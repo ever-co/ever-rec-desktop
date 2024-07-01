@@ -27,7 +27,6 @@ export const reducer = createReducer(
   })),
   on(screenshotActions.captureSuccess, (state, { image }) => ({
     ...state,
-    capturing: false,
     screenshots: [...state.screenshots, image],
     error: '',
   })),

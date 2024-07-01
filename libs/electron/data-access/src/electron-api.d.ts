@@ -1,5 +1,6 @@
 interface ElectronAPI {
-  captureScreen: (delay: number) => void;
+  startCapture: (interval: number) => void;
+  stopCapture: () => void;
   onScreenshotCaptured: (callback: (event: any, image: string) => void) => void;
 }
 

@@ -3,8 +3,12 @@ import { channel } from '@prototype/shared/utils';
 import { desktopCapturer, ipcMain } from 'electron';
 
 export function captureScreenEvent(): void {
-  ipcMain.on(channel.CAPTURE_SCREEN, async (event, delay) => {
-    setTimeout(async () => {
+  let captureInterval: any;
+  ipcMain.on(channel.START_CAPTURE_SCREEN, async (event, interval) => {
+    if (captureInterval) {
+      clearInterval(captureInterval);
+    }
+    captureInterval = setInterval(async () => {
       const sources = await desktopCapturer.getSources({
         types: ['screen'],
         thumbnailSize: getWindowSize(),
@@ -13,6 +17,10 @@ export function captureScreenEvent(): void {
       const image = source.thumbnail;
       // Send the screenshot back to the renderer process
       event.reply(channel.SCREENSHOT_CAPTURED, image.toDataURL());
-    }, delay);
+    }, interval);
+  });
+
+  ipcMain.on(channel.STOP_CAPTURE_SCREEN, () => {
+    clearInterval(captureInterval);
   });
 }

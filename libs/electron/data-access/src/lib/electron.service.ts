@@ -16,7 +16,7 @@ export class ElectronService {
     return win;
   }
 
-  private get electronAPI(): any | null {
+  private get electronAPI() {
     if (!this.window?.electronAPI) {
       console.debug('[ElectronService]: Electron API is unavailable');
       return null;
@@ -24,12 +24,23 @@ export class ElectronService {
     return this.window.electronAPI;
   }
 
-  public captureScreen(delay: number): void {
+  public startCapture(delay: number): void {
     const api = this.electronAPI;
     if (!api) return;
 
     try {
-      api.captureScreen(delay);
+      api.startCapture(delay);
+    } catch (error) {
+      console.error('[ElectronService]: Error capturing screen', error);
+    }
+  }
+
+  public stopCapture(): void {
+    const api = this.electronAPI;
+    if (!api) return;
+
+    try {
+      api.stopCapture();
     } catch (error) {
       console.error('[ElectronService]: Error capturing screen', error);
     }
