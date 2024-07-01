@@ -5,9 +5,9 @@
   <img [src]="screenshot" alt="Screenshot" />
   }
 
-  @if(capturing$ | async) {
-  <img src="assets/loading.gif" alt="Loading" />
   }
 
+  @if(capturing$ | async) {
+  <img src="assets/loading.gif" alt="Loading" />
   }
 </div>

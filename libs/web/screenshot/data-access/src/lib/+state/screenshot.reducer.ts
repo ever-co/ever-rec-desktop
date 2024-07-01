@@ -5,13 +5,13 @@ export const screenshotFeatureKey = 'screenshot';
 
 export interface IScreenshotState {
   capturing: boolean;
-  screenshot: string;
+  screenshots: string[];
   error: string;
 }
 
 export const initialState: IScreenshotState = {
   capturing: false,
-  screenshot: '',
+  screenshots: [],
   error: '',
 };
 
@@ -27,11 +27,13 @@ export const reducer = createReducer(
   })),
   on(screenshotActions.captureSuccess, (state, { image }) => ({
     ...state,
-    screenshot: image,
+    capturing: false,
+    screenshots: [...state.screenshots, image],
     error: '',
   })),
   on(screenshotActions.captureFailure, (state, { error }) => ({
     ...state,
+    capturing: false,
     error,
   }))
 );
