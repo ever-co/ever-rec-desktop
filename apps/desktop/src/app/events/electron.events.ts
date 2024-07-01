@@ -13,6 +13,8 @@ export default class ElectronEvents {
   }
 }
 
+ipcMain.removeAllListeners();
+
 /* Set unlimited listeners */
 ipcMain.setMaxListeners(0);
 
