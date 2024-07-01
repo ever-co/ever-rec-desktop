@@ -1,0 +1,1 @@
+export const SCREENSHOT_INTERVAL_DELAY = 5000;

@@ -1,0 +1,14 @@
+img {
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  width: 360px;
+  height: 2400px;
+  object-fit: cover;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+}
