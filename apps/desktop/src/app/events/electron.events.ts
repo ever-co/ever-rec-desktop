@@ -13,6 +13,9 @@ export default class ElectronEvents {
   }
 }
 
+/* Set unlimited listeners */
+ipcMain.setMaxListeners(0);
+
 // Retrieve app version
 ipcMain.handle('get-app-version', (event) => {
   console.log(`Fetching application version... [v${environment.version}]`);
