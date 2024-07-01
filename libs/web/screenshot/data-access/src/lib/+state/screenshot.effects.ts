@@ -15,7 +15,10 @@ export class ScreenshotEffects {
   startCaptureScreen$ = createEffect(() =>
     this.actions$.pipe(
       ofType(screenshotActions.startCapture),
-      map((action) => this.electronService.startCapture(action.delay)),
+      map((action) => {
+        this.electronService.startCapture(action.delay);
+        return screenshotActions.startCaptureSuccess();
+      }),
       catchError((error) => of(screenshotActions.captureFailure({ error })))
     )
   );
@@ -23,14 +26,20 @@ export class ScreenshotEffects {
   stopCaptureScreen$ = createEffect(() =>
     this.actions$.pipe(
       ofType(screenshotActions.stopCapture),
-      map(() => this.electronService.stopCapture()),
+      map(() => {
+        this.electronService.stopCapture();
+        return screenshotActions.stopCaptureSuccess();
+      }),
       catchError((error) => of(screenshotActions.captureFailure({ error })))
     )
   );
 
   captureScreen$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(screenshotActions.startCapture, screenshotActions.captureSuccess),
+      ofType(
+        screenshotActions.startCaptureSuccess,
+        screenshotActions.captureSuccess
+      ),
       mergeMap(() => {
         return new Promise((resolve) => {
           this.electronService.onScreenshotCaptured((image) => {

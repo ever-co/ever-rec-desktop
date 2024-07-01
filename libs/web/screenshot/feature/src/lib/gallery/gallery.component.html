@@ -2,12 +2,12 @@
   @for (screenshot of screenshots$ | async; track screenshot) {
 
   @if(screenshot) {
-  <img [src]="screenshot" alt="Screenshot" />
+  <img class="screenshot" [src]="screenshot" alt="Screenshot" />
   }
 
   }
 
   @if(capturing$ | async) {
-  <img src="assets/loading.gif" alt="Loading" />
+  <img class="loading" src="assets/loading.gif" alt="Loading" />
   }
 </div>
