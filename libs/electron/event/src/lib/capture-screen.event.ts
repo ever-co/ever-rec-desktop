@@ -1,13 +1,6 @@
+import { getWindowSize } from '@prototype/electron/utils';
 import { channel } from '@prototype/shared/utils';
-import { desktopCapturer, ipcMain, screen } from 'electron';
-
-export function getWindowSize(): { height: number; width: number } {
-  const display = screen.getPrimaryDisplay();
-  return {
-    height: display.workAreaSize.height,
-    width: display.workAreaSize.width,
-  };
-}
+import { desktopCapturer, ipcMain } from 'electron';
 
 export function captureScreenEvent(): void {
   ipcMain.on(channel.CAPTURE_SCREEN, async (event, delay) => {
