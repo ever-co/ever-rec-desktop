@@ -1,7 +1,7 @@
 import { channel } from '@prototype/shared/utils';
 import { contextBridge, ipcRenderer } from 'electron';
 
-contextBridge.exposeInMainWorld('electron', {
+contextBridge.exposeInMainWorld('electronAPI', {
   getAppVersion: () => ipcRenderer.invoke('get-app-version'),
   captureScreen: (delay: number) =>
     ipcRenderer.send(channel.CAPTURE_SCREEN, delay),
