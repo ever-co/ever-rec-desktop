@@ -50,5 +50,6 @@
       "style": "scss",
       "unitTestRunner": "jest"
     }
-  }
+  },
+  "defaultProject": "desktop"
 }
