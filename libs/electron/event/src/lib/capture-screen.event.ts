@@ -1,7 +1,6 @@
-import { getWindowSize } from '@prototype/electron/utils';
+import { FileManager, getWindowSize } from '@prototype/electron/utils';
 import { channel } from '@prototype/shared/utils';
-import { app, desktopCapturer, ipcMain } from 'electron';
-import { existsSync, mkdirSync, writeFile } from 'fs';
+import { desktopCapturer, ipcMain } from 'electron';
 import { join } from 'path';
 
 export function captureScreenEvent(): void {
@@ -33,20 +32,11 @@ async function takeScreenshot() {
 
   const image = screenSource.thumbnail.toPNG();
 
-  const fileDir = join(app.getPath('userData'), 'screenshots');
+  const fileDir = 'screenshots';
 
-  const filePath = join(fileDir, `screenshot-${Date.now()}.png`);
+  const fileName = `screenshot-${Date.now()}.png`;
 
-  if (!existsSync(fileDir)) {
-    mkdirSync(fileDir, { recursive: true });
-  }
-
-  writeFile(filePath, image, (err) => {
-    if (err) {
-      console.error('Failed to save screenshot:', err);
-      return;
-    }
-  });
+  const filePath = await FileManager.write(fileDir, fileName, image);
 
   return new URL(join('file://', filePath)).href;
 }
