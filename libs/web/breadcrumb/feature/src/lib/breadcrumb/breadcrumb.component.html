@@ -1,0 +1,9 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    @for (breadcrumb of breadcrumbs$ | async; track breadcrumb.label) {
+    <li class="breadcrumb-item">
+      <a [routerLink]="[breadcrumb.url]">{{ breadcrumb.label | titlecase }}</a>
+    </li>
+    }
+  </ol>
+</nav>

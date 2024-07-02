@@ -1,0 +1,28 @@
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { Store } from '@ngrx/store';
+import {
+  IBreadcrumb,
+  selectBreadcrumbState,
+} from '@prototype/breadcrumb/data-access';
+import { Observable, map } from 'rxjs';
+
+@Component({
+  selector: 'lib-breadcrumb',
+  standalone: true,
+  imports: [CommonModule, RouterModule],
+  templateUrl: './breadcrumb.component.html',
+  styleUrl: './breadcrumb.component.scss',
+})
+export class BreadcrumbComponent implements OnInit {
+  public breadcrumbs$!: Observable<IBreadcrumb[]>;
+
+  constructor(private store: Store) {}
+
+  ngOnInit(): void {
+    this.breadcrumbs$ = this.store
+      .select(selectBreadcrumbState)
+      .pipe(map((state) => state.breadcrumbs));
+  }
+}

@@ -5,6 +5,14 @@ export const screenshotRoutes: Route[] = [
     path: '',
     title: 'Memory Keeper',
     loadComponent: () =>
-      import('./layout/layout.component').then((c) => c.LayoutComponent),
+      import('./gallery/gallery.component').then((c) => c.GalleryComponent),
+  },
+  {
+    path: 'convert',
+    title: 'Memory Keeper',
+    loadChildren: () =>
+      import('@prototype/web/convert-video/feature').then(
+        (r) => r.convertVideoRoutes
+      ),
   },
 ];

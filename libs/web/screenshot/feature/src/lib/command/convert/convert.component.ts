@@ -1,18 +1,42 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { breadcrumbActions } from '@prototype/breadcrumb/data-access';
 
 @Component({
   selector: 'lib-convert',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './convert.component.html',
-  styleUrl: './convert.component.scss',
+  styleUrls: ['./convert.component.scss'], // Renamed to 'styleUrls' for consistency with Angular convention
 })
 export class ConvertComponent {
+  private readonly store = inject(Store);
+  // Using readonly property to enforce immutability
   private readonly router = inject(Router);
 
+  // Use more descriptive variable name for the title
+  public pageTitle = 'image to video';
+
+  // Adding explicit return type for better type safety
   public async navigateToVideo(): Promise<void> {
-    await this.router.navigate(['convert']);
+    // Check the current page title and toggle accordingly
+    const isGallery = this.pageTitle === 'gallery';
+    this.pageTitle = isGallery ? 'image to video' : 'gallery';
+
+    // Optimize route navigation by using a single ternary operation
+    const route = isGallery ? '' : 'convert';
+
+    this.store.dispatch(
+      !isGallery
+        ? breadcrumbActions.add({
+            breadcrumb: { label: this.pageTitle, url: '/' + route },
+          })
+        : breadcrumbActions.remove()
+    );
+
+    // Navigate to the desired route
+    await this.router.navigate([route]);
   }
 }

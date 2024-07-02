@@ -4,7 +4,7 @@ import { provideState } from '@ngrx/store';
 import { ScreenshotEffects } from './+state/screenshot.effects';
 import { screenshotFeature } from './+state/screenshot.reducer';
 
-export function provideScreenshotCategoryDataAccess(): EnvironmentProviders {
+export function provideScreenshotDataAccess(): EnvironmentProviders {
   return makeEnvironmentProviders([
     provideState(screenshotFeature),
     provideEffects([ScreenshotEffects]),
