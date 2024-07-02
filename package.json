@@ -15,6 +15,8 @@
     "@angular/platform-browser": "~17.3.0",
     "@angular/platform-browser-dynamic": "~17.3.0",
     "@angular/router": "~17.3.0",
+    "@ffmpeg/ffmpeg": "^0.12.10",
+    "@ffmpeg/util": "^0.12.1",
     "@ngrx/component-store": "~17.0.0",
     "@ngrx/effects": "~17.0.0",
     "@ngrx/entity": "~17.0.0",
