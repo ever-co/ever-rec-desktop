@@ -1,7 +1,6 @@
 import { FileManager, getWindowSize } from '@prototype/electron/utils';
 import { channel } from '@prototype/shared/utils';
 import { desktopCapturer, ipcMain } from 'electron';
-import { join } from 'path';
 
 export function captureScreenEvent(): void {
   let captureInterval: any;
@@ -36,7 +35,5 @@ async function takeScreenshot() {
 
   const fileName = `screenshot-${Date.now()}.png`;
 
-  const filePath = await FileManager.write(fileDir, fileName, image);
-
-  return new URL(join('file://', filePath)).href;
+  return FileManager.write(fileDir, fileName, image);
 }
