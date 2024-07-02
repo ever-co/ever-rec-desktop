@@ -42,8 +42,8 @@ export class ScreenshotEffects {
       ),
       mergeMap(() => {
         return new Promise((resolve) => {
-          this.electronService.onScreenshotCaptured((image) => {
-            resolve(screenshotActions.captureSuccess({ image }));
+          this.electronService.onScreenshotCaptured((screenshot) => {
+            resolve(screenshotActions.captureSuccess({ screenshot }));
           });
         });
       }),

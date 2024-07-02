@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { IScreenshot } from '@prototype/shared/utils';
 import { selectScreenshotState } from '@prototype/web/screenshot/data-access';
 import { Observable, Subject, map, takeUntil } from 'rxjs';
 
@@ -12,7 +13,7 @@ import { Observable, Subject, map, takeUntil } from 'rxjs';
   styleUrl: './gallery.component.scss',
 })
 export class GalleryComponent implements OnInit, OnDestroy {
-  public screenshots$ = new Observable<string[]>();
+  public screenshots$ = new Observable<IScreenshot[]>();
   public capturing$ = new Observable<boolean>();
   private destroy$ = new Subject<void>();
   public store = inject(Store);

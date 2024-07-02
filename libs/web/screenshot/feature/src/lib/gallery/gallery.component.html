@@ -2,7 +2,7 @@
   @for (screenshot of screenshots$ | async; track screenshot) {
 
   @if(screenshot) {
-  <img class="screenshot" [src]="screenshot" alt="Screenshot" />
+  <img class="screenshot" [src]="screenshot.pathname" alt="Screenshot" />
   }
 
   }

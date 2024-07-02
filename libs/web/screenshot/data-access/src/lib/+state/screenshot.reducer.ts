@@ -1,11 +1,12 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
+import { IScreenshot } from '@prototype/shared/utils';
 import { screenshotActions } from './screenshot.actions';
 
 export const screenshotFeatureKey = 'screenshot';
 
 export interface IScreenshotState {
   capturing: boolean;
-  screenshots: string[];
+  screenshots: IScreenshot[];
   error: string;
 }
 
@@ -25,9 +26,9 @@ export const reducer = createReducer(
     ...state,
     capturing: false,
   })),
-  on(screenshotActions.captureSuccess, (state, { image }) => ({
+  on(screenshotActions.captureSuccess, (state, { screenshot }) => ({
     ...state,
-    screenshots: [...state.screenshots, image],
+    screenshots: [...state.screenshots, screenshot],
     error: '',
   })),
   on(screenshotActions.captureFailure, (state, { error }) => ({

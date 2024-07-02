@@ -1,4 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import { IScreenshot } from '@prototype/shared/utils';
 
 export const screenshotActions = createActionGroup({
   source: 'Screenshot',
@@ -7,7 +8,7 @@ export const screenshotActions = createActionGroup({
     'Start Capture Success': emptyProps(),
     'Stop Capture': emptyProps(),
     'Stop Capture Success': emptyProps(),
-    'Capture Success': props<{ image: string }>(),
+    'Capture Success': props<{ screenshot: IScreenshot }>(),
     'Capture Failure': props<{ error: string }>(),
   },
 });

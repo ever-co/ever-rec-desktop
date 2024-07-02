@@ -1,6 +1,6 @@
 import { ScreenshotService } from '@prototype/electron/database';
 import { FileManager, getWindowSize } from '@prototype/electron/utils';
-import { channel } from '@prototype/shared/utils';
+import { IScreenshot, channel } from '@prototype/shared/utils';
 import { desktopCapturer, ipcMain } from 'electron';
 
 export function captureScreenEvent(): void {
@@ -11,9 +11,9 @@ export function captureScreenEvent(): void {
     }
     captureInterval = setInterval(async () => {
       // Take screenshot
-      const filePath = await takeScreenshot();
+      const screenshot = await takeScreenshot();
       // Send the screenshot back to the renderer process
-      event.reply(channel.SCREENSHOT_CAPTURED, filePath);
+      event.reply(channel.SCREENSHOT_CAPTURED, screenshot);
     }, interval);
   });
 
@@ -23,7 +23,7 @@ export function captureScreenEvent(): void {
 }
 
 // Function to take screenshot
-async function takeScreenshot() {
+async function takeScreenshot(): Promise<IScreenshot> {
   const sources = await desktopCapturer.getSources({
     types: ['screen'],
     thumbnailSize: getWindowSize(),
@@ -38,8 +38,5 @@ async function takeScreenshot() {
 
   const pathname = await FileManager.write(fileDir, fileName, image);
 
-  const screenshot = await ScreenshotService.save(pathname);
-
-  console.log(screenshot)
-  return pathname
+  return ScreenshotService.save(pathname);
 }

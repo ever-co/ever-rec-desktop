@@ -1,3 +1,4 @@
+import { IBase } from '@prototype/shared/utils';
 import {
   CreateDateColumn,
   DeleteDateColumn,
@@ -7,19 +8,19 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class Base {
+export class Base implements IBase {
   @PrimaryGeneratedColumn('uuid')
   id?: string;
 
   @CreateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt!: string;
+  createdAt?: string;
 
   @UpdateDateColumn({
     type: 'datetime',
     default: () => 'CURRENT_TIMESTAMP',
     onUpdate: 'CURRENT_TIMESTAMP',
   })
-  updatedAt!: string;
+  updatedAt?: string;
 
   @DeleteDateColumn({ type: 'datetime', nullable: true })
   deletedAt?: string | null;

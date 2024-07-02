@@ -1,5 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Injectable, inject } from '@angular/core';
+import { IScreenshot } from '@prototype/shared/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -46,12 +47,16 @@ export class ElectronService {
     }
   }
 
-  public onScreenshotCaptured(callback: (image: string) => void): void {
+  public onScreenshotCaptured(
+    callback: (screenshot: IScreenshot) => void
+  ): void {
     const api = this.electronAPI;
     if (!api) return;
 
     try {
-      api.onScreenshotCaptured((_: unknown, image: string) => callback(image));
+      api.onScreenshotCaptured((_: unknown, screenshot: IScreenshot) =>
+        callback(screenshot)
+      );
     } catch (error) {
       console.error(
         '[ElectronService]: Error setting screenshot capture callback',

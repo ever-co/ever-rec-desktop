@@ -1,3 +1,4 @@
+import { IScreenshot } from '@prototype/shared/utils';
 import { FindManyOptions, FindOneOptions, In } from 'typeorm';
 import { Screenshot } from '../entities/screenshot.entity';
 import { ScreenshotRepository } from '../repositories/screenshot.repository';
@@ -5,29 +6,29 @@ import { ScreenshotRepository } from '../repositories/screenshot.repository';
 export class ScreenshotService {
   private static readonly repository = ScreenshotRepository.instance;
 
-  public static async save(pathname: string): Promise<Screenshot> {
+  public static async save(pathname: string): Promise<IScreenshot> {
     const screenshot = new Screenshot();
     screenshot.pathname = pathname;
     return this.repository.save(screenshot);
   }
 
-  public static async findAll(options: FindManyOptions): Promise<Screenshot[]> {
+  public static async findAll(options: FindManyOptions): Promise<IScreenshot[]> {
     return this.repository.find(options);
   }
 
   public static async update(
     id: string,
-    screenshot: Partial<Screenshot>
-  ): Promise<Screenshot> {
+    screenshot: Partial<IScreenshot>
+  ): Promise<IScreenshot> {
     await this.repository.update(id, screenshot);
     return this.findOneById(id);
   }
 
-  public static async findOne(options: FindOneOptions): Promise<Screenshot> {
+  public static async findOne(options: FindOneOptions): Promise<IScreenshot> {
     return this.repository.findOne(options);
   }
 
-  public static async findOneById(id: string): Promise<Screenshot> {
+  public static async findOneById(id: string): Promise<IScreenshot> {
     return this.repository.findOneBy({ id });
   }
 
