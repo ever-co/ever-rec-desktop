@@ -1,7 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { screenshotActions } from '@prototype/web/screenshot/data-access';
+import {
+  screenshotActions,
+  selectScreenshotState,
+} from '@prototype/web/screenshot/data-access';
+import { Observable, Subject, map, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'lib-stop',
@@ -10,10 +14,28 @@ import { screenshotActions } from '@prototype/web/screenshot/data-access';
   templateUrl: './stop.component.html',
   styleUrl: './stop.component.scss',
 })
-export class StopComponent {
+export class StopComponent implements OnInit, OnDestroy {
   private readonly store = inject(Store);
+  private destroy$ = new Subject<void>();
+  public capturing$ = new Observable<boolean>();
+
+  public ngOnInit(): void {
+    this.capturing$ = this.store.select(selectScreenshotState).pipe(
+      map((state) => state.capturing),
+      takeUntil(this.destroy$)
+    );
+  }
 
   public stopCapture() {
     this.store.dispatch(screenshotActions.stopCapture());
+    this.capturing$ = this.store.select(selectScreenshotState).pipe(
+      map((state) => state.capturing),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
