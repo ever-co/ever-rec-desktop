@@ -21,8 +21,11 @@
     "@ngrx/router-store": "~17.0.0",
     "@ngrx/store": "~17.0.0",
     "@nx/angular": "18.3.5",
+    "better-sqlite3": "^9.6.0",
+    "reflect-metadata": "^0.2.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "typeorm": "^0.3.20",
     "zone.js": "~0.14.3"
   },
   "devDependencies": {
@@ -46,7 +49,7 @@
     "@swc/core": "^1.4.13",
     "@swc/helpers": "~0.5.2",
     "@types/jest": "^29.4.0",
-    "@types/node": "18.16.9",
+    "@types/node": "^18.16.9",
     "@typescript-eslint/eslint-plugin": "^7.3.0",
     "@typescript-eslint/parser": "^7.3.0",
     "electron": "^28.2.3",

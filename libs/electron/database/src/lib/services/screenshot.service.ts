@@ -1,0 +1,41 @@
+import { FindManyOptions, FindOneOptions, In } from 'typeorm';
+import { Screenshot } from '../entities/screenshot.entity';
+import { ScreenshotRepository } from '../repositories/screenshot.repository';
+
+export class ScreenshotService {
+  private static readonly repository = ScreenshotRepository.instance;
+
+  public static async save(pathname: string): Promise<Screenshot> {
+    const screenshot = new Screenshot();
+    screenshot.pathname = pathname;
+    return this.repository.save(screenshot);
+  }
+
+  public static async findAll(options: FindManyOptions): Promise<Screenshot[]> {
+    return this.repository.find(options);
+  }
+
+  public static async update(
+    id: string,
+    screenshot: Partial<Screenshot>
+  ): Promise<Screenshot> {
+    await this.repository.update(id, screenshot);
+    return this.findOneById(id);
+  }
+
+  public static async findOne(options: FindOneOptions): Promise<Screenshot> {
+    return this.repository.findOne(options);
+  }
+
+  public static async findOneById(id: string): Promise<Screenshot> {
+    return this.repository.findOneBy({ id });
+  }
+
+  public static async delete(id: string): Promise<void> {
+    await this.repository.delete({ id });
+  }
+
+  public static async deleteAll(screenshotIds: string[]): Promise<void> {
+    await this.repository.delete({ id: In(screenshotIds) });
+  }
+}

@@ -1,3 +1,4 @@
+import { ScreenshotService } from '@prototype/electron/database';
 import { FileManager, getWindowSize } from '@prototype/electron/utils';
 import { channel } from '@prototype/shared/utils';
 import { desktopCapturer, ipcMain } from 'electron';
@@ -35,5 +36,10 @@ async function takeScreenshot() {
 
   const fileName = `screenshot-${Date.now()}.png`;
 
-  return FileManager.write(fileDir, fileName, image);
+  const pathname = await FileManager.write(fileDir, fileName, image);
+
+  const screenshot = await ScreenshotService.save(pathname);
+
+  console.log(screenshot)
+  return pathname
 }

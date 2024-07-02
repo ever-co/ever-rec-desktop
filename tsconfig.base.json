@@ -7,6 +7,7 @@
       "@prototype/electron/data-access": [
         "libs/electron/data-access/src/index.ts"
       ],
+      "@prototype/electron/database": ["libs/electron/database/src/index.ts"],
       "@prototype/electron/events": ["libs/electron/event/src/index.ts"],
       "@prototype/electron/utils": ["libs/electron/utils/src/index.ts"],
       "@prototype/shared/utils": ["libs/shared/utils/src/index.ts"],
