@@ -21,7 +21,7 @@
   min-height: 400px;
   border: 1px solid;
   border-radius: 1.5rem;
-  height: calc(100vh - 13rem);
+  max-height: calc(100vh - 13rem);
   padding: 1rem;
   position: sticky;
   top: 1rem;
