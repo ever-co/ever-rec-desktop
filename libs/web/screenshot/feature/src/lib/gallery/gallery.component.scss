@@ -9,6 +9,8 @@ img {
 
   &.loading {
     max-width: 360px;
+    object-fit: scale-down;
+    scale: 0.5;
   }
 }
 
