@@ -18,28 +18,30 @@ function convertImagesToVideo(filePathnames, outputPath, config) {
   }
 
   const command = new FfmpegCommand();
+  const filterComplex = [];
+  const duration = config.duration ? config.duration / filePathnames.length : 2; // Default to 2 seconds per image
 
-  filePathnames.forEach((file) => {
-    command.input(file).inputOption('-loop 1');
-    if (config.frameRate) {
-      command.inputOptions(`-r ${config.frameRate}`);
-    }
+  filePathnames.forEach((file, index) => {
+    command.input(file);
+    filterComplex.push(
+      `[${index}:v]scale=${
+        config.resolution || '1920:1080'
+      },setpts=PTS-STARTPTS+${duration}/TB[v${index}]`
+    );
   });
 
-  if (config.resolution) {
-    command.outputOptions(`-vf scale=${config.resolution}`);
-  }
+  const concatFilter = filterComplex.map((_, index) => `[v${index}]`).join('');
+  filterComplex.push(
+    `${concatFilter}concat=n=${filePathnames.length}:v=1:a=0[vout]`
+  );
 
-  if (config.codec) {
-    command.videoCodec(config.codec)
+  command
+    .complexFilter(filterComplex)
+    .outputOptions('-map [vout]')
+    .videoCodec(config.codec || 'libx264')
     .outputOptions('-pix_fmt yuv420p') // Ensure compatibility with most players
     .outputOptions('-preset veryfast') // Adjusts encoding speed vs. quality trade-off
     .outputOptions('-crf 23'); // Quality setting for H.264
-  }
-
-  if (config.duration) {
-    command.outputOptions(`-t ${config.duration}`);
-  }
 
   command
     .output(outputPath)

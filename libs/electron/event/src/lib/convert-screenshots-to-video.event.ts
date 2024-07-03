@@ -13,6 +13,7 @@ export function convertScreenshotsToVideoEvent() {
     async (event, { screenshotIds, config }: IVideoConvertPayload) => {
       const screenshots = await ScreenshotService.findAll({
         where: { id: In(screenshotIds) },
+        order: { createdAt: 'ASC' },
       });
 
       const outputPath = FileManager.createFilePath(

@@ -28,7 +28,7 @@ export class SettingComponent implements OnInit, OnDestroy {
     this.formGroup = new FormGroup({
       frameRate: new FormControl('30', Validators.required),
       codec: new FormControl('libx264', Validators.required),
-      resolution: new FormControl('1920x1080', Validators.required),
+      resolution: new FormControl('1920:1080', Validators.required),
       duration: new FormControl('60', Validators.required),
     });
     this.store
@@ -56,7 +56,9 @@ export class SettingComponent implements OnInit, OnDestroy {
     } else {
       this.formGroup.markAllAsTouched(); // Mark all fields as touched to show validation errors
       console.log('Form is invalid');
-      this.store.dispatch(generateVideoActions.failure({error: 'Form is invalid'}));
+      this.store.dispatch(
+        generateVideoActions.failure({ error: 'Form is invalid' })
+      );
     }
   }
 
