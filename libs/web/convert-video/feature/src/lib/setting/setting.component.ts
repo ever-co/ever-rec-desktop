@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -9,7 +9,7 @@ import {
 import { Store } from '@ngrx/store';
 import { generateVideoActions } from '@prototype/web/convert-video/data-access';
 import { selectScreenshotState } from '@prototype/web/screenshot/data-access';
-import { tap } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'lib-setting',
@@ -18,10 +18,11 @@ import { tap } from 'rxjs';
   templateUrl: './setting.component.html',
   styleUrl: './setting.component.scss',
 })
-export class SettingComponent implements OnInit {
+export class SettingComponent implements OnInit, OnDestroy {
   public formGroup!: FormGroup;
   private store = inject(Store);
   private screenshotIds: string[] = [];
+  private destroy$ = new Subject<void>();
 
   ngOnInit(): void {
     this.formGroup = new FormGroup({
@@ -46,8 +47,10 @@ export class SettingComponent implements OnInit {
             (this.screenshotIds = state.screenshots.map(
               ({ id }) => id
             ) as string[])
-        )
-      );
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
   private validateAutoOrNumber(
@@ -60,7 +63,7 @@ export class SettingComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.formGroup.valid && !this.screenshotIds.length) {
+    if (this.formGroup.valid && this.screenshotIds.length > 0) {
       const formData = this.formGroup.value;
       console.log('Form Data:', formData);
       this.store.dispatch(
@@ -74,5 +77,10 @@ export class SettingComponent implements OnInit {
 
   cancel() {
     this.store.dispatch(generateVideoActions.cancel());
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
