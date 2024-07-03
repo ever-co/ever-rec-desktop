@@ -68,6 +68,8 @@ export default class App {
       width: width,
       height: height,
       show: false,
+      transparent: false,
+      opacity: 0.9,
       webPreferences: {
         contextIsolation: true,
         backgroundThrottling: false,
