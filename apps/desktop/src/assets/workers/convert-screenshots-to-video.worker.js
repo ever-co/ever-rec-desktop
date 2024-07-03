@@ -19,18 +19,22 @@ function convertImagesToVideo(filePathnames, outputPath, config) {
 
   const command = new FfmpegCommand();
 
-  filePathnames.forEach((file) => command.input(file));
-
-  if (config.frameRate) {
-    command.inputOptions(`-r ${config.frameRate}`);
-  }
+  filePathnames.forEach((file) => {
+    command.input(file).inputOption('-loop 1');
+    if (config.frameRate) {
+      command.inputOptions(`-r ${config.frameRate}`);
+    }
+  });
 
   if (config.resolution) {
-    command.inputOptions(`-r ${config.resolution}`);
+    command.outputOptions(`-vf scale=${config.resolution}`);
   }
 
   if (config.codec) {
-    command.outputOptions(`-c:v ${config.codec}`);
+    command.videoCodec(config.codec)
+    .outputOptions('-pix_fmt yuv420p') // Ensure compatibility with most players
+    .outputOptions('-preset veryfast') // Adjusts encoding speed vs. quality trade-off
+    .outputOptions('-crf 23'); // Quality setting for H.264
   }
 
   if (config.duration) {
@@ -38,7 +42,6 @@ function convertImagesToVideo(filePathnames, outputPath, config) {
   }
 
   command
-    .outputOptions('-pix_fmt yuv420p') // Ensure compatibility with most players
     .output(outputPath)
     .on('start', (cmdline) => console.log(`Started: ${cmdline}`))
     .on('progress', (progress) => {

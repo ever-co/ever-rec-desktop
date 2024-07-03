@@ -1,6 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { generateVideoActions } from '@prototype/web/convert-video/data-access';
 import { selectScreenshotState } from '@prototype/web/screenshot/data-access';
@@ -21,10 +26,10 @@ export class SettingComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.formGroup = new FormGroup({
-      frameRate: new FormControl('30'),
-      codec: new FormControl('libx264'),
-      resolution: new FormControl('1920x1080'),
-      duration: new FormControl('600'),
+      frameRate: new FormControl('30', Validators.required),
+      codec: new FormControl('libx264', Validators.required),
+      resolution: new FormControl('1920x1080', Validators.required),
+      duration: new FormControl('60', Validators.required),
     });
     this.store
       .select(selectScreenshotState)
@@ -42,17 +47,16 @@ export class SettingComponent implements OnInit, OnDestroy {
 
   onSubmit(): void {
     if (this.formGroup.valid && this.screenshotIds.length > 0) {
-      const formData = this.formGroup.value;
-      console.log('Form Data:', formData);
       this.store.dispatch(
         generateVideoActions.start({
           screenshotIds: this.screenshotIds,
-          config: formData,
+          config: this.formGroup.value,
         })
       );
     } else {
       this.formGroup.markAllAsTouched(); // Mark all fields as touched to show validation errors
       console.log('Form is invalid');
+      this.store.dispatch(generateVideoActions.failure({error: 'Form is invalid'}));
     }
   }
 

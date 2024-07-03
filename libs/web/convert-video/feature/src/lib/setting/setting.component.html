@@ -1,7 +1,7 @@
 <div class="title">Generate Video Configuration</div>
 <form [formGroup]="formGroup" class="form" (ngSubmit)="onSubmit()">
   <div class="input-container">
-    <input type="number" id="frameRate" formControlName="frameRate" class="input-field"
+    <input type="text" id="frameRate" formControlName="frameRate" class="input-field"
       placeholder="Enter the frame rate" aria-label="Frame Rate (fps)" />
     <label class="input-label" for="frameRate">Frame Rate (fps)</label>
     <div *ngIf="formGroup.controls['frameRate'].invalid && formGroup.controls['frameRate'].touched" class="error">
