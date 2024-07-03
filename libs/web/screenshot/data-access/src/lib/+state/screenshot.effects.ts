@@ -1,14 +1,14 @@
 import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
-import { ElectronService } from '@prototype/electron/data-access';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
+import { ScreenshotElectronService } from '../services/screenshot-electron.service';
 import { screenshotActions } from './screenshot.actions';
 
 @Injectable()
 export class ScreenshotEffects {
-  private electronService = inject(ElectronService);
+  private electronService = inject(ScreenshotElectronService);
 
   constructor(private actions$: Actions) {}
 
