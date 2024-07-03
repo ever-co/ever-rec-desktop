@@ -21,7 +21,11 @@ export class GenerateVideoEffects {
 
   cancelGenerateVideos$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(generateVideoActions.cancel, generateVideoActions.finish),
+      ofType(
+        generateVideoActions.cancel,
+        generateVideoActions.finish,
+        generateVideoActions.triggerError
+      ),
       map(() => {
         this.convertVideoElectronService.cancelGenerate();
         return generateVideoActions.cancelSuccess();
@@ -51,6 +55,20 @@ export class GenerateVideoEffects {
         return new Promise((resolve) => {
           this.convertVideoElectronService.onDone((videoPathname) => {
             resolve(generateVideoActions.finish({ videoPathname }));
+          });
+        });
+      }),
+      catchError((error) => of(generateVideoActions.failure({ error })))
+    )
+  );
+
+  onError$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(generateVideoActions.startSuccess),
+      mergeMap(() => {
+        return new Promise((resolve) => {
+          this.convertVideoElectronService.onError((error) => {
+            resolve(generateVideoActions.triggerError({ error }));
           });
         });
       }),

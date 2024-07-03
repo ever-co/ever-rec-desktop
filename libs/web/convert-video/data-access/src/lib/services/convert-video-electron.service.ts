@@ -29,4 +29,10 @@ export class ConvertVideoElectronService {
       (_, pathname: string) => callback(pathname)
     );
   }
+
+  public onError(callback: (error: string) => void): void {
+    this.electronService.on(channel.GENERATION_ERROR, (_, error: string) =>
+      callback(error)
+    );
+  }
 }

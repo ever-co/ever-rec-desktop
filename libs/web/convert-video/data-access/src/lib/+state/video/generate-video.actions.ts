@@ -10,5 +10,6 @@ export const generateVideoActions = createActionGroup({
     finish: props<{ videoPathname: string }>(),
     progress: props<{ progress: number }>(),
     failure: props<{ error: string }>(),
+    'Trigger Error': props<{ error: string }>(),
   },
 });

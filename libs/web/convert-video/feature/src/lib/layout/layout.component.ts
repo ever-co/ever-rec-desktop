@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { ScreenshotComponent } from '../screenshot/screenshot.component';
+import { ErrorComponent } from '../error/error.component';
 import { SettingComponent } from '../setting/setting.component';
 import { StatisticComponent } from '../statistics/statistic.component';
 import { VideoComponent } from '../video/video.component';
@@ -13,7 +13,7 @@ import { VideoComponent } from '../video/video.component';
     SettingComponent,
     VideoComponent,
     StatisticComponent,
-    ScreenshotComponent,
+    ErrorComponent,
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',

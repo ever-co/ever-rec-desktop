@@ -1,4 +1,5 @@
 import { ScreenshotService } from '@prototype/electron/database';
+import { FileManager } from '@prototype/electron/utils';
 import { channel } from '@prototype/shared/utils';
 import { ipcMain } from 'electron';
 import { join } from 'path';
@@ -6,13 +7,22 @@ import { In } from 'typeorm';
 import { Worker } from 'worker_threads';
 
 export function convertScreenshotsToVideoEvent() {
-  let worker: Worker;
+  let worker: any = null;
   ipcMain.on(
     channel.START_CONVERT_TO_VIDEO,
     async (event, screenshotIds: string[]) => {
       const screenshots = await ScreenshotService.findAll({
         where: { id: In(screenshotIds) },
       });
+
+      const outputPath = FileManager.createFilePath(
+        'videos',
+        `output-${Date.now()}.mp4`
+      );
+
+      const filePathnames = FileManager.getFilesByPathnames(
+        screenshots.map(({ pathname }) => pathname)
+      );
 
       if (!worker) {
         worker = new Worker(
@@ -22,7 +32,7 @@ export function convertScreenshotsToVideoEvent() {
             'workers',
             'convert-screenshots-to-video.worker.js'
           ),
-          { workerData: { screenshots } }
+          { workerData: { filePathnames, outputPath } }
         );
         worker.postMessage({ command: 'start' });
       }
@@ -30,27 +40,40 @@ export function convertScreenshotsToVideoEvent() {
       worker.on(
         'message',
         (evt: { status: string; message: string | number }) => {
-          console.log(evt)
           if (evt.status === 'progress') {
-            event.reply(channel.CONVERSION_IN_PROGRESS, {
-              progress: evt.message,
-            });
+            event.reply(channel.CONVERSION_IN_PROGRESS, evt.message);
           }
           if (evt.status === 'done') {
-            event.reply(channel.SCREESHOTS_CONVERTED, evt.message);
+            event.reply(
+              channel.SCREESHOTS_CONVERTED,
+              FileManager.encodePath(String(evt.message))
+            );
           }
 
           if (evt.status === 'error') {
-            event.reply(channel.CANCEL_GENERATING);
+            event.reply(channel.GENERATION_ERROR, evt.message);
           }
         }
       );
 
-      worker.on('exit', (error) => {
-        if (error) {
-          event.reply(channel.CANCEL_GENERATING);
+      worker.on('error', (code: number) => {
+        if (code !== 0) {
+          event.reply(
+            channel.GENERATION_ERROR,
+            'An Error Occurred while video generation'
+          );
           worker.terminate();
         }
+        console.error(code);
+      });
+
+      worker.on('exit', (error: any) => {
+        if (worker) {
+          event.reply(channel.GENERATION_ERROR, error);
+          worker.terminate();
+          worker = null;
+        }
+        console.error(error);
       });
     }
   );
@@ -58,6 +81,7 @@ export function convertScreenshotsToVideoEvent() {
   ipcMain.on(channel.CANCEL_GENERATING, () => {
     if (worker) {
       worker.terminate();
+      worker = null;
     }
   });
 }

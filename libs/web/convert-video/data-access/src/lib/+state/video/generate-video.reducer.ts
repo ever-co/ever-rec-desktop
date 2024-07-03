@@ -21,15 +21,21 @@ export const reducer = createReducer(
   initialState,
   on(generateVideoActions.start, (state) => ({
     ...state,
+    error: '',
     generating: true,
   })),
   on(generateVideoActions.cancel, (state) => ({
     ...state,
     generating: false,
   })),
-  on(generateVideoActions.finish, (state, {videoPathname}) => ({
+  on(generateVideoActions.finish, (state, { videoPathname }) => ({
     ...state,
     videoPathname,
+    generating: false,
+  })),
+  on(generateVideoActions.triggerError, (state, { error }) => ({
+    ...state,
+    error,
     generating: false,
   })),
   on(generateVideoActions.failure, (state, { error }) => ({

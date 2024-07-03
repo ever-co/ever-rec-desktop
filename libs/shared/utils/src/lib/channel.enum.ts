@@ -7,4 +7,5 @@ export enum channel {
   'CANCEL_CONVERSION' = 'cancel-conversion',
   'CONVERSION_IN_PROGRESS' = 'conversion-progress',
   'CANCEL_GENERATING' = 'cancel-generating',
+  'GENERATION_ERROR' = 'generation-error',
 }

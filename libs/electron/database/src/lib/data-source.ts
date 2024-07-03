@@ -1,5 +1,4 @@
-import { app } from 'electron';
-import { join } from 'path';
+import { FileManager } from '@prototype/electron/utils';
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import { Screenshot } from './entities/screenshot.entity';
@@ -7,7 +6,7 @@ import { ScreenshotSubscriber } from './subscribers/screenshot.subscriber';
 
 export const appDataSource = new DataSource({
   type: 'better-sqlite3',
-  database: join(app.getPath('userData'), 'database', 'prototype.sqlite'),
+  database: FileManager.createFilePath('database', 'prototype.sqlite'),
   entities: [Screenshot],
   synchronize: true,
   logging: true,

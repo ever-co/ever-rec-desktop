@@ -52,6 +52,19 @@ export class FileManager {
     }
   }
 
+  public static getFilesByPathnames(pathnames: string[]): string[] {
+    return pathnames.map((pathname) => this.decodePath(pathname));
+  }
+
+  public static createFilePath(directory: string, fileName: string): string {
+    directory = join(app.getPath('userData'), directory);
+    if (!existsSync(directory)) {
+      // Create directory if it doesn't exist
+      fsPromises.mkdir(directory, { recursive: true });
+    }
+    return join(directory, fileName);
+  }
+
   public static removeAllFiles(directory: string): void {
     // Safely read directory content
     try {
@@ -92,7 +105,7 @@ export class FileManager {
     }
   }
 
-  private static encodePath(filePath: string): string {
+  public static encodePath(filePath: string): string {
     try {
       // Use resolve to ensure the file path is absolute
       const absolutePath = resolve(filePath);
