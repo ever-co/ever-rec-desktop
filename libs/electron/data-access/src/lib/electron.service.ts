@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Injectable, inject } from '@angular/core';
-import { IScreenshot } from '@prototype/shared/utils';
+import { channel as ChEnum } from '@prototype/shared/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -25,43 +25,59 @@ export class ElectronService {
     return this.window.electronAPI;
   }
 
-  public startCapture(delay: number): void {
-    const api = this.electronAPI;
-    if (!api) return;
-
-    try {
-      api.startCapture(delay);
-    } catch (error) {
-      console.error('[ElectronService]: Error capturing screen', error);
+  public async invoke<T, U>(channel: ChEnum, data?: T): Promise<U> {
+    if (this.electronAPI) {
+      return this.electronAPI.invoke(channel, data) as U;
     }
+    throw new Error('Electron API is not available');
   }
 
-  public stopCapture(): void {
-    const api = this.electronAPI;
-    if (!api) return;
-
-    try {
-      api.stopCapture();
-    } catch (error) {
-      console.error('[ElectronService]: Error capturing screen', error);
-    }
-  }
-
-  public onScreenshotCaptured(
-    callback: (screenshot: IScreenshot) => void
+  public on(
+    channel: ChEnum,
+    callback: (event: any, ...args: any[]) => void
   ): void {
-    const api = this.electronAPI;
-    if (!api) return;
+    if (this.electronAPI) {
+      this.electronAPI.on(channel, callback);
+    } else {
+      throw new Error('Electron API is not available');
+    }
+  }
 
-    try {
-      api.onScreenshotCaptured((_: unknown, screenshot: IScreenshot) =>
-        callback(screenshot)
-      );
-    } catch (error) {
-      console.error(
-        '[ElectronService]: Error setting screenshot capture callback',
-        error
-      );
+  public once(
+    channel: ChEnum,
+    callback: (event: any, ...args: any[]) => void
+  ): void {
+    if (this.electronAPI) {
+      this.electronAPI.once(channel, callback);
+    } else {
+      throw new Error('Electron API is not available');
+    }
+  }
+
+  public send(channel: ChEnum, data?: any): void {
+    if (this.electronAPI) {
+      this.electronAPI.send(channel, data);
+    } else {
+      throw new Error('Electron API is not available');
+    }
+  }
+
+  public removeAllListeners(channel: ChEnum): void {
+    if (this.electronAPI) {
+      this.electronAPI.removeAllListeners(channel);
+    } else {
+      throw new Error('Electron API is not available');
+    }
+  }
+
+  public removeListener(
+    channel: ChEnum,
+    callback: (event: any, ...args: any[]) => void
+  ): void {
+    if (this.electronAPI) {
+      this.electronAPI.removeListener(channel, callback);
+    } else {
+      throw new Error('Electron API is not available');
     }
   }
 }
