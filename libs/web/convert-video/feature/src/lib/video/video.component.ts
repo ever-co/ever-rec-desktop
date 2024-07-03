@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import {
-  AfterViewInit,
   Component,
   ElementRef,
+  OnInit,
   ViewChild,
   inject
 } from '@angular/core';
@@ -17,13 +17,13 @@ import { Observable, distinctUntilChanged, map, tap } from 'rxjs';
   templateUrl: './video.component.html',
   styleUrl: './video.component.scss',
 })
-export class VideoComponent implements AfterViewInit {
+export class VideoComponent implements OnInit {
   private store = inject(Store);
   public source$!: Observable<string>;
   @ViewChild('videoPlayer', { static: false })
   public videoPlayer!: ElementRef<HTMLVideoElement>;
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.source$ = this.store.select(selectGenerateVideoState).pipe(
       map((state) => state.videoPathname),
       distinctUntilChanged(),
