@@ -3,7 +3,10 @@
  * between the frontend to the electron backend.
  */
 
-import { captureScreenEvent } from '@prototype/electron/events';
+import {
+  captureScreenEvent,
+  convertScreenshotsToVideoEvent,
+} from '@prototype/electron/events';
 import { app, ipcMain } from 'electron';
 import { environment } from '../../environments/environment';
 
@@ -31,3 +34,5 @@ ipcMain.on('quit', (event, code) => {
 });
 
 captureScreenEvent();
+
+convertScreenshotsToVideoEvent();

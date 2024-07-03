@@ -1,11 +1,23 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { selectScreenshotState } from '@prototype/web/screenshot/data-access';
+import { Observable, map } from 'rxjs';
+import { ProgressComponent } from '../progress/progress.component';
 
 @Component({
   selector: 'lib-statistic',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ProgressComponent],
   templateUrl: './statistic.component.html',
   styleUrl: './statistic.component.scss',
 })
-export class StatisticComponent {}
+export class StatisticComponent implements OnInit {
+  private readonly store = inject(Store);
+  public count$!: Observable<number>;
+  ngOnInit(): void {
+    this.count$ = this.store
+      .select(selectScreenshotState)
+      .pipe(map((state) => state.screenshots.length));
+  }
+}

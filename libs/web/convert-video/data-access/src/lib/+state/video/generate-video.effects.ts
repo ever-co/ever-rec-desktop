@@ -1,0 +1,65 @@
+import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+
+import { of } from 'rxjs';
+import { catchError, map, mergeMap } from 'rxjs/operators';
+import { ConvertVideoElectronService } from '../../services/convert-video-electron.service';
+import { generateVideoActions } from './generate-video.actions';
+
+@Injectable()
+export class GenerateVideoEffects {
+  startGenerateVideos$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(generateVideoActions.start),
+      map((action) => {
+        this.convertVideoElectronService.startGenerate(action.screenshotIds);
+        return generateVideoActions.startSuccess();
+      }),
+      catchError((error) => of(generateVideoActions.failure({ error })))
+    );
+  });
+
+  cancelGenerateVideos$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(generateVideoActions.cancel, generateVideoActions.finish),
+      map(() => {
+        this.convertVideoElectronService.cancelGenerate();
+        return generateVideoActions.cancelSuccess();
+      }),
+      catchError((error) => of(generateVideoActions.failure({ error })))
+    );
+  });
+
+  onProgress$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(generateVideoActions.progress, generateVideoActions.startSuccess),
+      mergeMap(() => {
+        return new Promise((resolve) => {
+          this.convertVideoElectronService.onProgress((progress) => {
+            resolve(generateVideoActions.progress({ progress }));
+          });
+        });
+      }),
+      catchError((error) => of(generateVideoActions.failure({ error })))
+    )
+  );
+
+  onDone$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(generateVideoActions.startSuccess),
+      mergeMap(() => {
+        return new Promise((resolve) => {
+          this.convertVideoElectronService.onDone((videoPathname) => {
+            resolve(generateVideoActions.finish({ videoPathname }));
+          });
+        });
+      }),
+      catchError((error) => of(generateVideoActions.failure({ error })))
+    )
+  );
+
+  constructor(
+    private actions$: Actions,
+    private readonly convertVideoElectronService: ConvertVideoElectronService
+  ) {}
+}

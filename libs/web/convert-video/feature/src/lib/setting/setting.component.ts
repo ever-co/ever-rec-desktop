@@ -1,11 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { generateVideoActions } from '@prototype/web/convert-video/data-access';
+import { selectScreenshotState } from '@prototype/web/screenshot/data-access';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'lib-setting',
@@ -16,6 +20,8 @@ import {
 })
 export class SettingComponent implements OnInit {
   public formGroup!: FormGroup;
+  private store = inject(Store);
+  private screenshotIds: string[] = [];
 
   ngOnInit(): void {
     this.formGroup = new FormGroup({
@@ -32,6 +38,16 @@ export class SettingComponent implements OnInit {
       imageFormat: new FormControl('png', Validators.required),
       videoFormat: new FormControl('mp4', Validators.required),
     });
+    this.store
+      .select(selectScreenshotState)
+      .pipe(
+        tap(
+          (state) =>
+            (this.screenshotIds = state.screenshots.map(
+              ({ id }) => id
+            ) as string[])
+        )
+      );
   }
 
   private validateAutoOrNumber(
@@ -44,14 +60,19 @@ export class SettingComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.formGroup.valid) {
+    if (this.formGroup.valid && !this.screenshotIds.length) {
       const formData = this.formGroup.value;
       console.log('Form Data:', formData);
-      // Add your form submission logic here
-      // For example, send the form data to a server
+      this.store.dispatch(
+        generateVideoActions.start({ screenshotIds: this.screenshotIds })
+      );
     } else {
       this.formGroup.markAllAsTouched(); // Mark all fields as touched to show validation errors
       console.log('Form is invalid');
     }
+  }
+
+  cancel() {
+    this.store.dispatch(generateVideoActions.cancel());
   }
 }

@@ -2,10 +2,9 @@
   <div class="row">
     <button class="button" type="button">Show All Images</button>
     <button class="button cancel" type="button">Delete All Images</button>
-    <div class="p"><strong>Saved Image</strong>: 25</div>
+    <div class="p"><strong>Saved Image</strong>: {{count$ | async}}</div>
   </div>
   <div class="row">
-    <div>Generating...</div>
-    <progress value="55" max="100"></progress>
+    <lib-progress class="full-width"></lib-progress>
   </div>
 </div>

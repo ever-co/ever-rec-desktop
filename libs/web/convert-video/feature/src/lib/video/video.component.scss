@@ -3,6 +3,7 @@
 
   .video {
     width: 100%;
+    max-height: calc(100vh - 10.85rem);
     border-radius: 1.5rem;
   }
 }
