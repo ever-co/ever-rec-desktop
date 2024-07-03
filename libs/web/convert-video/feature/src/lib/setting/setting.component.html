@@ -10,53 +10,29 @@
   </div>
 
   <div class="input-container">
-    <input type="text" id="patternType" formControlName="patternType" class="input-field"
-      placeholder="Enter the pattern type" aria-label="Pattern Type" />
-    <label class="input-label" for="patternType">Pattern Type</label>
-    <div *ngIf="formGroup.controls['patternType'].invalid && formGroup.controls['patternType'].touched" class="error">
-      Pattern type is required.
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="column">
-      <div class="input-container">
-        <input type="text" id="width" formControlName="width" class="input-field" placeholder="Width"
-          aria-label="Width" />
-        <label class="input-label" for="width">Width</label>
-        <div *ngIf="formGroup.controls['width'].invalid && formGroup.controls['width'].touched" class="error">
-          Width is required and must be 'auto' or a number.
-        </div>
-      </div>
-    </div>
-    <div class="column">
-      <div class="input-container">
-        <input type="text" id="height" formControlName="height" class="input-field" placeholder="Height"
-          aria-label="Height" />
-        <label class="input-label" for="height">Height</label>
-        <div *ngIf="formGroup.controls['height'].invalid && formGroup.controls['height'].touched" class="error">
-          Height is required and must be 'auto' or a number.
-        </div>
-      </div>
+    <input type="text" id="codec" formControlName="codec" class="input-field" placeholder="Codec" aria-label="Codec" />
+    <label class="input-label" for="codec">Codec</label>
+    <div *ngIf="formGroup.controls['codec'].invalid && formGroup.controls['codec'].touched" class="error">
+      Codec is required.
     </div>
   </div>
 
   <div class="input-container">
-    <input type="text" id="imageFormat" formControlName="imageFormat" class="input-field" placeholder="Image Format"
-      aria-label="Image Format" />
-    <label class="input-label" for="imageFormat">Image Format</label>
-    <div *ngIf="formGroup.controls['imageFormat'].invalid && formGroup.controls['imageFormat'].touched" class="error">
-      Image format is required.
+    <input type="text" id="resolution" formControlName="resolution" class="input-field" placeholder="Resolution"
+      aria-label="Resolution" />
+    <label class="input-label" for="resolution">Resolution</label>
+    <div *ngIf="formGroup.controls['resolution'].invalid && formGroup.controls['resolution'].touched" class="error">
+      Resolution is required.
     </div>
   </div>
 
   <div class="input-container">
-    <input type="text" id="videoFormat" formControlName="videoFormat" class="input-field" placeholder="Video Format"
-      aria-label="Video Format" />
-    <label class="input-label" for="videoFormat">Video Format</label>
+    <input type="text" id="duration" formControlName="duration" class="input-field" placeholder="Duration"
+      aria-label="Duration" />
+    <label class="input-label" for="duration">Duration(s)</label>
 
-    <div *ngIf="formGroup.controls['videoFormat'].invalid && formGroup.controls['videoFormat'].touched" class="error">
-      Video format is required.
+    <div *ngIf="formGroup.controls['duration'].invalid && formGroup.controls['duration'].touched" class="error">
+      Duration is required.
     </div>
   </div>
 

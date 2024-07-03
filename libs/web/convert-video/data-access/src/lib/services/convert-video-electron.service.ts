@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { ElectronService } from '@prototype/electron/data-access';
-import { channel } from '@prototype/shared/utils';
+import { IVideoConvertPayload, channel } from '@prototype/shared/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -8,8 +8,8 @@ import { channel } from '@prototype/shared/utils';
 export class ConvertVideoElectronService {
   private readonly electronService = inject(ElectronService);
 
-  public startGenerate(screenshotIds: string[]): void {
-    this.electronService.send(channel.START_CONVERT_TO_VIDEO, screenshotIds);
+  public startGenerate(payload: IVideoConvertPayload): void {
+    this.electronService.send(channel.START_CONVERT_TO_VIDEO, payload);
   }
 
   public cancelGenerate(): void {

@@ -1,6 +1,6 @@
 import { ScreenshotService } from '@prototype/electron/database';
 import { FileManager } from '@prototype/electron/utils';
-import { channel } from '@prototype/shared/utils';
+import { IVideoConvertPayload, channel } from '@prototype/shared/utils';
 import { ipcMain } from 'electron';
 import { join } from 'path';
 import { In } from 'typeorm';
@@ -10,7 +10,7 @@ export function convertScreenshotsToVideoEvent() {
   let worker: any = null;
   ipcMain.on(
     channel.START_CONVERT_TO_VIDEO,
-    async (event, screenshotIds: string[]) => {
+    async (event, { screenshotIds, config }: IVideoConvertPayload) => {
       const screenshots = await ScreenshotService.findAll({
         where: { id: In(screenshotIds) },
       });
@@ -32,7 +32,7 @@ export function convertScreenshotsToVideoEvent() {
             'workers',
             'convert-screenshots-to-video.worker.js'
           ),
-          { workerData: { filePathnames, outputPath } }
+          { workerData: { filePathnames, outputPath, config } }
         );
         worker.postMessage({ command: 'start' });
       }

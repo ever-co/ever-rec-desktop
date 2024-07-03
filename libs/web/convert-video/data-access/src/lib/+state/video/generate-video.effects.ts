@@ -12,7 +12,7 @@ export class GenerateVideoEffects {
     return this.actions$.pipe(
       ofType(generateVideoActions.start),
       map((action) => {
-        this.convertVideoElectronService.startGenerate(action.screenshotIds);
+        this.convertVideoElectronService.startGenerate(action);
         return generateVideoActions.startSuccess();
       }),
       catchError((error) => of(generateVideoActions.failure({ error })))

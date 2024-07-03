@@ -1,11 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { generateVideoActions } from '@prototype/web/convert-video/data-access';
 import { selectScreenshotState } from '@prototype/web/screenshot/data-access';
@@ -26,18 +21,10 @@ export class SettingComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.formGroup = new FormGroup({
-      frameRate: new FormControl('30', Validators.required),
-      patternType: new FormControl('glob', Validators.required),
-      width: new FormControl('auto', [
-        Validators.required,
-        this.validateAutoOrNumber,
-      ]),
-      height: new FormControl('auto', [
-        Validators.required,
-        this.validateAutoOrNumber,
-      ]),
-      imageFormat: new FormControl('png', Validators.required),
-      videoFormat: new FormControl('mp4', Validators.required),
+      frameRate: new FormControl('30'),
+      codec: new FormControl('libx264'),
+      resolution: new FormControl('1920x1080'),
+      duration: new FormControl('600'),
     });
     this.store
       .select(selectScreenshotState)
@@ -53,21 +40,15 @@ export class SettingComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  private validateAutoOrNumber(
-    control: FormControl
-  ): { [key: string]: boolean } | null {
-    const value = control.value;
-    return value === 'auto' || !isNaN(parseInt(value, 10))
-      ? null
-      : { invalidValue: true };
-  }
-
   onSubmit(): void {
     if (this.formGroup.valid && this.screenshotIds.length > 0) {
       const formData = this.formGroup.value;
       console.log('Form Data:', formData);
       this.store.dispatch(
-        generateVideoActions.start({ screenshotIds: this.screenshotIds })
+        generateVideoActions.start({
+          screenshotIds: this.screenshotIds,
+          config: formData,
+        })
       );
     } else {
       this.formGroup.markAllAsTouched(); // Mark all fields as touched to show validation errors
