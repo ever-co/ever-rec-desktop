@@ -1,8 +1,6 @@
 const { workerData, parentPort } = require('worker_threads');
 const FfmpegCommand = require('fluent-ffmpeg');
 const ffmpegPath = require('ffmpeg-static');
-const fs = require('fs');
-const path = require('path');
 
 FfmpegCommand.setFfmpegPath(ffmpegPath);
 
