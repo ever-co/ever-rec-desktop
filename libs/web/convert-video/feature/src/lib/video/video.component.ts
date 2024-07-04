@@ -4,11 +4,11 @@ import {
   ElementRef,
   OnInit,
   ViewChild,
-  inject
+  inject,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { selectGenerateVideoState } from '@prototype/web/convert-video/data-access';
-import { Observable, distinctUntilChanged, map, tap } from 'rxjs';
+import { Observable, distinctUntilChanged, filter, map, tap } from 'rxjs';
 
 @Component({
   selector: 'lib-video',
@@ -27,11 +27,12 @@ export class VideoComponent implements OnInit {
     this.source$ = this.store.select(selectGenerateVideoState).pipe(
       map((state) => state.videoPathname),
       distinctUntilChanged(),
+      filter(() => !!this.videoPlayer),
       tap(() => this.reload())
     );
   }
 
-  public reload() {
+  private reload() {
     if (this.videoPlayer) {
       this.videoPlayer.nativeElement.load();
     } else {
