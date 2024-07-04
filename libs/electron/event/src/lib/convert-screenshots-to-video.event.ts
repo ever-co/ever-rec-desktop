@@ -19,7 +19,7 @@ export function convertScreenshotsToVideoEvent() {
         screenshots.map(({ pathname }) => pathname)
       );
       const batches = splitIntoBatches(filePathnames, config.batch || 100); // Limit to batches of 100
-      const batchVideoPaths: string[] = [];
+      const batchVideo: { index: number; path: string }[] = [];
       const workers: Worker[] = [];
 
       let completedWorkers = 0;
@@ -36,7 +36,7 @@ export function convertScreenshotsToVideoEvent() {
             }
 
             if (evt.status === 'done') {
-              batchVideoPaths.push(evt.message as string);
+              batchVideo.push({ index, path: evt.message as string });
               completedWorkers++;
               checkCompletion();
             }
@@ -75,9 +75,18 @@ export function convertScreenshotsToVideoEvent() {
             `output-${Date.now()}.mp4`
           );
 
+          const batchVideoPaths = batchVideo
+            .sort((a, b) => a.index - b.index)
+            .map((batch) => batch.path);
+
           const worker = new Worker(
             join(__dirname, 'assets', 'workers', 'combine-videos.worker.js'),
-            { workerData: { batchVideoPaths, finalOutputPath } }
+            {
+              workerData: {
+                batchVideoPaths,
+                finalOutputPath,
+              },
+            }
           );
 
           worker.postMessage({ command: 'start' });
