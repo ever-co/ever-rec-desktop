@@ -14,11 +14,12 @@ parentPort.on('message', (message) => {
 function convertImagesToVideo(filePathnames, outputPath, config) {
   const command = new FfmpegCommand();
   const filterComplex = [];
-  const duration = 1 / config.frameRate || 2;
+  const frameRate = config.frameRate || 2;
+  const duration = 1 / frameRate;
   const frames = filePathnames.length;
 
   filePathnames.forEach((file, index) => {
-    command.input(file);
+    command.input(file).inputFps(frameRate);
     filterComplex.push(
       `[${index}:v]scale=${
         config.resolution || '1920:1080'
