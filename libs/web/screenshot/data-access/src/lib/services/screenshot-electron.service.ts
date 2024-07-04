@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { ElectronService } from '@prototype/electron/data-access';
-import { IScreenshot, channel } from '@prototype/shared/utils';
+import { Channel, IScreenshot } from '@prototype/shared/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -10,24 +10,24 @@ export class ScreenshotElectronService {
 
   public onScreenshotCaptured(callback: (screenshot: IScreenshot) => void) {
     this.electronService.on(
-      channel.SCREENSHOT_CAPTURED,
+      Channel.SCREENSHOT_CAPTURED,
       (_, screenshot: IScreenshot) => callback(screenshot)
     );
   }
 
   public stopCapture() {
-    this.electronService.send(channel.STOP_CAPTURE_SCREEN);
+    this.electronService.send(Channel.STOP_CAPTURE_SCREEN);
   }
 
   public startCapture(interval: number): void {
-    this.electronService.send(channel.START_CAPTURE_SCREEN, interval);
+    this.electronService.send(Channel.START_CAPTURE_SCREEN, interval);
   }
 
   public getAllScreenshots(): Promise<IScreenshot[]> {
-    return this.electronService.invoke(channel.REQUEST_SCREENSHOTS);
+    return this.electronService.invoke(Channel.REQUEST_SCREENSHOTS);
   }
 
   public deleteAllScreenshots(): Promise<void> {
-    return this.electronService.invoke(channel.REQUEST_DELETE_ALL_SCREENSHOTS);
+    return this.electronService.invoke(Channel.REQUEST_DELETE_ALL_SCREENSHOTS);
   }
 }

@@ -1,3 +1,4 @@
+import { Channel, IScreenshot, IVideoConfig } from '@prototype/shared/utils';
 import { ipcMain } from 'electron';
 import { join } from 'path';
 import { Worker } from 'worker_threads';
@@ -11,13 +12,13 @@ export class VideoConversionService {
   private batchVideo: { index: number; path: string }[] = [];
 
   constructor(
-    private event: any,
-    private screenshots: any[],
-    private config: any,
+    private event: Electron.IpcMainEvent,
+    private screenshots: IScreenshot[],
+    private config: IVideoConfig,
     private splitter: ISplitterStrategy,
     private workerFactory: typeof WorkerFactory,
     private fileManager: typeof FileManager,
-    private channel: any
+    private channel: typeof Channel
   ) {}
 
   async convert() {

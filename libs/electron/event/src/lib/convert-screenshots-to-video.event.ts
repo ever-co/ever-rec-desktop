@@ -5,13 +5,13 @@ import {
   VideoConversionService,
   WorkerFactory,
 } from '@prototype/electron/utils';
-import { channel, IVideoConvertPayload } from '@prototype/shared/utils';
+import { Channel, IVideoConvertPayload } from '@prototype/shared/utils';
 import { ipcMain } from 'electron';
 import { In } from 'typeorm';
 
 export function convertScreenshotsToVideoEvent() {
   ipcMain.on(
-    channel.START_CONVERT_TO_VIDEO,
+    Channel.START_CONVERT_TO_VIDEO,
     async (event, { screenshotIds, config }: IVideoConvertPayload) => {
       const screenshots = await ScreenshotService.findAll({
         where: { id: In(screenshotIds) },
@@ -26,7 +26,7 @@ export function convertScreenshotsToVideoEvent() {
         splitter,
         WorkerFactory,
         FileManager,
-        channel
+        Channel
       );
 
       await videoConversionService.convert();

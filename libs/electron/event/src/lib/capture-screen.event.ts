@@ -1,11 +1,11 @@
 import { ScreenshotService } from '@prototype/electron/database';
 import { FileManager, getWindowSize } from '@prototype/electron/utils';
-import { IScreenshot, channel } from '@prototype/shared/utils';
+import { Channel, IScreenshot } from '@prototype/shared/utils';
 import { desktopCapturer, ipcMain } from 'electron';
 
 export function captureScreenEvent(): void {
   let captureInterval: any;
-  ipcMain.on(channel.START_CAPTURE_SCREEN, async (event, interval) => {
+  ipcMain.on(Channel.START_CAPTURE_SCREEN, async (event, interval) => {
     if (captureInterval) {
       clearInterval(captureInterval);
     }
@@ -13,11 +13,11 @@ export function captureScreenEvent(): void {
       // Take screenshot
       const screenshot = await takeScreenshot();
       // Send the screenshot back to the renderer process
-      event.reply(channel.SCREENSHOT_CAPTURED, screenshot);
+      event.reply(Channel.SCREENSHOT_CAPTURED, screenshot);
     }, interval);
   });
 
-  ipcMain.on(channel.STOP_CAPTURE_SCREEN, () => {
+  ipcMain.on(Channel.STOP_CAPTURE_SCREEN, () => {
     clearInterval(captureInterval);
   });
 }

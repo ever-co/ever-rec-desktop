@@ -1,4 +1,4 @@
-export enum channel {
+export enum Channel {
   'START_CAPTURE_SCREEN' = 'start-capture-screen',
   'SCREENSHOT_CAPTURED' = 'screenshot-captured',
   'STOP_CAPTURE_SCREEN' = 'stop-capture-screen',
