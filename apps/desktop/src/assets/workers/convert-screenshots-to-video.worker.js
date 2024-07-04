@@ -7,21 +7,66 @@ FfmpegCommand.setFfmpegPath(ffmpegPath);
 parentPort.on('message', (message) => {
   if (message.command === 'start') {
     const { outputPath, filePathnames, config } = workerData;
-    convertImagesToVideo(filePathnames, outputPath, config);
+    processVideos(filePathnames, outputPath, config);
   }
 });
 
-function convertImagesToVideo(filePathnames, outputPath, config) {
-  if (!Array.isArray(filePathnames) || filePathnames.length === 0) {
-    parentPort.postMessage({ status: 'error', message: 'No images provided' });
-    return;
-  }
+function processVideos(filePathnames, outputPath, config) {
+  const batches = splitIntoBatches(filePathnames, 100);
+  const videoFiles = [];
 
+  let processedBatches = 0;
+
+  batches.forEach((batch, index) => {
+    convertBatchToVideo(
+      batch,
+      index,
+      outputPath,
+      config,
+      (error, videoFile) => {
+        if (error) {
+          parentPort.postMessage({ status: 'error', message: error.message });
+          return;
+        }
+
+        videoFiles.push(videoFile);
+        processedBatches += 1;
+
+        if (processedBatches === batches.length) {
+          concatenateVideos(
+            videoFiles,
+            outputPath,
+            (concatError, finalVideo) => {
+              if (concatError) {
+                parentPort.postMessage({
+                  status: 'error',
+                  message: concatError.message,
+                });
+              } else {
+                parentPort.postMessage({ status: 'done', message: finalVideo });
+              }
+            }
+          );
+        }
+      }
+    );
+  });
+}
+
+function splitIntoBatches(arr, batchSize) {
+  const batches = [];
+  for (let i = 0; i < arr.length; i += batchSize) {
+    batches.push(arr.slice(i, i + batchSize));
+  }
+  return batches;
+}
+
+function convertBatchToVideo(batch, batchIndex, outputPath, config, callback) {
   const command = new FfmpegCommand();
   const filterComplex = [];
-  const duration = config.duration ? config.duration / filePathnames.length : 2; // Default to 2 seconds per image
+  const duration = config.duration ? config.duration / batch.length : 2;
 
-  filePathnames.forEach((file, index) => {
+  batch.forEach((file, index) => {
     command.input(file);
     filterComplex.push(
       `[${index}:v]scale=${
@@ -31,35 +76,58 @@ function convertImagesToVideo(filePathnames, outputPath, config) {
   });
 
   const concatFilter = filterComplex.map((_, index) => `[v${index}]`).join('');
-  filterComplex.push(
-    `${concatFilter}concat=n=${filePathnames.length}:v=1:a=0[vout]`
-  );
+  filterComplex.push(`${concatFilter}concat=n=${batch.length}:v=1:a=0[vout]`);
+
+  const batchOutputPath = `${outputPath}_batch_${batchIndex}.mp4`;
 
   command
     .complexFilter(filterComplex)
     .outputOptions('-map [vout]')
     .videoCodec(config.codec || 'libx264')
-    .outputOptions('-pix_fmt yuv420p') // Ensure compatibility with most players
-    .outputOptions('-preset veryfast') // Adjusts encoding speed vs. quality trade-off
-    .outputOptions('-crf 23'); // Quality setting for H.264
-
-  command
-    .output(outputPath)
-    .on('start', (cmdline) => console.log(`Started: ${cmdline}`))
-    .on('progress', (progress) => {
-      const totalFrames = filePathnames.length;
-      const framesProcessed = progress.frames || 0;
-      const percentComplete = (framesProcessed / totalFrames) * 100;
-      parentPort.postMessage({
-        status: 'progress',
-        message: percentComplete,
-      });
-    })
+    .outputOptions('-pix_fmt yuv420p')
+    .outputOptions('-preset veryfast')
+    .outputOptions('-crf 23')
+    .output(batchOutputPath)
     .on('end', () => {
-      parentPort.postMessage({ status: 'done', message: outputPath });
+      console.log(
+        `Batch ${batchIndex} processing completed: ${batchOutputPath}`
+      );
+      callback(null, batchOutputPath);
     })
     .on('error', (error) => {
-      parentPort.postMessage({ status: 'error', message: error });
+      console.log(`Error processing batch ${batchIndex}: ${error.message}`);
+      callback(error, null);
+    })
+    .run();
+}
+
+function concatenateVideos(videoFiles, finalOutputPath, callback) {
+  const command = new FfmpegCommand();
+
+  videoFiles.forEach((video) => {
+    command.input(video);
+  });
+
+  command
+    .complexFilter([
+      {
+        filter: 'concat',
+        options: {
+          n: videoFiles.length,
+          v: 1,
+          a: 0,
+        },
+      },
+    ])
+    .outputOptions('-pix_fmt yuv420p')
+    .output(finalOutputPath)
+    .on('end', () => {
+      console.log(`Final video created: ${finalOutputPath}`);
+      callback(null, finalOutputPath);
+    })
+    .on('error', (error) => {
+      console.log(`Error concatenating videos: ${error.message}`);
+      callback(error, null);
     })
     .run();
 }
