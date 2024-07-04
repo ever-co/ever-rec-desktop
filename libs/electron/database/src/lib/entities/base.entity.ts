@@ -10,7 +10,7 @@ import {
 @Entity()
 export class Base implements IBase {
   @PrimaryGeneratedColumn('uuid')
-  id?: string;
+  id: string;
 
   @CreateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   createdAt?: string;

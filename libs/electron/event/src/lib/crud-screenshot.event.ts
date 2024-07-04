@@ -7,4 +7,8 @@ export function crudScreeshotEvents() {
   ipcMain.handle(channel.REQUEST_SCREENSHOTS, () => {
     return ScreenshotService.findAll({ order: { createdAt: 'ASC' } });
   });
+  // Delete all screenshots
+  ipcMain.handle(channel.REQUEST_DELETE_ALL_SCREENSHOTS, () => {
+    return ScreenshotService.deleteAll();
+  });
 }

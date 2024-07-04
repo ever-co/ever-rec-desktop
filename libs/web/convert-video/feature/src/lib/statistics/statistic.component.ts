@@ -1,7 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { selectScreenshotState } from '@prototype/web/screenshot/data-access';
+import {
+  screenshotActions,
+  selectScreenshotState,
+} from '@prototype/web/screenshot/data-access';
 import { Observable, map } from 'rxjs';
 
 @Component({
@@ -18,5 +21,9 @@ export class StatisticComponent implements OnInit {
     this.count$ = this.store
       .select(selectScreenshotState)
       .pipe(map((state) => state.screenshots.length));
+  }
+
+  public deleteAll() {
+    this.store.dispatch(screenshotActions.deleteScreenshots());
   }
 }

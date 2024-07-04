@@ -12,7 +12,9 @@ export class ScreenshotService {
     return this.repository.save(screenshot);
   }
 
-  public static async findAll(options: FindManyOptions): Promise<IScreenshot[]> {
+  public static async findAll(
+    options: FindManyOptions
+  ): Promise<IScreenshot[]> {
     return this.repository.find(options);
   }
 
@@ -36,7 +38,9 @@ export class ScreenshotService {
     await this.repository.delete({ id });
   }
 
-  public static async deleteAll(screenshotIds: string[]): Promise<void> {
-    await this.repository.delete({ id: In(screenshotIds) });
+  public static async deleteAll(screenshotIds?: string[]): Promise<void> {
+    await this.repository.delete(
+      screenshotIds ? { id: In(screenshotIds) } : {}
+    );
   }
 }

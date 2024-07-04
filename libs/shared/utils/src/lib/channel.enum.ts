@@ -9,4 +9,5 @@ export enum channel {
   'CANCEL_GENERATING' = 'cancel-generating',
   'GENERATION_ERROR' = 'generation-error',
   'REQUEST_SCREENSHOTS' = 'request-screeshots',
+  'REQUEST_DELETE_ALL_SCREENSHOTS' = 'request-delete-all-screeshots',
 }

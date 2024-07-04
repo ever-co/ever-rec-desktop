@@ -66,4 +66,18 @@ export class ScreenshotEffects {
       )
     )
   );
+
+  deleteAllScreenshots = createEffect(() =>
+    this.actions$.pipe(
+      ofType(screenshotActions.deleteScreenshots),
+      mergeMap(() =>
+        from(this.electronService.deleteAllScreenshots()).pipe(
+          map(() => screenshotActions.deleteScreenshotsSuccess()),
+          catchError((error) =>
+            of(screenshotActions.loadScreenshotsFailure({ error }))
+          )
+        )
+      )
+    )
+  );
 }
