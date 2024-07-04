@@ -1,13 +1,14 @@
+import { Channel } from '@prototype/shared/utils';
 import { Worker } from 'worker_threads';
 
 export class WorkerHandler {
   constructor(
     private worker: Worker,
     private index: number,
-    private event: any,
-    private channel: any,
-    private onComplete: (index: number, message: any) => void,
-    private onError: (error: any) => void
+    private event: Electron.IpcMainEvent,
+    private channel: typeof Channel,
+    private onComplete: (index: number, message: string | number) => void,
+    private onError: (error: string) => void
   ) {
     this.initializeWorker();
   }
@@ -28,7 +29,7 @@ export class WorkerHandler {
       }
     );
 
-    this.worker.on('error', (error: any) => {
+    this.worker.on('error', (error: string) => {
       console.error(`Worker error in batch ${this.index}: ${error}`);
       this.onError(error);
     });

@@ -52,11 +52,11 @@ export class VideoConversionService {
         this.event,
         this.channel,
         (idx, message) =>
-          this.handleWorkerCompletion(idx, message, workers.length),
+          this.handleWorkerCompletion(idx, String(message), workers.length),
         (error) =>
           this.event.reply(
             this.channel.GENERATION_ERROR,
-            error.message || 'An error occurred'
+            error || 'An error occurred'
           )
       );
 
@@ -117,7 +117,7 @@ export class VideoConversionService {
       (error) => {
         this.event.reply(
           this.channel.GENERATION_ERROR,
-          'An Error Occurred while video combination'
+          error || 'An Error Occurred while video combination'
         );
       }
     );
