@@ -35,7 +35,7 @@ export class SettingComponent implements OnInit, OnDestroy {
       frameRate: new FormControl('', Validators.required),
       codec: new FormControl('', Validators.required),
       resolution: new FormControl('', Validators.required),
-      duration: new FormControl('', Validators.required),
+      //duration: new FormControl('', Validators.required),
       batch: new FormControl('', [Validators.required]),
     });
     this.store

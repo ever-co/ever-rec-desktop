@@ -14,7 +14,7 @@ parentPort.on('message', (message) => {
 function convertImagesToVideo(filePathnames, outputPath, config) {
   const command = new FfmpegCommand();
   const filterComplex = [];
-  const duration = config.duration || 2;
+  const duration = 1 / config.frameRate || 2;
   const frames = filePathnames.length;
 
   filePathnames.forEach((file, index) => {
