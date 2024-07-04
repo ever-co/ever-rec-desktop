@@ -14,6 +14,7 @@ export const appDataSource = new DataSource({
   migrations: [],
   prepareDatabase: (db) => {
     db.pragma(`cipher='sqlcipher'`);
+    db.pragma(`journal_mode=WAL`);
   },
 });
 
