@@ -22,7 +22,7 @@ export class ScreenshotSubscriber
   }
 
   public afterRemove(event: RemoveEvent<Screenshot>): void {
-    if (event.entity.pathname) {
+    if (event?.entity?.pathname) {
       FileManager.deleteFile(event.entity.pathname);
     } else {
       FileManager.removeAllFiles('screenshots');
