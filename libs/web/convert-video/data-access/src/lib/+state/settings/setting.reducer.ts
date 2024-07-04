@@ -15,6 +15,7 @@ export const initialState: State = {
     resolution: '1920:1080',
     frameRate: 30,
     duration: 60,
+    batch: 100
   },
   error: '',
 };

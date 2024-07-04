@@ -3,6 +3,7 @@ export interface IVideoConfig {
   resolution: string;
   duration: number;
   codec: string;
+  batch: number;
 }
 
 export interface IVideoConvertPayload {

@@ -6,67 +6,18 @@ FfmpegCommand.setFfmpegPath(ffmpegPath);
 
 parentPort.on('message', (message) => {
   if (message.command === 'start') {
-    const { outputPath, filePathnames, config } = workerData;
-    processVideos(filePathnames, outputPath, config);
+    const { filePathnames, outputPath, config } = workerData;
+    convertImagesToVideo(filePathnames, outputPath, config);
   }
 });
 
-function processVideos(filePathnames, outputPath, config) {
-  const batches = splitIntoBatches(filePathnames, 100);
-  const videoFiles = [];
-
-  let processedBatches = 0;
-
-  batches.forEach((batch, index) => {
-    convertBatchToVideo(
-      batch,
-      index,
-      outputPath,
-      config,
-      (error, videoFile) => {
-        if (error) {
-          parentPort.postMessage({ status: 'error', message: error.message });
-          return;
-        }
-
-        videoFiles.push(videoFile);
-        processedBatches += 1;
-
-        if (processedBatches === batches.length) {
-          concatenateVideos(
-            videoFiles,
-            outputPath,
-            (concatError, finalVideo) => {
-              if (concatError) {
-                parentPort.postMessage({
-                  status: 'error',
-                  message: concatError.message,
-                });
-              } else {
-                parentPort.postMessage({ status: 'done', message: finalVideo });
-              }
-            }
-          );
-        }
-      }
-    );
-  });
-}
-
-function splitIntoBatches(arr, batchSize) {
-  const batches = [];
-  for (let i = 0; i < arr.length; i += batchSize) {
-    batches.push(arr.slice(i, i + batchSize));
-  }
-  return batches;
-}
-
-function convertBatchToVideo(batch, batchIndex, outputPath, config, callback) {
+function convertImagesToVideo(filePathnames, outputPath, config) {
   const command = new FfmpegCommand();
   const filterComplex = [];
-  const duration = config.duration ? config.duration / batch.length : 2;
+  const duration = config.duration || 2;
+  const frames = filePathnames.length;
 
-  batch.forEach((file, index) => {
+  filePathnames.forEach((file, index) => {
     command.input(file);
     filterComplex.push(
       `[${index}:v]scale=${
@@ -76,9 +27,7 @@ function convertBatchToVideo(batch, batchIndex, outputPath, config, callback) {
   });
 
   const concatFilter = filterComplex.map((_, index) => `[v${index}]`).join('');
-  filterComplex.push(`${concatFilter}concat=n=${batch.length}:v=1:a=0[vout]`);
-
-  const batchOutputPath = `${outputPath}_batch_${batchIndex}.mp4`;
+  filterComplex.push(`${concatFilter}concat=n=${frames}:v=1:a=0[vout]`);
 
   command
     .complexFilter(filterComplex)
@@ -87,47 +36,16 @@ function convertBatchToVideo(batch, batchIndex, outputPath, config, callback) {
     .outputOptions('-pix_fmt yuv420p')
     .outputOptions('-preset veryfast')
     .outputOptions('-crf 23')
-    .output(batchOutputPath)
-    .on('end', () => {
-      console.log(
-        `Batch ${batchIndex} processing completed: ${batchOutputPath}`
-      );
-      callback(null, batchOutputPath);
+    .output(outputPath)
+    .on('progress', (progress) => {
+      const percent = (progress.frames * 100) / frames;
+      parentPort.postMessage({ status: 'progress', message: percent });
     })
-    .on('error', (error) => {
-      console.log(`Error processing batch ${batchIndex}: ${error.message}`);
-      callback(error, null);
-    })
-    .run();
-}
-
-function concatenateVideos(videoFiles, finalOutputPath, callback) {
-  const command = new FfmpegCommand();
-
-  videoFiles.forEach((video) => {
-    command.input(video);
-  });
-
-  command
-    .complexFilter([
-      {
-        filter: 'concat',
-        options: {
-          n: videoFiles.length,
-          v: 1,
-          a: 0,
-        },
-      },
-    ])
-    .outputOptions('-pix_fmt yuv420p')
-    .output(finalOutputPath)
-    .on('end', () => {
-      console.log(`Final video created: ${finalOutputPath}`);
-      callback(null, finalOutputPath);
-    })
-    .on('error', (error) => {
-      console.log(`Error concatenating videos: ${error.message}`);
-      callback(error, null);
-    })
+    .on('end', () =>
+      parentPort.postMessage({ status: 'done', message: outputPath })
+    )
+    .on('error', (error) =>
+      parentPort.postMessage({ status: 'error', message: error })
+    )
     .run();
 }

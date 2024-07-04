@@ -32,10 +32,11 @@ export class SettingComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.formGroup = new FormGroup({
-      frameRate: new FormControl('30', Validators.required),
-      codec: new FormControl('libx264', Validators.required),
-      resolution: new FormControl('1920:1080', Validators.required),
-      duration: new FormControl('60', Validators.required),
+      frameRate: new FormControl('', Validators.required),
+      codec: new FormControl('', Validators.required),
+      resolution: new FormControl('', Validators.required),
+      duration: new FormControl('', Validators.required),
+      batch: new FormControl('', [Validators.required]),
     });
     this.store
       .select(selectScreenshotState)
@@ -53,9 +54,10 @@ export class SettingComponent implements OnInit, OnDestroy {
       .select(selectGenerateVideoState)
       .pipe(map((state) => state.generating));
 
-    this.store.select(selectSettingState).pipe(
-      tap((state) => this.formGroup.patchValue(state.videoConfig))
-    ).subscribe()
+    this.store
+      .select(selectSettingState)
+      .pipe(tap((state) => this.formGroup.patchValue(state.videoConfig)))
+      .subscribe();
   }
 
   onSubmit(): void {
