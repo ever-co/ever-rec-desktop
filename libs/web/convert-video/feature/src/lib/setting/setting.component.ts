@@ -10,6 +10,8 @@ import { Store } from '@ngrx/store';
 import {
   generateVideoActions,
   selectGenerateVideoState,
+  selectSettingState,
+  settingActions,
 } from '@prototype/web/convert-video/data-access';
 import { selectScreenshotState } from '@prototype/web/screenshot/data-access';
 import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
@@ -50,10 +52,17 @@ export class SettingComponent implements OnInit, OnDestroy {
     this.generating$ = this.store
       .select(selectGenerateVideoState)
       .pipe(map((state) => state.generating));
+
+    this.store.select(selectSettingState).pipe(
+      tap((state) => this.formGroup.patchValue(state.videoConfig))
+    ).subscribe()
   }
 
   onSubmit(): void {
     if (this.formGroup.valid && this.screenshotIds.length > 0) {
+      this.store.dispatch(
+        settingActions.update({ videoConfig: this.formGroup.value })
+      );
       this.store.dispatch(
         generateVideoActions.start({
           screenshotIds: this.screenshotIds,

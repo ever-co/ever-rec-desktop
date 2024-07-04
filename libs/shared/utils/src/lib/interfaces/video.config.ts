@@ -1,7 +1,7 @@
 export interface IVideoConfig {
   frameRate: number;
   resolution: string;
-  duration: string;
+  duration: number;
   codec: string;
 }
 
