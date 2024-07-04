@@ -1,13 +1,14 @@
-<div class="gallery">
+<div class="row">
   @for (screenshot of screenshots$ | async; track screenshot) {
-
-  @if(screenshot) {
-  <img class="screenshot" [src]="screenshot.pathname" alt="Screenshot" />
+  <div class="column">
+    @if(screenshot) {
+    <img class="screenshot" [src]="screenshot.pathname" alt="Screenshot" />
+    }
+  </div>
   }
-
-  }
-
-  @if(capturing$ | async) {
-  <img class="loading" src="assets/loading.gif" alt="Loading" />
-  }
+  <div class="column">
+    @if(capturing$ | async) {
+    <img class="loading" src="assets/loading.gif" alt="Loading" />
+    }
+  </div>
 </div>

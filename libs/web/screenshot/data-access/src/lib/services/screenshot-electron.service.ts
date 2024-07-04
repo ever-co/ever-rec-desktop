@@ -22,4 +22,8 @@ export class ScreenshotElectronService {
   public startCapture(interval: number): void {
     this.electronService.send(channel.START_CAPTURE_SCREEN, interval);
   }
+
+  public getAllScreenshots(): Promise<IScreenshot[]> {
+    return this.electronService.invoke(channel.REQUEST_SCREENSHOTS);
+  }
 }

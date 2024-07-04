@@ -6,6 +6,7 @@
 import {
   captureScreenEvent,
   convertScreenshotsToVideoEvent,
+  crudScreeshotEvents,
 } from '@prototype/electron/events';
 import { app, ipcMain } from 'electron';
 import { environment } from '../../environments/environment';
@@ -36,3 +37,5 @@ ipcMain.on('quit', (event, code) => {
 captureScreenEvent();
 
 convertScreenshotsToVideoEvent();
+
+crudScreeshotEvents();

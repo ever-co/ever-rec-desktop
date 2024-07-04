@@ -10,5 +10,8 @@ export const screenshotActions = createActionGroup({
     'Stop Capture Success': emptyProps(),
     'Capture Success': props<{ screenshot: IScreenshot }>(),
     'Capture Failure': props<{ error: string }>(),
+    'Load Screenshots': emptyProps(),
+    'Load Screenshots Success': props<{ screenshots: IScreenshot[] }>(),
+    'Load Screenshots Failure': props<{ error: string }>(),
   },
 });

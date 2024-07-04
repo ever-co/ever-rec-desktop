@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
-import { of } from 'rxjs';
+import { from, of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { ScreenshotElectronService } from '../services/screenshot-electron.service';
 import { screenshotActions } from './screenshot.actions';
@@ -48,6 +48,22 @@ export class ScreenshotEffects {
         });
       }),
       catchError((error) => of(screenshotActions.captureFailure({ error })))
+    )
+  );
+
+  getAllScreenshots = createEffect(() =>
+    this.actions$.pipe(
+      ofType(screenshotActions.loadScreenshots),
+      mergeMap(() =>
+        from(this.electronService.getAllScreenshots()).pipe(
+          map((screenshots) =>
+            screenshotActions.loadScreenshotsSuccess({ screenshots })
+          ),
+          catchError((error) =>
+            of(screenshotActions.loadScreenshotsFailure({ error }))
+          )
+        )
+      )
     )
   );
 }

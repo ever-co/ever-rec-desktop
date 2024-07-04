@@ -7,11 +7,13 @@ export const screenshotFeatureKey = 'screenshot';
 export interface IScreenshotState {
   capturing: boolean;
   screenshots: IScreenshot[];
+  loading: boolean;
   error: string;
 }
 
 export const initialState: IScreenshotState = {
   capturing: false,
+  loading: false,
   screenshots: [],
   error: '',
 };
@@ -34,6 +36,26 @@ export const reducer = createReducer(
   on(screenshotActions.captureFailure, (state, { error }) => ({
     ...state,
     capturing: false,
+    error,
+  })),
+  on(screenshotActions.loadScreenshots, (state) => ({
+    ...state,
+    loading: true,
+    error: '',
+  })),
+  on(screenshotActions.loadScreenshotsSuccess, (state, { screenshots }) => ({
+    ...state,
+    screenshots: [
+      ...new Map(
+        [...state.screenshots, ...screenshots].map((item) => [item.id, item])
+      ).values(),
+    ],
+    loading: false,
+    error: '',
+  })),
+  on(screenshotActions.loadScreenshotsFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
     error,
   }))
 );

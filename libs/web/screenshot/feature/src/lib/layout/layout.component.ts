@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { breadcrumbActions } from '@prototype/breadcrumb/data-access';
 import { BreadcrumbComponent } from '@prototype/breadcrumb/feature';
+import { screenshotActions } from '@prototype/web/screenshot/data-access';
 import { ConvertComponent } from '../command/convert/convert.component';
 import { StartComponent } from '../command/start/start.component';
 import { StopComponent } from '../command/stop/stop.component';
@@ -29,5 +30,6 @@ export class LayoutComponent implements OnInit {
     this.store.dispatch(
       breadcrumbActions.add({ breadcrumb: { label: 'Home', url: '/' } })
     );
+    this.store.dispatch(screenshotActions.loadScreenshots());
   }
 }
