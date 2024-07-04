@@ -16,6 +16,7 @@
       "@prototype/electron/database": ["libs/electron/database/src/index.ts"],
       "@prototype/electron/events": ["libs/electron/event/src/index.ts"],
       "@prototype/electron/utils": ["libs/electron/utils/src/index.ts"],
+      "@prototype/shared/component": ["libs/shared/components/src/index.ts"],
       "@prototype/shared/utils": ["libs/shared/utils/src/index.ts"],
       "@prototype/web/convert-video/data-access": [
         "libs/web/convert-video/data-access/src/index.ts"

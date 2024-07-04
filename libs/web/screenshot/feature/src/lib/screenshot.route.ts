@@ -5,7 +5,7 @@ export const screenshotRoutes: Route[] = [
     path: '',
     title: 'Memory Keeper',
     loadComponent: () =>
-      import('./gallery/gallery.component').then((c) => c.GalleryComponent),
+      import('@prototype/shared/component').then((c) => c.GalleryComponent),
   },
   {
     path: 'convert',

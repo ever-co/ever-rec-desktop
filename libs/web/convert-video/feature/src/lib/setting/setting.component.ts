@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -7,9 +7,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { generateVideoActions } from '@prototype/web/convert-video/data-access';
+import {
+  generateVideoActions,
+  selectGenerateVideoState,
+} from '@prototype/web/convert-video/data-access';
 import { selectScreenshotState } from '@prototype/web/screenshot/data-access';
-import { Subject, takeUntil, tap } from 'rxjs';
+import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'lib-setting',
@@ -23,6 +26,7 @@ export class SettingComponent implements OnInit, OnDestroy {
   private store = inject(Store);
   private screenshotIds: string[] = [];
   private destroy$ = new Subject<void>();
+  public generating$!: Observable<boolean>;
 
   ngOnInit(): void {
     this.formGroup = new FormGroup({
@@ -43,6 +47,9 @@ export class SettingComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe();
+    this.generating$ = this.store
+      .select(selectGenerateVideoState)
+      .pipe(map((state) => state.generating));
   }
 
   onSubmit(): void {

@@ -1,1 +1,3 @@
-export * from './lib/feature-breadcrumb/feature-breadcrumb.component';
+export * from './lib/breadcrumb/breadcrumb.component';
+export * from './test-setup';
+

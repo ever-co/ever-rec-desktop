@@ -3,11 +3,10 @@ import { Component, OnInit, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { breadcrumbActions } from '@prototype/breadcrumb/data-access';
-import { BreadcrumbComponent } from '../../../../../breadcrumb/feature/src/lib/breadcrumb/breadcrumb.component';
+import { BreadcrumbComponent } from '@prototype/breadcrumb/feature';
 import { ConvertComponent } from '../command/convert/convert.component';
 import { StartComponent } from '../command/start/start.component';
 import { StopComponent } from '../command/stop/stop.component';
-import { GalleryComponent } from '../gallery/gallery.component';
 
 @Component({
   selector: 'lib-layout',
@@ -16,7 +15,6 @@ import { GalleryComponent } from '../gallery/gallery.component';
     CommonModule,
     StartComponent,
     StopComponent,
-    GalleryComponent,
     ConvertComponent,
     RouterModule,
     BreadcrumbComponent,

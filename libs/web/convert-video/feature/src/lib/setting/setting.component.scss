@@ -34,6 +34,7 @@
   --c-bg: rgb(252, 252, 252);
   --c-outline: rgb(55, 45, 190);
   display: flex;
+  flex-direction: column;
   gap: 1ch;
   position: relative;
   width: 100%;
@@ -52,7 +53,6 @@
   color: var(--c-text);
   font-size: 1rem;
   letter-spacing: 0.1ch;
-  width: 100%;
 }
 
 .input-field:not(:placeholder-shown)+.input-label {
@@ -150,4 +150,33 @@
 .command {
   margin-top: 10px;
   justify-self: flex-end;
+}
+
+.setting {
+  width: 100%;
+  min-width: 320px;
+  min-height: 390px;
+  height: 100%;
+  border: 1px solid #666;
+  border-radius: 1.5rem;
+  max-height: calc(100vh - 13rem);
+  padding: 1rem;
+}
+
+.progress {
+  margin-right: 4px;
+
+  svg {
+    animation: spin 2s linear infinite;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }

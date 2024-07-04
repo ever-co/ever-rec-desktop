@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { GalleryComponent } from '@prototype/shared/component';
 import { ErrorComponent } from '../error/error.component';
+import { ProgressComponent } from '../progress/progress.component';
 import { SettingComponent } from '../setting/setting.component';
 import { StatisticComponent } from '../statistics/statistic.component';
 import { VideoComponent } from '../video/video.component';
@@ -13,7 +15,9 @@ import { VideoComponent } from '../video/video.component';
     SettingComponent,
     VideoComponent,
     StatisticComponent,
+    GalleryComponent,
     ErrorComponent,
+    ProgressComponent
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',

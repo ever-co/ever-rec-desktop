@@ -3,12 +3,11 @@ import { Component, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { selectScreenshotState } from '@prototype/web/screenshot/data-access';
 import { Observable, map } from 'rxjs';
-import { ProgressComponent } from '../progress/progress.component';
 
 @Component({
   selector: 'lib-statistic',
   standalone: true,
-  imports: [CommonModule, ProgressComponent],
+  imports: [CommonModule],
   templateUrl: './statistic.component.html',
   styleUrl: './statistic.component.scss',
 })
