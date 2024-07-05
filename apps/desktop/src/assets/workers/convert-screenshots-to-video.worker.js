@@ -1,8 +1,15 @@
 const { workerData, parentPort } = require('worker_threads');
 const FfmpegCommand = require('fluent-ffmpeg');
 const ffmpegPath = require('ffmpeg-static');
+const ffmpegProb = require('ffprobe-static');
 
-FfmpegCommand.setFfmpegPath(ffmpegPath);
+FfmpegCommand.setFfmpegPath(
+  ffmpegPath.replace('app.asar', 'app.asar.unpacked')
+);
+
+FfmpegCommand.setFfprobePath(
+  ffmpegProb.path.replace('app.asar', 'app.asar.unpacked')
+);
 
 parentPort.on('message', (message) => {
   if (message.command === 'start') {
