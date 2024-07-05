@@ -73,6 +73,21 @@ export const reducer = createReducer(
     ...state,
     loading: false,
     error,
+  })),
+  on(screenshotActions.ask, (state) => ({
+    ...state,
+    loading: true,
+    error: '',
+  })),
+  on(screenshotActions.askSuccess, (state, { screenshots }) => ({
+    ...state,
+    loading: false,
+    screenshots,
+  })),
+  on(screenshotActions.askFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
   }))
 );
 

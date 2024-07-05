@@ -8,3 +8,16 @@
     flex-direction: row;
   }
 }
+
+.sticky {
+  position: sticky;
+  top: 1rem;
+  z-index: 1;
+}
+
+lib-ask {
+  align-self: center;
+  margin-left: auto;
+  width: 30%;
+  min-width: 320px;
+}

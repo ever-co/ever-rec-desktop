@@ -74,8 +74,20 @@ export class ScreenshotEffects {
         from(this.electronService.deleteAllScreenshots()).pipe(
           map(() => screenshotActions.deleteScreenshotsSuccess()),
           catchError((error) =>
-            of(screenshotActions.loadScreenshotsFailure({ error }))
+            of(screenshotActions.deleteScreenshotsFailure({ error }))
           )
+        )
+      )
+    )
+  );
+
+  askFor$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(screenshotActions.ask),
+      mergeMap(({ request }) =>
+        from(this.electronService.askFor(request)).pipe(
+          map((screenshots) => screenshotActions.askSuccess({ screenshots })),
+          catchError((error) => of(screenshotActions.askFailure({ error })))
         )
       )
     )

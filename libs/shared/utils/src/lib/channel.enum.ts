@@ -10,4 +10,5 @@ export enum Channel {
   'GENERATION_ERROR' = 'generation-error',
   'REQUEST_SCREENSHOTS' = 'request-screeshots',
   'REQUEST_DELETE_ALL_SCREENSHOTS' = 'request-delete-all-screeshots',
+  'SEARCHING' = 'searching',
 }

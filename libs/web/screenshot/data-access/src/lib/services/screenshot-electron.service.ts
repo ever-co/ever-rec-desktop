@@ -30,4 +30,9 @@ export class ScreenshotElectronService {
   public deleteAllScreenshots(): Promise<void> {
     return this.electronService.invoke(Channel.REQUEST_DELETE_ALL_SCREENSHOTS);
   }
+
+  public askFor(request: string): Promise<IScreenshot[]> {
+    console.log(request)
+    return this.electronService.invoke(Channel.SEARCHING, request);
+  }
 }

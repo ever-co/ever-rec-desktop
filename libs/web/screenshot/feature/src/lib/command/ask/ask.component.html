@@ -1,0 +1,11 @@
+<form [formGroup]="askForm" class="form" (ngSubmit)="onSubmit()">
+  <div class="input-container">
+    <input type="text" id="request" formControlName="request" class="input-field" placeholder="An app in mind 🧠..."
+      aria-label="request" />
+    <label class="input-label" for="request">Search</label>
+
+    <div *ngIf="askForm.controls['request'].invalid && askForm.controls['request'].touched" class="error">
+      request is required.
+    </div>
+  </div>
+</form>
