@@ -71,7 +71,8 @@ export class VideoConversionService implements ILoggable {
             this.channel.GENERATION_ERROR,
             error || 'An error occurred'
           );
-        }
+        },
+        this.logger
       );
 
       worker.postMessage({ command: 'start' });
@@ -139,7 +140,8 @@ export class VideoConversionService implements ILoggable {
           this.channel.GENERATION_ERROR,
           error || 'An Error Occurred while video combination'
         );
-      }
+      },
+      this.logger
     );
   }
 
