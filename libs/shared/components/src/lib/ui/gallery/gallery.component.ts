@@ -20,7 +20,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.capturing$ = this.store.select(selectScreenshotState).pipe(
-      map((state) => state.capturing),
+      map((state) => state.capturing || state.loading),
       takeUntil(this.destroy$)
     );
 

@@ -2,11 +2,6 @@ img {
   &.screenshot {
     width: 100%;
   }
-
-  &.loading {
-    object-fit: scale-down;
-    scale: 0.5;
-  }
 }
 
 .row {
@@ -40,5 +35,28 @@ img {
   .column {
     flex: 100%;
     max-width: 100%;
+  }
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  height: 100%;
+  width: 100%;
+
+  svg {
+    animation: spin 2s linear infinite;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
   }
 }
