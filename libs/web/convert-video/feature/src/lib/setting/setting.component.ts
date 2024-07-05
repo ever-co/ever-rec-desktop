@@ -37,7 +37,7 @@ export class SettingComponent implements OnInit, OnDestroy {
       resolution: new FormControl('', Validators.required),
       batch: new FormControl('', [Validators.required]),
     });
-    this.store.dispatch(settingActions.load());
+
     this.store
       .select(selectScreenshotState)
       .pipe(
@@ -62,6 +62,8 @@ export class SettingComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe();
+
+    this.store.dispatch(settingActions.load());
   }
 
   onSubmit(): void {
