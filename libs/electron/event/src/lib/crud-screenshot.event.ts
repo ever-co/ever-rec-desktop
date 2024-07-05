@@ -6,7 +6,10 @@ import { ipcMain } from 'electron';
 export function crudScreeshotEvents() {
   // Get all screenshots
   ipcMain.handle(Channel.REQUEST_SCREENSHOTS, () => {
-    return ScreenshotService.findAll({ order: { createdAt: 'ASC' } });
+    return ScreenshotService.findAll({
+      order: { createdAt: 'ASC' },
+      relations: ['metadata'],
+    });
   });
   // Delete all screenshots
   ipcMain.handle(Channel.REQUEST_DELETE_ALL_SCREENSHOTS, async () => {

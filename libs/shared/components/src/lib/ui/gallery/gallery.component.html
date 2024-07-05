@@ -2,7 +2,15 @@
   @for (screenshot of screenshots$ | async; track screenshot) {
   <div class="column">
     @if(screenshot) {
-    <img class="screenshot" [src]="screenshot.pathname" alt="Screenshot" />
+    <figure>
+      <img class="screenshot" [src]="screenshot.pathname" alt="Screenshot" />
+      @if(screenshot.metadata?.name) {
+      <figcaption>{{ screenshot.metadata?.name }}</figcaption>
+      }
+      @if(screenshot.metadata?.icon) {
+      <img class="icon" [src]="screenshot.metadata?.icon" [alt]="screenshot.metadata?.name">
+      }
+    </figure>
     }
   </div>
   }
