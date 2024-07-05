@@ -1,13 +1,14 @@
 import { FileManager } from '@prototype/electron/utils';
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
+import { ScreenshotMetadata } from './entities/screenshot-metadata.entity';
 import { Screenshot } from './entities/screenshot.entity';
 import { ScreenshotSubscriber } from './subscribers/screenshot.subscriber';
 
 export const appDataSource = new DataSource({
   type: 'better-sqlite3',
   database: FileManager.createFilePath('database', 'prototype.sqlite'),
-  entities: [Screenshot],
+  entities: [Screenshot, ScreenshotMetadata],
   synchronize: true,
   logging: true,
   subscribers: [ScreenshotSubscriber],
