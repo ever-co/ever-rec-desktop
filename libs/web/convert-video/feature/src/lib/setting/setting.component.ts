@@ -35,9 +35,9 @@ export class SettingComponent implements OnInit, OnDestroy {
       frameRate: new FormControl('', Validators.required),
       codec: new FormControl('', Validators.required),
       resolution: new FormControl('', Validators.required),
-      //duration: new FormControl('', Validators.required),
       batch: new FormControl('', [Validators.required]),
     });
+    this.store.dispatch(settingActions.load());
     this.store
       .select(selectScreenshotState)
       .pipe(
@@ -50,13 +50,17 @@ export class SettingComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe();
-    this.generating$ = this.store
-      .select(selectGenerateVideoState)
-      .pipe(map((state) => state.generating));
+    this.generating$ = this.store.select(selectGenerateVideoState).pipe(
+      map((state) => state.generating),
+      takeUntil(this.destroy$)
+    );
 
     this.store
       .select(selectSettingState)
-      .pipe(tap((state) => this.formGroup.patchValue(state.videoConfig)))
+      .pipe(
+        tap((state) => this.formGroup.patchValue(state.videoConfig)),
+        takeUntil(this.destroy$)
+      )
       .subscribe();
   }
 

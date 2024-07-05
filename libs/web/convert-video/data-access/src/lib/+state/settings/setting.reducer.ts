@@ -15,7 +15,7 @@ export const initialState: State = {
     resolution: '1920:1080',
     frameRate: 30,
     duration: 60,
-    batch: 100
+    batch: 100,
   },
   error: '',
 };
@@ -25,7 +25,7 @@ export const reducer = createReducer(
   on(settingActions.load, (state) => ({ ...state, error: '' })),
   on(settingActions.loadSuccess, (state, { videoConfig }) => ({
     ...state,
-    videoConfig: videoConfig ?? initialState.videoConfig,
+    videoConfig: videoConfig ?? state.videoConfig,
   })),
   on(settingActions.failure, (state, { error }) => ({
     ...state,
