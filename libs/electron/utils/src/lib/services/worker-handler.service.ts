@@ -1,14 +1,15 @@
-import { Channel } from '@prototype/shared/utils';
+import { Channel, ILoggable, ILogger } from '@prototype/shared/utils';
 import { Worker } from 'worker_threads';
 
-export class WorkerHandler {
+export class WorkerHandler implements ILoggable {
   constructor(
     private worker: Worker,
     private index: number,
     private event: Electron.IpcMainEvent,
     private channel: typeof Channel,
     private onComplete: (index: number, message: string | number) => void,
-    private onError: (error: string) => void
+    private onError: (error: string) => void,
+    public logger: ILogger
   ) {
     this.initializeWorker();
   }
@@ -30,12 +31,14 @@ export class WorkerHandler {
     );
 
     this.worker.on('error', (error: string) => {
-      console.error(`Worker error in batch ${this.index}: ${error}`);
+      this.logger.error(`Worker error in batch ${this.index}: ${error}`);
       this.onError(error);
     });
 
     this.worker.on('exit', (code: number) => {
-      console.log(`Worker for batch ${this.index} exited with code ${code}`);
+      this.logger.info(
+        `Worker for batch ${this.index} exited with code ${code}`
+      );
       if (code !== 1) {
         this.event.reply(
           this.channel.GENERATION_ERROR,
