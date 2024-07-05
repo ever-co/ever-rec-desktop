@@ -1,10 +1,12 @@
 import { ScreenshotService } from '@prototype/electron/database';
 import {
   BatchSplitter,
+  ElectronLogger,
   FileManager,
   VideoConversionService,
   WorkerFactory,
 } from '@prototype/electron/utils';
+
 import { Channel, IVideoConvertPayload } from '@prototype/shared/utils';
 import { ipcMain } from 'electron';
 import { In } from 'typeorm';
@@ -19,6 +21,7 @@ export function convertScreenshotsToVideoEvent() {
       });
 
       const splitter = new BatchSplitter();
+      const logger = new ElectronLogger();
       const videoConversionService = new VideoConversionService(
         event,
         screenshots,
@@ -26,7 +29,8 @@ export function convertScreenshotsToVideoEvent() {
         splitter,
         WorkerFactory,
         FileManager,
-        Channel
+        Channel,
+        logger
       );
 
       await videoConversionService.convert();

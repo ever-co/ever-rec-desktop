@@ -1,4 +1,10 @@
-import { Channel, IScreenshot, IVideoConfig } from '@prototype/shared/utils';
+import {
+  Channel,
+  ILoggable,
+  ILogger,
+  IScreenshot,
+  IVideoConfig,
+} from '@prototype/shared/utils';
 import { ipcMain } from 'electron';
 import { join } from 'path';
 import { Worker } from 'worker_threads';
@@ -7,7 +13,7 @@ import { ISplitterStrategy } from '../interfaces/splitter-strategy.interface';
 import { WorkerFactory } from './worker-factory.service';
 import { WorkerHandler } from './worker-handler.service';
 
-export class VideoConversionService {
+export class VideoConversionService implements ILoggable {
   private completedWorkers = 0;
   private batchVideo: { index: number; path: string }[] = [];
 
@@ -18,10 +24,12 @@ export class VideoConversionService {
     private splitter: ISplitterStrategy,
     private workerFactory: typeof WorkerFactory,
     private fileManager: typeof FileManager,
-    private channel: typeof Channel
+    private channel: typeof Channel,
+    public logger: ILogger
   ) {}
 
   async convert() {
+    this.logger.info('Start converting video...');
     const filePathnames = this.fileManager.getFilesByPathnames(
       this.screenshots.map(({ pathname }) => pathname)
     );
@@ -31,6 +39,8 @@ export class VideoConversionService {
     );
     const workers: Worker[] = [];
     this.config.duration = this.config.duration / filePathnames.length;
+
+    this.logger.info(`Process [${batches.length}] batches...`);
 
     batches.forEach((batch, index) => {
       const workerPath = join(
@@ -46,6 +56,8 @@ export class VideoConversionService {
       });
       workers.push(worker);
 
+      this.logger.info(`Process images to video batch [${index}] ...`);
+
       new WorkerHandler(
         worker,
         index,
@@ -53,11 +65,13 @@ export class VideoConversionService {
         this.channel,
         (idx, message) =>
           this.handleWorkerCompletion(idx, String(message), workers.length),
-        (error) =>
+        (error) => {
+          this.logger.error(error || 'An error occurred');
           this.event.reply(
             this.channel.GENERATION_ERROR,
             error || 'An error occurred'
-          )
+          );
+        }
       );
 
       worker.postMessage({ command: 'start' });
@@ -65,6 +79,7 @@ export class VideoConversionService {
 
     ipcMain.on(this.channel.CANCEL_GENERATING, () => {
       workers.forEach((worker) => worker.terminate());
+      this.logger.warn('End Generating...');
       this.event.reply(this.channel.CANCEL_CONVERSION);
     });
   }
@@ -78,6 +93,7 @@ export class VideoConversionService {
     this.completedWorkers++;
 
     if (this.completedWorkers === totalBatches) {
+      this.logger.info(`Process images to video batch finished...`);
       this.combineVideos();
     }
   }
@@ -101,6 +117,8 @@ export class VideoConversionService {
       finalOutputPath,
     });
 
+    this.logger.info(`Start combine ${batchVideoPaths.length} videos...`);
+
     worker.postMessage({ command: 'start' });
 
     new WorkerHandler(
@@ -109,12 +127,14 @@ export class VideoConversionService {
       this.event,
       this.channel,
       (_, message) => {
+        this.logger.info(`Finale video output pathname: ${message}`);
         this.event.reply(
           this.channel.SCREESHOTS_CONVERTED,
           this.fileManager.encodePath(String(message))
         );
       },
       (error) => {
+        this.logger.error(error || 'An Error Occurred while video combination');
         this.event.reply(
           this.channel.GENERATION_ERROR,
           error || 'An Error Occurred while video combination'
