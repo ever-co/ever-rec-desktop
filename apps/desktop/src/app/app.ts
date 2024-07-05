@@ -74,7 +74,7 @@ export default class App {
         contextIsolation: true,
         backgroundThrottling: false,
         preload: join(__dirname, 'main.preload.js'),
-        webSecurity: false,
+        webSecurity: !App.isDevelopmentMode(),
       },
     });
     App.mainWindow.setVibrancy('fullscreen-ui');
@@ -109,7 +109,13 @@ export default class App {
     } else {
       App.mainWindow.loadURL(
         format({
-          pathname: join(__dirname, '..', rendererAppName, 'index.html'),
+          pathname: join(
+            __dirname,
+            '..',
+            rendererAppName,
+            'browser',
+            'index.html'
+          ),
           protocol: 'file:',
           slashes: true,
         })
