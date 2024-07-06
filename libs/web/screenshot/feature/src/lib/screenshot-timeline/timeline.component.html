@@ -1,1 +1,22 @@
-<p>timeline works!</p>
+<div class="container">
+  <div class="row"></div>
+  <div class="row">
+    <img class="image-now" [src]="(screenshots$ | async)?.[0]?.pathname" alt="">
+  </div>
+  <div class="row">
+    <div class="image-container">
+      @for (screenshot of screenshots$ | async; track screenshot.id; let idx = $index, isFirst=$first, isLast=$last) {
+      <div class="line-container">
+        @if (screenshot?.metadata?.icon) {
+        <div [ngStyle]="{width: (screenshot.xTimeIcon * 64)+'px'}" class="line-image">
+          <img class="image" [src]="screenshot.metadata?.icon" alt="screenshot">
+        </div>
+        }
+        <div [ngStyle]="{width: (screenshot.xTimeIcon * 68)+'px'}"
+          [ngClass]="{'radius-left': isFirst, 'radius-right':  isLast }" class="line"></div>
+      </div>
+      }
+    </div>
+  </div>
+  <div class="row"></div>
+</div>
