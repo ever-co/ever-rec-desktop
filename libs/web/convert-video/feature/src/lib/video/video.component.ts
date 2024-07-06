@@ -19,7 +19,8 @@ import { selectScreenshotState } from '@prototype/web/screenshot/data-access';
 import {
   Observable,
   Subject,
-  combineLatestWith,
+  catchError,
+  combineLatest,
   distinctUntilChanged,
   filter,
   map,
@@ -32,60 +33,96 @@ import {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './video.component.html',
-  styleUrl: './video.component.scss',
+  styleUrls: ['./video.component.scss'], // Fixed typo
 })
 export class VideoComponent implements OnInit, OnDestroy {
   private store = inject(Store);
-  public source$!: Observable<string>;
+  private destroy$ = new Subject<void>();
+
   @ViewChild('videoPlayer', { static: false })
   public videoPlayer!: ElementRef<HTMLVideoElement>;
-  public generating$!: Observable<boolean>;
-  private destroy$ = new Subject<void>();
+
   @Input({
     alias: 'remote',
     transform: (value: string) => value === 'true',
   })
-  public isControledRemotetly = false;
+  public isControlledRemotely = false;
+
+  public source$!: Observable<string>;
+  public generating$!: Observable<boolean>;
 
   ngOnInit(): void {
+    this.setupSourceObservable();
+    this.setupGeneratingObservable();
+    this.setupRemoteControlObservable();
+  }
+
+  private setupSourceObservable(): void {
     this.source$ = this.store.select(selectGenerateVideoState).pipe(
       map((state) => state.videoPathname),
       distinctUntilChanged(),
       filter(() => !!this.videoPlayer),
       tap(() => this.reload()),
+      catchError((err) => {
+        console.error('Error in source observable', err);
+        return [];
+      }),
       takeUntil(this.destroy$)
     );
+  }
 
+  private setupGeneratingObservable(): void {
     this.generating$ = this.store.select(selectGenerateVideoState).pipe(
       map(({ generating }) => generating),
+      catchError((err) => {
+        console.error('Error in generating observable', err);
+        return [];
+      }),
       takeUntil(this.destroy$)
     );
+  }
 
-    this.store
-      .select(selectVideoRemoteControlState)
+  private setupRemoteControlObservable(): void {
+    combineLatest([
+      this.store.select(selectVideoRemoteControlState),
+      this.store.select(selectSettingState),
+      this.store.select(selectScreenshotState),
+    ])
       .pipe(
-        filter(() => this.isControledRemotetly && !!this.videoPlayer),
-        combineLatestWith(
-          this.store.select(selectSettingState),
-          this.store.select(selectScreenshotState)
-        ),
-        tap(([{ scrollPercentage }, { videoConfig }, { screenshots }]) => {
-          const frameRate = videoConfig.frameRate;
-          const frameCount = screenshots.length;
-          const videoDuration = frameCount / frameRate;
-          const scrollDuration = (videoDuration * scrollPercentage) / 100;
-          this.videoPlayer.nativeElement.currentTime = scrollDuration;
+        filter(() => this.isControlledRemotely && !!this.videoPlayer),
+        tap(([remoteState, settingState, screenshotState]) => {
+          this.handleRemoteControlState(
+            remoteState,
+            settingState,
+            screenshotState
+          );
+        }),
+        catchError((err) => {
+          console.error('Error in remote control observable', err);
+          return [];
         }),
         takeUntil(this.destroy$)
       )
       .subscribe();
   }
 
-  private reload() {
+  private handleRemoteControlState(
+    remoteState: any,
+    settingState: any,
+    screenshotState: any
+  ): void {
+    const frameRate = settingState.videoConfig.frameRate;
+    const frameCount = screenshotState.screenshots.length;
+    const videoDuration = frameCount / frameRate;
+    const scrollDuration = (videoDuration * remoteState.scrollPercentage) / 100;
+    this.videoPlayer.nativeElement.currentTime = scrollDuration;
+  }
+
+  private reload(): void {
     if (this.videoPlayer) {
       this.videoPlayer.nativeElement.load();
     } else {
-      console.log('videoPlayer is not ready yet...');
+      console.warn('videoPlayer is not ready yet...');
     }
   }
 
