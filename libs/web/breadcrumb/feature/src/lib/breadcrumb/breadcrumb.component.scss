@@ -1,59 +1,169 @@
-/* breadcrumb.component.css */
+// SETTINGS - VARIABLES
 
-/* Container for the breadcrumb */
-nav[aria-label="breadcrumb"] {
-  background-color: #f8f9fa;
-  padding: 10px;
-  border-radius: 5px;
+$color-link: #ddd;
+$color-separator: #ddd;
+$size-icon: 16px;
+$space-separator: 8px;
+
+// TOOLS - MIXINS
+
+@mixin text-underline($color: currentColor) {
+  background-image: linear-gradient($color, $color);
+  background-size: auto 1px;
+  background-repeat: repeat-x;
+  background-position: 0 calc(50% + 1ex);
 }
 
-/* Breadcrumb list */
-.breadcrumb {
-  display: flex;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+// TOOLS - FUNCTIONS
+
+/// Returns SVG-Image embedded in a Data-URI.
+/// @parameter {color} Hexadecimal value for stroke color
+/// @returns {string} Data-URI
+/// @example background: url(icon-svg-uri('arrow-left', #000000)) center / 16px no-repeat;
+/// @link https://feathericons.com/ Icon design by Cole Bemis
+@function icon-svg-uri($icon-name, $color) {
+  @if (type_of($color)=='color') and (str-index(inspect($color), '#')==1) {
+    $encoded-color: '%23' + str-slice(inspect($color), 2);
+
+    // MS Edge is turning single quotes to double quotes. (`url('data:` -> `url("data:`)
+    $icon-set: (
+      arrow-left: "%3Cline x1='19' y1='12' x2='5' y2='12'%3E%3C/line%3E%3Cpolyline points='12 19 5 12 12 5'%3E%3C/polyline%3E",
+      chevron-right: "%3Cpolyline points='9 18 15 12 9 6'%3E%3C/polyline%3E"
+    );
+
+  @if map-has-key($icon-set, $icon-name) {
+    @return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='#{$encoded-color}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round%5C'%3E#{map-get($icon-set, $icon-name)}%3C/svg%3E";
+  }
+
+  @else {
+    @error 'Invalid icon name: `#{$icon-name}`'
+  }
 }
 
-/* Breadcrumb item */
-.breadcrumb-item {
-  font-size: 14px;
-  color: #007bff;
+@else {
+  @error 'Invalid HEX value: `#{$color}`'
+}
+}
+
+// GENERIC - RESET
+
+a:link {
   text-decoration: none;
-  margin-right: 10px;
-  display: flex;
-  align-items: center;
 }
 
-/* Add separator */
-.breadcrumb-item::after {
-  content: "/";
-  color: #6c757d;
-  margin-left: 10px;
+
+ol {
+  list-style-type: none;
+  padding-left: 0;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
-/* Remove separator for last item */
-.breadcrumb-item:last-child::after {
-  content: "";
+// GENERIC - NORMALIZE
+
+a:focus {
+  outline: thin dotted;
 }
 
-/* Link styling */
-.breadcrumb-item a {
-  text-decoration: none;
-  color: #007bff;
-  transition: color 0.3s;
+// GENERIC - FONTS
+
+@import url('https://fonts.googleapis.com/css?family=Work+Sans&display=swap');
+
+// ELEMENTS - A
+
+a:link {
+  touch-action: manipulation;
 }
 
-.breadcrumb-item a:hover {
-  color: #0056b3;
-  text-decoration: underline;
+a:active,
+a:hover {
+  outline: 0;
 }
 
-/* Last item styling */
-.breadcrumb-item:last-child a {
-  color: #6c757d;
-  pointer-events: none;
-  cursor: default;
-  font-weight: bold;
+a:visited:not([rel='external']) {
+  color: currentColor;
+}
+
+// ELEMENTS - BODY
+
+.container {
+  font: 16px/32px 'Work Sans', sans-serif;
+}
+
+// OBJECTS - INLINE-SVG-ICON
+
+.o-inline-svg-icon {
+  stroke: currentColor;
+
+  &--baseline {
+    position: relative;
+    top: .125em;
+    width: 1em;
+    height: 1em;
+  }
+}
+
+// COMPONENTS - NAVIGATION-BREADCRUMBS
+
+.c-navigation-breadcrumbs {
+  &__directory {
+    display: flex;
+  }
+
+  &__link:link {
+    color: $color-link;
+
+    &:hover {
+      @include text-underline();
+    }
+  }
+
+  // Shorten the breadcrumb trail to include only the next higher level. (Prevent wrap to multiple lines on small screen sizes)
+  @media (max-width: 500px) {
+    &__item {
+      &:not(:nth-last-child(2)) {
+        display: none;
+      }
+    }
+
+    &__link {
+      &:before {
+        display: inline-block;
+        // Invisible space character (sets auto-height for element)
+        content: '\200b';
+        // User goes "up one level" instead of "navigating back" to the last view or page.
+        background: url(icon-svg-uri('arrow-left', $color-link)) center / $size-icon $size-icon no-repeat;
+        width: $size-icon;
+      }
+    }
+  }
+
+  @media (min-width: 501px) {
+    &__item {
+      &:nth-last-child(n+2):after {
+        display: inline-block;
+        content: '\200b';
+        // "Greater-than sign" indicates higher-level page.
+        background: url(icon-svg-uri('chevron-right', $color-separator)) center / $size-icon $size-icon no-repeat;
+        width: $size-icon;
+        margin: 0 $space-separator;
+      }
+    }
+
+    &__link {
+      display: block;
+      float: left;
+    }
+  }
+}
+
+// UTILITIES - VISUALLY-HIDDEN
+
+.u-visually-hidden {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }
