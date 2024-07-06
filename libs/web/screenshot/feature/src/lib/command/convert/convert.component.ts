@@ -17,26 +17,20 @@ export class ConvertComponent {
   private readonly router = inject(Router);
 
   // Use more descriptive variable name for the title
-  public pageTitle = 'image to video';
+  public pageTitle = 'settings';
 
   // Adding explicit return type for better type safety
   public async navigateToVideo(): Promise<void> {
-    // Check the current page title and toggle accordingly
-    const isGallery = this.pageTitle === 'gallery';
-    this.pageTitle = isGallery ? 'image to video' : 'gallery';
-
     // Optimize route navigation by using a single ternary operation
-    const route = isGallery ? '' : 'convert';
+    const route = 'convert';
 
     this.store.dispatch(
-      !isGallery
-        ? breadcrumbActions.set({
-            breadcrumbs: [
-              { label: 'home', url: '/' },
-              { label: this.pageTitle, url: route },
-            ],
-          })
-        : breadcrumbActions.remove()
+      breadcrumbActions.set({
+        breadcrumbs: [
+          { label: 'home', url: '/' },
+          { label: this.pageTitle, url: route },
+        ],
+      })
     );
 
     // Navigate to the desired route
