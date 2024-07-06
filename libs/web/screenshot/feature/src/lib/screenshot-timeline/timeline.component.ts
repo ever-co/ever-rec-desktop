@@ -20,6 +20,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
   public capturing$ = new Observable<boolean>();
   private destroy$ = new Subject<void>();
   public store = inject(Store);
+  scrollPercentage = 0;
 
   ngOnInit(): void {
     this.capturing$ = this.store.select(selectScreenshotState).pipe(
@@ -60,6 +61,14 @@ export class TimelineComponent implements OnInit, OnDestroy {
     result.push(current);
 
     return result;
+  }
+
+  public onScroll(event: any) {
+    const element = event.target;
+    const scrollHeight = element.scrollWidth - element.clientWidth;
+    const scrollTop = element.scrollLeft;
+    const percentage = (scrollTop / scrollHeight) * 100;
+    this.scrollPercentage = percentage
   }
 
   ngOnDestroy(): void {

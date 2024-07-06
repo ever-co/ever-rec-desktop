@@ -4,7 +4,7 @@
     <img class="image-now" [src]="(screenshots$ | async)?.[0]?.pathname" alt="">
   </div>
   <div class="row">
-    <div class="image-container">
+    <div (scroll)="onScroll($event)" class="image-container">
       @for (screenshot of screenshots$ | async; track screenshot.id; let idx = $index, isFirst=$first, isLast=$last) {
       <div class="line-container">
         @if (screenshot?.metadata?.icon) {
@@ -17,6 +17,7 @@
       </div>
       }
     </div>
+    <div class="cursor" [style.left.%]="scrollPercentage"></div>
   </div>
   <div class="row"></div>
 </div>
