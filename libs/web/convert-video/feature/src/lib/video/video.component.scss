@@ -2,21 +2,22 @@
   max-width: 100%;
   position: relative;
 
+
   .video {
     width: 100%;
     max-height: calc(100vh - 10.85rem);
     border-radius: 1.5rem;
+    object-fit: contain;
   }
 }
 
 :host(.timeline) {
   .video {
-    max-height: calc(100vh - 14.5rem);
+    height: calc(100vh - 14.5rem);
+  }
 
-    &.container__loading {
-      height: calc(100vh - 14.5rem);
-      ;
-    }
+  .container__loading {
+    height: calc(100vh - 14.5rem);
   }
 }
 
