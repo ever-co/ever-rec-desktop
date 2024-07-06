@@ -87,11 +87,12 @@ $gap: 4px;
 .cursor {
   position: absolute;
   top: 0;
-  height: 96px;
+  height: 72px;
   width: 10px;
   background-color: #ddd;
   transform: translateX(-50%);
-  border-radius: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
   z-index: -1;
   box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 }
