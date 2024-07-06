@@ -5,7 +5,7 @@ export const breadcrumbActions = createActionGroup({
   source: 'Breadcrumb',
   events: {
     Add: props<{ breadcrumb: IBreadcrumb }>(),
-    set: props<{ breadcrumbs: IBreadcrumb[] }>(),
+    Set: props<{ breadcrumbs: IBreadcrumb[] }>(),
     Remove: emptyProps(),
     Reset: emptyProps(),
   },
