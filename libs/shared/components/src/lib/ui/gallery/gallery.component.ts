@@ -28,11 +28,6 @@ export class GalleryComponent implements OnInit, OnDestroy {
       map((state) => state.screenshots),
       takeUntil(this.destroy$)
     );
-
-    this.store.select(selectScreenshotState).pipe(
-      map((state) => console.log(state.screenshots)),
-      takeUntil(this.destroy$)
-    ).subscribe();
   }
 
   ngOnDestroy(): void {
