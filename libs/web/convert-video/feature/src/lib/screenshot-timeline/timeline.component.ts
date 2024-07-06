@@ -5,12 +5,11 @@ import { IScreenshot } from '@prototype/shared/utils';
 import {
   generateVideoActions,
   selectSettingState,
-  videoRemoteControlActions
+  videoRemoteControlActions,
 } from '@prototype/web/convert-video/data-access';
-// eslint-disable-next-line @nx/enforce-module-boundaries
-import { VideoComponent } from '@prototype/web/convert-video/feature';
 import { selectScreenshotState } from '@prototype/web/screenshot/data-access';
 import { map, Observable, Subject, takeUntil, withLatestFrom } from 'rxjs';
+import { VideoComponent } from '../video/video.component';
 
 type AggregatedScreenshot = IScreenshot & { xTimeIcon: number };
 

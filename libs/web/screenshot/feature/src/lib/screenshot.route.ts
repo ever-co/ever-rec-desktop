@@ -19,8 +19,8 @@ export const screenshotRoutes: Route[] = [
     path: 'timeline',
     title: 'Memory Keeper',
     loadComponent: () =>
-      import('./screenshot-timeline/timeline.component').then(
-        (c) => c.TimelineComponent
+      import('@prototype/web/convert-video/feature').then(
+        (r) => r.TimelineComponent
       ),
   },
 ];
