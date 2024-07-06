@@ -64,7 +64,7 @@ export class VideoComponent implements OnInit, OnDestroy {
     this.store
       .select(selectVideoRemoteControlState)
       .pipe(
-        filter(() => this.isControledRemotetly),
+        filter(() => this.isControledRemotetly && !!this.videoPlayer),
         combineLatestWith(
           this.store.select(selectSettingState),
           this.store.select(selectScreenshotState)
@@ -74,7 +74,7 @@ export class VideoComponent implements OnInit, OnDestroy {
           const frameCount = screenshots.length;
           const videoDuration = frameCount / frameRate;
           const scrollDuration = (videoDuration * scrollPercentage) / 100;
-          console.log(scrollDuration);
+          this.videoPlayer.nativeElement.currentTime = scrollDuration;
         }),
         takeUntil(this.destroy$)
       )
