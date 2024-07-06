@@ -30,8 +30,11 @@ export class ConvertComponent {
 
     this.store.dispatch(
       !isGallery
-        ? breadcrumbActions.add({
-            breadcrumb: { label: this.pageTitle, url: '/' + route },
+        ? breadcrumbActions.set({
+            breadcrumbs: [
+              { label: 'home', url: '/' },
+              { label: this.pageTitle, url: route },
+            ],
           })
         : breadcrumbActions.remove()
     );

@@ -9,6 +9,7 @@ import { AskComponent } from '../command/ask/ask.component';
 import { ConvertComponent } from '../command/convert/convert.component';
 import { StartComponent } from '../command/start/start.component';
 import { StopComponent } from '../command/stop/stop.component';
+import { TimelineButtonComponent } from '../command/timeline-button/timeline-button.component';
 
 @Component({
   selector: 'lib-layout',
@@ -20,7 +21,8 @@ import { StopComponent } from '../command/stop/stop.component';
     ConvertComponent,
     RouterModule,
     BreadcrumbComponent,
-    AskComponent
+    AskComponent,
+    TimelineButtonComponent
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',

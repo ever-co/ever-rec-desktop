@@ -17,8 +17,14 @@ export const reducer = createReducer(
   on(breadcrumbActions.add, (state, { breadcrumb }) => {
     return { ...state, breadcrumbs: [...state.breadcrumbs, breadcrumb] };
   }),
+  on(breadcrumbActions.set, (state, { breadcrumbs }) => {
+    return {
+      ...state,
+      breadcrumbs,
+    };
+  }),
   on(breadcrumbActions.remove, (state) => {
-    return { ...state, breadcrumbs: state.breadcrumbs.slice(0, -1)};
+    return { ...state, breadcrumbs: state.breadcrumbs.slice(0, -1) };
   }),
   on(breadcrumbActions.reset, () => initialState)
 );

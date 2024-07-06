@@ -15,4 +15,12 @@ export const screenshotRoutes: Route[] = [
         (r) => r.convertVideoRoutes
       ),
   },
+  {
+    path: 'timeline',
+    title: 'Memory Keeper',
+    loadComponent: () =>
+      import('./screenshot-timeline/timeline.component').then(
+        (c) => c.TimelineComponent
+      ),
+  },
 ];
