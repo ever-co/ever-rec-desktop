@@ -2,7 +2,7 @@
 .button {
   align-items: center;
   background-clip: padding-box;
-  background-color: #8e00fa;
+  background-color: #00b3fa;
   border: 1px solid transparent;
   border-radius: 1.5rem;
   box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
@@ -10,7 +10,7 @@
   color: #fff;
   cursor: pointer;
   display: inline-flex;
-  font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-family: system-ui, -apple-system, system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
   font-weight: 600;
   justify-content: center;
@@ -31,7 +31,7 @@
 
 .button:hover,
 .button:focus {
-  background-color: #ab32fb;
+  background-color: #329dfb;
   box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
 }
 
@@ -40,7 +40,7 @@
 }
 
 .button:active {
-  background-color: #4d00c8;
+  background-color: #007bc8;
   box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
   transform: translateY(0);
 }
