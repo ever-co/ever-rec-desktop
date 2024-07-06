@@ -39,9 +39,9 @@ export class VideoComponent implements OnInit, OnDestroy {
   public source$!: Observable<string>;
   @ViewChild('videoPlayer', { static: false })
   public videoPlayer!: ElementRef<HTMLVideoElement>;
+  public generating$!: Observable<boolean>;
   private destroy$ = new Subject<void>();
   @Input({
-    required: true,
     alias: 'remote',
     transform: (value: string) => value === 'true',
   })
@@ -55,6 +55,12 @@ export class VideoComponent implements OnInit, OnDestroy {
       tap(() => this.reload()),
       takeUntil(this.destroy$)
     );
+
+    this.generating$ = this.store.select(selectGenerateVideoState).pipe(
+      map(({ generating }) => generating),
+      takeUntil(this.destroy$)
+    );
+
     this.store
       .select(selectVideoRemoteControlState)
       .pipe(
