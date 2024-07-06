@@ -1,7 +1,9 @@
 <div class="container">
   <div class="row"></div>
   <div class="row">
-    <img class="image-now" [src]="(screenshots$ | async)?.[0]?.pathname" alt="">
+    <div class="image-now">
+      <lib-video remote="true" class="timeline"></lib-video>
+    </div>
   </div>
   <div class="row">
     <div (scroll)="onScroll($event)" class="image-container">

@@ -7,3 +7,9 @@
     border-radius: 1.5rem;
   }
 }
+
+:host(.timeline) {
+  .video {
+    max-height: calc(100vh - 14.5rem);
+  }
+}
