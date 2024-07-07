@@ -17,13 +17,13 @@ export class ScreenshotSubscriber
     return Screenshot;
   }
 
-  public afterUpdate(event: UpdateEvent<Screenshot>): void {
-    FileManager.deleteFile(this.screenshot.pathname);
+  public async afterUpdate(event: UpdateEvent<Screenshot>): Promise<void> {
+    await FileManager.deleteFile(this.screenshot.pathname);
   }
 
-  public afterRemove(event: RemoveEvent<Screenshot>): void {
+  public async afterRemove(event: RemoveEvent<Screenshot>): Promise<void> {
     if (event?.entity?.pathname) {
-      FileManager.deleteFile(event.entity.pathname);
+      await FileManager.deleteFile(event.entity.pathname);
     }
   }
 }

@@ -8,8 +8,8 @@ import {
 import { ipcMain } from 'electron';
 import { join } from 'path';
 import { Worker } from 'worker_threads';
-import { FileManager } from '../file-manager';
 import { ISplitterStrategy } from '../interfaces/splitter-strategy.interface';
+import { FileManager } from './files/file-manager';
 import { WorkerFactory } from './worker-factory.service';
 import { WorkerHandler } from './worker-handler.service';
 
@@ -42,17 +42,18 @@ export class VideoConversionService implements ILoggable {
 
     this.logger.info(`Process [${batches.length}] batches...`);
 
-    batches.forEach((batch, index) => {
+    batches.forEach(async (batch, index) => {
       const workerPath = join(
         __dirname,
         'assets',
         'workers',
         'convert-screenshots-to-video.worker.js'
       );
+      const outputPath = await this.getBatchOutputPath(index);
       const worker = this.workerFactory.createWorker(workerPath, {
         filePathnames: batch,
-        outputPath: this.getBatchOutputPath(index),
         config: this.config,
+        outputPath,
       });
       workers.push(worker);
 
@@ -100,7 +101,7 @@ export class VideoConversionService implements ILoggable {
   }
 
   private async combineVideos() {
-    const finalOutputPath = this.fileManager.createFilePath(
+    const finalOutputPath = await this.fileManager.createFilePath(
       'videos',
       `output-${Date.now()}.mp4`
     );
@@ -145,7 +146,7 @@ export class VideoConversionService implements ILoggable {
     );
   }
 
-  private getBatchOutputPath(batchIndex: number): string {
+  private async getBatchOutputPath(batchIndex: number): Promise<string> {
     return this.fileManager.createFilePath(
       'videos',
       `batch-${batchIndex}-${Date.now()}.mp4`
