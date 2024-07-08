@@ -1,0 +1,53 @@
+name: Make Desktop App
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  make:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: latest
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Electron app
+        run: npm run build  # Adjust this command according to your build script
+
+      - name: Package Electron app
+        run: npm run make
+
+      - name: Upload a Linux Build Artifact
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        uses: actions/upload-artifact@v4.3.4
+        with:
+          name: ${{ matrix.os }}
+          path: dist/executables/*.AppImage
+
+      - name: Upload a MacOS Build Artifact
+        if: ${{ matrix.os == 'macos-latest' }}
+        uses: actions/upload-artifact@v4.3.4
+        with:
+          name: ${{ matrix.os }}
+          path: dist/executables/*.dmg
+
+
+      - name: Upload a Windows Build Artifact
+        if: ${{ matrix.os == 'windows-latest' }}
+        uses: actions/upload-artifact@v4.3.4
+        with:
+          name: ${{ matrix.os }}
+          path: dist/executables/*.exe
