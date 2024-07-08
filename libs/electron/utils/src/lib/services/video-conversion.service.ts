@@ -9,6 +9,7 @@ import { ipcMain } from 'electron';
 import { join } from 'path';
 import { Worker } from 'worker_threads';
 import { ISplitterStrategy } from '../interfaces/splitter-strategy.interface';
+import { getWindowSize } from '../window-size';
 import { FileManager } from './files/file-manager';
 import { WorkerFactory } from './worker-factory.service';
 import { WorkerHandler } from './worker-handler.service';
@@ -39,6 +40,11 @@ export class VideoConversionService implements ILoggable {
     );
     const workers: Worker[] = [];
     this.config.duration = this.config.duration / filePathnames.length;
+
+    if (this.config.resolution.toLowerCase() === 'auto') {
+      const { width, height } = getWindowSize();
+      this.config.resolution = `${width}:${height}`;
+    }
 
     this.logger.info(`Process [${batches.length}] batches...`);
 
