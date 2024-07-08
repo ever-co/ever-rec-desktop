@@ -4,8 +4,7 @@
   "license": "MIT",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
-    "prebuild": "nx run ui:build",
-    "build": "nx run desktop:build",
+    "build": "nx run-many --target=build",
     "make": "nx run desktop:make"
   },
   "private": true,
