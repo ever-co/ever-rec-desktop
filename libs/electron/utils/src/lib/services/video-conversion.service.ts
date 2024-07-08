@@ -49,7 +49,7 @@ export class VideoConversionService implements ILoggable {
         'workers',
         'convert-screenshots-to-video.worker.js'
       );
-      const outputPath = await this.getBatchOutputPath(index);
+      const outputPath = this.getBatchOutputPath(index);
       const worker = this.workerFactory.createWorker(workerPath, {
         filePathnames: batch,
         config: this.config,
@@ -101,7 +101,7 @@ export class VideoConversionService implements ILoggable {
   }
 
   private async combineVideos() {
-    const finalOutputPath = await this.fileManager.createFilePath(
+    const finalOutputPath = this.fileManager.createFilePathSync(
       'videos',
       `output-${Date.now()}.mp4`
     );
@@ -146,8 +146,8 @@ export class VideoConversionService implements ILoggable {
     );
   }
 
-  private async getBatchOutputPath(batchIndex: number): Promise<string> {
-    return this.fileManager.createFilePath(
+  private getBatchOutputPath(batchIndex: number): string {
+    return this.fileManager.createFilePathSync(
       'videos',
       `batch-${batchIndex}-${Date.now()}.mp4`
     );
