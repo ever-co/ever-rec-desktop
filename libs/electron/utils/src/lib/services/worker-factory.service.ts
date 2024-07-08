@@ -1,7 +1,7 @@
 import { Worker } from 'worker_threads';
 
 export class WorkerFactory {
-  static createWorker(workerPath: string, workerData: any): Worker {
+  static createWorker<T>(workerPath: string, workerData?: T): Worker {
     return new Worker(workerPath, { workerData });
   }
 }

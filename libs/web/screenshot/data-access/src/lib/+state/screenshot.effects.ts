@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { from, of } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, debounceTime, map, mergeMap } from 'rxjs/operators';
 import { ScreenshotElectronService } from '../services/screenshot-electron.service';
 import { screenshotActions } from './screenshot.actions';
 
@@ -84,6 +84,7 @@ export class ScreenshotEffects {
   askFor$ = createEffect(() =>
     this.actions$.pipe(
       ofType(screenshotActions.ask),
+      debounceTime(500),
       mergeMap(({ request }) =>
         from(this.electronService.askFor(request)).pipe(
           map((screenshots) => screenshotActions.askSuccess({ screenshots })),

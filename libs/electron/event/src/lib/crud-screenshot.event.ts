@@ -29,6 +29,6 @@ export function crudScreeshotEvents() {
   // Delete all screenshots
   ipcMain.handle(Channel.REQUEST_DELETE_ALL_SCREENSHOTS, async () => {
     await ScreenshotService.deleteAll();
-    FileManager.removeAllFiles('screenshots');
+    await FileManager.removeAllFiles('screenshots');
   });
 }

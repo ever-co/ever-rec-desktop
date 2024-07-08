@@ -5,9 +5,11 @@ import { ScreenshotMetadata } from './entities/screenshot-metadata.entity';
 import { Screenshot } from './entities/screenshot.entity';
 import { ScreenshotSubscriber } from './subscribers/screenshot.subscriber';
 
+const database = FileManager.createFilePathSync('database', 'prototype.sqlite');
+
 export const appDataSource = new DataSource({
   type: 'better-sqlite3',
-  database: FileManager.createFilePath('database', 'prototype.sqlite'),
+  database,
   entities: [Screenshot, ScreenshotMetadata],
   synchronize: true,
   logging: true,
