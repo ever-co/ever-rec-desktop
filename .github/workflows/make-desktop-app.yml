@@ -22,13 +22,13 @@ jobs:
           node-version: latest
 
       - name: Install dependencies
-        run: npm install
+        run: yarn install
 
       - name: Build Electron app
-        run: npm run build  # Adjust this command according to your build script
+        run: yarn build  # Adjust this command according to your build script
 
       - name: Package Electron app
-        run: npm run make
+        run: yarn make
 
       - name: Upload a Linux Build Artifact
         if: ${{ matrix.os == 'ubuntu-latest' }}
