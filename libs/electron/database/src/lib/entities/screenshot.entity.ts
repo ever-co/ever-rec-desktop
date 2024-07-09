@@ -11,7 +11,7 @@ export class Screenshot extends Base implements IScreenshot {
   @Column({ default: false, type: 'boolean' })
   synced: boolean;
 
-  @OneToOne(() => ScreenshotMetadata)
+  @OneToOne(() => ScreenshotMetadata, { cascade: true })
   @JoinColumn()
   metadata: IScreenshotMetadata;
 }
