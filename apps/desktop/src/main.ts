@@ -1,3 +1,5 @@
+import { ElectronLogger } from '@prototype/electron/utils';
+import { ILogger } from '@prototype/shared/utils';
 import { app, BrowserWindow } from 'electron';
 import App from './app/app';
 import ElectronEvents from './app/events/electron.events';
@@ -24,7 +26,26 @@ export default class Main {
       UpdateEvents.initAutoUpdateService();
     }
   }
+
+  static handleErrors() {
+    const logger: ILogger = new ElectronLogger();
+
+    process.on('uncaughtException', (error) => {
+      logger.error(
+        'Uncaught Exception:' + error.stack ??
+          error.message ??
+          JSON.stringify(error)
+      );
+    });
+
+    process.on('unhandledRejection', (reason, promise) => {
+      logger.error('Unhandled Rejection at:' + promise + 'reason:' + reason);
+    });
+  }
 }
+
+// initialize logger
+Main.handleErrors();
 
 // handle setup events as quickly as possible
 Main.initialize();
