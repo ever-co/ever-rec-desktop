@@ -77,17 +77,17 @@ async function getScreenSource() {
   const sources = await desktopCapturer.getSources({
     types: ['screen'],
     thumbnailSize: getWindowSize(),
-    fetchWindowIcons: false
+    fetchWindowIcons: false,
   });
 
-  return sources.find(source => source.name === ENTIRE_SCREEN && source.display_id === DISPLAY_ID);
+  return sources[0];
 }
 
 async function getWindowSource() {
   const windows = await desktopCapturer.getSources({
     types: ['window'],
     thumbnailSize: getWindowSize(),
-    fetchWindowIcons: true
+    fetchWindowIcons: true,
   });
 
   return windows[0];
