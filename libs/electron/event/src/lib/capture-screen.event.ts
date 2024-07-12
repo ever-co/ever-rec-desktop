@@ -1,5 +1,9 @@
 import { ScreenshotService } from '@prototype/electron/database';
-import { FileManager, getWindowSize } from '@prototype/electron/utils';
+import {
+  ElectronLogger,
+  FileManager,
+  getWindowSize,
+} from '@prototype/electron/utils';
 import {
   Channel,
   IScreenshot,
@@ -9,8 +13,7 @@ import { desktopCapturer, ipcMain } from 'electron';
 
 // Constants
 const SCREENSHOT_DIR = 'screenshots';
-const ENTIRE_SCREEN = 'Entire screen';
-const DISPLAY_ID = '1';
+const logger = new ElectronLogger();
 
 export function captureScreenEvent(): void {
   let captureInterval: NodeJS.Timeout | null = null;
@@ -39,36 +42,44 @@ async function takeScreenshot(): Promise<IScreenshot | null> {
   try {
     const [screenSource, windowSource] = await Promise.all([
       getScreenSource(),
-      getWindowSource()
+      getWindowSource(),
     ]);
 
     if (!screenSource) {
-      console.warn('Screen source not found.');
+      logger.warn('Screen source not found.');
       return null;
     }
 
     const screenshotBuffer = screenSource.thumbnail.toPNG();
     const fileName = `screenshot-${Date.now()}.png`;
-    const screenshotPath = await FileManager.write(SCREENSHOT_DIR, fileName, screenshotBuffer);
+    const screenshotPath = await FileManager.write(
+      SCREENSHOT_DIR,
+      fileName,
+      screenshotBuffer
+    );
 
     const screenshot: IScreenshotInput = {
       pathname: screenshotPath,
       metadata: {
         name: windowSource?.name || '',
         description: getWindowDescription(windowSource),
-        icon: ''
-      }
+        icon: '',
+      },
     };
 
     if (windowSource?.appIcon && !windowSource.appIcon.isEmpty()) {
       const iconBuffer = windowSource.appIcon.toPNG();
-      const iconPath = await FileManager.write(SCREENSHOT_DIR, `icon-${fileName}`, iconBuffer);
+      const iconPath = await FileManager.write(
+        SCREENSHOT_DIR,
+        `icon-${fileName}`,
+        iconBuffer
+      );
       screenshot.metadata.icon = iconPath;
     }
 
     return ScreenshotService.save(screenshot);
   } catch (error) {
-    console.error('Error taking screenshot:', error);
+    logger.error('Error taking screenshot:' + error);
     return null;
   }
 }
