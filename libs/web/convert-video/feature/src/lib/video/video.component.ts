@@ -21,11 +21,10 @@ import {
   Subject,
   catchError,
   combineLatest,
-  distinctUntilChanged,
   filter,
   map,
   takeUntil,
-  tap,
+  tap
 } from 'rxjs';
 
 @Component({
@@ -60,7 +59,6 @@ export class VideoComponent implements OnInit, OnDestroy {
   private setupSourceObservable(): void {
     this.source$ = this.store.select(selectGenerateVideoState).pipe(
       map((state) => state.videoPathname),
-      distinctUntilChanged(),
       filter(() => !!this.videoPlayer),
       tap(() => this.reload()),
       catchError((err) => {
