@@ -7,6 +7,7 @@ import {
   captureScreenEvent,
   convertScreenshotsToVideoEvent,
   crudScreeshotEvents,
+  uploadEventListener,
 } from '@prototype/electron/events';
 import { app, ipcMain } from 'electron';
 import { environment } from '../../environments/environment';
@@ -39,3 +40,5 @@ captureScreenEvent();
 convertScreenshotsToVideoEvent();
 
 crudScreeshotEvents();
+
+uploadEventListener();
