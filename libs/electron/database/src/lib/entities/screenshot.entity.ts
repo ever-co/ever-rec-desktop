@@ -1,7 +1,19 @@
-import type { IScreenshot, IScreenshotMetadata } from '@prototype/shared/utils';
-import { Column, Entity, OneToOne, Relation } from 'typeorm';
+import type {
+  IScreenshot,
+  IScreenshotMetadata,
+  IVideo,
+} from '@prototype/shared/utils';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  Relation
+} from 'typeorm';
 import { Base } from './base.entity';
 import { ScreenshotMetadata } from './screenshot-metadata.entity';
+import { Video } from './video.enttiy';
 
 @Entity()
 export class Screenshot extends Base implements IScreenshot {
@@ -15,4 +27,8 @@ export class Screenshot extends Base implements IScreenshot {
     nullable: true,
   })
   metadata: Relation<IScreenshotMetadata>;
+
+  @ManyToOne(() => Video, (video) => video.chunks, { nullable: true })
+  @JoinColumn()
+  video?: Relation<IVideo>;
 }

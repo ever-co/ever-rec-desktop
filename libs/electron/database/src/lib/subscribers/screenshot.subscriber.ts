@@ -1,4 +1,5 @@
-import { FileManager } from '@prototype/electron/utils';
+import { ElectronLogger } from '@prototype/electron/utils';
+import { ILoggable, ILogger } from '@prototype/shared/utils';
 import {
   EntitySubscriberInterface,
   EventSubscriber,
@@ -9,21 +10,19 @@ import { Screenshot } from '../entities/screenshot.entity';
 
 @EventSubscriber()
 export class ScreenshotSubscriber
-  implements EntitySubscriberInterface<Screenshot>
+  implements EntitySubscriberInterface<Screenshot>, ILoggable
 {
-  screenshot: Screenshot;
+  logger: ILogger = new ElectronLogger();
 
   public listenTo() {
     return Screenshot;
   }
 
   public async afterUpdate(event: UpdateEvent<Screenshot>): Promise<void> {
-    await FileManager.deleteFile(this.screenshot.pathname);
+    this.logger.info('Entity updated');
   }
 
   public async afterRemove(event: RemoveEvent<Screenshot>): Promise<void> {
-    if (event?.entity?.pathname) {
-      await FileManager.deleteFile(event.entity.pathname);
-    }
+    this.logger.info('Entity deleted');
   }
 }

@@ -104,6 +104,8 @@ async function getWindowSource() {
   return windows[0];
 }
 
-function getWindowDescription(windowSource: Electron.DesktopCapturerSource | undefined): string {
+function getWindowDescription(
+  windowSource: Electron.DesktopCapturerSource | undefined
+): string {
   return windowSource ? windowSource.name : '';
 }

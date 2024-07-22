@@ -11,4 +11,9 @@ export enum Channel {
   'REQUEST_SCREENSHOTS' = 'request-screeshots',
   'REQUEST_DELETE_ALL_SCREENSHOTS' = 'request-delete-all-screeshots',
   'SEARCHING' = 'searching',
+  'UPLOAD' = 'upload',
+  'UPLOAD_DONE' = 'upload::done',
+  'UPLOAD_PROGRESS' = 'upload::progress',
+  'UPLOAD_ERROR' = 'upload::error',
+  'UPLOAD_CANCELED' = 'upload::canceled',
 }

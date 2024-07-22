@@ -3,7 +3,9 @@ import {
   ILoggable,
   ILogger,
   IScreenshot,
+  IVideo,
   IVideoConfig,
+  IVideoService,
 } from '@prototype/shared/utils';
 import { ipcMain } from 'electron';
 import { join } from 'path';
@@ -17,6 +19,7 @@ import { WorkerHandler } from './worker-handler.service';
 export class VideoConversionService implements ILoggable {
   private completedWorkers = 0;
   private batchVideo: { index: number; path: string }[] = [];
+  private chunks: IVideo[] = [];
 
   constructor(
     private event: Electron.IpcMainEvent,
@@ -26,7 +29,8 @@ export class VideoConversionService implements ILoggable {
     private workerFactory: typeof WorkerFactory,
     private fileManager: typeof FileManager,
     private channel: typeof Channel,
-    public logger: ILogger
+    public logger: ILogger,
+    private videoService: IVideoService
   ) {}
 
   async convert() {
@@ -70,8 +74,27 @@ export class VideoConversionService implements ILoggable {
         index,
         this.event,
         this.channel,
-        (idx, message) =>
-          this.handleWorkerCompletion(idx, String(message), workers.length),
+        async (idx, message) => {
+          try {
+            const chunk = await this.videoService.save({
+              pathname: FileManager.encodePath(String(message)),
+              duration: batch.length / this.config.frameRate,
+              resolution: this.config.resolution,
+              frameRate: this.config.frameRate,
+              screenshotIds: this.screenshots
+                .map(({ id }) => id)
+                .slice(this.config.batch * idx, this.config.batch * (idx + 1)),
+            });
+            this.chunks.push(chunk);
+            this.handleWorkerCompletion(idx, String(message), workers.length);
+          } catch (error) {
+            this.logger.error(String(error) || 'An error occurred');
+            this.event.reply(
+              this.channel.GENERATION_ERROR,
+              error || 'An error occurred'
+            );
+          }
+        },
         (error) => {
           this.logger.error(error || 'An error occurred');
           this.event.reply(
@@ -134,12 +157,30 @@ export class VideoConversionService implements ILoggable {
       -1, // no specific index for combine operation
       this.event,
       this.channel,
-      (_, message) => {
-        this.logger.info(`Finale video output pathname: ${message}`);
-        this.event.reply(
-          this.channel.SCREESHOTS_CONVERTED,
-          this.fileManager.encodePath(String(message))
-        );
+      async (_, message) => {
+        try {
+          await this.videoService.save({
+            pathname: FileManager.encodePath(String(message)),
+            duration: this.screenshots.length / this.config.frameRate,
+            resolution: this.config.resolution,
+            frameRate: this.config.frameRate,
+            chunkIds: this.chunks.map(({ id }) => id),
+            screenshotIds: this.screenshots.map(({ id }) => id),
+          });
+          this.logger.info(`Finale video output pathname: ${message}`);
+          this.event.reply(
+            this.channel.SCREESHOTS_CONVERTED,
+            this.fileManager.encodePath(String(message))
+          );
+        } catch (error) {
+          this.logger.error(
+            String(error) || 'An Error Occurred while video combination'
+          );
+          this.event.reply(
+            this.channel.GENERATION_ERROR,
+            error || 'An Error Occurred while video combination'
+          );
+        }
       },
       (error) => {
         this.logger.error(error || 'An Error Occurred while video combination');

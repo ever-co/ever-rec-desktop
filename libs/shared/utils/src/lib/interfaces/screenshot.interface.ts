@@ -1,9 +1,11 @@
 import { IBase } from './base.interface';
+import type { IVideo } from './video.interface';
 
 export interface IScreenshot extends IBase {
   pathname: string;
   synced?: boolean;
   metadata?: IScreenshotMetadata;
+  video?: IVideo
 }
 
 export interface IScreenshotMetadata extends IBase {

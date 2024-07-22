@@ -49,7 +49,7 @@ async function upload(files, uploadUrl) {
     }
 
     const result = await response.json();
-    return { status: 'success', message: result };
+    return { status: 'done', message: result };
   } catch (error) {
     return { status: 'error', message: error.message ?? error };
   } finally {
@@ -63,7 +63,7 @@ async function upload(files, uploadUrl) {
 }
 
 parentPort.on('message', async () => {
-  const { files, uploadUrl } = workerData;
-  const result = await upload(files, uploadUrl);
+  const { files, url } = workerData;
+  const result = await upload(files, url);
   parentPort.postMessage(result);
 });

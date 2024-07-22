@@ -123,7 +123,7 @@ export class FileManager {
     }
   }
 
-  private static decodePath(localUrl: string): string {
+  public static decodePath(localUrl: string): string {
     try {
       const url = new URL(localUrl);
       const pathName =
