@@ -1,5 +1,5 @@
-import { IScreenshot, IScreenshotMetadata } from '@prototype/shared/utils';
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import type { IScreenshot, IScreenshotMetadata } from '@prototype/shared/utils';
+import { Column, Entity, JoinColumn, OneToOne, Relation } from 'typeorm';
 import { Base } from './base.entity';
 import { Screenshot } from './screenshot.entity';
 
@@ -14,7 +14,9 @@ export class ScreenshotMetadata extends Base implements IScreenshotMetadata {
   @Column({ type: 'text', nullable: true })
   description: string;
 
-  @OneToOne(() => Screenshot, (it) => it.metadata, { onDelete: 'CASCADE' })
+  @OneToOne(() => Screenshot, (screenshot) => screenshot.metadata, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
-  screenshot?: IScreenshot;
+  screenshot?: Relation<IScreenshot>;
 }
