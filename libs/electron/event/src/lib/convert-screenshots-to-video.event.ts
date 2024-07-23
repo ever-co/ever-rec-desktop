@@ -16,19 +16,6 @@ export function convertScreenshotsToVideoEvent() {
     Channel.START_CONVERT_TO_VIDEO,
     async (event, { screenshotIds, config }: IVideoConvertPayload) => {
       const videoService = new VideoService();
-      const videoExist = await videoService.findOne({
-        where: { screenshots: { id: In(screenshotIds) } },
-        relations: ['screenshots'],
-      });
-
-      if (
-        videoExist &&
-        videoExist.screenshots?.length === screenshotIds.length
-      ) {
-        event.reply(Channel.SCREESHOTS_CONVERTED, videoExist.pathname);
-        return;
-      }
-
       const screenshots = await ScreenshotService.findAll({
         where: { id: In(screenshotIds) },
         order: { createdAt: 'ASC' },

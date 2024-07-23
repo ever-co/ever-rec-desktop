@@ -9,6 +9,7 @@ import {
 } from '@prototype/shared/utils';
 import { ipcMain } from 'electron';
 import { join } from 'path';
+import { In } from 'typeorm';
 import { Worker } from 'worker_threads';
 import { ISplitterStrategy } from '../interfaces/splitter-strategy.interface';
 import { getWindowSize } from '../window-size';
@@ -35,6 +36,37 @@ export class VideoConversionService implements ILoggable {
 
   async convert() {
     this.logger.info('Start converting video...');
+    const screenshotIds = this.screenshots.map(({ id }) => id);
+    const chunkExist = await this.videoService.findOne({
+      where: { screenshots: { id: In(screenshotIds) } },
+      relations: ['screenshots', 'chunks'],
+    });
+
+    const chunkSize = chunkExist?.screenshots?.length ?? 0;
+
+    if (chunkExist && chunkSize === screenshotIds.length) {
+      this.logger.info(`Last checkpoint reused...`);
+      this.logger.info(`Finale video output pathname: ${chunkExist.pathname}`);
+      this.event.reply(this.channel.SCREESHOTS_CONVERTED, chunkExist.pathname);
+      return;
+    }
+
+    if (chunkExist && chunkSize !== screenshotIds.length) {
+      const { screenshots: chunkScreenshots = [] } = chunkExist;
+      const chunkScreenshotIds = new Set(chunkScreenshots.map(({ id }) => id));
+      this.logger.info(`Last checkpoint reused...`);
+      this.chunks.push(chunkExist);
+      this.batchVideo.push({
+        index: -1,
+        path: this.fileManager.decodePath(chunkExist.pathname),
+      });
+      this.screenshots = this.screenshots.filter(
+        ({ id }) => !chunkScreenshotIds.has(id)
+      );
+    }
+
+    this.logger.info(`Processing ${this.screenshots.length} frames`);
+
     const filePathnames = this.fileManager.getFilesByPathnames(
       this.screenshots.map(({ pathname }) => pathname)
     );
@@ -78,7 +110,7 @@ export class VideoConversionService implements ILoggable {
           try {
             this.logger.info(`Batch [${idx}] proceed...`);
             const chunk = await this.videoService.save({
-              pathname: FileManager.encodePath(String(message)),
+              pathname: this.fileManager.encodePath(String(message)),
               duration: batch.length / this.config.frameRate,
               resolution: this.config.resolution,
               frameRate: this.config.frameRate,
@@ -88,7 +120,7 @@ export class VideoConversionService implements ILoggable {
             });
             this.chunks.push(chunk);
             this.handleWorkerCompletion(idx, String(message), workers.length);
-            this.logger.info(`Chunck [${chunk.id}] saved...`);
+            this.logger.info(`Chunk [${chunk.id}] saved...`);
           } catch (error) {
             this.logger.error(String(error) || 'An error occurred');
             this.event.reply(
@@ -161,28 +193,34 @@ export class VideoConversionService implements ILoggable {
       this.channel,
       async (idx, message) => {
         try {
-          this.logger.info(`Final batch [${idx}] proceed...`);
+          this.logger.info(`Processing final batch [${idx}]...`);
+          const { frameRate, resolution } = this.config;
+          const screenshotIds = this.screenshots.map(({ id }) => id);
+          const chunkScreenshotIds = this.chunks
+            .flatMap((chunk) => chunk?.screenshots?.map(({ id }) => id) || [])
+            .filter((id) => id != null);
+          const uniqueScreenshotIds = [
+            ...new Set([...chunkScreenshotIds, ...screenshotIds]),
+          ];
           await this.videoService.save({
-            pathname: FileManager.encodePath(String(message)),
-            duration: this.screenshots.length / this.config.frameRate,
-            resolution: this.config.resolution,
-            frameRate: this.config.frameRate,
+            pathname: this.fileManager.encodePath(String(message)),
+            duration: uniqueScreenshotIds.length / frameRate,
+            resolution,
+            frameRate,
             chunkIds: this.chunks.map(({ id }) => id),
-            screenshotIds: this.screenshots.map(({ id }) => id),
+            screenshotIds: uniqueScreenshotIds,
           });
-          this.logger.info(`Finale video output pathname: ${message}`);
+
+          this.logger.info(`Final video output pathname: ${message}`);
           this.event.reply(
             this.channel.SCREESHOTS_CONVERTED,
             this.fileManager.encodePath(String(message))
           );
         } catch (error) {
-          this.logger.error(
-            String(error) || 'An Error Occurred while video combination'
-          );
-          this.event.reply(
-            this.channel.GENERATION_ERROR,
-            error || 'An Error Occurred while video combination'
-          );
+          const errorMessage =
+            String(error) || 'An error occurred while combining the video';
+          this.logger.error(errorMessage);
+          this.event.reply(this.channel.GENERATION_ERROR, errorMessage);
         }
       },
       (error) => {
