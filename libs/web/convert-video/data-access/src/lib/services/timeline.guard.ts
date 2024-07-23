@@ -20,7 +20,7 @@ export const timelineGuard: CanActivateFn = () => {
 
   return store.select(selectScreenshotState).pipe(
     map(({ screenshots }) => {
-      if (!screenshots) {
+      if (!screenshots.length) {
         router.navigate(['/']);
         return false;
       } else {
