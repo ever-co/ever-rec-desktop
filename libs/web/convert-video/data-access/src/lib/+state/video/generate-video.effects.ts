@@ -53,8 +53,8 @@ export class GenerateVideoEffects {
       ofType(generateVideoActions.startSuccess),
       mergeMap(() => {
         return new Promise((resolve) => {
-          this.convertVideoElectronService.onDone((videoPathname) => {
-            resolve(generateVideoActions.finish({ videoPathname }));
+          this.convertVideoElectronService.onDone((video) => {
+            resolve(generateVideoActions.finish({ video}));
           });
         });
       }),

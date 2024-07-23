@@ -47,7 +47,7 @@ export class VideoConversionService implements ILoggable {
     if (chunkExist && chunkSize === screenshotIds.length) {
       this.logger.info(`Last checkpoint reused...`);
       this.logger.info(`Finale video output pathname: ${chunkExist.pathname}`);
-      this.event.reply(this.channel.SCREESHOTS_CONVERTED, chunkExist.pathname);
+      this.event.reply(this.channel.SCREESHOTS_CONVERTED, chunkExist);
       return;
     }
 
@@ -202,7 +202,7 @@ export class VideoConversionService implements ILoggable {
           const uniqueScreenshotIds = [
             ...new Set([...chunkScreenshotIds, ...screenshotIds]),
           ];
-          await this.videoService.save({
+          const video = await this.videoService.save({
             pathname: this.fileManager.encodePath(String(message)),
             duration: uniqueScreenshotIds.length / frameRate,
             resolution,
@@ -212,10 +212,7 @@ export class VideoConversionService implements ILoggable {
           });
 
           this.logger.info(`Final video output pathname: ${message}`);
-          this.event.reply(
-            this.channel.SCREESHOTS_CONVERTED,
-            this.fileManager.encodePath(String(message))
-          );
+          this.event.reply(this.channel.SCREESHOTS_CONVERTED, video);
         } catch (error) {
           const errorMessage =
             String(error) || 'An error occurred while combining the video';

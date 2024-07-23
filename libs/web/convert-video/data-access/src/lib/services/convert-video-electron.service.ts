@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { ElectronService } from '@prototype/electron/data-access';
-import { Channel, IVideoConvertPayload } from '@prototype/shared/utils';
+import { Channel, IVideo, IVideoConvertPayload } from '@prototype/shared/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -23,10 +23,10 @@ export class ConvertVideoElectronService {
     );
   }
 
-  public onDone(callback: (pathname: string) => void): void {
+  public onDone(callback: (video: IVideo) => void): void {
     this.electronService.on(
       Channel.SCREESHOTS_CONVERTED,
-      (_, pathname: string) => callback(pathname)
+      (_, video: IVideo) => callback(video)
     );
   }
 

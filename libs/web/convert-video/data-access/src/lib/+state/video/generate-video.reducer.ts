@@ -1,4 +1,5 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
+import { IVideo } from '@prototype/shared/utils';
 import { generateVideoActions } from './generate-video.actions';
 
 export const generateVideoFeatureKey = 'generateVideo';
@@ -7,13 +8,13 @@ export interface State {
   progress: number;
   generating: boolean;
   error: string;
-  videoPathname: string;
+  video: IVideo;
 }
 
 export const initialState: State = {
   progress: 0,
   generating: false,
-  videoPathname: '',
+  video: {} as IVideo,
   error: '',
 };
 
@@ -28,9 +29,9 @@ export const reducer = createReducer(
     ...state,
     generating: false,
   })),
-  on(generateVideoActions.finish, (state, { videoPathname }) => ({
+  on(generateVideoActions.finish, (state, { video }) => ({
     ...state,
-    videoPathname,
+    video,
     generating: false,
   })),
   on(generateVideoActions.triggerError, (state, { error }) => ({

@@ -58,7 +58,7 @@ export class VideoComponent implements OnInit, OnDestroy {
 
   private setupSourceObservable(): void {
     this.source$ = this.store.select(selectGenerateVideoState).pipe(
-      map((state) => state.videoPathname),
+      map((state) => state.video.pathname),
       filter(() => !!this.videoPlayer),
       tap(() => this.reload()),
       catchError((err) => {
