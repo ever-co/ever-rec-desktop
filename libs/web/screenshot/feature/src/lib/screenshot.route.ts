@@ -1,4 +1,5 @@
 import { Route } from '@angular/router';
+import { timelineGuard } from '@prototype/web/convert-video/data-access';
 
 export const screenshotRoutes: Route[] = [
   {
@@ -18,6 +19,7 @@ export const screenshotRoutes: Route[] = [
   {
     path: 'timeline',
     title: 'Memory Keeper',
+    canActivate: [timelineGuard],
     loadComponent: () =>
       import('@prototype/web/convert-video/feature').then(
         (r) => r.TimelineComponent
