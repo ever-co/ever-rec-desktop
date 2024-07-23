@@ -13,7 +13,7 @@ import {
 } from 'typeorm';
 import { Base } from './base.entity';
 import { ScreenshotMetadata } from './screenshot-metadata.entity';
-import { Video } from './video.enttiy';
+import { Video } from './video.entity';
 
 @Entity()
 export class Screenshot extends Base implements IScreenshot {

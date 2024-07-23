@@ -76,6 +76,7 @@ export class VideoConversionService implements ILoggable {
         this.channel,
         async (idx, message) => {
           try {
+            this.logger.info(`Batch [${idx}] proceed...`);
             const chunk = await this.videoService.save({
               pathname: FileManager.encodePath(String(message)),
               duration: batch.length / this.config.frameRate,
@@ -87,6 +88,7 @@ export class VideoConversionService implements ILoggable {
             });
             this.chunks.push(chunk);
             this.handleWorkerCompletion(idx, String(message), workers.length);
+            this.logger.info(`Chunck [${chunk.id}] saved...`);
           } catch (error) {
             this.logger.error(String(error) || 'An error occurred');
             this.event.reply(
@@ -157,8 +159,9 @@ export class VideoConversionService implements ILoggable {
       -1, // no specific index for combine operation
       this.event,
       this.channel,
-      async (_, message) => {
+      async (idx, message) => {
         try {
+          this.logger.info(`Final batch [${idx}] proceed...`);
           await this.videoService.save({
             pathname: FileManager.encodePath(String(message)),
             duration: this.screenshots.length / this.config.frameRate,

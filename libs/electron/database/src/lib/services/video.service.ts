@@ -1,12 +1,14 @@
 import { IVideo, IVideoInput, IVideoService } from '@prototype/shared/utils';
 import { FindManyOptions, FindOneOptions, In } from 'typeorm';
-import { Video } from '../entities/video.enttiy';
+import { Video } from '../entities/video.entity';
 import { VideoRepository } from '../repositories/video.repository';
 import { ScreenshotService } from './screenshot.service';
+import { VideoMetadataService } from './video-metadata.service';
 
 export class VideoService implements IVideoService {
   private readonly repository = VideoRepository.instance;
   private readonly screenshotService = ScreenshotService;
+  private readonly metadataService = new VideoMetadataService();
 
   public async save(input: IVideoInput): Promise<IVideo> {
     if (!input) {
@@ -14,8 +16,7 @@ export class VideoService implements IVideoService {
     }
 
     // Create a new Video instance and assign properties from input
-    const video = new Video();
-    Object.assign(video, input);
+    const video = Object.assign(new Video(), { pathname: input.pathname });
 
     try {
       // Handle parent video association
@@ -48,6 +49,9 @@ export class VideoService implements IVideoService {
         }
         video.screenshots = screenshots;
       }
+
+      const metadata = await this.metadataService.save(input);
+      video.metadata = metadata;
 
       // Save and return the video entity
       return await this.repository.save(video);

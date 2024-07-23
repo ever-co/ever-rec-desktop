@@ -1,7 +1,19 @@
-import type { IScreenshot, IVideo } from '@prototype/shared/utils';
-import { Column, Entity, ManyToOne, OneToMany, Relation } from 'typeorm';
+import type {
+  IScreenshot,
+  IVideo,
+  IVideoMetadata,
+} from '@prototype/shared/utils';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  Relation,
+} from 'typeorm';
 import { Base } from './base.entity';
 import { Screenshot } from './screenshot.entity';
+import { VideoMetadata } from './video-metadata.entity';
 
 @Entity()
 export class Video extends Base implements IVideo {
@@ -10,15 +22,6 @@ export class Video extends Base implements IVideo {
 
   @Column({ default: false, type: 'boolean' })
   synced?: boolean;
-
-  @Column({ default: '15', type: 'integer' })
-  frameRate?: number;
-
-  @Column({ default: '1920:1080', type: 'text' })
-  resolution?: string;
-
-  @Column({ default: 0, type: 'integer' })
-  duration?: number;
 
   @ManyToOne(() => Video, (video) => video.chunks, { nullable: true })
   parent?: Relation<IVideo>;
@@ -33,4 +36,9 @@ export class Video extends Base implements IVideo {
     nullable: true,
   })
   screenshots?: Relation<IScreenshot[]>;
+
+  @OneToOne(() => VideoMetadata, (metadata) => metadata.video, {
+    nullable: true,
+  })
+  metadata?: Relation<IVideoMetadata>;
 }

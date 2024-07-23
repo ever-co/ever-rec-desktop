@@ -4,13 +4,18 @@ import type { IScreenshot } from './screenshot.interface';
 
 export interface IVideo extends IBase {
   pathname: string;
-  frameRate?: number;
-  resolution?: string;
-  duration?: number;
   synced?: boolean;
   parent?: IVideo;
   chunks?: IVideo[];
   screenshots?: IScreenshot[];
+  metadata?: IVideoMetadata;
+}
+
+export interface IVideoMetadata extends IBase {
+  frameRate?: number;
+  resolution?: string;
+  duration?: number;
+  video?: IVideo;
 }
 
 export interface IVideoInput {
@@ -22,7 +27,15 @@ export interface IVideoInput {
   parentId?: string;
   chunkIds?: string[];
   screenshotIds?: string[];
+  metadataId?: string;
 }
+
+export type IVideoMetadataInput = Pick<
+  IVideoMetadata,
+  'duration' | 'resolution' | 'frameRate'
+> & {
+  videoId?: string;
+};
 
 export interface IVideoService {
   save(input: IVideoInput): Promise<IVideo>;
