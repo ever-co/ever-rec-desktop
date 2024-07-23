@@ -67,6 +67,12 @@ export class SettingComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
+    if (!this.screenshotIds.length) {
+      this.store.dispatch(
+        generateVideoActions.failure({ error: 'No available frames' })
+      );
+      return;
+    }
     if (this.formGroup.valid && this.screenshotIds.length > 0) {
       this.store.dispatch(
         settingActions.update({ videoConfig: this.formGroup.value })
