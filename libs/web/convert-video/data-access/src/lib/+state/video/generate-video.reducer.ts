@@ -48,6 +48,11 @@ export const reducer = createReducer(
   on(generateVideoActions.progress, (state, { progress }) => ({
     ...state,
     progress,
+  })),
+
+  on(generateVideoActions.loadLastVideoSuccess, (state, { video }) => ({
+    ...state,
+    video: video ?? state.video,
   }))
 );
 

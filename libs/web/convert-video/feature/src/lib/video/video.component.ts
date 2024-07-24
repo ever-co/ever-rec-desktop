@@ -1,6 +1,8 @@
 /* eslint-disable @angular-eslint/no-input-rename */
 import { CommonModule } from '@angular/common';
 import {
+  AfterContentInit,
+  AfterViewInit,
   Component,
   ElementRef,
   Input,
@@ -11,6 +13,7 @@ import {
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
+  generateVideoActions,
   selectGenerateVideoState,
   selectSettingState,
   selectVideoRemoteControlState,
@@ -23,8 +26,9 @@ import {
   combineLatest,
   filter,
   map,
+  of,
   takeUntil,
-  tap
+  tap,
 } from 'rxjs';
 
 @Component({
@@ -34,7 +38,9 @@ import {
   templateUrl: './video.component.html',
   styleUrls: ['./video.component.scss'], // Fixed typo
 })
-export class VideoComponent implements OnInit, OnDestroy {
+export class VideoComponent
+  implements OnInit, AfterViewInit, AfterContentInit, OnDestroy
+{
   private store = inject(Store);
   private destroy$ = new Subject<void>();
 
@@ -56,14 +62,27 @@ export class VideoComponent implements OnInit, OnDestroy {
     this.setupRemoteControlObservable();
   }
 
+  ngAfterViewInit(): void {
+    this.store
+      .select(selectGenerateVideoState)
+      .pipe(
+        filter(() => !!this.videoPlayer),
+        tap(() => this.reload()),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
+
+  ngAfterContentInit(): void {
+    this.store.dispatch(generateVideoActions.loadLastVideo());
+  }
+
   private setupSourceObservable(): void {
     this.source$ = this.store.select(selectGenerateVideoState).pipe(
       map((state) => state.video.pathname),
-      filter(() => !!this.videoPlayer),
-      tap(() => this.reload()),
       catchError((err) => {
         console.error('Error in source observable', err);
-        return [];
+        return '';
       }),
       takeUntil(this.destroy$)
     );
@@ -74,7 +93,7 @@ export class VideoComponent implements OnInit, OnDestroy {
       map(({ generating }) => generating),
       catchError((err) => {
         console.error('Error in generating observable', err);
-        return [];
+        return of(false);
       }),
       takeUntil(this.destroy$)
     );

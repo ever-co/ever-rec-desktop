@@ -39,7 +39,7 @@ export class VideoConversionService implements ILoggable {
     const screenshotIds = this.screenshots.map(({ id }) => id);
     const chunkExist = await this.videoService.findOne({
       where: { screenshots: { id: In(screenshotIds) } },
-      relations: ['screenshots', 'chunks'],
+      relations: ['screenshots', 'screenshots.metadata', 'chunks'],
     });
 
     const chunkSize = chunkExist?.screenshots?.length ?? 0;
@@ -202,13 +202,18 @@ export class VideoConversionService implements ILoggable {
           const uniqueScreenshotIds = [
             ...new Set([...chunkScreenshotIds, ...screenshotIds]),
           ];
-          const video = await this.videoService.save({
+          const { id } = await this.videoService.save({
             pathname: this.fileManager.encodePath(String(message)),
             duration: uniqueScreenshotIds.length / frameRate,
             resolution,
             frameRate,
             chunkIds: this.chunks.map(({ id }) => id),
             screenshotIds: uniqueScreenshotIds,
+          });
+
+          const video = await this.videoService.findOne({
+            where: { id },
+            relations: ['screenshots', 'screenshots.metadata'],
           });
 
           this.logger.info(`Final video output pathname: ${message}`);

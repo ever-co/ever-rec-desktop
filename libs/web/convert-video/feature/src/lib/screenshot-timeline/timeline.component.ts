@@ -3,12 +3,11 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { IScreenshot } from '@prototype/shared/utils';
 import {
-  generateVideoActions,
-  selectSettingState,
+  selectGenerateVideoState,
   videoRemoteControlActions,
 } from '@prototype/web/convert-video/data-access';
 import { selectScreenshotState } from '@prototype/web/screenshot/data-access';
-import { map, Observable, Subject, takeUntil, withLatestFrom } from 'rxjs';
+import { map, Observable, Subject, takeUntil } from 'rxjs';
 import { VideoComponent } from '../video/video.component';
 
 type AggregatedScreenshot = IScreenshot & { xTimeIcon: number };
@@ -32,16 +31,9 @@ export class TimelineComponent implements OnInit, OnDestroy {
       map((state) => state.capturing || state.loading),
       takeUntil(this.destroy$)
     );
-
-    this.screenshots$ = this.store.select(selectScreenshotState).pipe(
-      withLatestFrom(this.store.select(selectSettingState)),
-      map(([{ screenshots }, { videoConfig }]) => {
-        this.store.dispatch(
-          generateVideoActions.start({
-            screenshotIds: screenshots.map(({ id }) => id),
-            config: videoConfig,
-          })
-        );
+    this.screenshots$ = this.store.select(selectGenerateVideoState).pipe(
+      map(({ video }) => {
+        const screenshots = video?.screenshots || [];
         return this.mergeIcons(screenshots);
       }),
       takeUntil(this.destroy$)
