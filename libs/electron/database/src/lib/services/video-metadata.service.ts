@@ -12,6 +12,8 @@ export class VideoMetadataService {
     metadata.resolution = input.resolution;
     metadata.frameRate = input.frameRate;
     metadata.duration = input.duration;
+    metadata.codec = input.codec;
+    metadata.batch = input.batch;
     return this.repository.save(metadata);
   }
 

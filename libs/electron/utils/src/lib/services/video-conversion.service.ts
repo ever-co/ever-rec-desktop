@@ -36,10 +36,24 @@ export class VideoConversionService implements ILoggable {
 
   async convert() {
     this.logger.info('Start converting video...');
+
+    if (this.config.resolution.toLowerCase() === 'auto') {
+      const { width = 1920, height = 1080 } = getWindowSize();
+      this.config.resolution = `${width}:${height}`;
+    }
+
     const screenshotIds = this.screenshots.map(({ id }) => id);
     const chunkExist = await this.videoService.findOne({
-      where: { screenshots: { id: In(screenshotIds) } },
-      relations: ['screenshots', 'screenshots.metadata', 'chunks'],
+      where: {
+        screenshots: { id: In(screenshotIds) },
+        metadata: {
+          codec: this.config.codec,
+          frameRate: this.config.frameRate,
+          resolution: this.config.resolution,
+          batch: this.config.batch,
+        },
+      },
+      relations: ['screenshots', 'screenshots.metadata', 'chunks', 'metadata'],
       order: {
         screenshots: {
           createdAt: 'ASC',
@@ -82,11 +96,6 @@ export class VideoConversionService implements ILoggable {
     const workers: Worker[] = [];
     this.config.duration = this.config.duration / filePathnames.length;
 
-    if (this.config.resolution.toLowerCase() === 'auto') {
-      const { width, height } = getWindowSize();
-      this.config.resolution = `${width}:${height}`;
-    }
-
     this.logger.info(`Process [${batches.length}] batches...`);
 
     batches.forEach(async (batch, index) => {
@@ -119,6 +128,8 @@ export class VideoConversionService implements ILoggable {
               duration: batch.length / this.config.frameRate,
               resolution: this.config.resolution,
               frameRate: this.config.frameRate,
+              codec: this.config.codec,
+              batch: this.config.batch,
               screenshotIds: this.screenshots
                 .map(({ id }) => id)
                 .slice(this.config.batch * idx, this.config.batch * (idx + 1)),
@@ -199,7 +210,7 @@ export class VideoConversionService implements ILoggable {
       async (idx, message) => {
         try {
           this.logger.info(`Processing final batch [${idx}]...`);
-          const { frameRate, resolution } = this.config;
+          const { frameRate, resolution, codec, batch } = this.config;
           const screenshotIds = this.screenshots.map(({ id }) => id);
           const chunkScreenshotIds = this.chunks
             .flatMap((chunk) => chunk?.screenshots?.map(({ id }) => id) || [])
@@ -212,6 +223,8 @@ export class VideoConversionService implements ILoggable {
             duration: uniqueScreenshotIds.length / frameRate,
             resolution,
             frameRate,
+            codec,
+            batch,
             chunkIds: this.chunks.map(({ id }) => id),
             screenshotIds: uniqueScreenshotIds,
           });

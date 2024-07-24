@@ -1,6 +1,7 @@
 import { FindManyOptions, FindOneOptions } from 'typeorm';
 import { IBase } from './base.interface';
 import type { IScreenshot } from './screenshot.interface';
+import { IVideoConfig } from './video.config';
 
 export interface IVideo extends IBase {
   pathname: string;
@@ -11,18 +12,12 @@ export interface IVideo extends IBase {
   metadata?: IVideoMetadata;
 }
 
-export interface IVideoMetadata extends IBase {
-  frameRate?: number;
-  resolution?: string;
-  duration?: number;
+export interface IVideoMetadata extends IBase, Partial<IVideoConfig> {
   video?: IVideo;
 }
 
-export interface IVideoInput {
+export interface IVideoInput extends Partial<IVideoConfig> {
   pathname?: string;
-  frameRate?: number;
-  resolution?: string;
-  duration?: number;
   synced?: boolean;
   parentId?: string;
   chunkIds?: string[];
@@ -30,10 +25,7 @@ export interface IVideoInput {
   metadataId?: string;
 }
 
-export type IVideoMetadataInput = Pick<
-  IVideoMetadata,
-  'duration' | 'resolution' | 'frameRate'
-> & {
+export type IVideoMetadataInput = Partial<IVideoConfig> & {
   videoId?: string;
 };
 
