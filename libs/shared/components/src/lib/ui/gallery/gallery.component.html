@@ -5,7 +5,10 @@
     <figure>
       <img class="screenshot" [src]="screenshot.pathname" alt="Screenshot" />
       @if(screenshot.metadata?.name) {
-      <figcaption>{{ screenshot.metadata?.name }}</figcaption>
+      <figcaption>
+        <small>{{ screenshot.createdAt | date: 'medium' }}</small>
+        <div>{{ screenshot.metadata?.name }}</div>
+      </figcaption>
       }
       @if(screenshot.metadata?.icon) {
       <img class="icon" [src]="screenshot.metadata?.icon" [alt]="screenshot.metadata?.name">
