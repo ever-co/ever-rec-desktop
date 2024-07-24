@@ -40,6 +40,11 @@ export class VideoConversionService implements ILoggable {
     const chunkExist = await this.videoService.findOne({
       where: { screenshots: { id: In(screenshotIds) } },
       relations: ['screenshots', 'screenshots.metadata', 'chunks'],
+      order: {
+        screenshots: {
+          createdAt: 'ASC',
+        },
+      },
     });
 
     const chunkSize = chunkExist?.screenshots?.length ?? 0;
@@ -214,6 +219,11 @@ export class VideoConversionService implements ILoggable {
           const video = await this.videoService.findOne({
             where: { id },
             relations: ['screenshots', 'screenshots.metadata'],
+            order: {
+              screenshots: {
+                createdAt: 'ASC',
+              },
+            },
           });
 
           this.logger.info(`Final video output pathname: ${message}`);
