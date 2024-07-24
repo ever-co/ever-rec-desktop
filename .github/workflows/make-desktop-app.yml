@@ -22,7 +22,7 @@ jobs:
           node-version: latest
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
 
       - name: Build Electron app
         run: yarn build  # Adjust this command according to your build script
