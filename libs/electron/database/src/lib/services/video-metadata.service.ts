@@ -37,6 +37,8 @@ export class VideoMetadataService {
       resolution: input.resolution,
       frameRate: input.frameRate,
       duration: input.duration,
+      codec: input.codec,
+      batch: input.batch,
     });
 
     // Save the updated video entity
