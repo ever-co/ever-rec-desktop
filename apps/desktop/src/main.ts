@@ -1,5 +1,5 @@
-import { ElectronLogger } from '@prototype/electron/utils';
-import { ILogger } from '@prototype/shared/utils';
+import { ElectronLogger } from '@ever-capture/electron/utils';
+import { ILogger } from '@ever-capture/shared/utils';
 import { app, BrowserWindow } from 'electron';
 import log from 'electron-log/main';
 import App from './app/app';

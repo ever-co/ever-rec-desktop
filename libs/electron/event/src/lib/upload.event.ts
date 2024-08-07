@@ -1,6 +1,6 @@
-import { ScreenshotService, VideoService } from '@prototype/electron/database';
-import { UploaderService } from '@prototype/electron/utils';
-import { Channel, IUpload, UploadType } from '@prototype/shared/utils';
+import { ScreenshotService, VideoService } from '@ever-capture/electron/database';
+import { UploaderService } from '@ever-capture/electron/utils';
+import { Channel, IUpload, UploadType } from '@ever-capture/shared/utils';
 import { ipcMain } from 'electron';
 
 export function uploadEventListener() {

@@ -1,4 +1,4 @@
-import { IScreenshot, IScreenshotInput } from '@prototype/shared/utils';
+import { IScreenshot, IScreenshotInput } from '@ever-capture/shared/utils';
 import { FindManyOptions, FindOneOptions, In } from 'typeorm';
 import { Screenshot } from '../entities/screenshot.entity';
 import { ScreenshotRepository } from '../repositories/screenshot.repository';

@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { Store } from '@ngrx/store';
 import {
-  screenshotActions,
-  selectScreenshotState,
-} from '@prototype/web/screenshot/data-access';
+    screenshotActions,
+    selectScreenshotState,
+} from '@ever-capture/web/screenshot/data-access';
+import { Store } from '@ngrx/store';
 import { Observable, Subject, map, takeUntil } from 'rxjs';
 
 @Component({

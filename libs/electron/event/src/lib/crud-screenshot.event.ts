@@ -1,6 +1,6 @@
-import { ScreenshotService } from '@prototype/electron/database';
-import { FileManager } from '@prototype/electron/utils';
-import { Channel } from '@prototype/shared/utils';
+import { ScreenshotService } from '@ever-capture/electron/database';
+import { FileManager } from '@ever-capture/electron/utils';
+import { Channel } from '@ever-capture/shared/utils';
 import { ipcMain } from 'electron';
 import { ILike } from 'typeorm';
 

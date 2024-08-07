@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import { ElectronService } from '@prototype/electron/data-access';
-import { Channel, IVideo, IVideoConvertPayload } from '@prototype/shared/utils';
+import { ElectronService } from '@ever-capture/electron/data-access';
+import { Channel, IVideo, IVideoConvertPayload } from '@ever-capture/shared/utils';
 
 @Injectable({
   providedIn: 'root',

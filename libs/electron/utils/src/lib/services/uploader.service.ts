@@ -5,7 +5,7 @@ import {
   IScreenshot,
   IUpload,
   IUploadFile,
-} from '@prototype/shared/utils';
+} from '@ever-capture/shared/utils';
 import { ipcMain } from 'electron';
 import * as path from 'path';
 import { FindManyOptions, In } from 'typeorm';

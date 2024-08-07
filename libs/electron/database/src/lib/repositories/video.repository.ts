@@ -1,4 +1,4 @@
-import { IVideo } from '@prototype/shared/utils';
+import { IVideo } from '@ever-capture/shared/utils';
 import { Repository } from 'typeorm';
 import { appDataSource } from '../data-source';
 import { Video } from '../entities/video.entity';

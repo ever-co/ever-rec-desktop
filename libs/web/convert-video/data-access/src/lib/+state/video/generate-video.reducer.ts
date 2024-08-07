@@ -1,5 +1,5 @@
+import { IVideo } from '@ever-capture/shared/utils';
 import { createFeature, createReducer, on } from '@ngrx/store';
-import { IVideo } from '@prototype/shared/utils';
 import { generateVideoActions } from './generate-video.actions';
 
 export const generateVideoFeatureKey = 'generateVideo';

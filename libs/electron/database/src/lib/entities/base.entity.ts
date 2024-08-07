@@ -1,10 +1,10 @@
-import { IBase } from '@prototype/shared/utils';
+import { IBase } from '@ever-capture/shared/utils';
 import {
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
+    CreateDateColumn,
+    DeleteDateColumn,
+    Entity,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()

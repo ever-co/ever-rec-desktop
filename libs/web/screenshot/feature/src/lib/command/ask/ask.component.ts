@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { screenshotActions } from '@ever-capture/web/screenshot/data-access';
 import { Store } from '@ngrx/store';
-import { screenshotActions } from '@prototype/web/screenshot/data-access';
 
 @Component({
   selector: 'lib-ask',

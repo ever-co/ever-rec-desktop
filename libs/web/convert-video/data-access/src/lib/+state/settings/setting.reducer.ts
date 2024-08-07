@@ -1,5 +1,5 @@
+import { IVideoConfig } from '@ever-capture/shared/utils';
 import { createFeature, createReducer, on } from '@ngrx/store';
-import { IVideoConfig } from '@prototype/shared/utils';
 import { settingActions } from './setting.actions';
 
 export const settingFeatureKey = 'setting';

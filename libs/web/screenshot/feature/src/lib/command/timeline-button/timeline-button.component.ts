@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { breadcrumbActions } from '@ever-capture/breadcrumb/data-access';
 import { Store } from '@ngrx/store';
-import { breadcrumbActions } from '@prototype/breadcrumb/data-access';
 
 @Component({
   selector: 'lib-timeline-button',

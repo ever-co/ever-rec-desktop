@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { IScreenshot } from '@ever-capture/shared/utils';
+import { selectScreenshotState } from '@ever-capture/web/screenshot/data-access';
 import { Store } from '@ngrx/store';
-import { IScreenshot } from '@prototype/shared/utils';
-import { selectScreenshotState } from '@prototype/web/screenshot/data-access';
 import { Observable, Subject, map, takeUntil } from 'rxjs';
 
 @Component({

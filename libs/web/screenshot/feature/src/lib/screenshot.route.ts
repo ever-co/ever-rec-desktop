@@ -1,18 +1,18 @@
 import { Route } from '@angular/router';
-import { timelineGuard } from '@prototype/web/convert-video/data-access';
+import { timelineGuard } from '@ever-capture/web/convert-video/data-access';
 
 export const screenshotRoutes: Route[] = [
   {
     path: '',
     title: 'Memory Keeper',
     loadComponent: () =>
-      import('@prototype/shared/component').then((c) => c.GalleryComponent),
+      import('@ever-capture/shared/component').then((c) => c.GalleryComponent),
   },
   {
     path: 'convert',
     title: 'Memory Keeper',
     loadChildren: () =>
-      import('@prototype/web/convert-video/feature').then(
+      import('@ever-capture/web/convert-video/feature').then(
         (r) => r.convertVideoRoutes
       ),
   },
@@ -21,7 +21,7 @@ export const screenshotRoutes: Route[] = [
     title: 'Memory Keeper',
     canActivate: [timelineGuard],
     loadComponent: () =>
-      import('@prototype/web/convert-video/feature').then(
+      import('@ever-capture/web/convert-video/feature').then(
         (r) => r.TimelineComponent
       ),
   },

@@ -1,5 +1,5 @@
+import { IVideo, IVideoConvertPayload } from '@ever-capture/shared/utils';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { IVideo, IVideoConvertPayload } from '@prototype/shared/utils';
 
 export const generateVideoActions = createActionGroup({
   source: 'GenerateVideo',

@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { breadcrumbActions } from '@ever-capture/breadcrumb/data-access';
+import { BreadcrumbComponent } from '@ever-capture/breadcrumb/feature';
+import { screenshotActions } from '@ever-capture/web/screenshot/data-access';
 import { Store } from '@ngrx/store';
-import { breadcrumbActions } from '@prototype/breadcrumb/data-access';
-import { BreadcrumbComponent } from '@prototype/breadcrumb/feature';
-import { screenshotActions } from '@prototype/web/screenshot/data-access';
 import { AskComponent } from '../command/ask/ask.component';
 import { ConvertComponent } from '../command/convert/convert.component';
 import { StartComponent } from '../command/start/start.component';

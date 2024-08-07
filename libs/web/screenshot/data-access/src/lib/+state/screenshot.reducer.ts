@@ -1,5 +1,5 @@
+import { IScreenshot } from '@ever-capture/shared/utils';
 import { createFeature, createReducer, on } from '@ngrx/store';
-import { IScreenshot } from '@prototype/shared/utils';
 import { screenshotActions } from './screenshot.actions';
 
 export const screenshotFeatureKey = 'screenshot';

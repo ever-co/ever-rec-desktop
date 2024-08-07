@@ -1,4 +1,4 @@
-import { ILogger } from '@prototype/shared/utils';
+import { ILogger } from '@ever-capture/shared/utils';
 import * as log from 'electron-log';
 
 export class ElectronLogger implements ILogger {

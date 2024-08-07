@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Injectable, inject } from '@angular/core';
-import { Channel as ChEnum } from '@prototype/shared/utils';
+import { Channel as ChEnum } from '@ever-capture/shared/utils';
 
 @Injectable({
   providedIn: 'root',

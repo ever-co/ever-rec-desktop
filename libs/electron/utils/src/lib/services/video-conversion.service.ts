@@ -6,7 +6,7 @@ import {
   IVideo,
   IVideoConfig,
   IVideoService,
-} from '@prototype/shared/utils';
+} from '@ever-capture/shared/utils';
 import { ipcMain } from 'electron';
 import { join } from 'path';
 import { In } from 'typeorm';

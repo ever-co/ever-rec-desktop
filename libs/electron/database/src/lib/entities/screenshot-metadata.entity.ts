@@ -1,4 +1,4 @@
-import type { IScreenshot, IScreenshotMetadata } from '@prototype/shared/utils';
+import type { IScreenshot, IScreenshotMetadata } from '@ever-capture/shared/utils';
 import { Column, Entity, JoinColumn, OneToOne, Relation } from 'typeorm';
 import { Base } from './base.entity';
 import { Screenshot } from './screenshot.entity';

@@ -1,4 +1,4 @@
-import { Channel as ChEnum } from '@prototype/shared/utils';
+import { Channel as ChEnum } from '@ever-capture/shared/utils';
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
 type IpcCallback = (event: IpcRendererEvent, ...args: any[]) => void;

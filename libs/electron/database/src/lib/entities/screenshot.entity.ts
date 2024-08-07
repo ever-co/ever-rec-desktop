@@ -1,15 +1,15 @@
 import type {
-  IScreenshot,
-  IScreenshotMetadata,
-  IVideo,
-} from '@prototype/shared/utils';
+    IScreenshot,
+    IScreenshotMetadata,
+    IVideo,
+} from '@ever-capture/shared/utils';
 import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToOne,
-  Relation
+    Column,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    OneToOne,
+    Relation
 } from 'typeorm';
 import { Base } from './base.entity';
 import { ScreenshotMetadata } from './screenshot-metadata.entity';

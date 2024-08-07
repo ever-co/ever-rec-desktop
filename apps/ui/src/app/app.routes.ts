@@ -4,6 +4,6 @@ export const appRoutes: Route[] = [
   {
     path: '',
     loadChildren: () =>
-      import('@prototype/web/screenshot/feature').then((m) => m.layoutRoutes),
+      import('@ever-capture/web/screenshot/feature').then((m) => m.layoutRoutes),
   },
 ];

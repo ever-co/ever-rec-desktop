@@ -1,14 +1,14 @@
-import { ScreenshotService } from '@prototype/electron/database';
+import { ScreenshotService } from '@ever-capture/electron/database';
 import {
   ElectronLogger,
   FileManager,
   getWindowSize,
-} from '@prototype/electron/utils';
+} from '@ever-capture/electron/utils';
 import {
   Channel,
   IScreenshot,
   IScreenshotInput,
-} from '@prototype/shared/utils';
+} from '@ever-capture/shared/utils';
 import { desktopCapturer, ipcMain } from 'electron';
 
 // Constants
