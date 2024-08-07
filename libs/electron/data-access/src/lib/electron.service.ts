@@ -37,7 +37,10 @@ export class ElectronService {
     callback: (event: any, ...args: any[]) => void
   ): void {
     if (this.electronAPI) {
-      this.electronAPI.on(channel, callback);
+      this.electronAPI.on(channel, (event: any, ...args: any[]) => {
+        callback(event, ...args);
+        return () => this.removeAllListeners(channel);
+      });
     } else {
       throw new Error('Electron API is not available');
     }

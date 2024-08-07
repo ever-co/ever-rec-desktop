@@ -5,6 +5,8 @@ type IpcCallback = (event: IpcRendererEvent, ...args: any[]) => void;
 
 const validChannels = Object.values(ChEnum); // Replace with your actual channels
 
+ipcRenderer.setMaxListeners(0);
+
 contextBridge.exposeInMainWorld('electronAPI', {
   invoke: (channel: ChEnum, data?: any): Promise<any> => {
     if (validChannels.includes(channel)) {
