@@ -1,10 +1,13 @@
 import { ElectronLogger } from '@prototype/electron/utils';
 import { ILogger } from '@prototype/shared/utils';
 import { app, BrowserWindow } from 'electron';
+import log from 'electron-log/main';
 import App from './app/app';
 import ElectronEvents from './app/events/electron.events';
 import SquirrelEvents from './app/events/squirrel.events';
 import UpdateEvents from './app/events/update.events';
+
+Object.assign(console, log.functions);
 
 export default class Main {
   static initialize() {
