@@ -3,12 +3,7 @@
  * between the frontend to the electron backend.
  */
 
-import {
-  captureScreenEvent,
-  convertScreenshotsToVideoEvent,
-  crudScreeshotEvents,
-  uploadEventListener,
-} from '@prototype/electron/events';
+import { subscribeEvents, unsubscribeEvents } from '@prototype/electron/events';
 import { app, ipcMain } from 'electron';
 import { environment } from '../../environments/environment';
 
@@ -19,6 +14,8 @@ export default class ElectronEvents {
 }
 
 ipcMain.removeAllListeners();
+
+unsubscribeEvents();
 
 /* Set unlimited listeners */
 ipcMain.setMaxListeners(0);
@@ -35,10 +32,4 @@ ipcMain.on('quit', (event, code) => {
   app.exit(code);
 });
 
-captureScreenEvent();
-
-convertScreenshotsToVideoEvent();
-
-crudScreeshotEvents();
-
-uploadEventListener();
+subscribeEvents();

@@ -109,3 +109,8 @@ function getWindowDescription(
 ): string {
   return windowSource ? windowSource.name : '';
 }
+
+export function removeCaptureScreenEvent(): void {
+  const channels = [Channel.SCREENSHOT_CAPTURED, Channel.START_CAPTURE_SCREEN, Channel.STOP_CAPTURE_SCREEN]
+  channels.forEach(channel => ipcMain.removeAllListeners(channel))
+}

@@ -18,3 +18,7 @@ export function uploadEventListener() {
     }
   });
 }
+
+export function removeUploadEvent(): void {
+  ipcMain.removeAllListeners(Channel.UPLOAD);
+}

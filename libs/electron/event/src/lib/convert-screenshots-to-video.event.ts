@@ -39,3 +39,7 @@ export function convertScreenshotsToVideoEvent() {
     }
   );
 }
+
+export function removeConvertScreenshotsToVideoEvent(): void {
+  ipcMain.removeAllListeners(Channel.START_CONVERT_TO_VIDEO);
+}

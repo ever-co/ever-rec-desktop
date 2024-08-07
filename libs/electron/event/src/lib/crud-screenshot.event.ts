@@ -32,3 +32,9 @@ export function crudScreeshotEvents() {
     await FileManager.removeAllFiles('screenshots');
   });
 }
+
+// Removes any handler for channels, if present.
+export function removeCrudScreenshotEvent(): void {
+  const channels = [Channel.REQUEST_SCREENSHOTS, Channel.SEARCHING, Channel.REQUEST_DELETE_ALL_SCREENSHOTS]
+  channels.forEach(channel => ipcMain.removeHandler(channel))
+}
