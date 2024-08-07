@@ -99,6 +99,53 @@ export class VideoConversionService implements ILoggable {
     this.logger.info(`Process [${batches.length}] batches...`);
 
     batches.forEach(async (batch, index) => {
+      const chunkExist = await this.videoService.findOne({
+        where: {
+          screenshots: { pathname: In(batch) },
+          metadata: {
+            codec: this.config.codec,
+            frameRate: this.config.frameRate,
+            resolution: this.config.resolution,
+            batch: this.config.batch,
+          },
+        },
+        relations: [
+          'screenshots',
+          'screenshots.metadata',
+          'chunks',
+          'metadata',
+        ],
+        order: {
+          screenshots: {
+            createdAt: 'ASC',
+          },
+        },
+      });
+
+      const chunkSize = chunkExist?.screenshots?.length ?? 0;
+
+      if (chunkExist && chunkSize === batch.length) {
+        this.logger.info(`Last checkpoint reused...`);
+        this.logger.info(`batch video output pathname: ${chunkExist.pathname}`);
+        this.chunks.push(chunkExist);
+        this.handleWorkerCompletion(index, this.fileManager.decodePath(chunkExist.pathname), workers.length);
+        return;
+      }
+
+      if (chunkExist && chunkSize !== batch.length) {
+        const { screenshots: chunkScreenshots = [] } = chunkExist;
+        const chunkScreenshotPathnames = new Set(chunkScreenshots.map(({ pathname }) => pathname));
+        this.logger.info(`Last batch checkpoint reused...`);
+        this.chunks.push(chunkExist);
+        this.batchVideo.push({
+          index: -1,
+          path: this.fileManager.decodePath(chunkExist.pathname),
+        });
+        batch = batch.filter(
+          (pathname ) => !chunkScreenshotPathnames.has(pathname)
+        );
+      }
+
       const workerPath = join(
         __dirname,
         'assets',
