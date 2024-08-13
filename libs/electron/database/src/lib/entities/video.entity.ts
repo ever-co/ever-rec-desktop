@@ -1,21 +1,21 @@
 import type {
-    IScreenshot,
-    IVideo,
-    IVideoMetadata,
+  IScreenshot,
+  IVideo,
+  IVideoMetadata,
 } from '@ever-capture/shared/utils';
 import {
-    Column,
-    Entity,
-    ManyToOne,
-    OneToMany,
-    OneToOne,
-    Relation,
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  Relation,
 } from 'typeorm';
 import { Base } from './base.entity';
 import { Screenshot } from './screenshot.entity';
 import { VideoMetadata } from './video-metadata.entity';
 
-@Entity()
+@Entity('videos')
 export class Video extends Base implements IVideo {
   @Column({ type: 'text', nullable: true })
   pathname: string;

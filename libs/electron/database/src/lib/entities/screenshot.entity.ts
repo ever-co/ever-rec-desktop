@@ -1,21 +1,21 @@
 import type {
-    IScreenshot,
-    IScreenshotMetadata,
-    IVideo,
+  IScreenshot,
+  IScreenshotMetadata,
+  IVideo,
 } from '@ever-capture/shared/utils';
 import {
-    Column,
-    Entity,
-    JoinColumn,
-    ManyToOne,
-    OneToOne,
-    Relation
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  Relation
 } from 'typeorm';
 import { Base } from './base.entity';
 import { ScreenshotMetadata } from './screenshot-metadata.entity';
 import { Video } from './video.entity';
 
-@Entity()
+@Entity('screenshots')
 export class Screenshot extends Base implements IScreenshot {
   @Column({ type: 'text', nullable: true })
   pathname: string;

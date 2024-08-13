@@ -3,7 +3,7 @@ import { Column, Entity, JoinColumn, OneToOne, Relation } from 'typeorm';
 import { Base } from './base.entity';
 import { Video } from './video.entity';
 
-@Entity()
+@Entity('videoMetadatas')
 export class VideoMetadata extends Base implements IVideoMetadata {
   @Column({ default: '15', type: 'integer' })
   frameRate?: number;

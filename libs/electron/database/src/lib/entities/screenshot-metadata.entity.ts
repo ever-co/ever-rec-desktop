@@ -3,7 +3,7 @@ import { Column, Entity, JoinColumn, OneToOne, Relation } from 'typeorm';
 import { Base } from './base.entity';
 import { Screenshot } from './screenshot.entity';
 
-@Entity()
+@Entity('screenshotMetadatas')
 export class ScreenshotMetadata extends Base implements IScreenshotMetadata {
   @Column({ nullable: true })
   name: string;

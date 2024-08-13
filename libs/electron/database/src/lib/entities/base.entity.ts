@@ -1,14 +1,11 @@
 import { IBase } from '@ever-capture/shared/utils';
 import {
-    CreateDateColumn,
-    DeleteDateColumn,
-    Entity,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn,
+  CreateDateColumn,
+  DeleteDateColumn,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
 } from 'typeorm';
-
-@Entity()
-export class Base implements IBase {
+export abstract class Base implements IBase {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
