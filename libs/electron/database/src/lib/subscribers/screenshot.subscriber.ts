@@ -1,5 +1,5 @@
-import { ElectronLogger } from '@ever-capture/electron/utils';
-import { ILoggable, ILogger } from '@ever-capture/shared/utils';
+import { ElectronLogger } from '@ever-capture/electron-utils';
+import { ILoggable, ILogger } from '@ever-capture/shared-utils';
 import {
     EntitySubscriberInterface,
     EventSubscriber,

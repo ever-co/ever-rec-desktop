@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { IScreenshot } from '@ever-capture/shared/utils';
+import { IScreenshot } from '@ever-capture/shared-utils';
 import {
     selectGenerateVideoState,
     videoRemoteControlActions,

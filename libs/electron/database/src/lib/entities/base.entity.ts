@@ -1,4 +1,4 @@
-import { IBase } from '@ever-capture/shared/utils';
+import { IBase } from '@ever-capture/shared-utils';
 import {
   CreateDateColumn,
   DeleteDateColumn,
