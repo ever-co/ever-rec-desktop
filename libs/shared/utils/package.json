@@ -1,8 +1,12 @@
 {
   "name": "@ever-capture/shared-utils",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "dependencies": {
     "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "electron": "^28.2.3",
+    "typeorm": "^0.3.20"
   },
   "type": "commonjs",
   "main": "./src/index.js",

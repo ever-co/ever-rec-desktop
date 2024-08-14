@@ -1,8 +1,14 @@
 {
   "name": "@ever-capture/electron-utils",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "dependencies": {
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "electron-log": "^5.1.5",
+    "@ever-capture/shared-utils": "0.0.4"
+  },
+  "devDependencies": {
+    "electron": "^28.2.3",
+    "typeorm": "^0.3.20"
   },
   "type": "commonjs",
   "main": "./src/index.js",
