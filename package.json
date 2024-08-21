@@ -16,7 +16,7 @@
     "serve": "nx run-many --target=serve --projects=ui,desktop",
     "make": "nx run desktop:make"
   },
-  "private": true,
+  "private": false,
   "author": {
     "name": "Ever Co. LTD",
     "email": "ever@ever.co",
