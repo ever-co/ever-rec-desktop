@@ -2,7 +2,7 @@ import type {
   IScreenshot,
   IVideo,
   IVideoMetadata,
-} from '@ever-capture/shared/utils';
+} from '@ever-capture/shared-utils';
 import {
   Column,
   Entity,

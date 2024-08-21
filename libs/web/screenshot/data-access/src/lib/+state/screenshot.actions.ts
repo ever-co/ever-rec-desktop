@@ -1,4 +1,4 @@
-import { IScreenshot } from '@ever-capture/shared/utils';
+import { IScreenshot } from '@ever-capture/shared-utils';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 export const screenshotActions = createActionGroup({

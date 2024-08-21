@@ -1,4 +1,4 @@
-import { IVideo } from '@ever-capture/shared/utils';
+import { IVideo } from '@ever-capture/shared-utils';
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { generateVideoActions } from './generate-video.actions';
 

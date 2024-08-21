@@ -3,7 +3,7 @@
  * between the frontend to the electron backend.
  */
 
-import { subscribeEvents, unsubscribeEvents } from '@ever-capture/electron/events';
+import { subscribeEvents, unsubscribeEvents } from '@ever-capture/electron-events';
 import { app, ipcMain } from 'electron';
 import { environment } from '../../environments/environment';
 

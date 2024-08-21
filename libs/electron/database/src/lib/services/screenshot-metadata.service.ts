@@ -1,4 +1,4 @@
-import { IScreenshotMetadata } from '@ever-capture/shared/utils';
+import { IScreenshotMetadata } from '@ever-capture/shared-utils';
 import { FindManyOptions, FindOneOptions, In } from 'typeorm';
 import { ScreenshotMetadata } from '../entities/screenshot-metadata.entity';
 import { ScreenshotMetadataRepository } from '../repositories/screenshot-metadata.repository';

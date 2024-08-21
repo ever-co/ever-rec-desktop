@@ -1,4 +1,4 @@
-import { IVideoMetadata } from '@ever-capture/shared/utils';
+import { IVideoMetadata } from '@ever-capture/shared-utils';
 import { Repository } from 'typeorm';
 import { appDataSource } from '../data-source';
 import { VideoMetadata } from '../entities/video-metadata.entity';
