@@ -1,6 +1,4 @@
-export * from './lib/data-source';
-export * from './lib/db/migration';
-export * from './lib/db/migrations/1721496839646-migration';
+export * from './lib/better-sqlite-provider';
 export * from './lib/entities/base.entity';
 export * from './lib/entities/screenshot-metadata.entity';
 export * from './lib/entities/screenshot.entity';

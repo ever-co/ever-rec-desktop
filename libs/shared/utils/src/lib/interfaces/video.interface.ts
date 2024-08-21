@@ -10,6 +10,7 @@ export interface IVideo extends IBase {
   chunks?: IVideo[];
   screenshots?: IScreenshot[];
   metadata?: IVideoMetadata;
+  parentId?: string;
 }
 
 export interface IVideoMetadata extends IBase, Partial<IVideoConfig> {

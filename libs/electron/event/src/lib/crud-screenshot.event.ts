@@ -1,4 +1,4 @@
-import { ScreenshotService } from '@ever-capture/electron-database';
+import { screenshotMetadataTable, ScreenshotService } from '@ever-capture/electron-database';
 import { FileManager } from '@ever-capture/electron-utils';
 import { Channel } from '@ever-capture/shared-utils';
 import { ipcMain } from 'electron';
@@ -9,7 +9,7 @@ export function crudScreeshotEvents() {
   ipcMain.handle(Channel.REQUEST_SCREENSHOTS, () => {
     return ScreenshotService.findAll({
       order: { createdAt: 'ASC' },
-      relations: ['metadata'],
+      relations: [screenshotMetadataTable],
     });
   });
 

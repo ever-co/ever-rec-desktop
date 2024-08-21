@@ -12,6 +12,7 @@ export interface IScreenshotMetadata extends IBase {
   icon?: string;
   name?: string;
   description?: string;
+  screenshot?: IScreenshot;
 }
 
 export type IScreenshotInput =
