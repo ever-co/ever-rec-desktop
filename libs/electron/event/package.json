@@ -1,11 +1,11 @@
 {
   "name": "@ever-capture/electron-events",
-  "version": "0.0.8",
+  "version": "0.1.1",
   "dependencies": {
     "tslib": "^2.3.0",
-    "@ever-capture/shared-utils": "0.0.4",
-    "@ever-capture/electron-utils": "0.0.4",
-    "@ever-capture/electron-database": "0.0.8"
+    "@ever-capture/shared-utils": "0.1.0",
+    "@ever-capture/electron-utils": "0.1.0",
+    "@ever-capture/electron-database": "0.1.0"
   },
   "devDependencies": {
     "electron": "^28.2.3",

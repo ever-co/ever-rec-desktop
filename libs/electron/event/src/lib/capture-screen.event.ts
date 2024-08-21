@@ -8,6 +8,7 @@ import {
   Channel,
   IScreenshot,
   IScreenshotInput,
+  SCREENSHOT_INTERVAL_DELAY,
 } from '@ever-capture/shared-utils';
 import { desktopCapturer, ipcMain } from 'electron';
 
@@ -27,7 +28,7 @@ export function captureScreenEvent(): void {
       if (screenshot) {
         event.reply(Channel.SCREENSHOT_CAPTURED, screenshot);
       }
-    }, interval);
+    }, interval || SCREENSHOT_INTERVAL_DELAY);
   });
 
   ipcMain.on(Channel.STOP_CAPTURE_SCREEN, () => {

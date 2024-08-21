@@ -1,6 +1,6 @@
 {
   "name": "@ever-capture/shared-utils",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "dependencies": {
     "tslib": "^2.3.0"
   },

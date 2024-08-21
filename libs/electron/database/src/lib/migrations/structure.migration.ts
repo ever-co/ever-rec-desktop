@@ -73,8 +73,7 @@ export async function structure(knex: Knex) {
       (table: Knex.TableBuilder) => {
         table.increments('id').primary().unique();
         table.string('pathname');
-        table.boolean('synced').defaultTo(0);
-        table.string('video');
+        table.boolean('synced').defaultTo(false);
         table
           .integer(`${videoTable}Id`)
           .unsigned()
