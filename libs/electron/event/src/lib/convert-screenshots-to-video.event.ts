@@ -1,15 +1,14 @@
 import { ScreenshotService, VideoService } from '@ever-capture/electron-database';
 import {
-    BatchSplitter,
-    ElectronLogger,
-    FileManager,
-    VideoConversionService,
-    WorkerFactory,
+  BatchSplitter,
+  ElectronLogger,
+  FileManager,
+  VideoConversionService,
+  WorkerFactory,
 } from '@ever-capture/electron-utils';
 
 import { Channel, IVideoConvertPayload } from '@ever-capture/shared-utils';
 import { ipcMain } from 'electron';
-import { In } from 'typeorm';
 
 export function convertScreenshotsToVideoEvent() {
   ipcMain.on(
@@ -17,7 +16,7 @@ export function convertScreenshotsToVideoEvent() {
     async (event, { screenshotIds, config }: IVideoConvertPayload) => {
       const videoService = new VideoService();
       const screenshots = await ScreenshotService.findAll({
-        where: { id: In(screenshotIds) },
+        whereIn: {  column: 'id', values: screenshotIds },
         order: { createdAt: 'ASC' },
       });
 

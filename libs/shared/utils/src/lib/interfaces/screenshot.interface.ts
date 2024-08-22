@@ -5,7 +5,8 @@ export interface IScreenshot extends IBase {
   pathname: string;
   synced?: boolean;
   metadata?: IScreenshotMetadata;
-  video?: IVideo
+  video?: IVideo,
+  videoId?: string
 }
 
 export interface IScreenshotMetadata extends IBase {

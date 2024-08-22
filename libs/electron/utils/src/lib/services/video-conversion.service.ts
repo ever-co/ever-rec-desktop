@@ -1,3 +1,4 @@
+import { ScreenshotService } from '@ever-capture/electron-database';
 import {
   Channel,
   ILoggable,
@@ -9,7 +10,6 @@ import {
 } from '@ever-capture/shared-utils';
 import { ipcMain } from 'electron';
 import { join } from 'path';
-import { In } from 'typeorm';
 import { Worker } from 'worker_threads';
 import { ISplitterStrategy } from '../interfaces/splitter-strategy.interface';
 import { getWindowSize } from '../window-size';
@@ -42,47 +42,45 @@ export class VideoConversionService implements ILoggable {
       this.config.resolution = `${width}:${height}`;
     }
 
-    const screenshotIds = this.screenshots.map(({ id }) => id);
-    const chunkExist = await this.videoService.findOne({
-      where: {
-        screenshots: { id: In(screenshotIds) },
-        metadata: {
-          codec: this.config.codec,
-          frameRate: this.config.frameRate,
-          resolution: this.config.resolution,
-          batch: this.config.batch,
-        },
-      },
-      relations: ['screenshots', 'screenshots.metadata', 'chunks', 'metadata'],
-      order: {
-        screenshots: {
-          createdAt: 'ASC',
-        },
-      },
-    });
+    // const screenshotIds = this.screenshots.map(({ id }) => id);
+    // const chunkExist = await this.videoService.findOne({
+    //   whereIn: { column: 'screenshotId', values: screenshotIds},
+    //   where: {
+    //     [`video_metadata.codec`]: this.config.codec,
+    //     [`video_metadata.frameRate`]: this.config.frameRate,
+    //     [`video_metadata.resolution`]: this.config.resolution,
+    //     [`video_metadata.batch`]: this.config.batch,
+    //   },
+    //   relations: ['screenshot', 'screenshot_metadata', 'video', 'video_metadata'],
+    //   order: {
+    //     screenshots: {
+    //       createdAt: 'ASC',
+    //     },
+    //   },
+    // });
 
-    const chunkSize = chunkExist?.screenshots?.length ?? 0;
+    // const chunkSize = chunkExist?.screenshots?.length ?? 0;
 
-    if (chunkExist && chunkSize === screenshotIds.length) {
-      this.logger.info(`Last checkpoint reused...`);
-      this.logger.info(`Finale video output pathname: ${chunkExist.pathname}`);
-      this.event.reply(this.channel.SCREESHOTS_CONVERTED, chunkExist);
-      return;
-    }
+    // if (chunkExist && chunkSize === screenshotIds.length) {
+    //   this.logger.info(`Last checkpoint reused...`);
+    //   this.logger.info(`Finale video output pathname: ${chunkExist.pathname}`);
+    //   this.event.reply(this.channel.SCREESHOTS_CONVERTED, chunkExist);
+    //   return;
+    // }
 
-    if (chunkExist && chunkSize !== screenshotIds.length) {
-      const { screenshots: chunkScreenshots = [] } = chunkExist;
-      const chunkScreenshotIds = new Set(chunkScreenshots.map(({ id }) => id));
-      this.logger.info(`Last checkpoint reused...`);
-      this.chunks.push(chunkExist);
-      this.batchVideo.push({
-        index: -1,
-        path: this.fileManager.decodePath(chunkExist.pathname),
-      });
-      this.screenshots = this.screenshots.filter(
-        ({ id }) => !chunkScreenshotIds.has(id)
-      );
-    }
+    // if (chunkExist && chunkSize !== screenshotIds.length) {
+    //   const { screenshots: chunkScreenshots = [] } = chunkExist;
+    //   const chunkScreenshotIds = new Set(chunkScreenshots.map(({ id }) => id));
+    //   this.logger.info(`Last checkpoint reused...`);
+    //   this.chunks.push(chunkExist);
+    //   this.batchVideo.push({
+    //     index: -1,
+    //     path: this.fileManager.decodePath(chunkExist.pathname),
+    //   });
+    //   this.screenshots = this.screenshots.filter(
+    //     ({ id }) => !chunkScreenshotIds.has(id)
+    //   );
+    // }
 
     this.logger.info(`Processing ${this.screenshots.length} frames`);
 
@@ -99,52 +97,45 @@ export class VideoConversionService implements ILoggable {
     this.logger.info(`Process [${batches.length}] batches...`);
 
     batches.forEach(async (batch, index) => {
-      const chunkExist = await this.videoService.findOne({
-        where: {
-          screenshots: { pathname: In(batch) },
-          metadata: {
-            codec: this.config.codec,
-            frameRate: this.config.frameRate,
-            resolution: this.config.resolution,
-            batch: this.config.batch,
-          },
-        },
-        relations: [
-          'screenshots',
-          'screenshots.metadata',
-          'chunks',
-          'metadata',
-        ],
-        order: {
-          screenshots: {
-            createdAt: 'ASC',
-          },
-        },
-      });
+      // const chunkExist = await this.videoService.findOne({
+      //   whereIn: { column: 'screenshotId', values: screenshotIds},
+      //   where: {
+      //     [`video_metadata.codec`]: this.config.codec,
+      //     [`video_metadata.frameRate`]: this.config.frameRate,
+      //     [`video_metadata.resolution`]: this.config.resolution,
+      //     [`video_metadata.batch`]: this.config.batch,
+      //   },
+      //   relations: ['screenshot', 'screenshot_metadata', 'video', 'video_metadata'],
+      //   order: {
+      //     screenshots: {
+      //       createdAt: 'ASC',
+      //     },
+      //   },
+      // });
 
-      const chunkSize = chunkExist?.screenshots?.length ?? 0;
+      // const chunkSize = chunkExist?.screenshots?.length ?? 0;
 
-      if (chunkExist && chunkSize === batch.length) {
-        this.logger.info(`Last checkpoint reused...`);
-        this.logger.info(`batch video output pathname: ${chunkExist.pathname}`);
-        this.chunks.push(chunkExist);
-        this.handleWorkerCompletion(index, this.fileManager.decodePath(chunkExist.pathname), workers.length);
-        return;
-      }
+      // if (chunkExist && chunkSize === batch.length) {
+      //   this.logger.info(`Last checkpoint reused...`);
+      //   this.logger.info(`batch video output pathname: ${chunkExist.pathname}`);
+      //   this.chunks.push(chunkExist);
+      //   this.handleWorkerCompletion(index, this.fileManager.decodePath(chunkExist.pathname), workers.length);
+      //   return;
+      // }
 
-      if (chunkExist && chunkSize !== batch.length) {
-        const { screenshots: chunkScreenshots = [] } = chunkExist;
-        const chunkScreenshotPathnames = new Set(chunkScreenshots.map(({ pathname }) => pathname));
-        this.logger.info(`Last batch checkpoint reused...`);
-        this.chunks.push(chunkExist);
-        this.batchVideo.push({
-          index: -1,
-          path: this.fileManager.decodePath(chunkExist.pathname),
-        });
-        batch = batch.filter(
-          (pathname ) => !chunkScreenshotPathnames.has(pathname)
-        );
-      }
+      // if (chunkExist && chunkSize !== batch.length) {
+      //   const { screenshots: chunkScreenshots = [] } = chunkExist;
+      //   const chunkScreenshotPathnames = new Set(chunkScreenshots.map(({ pathname }) => pathname));
+      //   this.logger.info(`Last batch checkpoint reused...`);
+      //   this.chunks.push(chunkExist);
+      //   this.batchVideo.push({
+      //     index: -1,
+      //     path: this.fileManager.decodePath(chunkExist.pathname),
+      //   });
+      //   batch = batch.filter(
+      //     (pathname ) => !chunkScreenshotPathnames.has(pathname)
+      //   );
+      // }
 
       const workerPath = join(
         __dirname,
@@ -265,7 +256,7 @@ export class VideoConversionService implements ILoggable {
           const uniqueScreenshotIds = [
             ...new Set([...chunkScreenshotIds, ...screenshotIds]),
           ];
-          const { id } = await this.videoService.save({
+          const video = await this.videoService.save({
             pathname: this.fileManager.encodePath(String(message)),
             duration: uniqueScreenshotIds.length / frameRate,
             resolution,
@@ -276,18 +267,18 @@ export class VideoConversionService implements ILoggable {
             screenshotIds: uniqueScreenshotIds,
           });
 
-          const video = await this.videoService.findOne({
-            where: { id },
-            relations: ['screenshots', 'screenshots.metadata'],
-            order: {
-              screenshots: {
-                createdAt: 'ASC',
-              },
-            },
+          const screenshots = await ScreenshotService.findAll({
+            where: { videoId: video.id },
+            relations: ['screenshot_metadata']
           });
 
+          console.log(screenshots)
+
           this.logger.info(`Final video output pathname: ${message}`);
-          this.event.reply(this.channel.SCREESHOTS_CONVERTED, video);
+          this.event.reply(this.channel.SCREESHOTS_CONVERTED, {
+            ...video,
+            screenshots,
+          });
         } catch (error) {
           const errorMessage =
             String(error) || 'An error occurred while combining the video';

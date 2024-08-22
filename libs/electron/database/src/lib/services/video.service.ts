@@ -1,5 +1,4 @@
 import { IVideo, IVideoInput, IVideoService } from '@ever-capture/shared-utils';
-import { Video } from '../entities/video.entity';
 import { videoMetadataTable } from '../repositories/video-metadata.repository';
 import { VideoRepository } from '../repositories/video.repository';
 import { ScreenshotService } from './screenshot.service';
@@ -15,47 +14,33 @@ export class VideoService implements IVideoService {
       throw new Error('Invalid input');
     }
 
-    // Create a new Video instance and assign properties from input
-    const video = Object.assign(new Video(), { pathname: input.pathname });
-
     try {
-      // Handle parent video association
-      if (input.parentId) {
-        video.parentId = input.parentId
-      }
+      const videoMetadata = await this.metadataService.save(input);
+
+      // Save and return the video entity
+      const video = await this.repository.save({
+        pathname: input.pathname,
+        parentId: input.parentId,
+        [`${videoMetadataTable}Id`]: videoMetadata.id,
+      });
 
       // Handle chunk associations
       if (input.chunkIds) {
-        const chunks = await this.repository.findAll({
-          whereIn: {
-            column: 'id',
-            values: input.chunkIds,
-          },
-        });
-        if (chunks.length !== input.chunkIds.length) {
-          throw new Error('Some chunks were not found');
+        for (const chunkId of input.chunkIds) {
+          await this.update(chunkId, { parentId: video.id });
         }
-        video.chunks = chunks;
       }
 
       // Handle screenshot associations
       if (input.screenshotIds) {
-        const screenshots = await this.screenshotService.findAll({
-          whereIn: { column: 'id', values: input.screenshotIds },
-        });
-        if (screenshots.length !== input.screenshotIds.length) {
-          throw new Error('Some screenshots were not found');
+        for (const screenshotId of input.screenshotIds) {
+          await this.screenshotService.update(screenshotId, {
+            videoId: video.id,
+          });
         }
-        video.screenshots = screenshots;
       }
 
-      const videoMetadataId = await this.metadataService.save(input);
-
-      // Save and return the video entity
-      return await this.repository.save({
-        ...video,
-        [`${videoMetadataTable}Id`]: videoMetadataId,
-      });
+      return video;
     } catch (error) {
       console.error('Error saving video:', error);
       throw new Error('Error saving video');
@@ -77,29 +62,27 @@ export class VideoService implements IVideoService {
       throw new Error(`Video with ID ${id} not found`);
     }
 
-    // Update properties of the existing video entity
-    Object.assign(existingVideo, input);
-
     // Update relationships
     if (input.parentId) {
-      existingVideo.parent = await this.repository.findOneById(input.parentId);
+      existingVideo.parent = await this.repository.update(id, {
+        parentId: input.parentId,
+      });
     }
+    // Handle chunk associations
     if (input.chunkIds) {
-      existingVideo.chunks = await this.repository.findAll({
-        whereIn: {
-          column: 'id',
-          values: input.chunkIds,
-        },
-      });
-    }
-    if (input.screenshotIds) {
-      existingVideo.screenshots = await this.screenshotService.findAll({
-        whereIn: { column: id, values: input.screenshotIds },
-      });
+      for (const chunkId of input.chunkIds) {
+        await this.repository.update(chunkId, { parentId: id });
+      }
     }
 
-    // Save the updated video entity
-    await this.repository.save(existingVideo);
+    // Handle screenshot associations
+    if (input.screenshotIds) {
+      for (const screenshotId of input.screenshotIds) {
+        await this.screenshotService.update(screenshotId, {
+          videoId: id,
+        });
+      }
+    }
 
     // Return the updated video entity
     return this.findOneById(id);

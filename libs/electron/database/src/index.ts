@@ -9,5 +9,4 @@ export * from './lib/repositories/video.repository';
 export * from './lib/services/screenshot-metadata.service';
 export * from './lib/services/screenshot.service';
 export * from './lib/services/video.service';
-export * from './lib/subscribers/screenshot.subscriber';
 

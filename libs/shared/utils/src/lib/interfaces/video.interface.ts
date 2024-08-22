@@ -1,4 +1,3 @@
-import { FindManyOptions, FindOneOptions } from 'typeorm';
 import { IBase } from './base.interface';
 import type { IScreenshot } from './screenshot.interface';
 import { IVideoConfig } from './video.config';
@@ -32,9 +31,9 @@ export type IVideoMetadataInput = Partial<IVideoConfig> & {
 
 export interface IVideoService {
   save(input: IVideoInput): Promise<IVideo>;
-  findAll(options: FindManyOptions<IVideo>): Promise<IVideo[]>;
+  findAll<T>(options: T): Promise<IVideo[]>;
   update(id: string, video: Partial<IVideoInput>): Promise<IVideo>;
-  findOne(options: FindOneOptions<IVideo>): Promise<IVideo>;
+  findOne<T>(options: T): Promise<IVideo>;
   findOneById(id: string): Promise<IVideo>;
   delete(id: string): Promise<void>;
   deleteAll(videoIds?: string[]): Promise<void>;
