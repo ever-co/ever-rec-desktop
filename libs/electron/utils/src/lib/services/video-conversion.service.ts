@@ -1,9 +1,9 @@
-import { ScreenshotService } from '@ever-capture/electron-database';
 import {
   Channel,
   ILoggable,
   ILogger,
   IScreenshot,
+  IScreenshotService,
   IVideo,
   IVideoConfig,
   IVideoService,
@@ -31,7 +31,8 @@ export class VideoConversionService implements ILoggable {
     private fileManager: typeof FileManager,
     private channel: typeof Channel,
     public logger: ILogger,
-    private videoService: IVideoService
+    private videoService: IVideoService,
+    private screenshotService: IScreenshotService
   ) {}
 
   async convert() {
@@ -267,7 +268,7 @@ export class VideoConversionService implements ILoggable {
             screenshotIds: uniqueScreenshotIds,
           });
 
-          const screenshots = await ScreenshotService.findAll({
+          const screenshots = await this.screenshotService.findAll({
             where: { videoId: video.id },
             relations: ['screenshot_metadata']
           });
