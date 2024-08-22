@@ -1,11 +1,11 @@
 {
   "name": "@ever-capture/electron-events",
-  "version": "0.1.1",
+  "version": "0.1.0",
   "dependencies": {
     "tslib": "^2.3.0"
   },
   "type": "commonjs",
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
-  "private": false
+  "private": true
 }
