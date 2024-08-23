@@ -1,26 +1,26 @@
-import { ScreenshotService } from '@ever-capture/electron/database';
-import { FileManager } from '@ever-capture/electron/utils';
-import { Channel } from '@ever-capture/shared/utils';
+import {
+  screenshotMetadataTable,
+  ScreenshotService,
+} from '@ever-capture/electron-database';
+import { FileManager } from '@ever-capture/electron-utils';
+import { Channel } from '@ever-capture/shared-utils';
 import { ipcMain } from 'electron';
-import { ILike } from 'typeorm';
 
 export function crudScreeshotEvents() {
   // Get all screenshots
   ipcMain.handle(Channel.REQUEST_SCREENSHOTS, () => {
     return ScreenshotService.findAll({
       order: { createdAt: 'ASC' },
-      relations: ['metadata'],
+      relations: [screenshotMetadataTable],
     });
   });
 
   // searching
   ipcMain.handle(Channel.SEARCHING, (_, request: string) => {
     return ScreenshotService.findAll({
-      relations: ['metadata'],
+      relations: [screenshotMetadataTable],
       where: {
-        metadata: {
-          description: ILike(`%${request}%`),
-        },
+        [`${screenshotMetadataTable}.description`]: request,
       },
       order: { createdAt: 'ASC' },
     });
@@ -35,6 +35,10 @@ export function crudScreeshotEvents() {
 
 // Removes any handler for channels, if present.
 export function removeCrudScreenshotEvent(): void {
-  const channels = [Channel.REQUEST_SCREENSHOTS, Channel.SEARCHING, Channel.REQUEST_DELETE_ALL_SCREENSHOTS]
-  channels.forEach(channel => ipcMain.removeHandler(channel))
+  const channels = [
+    Channel.REQUEST_SCREENSHOTS,
+    Channel.SEARCHING,
+    Channel.REQUEST_DELETE_ALL_SCREENSHOTS,
+  ];
+  channels.forEach((channel) => ipcMain.removeHandler(channel));
 }

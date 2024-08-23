@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { SCREENSHOT_INTERVAL_DELAY } from '@ever-capture/shared/utils';
+import { SCREENSHOT_INTERVAL_DELAY } from '@ever-capture/shared-utils';
 import {
     screenshotActions,
     selectScreenshotState,

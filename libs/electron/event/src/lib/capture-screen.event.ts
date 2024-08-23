@@ -1,41 +1,45 @@
-import { ScreenshotService } from '@ever-capture/electron/database';
+import { ScreenshotService } from '@ever-capture/electron-database';
 import {
   ElectronLogger,
   FileManager,
   getWindowSize,
-} from '@ever-capture/electron/utils';
+} from '@ever-capture/electron-utils';
 import {
   Channel,
   IScreenshot,
   IScreenshotInput,
-} from '@ever-capture/shared/utils';
-import { desktopCapturer, ipcMain } from 'electron';
+  SCREENSHOT_INTERVAL_DELAY,
+} from '@ever-capture/shared-utils';
+import { desktopCapturer, ipcMain, IpcMainEvent } from 'electron';
 
 // Constants
 const SCREENSHOT_DIR = 'screenshots';
 const logger = new ElectronLogger();
+let captureInterval: NodeJS.Timeout | null = null;
 
 export function captureScreenEvent(): void {
-  let captureInterval: NodeJS.Timeout | null = null;
+  ipcMain.on(Channel.START_CAPTURE_SCREEN, captureScreen);
 
-  ipcMain.on(Channel.START_CAPTURE_SCREEN, (event, interval) => {
-    if (captureInterval) {
-      clearInterval(captureInterval);
-    }
-    captureInterval = setInterval(async () => {
-      const screenshot = await takeScreenshot();
-      if (screenshot) {
-        event.reply(Channel.SCREENSHOT_CAPTURED, screenshot);
-      }
-    }, interval);
-  });
+  ipcMain.on(Channel.STOP_CAPTURE_SCREEN, stopCaptureScreen);
+}
 
-  ipcMain.on(Channel.STOP_CAPTURE_SCREEN, () => {
-    if (captureInterval) {
-      clearInterval(captureInterval);
-      captureInterval = null;
+export function captureScreen(event: IpcMainEvent, interval: number) {
+  if (captureInterval) {
+    clearInterval(captureInterval);
+  }
+  captureInterval = setInterval(async () => {
+    const screenshot = await takeScreenshot();
+    if (screenshot) {
+      event.reply(Channel.SCREENSHOT_CAPTURED, screenshot);
     }
-  });
+  }, interval || SCREENSHOT_INTERVAL_DELAY);
+}
+
+export function stopCaptureScreen() {
+  if (captureInterval) {
+    clearInterval(captureInterval);
+    captureInterval = null;
+  }
 }
 
 async function takeScreenshot(): Promise<IScreenshot | null> {
@@ -111,6 +115,10 @@ function getWindowDescription(
 }
 
 export function removeCaptureScreenEvent(): void {
-  const channels = [Channel.SCREENSHOT_CAPTURED, Channel.START_CAPTURE_SCREEN, Channel.STOP_CAPTURE_SCREEN]
-  channels.forEach(channel => ipcMain.removeAllListeners(channel))
+  const channels = [
+    Channel.SCREENSHOT_CAPTURED,
+    Channel.START_CAPTURE_SCREEN,
+    Channel.STOP_CAPTURE_SCREEN,
+  ];
+  channels.forEach((channel) => ipcMain.removeAllListeners(channel));
 }

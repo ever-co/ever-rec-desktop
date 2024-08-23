@@ -5,16 +5,15 @@ import {
   IScreenshot,
   IUpload,
   IUploadFile,
-} from '@ever-capture/shared/utils';
+} from '@ever-capture/shared-utils';
 import { ipcMain } from 'electron';
 import * as path from 'path';
-import { FindManyOptions, In } from 'typeorm';
 import { FileManager } from './files/file-manager';
 import { ElectronLogger } from './logger/electron-logger';
 import { WorkerFactory } from './worker-factory.service';
 
 interface IService {
-  findAll(criteria: FindManyOptions): Promise<IScreenshot[]>;
+  findAll(criteria: any): Promise<IScreenshot[]>;
 }
 
 export class UploaderService implements ILoggable {
@@ -26,7 +25,7 @@ export class UploaderService implements ILoggable {
   ): Promise<void> {
     this.logger.info('[upload] start uploading...');
     const screenshots = await service.findAll({
-      where: { id: In(upload.ids) },
+      whereIn: { column: 'id', values: upload.ids },
     });
 
     const files: IUploadFile[] = screenshots.map((screenshot: IScreenshot) => ({

@@ -1,3 +1,4 @@
+import { BetterSqliteProvider } from '@ever-capture/electron-database';
 import { BrowserWindow, screen, shell } from 'electron';
 import { join } from 'path';
 import { format } from 'url';
@@ -40,21 +41,22 @@ export default class App {
     }
   }
 
-  private static onReady() {
+  private static async onReady(): Promise<void> {
     // This method will be called when Electron has finished
     // initialization and is ready to create browser windows.
     // Some APIs can only be used after this event occurs.
     if (rendererAppName) {
+      await App.initDatabase()
       App.initMainWindow();
       App.loadMainWindow();
     }
   }
 
-  private static onActivate() {
+  private static async onActivate(): Promise<void> {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (App.mainWindow === null) {
-      App.onReady();
+      await App.onReady();
     }
   }
 
@@ -100,6 +102,10 @@ export default class App {
       // when you should delete the corresponding element.
       App.mainWindow = null;
     });
+  }
+
+  private static async initDatabase(): Promise<void> {
+    await BetterSqliteProvider.instance.migrate();
   }
 
   private static loadMainWindow() {
