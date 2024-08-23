@@ -17,7 +17,7 @@
     "make": "nx run desktop:make",
     "knex": "./node_modules/.bin/knex --knexfile ./libs/electron/database/src/lib/database/knexfile.ts"
   },
-  "private": true,
+  "private": false,
   "author": {
     "name": "Ever Co. LTD",
     "email": "ever@ever.co",
