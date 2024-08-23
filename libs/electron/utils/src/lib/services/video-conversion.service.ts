@@ -273,8 +273,6 @@ export class VideoConversionService implements ILoggable {
             relations: ['screenshot_metadata']
           });
 
-          console.log(screenshots)
-
           this.logger.info(`Final video output pathname: ${message}`);
           this.event.reply(this.channel.SCREESHOTS_CONVERTED, {
             ...video,
@@ -299,9 +297,12 @@ export class VideoConversionService implements ILoggable {
   }
 
   private getBatchOutputPath(batchIndex: number): string {
-    return this.fileManager.createFilePathSync(
+   this.logger.info(`Creating batch file at index ${batchIndex}`);
+    const filePath = this.fileManager.createFilePathSync(
       'videos',
       `batch-${batchIndex}-${Date.now()}.mp4`
     );
+   this.logger.info(`Batch file path: ${filePath}`);
+    return filePath;
   }
 }
