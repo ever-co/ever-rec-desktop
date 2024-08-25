@@ -48,6 +48,8 @@ interface ElectronAPI {
   removeListener(channel: string, callback: IpcCallback): void;
 }
 
+export { };
+
 // Declare the interface for the global context
 declare global {
   interface Window {

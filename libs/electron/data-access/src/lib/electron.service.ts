@@ -8,7 +8,7 @@ import { Channel as ChEnum } from '@ever-capture/shared-utils';
 export class ElectronService {
   private readonly document = inject(DOCUMENT);
 
-  private get window(): Window | null {
+  private get window(): Window | any {
     const win = this.document.defaultView;
     if (!win) {
       console.debug('[ElectronService]: No window available');

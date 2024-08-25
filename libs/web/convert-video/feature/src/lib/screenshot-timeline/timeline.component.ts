@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { IScreenshot } from '@ever-capture/shared-utils';
 import {
-    selectGenerateVideoState,
-    videoRemoteControlActions,
-} from '@ever-capture/web/convert-video/data-access';
-import { selectScreenshotState } from '@ever-capture/web/screenshot/data-access';
+  selectGenerateVideoState,
+  videoRemoteControlActions,
+} from '@ever-capture/convert-video-data-access';
+import { selectScreenshotState } from '@ever-capture/screenshot-data-access';
+import { IScreenshot } from '@ever-capture/shared-utils';
 import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil } from 'rxjs';
 import { VideoComponent } from '../video/video.component';

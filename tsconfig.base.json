@@ -4,31 +4,36 @@
     "rootDir": ".",
     "baseUrl": ".",
     "paths": {
-      "@ever-capture/breadcrumb/data-access": [
+      "@ever-capture/breadcrumb-data-access": [
         "libs/web/breadcrumb/data-access/src/index.ts"
       ],
-      "@ever-capture/breadcrumb/feature": [
+      "@ever-capture/breadcrumb-feature": [
         "libs/web/breadcrumb/feature/src/index.ts"
       ],
-      "@ever-capture/electron/data-access": [
-        "libs/electron/data-access/src/index.ts"
+      "@ever-capture/electron-database": [
+        "libs/electron/database/src/index.ts"
       ],
-      "@ever-capture/electron-database": ["libs/electron/database/src/index.ts"],
       "@ever-capture/electron-events": ["libs/electron/event/src/index.ts"],
       "@ever-capture/electron-utils": ["libs/electron/utils/src/index.ts"],
-      "@ever-capture/shared/component": ["libs/shared/components/src/index.ts"],
-      "@ever-capture/shared/service": ["libs/shared/service/src/index.ts"],
+      "@ever-capture/electron-data-access": [
+        "libs/electron/data-access/src/index.ts"
+      ],
       "@ever-capture/shared-utils": ["libs/shared/utils/src/index.ts"],
-      "@ever-capture/web/convert-video/data-access": [
+      "@ever-capture/shared-components": [
+        "libs/shared/components/src/index.ts"
+      ],
+      "@ever-capture/shared-service": ["libs/shared/service/src/index.ts"],
+      "@ever-capture/test": ["libs/test/src/index.ts"],
+      "@ever-capture/convert-video-data-access": [
         "libs/web/convert-video/data-access/src/index.ts"
       ],
-      "@ever-capture/web/convert-video/feature": [
+      "@ever-capture/convert-video-feature": [
         "libs/web/convert-video/feature/src/index.ts"
       ],
-      "@ever-capture/web/screenshot/data-access": [
+      "@ever-capture/screenshot-data-access": [
         "libs/web/screenshot/data-access/src/index.ts"
       ],
-      "@ever-capture/web/screenshot/feature": [
+      "@ever-capture/screenshot-feature": [
         "libs/web/screenshot/feature/src/index.ts"
       ]
     },
@@ -40,7 +45,7 @@
     "importHelpers": true,
     "target": "ESNext",
     "module": "esnext",
-    "lib": ["es2020", "ESNext","dom"],
+    "lib": ["es2020", "ESNext", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true
   },

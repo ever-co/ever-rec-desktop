@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
-import { selectGenerateVideoState } from '@ever-capture/web/convert-video/data-access';
+import { selectGenerateVideoState } from '@ever-capture/convert-video-data-access';
 import { Store } from '@ngrx/store';
 import { Observable, map } from 'rxjs';
 
