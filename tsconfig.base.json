@@ -23,7 +23,6 @@
         "libs/shared/components/src/index.ts"
       ],
       "@ever-capture/shared-service": ["libs/shared/service/src/index.ts"],
-      "@ever-capture/test": ["libs/test/src/index.ts"],
       "@ever-capture/convert-video-data-access": [
         "libs/web/convert-video/data-access/src/index.ts"
       ],
