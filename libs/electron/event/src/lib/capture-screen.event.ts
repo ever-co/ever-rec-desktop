@@ -10,11 +10,17 @@ import {
   IScreenshotInput,
   SCREENSHOT_INTERVAL_DELAY,
 } from '@ever-capture/shared-utils';
-import { desktopCapturer, ipcMain, IpcMainEvent } from 'electron';
+import {
+  desktopCapturer,
+  ipcMain,
+  IpcMainEvent
+} from 'electron';
+import { EventManager } from './event.manager';
 
 // Constants
 const SCREENSHOT_DIR = 'screenshots';
 const logger = new ElectronLogger();
+const eventManager = EventManager.getInstance();
 let captureInterval: NodeJS.Timeout | null = null;
 
 export function captureScreenEvent(): void {
@@ -30,7 +36,8 @@ export function captureScreen(event: IpcMainEvent, interval: number) {
   captureInterval = setInterval(async () => {
     const screenshot = await takeScreenshot();
     if (screenshot) {
-      event.reply(Channel.SCREENSHOT_CAPTURED, screenshot);
+      eventManager.reply(Channel.SCREENSHOT_CAPTURED, screenshot);
+      event.sender.scrollToBottom();
     }
   }, interval || SCREENSHOT_INTERVAL_DELAY);
 }
