@@ -1,7 +1,4 @@
-import {
-  screenshotMetadataTable,
-  ScreenshotService,
-} from '@ever-capture/electron-database';
+import { ScreenshotService } from '@ever-capture/electron-database';
 import { FileManager } from '@ever-capture/electron-utils';
 import { Channel } from '@ever-capture/shared-utils';
 import { ipcMain } from 'electron';
@@ -9,21 +6,12 @@ import { ipcMain } from 'electron';
 export function crudScreeshotEvents() {
   // Get all screenshots
   ipcMain.handle(Channel.REQUEST_SCREENSHOTS, () => {
-    return ScreenshotService.findAll({
-      order: { createdAt: 'ASC' },
-      relations: [screenshotMetadataTable],
-    });
+    return ScreenshotService.findAllWithMetadata();
   });
 
   // searching
   ipcMain.handle(Channel.SEARCHING, (_, request: string) => {
-    return ScreenshotService.findAll({
-      relations: [screenshotMetadataTable],
-      where: {
-        [`${screenshotMetadataTable}.description`]: request,
-      },
-      order: { createdAt: 'ASC' },
-    });
+    return ScreenshotService.findScreenshotsByDescription(request);
   });
 
   // Delete all screenshots

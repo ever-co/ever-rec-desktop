@@ -1,7 +1,7 @@
 import { IScreenshot, IScreenshotInput } from '@ever-capture/shared-utils';
+import { screenshotMetadataTable } from '../repositories/screenshot-metadata.repository';
 import {
-  ScreenshotRepository,
-  screenshotTable,
+  ScreenshotRepository
 } from '../repositories/screenshot.repository';
 import { ScreenshotMetadataService } from './screenshot-metadata.service';
 
@@ -12,16 +12,25 @@ export class ScreenshotService {
   public static async save(input: IScreenshotInput): Promise<IScreenshot> {
     const pathname = input.pathname;
     const metadata = await this.metadataService.save(input.metadata);
-    const screenshot = await this.repository.save({ pathname });
-    await this.metadataService.update(metadata.id, {
-      ...metadata,
-      [`${screenshotTable}Id`]: screenshot.id,
+    const screenshot = await this.repository.save({
+      pathname,
+      [`${screenshotMetadataTable}Id`]: metadata.id,
     });
-    return screenshot;
+    return this.repository.findOneWithMetadataById(screenshot.id);
   }
 
   public static async findAll(options): Promise<IScreenshot[]> {
     return this.repository.findAll(options);
+  }
+
+  public static async findAllWithMetadata(): Promise<IScreenshot[]> {
+    return this.repository.findAllScreenshotsWithMetadata();
+  }
+
+  public static async findScreenshotsByDescription(
+    description: string
+  ): Promise<IScreenshot[]> {
+    return this.repository.findAllByDescription(description);
   }
 
   public static async update(

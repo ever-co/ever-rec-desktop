@@ -4,14 +4,19 @@ import { BetterSqliteProvider } from '../better-sqlite-provider';
 export class Repository<T> {
   protected connection: Knex;
 
-  constructor(private readonly tableName: string) {
+  constructor(protected readonly tableName: string) {
     this.connection = BetterSqliteProvider.instance.connection;
   }
 
-  public async save(options): Promise<T> {
+  public async save<U>(options: U): Promise<T> {
     const query = this.connection(this.tableName);
     const [id] = await query.insert(options);
-    return this.findOneById(id);
+    return this.findOneById(id)
+  }
+
+  public async latest(): Promise<T> {
+    const query = this.connection(this.tableName);
+    return query.select('*').orderBy('createdAt', 'desc').first();
   }
 
   public async findOne(options: {
@@ -85,7 +90,7 @@ export class Repository<T> {
 
   public async findOneById(id: any): Promise<T> {
     const query = this.connection(this.tableName);
-    return query.select('*').where('id', id).first();
+    return query.select('*').where({ id }).first();
   }
 
   public async delete(id: string): Promise<void> {

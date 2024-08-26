@@ -19,6 +19,7 @@ export class BetterSqliteProvider implements ILoggable {
 
   public async migrate(): Promise<void> {
     try {
+      await this.connection.raw(`PRAGMA journal_mode = WAL;`);
       await structure(this.connection);
     } catch (error) {
       this.logger.error(error);
