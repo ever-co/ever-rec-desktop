@@ -1,6 +1,7 @@
 export * from './lib/channel.enum';
 export * from './lib/constant';
 export * from './lib/interfaces/base.interface';
+export * from './lib/interfaces/chunk.interface';
 export * from './lib/interfaces/loggable.interface';
 export * from './lib/interfaces/logger.interface';
 export * from './lib/interfaces/screenshot.interface';

@@ -17,7 +17,7 @@ export async function structure(knex: Knex): Promise<void> {
       columns: (table: Knex.TableBuilder) => {
         createDefaultColumns(table);
         table.string('pathname');
-        table.string('synced');
+        table.boolean('synced').defaultTo(false);
         table
           .integer('parentId')
           .references(`${videoTable}.id`)
@@ -43,8 +43,7 @@ export async function structure(knex: Knex): Promise<void> {
         table
           .integer(`${screenshotTable}Id`)
           .unsigned()
-          .references(`${screenshotTable}.id`)
-          .unique();
+          .references(`${screenshotTable}.id`);
         table.index([`${videoTable}Id`, `${screenshotTable}Id`]);
       },
     },

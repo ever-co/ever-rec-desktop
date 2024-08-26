@@ -23,8 +23,8 @@ export class ScreenshotService {
     return this.repository.findAll(options);
   }
 
-  public static async findAllWithMetadata(): Promise<IScreenshot[]> {
-    return this.repository.findAllScreenshotsWithMetadata();
+  public static async findAllWithMetadata(screenshotIds?: string[]): Promise<IScreenshot[]> {
+    return this.repository.findAllScreenshotsWithMetadata(screenshotIds);
   }
 
   public static async findScreenshotsByDescription(

@@ -31,4 +31,8 @@ export interface IScreenshotService {
   findOneById(id: string): Promise<IScreenshot>;
   delete(id: string): Promise<void>;
   deleteAll(screenshotIds?: string[]): Promise<void>;
+  findAllWithMetadata(
+    screenshotIds?: string[],
+    where?: Record<string, string | number>
+  ): Promise<IScreenshot[]>
 }

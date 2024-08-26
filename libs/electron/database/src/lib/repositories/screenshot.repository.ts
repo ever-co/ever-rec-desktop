@@ -34,9 +34,12 @@ export class ScreenshotRepository extends Repository<IScreenshot> {
     }));
   }
 
-  public async findAllScreenshotsWithMetadata() {
+  public async findAllScreenshotsWithMetadata(
+    screenshotIds?: string[],
+    where?: Record<string, string | number>
+  ) {
     const subQuery = this.createMetadataSubQuery();
-    const screenshotsWithMetadata = await this.connection(this.tableName)
+    const query = this.connection(this.tableName)
       .select(`${this.tableName}.*`, subQuery)
       .leftJoin(
         `${screenshotMetadataTable}`,
@@ -46,6 +49,15 @@ export class ScreenshotRepository extends Repository<IScreenshot> {
       .groupBy(`${this.tableName}.id`)
       .orderBy('createdAt', 'asc');
 
+    if (screenshotIds) {
+      query.whereIn(`${this.tableName}.id`, screenshotIds);
+    }
+
+    if (where) {
+      query.where(where);
+    }
+
+    const screenshotsWithMetadata = await query;
     return this.mapScreenshotMetadata(screenshotsWithMetadata);
   }
 

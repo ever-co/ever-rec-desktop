@@ -1,4 +1,5 @@
 import {
+  ChunkService,
   ScreenshotService,
   VideoService,
 } from '@ever-capture/electron-database';
@@ -22,10 +23,10 @@ export async function convertToVideo(
   { screenshotIds, config }: IVideoConvertPayload
 ) {
   const videoService = new VideoService();
-  const screenshots = await ScreenshotService.findAll({
-    whereIn: { column: 'id', values: screenshotIds },
-    order: { createdAt: 'ASC' },
-  });
+  const chunkService = new ChunkService();
+  const screenshots = await ScreenshotService.findAllWithMetadata(
+    screenshotIds
+  );
 
   const splitter = new BatchSplitter();
   const logger = new ElectronLogger();
@@ -39,7 +40,8 @@ export async function convertToVideo(
     Channel,
     logger,
     videoService,
-    ScreenshotService
+    ScreenshotService,
+    chunkService
   );
 
   await videoConversionService.convert();

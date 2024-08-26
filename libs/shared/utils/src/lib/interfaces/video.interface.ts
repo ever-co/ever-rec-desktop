@@ -29,6 +29,15 @@ export type IVideoMetadataInput = Partial<IVideoConfig> & {
   videoId?: string;
 };
 
+export interface IFetchVideoInput {
+  screenshotIds: string[];
+  videoMetadata: Partial<IVideoMetadata>;
+}
+
+export interface IFetchVideoOutput extends IVideo {
+  count: number;
+}
+
 export interface IVideoService {
   save(input: IVideoInput): Promise<IVideo>;
   findAll<T>(options: T): Promise<IVideo[]>;
@@ -37,4 +46,5 @@ export interface IVideoService {
   findOneById(id: string): Promise<IVideo>;
   delete(id: string): Promise<void>;
   deleteAll(videoIds?: string[]): Promise<void>;
+  getFinalVideo(input: IFetchVideoInput): Promise<IFetchVideoOutput>;
 }

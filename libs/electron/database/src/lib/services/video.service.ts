@@ -1,12 +1,14 @@
-import { IVideo, IVideoInput, IVideoService } from '@ever-capture/shared-utils';
+import { IFetchVideoInput, IFetchVideoOutput, IVideo, IVideoInput, IVideoService } from '@ever-capture/shared-utils';
 import { videoMetadataTable } from '../repositories/video-metadata.repository';
 import { VideoRepository } from '../repositories/video.repository';
+import { ChunkService } from './chunk.service';
 import { ScreenshotService } from './screenshot.service';
 import { VideoMetadataService } from './video-metadata.service';
 
 export class VideoService implements IVideoService {
   private readonly repository = new VideoRepository();
   private readonly screenshotService = ScreenshotService;
+  private readonly chunkService = new ChunkService();
   private readonly metadataService = new VideoMetadataService();
 
   public async save(input: IVideoInput): Promise<IVideo> {
@@ -34,8 +36,9 @@ export class VideoService implements IVideoService {
       // Handle screenshot associations
       if (input.screenshotIds) {
         for (const screenshotId of input.screenshotIds) {
-          await this.screenshotService.update(screenshotId, {
+          await this.chunkService.save({
             videoId: video.id,
+            screenshotId,
           });
         }
       }
@@ -102,5 +105,9 @@ export class VideoService implements IVideoService {
 
   public async deleteAll(videoIds?: string[]): Promise<void> {
     await this.repository.deleteAll(videoIds);
+  }
+
+  public async getFinalVideo(input: IFetchVideoInput): Promise<IFetchVideoOutput> {
+    return this.repository.getFinalVideo(input);
   }
 }
