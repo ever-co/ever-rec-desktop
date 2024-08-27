@@ -43,6 +43,7 @@ export async function structure(knex: Knex): Promise<void> {
         table
           .integer(`${screenshotTable}Id`)
           .unsigned()
+          .unique()
           .references(`${screenshotTable}.id`);
         table.index([`${videoTable}Id`, `${screenshotTable}Id`]);
       },

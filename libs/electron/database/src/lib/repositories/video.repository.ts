@@ -1,7 +1,6 @@
 import { IFetchVideoInput, IVideo } from '@ever-capture/shared-utils';
 import { chunkTable } from './chunk.repository';
 import { Repository } from './repository';
-import { screenshotTable } from './screenshot.repository';
 import { videoMetadataTable } from './video-metadata.repository';
 
 export const videoTable = 'video';
@@ -11,25 +10,45 @@ export class VideoRepository extends Repository<IVideo> {
     super(videoTable);
   }
 
-  public getFinalVideo(input: IFetchVideoInput) {
-    return this.connection<IVideo>(this.tableName)
-      .select(`${this.tableName}.*`)
-      .count(`${this.tableName}.id as count`)
-      .leftJoin(
-        `${chunkTable}`,
-        `${chunkTable}.${this.tableName}Id`,
-        `${this.tableName}.id`
+  public async getVideoByCriteria(input: IFetchVideoInput) {
+    const { videoMetadata, screenshotIds } = input;
+
+    const videos = await this.connection<IVideo>(`${this.tableName} as v`)
+      .select(
+        'v.*',
+        'parent.*',
+        'c.videoId',
+        'c.screenshotId',
+        this.connection.raw('COUNT(v.id) as count'),
+        this.connection.raw('GROUP_CONCAT(c.screenshotId) as screenshotIds')
       )
+      .leftJoin(`${chunkTable} as c`, 'c.videoId', 'v.id')
       .leftJoin(
-        `${videoMetadataTable}`,
-        `${this.tableName}.${videoMetadataTable}Id`,
-        `${videoMetadataTable}.id`
+        `${videoMetadataTable} as m`,
+        `v.${videoMetadataTable}Id`,
+        'm.id'
       )
-      .whereNull(`${this.tableName}.parentId`)
-      .where({ ...input.videoMetadata })
-      .whereIn(`${chunkTable}.${screenshotTable}Id`, input.screenshotIds)
-      .groupBy(`${this.tableName}.id`)
-      .orderBy(`${this.tableName}.createdAt`, 'desc')
-      .first();
+      .leftJoin(`${this.tableName} as parent`, 'v.parentId', 'parent.id')
+      .where({ ...videoMetadata })
+      .whereIn('c.screenshotId', screenshotIds)
+      .groupBy('v.id')
+      .orderBy('v.createdAt', 'desc');
+
+    if (!videos.length) {
+      return null;
+    }
+
+    const video = {
+      ...videos.find((v) => !v.parenId),
+      count: videos.reduce((acc, { count }) => {
+        return acc + count;
+      }, 0),
+      screenshotIds: videos.reduce((acc, { screenshotIds }) => {
+        const current = screenshotIds.split(',').map(Number);
+        return [...acc, ...current].toSorted((a, b) => a - b);
+      }, []),
+    };
+
+    return video;
   }
 }

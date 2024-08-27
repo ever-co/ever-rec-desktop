@@ -36,6 +36,7 @@ export interface IFetchVideoInput {
 
 export interface IFetchVideoOutput extends IVideo {
   count: number;
+  screenshotIds: string[];
 }
 
 export interface IVideoService {
@@ -46,5 +47,5 @@ export interface IVideoService {
   findOneById(id: string): Promise<IVideo>;
   delete(id: string): Promise<void>;
   deleteAll(videoIds?: string[]): Promise<void>;
-  getFinalVideo(input: IFetchVideoInput): Promise<IFetchVideoOutput>;
+  getVideoByCriteria(input: IFetchVideoInput): Promise<IFetchVideoOutput>;
 }
