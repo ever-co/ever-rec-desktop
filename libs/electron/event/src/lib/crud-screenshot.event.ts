@@ -20,22 +20,24 @@ export function crudScreeshotEvents() {
     return ScreenshotService.findScreenshotsByDescription(request);
   });
 
-  ipcMain.handle(Channel.REQUEST_PURGE, async () => {
-    const videoService = new VideoService();
-    const chunkService = new ChunkService();
-    const videoMetadata = new VideoMetadataService();
+  ipcMain.handle(Channel.REQUEST_PURGE, purgeData);
+}
 
-    await ScreenshotMetadataService.deleteAll();
-    await ScreenshotService.deleteAll();
+export async function purgeData(): Promise<void> {
+  const videoService = new VideoService();
+  const chunkService = new ChunkService();
+  const videoMetadata = new VideoMetadataService();
 
-    await videoMetadata.deleteAll();
-    await videoService.deleteAll();
+  await ScreenshotMetadataService.deleteAll();
+  await ScreenshotService.deleteAll();
 
-    await chunkService.deleteAll();
+  await videoMetadata.deleteAll();
+  await videoService.deleteAll();
 
-    await FileManager.removeAllFiles('screenshots');
-    await FileManager.removeAllFiles('videos');
-  });
+  await chunkService.deleteAll();
+
+  await FileManager.removeAllFiles('screenshots');
+  await FileManager.removeAllFiles('videos');
 }
 
 // Removes any handler for channels, if present.
