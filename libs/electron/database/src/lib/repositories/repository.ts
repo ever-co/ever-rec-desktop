@@ -11,7 +11,7 @@ export class Repository<T> {
   public async save<U>(options: U): Promise<T> {
     const query = this.connection(this.tableName);
     const [id] = await query.insert(options);
-    return this.findOneById(id)
+    return this.findOneById(id);
   }
 
   public async latest(): Promise<T> {
@@ -100,10 +100,11 @@ export class Repository<T> {
 
   public async deleteAll(metadataIds?: string[]): Promise<void> {
     const query = this.connection(this.tableName);
-    if (!metadataIds.length) {
-      await query.delete();
-    } else {
+
+    if (metadataIds && metadataIds.length > 0) {
       await query.whereIn('id', metadataIds).del();
+    } else {
+      await query.del();
     }
   }
 }

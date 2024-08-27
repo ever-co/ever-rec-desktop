@@ -44,7 +44,8 @@ export async function structure(knex: Knex): Promise<void> {
           .integer(`${screenshotTable}Id`)
           .unsigned()
           .unique()
-          .references(`${screenshotTable}.id`);
+          .references(`${screenshotTable}.id`)
+          .onDelete('SET NULL');
         table.index([`${videoTable}Id`, `${screenshotTable}Id`]);
       },
     },

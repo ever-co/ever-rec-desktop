@@ -38,6 +38,11 @@
       </div>
     </div>
 
+    <div class="start">
+      <lib-toggle [checked]="optimizedControl" (check)="onCheck($event)"
+        [label]="optimizedControl ? 'Optimized': 'Normal'"></lib-toggle>
+    </div>
+
     <div class="row command">
       <button class="button" type="submit" [disabled]="formGroup.invalid && (generating$ | async)">
         @if(generating$ | async) {

@@ -13,13 +13,14 @@ import {
   settingActions,
 } from '@ever-capture/convert-video-data-access';
 import { selectScreenshotState } from '@ever-capture/screenshot-data-access';
+import { ToggleComponent } from '@ever-capture/shared-components';
 import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'lib-setting',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ToggleComponent],
   templateUrl: './setting.component.html',
   styleUrl: './setting.component.scss',
 })
@@ -36,6 +37,7 @@ export class SettingComponent implements OnInit, OnDestroy {
       codec: new FormControl('', Validators.required),
       resolution: new FormControl('', Validators.required),
       batch: new FormControl('', [Validators.required]),
+      optimized: new FormControl(false),
     });
 
     this.store
@@ -64,6 +66,14 @@ export class SettingComponent implements OnInit, OnDestroy {
       .subscribe();
 
     this.store.dispatch(settingActions.load());
+  }
+
+  public onCheck(checked: boolean) {
+    this.formGroup.controls['optimized'].setValue(checked);
+  }
+
+  public get optimizedControl(): boolean {
+    return this.formGroup.get('optimized')?.value;
   }
 
   onSubmit(): void {

@@ -4,7 +4,7 @@ import { selectScreenshotState } from '@ever-capture/screenshot-data-access';
 import { UtcToLocalTimePipe } from '@ever-capture/shared-service';
 import { IScreenshot } from '@ever-capture/shared-utils';
 import { Store } from '@ngrx/store';
-import { Observable, Subject, map, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, map, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'lib-gallery',
@@ -26,7 +26,6 @@ export class GalleryComponent implements OnInit, OnDestroy {
     );
 
     this.screenshots$ = this.store.select(selectScreenshotState).pipe(
-      tap((state) => console.log(state.screenshots)),
       map((state) => state.screenshots),
       takeUntil(this.destroy$)
     );

@@ -70,8 +70,8 @@ export default class App {
       width: width,
       height: height,
       show: false,
-      transparent: false,
-      opacity: 0.95,
+      vibrancy: 'fullscreen-ui',
+      backgroundMaterial: 'acrylic',
       webPreferences: {
         contextIsolation: true,
         backgroundThrottling: false,
@@ -79,8 +79,6 @@ export default class App {
         webSecurity: !App.isDevelopmentMode(),
       },
     });
-    App.mainWindow.setVibrancy('fullscreen-ui');
-    App.mainWindow.setBackgroundMaterial('acrylic');
     App.mainWindow.setMenu(null);
     App.mainWindow.center();
 

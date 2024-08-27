@@ -28,7 +28,7 @@ export class ScreenshotElectronService {
   }
 
   public deleteAllScreenshots(): Promise<void> {
-    return this.electronService.invoke(Channel.REQUEST_DELETE_ALL_SCREENSHOTS);
+    return this.electronService.invoke(Channel.REQUEST_PURGE);
   }
 
   public askFor(request: string): Promise<IScreenshot[]> {

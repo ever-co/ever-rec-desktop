@@ -4,6 +4,7 @@ export interface IVideoConfig {
   duration: number;
   codec: string;
   batch: number;
+  optimized?: boolean;
 }
 
 export interface IVideoConvertPayload {

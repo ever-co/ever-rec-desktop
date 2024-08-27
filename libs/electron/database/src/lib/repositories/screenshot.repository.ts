@@ -43,7 +43,7 @@ export class ScreenshotRepository extends Repository<IScreenshot> {
       .select(`${this.tableName}.*`, subQuery)
       .leftJoin(
         `${screenshotMetadataTable}`,
-        `${this.tableName}.id`,
+        `${screenshotMetadataTable}.id`,
         `${this.tableName}.${screenshotMetadataTable}Id`
       )
       .groupBy(`${this.tableName}.id`)
@@ -67,7 +67,7 @@ export class ScreenshotRepository extends Repository<IScreenshot> {
       .select(`${this.tableName}.*`, subQuery)
       .leftJoin(
         `${screenshotMetadataTable}`,
-        `${this.tableName}.id`,
+        `${screenshotMetadataTable}.id`,
         `${this.tableName}.${screenshotMetadataTable}Id`
       )
       .where(
@@ -87,7 +87,7 @@ export class ScreenshotRepository extends Repository<IScreenshot> {
       .select(`${this.tableName}.*`, subQuery)
       .leftJoin(
         `${screenshotMetadataTable}`,
-        `${this.tableName}.id`,
+        `${screenshotMetadataTable}.id`,
         `${this.tableName}.${screenshotMetadataTable}Id`
       )
       .whereIn(`${this.tableName}.id`, ids)
