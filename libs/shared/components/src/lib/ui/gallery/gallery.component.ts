@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { selectScreenshotState } from '@ever-capture/screenshot-data-access';
+import { UtcToLocalTimePipe } from '@ever-capture/shared-service';
 import { IScreenshot } from '@ever-capture/shared-utils';
 import { Store } from '@ngrx/store';
 import { Observable, Subject, map, takeUntil, tap } from 'rxjs';
@@ -8,7 +9,7 @@ import { Observable, Subject, map, takeUntil, tap } from 'rxjs';
 @Component({
   selector: 'lib-gallery',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, UtcToLocalTimePipe],
   templateUrl: './gallery.component.html',
   styleUrl: './gallery.component.scss',
 })
