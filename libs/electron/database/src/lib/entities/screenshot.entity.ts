@@ -9,7 +9,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToOne,
-  Relation
+  Relation,
 } from 'typeorm';
 import { Base } from './base.entity';
 import { ScreenshotMetadata } from './screenshot-metadata.entity';
@@ -25,10 +25,14 @@ export class Screenshot extends Base implements IScreenshot {
 
   @OneToOne(() => ScreenshotMetadata, (metadata) => metadata.screenshot, {
     nullable: true,
+    onDelete: 'SET NULL',
   })
   metadata: Relation<IScreenshotMetadata>;
 
-  @ManyToOne(() => Video, (video) => video.chunks, { nullable: true })
+  @ManyToOne(() => Video, (video) => video.chunks, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
   @JoinColumn()
   video?: Relation<IVideo>;
 }

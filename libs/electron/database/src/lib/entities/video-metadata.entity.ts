@@ -21,7 +21,7 @@ export class VideoMetadata extends Base implements IVideoMetadata {
   duration?: number;
 
   @OneToOne(() => Video, (video) => video.metadata, {
-    onDelete: 'CASCADE',
+    onDelete: 'SET NULL',
   })
   @JoinColumn()
   video?: Relation<IVideo>;

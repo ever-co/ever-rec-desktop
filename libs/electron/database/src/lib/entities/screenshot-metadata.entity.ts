@@ -15,7 +15,7 @@ export class ScreenshotMetadata extends Base implements IScreenshotMetadata {
   description: string;
 
   @OneToOne(() => Screenshot, (screenshot) => screenshot.metadata, {
-    onDelete: 'CASCADE',
+    onDelete: 'SET NULL',
   })
   @JoinColumn()
   screenshot?: Relation<IScreenshot>;

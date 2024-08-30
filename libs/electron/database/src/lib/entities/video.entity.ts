@@ -23,22 +23,27 @@ export class Video extends Base implements IVideo {
   @Column({ default: false, type: 'boolean' })
   synced?: boolean;
 
-  @ManyToOne(() => Video, (video) => video.chunks, { nullable: true })
+  @ManyToOne(() => Video, (video) => video.chunks, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
   parent?: Relation<IVideo>;
 
   @OneToMany(() => Video, (video) => video.parent, {
-    onDelete: 'CASCADE',
+    onDelete: 'SET NULL',
     nullable: true,
   })
   chunks?: Relation<IVideo[]>;
 
   @OneToMany(() => Screenshot, (screenshot) => screenshot.video, {
     nullable: true,
+    onDelete: 'SET NULL',
   })
   screenshots?: Relation<IScreenshot[]>;
 
   @OneToOne(() => VideoMetadata, (metadata) => metadata.video, {
     nullable: true,
+    onDelete: 'SET NULL',
   })
   metadata?: Relation<IVideoMetadata>;
 }
