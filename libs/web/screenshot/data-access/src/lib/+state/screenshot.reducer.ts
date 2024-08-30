@@ -36,6 +36,7 @@ export const reducer = createReducer(
   })),
   on(screenshotActions.captureSuccess, (state, { screenshot }) => ({
     ...state,
+    count: state.count + 1,
     screenshots: [...state.screenshots, screenshot],
     error: '',
   })),
