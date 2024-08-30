@@ -1,4 +1,3 @@
-import { BetterSqliteProvider } from '@ever-capture/electron-database';
 import { BrowserWindow, screen, shell } from 'electron';
 import { join } from 'path';
 import { format } from 'url';
@@ -46,7 +45,6 @@ export default class App {
     // initialization and is ready to create browser windows.
     // Some APIs can only be used after this event occurs.
     if (rendererAppName) {
-      await App.initDatabase()
       App.initMainWindow();
       App.loadMainWindow();
     }
@@ -100,10 +98,6 @@ export default class App {
       // when you should delete the corresponding element.
       App.mainWindow = null;
     });
-  }
-
-  private static async initDatabase(): Promise<void> {
-    await BetterSqliteProvider.instance.migrate();
   }
 
   private static loadMainWindow() {
