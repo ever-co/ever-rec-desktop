@@ -37,6 +37,8 @@ export class VideoConversionService implements ILoggable {
   async convert() {
     this.logger.info('Start converting video...');
 
+    const optimized = !!this.config?.optimized;
+
     if (this.config.resolution.toLowerCase() === 'auto') {
       const { width = 1920, height = 1080 } = getWindowSize();
       this.config.resolution = `${width}:${height}`;
@@ -63,14 +65,14 @@ export class VideoConversionService implements ILoggable {
 
     const chunkSize = chunkExist?.screenshots?.length ?? 0;
 
-    if (chunkExist && chunkSize === screenshotIds.length) {
+    if (chunkExist && chunkSize === screenshotIds.length && optimized) {
       this.logger.info(`Last checkpoint reused...`);
       this.logger.info(`Finale video output pathname: ${chunkExist.pathname}`);
       this.event.reply(this.channel.SCREESHOTS_CONVERTED, chunkExist);
       return;
     }
 
-    if (chunkExist && chunkSize !== screenshotIds.length) {
+    if (chunkExist && chunkSize !== screenshotIds.length && optimized) {
       const { screenshots: chunkScreenshots = [] } = chunkExist;
       const chunkScreenshotIds = new Set(chunkScreenshots.map(({ id }) => id));
       this.logger.info(`Last checkpoint reused...`);
@@ -124,7 +126,7 @@ export class VideoConversionService implements ILoggable {
 
       const chunkSize = chunkExist?.screenshots?.length ?? 0;
 
-      if (chunkExist && chunkSize === batch.length) {
+      if (chunkExist && chunkSize === batch.length && optimized) {
         this.logger.info(`Last checkpoint reused...`);
         this.logger.info(`batch video output pathname: ${chunkExist.pathname}`);
         this.chunks.push(chunkExist);
@@ -136,7 +138,7 @@ export class VideoConversionService implements ILoggable {
         return;
       }
 
-      if (chunkExist && chunkSize !== batch.length) {
+      if (chunkExist && chunkSize !== batch.length && optimized) {
         const { screenshots: chunkScreenshots = [] } = chunkExist;
         const chunkScreenshotPathnames = new Set(
           chunkScreenshots.map(({ pathname }) => pathname)
