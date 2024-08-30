@@ -1,6 +1,6 @@
 {
   "name": "@ever-capture/electron-database",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "dependencies": {
     "tslib": "^2.3.0"
   },
