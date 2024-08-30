@@ -15,7 +15,7 @@ import { Base } from './base.entity';
 import { Screenshot } from './screenshot.entity';
 import { VideoMetadata } from './video-metadata.entity';
 
-@Entity('videos')
+@Entity('video')
 export class Video extends Base implements IVideo {
   @Column({ type: 'text', nullable: true })
   pathname: string;

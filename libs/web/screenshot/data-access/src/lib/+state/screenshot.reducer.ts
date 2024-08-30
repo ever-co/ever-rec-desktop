@@ -74,11 +74,8 @@ export const reducer = createReducer(
     loading: true,
     error: '',
   })),
-  on(screenshotActions.deleteScreenshotsSuccess, (state) => ({
-    ...state,
-    screenshots: [],
-    loading: false,
-    error: '',
+  on(screenshotActions.deleteScreenshotsSuccess, () => ({
+    ...initialState
   })),
   on(screenshotActions.deleteScreenshotsFailure, (state, { error }) => ({
     ...state,

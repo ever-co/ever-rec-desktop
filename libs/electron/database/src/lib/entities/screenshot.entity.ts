@@ -15,7 +15,7 @@ import { Base } from './base.entity';
 import { ScreenshotMetadata } from './screenshot-metadata.entity';
 import { Video } from './video.entity';
 
-@Entity('screenshots')
+@Entity('screenshot')
 export class Screenshot extends Base implements IScreenshot {
   @Column({ type: 'text', nullable: true })
   pathname: string;
