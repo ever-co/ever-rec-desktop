@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { ElectronService } from '@ever-capture/electron/data-access';
+import { ElectronService } from '@ever-capture/electron-data-access';
 import { Channel, IVideo, IVideoConvertPayload } from '@ever-capture/shared-utils';
 
 @Injectable({

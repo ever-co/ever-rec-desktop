@@ -2,6 +2,8 @@ img {
   &.screenshot {
     width: 100%;
     border-radius: 8px;
+    border: 1px solid #adadad;
+    box-shadow: 0 20px 70px rgba(0, 0, 0, 0.55);
   }
 
   &.icon {

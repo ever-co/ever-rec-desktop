@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { ElectronService } from '@ever-capture/electron/data-access';
+import { ElectronService } from '@ever-capture/electron-data-access';
 import { Channel, IScreenshot } from '@ever-capture/shared-utils';
 
 @Injectable({
@@ -28,7 +28,7 @@ export class ScreenshotElectronService {
   }
 
   public deleteAllScreenshots(): Promise<void> {
-    return this.electronService.invoke(Channel.REQUEST_DELETE_ALL_SCREENSHOTS);
+    return this.electronService.invoke(Channel.REQUEST_PURGE);
   }
 
   public askFor(request: string): Promise<IScreenshot[]> {

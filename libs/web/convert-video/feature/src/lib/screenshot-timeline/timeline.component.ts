@@ -1,16 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { IScreenshot } from '@ever-capture/shared-utils';
 import {
   selectGenerateVideoState,
   videoRemoteControlActions,
-} from '@ever-capture/web/convert-video/data-access';
-import { selectScreenshotState } from '@ever-capture/web/screenshot/data-access';
+} from '@ever-capture/convert-video-data-access';
+import { selectScreenshotState } from '@ever-capture/screenshot-data-access';
+import { IScreenshot } from '@ever-capture/shared-utils';
 import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil } from 'rxjs';
 import { VideoComponent } from '../video/video.component';
 
-type AggregatedScreenshot = IScreenshot & { xTimeIcon: number };
+type AggregatedScreenshot = IScreenshot & { xTimeIcon: number; width: number };
 
 @Component({
   selector: 'lib-timeline',
@@ -40,29 +40,37 @@ export class TimelineComponent implements OnInit, OnDestroy {
     );
   }
 
-  private mergeIcons(
-    screenshots: IScreenshot[]
-  ): (IScreenshot & { xTimeIcon: number })[] {
-    if (!screenshots.length) return [];
+  private mergeIcons(screenshots: IScreenshot[]): AggregatedScreenshot[] {
+    const size = screenshots.length;
+    if (!size) return [];
 
-    const result: (IScreenshot & { xTimeIcon: number })[] = [];
-    let current: IScreenshot & { xTimeIcon: number } = {
+    const result: AggregatedScreenshot[] = [];
+    let current: AggregatedScreenshot = {
       ...screenshots[0],
       xTimeIcon: 1,
+      width: this.clamp(1920 / size),
     };
 
-    for (let i = 1; i < screenshots.length; i++) {
+    for (let i = 1; i < size; i++) {
       const screenshot = screenshots[i];
       if (current.metadata?.name === screenshot.metadata?.name) {
         current.xTimeIcon++;
       } else {
         result.push(current);
-        current = { ...screenshot, xTimeIcon: 1 };
+        current = {
+          ...screenshot,
+          xTimeIcon: 1,
+          width: this.clamp(1920 / size),
+        };
       }
     }
     result.push(current);
 
     return result;
+  }
+
+  private clamp(value: number, min = 64, max = 1920): number {
+    return Math.max(min, Math.min(max, value));
   }
 
   public onScroll(event: any) {

@@ -12,7 +12,7 @@
     justify-content: center;
     gap: 1rem;
     width: 100%;
-    max-width: 1200px;
+    max-width: 1920px;
 
     .row {
       display: flex;
@@ -24,7 +24,7 @@
 }
 
 $icon-width: 48px;
-$height: 10px;
+$height: 8px;
 $border-radius: calc($height /2);
 $gap: 4px;
 
@@ -68,7 +68,7 @@ $gap: 4px;
 
 .image-now {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1920px;
   max-height: calc(100vh - 14.5rem);
   object-fit: contain;
 }
@@ -88,7 +88,7 @@ $gap: 4px;
   position: absolute;
   top: 0;
   height: 72px;
-  width: 10px;
+  width: 5px;
   background-color: #ddd;
   transform: translateX(-50%);
   border-top-left-radius: 10px;

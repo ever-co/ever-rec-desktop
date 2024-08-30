@@ -56,3 +56,10 @@
     scale: 1;
   }
 }
+
+:host(.shadow) {
+  .video {
+    border: 1px solid #adadad;
+    box-shadow: 0 20px 70px rgba(0, 0, 0, 0.55);
+  }
+}
