@@ -47,5 +47,4 @@ export interface IVideoService {
   findOneById(id: string): Promise<IVideo>;
   delete(id: string): Promise<void>;
   deleteAll(videoIds?: string[]): Promise<void>;
-  getVideoByCriteria(input: IFetchVideoInput): Promise<IFetchVideoOutput>;
 }
