@@ -18,6 +18,9 @@ img {
   display: flex;
   flex-wrap: wrap;
   padding: 0 4px;
+  border-radius: 12px;
+  max-height: calc(100vh - 9.25rem);
+  overflow: auto;
 }
 
 /* Create four equal columns that sits next to each other */

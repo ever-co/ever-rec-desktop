@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { ElectronService } from '@ever-capture/electron-data-access';
-import { Channel, IScreenshot } from '@ever-capture/shared-utils';
+import { Channel, IPaginationOptions, IPaginationResponse, IScreenshot } from '@ever-capture/shared-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -23,16 +23,15 @@ export class ScreenshotElectronService {
     this.electronService.send(Channel.START_CAPTURE_SCREEN, interval);
   }
 
-  public getAllScreenshots(): Promise<IScreenshot[]> {
-    return this.electronService.invoke(Channel.REQUEST_SCREENSHOTS);
+  public getAllScreenshots(options: IPaginationOptions): Promise<IPaginationResponse<IScreenshot>> {
+    return this.electronService.invoke(Channel.REQUEST_SCREENSHOTS, options);
   }
 
   public deleteAllScreenshots(): Promise<void> {
-    return this.electronService.invoke(Channel.REQUEST_PURGE);
+    return this.electronService.invoke(Channel.REQUEST_DELETE_ALL_SCREENSHOTS);
   }
 
-  public askFor(request: string): Promise<IScreenshot[]> {
-    console.log(request)
-    return this.electronService.invoke(Channel.SEARCHING, request);
+  public askFor(options: IPaginationOptions): Promise<IPaginationResponse<IScreenshot>> {
+    return this.electronService.invoke(Channel.SEARCHING, options);
   }
 }

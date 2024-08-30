@@ -1,4 +1,7 @@
-import { ScreenshotService, VideoService } from '@ever-capture/electron-database';
+import {
+  ScreenshotService,
+  VideoService,
+} from '@ever-capture/electron-database';
 import {
   BatchSplitter,
   ElectronLogger,
@@ -9,15 +12,21 @@ import {
 
 import { Channel, IVideoConvertPayload } from '@ever-capture/shared-utils';
 import { ipcMain } from 'electron';
-import { In } from 'typeorm';
+import { ILike } from 'typeorm';
 
 export function convertScreenshotsToVideoEvent() {
   ipcMain.on(
     Channel.START_CONVERT_TO_VIDEO,
-    async (event, { screenshotIds, config }: IVideoConvertPayload) => {
+    async (event, { filter, config }: IVideoConvertPayload) => {
       const videoService = new VideoService();
       const screenshots = await ScreenshotService.findAll({
-        where: { id: In(screenshotIds) },
+        ...(filter && {
+          where: {
+            metadata: {
+              description: ILike(`%${filter}%`),
+            },
+          },
+        }),
         order: { createdAt: 'ASC' },
       });
 

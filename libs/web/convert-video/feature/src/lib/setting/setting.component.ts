@@ -27,9 +27,10 @@ import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 export class SettingComponent implements OnInit, OnDestroy {
   public formGroup!: FormGroup;
   private store = inject(Store);
-  private screenshotIds: string[] = [];
   private destroy$ = new Subject<void>();
   public generating$!: Observable<boolean>;
+  private filter = '';
+  private count = 0;
 
   ngOnInit(): void {
     this.formGroup = new FormGroup({
@@ -43,12 +44,10 @@ export class SettingComponent implements OnInit, OnDestroy {
     this.store
       .select(selectScreenshotState)
       .pipe(
-        tap(
-          (state) =>
-            (this.screenshotIds = state.screenshots.map(
-              ({ id }) => id
-            ) as string[])
-        ),
+        tap((state) => {
+          this.filter = state.filter;
+          this.count = state.count;
+        }),
         takeUntil(this.destroy$)
       )
       .subscribe();
@@ -77,20 +76,20 @@ export class SettingComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    if (!this.screenshotIds.length) {
+    if (!this.count) {
       this.store.dispatch(
         generateVideoActions.failure({ error: 'No available frames' })
       );
       return;
     }
-    if (this.formGroup.valid && this.screenshotIds.length > 0) {
+    if (this.formGroup.valid && this.count > 0) {
       this.store.dispatch(
         settingActions.update({ videoConfig: this.formGroup.value })
       );
       this.store.dispatch(
         generateVideoActions.start({
-          screenshotIds: this.screenshotIds,
           config: this.formGroup.value,
+          filter: this.filter
         })
       );
     } else {

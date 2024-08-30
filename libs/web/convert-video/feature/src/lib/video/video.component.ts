@@ -129,7 +129,7 @@ export class VideoComponent
     screenshotState: any
   ): void {
     const frameRate = settingState.videoConfig.frameRate;
-    const frameCount = screenshotState.screenshots.length;
+    const frameCount = screenshotState.count;
     const videoDuration = frameCount / frameRate;
     const scrollDuration = (videoDuration * remoteState.scrollPercentage) / 100;
     this.videoPlayer.nativeElement.currentTime = scrollDuration;

@@ -21,6 +21,12 @@ export class ScreenshotService {
     return this.repository.find(options);
   }
 
+  public static async findAndCount(
+    options?: FindManyOptions<IScreenshot>
+  ) {
+    return this.repository.findAndCount(options);
+  }
+
   public static async update(
     id: string,
     screenshot: Partial<IScreenshot>

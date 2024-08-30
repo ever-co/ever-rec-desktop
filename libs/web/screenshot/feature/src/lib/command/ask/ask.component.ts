@@ -16,6 +16,8 @@ export class AskComponent {
   private store = inject(Store);
 
   onChange() {
-    this.store.dispatch(screenshotActions.ask({ request: this.request }));
+    this.store.dispatch(
+      screenshotActions.ask({ filter: this.request, page: 1 })
+    );
   }
 }

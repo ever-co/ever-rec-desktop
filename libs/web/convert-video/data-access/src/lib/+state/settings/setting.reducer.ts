@@ -16,6 +16,7 @@ export const initialState: State = {
     frameRate: 30,
     duration: 60,
     batch: 100,
+    optimized: false
   },
   error: '',
 };

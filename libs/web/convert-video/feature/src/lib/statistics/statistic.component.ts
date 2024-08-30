@@ -20,7 +20,7 @@ export class StatisticComponent implements OnInit {
   ngOnInit(): void {
     this.count$ = this.store
       .select(selectScreenshotState)
-      .pipe(map((state) => state.screenshots.length));
+      .pipe(map((state) => state.count));
   }
 
   public deleteAll() {

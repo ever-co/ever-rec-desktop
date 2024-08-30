@@ -1,4 +1,4 @@
-<div class="row">
+<div libInfiniteScroll (scrolled)="moreScreenshots()" class="row">
   @for (screenshot of screenshots$ | async; track screenshot) {
   <div class="column">
     @if(screenshot) {

@@ -22,10 +22,10 @@ export const timelineGuard: CanActivateFn = () => {
   return store.select(selectScreenshotState).pipe(
     withLatestFrom(store.select(selectGenerateVideoState)),
     switchMap(([screenshotState, videoState]) => {
-      const { screenshots } = screenshotState;
+      const { count, filter } = screenshotState;
       const { video } = videoState;
 
-      if (!screenshots.length) {
+      if (!count) {
         router.navigate(['/convert']);
         return of(false);
       }
@@ -35,8 +35,8 @@ export const timelineGuard: CanActivateFn = () => {
           map(({ videoConfig }) => {
             store.dispatch(
               generateVideoActions.start({
-                screenshotIds: screenshots.map(({ id }) => id),
                 config: videoConfig,
+                filter,
               })
             );
             return true;

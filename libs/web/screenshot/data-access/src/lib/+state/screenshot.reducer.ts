@@ -7,7 +7,10 @@ export const screenshotFeatureKey = 'screenshot';
 export interface IScreenshotState {
   capturing: boolean;
   screenshots: IScreenshot[];
+  hasNext: boolean;
+  count: number;
   loading: boolean;
+  filter: string;
   error: string;
 }
 
@@ -15,6 +18,9 @@ export const initialState: IScreenshotState = {
   capturing: false,
   loading: false,
   screenshots: [],
+  filter: '',
+  hasNext: false,
+  count: 0,
   error: '',
 };
 
@@ -43,16 +49,21 @@ export const reducer = createReducer(
     loading: true,
     error: '',
   })),
-  on(screenshotActions.loadScreenshotsSuccess, (state, { screenshots }) => ({
-    ...state,
-    screenshots: [
-      ...new Map(
-        [...state.screenshots, ...screenshots].map((item) => [item.id, item])
-      ).values(),
-    ],
-    loading: false,
-    error: '',
-  })),
+  on(
+    screenshotActions.loadScreenshotsSuccess,
+    (state, { data, hasNext, count }) => ({
+      ...state,
+      count,
+      hasNext,
+      screenshots: [
+        ...new Map(
+          [...state.screenshots, ...data].map((item) => [item.id, item])
+        ).values(),
+      ],
+      loading: false,
+      error: '',
+    })
+  ),
   on(screenshotActions.loadScreenshotsFailure, (state, { error }) => ({
     ...state,
     loading: false,
@@ -74,16 +85,22 @@ export const reducer = createReducer(
     loading: false,
     error,
   })),
-  on(screenshotActions.ask, (state) => ({
+  on(screenshotActions.ask, (state, { filter = '' }) => ({
     ...state,
+    filter,
     loading: true,
     error: '',
   })),
-  on(screenshotActions.askSuccess, (state, { screenshots }) => ({
-    ...state,
-    loading: false,
-    screenshots,
-  })),
+  on(
+    screenshotActions.askSuccess,
+    (state, { data: screenshots, hasNext, count }) => ({
+      ...state,
+      loading: false,
+      hasNext,
+      count,
+      screenshots,
+    })
+  ),
   on(screenshotActions.askFailure, (state, { error }) => ({
     ...state,
     loading: false,

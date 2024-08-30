@@ -8,6 +8,6 @@ export interface IVideoConfig {
 }
 
 export interface IVideoConvertPayload {
-  screenshotIds: string[];
+  filter?: string;
   config: IVideoConfig;
 }
