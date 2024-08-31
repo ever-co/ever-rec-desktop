@@ -1,4 +1,4 @@
-<div class="row">
+<div libInfiniteScroll (scrolled)="moreScreenshots()" class="row">
   @for (screenshot of screenshots$ | async; track screenshot) {
   <div class="column">
     @if(screenshot) {
@@ -6,7 +6,7 @@
       <img class="screenshot" [src]="screenshot.pathname" alt="Screenshot" />
       @if(screenshot.metadata?.name) {
       <figcaption>
-        <small>{{ screenshot.createdAt | date: 'medium' }}</small>
+        <small>{{ screenshot.createdAt | utcToLocalTime }}</small>
         <div>{{ screenshot.metadata?.name }}</div>
       </figcaption>
       }

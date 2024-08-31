@@ -1,10 +1,15 @@
 import { IScreenshot } from '@ever-capture/shared-utils';
-import { Repository } from './repository';
+import { Repository } from 'typeorm';
+import { appDataSource } from '../data-source';
+import { Screenshot } from '../entities/screenshot.entity';
 
-export const screenshotTable = 'screenshot';
+export class ScreenshotRepository {
+  private static _instance: Repository<IScreenshot>;
 
-export class ScreenshotRepository extends Repository<IScreenshot> {
-  constructor() {
-    super(screenshotTable);
+  public static get instance(): Repository<IScreenshot> {
+    if (!this._instance) {
+      this._instance = appDataSource.getRepository<IScreenshot>(Screenshot);
+    }
+    return this._instance;
   }
 }

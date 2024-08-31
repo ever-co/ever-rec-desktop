@@ -1,19 +1,22 @@
-import type {
-  IScreenshot,
-  IScreenshotMetadata,
-} from '@ever-capture/shared-utils';
+import type { IScreenshot, IScreenshotMetadata } from '@ever-capture/shared-utils';
+import { Column, Entity, JoinColumn, OneToOne, Relation } from 'typeorm';
 import { Base } from './base.entity';
+import { Screenshot } from './screenshot.entity';
 
+@Entity('screenshot_metadata')
 export class ScreenshotMetadata extends Base implements IScreenshotMetadata {
-  public name: string;
-  public icon: string;
-  public description: string;
-  public screenshot?: IScreenshot;
+  @Column({ nullable: true })
+  name: string;
 
-  constructor(partial: Partial<IScreenshotMetadata> = {}) {
-    super();
-    this.name = partial.name || '';
-    this.icon = partial.icon || '';
-    this.description = partial.description || '';
-  }
+  @Column({ type: 'text', nullable: true })
+  icon: string;
+
+  @Column({ type: 'text', nullable: true })
+  description: string;
+
+  @OneToOne(() => Screenshot, (screenshot) => screenshot.metadata, {
+    onDelete: 'SET NULL',
+  })
+  @JoinColumn()
+  screenshot?: Relation<IScreenshot>;
 }

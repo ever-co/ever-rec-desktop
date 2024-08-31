@@ -4,9 +4,10 @@ export interface IVideoConfig {
   duration: number;
   codec: string;
   batch: number;
+  optimized?: boolean;
 }
 
 export interface IVideoConvertPayload {
-  screenshotIds: string[];
+  filter?: string;
   config: IVideoConfig;
 }

@@ -1,34 +1,34 @@
 /* eslint-disable @angular-eslint/no-input-rename */
 import { CommonModule } from '@angular/common';
 import {
-    AfterContentInit,
-    AfterViewInit,
-    Component,
-    ElementRef,
-    Input,
-    OnDestroy,
-    OnInit,
-    ViewChild,
-    inject,
+  AfterContentInit,
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  inject,
 } from '@angular/core';
 import {
-    generateVideoActions,
-    selectGenerateVideoState,
-    selectSettingState,
-    selectVideoRemoteControlState,
-} from '@ever-capture/web/convert-video/data-access';
-import { selectScreenshotState } from '@ever-capture/web/screenshot/data-access';
+  generateVideoActions,
+  selectGenerateVideoState,
+  selectSettingState,
+  selectVideoRemoteControlState,
+} from '@ever-capture/convert-video-data-access';
+import { selectScreenshotState } from '@ever-capture/screenshot-data-access';
 import { Store } from '@ngrx/store';
 import {
-    Observable,
-    Subject,
-    catchError,
-    combineLatest,
-    filter,
-    map,
-    of,
-    takeUntil,
-    tap,
+  Observable,
+  Subject,
+  catchError,
+  combineLatest,
+  filter,
+  map,
+  of,
+  takeUntil,
+  tap,
 } from 'rxjs';
 
 @Component({
@@ -129,7 +129,7 @@ export class VideoComponent
     screenshotState: any
   ): void {
     const frameRate = settingState.videoConfig.frameRate;
-    const frameCount = screenshotState.screenshots.length;
+    const frameCount = screenshotState.count;
     const videoDuration = frameCount / frameRate;
     const scrollDuration = (videoDuration * remoteState.scrollPercentage) / 100;
     this.videoPlayer.nativeElement.currentTime = scrollDuration;

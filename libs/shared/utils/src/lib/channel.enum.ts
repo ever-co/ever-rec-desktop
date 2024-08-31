@@ -10,6 +10,7 @@ export enum Channel {
   'GENERATION_ERROR' = 'generation-error',
   'REQUEST_SCREENSHOTS' = 'request-screeshots',
   'REQUEST_DELETE_ALL_SCREENSHOTS' = 'request-delete-all-screeshots',
+  'REQUEST_PURGE' = 'request-purge',
   'SEARCHING' = 'searching',
   'UPLOAD' = 'upload',
   'UPLOAD_DONE' = 'upload::done',

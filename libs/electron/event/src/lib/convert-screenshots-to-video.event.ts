@@ -11,38 +11,42 @@ import {
 } from '@ever-capture/electron-utils';
 
 import { Channel, IVideoConvertPayload } from '@ever-capture/shared-utils';
-import { ipcMain, IpcMainEvent } from 'electron';
+import { ipcMain } from 'electron';
+import { ILike } from 'typeorm';
 
 export function convertScreenshotsToVideoEvent() {
-  ipcMain.on(Channel.START_CONVERT_TO_VIDEO, convertToVideo);
-}
+  ipcMain.on(
+    Channel.START_CONVERT_TO_VIDEO,
+    async (event, { filter, config }: IVideoConvertPayload) => {
+      const videoService = new VideoService();
+      const screenshots = await ScreenshotService.findAll({
+        ...(filter && {
+          where: {
+            metadata: {
+              description: ILike(`%${filter}%`),
+            },
+          },
+        }),
+        order: { createdAt: 'ASC' },
+      });
 
-export async function convertToVideo(
-  event: IpcMainEvent,
-  { screenshotIds, config }: IVideoConvertPayload
-) {
-  const videoService = new VideoService();
-  const screenshots = await ScreenshotService.findAll({
-    whereIn: { column: 'id', values: screenshotIds },
-    order: { createdAt: 'ASC' },
-  });
+      const splitter = new BatchSplitter();
+      const logger = new ElectronLogger();
+      const videoConversionService = new VideoConversionService(
+        event,
+        screenshots,
+        config,
+        splitter,
+        WorkerFactory,
+        FileManager,
+        Channel,
+        logger,
+        videoService
+      );
 
-  const splitter = new BatchSplitter();
-  const logger = new ElectronLogger();
-  const videoConversionService = new VideoConversionService(
-    event,
-    screenshots,
-    config,
-    splitter,
-    WorkerFactory,
-    FileManager,
-    Channel,
-    logger,
-    videoService,
-    ScreenshotService
+      await videoConversionService.convert();
+    }
   );
-
-  await videoConversionService.convert();
 }
 
 export function removeConvertScreenshotsToVideoEvent(): void {

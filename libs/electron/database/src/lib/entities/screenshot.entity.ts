@@ -3,17 +3,36 @@ import type {
   IScreenshotMetadata,
   IVideo,
 } from '@ever-capture/shared-utils';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  Relation,
+} from 'typeorm';
 import { Base } from './base.entity';
+import { ScreenshotMetadata } from './screenshot-metadata.entity';
+import { Video } from './video.entity';
 
+@Entity('screenshot')
 export class Screenshot extends Base implements IScreenshot {
-  public pathname: string;
-  public synced: boolean;
-  public metadata: IScreenshotMetadata;
-  public video?: IVideo;
+  @Column({ type: 'text', nullable: true })
+  pathname: string;
 
-  constructor(partial: IScreenshot) {
-    super();
-    this.pathname = partial.pathname;
-    this.synced = partial.synced;
-  }
+  @Column({ default: false, type: 'boolean' })
+  synced: boolean;
+
+  @OneToOne(() => ScreenshotMetadata, (metadata) => metadata.screenshot, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  metadata: Relation<IScreenshotMetadata>;
+
+  @ManyToOne(() => Video, (video) => video.chunks, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  @JoinColumn()
+  video?: Relation<IVideo>;
 }

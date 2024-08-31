@@ -1,10 +1,15 @@
 import { IVideo } from '@ever-capture/shared-utils';
-import { Repository } from './repository';
+import { Repository } from 'typeorm';
+import { appDataSource } from '../data-source';
+import { Video } from '../entities/video.entity';
 
-export const videoTable = 'video';
+export class VideoRepository {
+  private static _instance: Repository<IVideo>;
 
-export class VideoRepository extends Repository<IVideo> {
-  constructor() {
-    super(videoTable);
+  public static get instance(): Repository<IVideo> {
+    if (!this._instance) {
+      this._instance = appDataSource.getRepository<IVideo>(Video);
+    }
+    return this._instance;
   }
 }

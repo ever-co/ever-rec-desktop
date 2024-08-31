@@ -2,6 +2,8 @@ img {
   &.screenshot {
     width: 100%;
     border-radius: 8px;
+    border: 1px solid #adadad;
+    box-shadow: 0 20px 70px rgba(0, 0, 0, 0.55);
   }
 
   &.icon {
@@ -16,6 +18,9 @@ img {
   display: flex;
   flex-wrap: wrap;
   padding: 0 4px;
+  border-radius: 12px;
+  max-height: calc(100vh - 9.25rem);
+  overflow: auto;
 }
 
 /* Create four equal columns that sits next to each other */

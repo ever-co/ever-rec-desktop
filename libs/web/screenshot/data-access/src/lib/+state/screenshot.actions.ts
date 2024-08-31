@@ -1,4 +1,8 @@
-import { IScreenshot } from '@ever-capture/shared-utils';
+import {
+  IPaginationOptions,
+  IPaginationResponse,
+  IScreenshot,
+} from '@ever-capture/shared-utils';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 export const screenshotActions = createActionGroup({
@@ -10,16 +14,16 @@ export const screenshotActions = createActionGroup({
     'Stop Capture Success': emptyProps(),
     'Capture Success': props<{ screenshot: IScreenshot }>(),
     'Capture Failure': props<{ error: string }>(),
-    'Load Screenshots': emptyProps(),
-    'Load Screenshots Success': props<{ screenshots: IScreenshot[] }>(),
+    'Load Screenshots': props<IPaginationOptions>(),
+    'Load Screenshots Success': props<IPaginationResponse<IScreenshot>>(),
     'Load Screenshots Failure': props<{ error: string }>(),
 
     'Delete Screenshots': emptyProps(),
     'Delete Screenshots Success': emptyProps(),
     'Delete Screenshots Failure': props<{ error: string }>(),
 
-    ask: props<{ request: string }>(),
-    'ask Success': props<{ screenshots: IScreenshot[] }>(),
+    ask: props<IPaginationOptions>(),
+    'ask Success': props<IPaginationResponse<IScreenshot>>(),
     'ask Failure': props<{ error: string }>(),
   },
 });

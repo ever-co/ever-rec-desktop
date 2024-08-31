@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { selectScreenshotState } from '@ever-capture/web/screenshot/data-access';
+import { selectScreenshotState } from '@ever-capture/screenshot-data-access';
 import { Store } from '@ngrx/store';
 import { catchError, map, of, switchMap, withLatestFrom } from 'rxjs';
 import { settingActions } from '../+state/settings/setting.actions';
@@ -22,10 +22,10 @@ export const timelineGuard: CanActivateFn = () => {
   return store.select(selectScreenshotState).pipe(
     withLatestFrom(store.select(selectGenerateVideoState)),
     switchMap(([screenshotState, videoState]) => {
-      const { screenshots } = screenshotState;
+      const { count, filter } = screenshotState;
       const { video } = videoState;
 
-      if (!screenshots.length) {
+      if (!count) {
         router.navigate(['/convert']);
         return of(false);
       }
@@ -35,8 +35,8 @@ export const timelineGuard: CanActivateFn = () => {
           map(({ videoConfig }) => {
             store.dispatch(
               generateVideoActions.start({
-                screenshotIds: screenshots.map(({ id }) => id),
                 config: videoConfig,
+                filter,
               })
             );
             return true;

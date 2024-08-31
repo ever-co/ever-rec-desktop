@@ -148,7 +148,6 @@
 }
 
 .command {
-  margin-top: 10px;
   justify-self: flex-end;
 }
 
@@ -157,10 +156,11 @@
   min-width: 320px;
   min-height: 390px;
   height: 100%;
-  border: 1px solid #666;
   border-radius: 1.5rem;
   max-height: calc(100vh - 13rem);
   padding: 1rem;
+  border: 1px solid #adadad;
+  box-shadow: 0 20px 70px rgba(0, 0, 0, 0.55);
 }
 
 .progress {
@@ -179,4 +179,8 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.start {
+  align-self: flex-start;
 }

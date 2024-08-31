@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { breadcrumbActions } from '@ever-capture/breadcrumb/data-access';
-import { BreadcrumbComponent } from '@ever-capture/breadcrumb/feature';
-import { screenshotActions } from '@ever-capture/web/screenshot/data-access';
+import { breadcrumbActions } from '@ever-capture/breadcrumb-data-access';
+import { BreadcrumbComponent } from '@ever-capture/breadcrumb-feature';
 import { Store } from '@ngrx/store';
 import { AskComponent } from '../command/ask/ask.component';
 import { ConvertComponent } from '../command/convert/convert.component';
@@ -34,6 +33,5 @@ export class LayoutComponent implements OnInit {
     this.store.dispatch(
       breadcrumbActions.add({ breadcrumb: { label: 'Home', url: '/' } })
     );
-    this.store.dispatch(screenshotActions.loadScreenshots());
   }
 }

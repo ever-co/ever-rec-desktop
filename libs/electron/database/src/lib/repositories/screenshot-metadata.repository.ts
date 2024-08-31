@@ -1,10 +1,16 @@
 import { IScreenshotMetadata } from '@ever-capture/shared-utils';
-import { Repository } from './repository';
+import { Repository } from 'typeorm';
+import { appDataSource } from '../data-source';
+import { ScreenshotMetadata } from '../entities/screenshot-metadata.entity';
 
-export const screenshotMetadataTable = 'screenshot_metadata';
+export class ScreenshotMetadataRepository {
+  private static _instance: Repository<IScreenshotMetadata>;
 
-export class ScreenshotMetadataRepository extends Repository<IScreenshotMetadata> {
-  constructor() {
-    super(screenshotMetadataTable);
+  public static get instance(): Repository<IScreenshotMetadata> {
+    if (!this._instance) {
+      this._instance =
+        appDataSource.getRepository<IScreenshotMetadata>(ScreenshotMetadata);
+    }
+    return this._instance;
   }
 }

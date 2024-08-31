@@ -1,12 +1,24 @@
 import { IBase } from '@ever-capture/shared-utils';
-
+import {
+  CreateDateColumn,
+  DeleteDateColumn,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
+} from 'typeorm';
 export abstract class Base implements IBase {
-  public id: string;
-  public createdAt?: string;
-  public updatedAt?: string;
-  public deletedAt?: string | null;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-  constructor(partial: Partial<Base> = {}) {
-    Object.assign(this, partial);
-  }
+  @CreateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt?: string;
+
+  @UpdateDateColumn({
+    type: 'datetime',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+  })
+  updatedAt?: string;
+
+  @DeleteDateColumn({ type: 'datetime', nullable: true })
+  deletedAt?: string | null;
 }
