@@ -54,20 +54,22 @@ export function crudScreeshotEvents() {
     }
   );
 
-  // Delete all screenshots
-  ipcMain.handle(Channel.REQUEST_PURGE, async () => {
-    const videoService = new VideoService();
-    const videoMetadataService = new VideoMetadataService();
+  // Purge Data
+  ipcMain.handle(Channel.REQUEST_PURGE, purgeData);
+}
 
-    await videoService.deleteAll();
-    await videoMetadataService.deleteAll();
+export async function purgeData() {
+  const videoService = new VideoService();
+  const videoMetadataService = new VideoMetadataService();
 
-    await ScreenshotService.deleteAll();
-    await ScreenshotMetadataService.deleteAll();
+  await videoService.deleteAll();
+  await videoMetadataService.deleteAll();
 
-    await FileManager.removeAllFiles('screenshots');
-    await FileManager.removeAllFiles('videos');
-  });
+  await ScreenshotService.deleteAll();
+  await ScreenshotMetadataService.deleteAll();
+
+  await FileManager.removeAllFiles('screenshots');
+  await FileManager.removeAllFiles('videos');
 }
 
 // Removes any handler for channels, if present.

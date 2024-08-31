@@ -21,9 +21,7 @@ export class ScreenshotService {
     return this.repository.find(options);
   }
 
-  public static async findAndCount(
-    options?: FindManyOptions<IScreenshot>
-  ) {
+  public static async findAndCount(options?: FindManyOptions<IScreenshot>) {
     return this.repository.findAndCount(options);
   }
 
@@ -33,6 +31,13 @@ export class ScreenshotService {
   ): Promise<IScreenshot> {
     await this.repository.update(id, screenshot);
     return this.findOneById(id);
+  }
+
+  public static async updateMany(
+    ids: string[],
+    screenshot: Partial<IScreenshot>
+  ): Promise<void> {
+    await this.repository.update({ id: In(ids) }, screenshot);
   }
 
   public static async findOne(options: FindOneOptions): Promise<IScreenshot> {
