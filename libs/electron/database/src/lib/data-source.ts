@@ -1,4 +1,4 @@
-import { FileManager } from '@ever-capture/electron-utils';
+import { FileManager } from '@ever-co/electron-utils';
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import { ScreenshotMetadata } from './entities/screenshot-metadata.entity';

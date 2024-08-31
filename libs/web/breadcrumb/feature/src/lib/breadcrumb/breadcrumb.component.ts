@@ -2,9 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {
-  IBreadcrumb,
-  selectBreadcrumbState,
-} from '@ever-capture/breadcrumb-data-access';
+    IBreadcrumb,
+    selectBreadcrumbState,
+} from '@ever-co/breadcrumb-data-access';
 import { Store } from '@ngrx/store';
 import { Observable, map } from 'rxjs';
 

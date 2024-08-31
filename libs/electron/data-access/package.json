@@ -1,12 +1,20 @@
 {
-  "name": "@ever-capture/electron-data-access",
-  "version": "0.0.1",
+  "name": "@ever-co/electron-data-access",
+  "version": "0.1.0",
   "peerDependencies": {
     "@angular/common": "^17.3.0",
     "@angular/core": "^17.3.0"
   },
+  "private": false,
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "description": "This library was generated with [Nx](https://nx.dev).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ever Co. LTD <ever@ever.co> (https://ever.co)",
+  "license": "ISC"
 }

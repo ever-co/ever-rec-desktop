@@ -1,4 +1,4 @@
-import { IVideoConfig } from '@ever-capture/shared-utils';
+import { IVideoConfig } from '@ever-co/shared-utils';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 export const settingActions = createActionGroup({

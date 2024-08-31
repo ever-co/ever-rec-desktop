@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { selectScreenshotState } from '@ever-capture/screenshot-data-access';
+import { selectScreenshotState } from '@ever-co/screenshot-data-access';
 import { Store } from '@ngrx/store';
 import { catchError, map, of, switchMap, withLatestFrom } from 'rxjs';
 import { settingActions } from '../+state/settings/setting.actions';

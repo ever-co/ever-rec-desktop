@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { GalleryComponent } from '@ever-capture/shared-components';
+import { GalleryComponent } from '@ever-co/shared-components';
 import { ErrorComponent } from '../error/error.component';
 import { ProgressComponent } from '../progress/progress.component';
 import { SettingComponent } from '../setting/setting.component';

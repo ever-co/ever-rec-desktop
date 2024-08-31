@@ -1,4 +1,4 @@
-import type { IVideo, IVideoMetadata } from '@ever-capture/shared-utils';
+import type { IVideo, IVideoMetadata } from '@ever-co/shared-utils';
 import { Column, Entity, JoinColumn, OneToOne, Relation } from 'typeorm';
 import { Base } from './base.entity';
 import { Video } from './video.entity';
