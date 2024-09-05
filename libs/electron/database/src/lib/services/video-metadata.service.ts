@@ -1,4 +1,4 @@
-import { IVideoMetadata, IVideoMetadataInput } from '@ever-capture/shared-utils';
+import { IVideoMetadata, IVideoMetadataInput } from '@ever-co/shared-utils';
 import { FindManyOptions, FindOneOptions, In } from 'typeorm';
 import { VideoMetadata } from '../entities/video-metadata.entity';
 import { VideoMetadataRepository } from '../repositories/video-metadata.repository';

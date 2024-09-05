@@ -3,9 +3,9 @@ import {
   ScreenshotService,
   VideoMetadataService,
   VideoService,
-} from '@ever-capture/electron-database';
-import { FileManager } from '@ever-capture/electron-utils';
-import { Channel, IPaginationOptions } from '@ever-capture/shared-utils';
+} from '@ever-co/electron-database';
+import { FileManager } from '@ever-co/electron-utils';
+import { Channel, IPaginationOptions } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
 import { ILike } from 'typeorm';
 

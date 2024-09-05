@@ -1,9 +1,9 @@
-import { IBase } from '@ever-capture/shared-utils';
+import { IBase } from '@ever-co/shared-utils';
 import {
-  CreateDateColumn,
-  DeleteDateColumn,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn
+    CreateDateColumn,
+    DeleteDateColumn,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn
 } from 'typeorm';
 export abstract class Base implements IBase {
   @PrimaryGeneratedColumn('uuid')

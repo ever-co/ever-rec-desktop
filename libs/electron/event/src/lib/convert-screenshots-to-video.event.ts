@@ -1,16 +1,16 @@
 import {
   ScreenshotService,
   VideoService,
-} from '@ever-capture/electron-database';
+} from '@ever-co/electron-database';
 import {
   BatchSplitter,
   ElectronLogger,
   FileManager,
   VideoConversionService,
   WorkerFactory,
-} from '@ever-capture/electron-utils';
+} from '@ever-co/electron-utils';
 
-import { Channel, IVideoConvertPayload } from '@ever-capture/shared-utils';
+import { Channel, IVideoConvertPayload } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
 import { ILike } from 'typeorm';
 

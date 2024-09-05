@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import {
-  screenshotActions,
-  selectScreenshotState,
-} from '@ever-capture/screenshot-data-access';
-import { SCREENSHOT_INTERVAL_DELAY } from '@ever-capture/shared-utils';
+    screenshotActions,
+    selectScreenshotState,
+} from '@ever-co/screenshot-data-access';
+import { SCREENSHOT_INTERVAL_DELAY } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { Observable, Subject, map, takeUntil } from 'rxjs';
 

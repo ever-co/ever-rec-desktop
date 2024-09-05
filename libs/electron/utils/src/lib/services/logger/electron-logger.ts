@@ -1,20 +1,20 @@
-import { ILogger } from '@ever-capture/shared-utils';
+import { ILogger } from '@ever-co/shared-utils';
 import * as log from 'electron-log';
 
 export class ElectronLogger implements ILogger {
-  public info(message: string): void {
-    log.info(message);
+  public info(...message: any[]): void {
+    log.info(...message);
   }
 
-  public error(message: string): void {
-    log.error(message);
+  public error(...message: any[]): void {
+    log.error(...message);
   }
 
-  public warn(message: string): void {
-    log.warn(message);
+  public warn(...message: any[]): void {
+    log.warn(...message);
   }
 
-  public debug(message: string): void {
-    log.debug(message);
+  public debug(...message: any[]): void {
+    log.debug(...message);
   }
 }

@@ -1,4 +1,4 @@
-import { IScreenshot } from '@ever-capture/shared-utils';
+import { IScreenshot } from '@ever-co/shared-utils';
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { screenshotActions } from './screenshot.actions';
 

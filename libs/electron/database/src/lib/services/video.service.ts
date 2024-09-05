@@ -1,4 +1,4 @@
-import { IVideo, IVideoInput, IVideoService } from '@ever-capture/shared-utils';
+import { IVideo, IVideoInput, IVideoService } from '@ever-co/shared-utils';
 import { FindManyOptions, FindOneOptions, In } from 'typeorm';
 import { Video } from '../entities/video.entity';
 import { VideoRepository } from '../repositories/video.repository';

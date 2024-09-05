@@ -1,10 +1,10 @@
-import { ElectronLogger } from '@ever-capture/electron-utils';
-import { ILoggable, ILogger } from '@ever-capture/shared-utils';
+import { ElectronLogger } from '@ever-co/electron-utils';
+import { ILoggable, ILogger } from '@ever-co/shared-utils';
 import {
-  EntitySubscriberInterface,
-  EventSubscriber,
-  RemoveEvent,
-  UpdateEvent,
+    EntitySubscriberInterface,
+    EventSubscriber,
+    RemoveEvent,
+    UpdateEvent,
 } from 'typeorm';
 import { Screenshot } from '../entities/screenshot.entity';
 

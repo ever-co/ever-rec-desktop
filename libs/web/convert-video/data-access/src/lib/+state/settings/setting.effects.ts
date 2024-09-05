@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
-import { LocalstorageService } from '@ever-capture/shared-service';
-import { IVideoConfig } from '@ever-capture/shared-utils';
+import { LocalstorageService } from '@ever-co/shared-service';
+import { IVideoConfig } from '@ever-co/shared-utils';
 import { of } from 'rxjs';
 import { catchError, concatMap, map } from 'rxjs/operators';
 import { settingActions } from './setting.actions';

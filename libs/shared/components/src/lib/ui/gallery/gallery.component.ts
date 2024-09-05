@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import {
-  screenshotActions,
-  selectScreenshotState,
-} from '@ever-capture/screenshot-data-access';
+    screenshotActions,
+    selectScreenshotState,
+} from '@ever-co/screenshot-data-access';
 import {
-  InfiniteScrollDirective,
-  UtcToLocalTimePipe,
-} from '@ever-capture/shared-service';
-import { IScreenshot } from '@ever-capture/shared-utils';
+    InfiniteScrollDirective,
+    UtcToLocalTimePipe,
+} from '@ever-co/shared-service';
+import { IScreenshot } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { Observable, Subject, map, takeUntil, tap } from 'rxjs';
 

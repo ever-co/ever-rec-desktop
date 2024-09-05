@@ -1,19 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
+    FormControl,
+    FormGroup,
+    ReactiveFormsModule,
+    Validators,
 } from '@angular/forms';
 import {
-  generateVideoActions,
-  selectGenerateVideoState,
-  selectSettingState,
-  settingActions,
-} from '@ever-capture/convert-video-data-access';
-import { selectScreenshotState } from '@ever-capture/screenshot-data-access';
-import { ToggleComponent } from '@ever-capture/shared-components';
+    generateVideoActions,
+    selectGenerateVideoState,
+    selectSettingState,
+    settingActions,
+} from '@ever-co/convert-video-data-access';
+import { selectScreenshotState } from '@ever-co/screenshot-data-access';
+import { ToggleComponent } from '@ever-co/shared-components';
 import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 

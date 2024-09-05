@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { breadcrumbActions } from '@ever-capture/breadcrumb-data-access';
-import { BreadcrumbComponent } from '@ever-capture/breadcrumb-feature';
+import { breadcrumbActions } from '@ever-co/breadcrumb-data-access';
+import { BreadcrumbComponent } from '@ever-co/breadcrumb-feature';
 import { Store } from '@ngrx/store';
 import { AskComponent } from '../command/ask/ask.component';
 import { ConvertComponent } from '../command/convert/convert.component';

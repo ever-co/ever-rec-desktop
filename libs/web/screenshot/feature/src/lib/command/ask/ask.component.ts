@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { screenshotActions } from '@ever-capture/screenshot-data-access';
+import { screenshotActions } from '@ever-co/screenshot-data-access';
 import { Store } from '@ngrx/store';
 
 @Component({

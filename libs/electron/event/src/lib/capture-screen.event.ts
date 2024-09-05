@@ -1,15 +1,15 @@
-import { ScreenshotService } from '@ever-capture/electron-database';
+import { ScreenshotService } from '@ever-co/electron-database';
 import {
   ElectronLogger,
   FileManager,
   getWindowSize,
-} from '@ever-capture/electron-utils';
+} from '@ever-co/electron-utils';
 import {
   Channel,
   IScreenshot,
   IScreenshotInput,
   SCREENSHOT_INTERVAL_DELAY,
-} from '@ever-capture/shared-utils';
+} from '@ever-co/shared-utils';
 import {
   desktopCapturer,
   ipcMain,

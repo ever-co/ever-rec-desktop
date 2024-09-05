@@ -1,4 +1,4 @@
-import { IScreenshotMetadata } from '@ever-capture/shared-utils';
+import { IScreenshotMetadata } from '@ever-co/shared-utils';
 import { Repository } from 'typeorm';
 import { appDataSource } from '../data-source';
 import { ScreenshotMetadata } from '../entities/screenshot-metadata.entity';

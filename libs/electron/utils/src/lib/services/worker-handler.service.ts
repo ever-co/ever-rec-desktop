@@ -1,4 +1,4 @@
-import { Channel, ILoggable, ILogger } from '@ever-capture/shared-utils';
+import { Channel, ILoggable, ILogger } from '@ever-co/shared-utils';
 import { Worker } from 'worker_threads';
 
 export class WorkerHandler implements ILoggable {

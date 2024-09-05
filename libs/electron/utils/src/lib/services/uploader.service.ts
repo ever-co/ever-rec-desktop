@@ -1,11 +1,11 @@
 import {
-  Channel,
-  ILoggable,
-  ILogger,
-  IScreenshot,
-  IUpload,
-  IUploadFile,
-} from '@ever-capture/shared-utils';
+    Channel,
+    ILoggable,
+    ILogger,
+    IScreenshot,
+    IUpload,
+    IUploadFile,
+} from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
 import * as path from 'path';
 import { FileManager } from './files/file-manager';

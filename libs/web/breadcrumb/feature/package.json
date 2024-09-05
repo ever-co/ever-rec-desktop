@@ -1,6 +1,6 @@
 {
-  "name": "@ever-capture/breadcrumb-feature",
-  "version": "0.0.1",
+  "name": "@ever-co/breadcrumb-feature",
+  "version": "0.1.0",
   "peerDependencies": {
     "@angular/common": "^17.3.0",
     "@angular/core": "^17.3.0"
@@ -8,5 +8,14 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "description": "This library was generated with [Nx](https://nx.dev).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Ever Co. LTD <ever@ever.co> (https://ever.co)",
+  "private": false,
+  "license": "ISC"
 }

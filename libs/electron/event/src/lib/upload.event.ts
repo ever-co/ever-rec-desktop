@@ -1,9 +1,9 @@
 import {
-  ScreenshotService,
-  VideoService,
-} from '@ever-capture/electron-database';
-import { UploaderService } from '@ever-capture/electron-utils';
-import { Channel, IUpload, UploadType } from '@ever-capture/shared-utils';
+    ScreenshotService,
+    VideoService,
+} from '@ever-co/electron-database';
+import { UploaderService } from '@ever-co/electron-utils';
+import { Channel, IUpload, UploadType } from '@ever-co/shared-utils';
 import { ipcMain, IpcMainEvent } from 'electron';
 
 const uploadService = new UploaderService();

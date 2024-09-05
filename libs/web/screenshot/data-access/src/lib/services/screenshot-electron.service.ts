@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import { ElectronService } from '@ever-capture/electron-data-access';
-import { Channel, IPaginationOptions, IPaginationResponse, IScreenshot } from '@ever-capture/shared-utils';
+import { ElectronService } from '@ever-co/electron-data-access';
+import { Channel, IPaginationOptions, IPaginationResponse, IScreenshot } from '@ever-co/shared-utils';
 
 @Injectable({
   providedIn: 'root',

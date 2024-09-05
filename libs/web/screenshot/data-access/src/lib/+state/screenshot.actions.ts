@@ -1,8 +1,8 @@
 import {
-  IPaginationOptions,
-  IPaginationResponse,
-  IScreenshot,
-} from '@ever-capture/shared-utils';
+    IPaginationOptions,
+    IPaginationResponse,
+    IScreenshot,
+} from '@ever-co/shared-utils';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 export const screenshotActions = createActionGroup({

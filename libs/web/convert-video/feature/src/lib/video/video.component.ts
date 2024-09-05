@@ -1,34 +1,34 @@
 /* eslint-disable @angular-eslint/no-input-rename */
 import { CommonModule } from '@angular/common';
 import {
-  AfterContentInit,
-  AfterViewInit,
-  Component,
-  ElementRef,
-  Input,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-  inject,
+    AfterContentInit,
+    AfterViewInit,
+    Component,
+    ElementRef,
+    Input,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+    inject,
 } from '@angular/core';
 import {
-  generateVideoActions,
-  selectGenerateVideoState,
-  selectSettingState,
-  selectVideoRemoteControlState,
-} from '@ever-capture/convert-video-data-access';
-import { selectScreenshotState } from '@ever-capture/screenshot-data-access';
+    generateVideoActions,
+    selectGenerateVideoState,
+    selectSettingState,
+    selectVideoRemoteControlState,
+} from '@ever-co/convert-video-data-access';
+import { selectScreenshotState } from '@ever-co/screenshot-data-access';
 import { Store } from '@ngrx/store';
 import {
-  Observable,
-  Subject,
-  catchError,
-  combineLatest,
-  filter,
-  map,
-  of,
-  takeUntil,
-  tap,
+    Observable,
+    Subject,
+    catchError,
+    combineLatest,
+    filter,
+    map,
+    of,
+    takeUntil,
+    tap,
 } from 'rxjs';
 
 @Component({

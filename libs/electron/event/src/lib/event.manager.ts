@@ -1,4 +1,4 @@
-import { Channel } from '@ever-capture/shared-utils';
+import { Channel } from '@ever-co/shared-utils';
 import { BrowserWindow } from 'electron';
 
 export class EventManager {
