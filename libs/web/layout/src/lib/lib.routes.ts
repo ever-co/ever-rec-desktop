@@ -7,6 +7,6 @@ export const layoutRoutes: Route[] = [
     loadComponent: () =>
       import('./layout/layout.component').then((c) => c.LayoutComponent),
     loadChildren: () =>
-      import('./screenshot.route').then((r) => r.screenshotRoutes),
+      import('@ever-co/screenshot-feature').then((r) => r.screenshotRoutes),
   },
 ];
