@@ -19,9 +19,7 @@
       "@ever-co/electron-data-access": [
         "libs/electron/data-access/src/index.ts"
       ],
-      "@ever-co/electron-database": [
-        "libs/electron/database/src/index.ts"
-      ],
+      "@ever-co/electron-database": ["libs/electron/database/src/index.ts"],
       "@ever-co/electron-events": ["libs/electron/event/src/index.ts"],
       "@ever-co/electron-utils": ["libs/electron/utils/src/index.ts"],
       "@ever-co/screenshot-data-access": [
@@ -30,9 +28,7 @@
       "@ever-co/screenshot-feature": [
         "libs/web/screenshot/feature/src/index.ts"
       ],
-      "@ever-co/shared-components": [
-        "libs/shared/components/src/index.ts"
-      ],
+      "@ever-co/shared-components": ["libs/shared/components/src/index.ts"],
       "@ever-co/shared-service": ["libs/shared/service/src/index.ts"],
       "@ever-co/shared-utils": ["libs/shared/utils/src/index.ts"]
     },

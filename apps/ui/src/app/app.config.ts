@@ -7,6 +7,7 @@ import { provideScreenshotDataAccess } from '@ever-co/screenshot-data-access';
 import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { appRoutes } from './app.routes';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,6 +17,6 @@ export const appConfig: ApplicationConfig = {
     provideScreenshotDataAccess(),
     provideBreadcrumbDataAccess(),
     provideConvertVideoDataAccess(),
-    provideRouter(appRoutes),
+    provideRouter(appRoutes), provideAnimationsAsync(),
   ],
 };
