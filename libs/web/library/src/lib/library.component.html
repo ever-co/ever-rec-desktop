@@ -1,6 +1,6 @@
 <h4 class="text-xl md:text-xl font-bold mb-6">{{ activeLink.title }}</h4>
 <!-- Tabs -->
-<nav mat-stretch-tabs="false" mat-align-tabs="start" mat-tab-nav-bar >
+<nav class="mb-6" mat-stretch-tabs="false" mat-align-tabs="start" mat-tab-nav-bar >
   @for (link of links; track link.title) {
     <a mat-tab-link
      (click)="activeLink = link"
