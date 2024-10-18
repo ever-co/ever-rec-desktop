@@ -1,0 +1,10 @@
+<nav class="p-2">
+  <mat-nav-list>
+    @for (item of navigationItems$ | async; track item.title) {
+      <a mat-list-item (click)="onSelect(item)" [class.bg-indigo-50]="(selectedItem$ | async)?.title === item.title">
+        <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+        <span matListItemTitle>{{ item.title }}</span>
+      </a>
+    }
+  </mat-nav-list>
+</nav>

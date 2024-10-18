@@ -12,6 +12,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
 import { breadcrumbActions } from '@ever-co/breadcrumb-data-access';
 import { BreadcrumbComponent } from '@ever-co/breadcrumb-feature';
+import { SidebarComponent } from '@ever-co/sidebar-feature';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -30,6 +31,7 @@ import { Store } from '@ngrx/store';
     MatFormFieldModule,
     MatTabsModule,
     MatInputModule,
+    SidebarComponent
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',

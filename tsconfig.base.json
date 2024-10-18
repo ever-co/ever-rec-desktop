@@ -31,7 +31,11 @@
       ],
       "@ever-co/shared-components": ["libs/shared/components/src/index.ts"],
       "@ever-co/shared-service": ["libs/shared/service/src/index.ts"],
-      "@ever-co/shared-utils": ["libs/shared/utils/src/index.ts"]
+      "@ever-co/shared-utils": ["libs/shared/utils/src/index.ts"],
+      "@ever-co/sidebar-data-access": [
+        "libs/web/sidebar/data-access/src/index.ts"
+      ],
+      "@ever-co/sidebar-feature": ["libs/web/sidebar/features/src/index.ts"]
     },
     "sourceMap": true,
     "declaration": false,
