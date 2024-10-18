@@ -3,10 +3,12 @@ import { timelineGuard } from '@ever-co/convert-video-data-access';
 
 export const screenshotRoutes: Route[] = [
   {
-    path: 'screenshots',
+    path: 'library',
     title: 'Continues Recording',
-    loadComponent: () =>
-      import('@ever-co/shared-components').then((c) => c.GalleryComponent),
+    loadChildren: () =>
+      import('@ever-co/library').then(
+        (r) => r.libraryRoutes
+      ),
   },
   {
     path: 'settings',
