@@ -3,7 +3,7 @@ import { Route } from '@angular/router';
 export const convertVideoRoutes: Route[] = [
   {
     path: '',
-    title: 'Memory Keeper',
+    title: 'Continues Recording',
     loadComponent: () =>
       import('./layout/layout.component').then((c) => c.LayoutComponent),
   },

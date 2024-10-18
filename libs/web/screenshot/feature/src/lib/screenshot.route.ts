@@ -4,13 +4,13 @@ import { timelineGuard } from '@ever-co/convert-video-data-access';
 export const screenshotRoutes: Route[] = [
   {
     path: '',
-    title: 'Memory Keeper',
+    title: 'Continues Recording',
     loadComponent: () =>
       import('@ever-co/shared-components').then((c) => c.GalleryComponent),
   },
   {
     path: 'convert',
-    title: 'Memory Keeper',
+    title: 'Continues Recording',
     loadChildren: () =>
       import('@ever-co/convert-video-feature').then(
         (r) => r.convertVideoRoutes
@@ -18,7 +18,7 @@ export const screenshotRoutes: Route[] = [
   },
   {
     path: 'timeline',
-    title: 'Memory Keeper',
+    title: 'Continues Recording',
     canActivate: [timelineGuard],
     loadComponent: () =>
       import('@ever-co/convert-video-feature').then(
