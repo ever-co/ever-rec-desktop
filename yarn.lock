@@ -2464,6 +2464,13 @@
   resolved "https://registry.yarnpkg.com/@ngrx/schematics/-/schematics-17.0.1.tgz#b6652be98dc0a1dff3753a906cdd20d173f3b9fb"
   integrity sha512-yOQxy6PWKbxS2JhE54Li5qAJVruZGkUrsVCcx6pFKssKMGBG1R0EHBZ0BAmFtkiHvyHz3P/RUiaNf+UbWPPgIw==
 
+"@ngrx/store-devtools@^18.1.0":
+  version "18.1.0"
+  resolved "https://registry.yarnpkg.com/@ngrx/store-devtools/-/store-devtools-18.1.0.tgz#f871104f7f7de563c885336f64317e8979ceb4f6"
+  integrity sha512-46oTChtdiJCgONwJ6SuKmVlAMe7fKnlRE1puSMyYh5O45ZuKOE6j4VFQQhIyecoce21eO/zmH3CxuBDJaoD4OQ==
+  dependencies:
+    tslib "^2.0.0"
+
 "@ngrx/store@~17.0.0":
   version "17.0.1"
   resolved "https://registry.yarnpkg.com/@ngrx/store/-/store-17.0.1.tgz#e8ebad6ff28e53cd7c945939d84f26be965a406c"
