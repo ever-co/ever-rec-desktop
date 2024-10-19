@@ -16,10 +16,9 @@
   <main class="flex-1 overflow-auto">
     <!-- Search Header -->
     <header class="p-4 flex items-center justify-between border-b border-gray-200 bg-white">
-      <mat-form-field class="w-full md:w-2/3" appearance="outline">
-        <mat-icon matPrefix class="text-gray-400">search</mat-icon>
-        <input matInput placeholder="Search for applications, tags, folders, and website names">
-      </mat-form-field>
+      <div class="w-full md:w-2/3">
+        <lib-search></lib-search>
+      </div>
       <div class="flex items-center space-x-4">
         <span class="hidden md:block text-sm text-gray-600">12 videos</span>
         <button mat-icon-button>

@@ -1,0 +1,23 @@
+<div class="overlay-container w-full mat-elevation-z2">
+  @if (recents().length > 0) {
+  <mat-action-list>
+    @for (item of recents(); track item) {
+    <mat-list-item>
+      <mat-icon matListItemIcon>history</mat-icon>
+      <p matListItemTitle>{{ item }}</p>
+      <button matListItemMeta mat-icon-button>
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-list-item>
+    }
+  </mat-action-list>
+  } @else {
+  <lib-no-data
+    [message]="
+      searchTerm()
+        ? 'Your search - ' + searchTerm() + ' - did not match any documents.'
+        : 'No data available'
+    "
+  ></lib-no-data>
+  }
+</div>

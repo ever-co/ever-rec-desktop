@@ -13,6 +13,7 @@ import { RouterOutlet } from '@angular/router';
 import { breadcrumbActions } from '@ever-co/breadcrumb-data-access';
 import { BreadcrumbComponent } from '@ever-co/breadcrumb-feature';
 import { SidebarComponent } from '@ever-co/sidebar-feature';
+import { SearchComponent } from '@ever-co/web-search';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -31,7 +32,8 @@ import { Store } from '@ngrx/store';
     MatTabsModule,
     MatInputModule,
     SidebarComponent,
-    RouterOutlet
+    RouterOutlet,
+    SearchComponent
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',

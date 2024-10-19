@@ -1,0 +1,11 @@
+<mat-form-field class="w-full" appearance="outline" cdkOverlayOrigin #overlayPosition="cdkOverlayOrigin" [ngClass]="{'opened mat-elevation-z2': overlayOpen()}">
+  <mat-icon matPrefix class="text-gray-400">search</mat-icon>
+  <input (click)="overlayOpen.set(true)" #search (input)="onChange(search.value)" matInput placeholder="Search for applications, tags, folders, and website names">
+</mat-form-field>
+
+<ng-template cdkConnectedOverlay (overlayOutsideClick)="overlayOpen.set(false)"
+  [cdkConnectedOverlayOrigin]="overlayPosition"
+  [cdkConnectedOverlayOpen]="overlayOpen()"
+  [cdkConnectedOverlayWidth]="offsetWidth">
+  <lib-search-overlay class="w-full"></lib-search-overlay>
+</ng-template>
