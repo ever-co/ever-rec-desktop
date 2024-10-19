@@ -20,6 +20,8 @@ export const libraryRoutes: Route[] = [
         loadComponent: () =>
           import('@ever-co/shared-components').then((m) => m.GalleryComponent),
       },
+      { path: '**', redirectTo: '' },
     ],
   },
+  { path: '**', redirectTo: '' },
 ];

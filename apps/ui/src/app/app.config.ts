@@ -19,6 +19,7 @@ export const appConfig: ApplicationConfig = {
     provideBreadcrumbDataAccess(),
     provideConvertVideoDataAccess(),
     provideSidebarDataAccess(),
-    provideRouter(appRoutes), provideAnimationsAsync(),
+    provideRouter(appRoutes),
+    provideAnimationsAsync(),
   ],
 };

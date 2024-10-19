@@ -37,6 +37,8 @@ export const layoutRoutes: Route[] = [
             (r) => r.TimelineComponent
           ),
       },
+      { path: '**', redirectTo: '' },
     ],
   },
+  { path: '**', redirectTo: '' },
 ];
