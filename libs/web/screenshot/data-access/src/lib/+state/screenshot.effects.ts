@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
+import { Action } from '@ngrx/store';
 import { from, of } from 'rxjs';
 import { catchError, debounceTime, map, mergeMap } from 'rxjs/operators';
 import { ScreenshotElectronService } from '../services/screenshot-electron.service';
@@ -41,7 +42,7 @@ export class ScreenshotEffects {
         screenshotActions.captureSuccess
       ),
       mergeMap(() => {
-        return new Promise((resolve) => {
+        return new Promise<Action<string>>((resolve) => {
           this.electronService.onScreenshotCaptured((screenshot) => {
             resolve(screenshotActions.captureSuccess({ screenshot }));
           });

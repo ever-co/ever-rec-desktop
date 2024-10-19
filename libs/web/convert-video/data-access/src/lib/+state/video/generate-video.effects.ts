@@ -3,6 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { LocalstorageService } from '@ever-co/shared-service';
 import { IVideo } from '@ever-co/shared-utils';
+import { Action } from '@ngrx/store';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { ConvertVideoElectronService } from '../../services/convert-video-electron.service';
@@ -41,7 +42,7 @@ export class GenerateVideoEffects {
     this.actions$.pipe(
       ofType(generateVideoActions.progress, generateVideoActions.startSuccess),
       mergeMap(() => {
-        return new Promise((resolve) => {
+        return new Promise<Action<string>>((resolve) => {
           this.convertVideoElectronService.onProgress((progress) => {
             resolve(generateVideoActions.progress({ progress }));
           });
@@ -55,7 +56,7 @@ export class GenerateVideoEffects {
     this.actions$.pipe(
       ofType(generateVideoActions.startSuccess),
       mergeMap(() => {
-        return new Promise((resolve) => {
+        return new Promise<Action<string>>((resolve) => {
           this.convertVideoElectronService.onDone((video) => {
             resolve(generateVideoActions.finish({ video }));
           });
@@ -69,7 +70,7 @@ export class GenerateVideoEffects {
     this.actions$.pipe(
       ofType(generateVideoActions.startSuccess),
       mergeMap(() => {
-        return new Promise((resolve) => {
+        return new Promise<Action<string>>((resolve) => {
           this.convertVideoElectronService.onError((error) => {
             resolve(generateVideoActions.triggerError({ error }));
           });
