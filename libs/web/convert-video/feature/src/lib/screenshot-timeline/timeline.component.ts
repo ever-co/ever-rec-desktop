@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
-    selectGenerateVideoState,
-    videoRemoteControlActions,
+  selectGenerateVideoState,
+  videoRemoteControlActions,
 } from '@ever-co/convert-video-data-access';
 import { selectScreenshotState } from '@ever-co/screenshot-data-access';
+import { NoDataComponent } from '@ever-co/shared-components';
 import { IScreenshot } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil } from 'rxjs';
@@ -15,13 +16,14 @@ type AggregatedScreenshot = IScreenshot & { xTimeIcon: number; width: number };
 @Component({
   selector: 'lib-timeline',
   standalone: true,
-  imports: [CommonModule, VideoComponent],
+  imports: [CommonModule, VideoComponent, NoDataComponent],
   templateUrl: './timeline.component.html',
   styleUrl: './timeline.component.scss',
 })
 export class TimelineComponent implements OnInit, OnDestroy {
   public screenshots$ = new Observable<AggregatedScreenshot[]>();
   public capturing$ = new Observable<boolean>();
+  public isAvailable$ = new Observable<boolean>();
   private destroy$ = new Subject<void>();
   public store = inject(Store);
   public scrollPercentage = 0;
@@ -29,6 +31,10 @@ export class TimelineComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.capturing$ = this.store.select(selectScreenshotState).pipe(
       map((state) => state.capturing || state.loading),
+      takeUntil(this.destroy$)
+    );
+    this.isAvailable$ = this.store.select(selectScreenshotState).pipe(
+      map((state) => state.count > 0),
       takeUntil(this.destroy$)
     );
     this.screenshots$ = this.store.select(selectGenerateVideoState).pipe(

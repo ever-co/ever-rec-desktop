@@ -1,25 +1,30 @@
-<div class="container">
-  <div class="row"></div>
-  <div class="row">
-    <div class="image-now">
-      <lib-video remote="true" class="timeline"></lib-video>
+@if (isAvailable$ | async) {
+  <div class="container">
+    <div class="row"></div>
+    <div class="row">
+      <div class="image-now">
+        <lib-video remote="true" class="timeline"></lib-video>
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <div (scroll)="onScroll($event)" class="image-container">
-      @for (screenshot of screenshots$ | async; track screenshot.id; let idx = $index, isFirst=$first, isLast=$last) {
-      <div class="line-container">
-        @if (screenshot?.metadata?.icon) {
-        <div [ngStyle]="{width: (screenshot.xTimeIcon * screenshot.width)+'px'}" class="line-image">
-          <img class="image" [src]="screenshot.metadata?.icon" alt="screenshot">
+    <div class="row">
+      <div (scroll)="onScroll($event)" class="image-container">
+        @for (screenshot of screenshots$ | async; track screenshot.id; let idx = $index, isFirst=$first, isLast=$last) {
+        <div class="line-container">
+          @if (screenshot?.metadata?.icon) {
+          <div [ngStyle]="{width: (screenshot.xTimeIcon * screenshot.width)+'px'}" class="line-image">
+            <img class="image" [src]="screenshot.metadata?.icon" alt="screenshot">
+          </div>
+          }
+          <div [ngStyle]="{width: (screenshot.xTimeIcon * (screenshot.width + 4))+'px'}"
+            [ngClass]="{'radius-left': isFirst, 'radius-right':  isLast }" class="line"></div>
         </div>
         }
-        <div [ngStyle]="{width: (screenshot.xTimeIcon * (screenshot.width + 4))+'px'}"
-          [ngClass]="{'radius-left': isFirst, 'radius-right':  isLast }" class="line"></div>
       </div>
-      }
+      <div class="cursor" [style.left.%]="scrollPercentage"></div>
     </div>
-    <div class="cursor" [style.left.%]="scrollPercentage"></div>
+    <div class="row"></div>
   </div>
-  <div class="row"></div>
-</div>
+} @else {
+  <lib-no-data message="No timeline available"></lib-no-data>
+}
+

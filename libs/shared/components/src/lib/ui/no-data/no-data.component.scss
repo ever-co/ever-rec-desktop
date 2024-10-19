@@ -1,0 +1,9 @@
+mat-icon {
+  rotate: -90deg;
+  font-size: 48px;
+  font-weight: 500;
+  width: 48px !important;
+  height: 48px !important;
+  transform: matrix(1, 0, 0, -1, 0, 0);
+  color: var(--mat-outlined-button-state-layer-color);
+}
