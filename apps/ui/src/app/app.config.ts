@@ -1,7 +1,13 @@
-import { ApplicationConfig, isDevMode, provideZoneChangeDetection } from '@angular/core';
+import {
+  ApplicationConfig,
+  isDevMode,
+  provideZoneChangeDetection,
+} from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
-  provideRouter
+  provideRouter,
+  withHashLocation,
+  withViewTransitions,
 } from '@angular/router';
 import { provideBreadcrumbDataAccess } from '@ever-co/breadcrumb-data-access';
 import { provideConvertVideoDataAccess } from '@ever-co/convert-video-data-access';
@@ -22,7 +28,7 @@ export const appConfig: ApplicationConfig = {
     provideEffects(),
     provideStore(),
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(appRoutes),
+    provideRouter(appRoutes, withViewTransitions(), withHashLocation()),
     provideAnimationsAsync(),
   ],
 };
