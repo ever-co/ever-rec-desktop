@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { screenshotActions } from '@ever-co/screenshot-data-access';
 import { Store } from '@ngrx/store';
-import { debounceTime, distinctUntilChanged, of, tap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, of, tap } from 'rxjs';
 import { SearchOverlayComponent } from '../search-overlay/search-overlay.component';
 import { SearchService } from './search.service';
 
@@ -39,6 +39,7 @@ export class SearchComponent {
   public onChange(value: string) {
     of(value)
       .pipe(
+        filter(Boolean),
         distinctUntilChanged(),
         debounceTime(1000),
         tap((filter) => {

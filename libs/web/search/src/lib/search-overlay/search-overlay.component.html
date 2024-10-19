@@ -3,11 +3,14 @@
   <mat-action-list>
     @for (item of recents(); track item) {
     <mat-list-item>
-      <mat-icon matListItemIcon>history</mat-icon>
-      <p matListItemTitle>{{ item }}</p>
-      <button matListItemMeta mat-icon-button>
-        <mat-icon>close</mat-icon>
-      </button>
+      <div matListItemTitle class="flex items-center">
+        <img
+          class="w-8 h-8 rounded-full"
+          [src]="item?.metadata?.icon"
+          alt="icon"
+        />
+        <p>{{ item?.metadata?.name }}</p>
+      </div>
     </mat-list-item>
     }
   </mat-action-list>
