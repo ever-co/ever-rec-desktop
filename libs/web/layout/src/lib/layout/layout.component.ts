@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,8 +10,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterOutlet } from '@angular/router';
+import { breadcrumbActions } from '@ever-co/breadcrumb-data-access';
 import { BreadcrumbComponent } from '@ever-co/breadcrumb-feature';
 import { SidebarComponent } from '@ever-co/sidebar-feature';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'lib-layout',
@@ -34,4 +36,13 @@ import { SidebarComponent } from '@ever-co/sidebar-feature';
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
 })
-export class LayoutComponent {}
+export class LayoutComponent implements OnInit{
+  constructor(private readonly store: Store) {}
+  ngOnInit(): void {
+    this.store.dispatch(
+      breadcrumbActions.set({
+        breadcrumbs: [{ label: 'home', url: 'home' }],
+      })
+    );
+  }
+}

@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { Router } from '@angular/router';
+import { breadcrumbActions } from '@ever-co/breadcrumb-data-access';
 import {
   INavigationState,
   selectSidebarState,
@@ -31,6 +32,11 @@ export class SidebarComponent {
   }
 
   public async onSelect(selectedItem: INavigationState) {
+    this.store.dispatch(
+      breadcrumbActions.set({
+        breadcrumbs: [{ label: selectedItem.title, url: selectedItem.route }],
+      })
+    );
     this.store.dispatch(SidebarActions.selectNavigationItem({ selectedItem }));
     await this.router.navigate([selectedItem.route]);
   }
