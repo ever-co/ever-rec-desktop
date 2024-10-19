@@ -25,7 +25,8 @@ export class SidebarComponent {
 
   constructor(private readonly store: Store, private readonly router: Router) {
     const sidebarState$ = this.store.select(selectSidebarState);
-    this.selectedItem$ = sidebarState$.pipe(map((state) => state.selectedItem));
+    this.selectedItem$ = sidebarState$.pipe(map((state) => {
+      return state.selectedItem}));
     this.navigationItems$ = sidebarState$.pipe(
       map((state) => state.navigationItems)
     );
