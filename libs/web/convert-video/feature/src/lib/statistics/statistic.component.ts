@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import {
-    screenshotActions,
-    selectScreenshotState,
+  screenshotActions,
+  selectScreenshotState,
 } from '@ever-co/screenshot-data-access';
 import { Store } from '@ngrx/store';
 import { Observable, map } from 'rxjs';

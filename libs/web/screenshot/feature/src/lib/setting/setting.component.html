@@ -1,0 +1,25 @@
+<div class="setting max-w-xl space-y-6 w-full">
+  <form [formGroup]="formGroup" class="form space-y-4" (ngSubmit)="onSubmit()">
+
+    <!-- Frame Rate Input -->
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Period (second)</mat-label>
+      <input matInput type="number" id="period" formControlName="period" placeholder="Enter the period" />
+      <mat-error *ngIf="formGroup.controls['period'].invalid && formGroup.controls['period'].touched">
+        @if (formGroup.controls['period'].hasError('required')) {
+          <p>Period is required</p>
+        }
+        @if (formGroup.controls['period'].hasError('min')) {
+          <p>Period must be a valid number not null or negative.</p>
+        }
+      </mat-error>
+    </mat-form-field>
+
+     <!-- Submit and Cancel Buttons -->
+     <div class="flex space-x-4">
+      <button mat-stroked-button color="primary" type="submit" [disabled]="formGroup.invalid">
+        Save
+      </button>
+    </div>
+  </form>
+</div>

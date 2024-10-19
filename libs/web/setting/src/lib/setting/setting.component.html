@@ -1,0 +1,14 @@
+<h4 class="text-xl md:text-xl font-bold mb-6">{{ activeLink.title }}</h4>
+<!-- Tabs -->
+<nav class="mb-6" [tabPanel]="tabPanel" mat-stretch-tabs="false" mat-align-tabs="start" mat-tab-nav-bar >
+  @for (link of links; track link.title) {
+    <a mat-tab-link
+     (click)="activeLink = link"
+     [routerLink]="link.route"
+     [active]="activeLink.title === link.title"> {{link.title}} </a>
+  }
+</nav>
+<!-- router -->
+<mat-tab-nav-panel #tabPanel>
+  <router-outlet></router-outlet>
+</mat-tab-nav-panel>

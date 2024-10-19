@@ -7,6 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import {
@@ -21,7 +22,7 @@ import { Store } from '@ngrx/store';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
-  selector: 'lib-setting',
+  selector: 'lib-convert-video-setting',
   standalone: true,
   imports: [
     CommonModule,
@@ -30,6 +31,7 @@ import { Subject, takeUntil, tap } from 'rxjs';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    MatFormFieldModule
   ],
   templateUrl: './setting.component.html',
   styleUrl: './setting.component.scss',

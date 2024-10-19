@@ -23,10 +23,8 @@ export const layoutRoutes: Route[] = [
       },
       {
         path: 'settings',
-        loadComponent: () =>
-          import('@ever-co/convert-video-feature').then(
-            (r) => r.SettingComponent
-          ),
+        loadChildren: () =>
+          import('@ever-co/web-setting').then((r) => r.settingRoutes),
       },
       {
         path: 'timeline',

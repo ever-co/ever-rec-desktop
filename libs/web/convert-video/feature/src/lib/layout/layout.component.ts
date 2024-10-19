@@ -8,7 +8,7 @@ import { StatisticComponent } from '../statistics/statistic.component';
 import { VideoComponent } from '../video/video.component';
 
 @Component({
-  selector: 'lib-layout',
+  selector: 'lib-convert-video-layout',
   standalone: true,
   imports: [
     CommonModule,
