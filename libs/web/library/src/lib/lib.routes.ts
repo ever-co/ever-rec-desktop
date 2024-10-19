@@ -12,7 +12,7 @@ export const libraryRoutes: Route[] = [
         path: 'videos',
         loadComponent: () =>
           import('@ever-co/convert-video-feature').then(
-            (m) => m.VideoComponent
+            (m) => m.VideoGalleryComponent
           ),
       },
       {
