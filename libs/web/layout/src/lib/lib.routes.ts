@@ -8,9 +8,9 @@ export const layoutRoutes: Route[] = [
     loadComponent: () =>
       import('./layout/layout.component').then((c) => c.LayoutComponent),
     children: [
-      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       {
-        path: 'home',
+        path: 'dashboard',
         loadComponent: () =>
           import('@ever-co/convert-video-feature').then(
             (r) => r.StatisticComponent

@@ -15,7 +15,7 @@ export interface ISidebarState {
 }
 
 const navigationItems = [
-  { title: 'Home', icon: 'home', route: '/home' },
+  { title: 'Dashboard', icon: 'dashboard', route: '/dashboard' },
   { title: 'My Library', icon: 'video_library', route: '/library' },
   { title: 'Timeline', icon: 'view_timeline', route: '/timeline' },
   { title: 'Settings', icon: 'settings', route: '/settings' },
