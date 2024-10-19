@@ -3,7 +3,15 @@
     <mat-card class="w-full" appearance="outlined">
       <mat-card-content>
         <div>State</div>
-        <h6>Running...</h6>
+        @if (capturing$ | async) {
+          <h6>Capturing...</h6>
+        }
+        @else if (generating$ | async) {
+          <h6>Generating...</h6>
+        }
+        @else{
+          <h6>Idle</h6>
+        }
       </mat-card-content>
     </mat-card>
     <mat-card class="w-full" appearance="outlined">
@@ -15,7 +23,7 @@
     <mat-card class="w-full" appearance="outlined">
       <mat-card-content>
         <div>Screenshots</div>
-        <h6>300</h6>
+        <h6>{{screenshotCount$ | async}}</h6>
       </mat-card-content>
     </mat-card>
   </div>
