@@ -18,14 +18,17 @@
      <mat-form-field appearance="outline" class="w-full">
       <mat-label>Period (second)</mat-label>
       <input matInput type="number" id="period" formControlName="period" placeholder="Enter the period" />
-      @if (formGroup.controls['period'].invalid && formGroup.controls['period'].touched) {
-        @if (formGroup.controls['period'].hasError('required')) {
-          <mat-error>Period is required</mat-error>
+      <mat-error>
+        @if (formGroup.controls['period'].invalid && formGroup.controls['period'].touched) {
+          @if (formGroup.controls['period'].hasError('required')) {
+            Period is required
+          }
+          @if (formGroup.controls['period'].hasError('min')) {
+            Period must be a valid number not null or negative.
+          }
         }
-        @if (formGroup.controls['period'].hasError('min')) {
-          <mat-error>Period must be a valid number not null or negative.</mat-error>
-        }
-      }
+      </mat-error>
+
     </mat-form-field>
 
      <!-- Submit and Cancel Buttons -->
