@@ -37,6 +37,7 @@
         "libs/web/sidebar/data-access/src/index.ts"
       ],
       "@ever-co/sidebar-feature": ["libs/web/sidebar/features/src/index.ts"],
+      "@ever-co/web-dashboard": ["libs/web/dashboard/src/index.ts"],
       "@ever-co/web-setting": ["libs/web/setting/src/index.ts"]
     },
     "sourceMap": true,

@@ -41,7 +41,7 @@ export class LayoutComponent implements OnInit{
   ngOnInit(): void {
     this.store.dispatch(
       breadcrumbActions.set({
-        breadcrumbs: [{ label: 'home', url: 'home' }],
+        breadcrumbs: [{ label: 'Dashboard', url: 'dashboard' }],
       })
     );
   }

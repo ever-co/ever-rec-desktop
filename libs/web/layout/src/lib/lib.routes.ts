@@ -12,8 +12,8 @@ export const layoutRoutes: Route[] = [
       {
         path: 'dashboard',
         loadComponent: () =>
-          import('@ever-co/convert-video-feature').then(
-            (r) => r.StatisticComponent
+          import('@ever-co/web-dashboard').then(
+            (r) => r.DashboardComponent
           ),
       },
       {
