@@ -2,7 +2,6 @@ import { Route } from '@angular/router';
 import { timelineGuard } from '@ever-co/convert-video-data-access';
 
 export const layoutRoutes: Route[] = [
-  { path: '', redirectTo: '', pathMatch: 'full' },
   {
     path: '',
     title: 'Continues Recording',
@@ -24,9 +23,9 @@ export const layoutRoutes: Route[] = [
       },
       {
         path: 'settings',
-        loadChildren: () =>
+        loadComponent: () =>
           import('@ever-co/convert-video-feature').then(
-            (r) => r.convertVideoRoutes
+            (r) => r.SettingComponent
           ),
       },
       {
