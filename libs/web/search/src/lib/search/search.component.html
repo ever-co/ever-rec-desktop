@@ -4,7 +4,7 @@
 </mat-form-field>
 
 <ng-template cdkConnectedOverlay (overlayOutsideClick)="overlayOpen.set(false)"
-  [cdkConnectedOverlayOrigin]="overlayPosition"
+  [cdkConnectedOverlayOrigin]="overlayPosition || null"
   [cdkConnectedOverlayOpen]="overlayOpen()"
   [cdkConnectedOverlayWidth]="offsetWidth">
   <lib-search-overlay class="w-full"></lib-search-overlay>

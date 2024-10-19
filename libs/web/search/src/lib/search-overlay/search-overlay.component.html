@@ -3,7 +3,7 @@
   <mat-action-list>
     @for (item of recents(); track item) {
     <mat-list-item>
-      <div matListItemTitle class="flex items-center">
+      <div matListItemTitle class="flex gap-2 items-center">
         <img
           class="w-8 h-8 rounded-full"
           [src]="item?.metadata?.icon"
