@@ -1,0 +1,27 @@
+<div class="setting max-w-xl space-y-6 w-full">
+  <form [formGroup]="formGroup" class="form space-y-4" (ngSubmit)="onSubmit()">
+    <p>How long do you want to keep your data?</p>
+     <!-- Select Input -->
+     <mat-form-field  appearance="outline" class="w-full">
+      <mat-label>Retention Period</mat-label>
+      <mat-select formControlName="retention" required>
+        @for (period of retentionPeriods; track period) {
+          <mat-option [value]="period">{{period}}</mat-option>
+        }
+      </mat-select>
+      @if (formGroup.controls['retention'].hasError('required')) {
+        <mat-error>Please choose a retention period</mat-error>
+      }
+    </mat-form-field>
+
+     <!-- Submit and Cancel Buttons -->
+     <div class="flex space-x-4">
+      <button mat-stroked-button color="primary" type="submit" [disabled]="formGroup.invalid">
+        Save
+      </button>
+      <button mat-stroked-button color="warn" type="button">
+        Delete All Data...
+      </button>
+    </div>
+  </form>
+</div>

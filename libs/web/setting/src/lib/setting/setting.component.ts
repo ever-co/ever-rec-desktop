@@ -26,6 +26,10 @@ export class SettingComponent {
       title: 'Screen Capture',
       route: 'screen-capture-settings',
     },
+    {
+      title: 'Storage',
+      route: 'storage',
+    },
   ];
 
   public activeLink = this.links[0];

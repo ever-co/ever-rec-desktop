@@ -20,6 +20,11 @@ export const settingRoutes: Route[] = [
         loadComponent: () =>
           import('@ever-co/screenshot-feature').then((m) => m.SettingComponent),
       },
+      {
+        path: 'storage',
+        loadComponent: () =>
+          import('./storage/storage.component').then((m) => m.StorageComponent),
+      },
       { path: '**', redirectTo: '' },
     ],
   },
