@@ -1,26 +1,36 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
-    FormControl,
-    FormGroup,
-    ReactiveFormsModule,
-    Validators,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import {
-    generateVideoActions,
-    selectGenerateVideoState,
-    selectSettingState,
-    settingActions,
+  MatSlideToggleChange,
+  MatSlideToggleModule,
+} from '@angular/material/slide-toggle';
+import {
+  selectSettingState,
+  settingActions,
 } from '@ever-co/convert-video-data-access';
-import { selectScreenshotState } from '@ever-co/screenshot-data-access';
-import { ToggleComponent } from '@ever-co/shared-components';
 import { Store } from '@ngrx/store';
-import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'lib-setting',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ToggleComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatSlideToggleModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+  ],
   templateUrl: './setting.component.html',
   styleUrl: './setting.component.scss',
 })
@@ -28,9 +38,6 @@ export class SettingComponent implements OnInit, OnDestroy {
   public formGroup!: FormGroup;
   private store = inject(Store);
   private destroy$ = new Subject<void>();
-  public generating$!: Observable<boolean>;
-  private filter = '';
-  private count = 0;
 
   ngOnInit(): void {
     this.formGroup = new FormGroup({
@@ -40,21 +47,6 @@ export class SettingComponent implements OnInit, OnDestroy {
       batch: new FormControl('', [Validators.required]),
       optimized: new FormControl(false),
     });
-
-    this.store
-      .select(selectScreenshotState)
-      .pipe(
-        tap((state) => {
-          this.filter = state.filter;
-          this.count = state.count;
-        }),
-        takeUntil(this.destroy$)
-      )
-      .subscribe();
-    this.generating$ = this.store.select(selectGenerateVideoState).pipe(
-      map((state) => state.generating),
-      takeUntil(this.destroy$)
-    );
 
     this.store
       .select(selectSettingState)
@@ -67,7 +59,7 @@ export class SettingComponent implements OnInit, OnDestroy {
     this.store.dispatch(settingActions.load());
   }
 
-  public onCheck(checked: boolean) {
+  public onCheck({ checked }: MatSlideToggleChange) {
     this.formGroup.controls['optimized'].setValue(checked);
   }
 
@@ -75,34 +67,10 @@ export class SettingComponent implements OnInit, OnDestroy {
     return this.formGroup.get('optimized')?.value;
   }
 
-  onSubmit(): void {
-    if (!this.count) {
-      this.store.dispatch(
-        generateVideoActions.failure({ error: 'No available frames' })
-      );
-      return;
-    }
-    if (this.formGroup.valid && this.count > 0) {
-      this.store.dispatch(
-        settingActions.update({ videoConfig: this.formGroup.value })
-      );
-      this.store.dispatch(
-        generateVideoActions.start({
-          config: this.formGroup.value,
-          filter: this.filter
-        })
-      );
-    } else {
-      this.formGroup.markAllAsTouched(); // Mark all fields as touched to show validation errors
-      console.log('Form is invalid');
-      this.store.dispatch(
-        generateVideoActions.failure({ error: 'Form is invalid' })
-      );
-    }
-  }
-
-  cancel() {
-    this.store.dispatch(generateVideoActions.cancel());
+  public onSubmit(): void {
+    this.store.dispatch(
+      settingActions.update({ videoConfig: this.formGroup.value })
+    );
   }
 
   ngOnDestroy(): void {

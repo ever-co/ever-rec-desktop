@@ -30,8 +30,8 @@ export class SidebarComponent {
     );
   }
 
-  public onSelect(selectedItem: INavigationState) {
+  public async onSelect(selectedItem: INavigationState) {
     this.store.dispatch(SidebarActions.selectNavigationItem({ selectedItem }));
-    this.router.navigate([selectedItem.route]);
+    await this.router.navigate([selectedItem.route]);
   }
 }

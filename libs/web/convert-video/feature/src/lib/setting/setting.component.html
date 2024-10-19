@@ -1,61 +1,57 @@
-<div class="setting">
-  <div class="title">Generate Video Configuration</div>
-  <form [formGroup]="formGroup" class="form" (ngSubmit)="onSubmit()">
-    <div class="input-container">
-      <input type="text" id="frameRate" formControlName="frameRate" class="input-field"
-        placeholder="Enter the frame rate" aria-label="Frame Rate (fps)" />
-      <label class="input-label" for="frameRate">Frame Rate (fps)</label>
-      <div *ngIf="formGroup.controls['frameRate'].invalid && formGroup.controls['frameRate'].touched" class="error">
-        Frame rate is required and must be a number.
-      </div>
-    </div>
+<div class="setting max-w-xl space-y-6 w-full">
+  <h3 class="title text-2xl font-semibold text-gray-800">Generate Video</h3>
 
-    <div class="input-container">
-      <input type="text" id="codec" formControlName="codec" class="input-field" placeholder="Codec"
-        aria-label="Codec" />
-      <label class="input-label" for="codec">Codec</label>
-      <div *ngIf="formGroup.controls['codec'].invalid && formGroup.controls['codec'].touched" class="error">
+  <form [formGroup]="formGroup" class="form space-y-4" (ngSubmit)="onSubmit()">
+
+    <!-- Frame Rate Input -->
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Frame Rate (fps)</mat-label>
+      <input matInput type="number" id="frameRate" formControlName="frameRate" placeholder="Enter the frame rate" />
+      <mat-error *ngIf="formGroup.controls['frameRate'].invalid && formGroup.controls['frameRate'].touched">
+        Frame rate is required and must be a valid number.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Codec Input -->
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Codec</mat-label>
+      <input matInput type="text" id="codec" formControlName="codec" placeholder="Enter codec" />
+      <mat-error *ngIf="formGroup.controls['codec'].invalid && formGroup.controls['codec'].touched">
         Codec is required.
-      </div>
-    </div>
+      </mat-error>
+    </mat-form-field>
 
-    <div class="input-container">
-      <input type="text" id="resolution" formControlName="resolution" class="input-field" placeholder="Resolution"
-        aria-label="Resolution" />
-      <label class="input-label" for="resolution">Resolution</label>
-      <div *ngIf="formGroup.controls['resolution'].invalid && formGroup.controls['resolution'].touched" class="error">
+    <!-- Resolution Input -->
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Resolution</mat-label>
+      <input matInput type="text"  id="resolution" formControlName="resolution" placeholder="Enter resolution" />
+      <mat-error *ngIf="formGroup.controls['resolution'].invalid && formGroup.controls['resolution'].touched">
         Resolution is required.
-      </div>
-    </div>
+      </mat-error>
+    </mat-form-field>
 
-    <div class="input-container">
-      <input type="number" id="batch" formControlName="batch" class="input-field" placeholder="Batch Size"
-        aria-label="Duration" />
-      <label class="input-label" for="batch">Batch Size</label>
-
-      <div *ngIf="formGroup.controls['batch'].invalid && formGroup.controls['batch'].touched" class="error">
+    <!-- Batch Size Input -->
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Batch Size</mat-label>
+      <input  matInput type="number" id="batch" formControlName="batch" placeholder="Enter batch size" />
+      <mat-error *ngIf="formGroup.controls['batch'].invalid && formGroup.controls['batch'].touched">
         Batch size is required.
-      </div>
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Toggle for Optimization -->
+    <div class="start flex justify-between items-center">
+      <span class="text-gray-700">Optimization</span>
+      <mat-slide-toggle [checked]="optimizedControl" (change)="onCheck($event)">
+        {{ optimizedControl ? 'Enable' : 'Disable' }}
+      </mat-slide-toggle>
     </div>
 
-    <div class="start">
-      <lib-toggle [checked]="optimizedControl" (check)="onCheck($event)"
-        [label]="optimizedControl ? 'Optimized': 'Normal'"></lib-toggle>
-    </div>
-
-    <div class="row command">
-      <button class="button" type="submit" [disabled]="formGroup.invalid && (generating$ | async)">
-        @if(generating$ | async) {
-        <div class="progress">
-          <svg xmlns="http://www.w3.org/2000/svg" height="14px" viewBox="0 -960 960 960" width="14px" fill="#fff">
-            <path
-              d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q17 0 28.5 11.5T520-840q0 17-11.5 28.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160q133 0 226.5-93.5T800-480q0-17 11.5-28.5T840-520q17 0 28.5 11.5T880-480q0 82-31.5 155t-86 127.5q-54.5 54.5-127 86T480-80Z" />
-          </svg>
-        </div>
-        }
-        Generate
+     <!-- Submit and Cancel Buttons -->
+     <div class="flex space-x-4">
+      <button mat-stroked-button color="primary" type="submit" [disabled]="formGroup.invalid">
+        Save
       </button>
-      <button class="button cancel" (click)="cancel()">Cancel</button>
     </div>
   </form>
 </div>
