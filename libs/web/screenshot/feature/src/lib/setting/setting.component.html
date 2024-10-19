@@ -1,20 +1,6 @@
 <div class="setting max-w-xl space-y-6 w-full">
   <form [formGroup]="formGroup" class="form space-y-4" (ngSubmit)="onSubmit()">
 
-    <!-- Period Input -->
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>Period (second)</mat-label>
-      <input matInput type="number" id="period" formControlName="period" placeholder="Enter the period" />
-      @if (formGroup.controls['period'].invalid && formGroup.controls['period'].touched) {
-        @if (formGroup.controls['period'].hasError('required')) {
-          <mat-error>Period is required</mat-error>
-        }
-        @if (formGroup.controls['period'].hasError('min')) {
-          <mat-error>Period must be a valid number not null or negative.</mat-error>
-        }
-      }
-    </mat-form-field>
-
      <!-- Select Input -->
      <mat-form-field  appearance="outline" class="w-full">
       <mat-label>Source</mat-label>
@@ -25,6 +11,20 @@
       </mat-select>
       @if (formGroup.controls['source'].hasError('required')) {
         <mat-error>Please choose a source</mat-error>
+      }
+    </mat-form-field>
+
+     <!-- Period Input -->
+     <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Period (second)</mat-label>
+      <input matInput type="number" id="period" formControlName="period" placeholder="Enter the period" />
+      @if (formGroup.controls['period'].invalid && formGroup.controls['period'].touched) {
+        @if (formGroup.controls['period'].hasError('required')) {
+          <mat-error>Period is required</mat-error>
+        }
+        @if (formGroup.controls['period'].hasError('min')) {
+          <mat-error>Period must be a valid number not null or negative.</mat-error>
+        }
       }
     </mat-form-field>
 
