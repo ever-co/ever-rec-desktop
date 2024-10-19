@@ -25,12 +25,7 @@ export const timelineGuard: CanActivateFn = () => {
       const { count, filter } = screenshotState;
       const { video } = videoState;
 
-      if (!count) {
-        router.navigate(['/settings']);
-        return of(false);
-      }
-
-      if (!video.pathname) {
+      if (!video.pathname && count) {
         return store.select(selectSettingState).pipe(
           map(({ videoConfig }) => {
             store.dispatch(
