@@ -1,6 +1,7 @@
 import { Route } from '@angular/router';
 
 export const libraryRoutes: Route[] = [
+  { path: '', redirectTo: '', pathMatch: 'full' },
   {
     path: '',
     loadComponent: () =>
@@ -10,12 +11,9 @@ export const libraryRoutes: Route[] = [
       {
         path: 'videos',
         loadComponent: () =>
-          import('@ever-co/shared-components').then((m) => m.GalleryComponent),
-      },
-      {
-        path: 'archive',
-        loadComponent: () =>
-          import('@ever-co/shared-components').then((m) => m.GalleryComponent),
+          import('@ever-co/convert-video-feature').then(
+            (m) => m.VideoComponent
+          ),
       },
       {
         path: 'screenshots',

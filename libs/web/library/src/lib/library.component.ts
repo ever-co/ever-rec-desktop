@@ -24,10 +24,6 @@ export class LibraryComponent {
       route: 'videos',
     },
     {
-      title: 'Archive',
-      route: 'archive',
-    },
-    {
       title: 'Screenshots',
       route: 'screenshots',
     },

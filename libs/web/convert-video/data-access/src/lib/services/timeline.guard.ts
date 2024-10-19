@@ -26,7 +26,7 @@ export const timelineGuard: CanActivateFn = () => {
       const { video } = videoState;
 
       if (!count) {
-        router.navigate(['/convert']);
+        router.navigate(['/settings']);
         return of(false);
       }
 
