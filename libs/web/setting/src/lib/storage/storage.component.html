@@ -6,7 +6,7 @@
       <mat-label>Retention Period</mat-label>
       <mat-select formControlName="retention" required>
         @for (period of retentionPeriods; track period) {
-          <mat-option [value]="period">{{period}}</mat-option>
+          <mat-option [value]="period">{{period | humanize: 'day' | titlecase}}</mat-option>
         }
       </mat-select>
       @if (formGroup.controls['retention'].hasError('required')) {

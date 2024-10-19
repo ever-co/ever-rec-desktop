@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { HumanizePipe } from '@ever-co/shared-service';
 
 @Component({
   selector: 'lib-storage',
@@ -23,6 +24,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatIconModule,
     MatFormFieldModule,
     MatSelectModule,
+    HumanizePipe
   ],
   templateUrl: './storage.component.html',
   styleUrl: './storage.component.scss',
