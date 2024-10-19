@@ -65,10 +65,6 @@ a:focus {
   outline: thin dotted;
 }
 
-// GENERIC - FONTS
-
-@import url('https://fonts.googleapis.com/css?family=Work+Sans&display=swap');
-
 // ELEMENTS - A
 
 a:link {
@@ -82,12 +78,6 @@ a:hover {
 
 a:visited:not([rel='external']) {
   color: currentColor;
-}
-
-// ELEMENTS - BODY
-
-.container {
-  font: 16px/32px 'Work Sans', sans-serif;
 }
 
 // OBJECTS - INLINE-SVG-ICON
