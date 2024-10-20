@@ -5,11 +5,11 @@
     class="w-full md:w-48 bg-white border-gray-200 md:flex md:flex-col sidenav"
   >
     <div class="p-4 border-b border-gray-200">
-      <div class="flex items-center space-x-2">
+      <div class="flex items-center gap-2">
         <mat-icon class="text-indigo-600">blur_circular</mat-icon>
         <span class="text-xl font-semibold">Ever Capture</span>
         @if(isMobileView){
-        <mat-icon (click)="toggleSidenav()">close</mat-icon>
+        <mat-icon class="ml-auto" (click)="toggleSidenav()">close</mat-icon>
         }
       </div>
     </div>
