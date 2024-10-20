@@ -56,17 +56,18 @@
     <mat-card class="w-full" appearance="outlined">
       <mat-card-content class="p-6">
         <p class="text-sm font-medium text-gray-600 mb-4">Recent Screenshots</p>
-        <div class="min-h-[24rem]">
-          <lib-no-data message="No recent screenshots"></lib-no-data>
+        <div>
+          <lib-screenshot-gallery class="dashboard"></lib-screenshot-gallery>
+          <!-- <lib-no-data message="No recent screenshots"></lib-no-data> -->
         </div>
       </mat-card-content>
     </mat-card>
 
     <!-- Recent Videos -->
     <mat-card class="w-full" appearance="outlined">
-      <mat-card-content class="p-6">
+      <mat-card-content class="p-6 h-full">
         <p class="text-sm font-medium text-gray-600 mb-4">Recent Videos</p>
-        <div class="min-h-[24rem]">
+        <div class="h-full">
           <lib-no-data message="No recent videos"></lib-no-data>
         </div>
       </mat-card-content>
