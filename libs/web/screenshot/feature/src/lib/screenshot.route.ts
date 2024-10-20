@@ -4,7 +4,9 @@ export const screenshotRoutes: Route[] = [
   {
     path: '',
     loadComponent: () =>
-      import('@ever-co/shared-components').then((m) => m.GalleryComponent),
+      import('./screenshot-gallery/screenshot-gallery.component').then(
+        (m) => m.ScreenshotGalleryComponent
+      ),
   },
   {
     path: ':id',

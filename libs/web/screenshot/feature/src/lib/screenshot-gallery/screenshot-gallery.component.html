@@ -1,0 +1,57 @@
+@if (isAvailable$ | async) {
+  <div
+    libInfiniteScroll
+    (scrolled)="moreScreenshots()"
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4"
+  >
+    @for (screenshot of screenshots$ | async; track screenshot) {
+      <mat-card appearance="outlined">
+        <div class="p-4">
+          <img
+          mat-card-image
+          [src]="screenshot.pathname"
+          alt="Screenshot"
+          class="w-full h-auto object-cover rounded-md"
+        />
+        </div>
+
+        <mat-card-content>
+          <div class="flex gap-4">
+            @if(screenshot.metadata?.icon) {
+              <img
+                mat-card-avatar
+                [src]="screenshot.metadata?.icon"
+                [alt]="screenshot.metadata?.name"
+                class="w-10 h-10 rounded-full"
+              />
+            }
+            <div>
+              @if(screenshot.metadata?.name) {
+                <div class="text-lg font-medium">
+                  {{ screenshot.metadata?.name }}
+                </div>
+              }
+              <div class="text-sm text-gray-500">
+                {{ screenshot.createdAt | utcToLocalTime }}
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    }
+
+    @if(capturing$ | async) {
+      <mat-card class="screenshot-card flex items-center justify-center p-8">
+        <mat-spinner diameter="48" class="text-gray-300"></mat-spinner>
+      </mat-card>
+    }
+  </div>
+} @else {
+  <div class="flex items-center justify-center p-8">
+    <lib-no-data
+      message="No screenshots available"
+      class="text-center text-gray-500"
+    >
+    </lib-no-data>
+  </div>
+}
