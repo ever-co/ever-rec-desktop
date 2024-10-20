@@ -5,7 +5,7 @@
     class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pr-4 overflow-auto max-h-svh"
   >
     @for (screenshot of screenshots$ | async; track screenshot) {
-      <mat-card appearance="outlined">
+      <mat-card [routerLink]="[screenshot.id]" appearance="outlined">
         <div class="p-4">
           <img
           mat-card-image

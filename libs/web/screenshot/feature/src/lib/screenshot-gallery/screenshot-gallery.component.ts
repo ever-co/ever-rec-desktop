@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { RouterLink } from '@angular/router';
 import {
   screenshotActions,
   selectScreenshotState,
@@ -24,7 +25,8 @@ import { Observable, Subject, map, takeUntil, tap } from 'rxjs';
     UtcToLocalTimePipe,
     NoDataComponent,
     MatCardModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    RouterLink
   ],
   templateUrl: './screenshot-gallery.component.html',
   styleUrl: './screenshot-gallery.component.scss',
