@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { selectGenerateVideoState } from '@ever-co/convert-video-data-access';
 import { selectScreenshotState } from '@ever-co/screenshot-data-access';
 import { NoDataComponent } from '@ever-co/shared-components';
@@ -10,7 +11,7 @@ import { map, Observable } from 'rxjs';
 @Component({
   selector: 'lib-dashboard',
   standalone: true,
-  imports: [CommonModule, MatCardModule, NoDataComponent],
+  imports: [CommonModule, MatCardModule, NoDataComponent, MatIconModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })

@@ -1,43 +1,74 @@
-<div class="flex gap-4 flex-col">
-  <div class="flex items-center gap-4 justify-between w-full">
+<!-- dashboard.component.html -->
+<div class="w-full space-y-6">
+  <!-- Status Cards - Stack on mobile, grid on larger screens -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <!-- State Card -->
     <mat-card class="w-full" appearance="outlined">
-      <mat-card-content>
-        <div>State</div>
-        @if (capturing$ | async) {
-          <h6>Capturing...</h6>
-        }
-        @else if (generating$ | async) {
-          <h6>Generating...</h6>
-        }
-        @else{
-          <h6>Not Running.</h6>
-        }
+      <mat-card-content class="p-6">
+        <div class="flex items-center justify-between">
+          <div class="space-y-1">
+            <p class="text-sm font-medium text-gray-600">State</p>
+            <h6 class="text-2xl font-bold">
+              @if (capturing$ | async) {
+                <span>Capturing...</span>
+              } @else if (generating$ | async) {
+                <span>Generating...</span>
+              } @else {
+                <span>Not Running.</span>
+              }
+            </h6>
+          </div>
+          <mat-icon class="h-6 w-6 text-gray-600">photo_camera</mat-icon>
+        </div>
       </mat-card-content>
     </mat-card>
+
+    <!-- Videos Card -->
     <mat-card class="w-full" appearance="outlined">
-      <mat-card-content >
-        <div>Videos</div>
-        <h6>12</h6>
+      <mat-card-content class="p-6">
+        <div class="flex items-center justify-between">
+          <div class="space-y-1">
+            <p class="text-sm font-medium text-gray-600">Videos</p>
+            <h6 class="text-2xl font-bold">12</h6>
+          </div>
+          <mat-icon class="h-6 w-6 text-gray-600">videocam</mat-icon>
+        </div>
       </mat-card-content>
     </mat-card>
+
+    <!-- Screenshots Card -->
     <mat-card class="w-full" appearance="outlined">
-      <mat-card-content>
-        <div>Screenshots</div>
-        <h6>{{screenshotCount$ | async}}</h6>
+      <mat-card-content class="p-6">
+        <div class="flex items-center justify-between">
+          <div class="space-y-1">
+            <p class="text-sm font-medium text-gray-600">Screenshots</p>
+            <h6 class="text-2xl font-bold">{{screenshotCount$ | async}}</h6>
+          </div>
+          <mat-icon class="h-6 w-6 text-gray-600">photo_library</mat-icon>
+        </div>
       </mat-card-content>
     </mat-card>
   </div>
-  <div class="flex items-center gap-4 justify-between w-full">
-    <mat-card class="w-full min-h-96"appearance="outlined">
-      <mat-card-content>
-        <div>Recent screenshots</div>
-        <lib-no-data message="No recent screenshots"></lib-no-data>
+
+  <!-- Content Cards - Stack on mobile, 2 columns on larger screens -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Recent Screenshots -->
+    <mat-card class="w-full" appearance="outlined">
+      <mat-card-content class="p-6">
+        <p class="text-sm font-medium text-gray-600 mb-4">Recent Screenshots</p>
+        <div class="min-h-[24rem]">
+          <lib-no-data message="No recent screenshots"></lib-no-data>
+        </div>
       </mat-card-content>
     </mat-card>
-    <mat-card class="w-full min-h-96" appearance="outlined">
-      <mat-card-content >
-        <div>Recent Videos</div>
-        <lib-no-data message="No recent videos"></lib-no-data>
+
+    <!-- Recent Videos -->
+    <mat-card class="w-full" appearance="outlined">
+      <mat-card-content class="p-6">
+        <p class="text-sm font-medium text-gray-600 mb-4">Recent Videos</p>
+        <div class="min-h-[24rem]">
+          <lib-no-data message="No recent videos"></lib-no-data>
+        </div>
       </mat-card-content>
     </mat-card>
   </div>
