@@ -19,7 +19,7 @@
       <button mat-stroked-button color="primary" type="submit" [disabled]="formGroup.invalid">
         Save
       </button>
-      <button mat-stroked-button color="warn" type="button">
+      <button mat-stroked-button color="warn" (click)="purge()" type="button">
         Delete All Data...
       </button>
     </div>

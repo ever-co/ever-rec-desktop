@@ -1,5 +1,5 @@
 {
-  "name": "@ever-co/web-setting",
+  "name": "@ever-co/web-setting-feature",
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^17.3.0",

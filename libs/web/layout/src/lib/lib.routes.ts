@@ -24,7 +24,7 @@ export const layoutRoutes: Route[] = [
       {
         path: 'settings',
         loadChildren: () =>
-          import('@ever-co/web-setting').then((r) => r.settingRoutes),
+          import('@ever-co/web-setting-feature').then((r) => r.settingRoutes),
       },
       {
         path: 'timeline',

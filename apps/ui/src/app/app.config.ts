@@ -13,6 +13,7 @@ import { provideBreadcrumbDataAccess } from '@ever-co/breadcrumb-data-access';
 import { provideConvertVideoDataAccess } from '@ever-co/convert-video-data-access';
 import { provideScreenshotDataAccess } from '@ever-co/screenshot-data-access';
 import { provideSidebarDataAccess } from '@ever-co/sidebar-data-access';
+import { provideSettingsDataAccess } from '@ever-co/web-setting-data-access';
 import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
@@ -24,6 +25,7 @@ export const appConfig: ApplicationConfig = {
     provideBreadcrumbDataAccess(),
     provideConvertVideoDataAccess(),
     provideSidebarDataAccess(),
+    provideSettingsDataAccess(),
     provideStoreDevtools({ logOnly: !isDevMode() }),
     provideEffects(),
     provideStore(),

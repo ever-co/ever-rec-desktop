@@ -39,7 +39,10 @@
       "@ever-co/sidebar-feature": ["libs/web/sidebar/features/src/index.ts"],
       "@ever-co/web-dashboard": ["libs/web/dashboard/src/index.ts"],
       "@ever-co/web-search": ["libs/web/search/src/index.ts"],
-      "@ever-co/web-setting": ["libs/web/setting/src/index.ts"]
+      "@ever-co/web-setting-feature": ["libs/web/settings/features/src/index.ts"],
+      "@ever-co/web-setting-data-access": [
+        "libs/web/settings/data-access/src/index.ts"
+      ]
     },
     "sourceMap": true,
     "declaration": false,
