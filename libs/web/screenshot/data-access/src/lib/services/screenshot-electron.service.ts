@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { ElectronService } from '@ever-co/electron-data-access';
-import { Channel, IPaginationOptions, IPaginationResponse, IScreenshot } from '@ever-co/shared-utils';
+import { Channel, IPaginationOptions, IPaginationResponse, IScreenCaptureConfig, IScreenshot } from '@ever-co/shared-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -19,8 +19,8 @@ export class ScreenshotElectronService {
     this.electronService.send(Channel.STOP_CAPTURE_SCREEN);
   }
 
-  public startCapture(interval: number): void {
-    this.electronService.send(Channel.START_CAPTURE_SCREEN, interval);
+  public startCapture(config: IScreenCaptureConfig): void {
+    this.electronService.send(Channel.START_CAPTURE_SCREEN, config);
   }
 
   public getAllScreenshots(options: IPaginationOptions): Promise<IPaginationResponse<IScreenshot>> {

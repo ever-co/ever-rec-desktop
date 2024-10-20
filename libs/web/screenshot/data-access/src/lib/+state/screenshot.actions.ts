@@ -1,14 +1,15 @@
 import {
-    IPaginationOptions,
-    IPaginationResponse,
-    IScreenshot,
+  IPaginationOptions,
+  IPaginationResponse,
+  IScreenCaptureConfig,
+  IScreenshot,
 } from '@ever-co/shared-utils';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 export const screenshotActions = createActionGroup({
   source: 'Screenshot',
   events: {
-    'Start Capture': props<{ delay: number }>(),
+    'Start Capture': props<IScreenCaptureConfig>(),
     'Start Capture Success': emptyProps(),
     'Stop Capture': emptyProps(),
     'Stop Capture Success': emptyProps(),

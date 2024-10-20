@@ -17,7 +17,7 @@ export class ScreenshotEffects {
     this.actions$.pipe(
       ofType(screenshotActions.startCapture),
       map((action) => {
-        this.electronService.startCapture(action.delay);
+        this.electronService.startCapture(action);
         return screenshotActions.startCaptureSuccess();
       }),
       catchError((error) => of(screenshotActions.captureFailure({ error })))

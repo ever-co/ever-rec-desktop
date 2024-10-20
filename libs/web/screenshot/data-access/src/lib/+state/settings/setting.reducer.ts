@@ -15,8 +15,7 @@ export interface State {
 const initialState: State = {
   screenCaptureConfig: {
     period: 2,
-    source: Source.WINDOWS,
-    retention: 7,
+    source: Source.SCREEN
   },
   error: '',
 };

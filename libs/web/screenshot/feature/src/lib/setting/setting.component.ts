@@ -12,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { selectSettingScreenCaptureState, settingScreenCaptureActions } from '@ever-co/screenshot-data-access';
+import { Source } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { Subject, takeUntil, tap } from 'rxjs';
 
@@ -32,7 +33,7 @@ import { Subject, takeUntil, tap } from 'rxjs';
 })
 export class SettingComponent implements OnInit, OnDestroy {
   public formGroup!: FormGroup;
-  public sources = ['windows', 'screen'];
+  public sources = Object.values(Source);
   private destroy$ = new Subject<void>();
 
   constructor(private readonly store: Store) {}

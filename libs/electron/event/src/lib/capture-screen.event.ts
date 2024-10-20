@@ -6,9 +6,11 @@ import {
 } from '@ever-co/electron-utils';
 import {
   Channel,
+  IScreenCaptureConfig,
   IScreenshot,
   IScreenshotInput,
   SCREENSHOT_INTERVAL_DELAY,
+  Source,
 } from '@ever-co/shared-utils';
 import {
   desktopCapturer,
@@ -29,17 +31,17 @@ export function captureScreenEvent(): void {
   ipcMain.on(Channel.STOP_CAPTURE_SCREEN, stopCaptureScreen);
 }
 
-export function captureScreen(event: IpcMainEvent, interval: number) {
+export function captureScreen(event: IpcMainEvent, config: IScreenCaptureConfig) {
   if (captureInterval) {
     clearInterval(captureInterval);
   }
   captureInterval = setInterval(async () => {
-    const screenshot = await takeScreenshot();
+    const screenshot = await takeScreenshot(config.source);
     if (screenshot) {
       eventManager.reply(Channel.SCREENSHOT_CAPTURED, screenshot);
       event.sender.scrollToBottom();
     }
-  }, interval || SCREENSHOT_INTERVAL_DELAY);
+  }, (config.period * 1000) || SCREENSHOT_INTERVAL_DELAY);
 }
 
 export function stopCaptureScreen() {
@@ -49,19 +51,25 @@ export function stopCaptureScreen() {
   }
 }
 
-async function takeScreenshot(): Promise<IScreenshot | null> {
+async function takeScreenshot(config = Source.SCREEN): Promise<IScreenshot | null> {
   try {
     const [screenSource, windowSource] = await Promise.all([
       getScreenSource(),
       getWindowSource(),
     ]);
 
-    if (!screenSource) {
+    if (!screenSource && config === Source.SCREEN) {
       logger.warn('Screen source not found.');
       return null;
     }
 
-    const screenshotBuffer = screenSource.thumbnail.toPNG();
+    if (!windowSource && config === Source.WINDOW) {
+      logger.warn('Screen source not found.');
+    }
+
+    const source = config === Source.SCREEN ? screenSource : windowSource
+
+    const screenshotBuffer = source.thumbnail.toPNG();
     const fileName = `screenshot-${Date.now()}.png`;
     const screenshotPath = await FileManager.write(
       SCREENSHOT_DIR,
@@ -97,7 +105,7 @@ async function takeScreenshot(): Promise<IScreenshot | null> {
 
 async function getScreenSource() {
   const sources = await desktopCapturer.getSources({
-    types: ['screen'],
+    types: [Source.SCREEN],
     thumbnailSize: getWindowSize(),
     fetchWindowIcons: false,
   });
@@ -107,7 +115,7 @@ async function getScreenSource() {
 
 async function getWindowSource() {
   const windows = await desktopCapturer.getSources({
-    types: ['window'],
+    types: [Source.WINDOW],
     thumbnailSize: getWindowSize(),
     fetchWindowIcons: true,
   });

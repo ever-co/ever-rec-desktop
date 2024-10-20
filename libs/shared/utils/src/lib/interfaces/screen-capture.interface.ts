@@ -1,10 +1,9 @@
 export enum Source {
-  WINDOWS = 'windows',
+  WINDOW = 'window',
   SCREEN = 'screen',
 }
 
 export interface IScreenCaptureConfig {
   source: Source;
   period: number;
-  retention: number;
 }
