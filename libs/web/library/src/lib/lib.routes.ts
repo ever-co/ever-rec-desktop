@@ -17,8 +17,8 @@ export const libraryRoutes: Route[] = [
       },
       {
         path: 'screenshots',
-        loadComponent: () =>
-          import('@ever-co/shared-components').then((m) => m.GalleryComponent),
+        loadChildren: () =>
+          import('@ever-co/screenshot-feature').then((m) => m.screenshotRoutes),
       },
       { path: '**', redirectTo: '' },
     ],
