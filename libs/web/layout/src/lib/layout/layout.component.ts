@@ -38,16 +38,19 @@ import { Subject, debounceTime, takeUntil } from 'rxjs';
     RouterOutlet,
     SearchComponent,
     StartComponent,
-    StopComponent
+    StopComponent,
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
 })
-export class LayoutComponent implements OnInit, OnDestroy{
+export class LayoutComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
   public isExpanded = false;
   public isMobileView = false;
-  constructor(private readonly store: Store, private readonly breakpointObserver: BreakpointObserver) {}
+  constructor(
+    private readonly store: Store,
+    private readonly breakpointObserver: BreakpointObserver
+  ) {}
   public ngOnInit(): void {
     this.store.dispatch(
       breadcrumbActions.set({
@@ -59,9 +62,7 @@ export class LayoutComponent implements OnInit, OnDestroy{
       .pipe(debounceTime(100), takeUntil(this.destroy$))
       .subscribe((result) => {
         this.isMobileView = result.matches;
-        if (this.isExpanded && !this.isMobileView) {
-          this.isExpanded = false;
-        }
+        this.isExpanded = !this.isMobileView;
       });
   }
 
