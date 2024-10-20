@@ -1,6 +1,6 @@
-<div class="flex h-screen bg-gray-50">
+<div class="flex flex-col md:flex-row h-screen bg-gray-50">
   <!-- Sidebar -->
-  <aside class="w-64 bg-white border-r border-gray-200 hidden md:block">
+  <aside class="w-full md:w-64 bg-white border-r border-gray-200 hidden md:flex md:flex-col">
     <div class="p-4 border-b border-gray-200">
       <div class="flex items-center space-x-2">
         <mat-icon class="text-indigo-600">blur_circular</mat-icon>
@@ -9,10 +9,10 @@
     </div>
 
     <!-- Navigation Menu -->
-    <lib-sidebar></lib-sidebar>
+    <lib-sidebar class="flex-grow"></lib-sidebar>
 
     <!-- command -->
-    <div class="border-t p-4 items-center justify-center w-full border-gray-200 hidden md:block flex flex-col gap-4">
+    <div class="border-t p-4 items-center justify-center w-full border-gray-200 flex flex-col gap-4 mt-auto">
       <lib-start></lib-start>
       <lib-stop></lib-stop>
     </div>
@@ -35,7 +35,7 @@
 
     <!-- Content Area -->
     <div class="p-4 md:p-8">
-      <!-- breadcumb -->
+      <!-- breadcrumb -->
       <lib-breadcrumb></lib-breadcrumb>
       <!-- Router outlet -->
       <router-outlet></router-outlet>
