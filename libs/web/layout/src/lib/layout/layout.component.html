@@ -1,38 +1,44 @@
-<div class="flex flex-col md:flex-row h-screen bg-gray-50">
-  <!-- Sidebar -->
-  <aside class="w-full md:w-64 bg-white border-r border-gray-200 hidden md:flex md:flex-col">
+<mat-sidenav-container class="flex flex-col md:flex-row h-screen bg-gray-50">
+  <mat-sidenav
+    [mode]="isMobileView ? 'over' : 'side'"
+    [(opened)]="isExpanded"
+    class="w-full md:w-48 bg-white border-gray-200 md:flex md:flex-col"
+  >
+    @if(isMobileView){
+    <mat-toolbar (click)="toggleSidenav()">
+      <mat-icon>close</mat-icon>
+    </mat-toolbar>
+    }
     <div class="p-4 border-b border-gray-200">
       <div class="flex items-center space-x-2">
         <mat-icon class="text-indigo-600">blur_circular</mat-icon>
         <span class="text-xl font-semibold">Ever Capture</span>
       </div>
     </div>
-
     <!-- Navigation Menu -->
     <lib-sidebar class="flex-grow"></lib-sidebar>
-
     <!-- command -->
     <div class="border-t p-4 items-center justify-center w-full border-gray-200 flex flex-col gap-4 mt-auto">
       <lib-start></lib-start>
       <lib-stop></lib-stop>
     </div>
-  </aside>
+  </mat-sidenav>
 
   <!-- Main Content -->
-  <main class="flex-1 overflow-auto">
+  <mat-sidenav-content class="flex border-l flex-col overflow-auto">
     <!-- Search Header -->
-    <header class="p-4 flex items-center justify-between border-b border-gray-200 bg-white">
+    <header
+      class="p-4 gap-4 flex items-center justify-start border-b border-gray-200 bg-white"
+    >
+      @if(!isExpanded) {
+      <button mat-icon-button (click)="toggleSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      }
       <div class="w-full md:w-2/3">
         <lib-search></lib-search>
       </div>
-      <div class="flex items-center space-x-4">
-        <span class="hidden md:block text-sm text-gray-600">12 videos</span>
-        <button mat-icon-button>
-          <mat-icon>account_circle</mat-icon>
-        </button>
-      </div>
     </header>
-
     <!-- Content Area -->
     <div class="p-4 md:p-8">
       <!-- breadcrumb -->
@@ -40,5 +46,5 @@
       <!-- Router outlet -->
       <router-outlet></router-outlet>
     </div>
-  </main>
-</div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
