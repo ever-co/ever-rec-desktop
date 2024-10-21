@@ -89,7 +89,7 @@ $gap: 4px;
   top: 0;
   height: 72px;
   width: 5px;
-  background-color: #ddd;
+  background-color: var(--mat-outlined-button-state-layer-color);
   transform: translateX(-50%);
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
