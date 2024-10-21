@@ -54,7 +54,7 @@ export class SettingComponent implements OnInit, OnDestroy {
       batch: new FormControl('', [Validators.required]),
       period: new FormControl('10', [Validators.required]),
       optimized: new FormControl(false),
-      autoGeneration: new FormControl(true),
+      autoGenerate: new FormControl(true),
     });
 
     this.store
@@ -62,7 +62,7 @@ export class SettingComponent implements OnInit, OnDestroy {
       .pipe(
         tap(({ videoConfig }) => {
           this.formGroup.patchValue(videoConfig);
-          this.onCheck({ checked: videoConfig.autoGeneration });
+          this.onCheck({ checked: videoConfig.autoGenerate });
         }),
         takeUntil(this.destroy$)
       )

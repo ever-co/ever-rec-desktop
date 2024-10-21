@@ -17,7 +17,7 @@ export const initialState: State = {
     duration: 60,
     batch: 100,
     optimized: false,
-    autoGeneration: true,
+    autoGenerate: true,
     period: 10,
   },
   error: '',

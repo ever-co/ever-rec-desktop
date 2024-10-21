@@ -80,15 +80,15 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Toggle for Optimization -->
+    <!-- Toggle for Auto Generate -->
     <div class="start flex justify-between items-center">
-      <span class="text-gray-700">Auto Generation</span>
-      <mat-slide-toggle (change)="onCheck($event)" formControlName="autoGeneration"> </mat-slide-toggle>
+      <span class="text-gray-700">Auto Generate</span>
+      <mat-slide-toggle (change)="onCheck($event)" formControlName="autoGenerate"> </mat-slide-toggle>
     </div>
 
     <!-- Select Input -->
     <mat-form-field appearance="outline" class="w-full">
-      <mat-label>Generate Each</mat-label>
+      <mat-label>Each</mat-label>
       <mat-select formControlName="period" required>
         @for (period of periods; track period) {
         <mat-option [value]="period">{{

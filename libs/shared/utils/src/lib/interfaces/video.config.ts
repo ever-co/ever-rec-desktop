@@ -5,7 +5,7 @@ export interface IVideoConfig {
   codec: string;
   batch: number;
   optimized?: boolean;
-  autoGeneration: boolean;
+  autoGenerate: boolean;
   period: number;
 }
 
