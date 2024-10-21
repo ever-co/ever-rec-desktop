@@ -1,5 +1,5 @@
 export default {
-  displayName: 'setting-data-access',
+  displayName: 'web-setting-data-access',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory:
