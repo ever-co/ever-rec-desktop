@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterLink } from '@angular/router';
 import { generateVideoActions, selectGenerateVideoState } from '@ever-co/convert-video-data-access';
-import { NoDataComponent } from '@ever-co/shared-components';
+import { NoDataComponent, VideoComponent } from '@ever-co/shared-components';
 import {
   InfiniteScrollDirective,
   UtcToLocalTimePipe,
@@ -25,7 +25,8 @@ import { Observable, Subject, map, takeUntil, tap } from 'rxjs';
     MatCardModule,
     MatProgressSpinnerModule,
     RouterLink,
-    MatIconModule
+    MatIconModule,
+    VideoComponent
   ],
   templateUrl: './video-gallery.component.html',
   styleUrl: './video-gallery.component.scss',

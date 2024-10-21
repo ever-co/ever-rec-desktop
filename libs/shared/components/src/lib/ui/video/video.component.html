@@ -1,0 +1,36 @@
+@if (video) {
+  <mat-card class="card" appearance="outlined">
+    <div class="p-4">
+      <video
+        mat-card-image
+        [src]="video.pathname"
+        alt="Video"
+        class="w-full h-auto object-cover rounded-md"
+        playsinline
+        autoplay
+        muted
+        loop
+      >
+        <source [src]="video.pathname" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      <div class="overlay"></div>
+    </div>
+
+    <mat-card-content>
+      <div class="flex w-full truncate gap-4">
+        <mat-icon class="rounded-full">play_arrow</mat-icon>
+        <div class="max-w-56">
+          @if(video.pathname) {
+          <div class="text-lg truncate">
+            {{ video.pathname }}
+          </div>
+          }
+          <div class="text-sm text-gray-500">
+            {{ video.createdAt | utcToLocalTime }}
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+}

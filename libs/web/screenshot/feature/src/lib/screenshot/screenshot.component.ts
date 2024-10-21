@@ -5,7 +5,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ScreenshotElectronService } from '@ever-co/screenshot-data-access';
-import { NoDataComponent } from '@ever-co/shared-components';
+import { NoDataComponent, VideoComponent } from '@ever-co/shared-components';
 import { UtcToLocalTimePipe } from '@ever-co/shared-service';
 import { IScreenshot } from '@ever-co/shared-utils';
 import { concatMap, filter, Observable } from 'rxjs';
@@ -13,7 +13,7 @@ import { concatMap, filter, Observable } from 'rxjs';
 @Component({
   selector: 'lib-screenshot',
   standalone: true,
-  imports: [CommonModule, NoDataComponent, UtcToLocalTimePipe, MatCardModule, MatIconModule, MatChipsModule],
+  imports: [CommonModule, NoDataComponent, UtcToLocalTimePipe, MatCardModule, MatIconModule, MatChipsModule, VideoComponent],
   templateUrl: './screenshot.component.html',
   styleUrl: './screenshot.component.scss',
 })
