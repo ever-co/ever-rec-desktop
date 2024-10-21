@@ -13,7 +13,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterOutlet } from '@angular/router';
 import { breadcrumbActions } from '@ever-co/breadcrumb-data-access';
 import { BreadcrumbComponent } from '@ever-co/breadcrumb-feature';
-import { StartComponent, StopComponent } from '@ever-co/screenshot-feature';
+import { StartComponent } from '@ever-co/shared-components';
 import { SidebarComponent } from '@ever-co/sidebar-feature';
 import { SearchComponent } from '@ever-co/web-search';
 import { Store } from '@ngrx/store';
@@ -37,8 +37,7 @@ import { Subject, debounceTime, takeUntil } from 'rxjs';
     SidebarComponent,
     RouterOutlet,
     SearchComponent,
-    StartComponent,
-    StopComponent,
+    StartComponent
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',

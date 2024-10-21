@@ -1,5 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import {
   screenshotActions,
   selectScreenshotState,
@@ -12,7 +15,7 @@ import { Observable, Subject, map, takeUntil, tap } from 'rxjs';
 @Component({
   selector: 'lib-start',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatButtonModule, MatIconModule, MatTooltipModule],
   templateUrl: './start.component.html',
   styleUrl: './start.component.scss',
 })
@@ -38,6 +41,10 @@ export class StartComponent implements OnInit, OnDestroy {
 
   public startCapture(): void {
     this.store.dispatch(screenshotActions.startCapture(this.config));
+  }
+
+  public stopCapture() {
+    this.store.dispatch(screenshotActions.stopCapture());
   }
 
   ngOnDestroy(): void {

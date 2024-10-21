@@ -1,0 +1,24 @@
+@if (notCapturing$ | async) {
+<button
+  mat-stroked-button
+  class="relative group"
+  (click)="startCapture()"
+  matTooltip="Start continues screenshots capture"
+>
+  <mat-icon>play_arrow</mat-icon>
+  <span>Start</span>
+  <span class="ml-1 hidden group-hover:inline">Capturing</span>
+</button>
+}@else {
+<button
+  mat-stroked-button
+  color="warn"
+  (click)="stopCapture()"
+  class="relative group"
+  matTooltip="Stop continues screenshots capture"
+>
+  <mat-icon>pause</mat-icon>
+  <span class="inline group-hover:hidden">Capturing</span>
+  <span class="ml-1 hidden group-hover:inline">Stop Capturing</span>
+</button>
+}
