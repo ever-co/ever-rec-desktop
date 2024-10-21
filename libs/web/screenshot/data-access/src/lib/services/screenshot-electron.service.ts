@@ -27,6 +27,10 @@ export class ScreenshotElectronService {
     return this.electronService.invoke(Channel.REQUEST_SCREENSHOTS, options);
   }
 
+  public getOneScreenshot<T>(options: T): Promise<IScreenshot> {
+    return this.electronService.invoke(Channel.REQUEST_ONE_SCREENSHOT, options);
+  }
+
   public deleteAllScreenshots(): Promise<void> {
     return this.electronService.invoke(Channel.REQUEST_PURGE);
   }

@@ -9,6 +9,7 @@ export enum Channel {
   'CANCEL_GENERATING' = 'cancel-generating',
   'GENERATION_ERROR' = 'generation-error',
   'REQUEST_SCREENSHOTS' = 'request-screeshots',
+  'REQUEST_ONE_SCREENSHOT' = 'request::one::screeshots',
   'REQUEST_DELETE_ALL_SCREENSHOTS' = 'request-delete-all-screeshots',
   'REQUEST_PURGE' = 'request-purge',
   'SEARCHING' = 'searching',

@@ -28,6 +28,11 @@ export function crudScreeshotEvents() {
     }
   );
 
+  // Get one screenshot
+  ipcMain.handle(Channel.REQUEST_ONE_SCREENSHOT, async (_, options = {}) => {
+    return ScreenshotService.findOne(options);
+  });
+
   // searching
   ipcMain.handle(
     Channel.SEARCHING,
@@ -76,6 +81,7 @@ export async function purgeData() {
 export function removeCrudScreenshotEvent(): void {
   const channels = [
     Channel.REQUEST_SCREENSHOTS,
+    Channel.REQUEST_ONE_SCREENSHOT,
     Channel.SEARCHING,
     Channel.REQUEST_PURGE,
   ];
