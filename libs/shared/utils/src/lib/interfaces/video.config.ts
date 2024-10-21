@@ -5,6 +5,8 @@ export interface IVideoConfig {
   codec: string;
   batch: number;
   optimized?: boolean;
+  autoGeneration: boolean;
+  period: number;
 }
 
 export interface IVideoConvertPayload {

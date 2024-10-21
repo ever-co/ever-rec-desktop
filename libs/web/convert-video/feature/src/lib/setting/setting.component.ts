@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import {
   MatSlideToggleChange,
   MatSlideToggleModule,
@@ -18,6 +19,7 @@ import {
   selectSettingState,
   settingActions,
 } from '@ever-co/convert-video-data-access';
+import { HumanizePipe } from '@ever-co/shared-service';
 import { Store } from '@ngrx/store';
 import { Subject, takeUntil, tap } from 'rxjs';
 
@@ -31,7 +33,9 @@ import { Subject, takeUntil, tap } from 'rxjs';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    HumanizePipe,
+    MatSelectModule,
   ],
   templateUrl: './setting.component.html',
   styleUrl: './setting.component.scss',
@@ -40,6 +44,7 @@ export class SettingComponent implements OnInit, OnDestroy {
   public formGroup!: FormGroup;
   private store = inject(Store);
   private destroy$ = new Subject<void>();
+  public periods = [5, 10, 15, 30];
 
   ngOnInit(): void {
     this.formGroup = new FormGroup({
@@ -47,13 +52,18 @@ export class SettingComponent implements OnInit, OnDestroy {
       codec: new FormControl('', Validators.required),
       resolution: new FormControl('', Validators.required),
       batch: new FormControl('', [Validators.required]),
+      period: new FormControl('10', [Validators.required]),
       optimized: new FormControl(false),
+      autoGeneration: new FormControl(true),
     });
 
     this.store
       .select(selectSettingState)
       .pipe(
-        tap((state) => this.formGroup.patchValue(state.videoConfig)),
+        tap(({ videoConfig }) => {
+          this.formGroup.patchValue(videoConfig);
+          this.onCheck({ checked: videoConfig.autoGeneration });
+        }),
         takeUntil(this.destroy$)
       )
       .subscribe();
@@ -61,8 +71,12 @@ export class SettingComponent implements OnInit, OnDestroy {
     this.store.dispatch(settingActions.load());
   }
 
-  public onCheck({ checked }: MatSlideToggleChange) {
-    this.formGroup.controls['optimized'].setValue(checked);
+  public onCheck({ checked }: Partial<MatSlideToggleChange>) {
+    if (checked) {
+      this.formGroup.controls['period'].enable();
+    } else {
+      this.formGroup.controls['period'].disable();
+    }
   }
 
   public get optimizedControl(): boolean {

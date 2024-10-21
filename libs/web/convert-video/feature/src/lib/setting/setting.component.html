@@ -1,11 +1,21 @@
 <div class="setting max-w-xl space-y-6 w-full">
   <form [formGroup]="formGroup" class="form space-y-4" (ngSubmit)="onSubmit()">
-
     <!-- Frame Rate Input -->
     <mat-form-field appearance="outline" class="w-full">
       <mat-label>Frame Rate (fps)</mat-label>
-      <input matInput type="number" id="frameRate" formControlName="frameRate" placeholder="Enter the frame rate" />
-      <mat-error *ngIf="formGroup.controls['frameRate'].invalid && formGroup.controls['frameRate'].touched">
+      <input
+        matInput
+        type="number"
+        id="frameRate"
+        formControlName="frameRate"
+        placeholder="Enter the frame rate"
+      />
+      <mat-error
+        *ngIf="
+          formGroup.controls['frameRate'].invalid &&
+          formGroup.controls['frameRate'].touched
+        "
+      >
         Frame rate is required and must be a valid number.
       </mat-error>
     </mat-form-field>
@@ -13,8 +23,19 @@
     <!-- Codec Input -->
     <mat-form-field appearance="outline" class="w-full">
       <mat-label>Codec</mat-label>
-      <input matInput type="text" id="codec" formControlName="codec" placeholder="Enter codec" />
-      <mat-error *ngIf="formGroup.controls['codec'].invalid && formGroup.controls['codec'].touched">
+      <input
+        matInput
+        type="text"
+        id="codec"
+        formControlName="codec"
+        placeholder="Enter codec"
+      />
+      <mat-error
+        *ngIf="
+          formGroup.controls['codec'].invalid &&
+          formGroup.controls['codec'].touched
+        "
+      >
         Codec is required.
       </mat-error>
     </mat-form-field>
@@ -22,8 +43,19 @@
     <!-- Resolution Input -->
     <mat-form-field appearance="outline" class="w-full">
       <mat-label>Resolution</mat-label>
-      <input matInput type="text"  id="resolution" formControlName="resolution" placeholder="Enter resolution" />
-      <mat-error *ngIf="formGroup.controls['resolution'].invalid && formGroup.controls['resolution'].touched">
+      <input
+        matInput
+        type="text"
+        id="resolution"
+        formControlName="resolution"
+        placeholder="Enter resolution"
+      />
+      <mat-error
+        *ngIf="
+          formGroup.controls['resolution'].invalid &&
+          formGroup.controls['resolution'].touched
+        "
+      >
         Resolution is required.
       </mat-error>
     </mat-form-field>
@@ -31,23 +63,58 @@
     <!-- Batch Size Input -->
     <mat-form-field appearance="outline" class="w-full">
       <mat-label>Batch Size</mat-label>
-      <input  matInput type="number" id="batch" formControlName="batch" placeholder="Enter batch size" />
-      <mat-error *ngIf="formGroup.controls['batch'].invalid && formGroup.controls['batch'].touched">
+      <input
+        matInput
+        type="number"
+        id="batch"
+        formControlName="batch"
+        placeholder="Enter batch size"
+      />
+      <mat-error
+        *ngIf="
+          formGroup.controls['batch'].invalid &&
+          formGroup.controls['batch'].touched
+        "
+      >
         Batch size is required.
       </mat-error>
     </mat-form-field>
 
     <!-- Toggle for Optimization -->
     <div class="start flex justify-between items-center">
-      <span class="text-gray-700">Optimization</span>
-      <mat-slide-toggle [checked]="optimizedControl" (change)="onCheck($event)">
-        {{ optimizedControl ? 'Enable' : 'Disable' }}
-      </mat-slide-toggle>
+      <span class="text-gray-700">Auto Generation</span>
+      <mat-slide-toggle (change)="onCheck($event)" formControlName="autoGeneration"> </mat-slide-toggle>
     </div>
 
-     <!-- Submit and Cancel Buttons -->
-     <div class="flex space-x-4">
-      <button mat-stroked-button color="primary" type="submit" [disabled]="formGroup.invalid">
+    <!-- Select Input -->
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Generate Each</mat-label>
+      <mat-select formControlName="period" required>
+        @for (period of periods; track period) {
+        <mat-option [value]="period">{{
+          period | humanize : 'minutes' | titlecase
+        }}</mat-option>
+        }
+      </mat-select>
+      @if (formGroup.controls['period'].hasError('required')) {
+      <mat-error>Please choose a period</mat-error>
+      }
+    </mat-form-field>
+
+    <!-- Toggle for Optimization -->
+    <div class="start flex justify-between items-center">
+      <span class="text-gray-700">Optimization</span>
+      <mat-slide-toggle formControlName="optimized"> </mat-slide-toggle>
+    </div>
+
+    <!-- Submit and Cancel Buttons -->
+    <div class="flex space-x-4">
+      <button
+        mat-stroked-button
+        color="primary"
+        type="submit"
+        [disabled]="formGroup.invalid"
+      >
         Save
       </button>
     </div>

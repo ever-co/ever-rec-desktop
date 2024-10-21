@@ -6,7 +6,7 @@ import moment from 'moment';
   standalone: true,
 })
 export class HumanizePipe implements PipeTransform {
-  transform(value: string, unit: moment.DurationInputArg2): string {
+  transform(value: string | number, unit: moment.DurationInputArg2): string {
     return moment.duration(value, unit).humanize();
   }
 }
