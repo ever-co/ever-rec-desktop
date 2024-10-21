@@ -61,6 +61,10 @@ export class VideoService implements IVideoService {
     }
   }
 
+  public async findAndCount(options?: FindManyOptions<IVideo>) {
+    return this.repository.findAndCount(options);
+  }
+
   public async findAll(options: FindManyOptions): Promise<IVideo[]> {
     return this.repository.find(options);
   }

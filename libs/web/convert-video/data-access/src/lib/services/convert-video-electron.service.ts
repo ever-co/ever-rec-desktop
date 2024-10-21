@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { ElectronService } from '@ever-co/electron-data-access';
-import { Channel, IVideo, IVideoConvertPayload } from '@ever-co/shared-utils';
+import { Channel, IPaginationOptions, IPaginationResponse, IVideo, IVideoConvertPayload } from '@ever-co/shared-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +28,10 @@ export class ConvertVideoElectronService {
       Channel.SCREESHOTS_CONVERTED,
       (_, video: IVideo) => callback(video)
     );
+  }
+
+  public getAllVideos(options: IPaginationOptions): Promise<IPaginationResponse<IVideo>> {
+    return this.electronService.invoke(Channel.REQUEST_VIDEO, options);
   }
 
   public onError(callback: (error: string) => void): void {

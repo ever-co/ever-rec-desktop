@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { LocalstorageService } from '@ever-co/shared-service';
 import { IVideo } from '@ever-co/shared-utils';
 import { Action } from '@ngrx/store';
-import { of } from 'rxjs';
+import { from, of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { ConvertVideoElectronService } from '../../services/convert-video-electron.service';
 import { generateVideoActions } from './generate-video.actions';
@@ -101,6 +101,22 @@ export class GenerateVideoEffects {
           catchError((error) => of(generateVideoActions.failure({ error })))
         );
       })
+    )
+  );
+
+  getAllVideos = createEffect(() =>
+    this.actions$.pipe(
+      ofType(generateVideoActions.loadVideos),
+      mergeMap((options) =>
+        from(this.convertVideoElectronService.getAllVideos(options)).pipe(
+          map((response) =>
+            generateVideoActions.loadVideosSuccess(response)
+          ),
+          catchError((error) =>
+            of(generateVideoActions.loadVideosFailure({ error }))
+          )
+        )
+      )
     )
   );
 
