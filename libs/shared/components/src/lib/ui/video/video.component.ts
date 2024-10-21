@@ -1,10 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { UtcToLocalTimePipe } from '@ever-co/shared-service';
 import { IVideo } from '@ever-co/shared-utils';
+import { BehaviorSubject, fromEvent, Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'lib-video',
@@ -15,11 +24,12 @@ import { IVideo } from '@ever-co/shared-utils';
     MatButtonModule,
     MatIconModule,
     UtcToLocalTimePipe,
+    MatMenuModule
   ],
   templateUrl: './video.component.html',
   styleUrl: './video.component.scss',
 })
-export class VideoComponent {
+export class VideoComponent implements AfterViewInit, OnDestroy {
   @ViewChild('videoPlayer', { static: false })
   public videoPlayer!: ElementRef<HTMLVideoElement>;
 
@@ -29,21 +39,58 @@ export class VideoComponent {
   @Input()
   public video!: IVideo;
 
-  public isPlayed = false;
-  public async togglePlayPause(): Promise<void>{
-    const player = this.videoPlayer?.nativeElement;
+  public played$ = new BehaviorSubject<boolean>(false);
 
-    if (!player) {
+  private destroy$ = new Subject<void>();
+
+  ngAfterViewInit(): void {
+    fromEvent(this.player, 'play')
+      .pipe(
+        tap(() => this.played$.next(true)),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+
+    fromEvent(this.player, 'pause')
+      .pipe(
+        tap(() => this.played$.next(false)),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
+
+  public async togglePlayPause(): Promise<void> {
+    if (!this.player) {
       console.error('Video player is not available');
       return;
     }
 
-    if (this.isPlayed) {
-      player.pause();
+    if (this.isPaused) {
+      await this.player.play();
     } else {
-       await player.play();
+      this.player.pause();
+    }
+  }
+
+  public async fullscreen(): Promise<void> {
+    if (!this.player) {
+      console.error('Video player is not available');
+      return;
     }
 
-    this.isPlayed = !this.isPlayed;
+    await this.player.requestFullscreen();
+  }
+
+  public get player(): HTMLVideoElement {
+    return this.videoPlayer?.nativeElement;
+  }
+
+  public get isPaused(): boolean {
+    return this.player?.paused;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

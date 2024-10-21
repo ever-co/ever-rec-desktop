@@ -1,6 +1,6 @@
 @if (video) {
 <mat-card class="card" appearance="outlined">
-  <div class="p-4">
+  <div class="video-container p-4">
     <video
       #videoPlayer
       mat-card-image
@@ -12,7 +12,16 @@
       <source [src]="video.pathname" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
-    <div class="overlay"></div>
+    @if(!controls){
+    <div class="overlay flex items-end flex-col gap-2 justify-between">
+      <button [matMenuTriggerFor]="menu" mat-icon-button>
+        <mat-icon>more_horiz</mat-icon>
+      </button>
+      <button (click)="fullscreen()" mat-icon-button>
+        <mat-icon>fullscreen</mat-icon>
+      </button>
+    </div>
+    }
   </div>
 
   @if(!controls){
@@ -20,7 +29,7 @@
     <div class="flex w-full truncate gap-4">
       <button mat-icon-button (click)="togglePlayPause()">
         <mat-icon class="rounded-full">{{
-          isPlayed ? 'pause' : 'play_arrow'
+          (played$ | async) ? 'pause' : 'play_arrow'
         }}</mat-icon>
       </button>
       <div class="max-w-56">
@@ -38,3 +47,18 @@
   }
 </mat-card>
 }
+
+<mat-menu #menu="matMenu">
+  <button mat-menu-item>
+    <mat-icon color="primary">visibility</mat-icon>
+    <span>View</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon color="warn">delete</mat-icon>
+    <span>Delete</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>ios_share</mat-icon>
+    <span>Share</span>
+  </button>
+</mat-menu>

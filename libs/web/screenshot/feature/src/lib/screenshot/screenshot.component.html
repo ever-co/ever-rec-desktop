@@ -38,7 +38,7 @@
       </mat-chip-set>
       <!-- video card -->
       @if(screenshot.video; as video) {
-        <lib-video class="max-w-80" [video]="video"></lib-video>
+        <lib-video class="max-w-80" [controls]="true" [video]="video"></lib-video>
       }
     </div>
   </div>
