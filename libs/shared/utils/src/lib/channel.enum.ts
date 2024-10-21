@@ -17,5 +17,5 @@ export enum Channel {
   'UPLOAD_PROGRESS' = 'upload::progress',
   'UPLOAD_ERROR' = 'upload::error',
   'UPLOAD_CANCELED' = 'upload::canceled',
-  'REQUEST_VIDEO' = 'request-video',
+  'REQUEST_RECENT_VIDEOS' = 'request::recent::video',
 }

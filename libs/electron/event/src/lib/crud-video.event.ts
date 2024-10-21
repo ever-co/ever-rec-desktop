@@ -1,18 +1,24 @@
 import { VideoService } from '@ever-co/electron-database';
 import { Channel, IPaginationOptions } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
+import { IsNull, Not } from 'typeorm';
 
 export function crudVideoEvents() {
   const videoService = new VideoService();
   // Get all screenshots
   ipcMain.handle(
-    Channel.REQUEST_VIDEO,
+    Channel.REQUEST_RECENT_VIDEOS,
     async (_, options = {} as IPaginationOptions) => {
       const { page = 1, limit = 10 } = options;
 
       const [data, count] = await videoService.findAndCount({
-        order: { createdAt: 'ASC' },
-        relations: ['metadata'],
+        where: {
+          chunks: {
+            id: Not(IsNull())
+          }
+        },
+        order: { createdAt: 'DESC' },
+        relations: ['metadata', 'chunks'],
         skip: (page - 1) * limit,
         take: limit,
       });
@@ -25,6 +31,6 @@ export function crudVideoEvents() {
 
 // Removes any handler for channels, if present.
 export function removeCrudVideoEvent(): void {
-  const channels = [Channel.REQUEST_VIDEO];
+  const channels = [Channel.REQUEST_RECENT_VIDEOS];
   channels.forEach((channel) => ipcMain.removeHandler(channel));
 }
