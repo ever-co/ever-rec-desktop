@@ -66,6 +66,7 @@ async function takeScreenshot(
 
     if (!windowSource && config === Source.WINDOW) {
       logger.warn('Screen source not found.');
+      return null;
     }
 
     const source = config === Source.SCREEN ? screenSource : windowSource;
