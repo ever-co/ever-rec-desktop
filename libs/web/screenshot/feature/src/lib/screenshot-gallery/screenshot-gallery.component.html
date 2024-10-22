@@ -1,58 +1,63 @@
 @if (isAvailable$ | async) {
-  <div
-    libInfiniteScroll
-    (scrolled)="moreScreenshots()"
-    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pr-4 overflow-auto max-h-svh main"
+<div
+  libInfiniteScroll
+  (scrolled)="moreScreenshots()"
+  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pr-4 overflow-auto max-h-svh main"
+>
+  @for (screenshot of screenshots$ | async; track screenshot) {
+  <mat-card
+    class="card"
+    [routerLink]="['/', 'library', 'screenshots', screenshot.id]"
+    appearance="outlined"
   >
-    @for (screenshot of screenshots$ | async; track screenshot) {
-      <mat-card class="card" [routerLink]="['/', 'library', 'screenshots', screenshot.id]" appearance="outlined">
-        <div class="p-4">
-          <img
-          mat-card-image
-          [src]="screenshot.pathname"
-          alt="Screenshot"
-          class="w-full h-auto object-cover rounded-md"
+    <div class="p-4">
+      <img
+        mat-card-image
+        [src]="screenshot.pathname"
+        alt="Screenshot"
+        class="w-full h-auto object-cover rounded-md"
+      />
+      <div class="overlay"></div>
+    </div>
+
+    <mat-card-content>
+      <div class="flex gap-4 w-full items-center">
+        @if (screenshot.metadata?.icon) {
+        <img
+          mat-card-avatar
+          [src]="screenshot.metadata?.icon"
+          [alt]="screenshot.metadata?.name"
+          class="w-10 h-10 rounded-full object-cover"
         />
-        <div class="overlay"></div>
-        </div>
-
-        <mat-card-content>
-          <div class="flex gap-4">
-            @if(screenshot.metadata?.icon) {
-              <img
-                mat-card-avatar
-                [src]="screenshot.metadata?.icon"
-                [alt]="screenshot.metadata?.name"
-                class="w-10 h-10 rounded-full"
-              />
-            }
-            <div>
-              @if(screenshot.metadata?.name) {
-                <div class="text-lg font-medium">
-                  {{ screenshot.metadata?.name }}
-                </div>
-              }
-              <div class="text-sm text-gray-500">
-                {{ screenshot.createdAt | utcToLocalTime }}
-              </div>
-            </div>
+        }
+        <div class="flex-1 min-w-0">
+          @if (screenshot.metadata?.name) {
+          <div class="text-lg font-medium truncate">
+            {{ screenshot.metadata?.name }}
           </div>
-        </mat-card-content>
-      </mat-card>
-    }
-
-    @if(capturing$ | async) {
-      <mat-card appearance="outlined" class="screenshot-card flex items-center justify-center p-8">
-        <mat-spinner diameter="48" class="text-gray-300"></mat-spinner>
-      </mat-card>
-    }
-  </div>
+          }
+          <div class="text-sm text-gray-500 truncate">
+            {{ screenshot.createdAt | utcToLocalTime }}
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  } @if(capturing$ | async) {
+  <mat-card
+    appearance="outlined"
+    class="screenshot-card flex items-center justify-center p-8"
+  >
+    <mat-spinner diameter="48" class="text-gray-300"></mat-spinner>
+  </mat-card>
+  }
+</div>
 } @else {
-  <div class="flex h-full items-center justify-center">
-    <lib-no-data
-      message="No screenshots available"
-      class="text-center text-gray-500"
-    >
-    </lib-no-data>
-  </div>
+<div class="flex h-full items-center justify-center">
+  <lib-no-data
+    message="No screenshots available"
+    class="text-center text-gray-500"
+  >
+  </lib-no-data>
+</div>
 }

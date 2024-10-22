@@ -26,19 +26,19 @@
 
   @if(!controls){
   <mat-card-content>
-    <div class="flex w-full truncate gap-4">
+    <div class="flex w-full gap-4">
       <button mat-icon-button (click)="togglePlayPause()">
         <mat-icon class="rounded-full">{{
           (played$ | async) ? 'pause' : 'play_arrow'
         }}</mat-icon>
       </button>
-      <div class="max-w-56">
+      <div class="flex-1 min-w-0">
         @if(video.pathname) {
         <div class="text-lg truncate">
           {{ video.pathname }}
         </div>
         }
-        <div class="text-sm text-gray-500">
+        <div class="text-sm text-gray-500 truncate">
           {{ video.createdAt | utcToLocalTime }}
         </div>
       </div>
