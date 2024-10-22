@@ -19,13 +19,13 @@ export const appDataSource = new DataSource({
   synchronize: true,
   logging: true,
   subscribers: [ScreenshotSubscriber],
+  enableWAL: true,
   prepareDatabase: (db) => {
     db.pragma('cipher = "sqlcipher"');
-    db.pragma('journal_mode = WAL');
   },
 });
 
-async function bootstrapDatabase() {
+export async function bootstrapDatabase() {
   try {
     await appDataSource.initialize();
     console.log('[Database] - Bootstrapped');
@@ -33,5 +33,3 @@ async function bootstrapDatabase() {
     console.error(error);
   }
 }
-
-bootstrapDatabase();

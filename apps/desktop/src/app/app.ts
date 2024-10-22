@@ -1,3 +1,4 @@
+import { bootstrapDatabase } from '@ever-co/electron-database';
 import { BrowserWindow, screen, shell } from 'electron';
 import { join } from 'path';
 import { format } from 'url';
@@ -45,6 +46,7 @@ export default class App {
     // initialization and is ready to create browser windows.
     // Some APIs can only be used after this event occurs.
     if (rendererAppName) {
+      await bootstrapDatabase();
       App.initMainWindow();
       App.loadMainWindow();
     }
@@ -75,6 +77,8 @@ export default class App {
         backgroundThrottling: false,
         preload: join(__dirname, 'main.preload.js'),
         webSecurity: !App.isDevelopmentMode(),
+        sandbox: !App.isDevelopmentMode(),
+        nodeIntegration: true,
       },
     });
     App.mainWindow.setMenu(null);
