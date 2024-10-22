@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
+import { generateVideoActions } from '@ever-co/convert-video-data-access';
 import { screenshotActions } from '@ever-co/screenshot-data-access';
 import { LocalstorageService } from '@ever-co/shared-service';
 import { from, of } from 'rxjs';
@@ -43,7 +44,10 @@ export class SettingStorageEffects {
     this.actions$.pipe(
       ofType(
         settingStorageActions.getTotalSize,
-        screenshotActions.deleteScreenshots
+        screenshotActions.deleteScreenshots,
+        screenshotActions.captureSuccess,
+        generateVideoActions.progress,
+        generateVideoActions.finishSuccess
       ),
       mergeMap(() =>
         from(this.storageElectronService.getTotalSize()).pipe(
