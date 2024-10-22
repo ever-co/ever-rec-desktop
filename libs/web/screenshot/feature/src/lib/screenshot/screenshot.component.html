@@ -20,7 +20,9 @@
             </div>
           }
           <div class="text-sm text-gray-500">
-            {{ screenshot.createdAt | utcToLocalTime }}
+            <span>{{ screenshot.createdAt | utcToLocalTime }}</span>
+            <span class="mx-1">|</span>
+            <span>{{ screenshot.metadata?.size | humanizeBytes }}</span>
           </div>
          </div>
       </div>
@@ -34,7 +36,7 @@
       <mat-chip-set aria-label="screenshot tags">
         <mat-chip>Associate</mat-chip>
         <mat-chip>Video</mat-chip>
-        <mat-chip>{{screenshot.metadata?.name}}</mat-chip>
+        <mat-chip class="truncate">{{screenshot.metadata?.name}}</mat-chip>
       </mat-chip-set>
       <!-- video card -->
       @if(screenshot.video; as video) {

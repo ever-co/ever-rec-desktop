@@ -6,14 +6,23 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ScreenshotElectronService } from '@ever-co/screenshot-data-access';
 import { NoDataComponent, VideoComponent } from '@ever-co/shared-components';
-import { UtcToLocalTimePipe } from '@ever-co/shared-service';
+import { HumanizeBytesPipe, UtcToLocalTimePipe } from '@ever-co/shared-service';
 import { IScreenshot } from '@ever-co/shared-utils';
 import { concatMap, filter, Observable } from 'rxjs';
 
 @Component({
   selector: 'lib-screenshot',
   standalone: true,
-  imports: [CommonModule, NoDataComponent, UtcToLocalTimePipe, MatCardModule, MatIconModule, MatChipsModule, VideoComponent],
+  imports: [
+    CommonModule,
+    NoDataComponent,
+    UtcToLocalTimePipe,
+    MatCardModule,
+    MatIconModule,
+    MatChipsModule,
+    VideoComponent,
+    HumanizeBytesPipe,
+  ],
   templateUrl: './screenshot.component.html',
   styleUrl: './screenshot.component.scss',
 })
@@ -33,7 +42,7 @@ export class ScreenshotComponent implements OnInit {
             where: {
               id: params['id'],
             },
-            relations: ['metadata', 'video']
+            relations: ['metadata', 'video'],
           });
         } else {
           await this.router.navigate(['/dashboard']);
