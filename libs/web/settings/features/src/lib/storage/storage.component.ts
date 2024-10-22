@@ -38,7 +38,7 @@ import { Subject, takeUntil, tap } from 'rxjs';
 })
 export class StorageComponent implements OnInit {
   public formGroup!: FormGroup;
-  public retentionPeriods = ['7', '14', '30', '90', '180', '360'];
+  public retentionPeriods = [7, 14, 30, 90, 180, 360];
   private destroy$ = new Subject<void>();
 
   constructor(private readonly store: Store) {}
