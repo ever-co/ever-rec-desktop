@@ -83,7 +83,7 @@
     "@typescript-eslint/parser": "7.18.0",
     "@typescript-eslint/utils": "^7.16.0",
     "autoprefixer": "^10.4.20",
-    "electron": "^28.2.3",
+    "electron": "^30.0.1",
     "eslint": "~8.57.0",
     "eslint-config-prettier": "^9.0.0",
     "jasmine-marbles": "~0.9.1",
@@ -105,5 +105,8 @@
   },
   "snyk": true,
   "homepage": "https://github.com/ever-co/ever-capture#readme",
-  "main": "jest.preset.js"
+  "main": "jest.preset.js",
+  "jest": {
+    "preset": "./jest.preset.js"
+  }
 }
