@@ -3,8 +3,10 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnDestroy,
+  Output,
   ViewChild,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -42,6 +44,9 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
   public played$ = new BehaviorSubject<boolean>(false);
 
   private destroy$ = new Subject<void>();
+
+  @Output() view = new EventEmitter<void>();
+  @Output() delete = new EventEmitter<void>();
 
   ngAfterViewInit(): void {
     fromEvent(this.player, 'play')
@@ -87,6 +92,14 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
 
   public get isPaused(): boolean {
     return this.player?.paused;
+  }
+
+  public viewVideo() {
+     this.view.emit();
+  }
+
+  public deleteVideo() {
+    this.delete.emit();
   }
 
   ngOnDestroy(): void {

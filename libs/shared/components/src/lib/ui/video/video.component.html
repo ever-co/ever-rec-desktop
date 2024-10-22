@@ -49,16 +49,12 @@
 }
 
 <mat-menu #menu="matMenu">
-  <button mat-menu-item>
+  <button (click)="viewVideo()" mat-menu-item>
     <mat-icon color="primary">visibility</mat-icon>
     <span>View</span>
   </button>
-  <button mat-menu-item>
+  <button (click)="deleteVideo()" mat-menu-item>
     <mat-icon color="warn">delete</mat-icon>
     <span>Delete</span>
-  </button>
-  <button mat-menu-item>
-    <mat-icon>ios_share</mat-icon>
-    <span>Share</span>
   </button>
 </mat-menu>
