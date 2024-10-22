@@ -60,10 +60,7 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
     );
 
     this.videos$ = this.store.select(selectGenerateVideoState).pipe(
-      map((state) => {
-        console.log(state);
-        return state.videos;
-      }),
+      map((state) => state.videos),
       takeUntil(this.destroy$)
     );
 
