@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: true,
 })
 export class HumanizeBytesPipe implements PipeTransform {
-  transform(bytes: number | undefined, decimals = 2): string {
+  transform(bytes: number | undefined | null, decimals = 2): string {
     if (!bytes || bytes === 0) {
       return '0 Bytes';
     }

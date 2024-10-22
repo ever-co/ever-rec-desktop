@@ -1,4 +1,4 @@
-import { VideoService } from '@ever-co/electron-database';
+import { MetadataService, VideoService } from '@ever-co/electron-database';
 import { Channel, IPaginationOptions } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
 import { IsNull, Not } from 'typeorm';
@@ -14,8 +14,8 @@ export function crudVideoEvents() {
       const [data, count] = await videoService.findAndCount({
         where: {
           chunks: {
-            id: Not(IsNull())
-          }
+            id: Not(IsNull()),
+          },
         },
         order: { createdAt: 'DESC' },
         relations: ['metadata', 'chunks'],
@@ -31,6 +31,12 @@ export function crudVideoEvents() {
   // Get one video
   ipcMain.handle(Channel.REQUEST_ONE_VIDEO, async (_, options = {}) => {
     return videoService.findOne(options);
+  });
+
+  // Get one video
+  ipcMain.handle(Channel.GET_TOTAL_SIZE, () => {
+    const metadataService = new MetadataService();
+    return metadataService.getTotalSize();
   });
 }
 

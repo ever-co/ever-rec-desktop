@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { LocalstorageService } from '@ever-co/shared-service';
-import { of } from 'rxjs';
+import { from, of } from 'rxjs';
 import { catchError, concatMap, map } from 'rxjs/operators';
+import { StorageElectronService } from '../services/storage-electron.service';
 import { settingStorageActions } from './storage-setting.actions';
 import { IStorageState } from './storage-setting.reducer';
 
@@ -15,14 +16,10 @@ export class SettingStorageEffects {
     return this.actions$.pipe(
       ofType(settingStorageActions.load),
       concatMap(() =>
-        this.localstorageService
-          .getItem<IStorageState['retention']>(this.key)
-          .pipe(
-            map((retention) =>
-              settingStorageActions.loadSuccess({ retention })
-            ),
-            catchError((error) => of(settingStorageActions.failure({ error })))
-          )
+        this.localstorageService.getItem<IStorageState>(this.key).pipe(
+          map((storage) => settingStorageActions.loadSuccess(storage)),
+          catchError((error) => of(settingStorageActions.failure({ error })))
+        )
       )
     );
   });
@@ -30,9 +27,9 @@ export class SettingStorageEffects {
   updateSettings$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(settingStorageActions.update),
-      concatMap(({ retention }) =>
+      concatMap((storage) =>
         this.localstorageService
-          .setItem<IStorageState['retention']>(this.key, retention)
+          .setItem<Partial<IStorageState>>(this.key, storage)
           .pipe(
             map(() => settingStorageActions.load()),
             catchError((error) => of(settingStorageActions.failure({ error })))
@@ -41,8 +38,24 @@ export class SettingStorageEffects {
     );
   });
 
+  getTotalSize$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(settingStorageActions.load),
+      concatMap(() =>
+        from(this.storageElectronService.getTotalSize()).pipe(
+          map(size => settingStorageActions.update({ size })),
+          catchError(error => {
+            console.error('Error fetching total size:', error);
+            return of(settingStorageActions.failure({ error }));
+          })
+        )
+      )
+    )
+  );
+
   constructor(
     private actions$: Actions,
-    private readonly localstorageService: LocalstorageService
+    private readonly localstorageService: LocalstorageService,
+    private readonly storageElectronService: StorageElectronService
   ) {}
 }

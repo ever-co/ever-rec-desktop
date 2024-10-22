@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -12,13 +12,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { screenshotActions } from '@ever-co/screenshot-data-access';
-import { HumanizePipe } from '@ever-co/shared-service';
+import { HumanizeBytesPipe, HumanizePipe } from '@ever-co/shared-service';
 import {
   selectSettingStorageState,
   settingStorageActions,
 } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
-import { Subject, takeUntil, tap } from 'rxjs';
+import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'lib-storage',
@@ -32,14 +32,16 @@ import { Subject, takeUntil, tap } from 'rxjs';
     MatFormFieldModule,
     MatSelectModule,
     HumanizePipe,
+    HumanizeBytesPipe,
   ],
   templateUrl: './storage.component.html',
   styleUrl: './storage.component.scss',
 })
-export class StorageComponent implements OnInit {
+export class StorageComponent implements OnInit, OnDestroy {
   public formGroup!: FormGroup;
   public retentionPeriods = [7, 14, 30, 90, 180, 360];
   private destroy$ = new Subject<void>();
+  public size$!: Observable<number>;
 
   constructor(private readonly store: Store) {}
 
@@ -49,6 +51,11 @@ export class StorageComponent implements OnInit {
         Validators.required,
       ]),
     });
+
+    this.size$ = this.store.select(selectSettingStorageState).pipe(
+      map(({ size }) => size),
+      takeUntil(this.destroy$)
+    );
 
     this.store
       .select(selectSettingStorageState)
@@ -67,5 +74,10 @@ export class StorageComponent implements OnInit {
 
   public purge(): void {
     this.store.dispatch(screenshotActions.deleteScreenshots());
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

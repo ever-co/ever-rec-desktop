@@ -1,4 +1,5 @@
 <div class="setting max-w-xl space-y-6 w-full">
+  <p class="text font-bold">Current disk used {{size$ | async | humanizeBytes}}</p>
   <form [formGroup]="formGroup" class="form space-y-4" (ngSubmit)="onSubmit()">
     <p>How long do you want to keep your data?</p>
      <!-- Select Input -->
