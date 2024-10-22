@@ -3,8 +3,11 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { RouterLink } from '@angular/router';
-import { generateVideoActions, selectGenerateVideoState } from '@ever-co/convert-video-data-access';
+import { Router, RouterLink } from '@angular/router';
+import {
+  generateVideoActions,
+  selectGenerateVideoState,
+} from '@ever-co/convert-video-data-access';
 import { NoDataComponent, VideoComponent } from '@ever-co/shared-components';
 import {
   InfiniteScrollDirective,
@@ -26,7 +29,7 @@ import { Observable, Subject, map, takeUntil, tap } from 'rxjs';
     MatProgressSpinnerModule,
     RouterLink,
     MatIconModule,
-    VideoComponent
+    VideoComponent,
   ],
   templateUrl: './video-gallery.component.html',
   styleUrl: './video-gallery.component.scss',
@@ -38,6 +41,8 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
   public store = inject(Store);
   private currentPage = 1;
   private hasNext = false;
+
+  constructor(private readonly router: Router) {}
 
   ngOnInit(): void {
     this.store
@@ -56,8 +61,8 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
 
     this.videos$ = this.store.select(selectGenerateVideoState).pipe(
       map((state) => {
-        console.log(state)
-        return state.videos
+        console.log(state);
+        return state.videos;
       }),
       takeUntil(this.destroy$)
     );
@@ -76,6 +81,10 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
     this.store.dispatch(
       generateVideoActions.loadVideos({ page: this.currentPage })
     );
+  }
+
+  public async onView(video: IVideo): Promise<void> {
+    await this.router.navigate(['/', 'library', 'videos', video.id]);
   }
 
   ngOnDestroy(): void {

@@ -5,7 +5,7 @@
   class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pr-4 overflow-auto max-h-svh main"
 >
   @for (video of videos$ | async; track video) {
-  <lib-video [video]="video"></lib-video>
+  <lib-video (view)="onView(video)" [video]="video"></lib-video>
   }
 </div>
 } @else {

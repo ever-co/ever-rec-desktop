@@ -10,9 +10,9 @@ export const libraryRoutes: Route[] = [
       { path: '', redirectTo: 'videos', pathMatch: 'full' },
       {
         path: 'videos',
-        loadComponent: () =>
+        loadChildren: () =>
           import('@ever-co/convert-video-feature').then(
-            (m) => m.VideoGalleryComponent
+            (m) => m.videoRoutes
           ),
       },
       {
