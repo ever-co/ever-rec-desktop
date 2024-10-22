@@ -40,18 +40,18 @@ export class SettingStorageEffects {
     );
   });
 
-  getTotalSize$ = createEffect(() =>
+  getUsedSize$ = createEffect(() =>
     this.actions$.pipe(
       ofType(
-        settingStorageActions.getTotalSize,
+        settingStorageActions.getUsedSize,
         screenshotActions.deleteScreenshots,
         screenshotActions.captureSuccess,
         generateVideoActions.progress,
         generateVideoActions.finishSuccess
       ),
       mergeMap(() =>
-        from(this.storageElectronService.getTotalSize()).pipe(
-          map((size) => settingStorageActions.update({ size })),
+        from(this.storageElectronService.getUsedSize()).pipe(
+          map((used) => settingStorageActions.update({ used })),
           catchError((error) => of(settingStorageActions.failure({ error })))
         )
       )

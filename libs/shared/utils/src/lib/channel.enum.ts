@@ -20,5 +20,5 @@ export enum Channel {
   'UPLOAD_CANCELED' = 'upload::canceled',
   'REQUEST_RECENT_VIDEOS' = 'request::recent::video',
   'REQUEST_ONE_VIDEO' = 'request::one::video',
-  'GET_TOTAL_SIZE' = 'get::total::size',
+  'GET_USED_SIZE' = 'get::used::size',
 }

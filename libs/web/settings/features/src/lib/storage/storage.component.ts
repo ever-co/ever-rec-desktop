@@ -7,12 +7,14 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { screenshotActions } from '@ever-co/screenshot-data-access';
 import { HumanizeBytesPipe, HumanizePipe } from '@ever-co/shared-service';
+import { IUsedSize } from '@ever-co/shared-utils';
 import {
   selectSettingStorageState,
   settingStorageActions,
@@ -33,6 +35,7 @@ import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
     MatSelectModule,
     HumanizePipe,
     HumanizeBytesPipe,
+    MatCardModule
   ],
   templateUrl: './storage.component.html',
   styleUrl: './storage.component.scss',
@@ -41,7 +44,7 @@ export class StorageComponent implements OnInit, OnDestroy {
   public formGroup!: FormGroup;
   public retentionPeriods = [7, 14, 30, 90, 180, 360];
   private destroy$ = new Subject<void>();
-  public size$!: Observable<number>;
+  public size$!: Observable<IUsedSize>;
 
   constructor(private readonly store: Store) {}
 
@@ -53,7 +56,7 @@ export class StorageComponent implements OnInit, OnDestroy {
     });
 
     this.size$ = this.store.select(selectSettingStorageState).pipe(
-      map(({ size }) => size),
+      map(({ used }) => used),
       takeUntil(this.destroy$)
     );
 
@@ -66,7 +69,7 @@ export class StorageComponent implements OnInit, OnDestroy {
       .subscribe();
 
     this.store.dispatch(settingStorageActions.load());
-    this.store.dispatch(settingStorageActions.getTotalSize());
+    this.store.dispatch(settingStorageActions.getUsedSize());
   }
 
   public onSubmit(): void {

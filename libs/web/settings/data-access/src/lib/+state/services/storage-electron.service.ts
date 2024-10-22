@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ElectronService } from '@ever-co/electron-data-access';
-import { Channel } from '@ever-co/shared-utils';
+import { Channel, IUsedSize } from '@ever-co/shared-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -8,7 +8,7 @@ import { Channel } from '@ever-co/shared-utils';
 export class StorageElectronService {
   constructor(private readonly electronService: ElectronService) {}
 
-  public getTotalSize(): Promise<number> {
-    return this.electronService.invoke(Channel.GET_TOTAL_SIZE);
+  public getUsedSize(): Promise<IUsedSize> {
+    return this.electronService.invoke(Channel.GET_USED_SIZE);
   }
 }

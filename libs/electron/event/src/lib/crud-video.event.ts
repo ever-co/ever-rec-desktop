@@ -34,9 +34,9 @@ export function crudVideoEvents() {
   });
 
   // Get one video
-  ipcMain.handle(Channel.GET_TOTAL_SIZE, () => {
+  ipcMain.handle(Channel.GET_USED_SIZE, () => {
     const metadataService = new MetadataService();
-    return metadataService.getTotalSize();
+    return metadataService.getUsedSize();
   });
 }
 
@@ -45,7 +45,7 @@ export function removeCrudVideoEvent(): void {
   const channels = [
     Channel.REQUEST_RECENT_VIDEOS,
     Channel.REQUEST_ONE_VIDEO,
-    Channel.GET_TOTAL_SIZE,
+    Channel.GET_USED_SIZE,
   ];
   channels.forEach((channel) => ipcMain.removeHandler(channel));
 }

@@ -1,3 +1,4 @@
+import { IUsedSize } from '@ever-co/shared-utils';
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { settingStorageActions } from './storage-setting.actions';
 
@@ -5,23 +6,27 @@ export const settingStorageFeatureKey = 'settingStorageRetention';
 
 export interface IStorageState {
   retention: number;
-  size: number;
+  used: IUsedSize;
   error: string;
 }
 
 const initialState: IStorageState = {
   retention: 7,
-  size: 0,
+  used: {
+    screenshot: 0,
+    video: 0,
+    total: 0
+  },
   error: '',
 };
 
 export const reducer = createReducer(
   initialState,
   on(settingStorageActions.load, (state) => ({ ...state, error: '' })),
-  on(settingStorageActions.loadSuccess, (state, { retention, size }) => ({
+  on(settingStorageActions.loadSuccess, (state, { retention, used }) => ({
     ...state,
     retention: retention ?? initialState.retention,
-    size: size ?? initialState.size
+    used: used ?? initialState.used
   })),
   on(settingStorageActions.failure, (state, { error }) => ({
     ...state,

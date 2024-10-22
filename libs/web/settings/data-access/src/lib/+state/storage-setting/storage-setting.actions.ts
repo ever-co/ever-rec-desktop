@@ -8,6 +8,6 @@ export const settingStorageActions = createActionGroup({
     'Load Success': props<IStorageState | null>(),
     Update: props<Partial<IStorageState>>(),
     Failure: props<{ error: string }>(),
-    'Get Total Size': emptyProps()
+    'Get Used Size': emptyProps()
   },
 });
