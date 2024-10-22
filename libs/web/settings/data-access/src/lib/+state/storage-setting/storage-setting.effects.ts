@@ -48,10 +48,7 @@ export class SettingStorageEffects {
       mergeMap(() =>
         from(this.storageElectronService.getTotalSize()).pipe(
           map((size) => settingStorageActions.update({ size })),
-          catchError((error) => {
-            console.error('Error fetching total size:', error);
-            return of(settingStorageActions.failure({ error }));
-          })
+          catchError((error) => of(settingStorageActions.failure({ error })))
         )
       )
     )
