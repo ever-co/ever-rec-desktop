@@ -38,7 +38,6 @@ export function captureScreen(
     const screenshot = await takeScreenshot(config.source);
     if (screenshot) {
       eventManager.reply(Channel.SCREENSHOT_CAPTURED, screenshot);
-      event.sender.scrollToBottom();
     }
   }, config.period * 1000 || SCREENSHOT_INTERVAL_DELAY);
 }
@@ -80,6 +79,10 @@ async function takeScreenshot(
     );
 
     const size = await FileManager.fileSize(screenshotPath);
+
+    if(!size) {
+      return null;
+    }
 
     const screenshot: IScreenshotInput = {
       pathname: screenshotPath,
