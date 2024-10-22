@@ -27,6 +27,11 @@ export function crudVideoEvents() {
       return { data, count, hasNext };
     }
   );
+
+  // Get one video
+  ipcMain.handle(Channel.REQUEST_ONE_VIDEO, async (_, options = {}) => {
+    return videoService.findOne(options);
+  });
 }
 
 // Removes any handler for channels, if present.

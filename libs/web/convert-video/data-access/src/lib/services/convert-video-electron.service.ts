@@ -34,6 +34,10 @@ export class ConvertVideoElectronService {
     return this.electronService.invoke(Channel.REQUEST_RECENT_VIDEOS, options);
   }
 
+  public getOneVideo<T>(options: T): Promise<IVideo> {
+    return this.electronService.invoke(Channel.REQUEST_ONE_VIDEO, options);
+  }
+
   public onError(callback: (error: string) => void): void {
     this.electronService.on(Channel.GENERATION_ERROR, (_, error: string) =>
       callback(error)

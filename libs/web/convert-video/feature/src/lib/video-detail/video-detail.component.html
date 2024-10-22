@@ -1,1 +1,83 @@
-<p>video-detail works!</p>
+@if (video$ | async; as video) {
+  <div class="flex lg:flex-row justify-center items-start flex-col gap-6">
+    <!-- Video Player Section -->
+    <div class="flex justify-center w-full lg:w-2/3">
+      <div class="w-full rounded-xl overflow-hidden">
+        <lib-video
+          class="max-w-full h-auto rounded-lg"
+          [controls]="true"
+          [video]="video">
+        </lib-video>
+      </div>
+    </div>
+
+    <!-- iOS-style Metadata Section -->
+    <div class="flex flex-col w-full lg:w-1/3 space-y-4">
+      @if(video.metadata) {
+        <mat-card appearance="outlined" class="rounded-xl p-4 w-full space-y-4">
+          <!-- Header with Date and Time -->
+          <div class="flex justify-between items-center text-sm text-gray-500">
+            <div>{{ video.metadata.createdAt | date: 'EEEE • MMM d, y' }}</div>
+            <div>{{ video.metadata.createdAt | date: 'h:mm a' }}</div>
+          </div>
+
+          <!-- File Name -->
+          <div class="text-xl text-gray-700 font-light mb-4">
+            {{ 'VIDEO_' + video.metadata.id.substring(0, 4) }}
+          </div>
+
+          <!-- Device Info -->
+          <mat-card appearance="outlined" class="rounded-lg p-4">
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="text-lg text-gray-700">Details</span>
+              <mat-icon class="text-gray-400">videocam</mat-icon>
+            </div>
+            <div class="text-gray-600 space-y-2">
+              <div class="flex justify-between items-center">
+                <span class="text-sm">Codec</span>
+                <span class="text-sm font-light">{{ video.metadata.codec }}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-sm">Frame Rate</span>
+                <span class="text-sm font-light">{{ video.metadata.frameRate }} FPS</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-sm">Batch ID</span>
+                <span class="text-sm font-light">{{ video.metadata.batch }}</span>
+              </div>
+            </div>
+          </mat-card>
+
+          <!-- Video Info -->
+          <mat-card appearance="outlined" class="rounded-lg p-4">
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="text-lg text-gray-700">Info</span>
+              <mat-icon class="text-gray-400">info</mat-icon>
+            </div>
+            <div class="text-gray-600 space-y-2">
+              <div class="flex justify-between items-center">
+                <span class="text-sm">Resolution</span>
+                <span class="text-sm font-light">{{ video.metadata.resolution }}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-sm">Size</span>
+                <span class="text-sm font-light">4.09 MB</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-sm">Duration</span>
+                <span class="text-sm font-light">{{ video.metadata.duration | number }} seconds</span>
+              </div>
+            </div>
+          </mat-card>
+        </mat-card>
+      }
+    </div>
+  </div>
+} @else {
+  <div class="min-h-96 flex justify-center items-center bg-gray-100 rounded-xl">
+    <lib-no-data
+      class="text-gray-500"
+      message="No video available">
+    </lib-no-data>
+  </div>
+}
