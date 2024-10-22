@@ -14,6 +14,9 @@ export class ScreenshotMetadata extends Base implements IScreenshotMetadata {
   @Column({ type: 'text', nullable: true })
   description: string;
 
+  @Column({ type: 'bigint', default: 0 })
+  size: number;
+
   @OneToOne(() => Screenshot, (screenshot) => screenshot.metadata, {
     onDelete: 'SET NULL',
   })

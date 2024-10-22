@@ -36,6 +36,6 @@ export function crudVideoEvents() {
 
 // Removes any handler for channels, if present.
 export function removeCrudVideoEvent(): void {
-  const channels = [Channel.REQUEST_RECENT_VIDEOS];
+  const channels = [Channel.REQUEST_RECENT_VIDEOS, Channel.REQUEST_ONE_VIDEO];
   channels.forEach((channel) => ipcMain.removeHandler(channel));
 }

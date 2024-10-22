@@ -12,11 +12,7 @@ import {
   SCREENSHOT_INTERVAL_DELAY,
   Source,
 } from '@ever-co/shared-utils';
-import {
-  desktopCapturer,
-  ipcMain,
-  IpcMainEvent
-} from 'electron';
+import { desktopCapturer, ipcMain, IpcMainEvent } from 'electron';
 import { EventManager } from './event.manager';
 
 // Constants
@@ -31,7 +27,10 @@ export function captureScreenEvent(): void {
   ipcMain.on(Channel.STOP_CAPTURE_SCREEN, stopCaptureScreen);
 }
 
-export function captureScreen(event: IpcMainEvent, config: IScreenCaptureConfig) {
+export function captureScreen(
+  event: IpcMainEvent,
+  config: IScreenCaptureConfig
+) {
   if (captureInterval) {
     clearInterval(captureInterval);
   }
@@ -41,7 +40,7 @@ export function captureScreen(event: IpcMainEvent, config: IScreenCaptureConfig)
       eventManager.reply(Channel.SCREENSHOT_CAPTURED, screenshot);
       event.sender.scrollToBottom();
     }
-  }, (config.period * 1000) || SCREENSHOT_INTERVAL_DELAY);
+  }, config.period * 1000 || SCREENSHOT_INTERVAL_DELAY);
 }
 
 export function stopCaptureScreen() {
@@ -51,7 +50,9 @@ export function stopCaptureScreen() {
   }
 }
 
-async function takeScreenshot(config = Source.SCREEN): Promise<IScreenshot | null> {
+async function takeScreenshot(
+  config = Source.SCREEN
+): Promise<IScreenshot | null> {
   try {
     const [screenSource, windowSource] = await Promise.all([
       getScreenSource(),
@@ -67,7 +68,7 @@ async function takeScreenshot(config = Source.SCREEN): Promise<IScreenshot | nul
       logger.warn('Screen source not found.');
     }
 
-    const source = config === Source.SCREEN ? screenSource : windowSource
+    const source = config === Source.SCREEN ? screenSource : windowSource;
 
     const screenshotBuffer = source.thumbnail.toPNG();
     const fileName = `screenshot-${Date.now()}.png`;
@@ -77,12 +78,15 @@ async function takeScreenshot(config = Source.SCREEN): Promise<IScreenshot | nul
       screenshotBuffer
     );
 
+    const size = await FileManager.fileSize(screenshotPath);
+
     const screenshot: IScreenshotInput = {
       pathname: screenshotPath,
       metadata: {
         name: windowSource?.name || '',
         description: getWindowDescription(windowSource),
         icon: '',
+        size
       },
     };
 

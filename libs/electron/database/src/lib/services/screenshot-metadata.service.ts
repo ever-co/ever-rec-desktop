@@ -13,6 +13,7 @@ export class ScreenshotMetadataService {
     screenshotMetadata.description = metadata.description;
     screenshotMetadata.icon = metadata.icon;
     screenshotMetadata.name = metadata.name;
+    screenshotMetadata.size = metadata.size;
     return this.repository.save(screenshotMetadata);
   }
 

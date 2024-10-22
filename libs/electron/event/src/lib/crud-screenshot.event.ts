@@ -17,7 +17,7 @@ export function crudScreeshotEvents() {
       const { page = 1, limit = 10 } = options;
 
       const [data, count] = await ScreenshotService.findAndCount({
-        order: { createdAt: 'ASC' },
+        order: { createdAt: 'DESC' },
         relations: ['metadata'],
         skip: (page - 1) * limit,
         take: limit,
@@ -48,7 +48,7 @@ export function crudScreeshotEvents() {
             },
           },
         }),
-        order: { createdAt: 'ASC' },
+        order: { createdAt: 'DESC' },
         skip: (page - 1) * limit,
         take: limit,
       });

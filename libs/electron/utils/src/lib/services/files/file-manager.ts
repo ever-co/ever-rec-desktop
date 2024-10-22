@@ -110,6 +110,16 @@ export class FileManager {
     }
   }
 
+  public static async fileSize(localUrl: string): Promise<number> {
+    try {
+      const filePath = this.decodePath(localUrl);
+      return this.task.run('getFileSize', { filePath });
+    } catch (error) {
+      console.error(`Failed to get file size file: ${localUrl}`, error);
+      throw error;
+    }
+  }
+
   public static encodePath(filePath: string): string {
     try {
       const absolutePath = resolve(filePath);

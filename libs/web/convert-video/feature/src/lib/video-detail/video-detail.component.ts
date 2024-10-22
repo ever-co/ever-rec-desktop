@@ -8,7 +8,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConvertVideoElectronService } from '@ever-co/convert-video-data-access';
 import { NoDataComponent, VideoComponent } from '@ever-co/shared-components';
-import { UtcToLocalTimePipe } from '@ever-co/shared-service';
+import { HumanizeBytesPipe, UtcToLocalTimePipe } from '@ever-co/shared-service';
 import { IVideo } from '@ever-co/shared-utils';
 import { concatMap, filter, Observable } from 'rxjs';
 
@@ -24,7 +24,8 @@ import { concatMap, filter, Observable } from 'rxjs';
     MatCardModule,
     MatDividerModule,
     MatTooltipModule,
-    MatIconModule
+    MatIconModule,
+    HumanizeBytesPipe
   ],
   templateUrl: './video-detail.component.html',
   styleUrl: './video-detail.component.scss',

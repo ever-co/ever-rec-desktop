@@ -20,6 +20,9 @@ export class VideoMetadata extends Base implements IVideoMetadata {
   @Column({ default: 0, type: 'integer' })
   duration?: number;
 
+  @Column({ type: 'bigint', default: 0 })
+  size: number;
+
   @OneToOne(() => Video, (video) => video.metadata, {
     onDelete: 'SET NULL',
   })

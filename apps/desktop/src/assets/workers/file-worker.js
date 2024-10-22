@@ -33,6 +33,9 @@ parentPort?.on('message', async ({ operation, payload }) => {
     case 'createFilePath':
       await handleCreateFilePath(payload);
       break;
+    case 'getFileSize':
+      await handleGetFileSize(payload);
+      break;
   }
 });
 
@@ -137,6 +140,17 @@ async function handleCreateFilePath(payload) {
       status: 'done',
       data: join(dirPath, filename),
     });
+  } catch (error) {
+    parentPort?.postMessage({ status: 'error', error });
+  }
+}
+
+async function handleGetFileSize(payload) {
+  const { filePath } = payload;
+  try {
+    const stats = await fsPromises.stat(filePath);
+    const fileSizeInBytes = stats.size;
+    parentPort?.postMessage({ status: 'done', data: fileSizeInBytes });
   } catch (error) {
     parentPort?.postMessage({ status: 'error', error });
   }

@@ -178,8 +178,12 @@ export class VideoConversionService implements ILoggable {
         async (idx, message) => {
           try {
             this.logger.info(`Batch [${idx}] proceed...`);
+            const pathname = this.fileManager.encodePath(String(message));
+            const size = await this.fileManager.fileSize(pathname);
+
             const chunk = await this.videoService.save({
-              pathname: this.fileManager.encodePath(String(message)),
+              pathname,
+              size,
               duration: batch.length / this.config.frameRate,
               resolution: this.config.resolution,
               frameRate: this.config.frameRate,
@@ -273,8 +277,11 @@ export class VideoConversionService implements ILoggable {
           const uniqueScreenshotIds = [
             ...new Set([...chunkScreenshotIds, ...screenshotIds]),
           ];
+          const pathname = this.fileManager.encodePath(String(message));
+          const size = await this.fileManager.fileSize(pathname);
           const { id } = await this.videoService.save({
-            pathname: this.fileManager.encodePath(String(message)),
+            pathname,
+            size,
             duration: uniqueScreenshotIds.length / frameRate,
             resolution,
             frameRate,

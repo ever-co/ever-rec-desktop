@@ -7,6 +7,7 @@ export interface IVideoConfig {
   optimized?: boolean;
   autoGenerate: boolean;
   period: number;
+  size?: number;
 }
 
 export interface IVideoConvertPayload {
