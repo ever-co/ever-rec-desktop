@@ -104,9 +104,5 @@
     "typescript": "5.5.4"
   },
   "snyk": true,
-  "homepage": "https://github.com/ever-co/ever-capture#readme",
-  "main": "jest.preset.js",
-  "jest": {
-    "preset": "./jest.preset.js"
-  }
+  "homepage": "https://github.com/ever-co/ever-capture#readme"
 }
