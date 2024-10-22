@@ -66,6 +66,7 @@ export class StorageComponent implements OnInit, OnDestroy {
       .subscribe();
 
     this.store.dispatch(settingStorageActions.load());
+    this.store.dispatch(settingStorageActions.getTotalSize());
   }
 
   public onSubmit(): void {

@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
+import { screenshotActions } from '@ever-co/screenshot-data-access';
 import { LocalstorageService } from '@ever-co/shared-service';
 import { from, of } from 'rxjs';
-import { catchError, concatMap, map } from 'rxjs/operators';
+import { catchError, concatMap, map, mergeMap } from 'rxjs/operators';
 import { StorageElectronService } from '../services/storage-electron.service';
 import { settingStorageActions } from './storage-setting.actions';
 import { IStorageState } from './storage-setting.reducer';
@@ -40,11 +41,14 @@ export class SettingStorageEffects {
 
   getTotalSize$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(settingStorageActions.load),
-      concatMap(() =>
+      ofType(
+        settingStorageActions.getTotalSize,
+        screenshotActions.deleteScreenshots
+      ),
+      mergeMap(() =>
         from(this.storageElectronService.getTotalSize()).pipe(
-          map(size => settingStorageActions.update({ size })),
-          catchError(error => {
+          map((size) => settingStorageActions.update({ size })),
+          catchError((error) => {
             console.error('Error fetching total size:', error);
             return of(settingStorageActions.failure({ error }));
           })
