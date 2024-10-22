@@ -51,7 +51,7 @@ export function stopCaptureScreen() {
 }
 
 async function takeScreenshot(
-  config = Source.SCREEN
+  sourceType = Source.SCREEN
 ): Promise<IScreenshot | null> {
   try {
     const [screenSource, windowSource] = await Promise.all([
@@ -59,17 +59,17 @@ async function takeScreenshot(
       getWindowSource(),
     ]);
 
-    if (!screenSource && config === Source.SCREEN) {
+    if (!screenSource && sourceType === Source.SCREEN) {
       logger.warn('Screen source not found.');
       return null;
     }
 
-    if (!windowSource && config === Source.WINDOW) {
+    if (!windowSource && sourceType === Source.WINDOW) {
       logger.warn('Screen source not found.');
       return null;
     }
 
-    const source = config === Source.SCREEN ? screenSource : windowSource;
+    const source = sourceType === Source.SCREEN ? screenSource : windowSource;
 
     const screenshotBuffer = source.thumbnail.toPNG();
     const fileName = `screenshot-${Date.now()}.png`;
