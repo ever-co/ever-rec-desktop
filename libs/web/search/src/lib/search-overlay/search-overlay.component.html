@@ -1,4 +1,4 @@
-<div class="overlay-container w-full mat-elevation-z2">
+<div libInfiniteScroll (scrolled)="moreResult()" class="overlay-container w-full mat-elevation-z2">
   @if (recents().length > 0) {
   <mat-action-list>
     @for (item of recents(); track item) {

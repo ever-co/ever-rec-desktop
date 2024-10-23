@@ -32,5 +32,6 @@ export const screenshotActions = createActionGroup({
     ask: props<IPaginationOptions>(),
     'ask Success': props<IPaginationResponse<IScreenshot>>(),
     'ask Failure': props<{ error: string }>(),
+    'Reset Ask': emptyProps(),
   },
 });

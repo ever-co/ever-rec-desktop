@@ -4,9 +4,21 @@ import { Component, inject, ViewChild } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { screenshotActions } from '@ever-co/screenshot-data-access';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import {
+  screenshotActions,
+  selectScreenshotState,
+} from '@ever-co/screenshot-data-access';
 import { Store } from '@ngrx/store';
-import { debounceTime, distinctUntilChanged, filter, of, tap } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  Observable,
+  of,
+  tap,
+} from 'rxjs';
 import { SearchOverlayComponent } from '../search-overlay/search-overlay.component';
 import { SearchService } from './search.service';
 
@@ -20,6 +32,7 @@ import { SearchService } from './search.service';
     MatIconModule,
     OverlayModule,
     SearchOverlayComponent,
+    MatProgressSpinner,
   ],
   templateUrl: './search.component.html',
   styleUrl: './search.component.scss',
@@ -43,10 +56,17 @@ export class SearchComponent {
         distinctUntilChanged(),
         debounceTime(1000),
         tap((filter) => {
+          this.store.dispatch(screenshotActions.resetAsk());
           this.store.dispatch(screenshotActions.ask({ filter, page: 1 }));
           this.searchService.searchTerm.set(filter);
         })
       )
       .subscribe();
+  }
+
+  public get isLoading$(): Observable<boolean> {
+    return this.store
+      .select(selectScreenshotState)
+      .pipe(map((state) => state.search.loading));
   }
 }

@@ -15,6 +15,13 @@ export interface IScreenshotState {
   loading: boolean;
   filter: string;
   statistics: IScreenshotMetadataStatistic[];
+  search: {
+    screenshots: IScreenshot[];
+    hasNext: boolean;
+    count: number;
+    loading: boolean;
+    filter: string;
+  };
   error: string;
 }
 
@@ -27,6 +34,13 @@ export const initialState: IScreenshotState = {
   count: 0,
   error: '',
   statistics: [],
+  search: {
+    loading: false,
+    screenshots: [],
+    filter: '',
+    hasNext: false,
+    count: 0,
+  },
 };
 
 export const reducer = createReducer(
@@ -90,24 +104,41 @@ export const reducer = createReducer(
   })),
   on(screenshotActions.ask, (state, { filter = '' }) => ({
     ...state,
-    filter,
-    loading: true,
+    search: {
+      ...state.search,
+      filter,
+      loading: true,
+    },
     error: '',
   })),
-  on(
-    screenshotActions.askSuccess,
-    (state, { data: screenshots, hasNext, count }) => ({
-      ...state,
+  on(screenshotActions.askSuccess, (state, { data, hasNext, count }) => ({
+    ...state,
+    search: {
+      ...state.search,
       loading: false,
+      screenshots: [
+        ...new Map(
+          [...state.search.screenshots, ...data].map((item) => [item.id, item])
+        ).values(),
+      ],
       hasNext,
       count,
-      screenshots,
-    })
-  ),
+    },
+  })),
   on(screenshotActions.askFailure, (state, { error }) => ({
     ...state,
-    loading: false,
+    search: {
+      ...state.search,
+      loading: false,
+    },
     error,
+  })),
+
+  on(screenshotActions.resetAsk, (state) => ({
+    ...state,
+    search: {
+      ...initialState.search
+    }
   })),
 
   on(
