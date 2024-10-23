@@ -1,7 +1,7 @@
 @if (video$ | async; as video) {
 <div class="flex lg:flex-row justify-center items-start flex-col gap-6">
   <!-- Video Player Section -->
-  <div class="flex flex-col gap-4 justify-center w-full lg:w-2/3">
+  <div class="flex flex-col gap-6 justify-center w-full lg:w-2/3">
     <div class="w-full rounded-xl overflow-hidden">
       <lib-video
         class="max-w-full h-auto rounded-lg"
@@ -97,6 +97,10 @@
   <button mat-menu-item>
     <mat-icon>copy</mat-icon>
     <span>Duplicate</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>summarize</mat-icon>
+    <span>Summarize</span>
   </button>
   <button
     class="group flex items-center hover:bg-red-50 transition-colors duration-200"
