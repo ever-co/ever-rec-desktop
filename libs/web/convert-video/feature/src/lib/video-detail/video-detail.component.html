@@ -1,7 +1,7 @@
 @if (video$ | async; as video) {
 <div class="flex lg:flex-row justify-center items-start flex-col gap-6">
   <!-- Video Player Section -->
-  <div class="flex justify-center w-full lg:w-2/3">
+  <div class="flex flex-col gap-4 justify-center w-full lg:w-2/3">
     <div class="w-full rounded-xl overflow-hidden">
       <lib-video
         class="max-w-full h-auto rounded-lg"
@@ -10,6 +10,10 @@
       >
       </lib-video>
     </div>
+    <mat-form-field appearance="outline" class="w-full rounded-xl h-auto">
+      <mat-label>Summary</mat-label>
+      <textarea [value]="" (input)="onInput($event)" matInput></textarea>
+    </mat-form-field>
   </div>
 
   <!-- iOS-style Metadata Section -->
@@ -17,7 +21,7 @@
     @if(video.metadata) {
     <mat-card appearance="outlined" class="rounded-xl p-4 w-full space-y-4">
       <!-- Header with Date and Time -->
-      <div class="flex justify-between items-center text-sm text-gray-500">
+      <div class="flex justify-between items-center text-sm text-gray-700">
         <div>{{ video.metadata.createdAt | date : 'EEEE • MMM d, y' }}</div>
         <div>{{ video.metadata.createdAt | date : 'h:mm a' }}</div>
       </div>
@@ -111,7 +115,7 @@
 </mat-menu>
 } @else {
 <div class="min-h-96 flex justify-center items-center bg-gray-100 rounded-xl">
-  <lib-no-data class="text-gray-500" message="No video available">
+  <lib-no-data class="text-gray-700" message="No video available">
   </lib-no-data>
 </div>
 }

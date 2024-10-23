@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -32,12 +34,16 @@ import { concatMap, filter, Observable } from 'rxjs';
     MatIconModule,
     HumanizeBytesPipe,
     MatMenuModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   templateUrl: './video-detail.component.html',
   styleUrl: './video-detail.component.scss',
 })
 export class VideoDetailComponent implements OnInit {
   public video$!: Observable<IVideo | null>;
+  protected readonly value = signal('');
+
   constructor(
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
@@ -66,5 +72,10 @@ export class VideoDetailComponent implements OnInit {
   public async deleteVideo(video: IVideo): Promise<void> {
     this.store.dispatch(generateVideoActions.deleteVideo(video));
     await this.router.navigate(['/', 'library', 'screenshots']);
+  }
+
+  protected onInput(event: Event) {
+    this.value.set((event.target as HTMLInputElement).value);
+    console.log(this.value())
   }
 }
