@@ -13,18 +13,14 @@
                 <div class="flex items-center space-x-2">
                   <span class="animate-fade-in">Capturing</span>
                   <span class="flex space-x-1">
-                    <span class="animate-bounce-dot delay-0">.</span>
-                    <span class="animate-bounce-dot delay-150">.</span>
-                    <span class="animate-bounce-dot delay-300">.</span>
+                    <ng-container *ngTemplateOutlet="loading"></ng-container>
                   </span>
                 </div>
               } @else if (generating$ | async) {
                 <div class="flex items-center space-x-2">
                   <span class="animate-fade-in">Generating</span>
                   <span class="flex space-x-1">
-                    <span class="animate-bounce-dot delay-0">.</span>
-                    <span class="animate-bounce-dot delay-150">.</span>
-                    <span class="animate-bounce-dot delay-300">.</span>
+                    <ng-container *ngTemplateOutlet="loading"></ng-container>
                   </span>
                 </div>
               } @else {
@@ -101,3 +97,9 @@
     </mat-card>
   </div>
 </div>
+
+<ng-template #loading>
+    <span class="animate-bounce-dot delay-0">.</span>
+    <span class="animate-bounce-dot delay-150">.</span>
+    <span class="animate-bounce-dot delay-300">.</span>
+</ng-template>
