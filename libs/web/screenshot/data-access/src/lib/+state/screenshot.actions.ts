@@ -20,6 +20,10 @@ export const screenshotActions = createActionGroup({
     'Load Screenshots Success': props<IPaginationResponse<IScreenshot>>(),
     'Load Screenshots Failure': props<{ error: string }>(),
 
+    'Delete Screenshot': props<IScreenshot>(),
+    'Delete Screenshot Success': props<{ id: string }>(),
+    'Delete Screenshot Failure': props<{ error: string }>(),
+
     'Delete Screenshots': emptyProps(),
     'Delete Screenshots Success': emptyProps(),
     'Delete Screenshots Failure': props<{ error: string }>(),

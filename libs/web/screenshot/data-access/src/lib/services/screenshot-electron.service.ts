@@ -44,6 +44,10 @@ export class ScreenshotElectronService {
     return this.electronService.invoke(Channel.REQUEST_PURGE);
   }
 
+  public deleteScreenshot(screenshot: IScreenshot): Promise<void> {
+    return this.electronService.invoke(Channel.REQUEST_DELETE_ONE_SCREENSHOT, screenshot);
+  }
+
   public askFor(
     options: IPaginationOptions
   ): Promise<IPaginationResponse<IScreenshot>> {

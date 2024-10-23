@@ -1,0 +1,38 @@
+.card {
+  cursor: pointer;
+}
+
+mat-icon {
+  overflow: unset;
+}
+
+.screenshot-container {
+  position: relative;
+
+  .overlay {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    top: 1rem;
+    left: 1rem;
+
+    mat-icon {
+      display: none;
+    }
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.5);
+      @apply rounded-md;
+
+      mat-icon {
+        display: block;
+        color: white;
+      }
+    }
+  }
+}
+
+::ng-deep .mat-mdc-menu-content {
+  padding: 0 !important;
+  background: white;
+}

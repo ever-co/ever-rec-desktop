@@ -5,7 +5,11 @@ import {
   VideoService,
 } from '@ever-co/electron-database';
 import { FileManager } from '@ever-co/electron-utils';
-import { Channel, IPaginationOptions } from '@ever-co/shared-utils';
+import {
+  Channel,
+  IPaginationOptions,
+  IScreenshot,
+} from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
 import { ILike } from 'typeorm';
 
@@ -65,7 +69,16 @@ export function crudScreeshotEvents() {
   // Request statistics
   ipcMain.handle(
     Channel.REQUEST_SCREENSHOTS_STATISTICS,
-    (_, options: IPaginationOptions) => ScreenshotMetadataService.statistics(options)
+    (_, options: IPaginationOptions) =>
+      ScreenshotMetadataService.statistics(options)
+  );
+
+  ipcMain.handle(
+    Channel.REQUEST_DELETE_ONE_SCREENSHOT,
+    async (_, screenshot: IScreenshot) => {
+      await ScreenshotService.delete(screenshot.id);
+      await FileManager.deleteFile(screenshot.pathname);
+    }
   );
 }
 
@@ -88,6 +101,7 @@ export function removeCrudScreenshotEvent(): void {
   const channels = [
     Channel.REQUEST_SCREENSHOTS,
     Channel.REQUEST_ONE_SCREENSHOT,
+    Channel.REQUEST_DELETE_ONE_SCREENSHOT,
     Channel.SEARCHING,
     Channel.REQUEST_PURGE,
   ];

@@ -67,7 +67,7 @@ export class ScreenshotEffects {
     )
   );
 
-  deleteAllScreenshots = createEffect(() =>
+  deleteAllScreenshots$ = createEffect(() =>
     this.actions$.pipe(
       ofType(screenshotActions.deleteScreenshots),
       mergeMap(() =>
@@ -75,6 +75,20 @@ export class ScreenshotEffects {
           map(() => screenshotActions.deleteScreenshotsSuccess()),
           catchError((error) =>
             of(screenshotActions.deleteScreenshotsFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  deleteAllScreenshot$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(screenshotActions.deleteScreenshot),
+      mergeMap((screenshot) =>
+        from(this.electronService.deleteScreenshot(screenshot)).pipe(
+          map(() => screenshotActions.deleteScreenshotSuccess(screenshot)),
+          catchError((error) =>
+            of(screenshotActions.deleteScreenshotFailure({ error }))
           )
         )
       )

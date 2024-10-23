@@ -113,6 +113,23 @@ export const reducer = createReducer(
     loading: false,
     error,
   })),
+
+  on(screenshotActions.deleteScreenshot, (state) => ({
+    ...state,
+    loading: true,
+    error: '',
+  })),
+  on(screenshotActions.deleteScreenshotSuccess, (state, { id }) => ({
+    ...state,
+    loading: false,
+    screenshots: state.screenshots.filter((screenshot) => screenshot.id !== id),
+  })),
+  on(screenshotActions.deleteScreenshotFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  })),
+
   on(screenshotActions.ask, (state, { filter = '' }) => ({
     ...state,
     search: {

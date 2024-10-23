@@ -7,7 +7,7 @@ import {
   screenshotActions,
   selectScreenshotState,
 } from '@ever-co/screenshot-data-access';
-import { NoDataComponent } from '@ever-co/shared-components';
+import { NoDataComponent, ScreenshotComponent } from '@ever-co/shared-components';
 import {
   InfiniteScrollDirective,
   UtcToLocalTimePipe,
@@ -26,7 +26,8 @@ import { Observable, Subject, map, takeUntil, tap } from 'rxjs';
     NoDataComponent,
     MatCardModule,
     MatProgressSpinnerModule,
-    RouterLink
+    RouterLink,
+    ScreenshotComponent
   ],
   templateUrl: './screenshot-gallery.component.html',
   styleUrl: './screenshot-gallery.component.scss',
