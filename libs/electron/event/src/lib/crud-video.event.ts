@@ -1,5 +1,6 @@
 import { MetadataService, VideoService } from '@ever-co/electron-database';
-import { Channel, IPaginationOptions } from '@ever-co/shared-utils';
+import { FileManager } from '@ever-co/electron-utils';
+import { Channel, IPaginationOptions, IVideo } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
 import { IsNull, Not } from 'typeorm';
 
@@ -31,6 +32,12 @@ export function crudVideoEvents() {
   // Get one video
   ipcMain.handle(Channel.REQUEST_ONE_VIDEO, async (_, options = {}) => {
     return videoService.findOne(options);
+  });
+
+  // Get one video
+  ipcMain.handle(Channel.REQUEST_DELETE_ONE_VIDEO, async (_, video: IVideo) => {
+    await videoService.delete(video.id);
+    await FileManager.deleteFile(video.pathname);
   });
 
   // Get one video

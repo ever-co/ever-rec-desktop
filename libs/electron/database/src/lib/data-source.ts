@@ -6,6 +6,7 @@ import { Screenshot } from './entities/screenshot.entity';
 import { VideoMetadata } from './entities/video-metadata.entity';
 import { Video } from './entities/video.entity';
 import { ScreenshotSubscriber } from './subscribers/screenshot.subscriber';
+import { VideoSubscriber } from './subscribers/video.subscriber';
 
 const database = FileManager.createFilePathSync(
   'databases',
@@ -18,7 +19,7 @@ export const appDataSource = new DataSource({
   entities: [Screenshot, ScreenshotMetadata, Video, VideoMetadata],
   synchronize: true,
   logging: true,
-  subscribers: [ScreenshotSubscriber],
+  subscribers: [ScreenshotSubscriber, VideoSubscriber],
   enableWAL: true,
   prepareDatabase: (db) => {
     db.pragma('cipher = "sqlcipher"');

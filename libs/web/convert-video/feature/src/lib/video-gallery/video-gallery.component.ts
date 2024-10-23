@@ -84,6 +84,10 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
     await this.router.navigate(['/', 'library', 'videos', video.id]);
   }
 
+  public async onDelete(video: IVideo): Promise<void> {
+    this.store.dispatch(generateVideoActions.deleteVideo(video));
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

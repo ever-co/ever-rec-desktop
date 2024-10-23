@@ -5,15 +5,17 @@
   class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pr-4 overflow-auto max-h-svh main"
 >
   @for (video of videos$ | async; track video) {
-  <lib-video class="video-card" (view)="onView(video)" [video]="video"></lib-video>
+  <lib-video
+    class="video-card"
+    (view)="onView(video)"
+    (delete)="onDelete(video)"
+    [video]="video"
+  ></lib-video>
   }
 </div>
 } @else {
 <div class="flex h-full items-center p-4 justify-center">
-  <lib-no-data
-    message="No Videos available"
-    class="text-center text-gray-500"
-  >
+  <lib-no-data message="No Videos available" class="text-center text-gray-500">
   </lib-no-data>
 </div>
 }

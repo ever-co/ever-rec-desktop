@@ -47,7 +47,8 @@ export class SettingStorageEffects {
         screenshotActions.deleteScreenshots,
         screenshotActions.captureSuccess,
         generateVideoActions.progress,
-        generateVideoActions.finishSuccess
+        generateVideoActions.finishSuccess,
+        generateVideoActions.deleteVideoSuccess,
       ),
       mergeMap(() =>
         from(this.storageElectronService.getUsedSize()).pipe(

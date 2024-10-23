@@ -23,7 +23,7 @@ export const initialState: State = {
   videos: [],
   hasNext: false,
   count: 0,
-  loading: false
+  loading: false,
 };
 
 export const reducer = createReducer(
@@ -88,6 +88,18 @@ export const reducer = createReducer(
     loading: false,
     error,
   })),
+
+  on(generateVideoActions.deleteVideoSuccess, (state, { id }) => ({
+    ...state,
+    video: state.video?.id === id ? initialState.video : state.video,
+    videos: state.videos.filter((video) => video.id !== id),
+  })),
+
+  on(generateVideoActions.deleteVideoFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  }))
 );
 
 export const generateVideoFeature = createFeature({
