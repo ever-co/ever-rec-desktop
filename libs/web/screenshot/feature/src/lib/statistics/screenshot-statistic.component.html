@@ -1,0 +1,96 @@
+<div class="w-full bg-gray-50">
+    <!-- Responsive Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 max-h-screen overflow-auto">
+      @for (statistic of statistics$ | async; track statistic.name) {
+        <mat-card
+          appearance="outlined"
+          class="transform transition-all mt-1 duration-300 bg-white hover:shadow-lg hover:-translate-y-1 break-words"
+        >
+          <mat-card-content class="p-4 sm:p-6">
+            <!-- Header Section -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+              <div class="flex items-center min-w-0 gap-3">
+                  <img [src]="statistic.icon"
+                       [alt]="statistic.name"
+                       class="w-8 h-8 sm:w-6 rounded-full sm:h-6 object-contain" />
+                <div class="text-base sm:text-lg font-semibold text-gray-700 truncate">
+                  {{ statistic.name }}
+                </div>
+              </div>
+
+              <!-- Trend Indicator -->
+              @if (statistic.trend !== undefined) {
+                <div class="flex items-center"
+                     [ngClass]="statistic.trend >= 0 ? 'text-green-500' : 'text-red-500'">
+                  <mat-icon class="text-sm">
+                    {{ statistic.trend >= 0 ? 'trending_up' : 'trending_down' }}
+                  </mat-icon>
+                  <span class="text-sm ml-1">{{ statistic.trend }}%</span>
+                </div>
+              }
+            </div>
+
+            <!-- Progress Section -->
+            <div class="space-y-3">
+              <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2">
+                <div class="flex items-baseline gap-2">
+                  <span class="text-xl sm:text-2xl font-bold text-gray-800">
+                    {{ statistic.count | number }}
+                  </span>
+                  <span class="text-sm text-gray-500">
+                    of {{ statistic.total | number }} screenshots
+                  </span>
+                </div>
+                <span class="text-sm hidden sm:inline font-medium text-gray-600">
+                  {{ (statistic.count / statistic.total) | percent:'1.0-1' }}
+                </span>
+              </div>
+
+              <!-- Progress Bar -->
+              <div class="relative w-full">
+                <mat-progress-bar
+                  class="rounded-full"
+                  [color]="getColor(statistic.count * 100 / statistic.total)"
+                  mode="determinate"
+                  [value]="calculateProgress(statistic.count, statistic.total)">
+                </mat-progress-bar>
+              </div>
+
+              <!-- Mobile Stats Summary -->
+              <div class="block sm:hidden mt-2">
+                <div class="grid grid-cols-2 gap-2 text-sm text-gray-600">
+                  <div>
+                    <span class="font-medium">Progress:</span>
+                    {{ (statistic.count / statistic.total) | percent:'1.0-1' }}
+                  </div>
+                  @if (statistic.trend !== undefined) {
+                    <div>
+                      <span class="font-medium">Trend:</span>
+                      <span [ngClass]="statistic.trend >= 0 ? 'text-green-500' : 'text-red-500'">
+                        {{ statistic.trend }}%
+                      </span>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+
+    <!-- Responsive Summary Footer -->
+    <mat-card appearance="outlined" class="mt-4 bg-white rounded-lg p-4 sm:p-6 hidden sm:block">
+      <div>
+        <p class="text-sm font-medium text-gray-600 border-b p-2">Summary</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        @for (statistic of (statistics$ | async)?.slice(0, 3); track statistic.name) {
+          <div class="flex items-center justify-between border-b sm:border-b-0 sm:border-r last:border-0 p-2">
+            <span class="text-gray-600 truncate">{{ statistic.name }}</span>
+            <span class="font-semibold">{{ (statistic.count / statistic.total) | percent:'1.0-1' }}</span>
+          </div>
+        }
+      </div>
+    </mat-card>
+</div>

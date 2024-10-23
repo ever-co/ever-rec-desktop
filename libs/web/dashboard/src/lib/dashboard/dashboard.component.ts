@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { selectGenerateVideoState } from '@ever-co/convert-video-data-access';
 import { VideoGalleryComponent } from '@ever-co/convert-video-feature';
 import { selectScreenshotState } from '@ever-co/screenshot-data-access';
-import { ScreenshotGalleryComponent } from '@ever-co/screenshot-feature';
+import { ScreenshotGalleryComponent, ScreenshotStatisticComponent } from '@ever-co/screenshot-feature';
 import { NoDataComponent } from '@ever-co/shared-components';
 import { Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
@@ -13,11 +13,19 @@ import { map, Observable } from 'rxjs';
 @Component({
   selector: 'lib-dashboard',
   standalone: true,
-  imports: [CommonModule, MatCardModule, NoDataComponent, MatIconModule, ScreenshotGalleryComponent, VideoGalleryComponent],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    NoDataComponent,
+    MatIconModule,
+    ScreenshotGalleryComponent,
+    VideoGalleryComponent,
+    ScreenshotStatisticComponent
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
-export class DashboardComponent implements OnInit{
+export class DashboardComponent implements OnInit {
   public capturing$!: Observable<boolean>;
   public generating$!: Observable<boolean>;
   public screenshotCount$!: Observable<number>;
@@ -25,9 +33,17 @@ export class DashboardComponent implements OnInit{
 
   constructor(private readonly store: Store) {}
   ngOnInit(): void {
-    this.capturing$ = this.store.select(selectScreenshotState).pipe(map(state => state.capturing));
-    this.screenshotCount$ = this.store.select(selectScreenshotState).pipe(map(state => state.count));
-    this.videoCount$ = this.store.select(selectGenerateVideoState).pipe(map(state => state.count));
-    this.generating$ = this.store.select(selectGenerateVideoState).pipe(map(state => state.generating));
+    this.capturing$ = this.store
+      .select(selectScreenshotState)
+      .pipe(map((state) => state.capturing));
+    this.screenshotCount$ = this.store
+      .select(selectScreenshotState)
+      .pipe(map((state) => state.count));
+    this.videoCount$ = this.store
+      .select(selectGenerateVideoState)
+      .pipe(map((state) => state.count));
+    this.generating$ = this.store
+      .select(selectGenerateVideoState)
+      .pipe(map((state) => state.generating));
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { ElectronService } from '@ever-co/electron-data-access';
-import { Channel, IPaginationOptions, IPaginationResponse, IScreenCaptureConfig, IScreenshot } from '@ever-co/shared-utils';
+import { Channel, IPaginationOptions, IPaginationResponse, IScreenCaptureConfig, IScreenshot, IScreenshotMetadataStatistic } from '@ever-co/shared-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -37,5 +37,9 @@ export class ScreenshotElectronService {
 
   public askFor(options: IPaginationOptions): Promise<IPaginationResponse<IScreenshot>> {
     return this.electronService.invoke(Channel.SEARCHING, options);
+  }
+
+  public getStatistics(): Promise<IScreenshotMetadataStatistic[]> {
+    return this.electronService.invoke(Channel.REQUEST_SCREENSHOTS_STATISTICS);
   }
 }

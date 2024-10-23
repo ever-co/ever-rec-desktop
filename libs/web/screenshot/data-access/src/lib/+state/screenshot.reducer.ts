@@ -1,4 +1,7 @@
-import { IScreenshot } from '@ever-co/shared-utils';
+import {
+  IScreenshot,
+  IScreenshotMetadataStatistic,
+} from '@ever-co/shared-utils';
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { screenshotActions } from './screenshot.actions';
 
@@ -11,6 +14,7 @@ export interface IScreenshotState {
   count: number;
   loading: boolean;
   filter: string;
+  statistics: IScreenshotMetadataStatistic[];
   error: string;
 }
 
@@ -22,6 +26,7 @@ export const initialState: IScreenshotState = {
   hasNext: false,
   count: 0,
   error: '',
+  statistics: [],
 };
 
 export const reducer = createReducer(
@@ -76,7 +81,7 @@ export const reducer = createReducer(
     error: '',
   })),
   on(screenshotActions.deleteScreenshotsSuccess, () => ({
-    ...initialState
+    ...initialState,
   })),
   on(screenshotActions.deleteScreenshotsFailure, (state, { error }) => ({
     ...state,
@@ -103,7 +108,15 @@ export const reducer = createReducer(
     ...state,
     loading: false,
     error,
-  }))
+  })),
+
+  on(
+    screenshotActions.getScreenshotsStatisticsSuccess,
+    (state, { statistics }) => ({
+      ...state,
+      statistics,
+    })
+  )
 );
 
 export const screenshotFeature = createFeature({

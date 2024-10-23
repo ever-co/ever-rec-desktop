@@ -61,6 +61,12 @@ export function crudScreeshotEvents() {
 
   // Purge Data
   ipcMain.handle(Channel.REQUEST_PURGE, purgeData);
+
+  // Request statistics
+  ipcMain.handle(
+    Channel.REQUEST_SCREENSHOTS_STATISTICS,
+    () => ScreenshotMetadataService.statistics()
+  );
 }
 
 export async function purgeData() {

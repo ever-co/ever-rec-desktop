@@ -1,4 +1,7 @@
-import { IScreenshotMetadata } from '@ever-co/shared-utils';
+import {
+  IScreenshotMetadata,
+  IScreenshotMetadataStatistic,
+} from '@ever-co/shared-utils';
 import { FindManyOptions, FindOneOptions, In } from 'typeorm';
 import { ScreenshotMetadata } from '../entities/screenshot-metadata.entity';
 import { ScreenshotMetadataRepository } from '../repositories/screenshot-metadata.repository';
@@ -47,5 +50,17 @@ export class ScreenshotMetadataService {
 
   public static async deleteAll(metadataIds?: string[]): Promise<void> {
     await this.repository.delete(metadataIds ? { id: In(metadataIds) } : {});
+  }
+
+  public static async statistics(): Promise<IScreenshotMetadataStatistic[]> {
+    return this.repository
+      .createQueryBuilder('metadata')
+      .select('metadata.name', 'name')
+      .addSelect('metadata.icon', 'icon')
+      .addSelect('COUNT(metadata.name)', 'count')
+      .addSelect('SUM(COUNT(metadata.id)) OVER()', 'total')
+      .groupBy('metadata.name')
+      .orderBy('count', 'DESC')
+      .getRawMany();
   }
 }
