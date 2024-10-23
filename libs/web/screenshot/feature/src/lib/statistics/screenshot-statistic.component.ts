@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { selectScreenshotState } from '@ever-co/screenshot-data-access';
+import { NoDataComponent } from '@ever-co/shared-components';
 import { IScreenshotMetadataStatistic } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
@@ -13,7 +14,15 @@ import { map, Observable } from 'rxjs';
 @Component({
   selector: 'lib-screenshot-statistic',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatProgressBarModule, MatIconModule, MatFormFieldModule, MatSelectModule],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatProgressBarModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    NoDataComponent,
+  ],
   templateUrl: './screenshot-statistic.component.html',
   styleUrl: './screenshot-statistic.component.scss',
 })

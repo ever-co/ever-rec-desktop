@@ -56,7 +56,10 @@ export const reducer = createReducer(
   on(screenshotActions.captureSuccess, (state, { screenshot }) => ({
     ...state,
     count: state.count + 1,
-    screenshots: [...state.screenshots, screenshot],
+    screenshots:
+      state.screenshots.length <= 10
+        ? [...state.screenshots, screenshot]
+        : state.screenshots,
     error: '',
   })),
   on(screenshotActions.captureFailure, (state, { error }) => ({
@@ -137,8 +140,8 @@ export const reducer = createReducer(
   on(screenshotActions.resetAsk, (state) => ({
     ...state,
     search: {
-      ...initialState.search
-    }
+      ...initialState.search,
+    },
   })),
 
   on(
