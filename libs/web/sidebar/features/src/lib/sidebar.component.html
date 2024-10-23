@@ -2,7 +2,7 @@
   <mat-nav-list>
     @for (item of navigationItems$ | async; track item.title) {
       <a mat-list-item (click)="onSelect(item)" [ngClass]="{'bg-indigo-50': (selectedItem$ | async)?.title === item.title}" [class.bg-indigo-50]="(selectedItem$ | async)?.title === item.title">
-        <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+        <mat-icon [fontSet]="(selectedItem$ | async)?.title === item.title ? 'selected': ''" matListItemIcon>{{ item.icon }}</mat-icon>
         <span matListItemTitle>{{ item.title }}</span>
       </a>
     }

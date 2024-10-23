@@ -2,8 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-.mdc-notched-outline__notch
-{
+.mdc-notched-outline__notch {
   border-right: none;
 }
 
@@ -23,5 +22,24 @@ html {
   height: 100%;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+mat-icon {
+  font-family: 'Material Icons Outlined' !important;
+  font-feature-settings: 'liga' !important;
+}
+
+mat-icon:hover,
+mat-icon:focus,
+mat-icon:active,
+.selected {
+  font-family: 'Material Icons' !important;
+}

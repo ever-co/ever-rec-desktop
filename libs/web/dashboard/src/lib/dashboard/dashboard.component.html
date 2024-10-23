@@ -43,7 +43,7 @@
             <p class="text-sm font-medium text-gray-600">Videos</p>
             <h6 class="text-2xl font-bold">{{ videoCount$ | async }}</h6>
           </div>
-          <mat-icon class="h-6 w-6 text-gray-600">videocam</mat-icon>
+          <mat-icon class="h-6 w-6 text-gray-600 transition-all duration-300 hover:text-blue-500 hover:scale-110">videocam</mat-icon>
         </div>
       </mat-card-content>
     </mat-card>
@@ -56,7 +56,7 @@
             <p class="text-sm font-medium text-gray-600">Screenshots</p>
             <h6 class="text-2xl font-bold">{{screenshotCount$ | async}}</h6>
           </div>
-          <mat-icon class="h-6 w-6 text-gray-600">photo_library</mat-icon>
+          <mat-icon class="h-6 w-6 text-gray-600 transition-all duration-300 hover:text-blue-500 hover:scale-110">photo_library</mat-icon>
         </div>
       </mat-card-content>
     </mat-card>
@@ -67,7 +67,7 @@
     <!-- Recent Screenshots -->
     <mat-card class="w-full" appearance="outlined">
       <mat-card-content class="p-6 h-full">
-        <p class="text-sm font-medium text-gray-600 mb-4">Recent Screenshots</p>
+        <p class="text-sm font-medium text-gray-600 mb-4 ">Recent Screenshots</p>
         <div class="h-full">
           <lib-screenshot-gallery class="dashboard"></lib-screenshot-gallery>
         </div>
