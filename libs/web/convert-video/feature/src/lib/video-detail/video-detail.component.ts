@@ -4,12 +4,17 @@ import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConvertVideoElectronService } from '@ever-co/convert-video-data-access';
+import {
+  ConvertVideoElectronService,
+  generateVideoActions,
+} from '@ever-co/convert-video-data-access';
 import { NoDataComponent, VideoComponent } from '@ever-co/shared-components';
 import { HumanizeBytesPipe, UtcToLocalTimePipe } from '@ever-co/shared-service';
 import { IVideo } from '@ever-co/shared-utils';
+import { Store } from '@ngrx/store';
 import { concatMap, filter, Observable } from 'rxjs';
 
 @Component({
@@ -25,7 +30,8 @@ import { concatMap, filter, Observable } from 'rxjs';
     MatDividerModule,
     MatTooltipModule,
     MatIconModule,
-    HumanizeBytesPipe
+    HumanizeBytesPipe,
+    MatMenuModule,
   ],
   templateUrl: './video-detail.component.html',
   styleUrl: './video-detail.component.scss',
@@ -35,7 +41,8 @@ export class VideoDetailComponent implements OnInit {
   constructor(
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
-    private readonly videoService: ConvertVideoElectronService
+    private readonly videoService: ConvertVideoElectronService,
+    private readonly store: Store
   ) {}
   ngOnInit(): void {
     this.video$ = this.activatedRoute.params.pipe(
@@ -54,5 +61,10 @@ export class VideoDetailComponent implements OnInit {
         }
       })
     );
+  }
+
+  public async deleteVideo(video: IVideo): Promise<void> {
+    this.store.dispatch(generateVideoActions.deleteVideo(video));
+    await this.router.navigate(['/', 'library', 'screenshots']);
   }
 }
