@@ -1,15 +1,15 @@
 import type {
-    IScreenshot,
-    IVideo,
-    IVideoMetadata,
+  IScreenshot,
+  IVideo,
+  IVideoMetadata,
 } from '@ever-co/shared-utils';
 import {
-    Column,
-    Entity,
-    ManyToOne,
-    OneToMany,
-    OneToOne,
-    Relation,
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  Relation,
 } from 'typeorm';
 import { Base } from './base.entity';
 import { Screenshot } from './screenshot.entity';
@@ -25,12 +25,12 @@ export class Video extends Base implements IVideo {
 
   @ManyToOne(() => Video, (video) => video.chunks, {
     nullable: true,
-    onDelete: 'SET NULL',
+    onDelete: 'CASCADE',
   })
   parent?: Relation<IVideo>;
 
   @OneToMany(() => Video, (video) => video.parent, {
-    onDelete: 'SET NULL',
+    onDelete: 'CASCADE',
     nullable: true,
   })
   chunks?: Relation<IVideo[]>;
@@ -43,7 +43,7 @@ export class Video extends Base implements IVideo {
 
   @OneToOne(() => VideoMetadata, (metadata) => metadata.video, {
     nullable: true,
-    onDelete: 'SET NULL',
+    onDelete: 'CASCADE',
   })
   metadata?: Relation<IVideoMetadata>;
 }

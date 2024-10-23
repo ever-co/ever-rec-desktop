@@ -1,15 +1,15 @@
 import type {
-    IScreenshot,
-    IScreenshotMetadata,
-    IVideo,
+  IScreenshot,
+  IScreenshotMetadata,
+  IVideo,
 } from '@ever-co/shared-utils';
 import {
-    Column,
-    Entity,
-    JoinColumn,
-    ManyToOne,
-    OneToOne,
-    Relation,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  Relation,
 } from 'typeorm';
 import { Base } from './base.entity';
 import { ScreenshotMetadata } from './screenshot-metadata.entity';
@@ -25,7 +25,7 @@ export class Screenshot extends Base implements IScreenshot {
 
   @OneToOne(() => ScreenshotMetadata, (metadata) => metadata.screenshot, {
     nullable: true,
-    onDelete: 'SET NULL',
+    onDelete: 'CASCADE',
   })
   metadata: Relation<IScreenshotMetadata>;
 
