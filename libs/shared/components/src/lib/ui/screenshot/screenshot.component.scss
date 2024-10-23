@@ -36,3 +36,19 @@ mat-icon {
   padding: 0 !important;
   background: white;
 }
+
+::ng-deep .mat-menu-panel {
+  @apply rounded-xl;
+  @apply shadow-lg;
+  @apply border border-gray-100;
+  @apply min-w-[200px];
+}
+
+::ng-deep .mat-menu-content {
+  @apply py-2;
+}
+
+::ng-deep .mat-menu-item {
+  @apply h-auto;
+  @apply leading-none;
+}

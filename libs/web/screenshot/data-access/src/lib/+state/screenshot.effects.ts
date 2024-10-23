@@ -114,7 +114,8 @@ export class ScreenshotEffects {
         screenshotActions.getScreenshotsStatistics,
         screenshotActions.loadScreenshots,
         screenshotActions.captureSuccess,
-        screenshotActions.deleteScreenshotsSuccess
+        screenshotActions.deleteScreenshotsSuccess,
+        screenshotActions.deleteScreenshotSuccess
       ),
       mergeMap((options) =>
         from(

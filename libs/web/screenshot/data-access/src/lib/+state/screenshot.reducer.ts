@@ -122,6 +122,7 @@ export const reducer = createReducer(
   on(screenshotActions.deleteScreenshotSuccess, (state, { id }) => ({
     ...state,
     loading: false,
+    count: state.count - 1,
     screenshots: state.screenshots.filter((screenshot) => screenshot.id !== id),
   })),
   on(screenshotActions.deleteScreenshotFailure, (state, { error }) => ({
