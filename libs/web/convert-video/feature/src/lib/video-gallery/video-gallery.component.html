@@ -7,8 +7,6 @@
   @for (video of videos$ | async; track video) {
   <lib-video
     class="video-card"
-    (view)="onView(video)"
-    (delete)="onDelete(video)"
     [video]="video"
   ></lib-video>
   }

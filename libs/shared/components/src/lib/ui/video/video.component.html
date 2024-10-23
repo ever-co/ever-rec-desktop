@@ -48,16 +48,14 @@
   </mat-card-content>
   }
 </mat-card>
-}
-
 <mat-menu #menu="matMenu">
-  <button (click)="viewVideo()" mat-menu-item>
+  <button (click)="view(video)" mat-menu-item>
     <mat-icon>visibility</mat-icon>
     <span>View</span>
   </button>
   <button
     class="group flex items-center hover:bg-red-50 transition-colors duration-200"
-    (click)="deleteVideo()"
+    (click)="delete(video)"
     mat-menu-item
   >
     <mat-icon
@@ -70,3 +68,4 @@
     >
   </button>
 </mat-menu>
+}

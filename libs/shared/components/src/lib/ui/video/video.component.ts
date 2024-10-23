@@ -3,18 +3,19 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  EventEmitter,
   Input,
   OnDestroy,
-  Output,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { Router } from '@angular/router';
+import { generateVideoActions } from '@ever-co/convert-video-data-access';
 import { UtcToLocalTimePipe } from '@ever-co/shared-service';
 import { IVideo } from '@ever-co/shared-utils';
+import { Store } from '@ngrx/store';
 import { BehaviorSubject, fromEvent, Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
@@ -45,8 +46,7 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  @Output() view = new EventEmitter<void>();
-  @Output() delete = new EventEmitter<void>();
+  constructor(private readonly router: Router, private readonly store: Store){}
 
   ngAfterViewInit(): void {
     fromEvent(this.player, 'play')
@@ -94,12 +94,12 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
     return this.player?.paused;
   }
 
-  public viewVideo() {
-     this.view.emit();
+  public async view(video: IVideo): Promise<void> {
+    await this.router.navigate(['/', 'library', 'videos', video.id]);
   }
 
-  public deleteVideo() {
-    this.delete.emit();
+  public async delete(video: IVideo): Promise<void> {
+    this.store.dispatch(generateVideoActions.deleteVideo(video));
   }
 
   ngOnDestroy(): void {
