@@ -1,6 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { ElectronService } from '@ever-co/electron-data-access';
-import { Channel, IPaginationOptions, IPaginationResponse, IScreenCaptureConfig, IScreenshot, IScreenshotMetadataStatistic } from '@ever-co/shared-utils';
+import {
+  Channel,
+  IPaginationOptions,
+  IPaginationResponse,
+  IScreenCaptureConfig,
+  IScreenshot,
+  IScreenshotMetadataStatistic,
+} from '@ever-co/shared-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +30,9 @@ export class ScreenshotElectronService {
     this.electronService.send(Channel.START_CAPTURE_SCREEN, config);
   }
 
-  public getAllScreenshots(options: IPaginationOptions): Promise<IPaginationResponse<IScreenshot>> {
+  public getAllScreenshots(
+    options: IPaginationOptions
+  ): Promise<IPaginationResponse<IScreenshot>> {
     return this.electronService.invoke(Channel.REQUEST_SCREENSHOTS, options);
   }
 
@@ -35,11 +44,19 @@ export class ScreenshotElectronService {
     return this.electronService.invoke(Channel.REQUEST_PURGE);
   }
 
-  public askFor(options: IPaginationOptions): Promise<IPaginationResponse<IScreenshot>> {
+  public askFor(
+    options: IPaginationOptions
+  ): Promise<IPaginationResponse<IScreenshot>> {
     return this.electronService.invoke(Channel.SEARCHING, options);
   }
 
-  public getStatistics(): Promise<IScreenshotMetadataStatistic[]> {
-    return this.electronService.invoke(Channel.REQUEST_SCREENSHOTS_STATISTICS);
+  public getStatistics(
+    options = {} as IPaginationOptions
+  ): Promise<IPaginationResponse<IScreenshotMetadataStatistic>> {
+    const { page = 1, limit = 10 } = options;
+    return this.electronService.invoke(Channel.REQUEST_SCREENSHOTS_STATISTICS, {
+      page,
+      limit,
+    });
   }
 }

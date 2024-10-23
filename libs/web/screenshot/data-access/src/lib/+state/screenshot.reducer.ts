@@ -14,7 +14,11 @@ export interface IScreenshotState {
   count: number;
   loading: boolean;
   filter: string;
-  statistics: IScreenshotMetadataStatistic[];
+  statistic: {
+    currents: IScreenshotMetadataStatistic[];
+    hasNext: boolean;
+    count: number;
+  };
   search: {
     screenshots: IScreenshot[];
     hasNext: boolean;
@@ -33,7 +37,11 @@ export const initialState: IScreenshotState = {
   hasNext: false,
   count: 0,
   error: '',
-  statistics: [],
+  statistic: {
+    currents: [],
+    hasNext: false,
+    count: 0,
+  },
   search: {
     loading: false,
     screenshots: [],
@@ -146,9 +154,20 @@ export const reducer = createReducer(
 
   on(
     screenshotActions.getScreenshotsStatisticsSuccess,
-    (state, { statistics }) => ({
+    (state, { hasNext, data, count }) => ({
       ...state,
-      statistics,
+      statistic: {
+        hasNext,
+        currents: [
+          ...new Map(
+            [...state.statistic.currents, ...data].map((item) => [
+              item.name,
+              item,
+            ])
+          ).values(),
+        ],
+        count,
+      },
     })
   )
 );

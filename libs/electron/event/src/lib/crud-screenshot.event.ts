@@ -65,7 +65,7 @@ export function crudScreeshotEvents() {
   // Request statistics
   ipcMain.handle(
     Channel.REQUEST_SCREENSHOTS_STATISTICS,
-    () => ScreenshotMetadataService.statistics()
+    (_, options: IPaginationOptions) => ScreenshotMetadataService.statistics(options)
   );
 }
 

@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
+import { IPaginationOptions } from '@ever-co/shared-utils';
 import { Action } from '@ngrx/store';
 import { from, of } from 'rxjs';
 import { catchError, debounceTime, map, mergeMap } from 'rxjs/operators';
@@ -96,14 +97,21 @@ export class ScreenshotEffects {
   getStatistics$ = createEffect(() =>
     this.actions$.pipe(
       ofType(
+        screenshotActions.getScreenshotsStatistics,
         screenshotActions.loadScreenshots,
         screenshotActions.captureSuccess,
         screenshotActions.deleteScreenshotsSuccess
       ),
-      mergeMap(() =>
-        from(this.electronService.getStatistics()).pipe(
-          map((statistics) =>
-            screenshotActions.getScreenshotsStatisticsSuccess({ statistics })
+      mergeMap((options) =>
+        from(
+          this.electronService.getStatistics(options as IPaginationOptions)
+        ).pipe(
+          map(({ hasNext, count, data }) =>
+            screenshotActions.getScreenshotsStatisticsSuccess({
+              hasNext,
+              count,
+              data,
+            })
           ),
           catchError((error) =>
             of(screenshotActions.getScreenshotsStatisticsFailure({ error }))

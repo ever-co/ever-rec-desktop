@@ -3,7 +3,7 @@ import {
   IPaginationResponse,
   IScreenCaptureConfig,
   IScreenshot,
-  IScreenshotMetadataStatistic,
+  IScreenshotMetadataStatistic
 } from '@ever-co/shared-utils';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
@@ -24,9 +24,8 @@ export const screenshotActions = createActionGroup({
     'Delete Screenshots Success': emptyProps(),
     'Delete Screenshots Failure': props<{ error: string }>(),
 
-    'Get Screenshots Statistics Success': props<{
-      statistics: IScreenshotMetadataStatistic[];
-    }>(),
+    'Get Screenshots Statistics': props<IPaginationOptions>(),
+    'Get Screenshots Statistics Success': props<IPaginationResponse<IScreenshotMetadataStatistic>>(),
     'Get Screenshots Statistics Failure': props<{ error: string }>(),
 
     ask: props<IPaginationOptions>(),

@@ -1,4 +1,6 @@
 import {
+  IPaginationOptions,
+  IPaginationResponse,
   IScreenshotMetadata,
   IScreenshotMetadataStatistic,
 } from '@ever-co/shared-utils';
@@ -52,8 +54,12 @@ export class ScreenshotMetadataService {
     await this.repository.delete(metadataIds ? { id: In(metadataIds) } : {});
   }
 
-  public static async statistics(): Promise<IScreenshotMetadataStatistic[]> {
-    return this.repository
+  public static async statistics(
+    options: IPaginationOptions = {}
+  ): Promise<IPaginationResponse<IScreenshotMetadataStatistic>> {
+    const { page = 1, limit = 10 } = options;
+
+    const query = this.repository
       .createQueryBuilder('metadata')
       .select('metadata.name', 'name')
       .addSelect('metadata.icon', 'icon')
@@ -61,6 +67,15 @@ export class ScreenshotMetadataService {
       .addSelect('SUM(COUNT(metadata.id)) OVER()', 'total')
       .groupBy('metadata.name')
       .orderBy('count', 'DESC')
-      .getRawMany();
+      .skip((page - 1) * limit)
+      .take(limit);
+
+    const data = await query.getRawMany();
+
+    // Get the total count from the first result (as `total` is calculated per row)
+    const count = data.length > 0 ? parseInt(data[0].total, 10) : 0;
+    const hasNext = page * limit < count;
+
+    return { data, count, hasNext };
   }
 }
