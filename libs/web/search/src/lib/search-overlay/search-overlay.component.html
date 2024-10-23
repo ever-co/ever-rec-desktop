@@ -1,15 +1,22 @@
-<div libInfiniteScroll (scrolled)="moreResult()" class="overlay-container w-full mat-elevation-z2">
+<div class="overlay-container w-full mat-elevation-z2">
   @if (recents().length > 0) {
-  <mat-action-list>
+  <div class="text-sm font-medium text-gray-600 flex justify-end w-full p-4 pb-0">
+    {{ count$ | async }} results found
+  </div>
+  <mat-action-list
+    class="overflow-y-auto rounded-bl-[2rem] rounded-br-[2rem] max-h-80"
+    libInfiniteScroll
+    (scrolled)="moreResult()"
+  >
     @for (item of recents(); track item) {
-    <mat-list-item>
-      <div matListItemTitle class="flex gap-2 items-center">
+    <mat-list-item class="w-full" (click)="showResult(item)">
+      <div matListItemTitle class="flex gap-2 min-w-0 items-center">
         <img
           class="w-8 h-8 rounded-full"
           [src]="item?.metadata?.icon"
           alt="icon"
         />
-        <p>{{ item?.metadata?.name }}</p>
+        <p class="truncate">{{ item?.metadata?.name }}</p>
       </div>
     </mat-list-item>
     }
