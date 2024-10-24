@@ -1,6 +1,6 @@
 @if (isAvailable$ | async) {
   <div libInfiniteScroll (scrolled)="moreScreenshots()" class="row">
-    @for (screenshot of screenshots$ | async; track screenshot) {
+    @for (screenshot of screenshots$ | async; track screenshot.id) {
     <div class="column">
       @if(screenshot) {
       <figure>

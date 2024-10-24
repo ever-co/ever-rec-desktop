@@ -4,7 +4,7 @@
   (scrolled)="moreScreenshots()"
   class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pr-4 overflow-auto max-h-svh main"
 >
-  @for (screenshot of screenshots$ | async; track screenshot) {
+  @for (screenshot of screenshots$ | async; track screenshot.id) {
    <lib-screenshot class="card" [screenshot]="screenshot"></lib-screenshot>
   } @if(capturing$ | async) {
   <mat-card
