@@ -12,6 +12,7 @@ import {
 import { provideBreadcrumbDataAccess } from '@ever-co/breadcrumb-data-access';
 import { provideConvertVideoDataAccess } from '@ever-co/convert-video-data-access';
 import { provideScreenshotDataAccess } from '@ever-co/screenshot-data-access';
+import { provideDatePickerDataAccess } from '@ever-co/shared-components';
 import { provideSidebarDataAccess } from '@ever-co/sidebar-data-access';
 import { provideSettingsDataAccess } from '@ever-co/web-setting-data-access';
 import { provideEffects } from '@ngrx/effects';
@@ -32,5 +33,6 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(appRoutes, withViewTransitions(), withHashLocation()),
     provideAnimationsAsync(),
+    provideDatePickerDataAccess()
   ],
 };
