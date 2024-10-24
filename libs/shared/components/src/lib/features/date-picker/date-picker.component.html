@@ -5,8 +5,8 @@
     [formGroup]="range"
     [rangePicker]="picker"
   >
-    <input formControlName="start" matStartDate placeholder="Start date" />
-    <input formControlName="end" matEndDate placeholder="End date" />
+    <input class="truncate" formControlName="start" matStartDate placeholder="Start date" />
+    <input class="truncate" formControlName="end" matEndDate placeholder="End date" />
   </mat-date-range-input>
   <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
   <mat-date-range-picker #picker></mat-date-range-picker>

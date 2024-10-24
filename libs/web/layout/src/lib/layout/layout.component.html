@@ -2,17 +2,25 @@
   <mat-sidenav
     [mode]="isMobileView ? 'over' : 'side'"
     [(opened)]="isExpanded"
-    class="w-full md:w-48 bg-white border-gray-200 md:flex md:flex-col sidenav"
+    class="w-full md:w-48 bg-whiteborder-gray-200 md:flex md:flex-col sidenav"
   >
-    <div class="p-4 border-b border-gray-200">
+    <div class="p-6 pr-2 border-b border-gray-200">
       <div class="flex items-center gap-2">
-        <mat-icon class="text-indigo-600">blur_circular</mat-icon>
-        <span class="text-xl font-semibold">Ever Capture</span>
+        <mat-icon class="text-gray-700">terminal</mat-icon>
+        <span class="text-xl text-gray-700 font-semibold">Ever Capture</span>
         @if(isMobileView){
-        <mat-icon class="ml-auto" (click)="toggleSidenav()">close</mat-icon>
+        <button class="ml-auto" mat-icon-button (click)="toggleSidenav()">
+          <mat-icon>close</mat-icon>
+        </button>
         }
       </div>
     </div>
+    <!-- Date Picker -->
+    @if(isMobileView) {
+      <div class="pl-2 pr-2 pt-4 pb-4 border-b border-gray-200">
+        <lib-date-picker></lib-date-picker>
+      </div>
+    }
     <!-- Navigation Menu -->
     <lib-sidebar class="flex-grow"></lib-sidebar>
     <!-- command -->
@@ -34,12 +42,14 @@
         <mat-icon>menu</mat-icon>
       </button>
       }
-      <div class="w-full md:w-2/3">
+      <div class="w-full flex-shrink-1">
         <lib-search></lib-search>
       </div>
-      <div>
-        <lib-date-picker></lib-date-picker>
-      </div>
+      @if(!isMobileView) {
+        <div class="flex-shrink-0">
+          <lib-date-picker></lib-date-picker>
+        </div>
+      }
     </header>
     <!-- Content Area -->
     <div class="p-4 md:p-8">
