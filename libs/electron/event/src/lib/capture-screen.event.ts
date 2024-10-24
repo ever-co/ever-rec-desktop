@@ -1,4 +1,4 @@
-import { ScreenshotService } from '@ever-co/electron-database';
+import { ScreenshotService, TimeLogService } from '@ever-co/electron-database';
 import {
   ElectronLogger,
   FileManager,
@@ -20,6 +20,7 @@ const SCREENSHOT_DIR = 'screenshots';
 const logger = new ElectronLogger();
 const eventManager = EventManager.getInstance();
 let captureInterval: NodeJS.Timeout | null = null;
+const timeLogService = new TimeLogService();
 
 export function captureScreenEvent(): void {
   ipcMain.on(Channel.START_CAPTURE_SCREEN, captureScreen);
@@ -34,6 +35,7 @@ export function captureScreen(
   if (captureInterval) {
     clearInterval(captureInterval);
   }
+  timeLogService.start();
   captureInterval = setInterval(async () => {
     const screenshot = await takeScreenshot(config.source);
     if (screenshot) {
@@ -42,10 +44,11 @@ export function captureScreen(
   }, config.period * 1000 || SCREENSHOT_INTERVAL_DELAY);
 }
 
-export function stopCaptureScreen() {
+export async function stopCaptureScreen() {
   if (captureInterval) {
     clearInterval(captureInterval);
     captureInterval = null;
+    await timeLogService.stop();
   }
 }
 
@@ -80,7 +83,7 @@ async function takeScreenshot(
 
     const size = await FileManager.fileSize(screenshotPath);
 
-    if(!size) {
+    if (!size) {
       return null;
     }
 
@@ -90,7 +93,7 @@ async function takeScreenshot(
         name: windowSource?.name || '',
         description: getWindowDescription(windowSource),
         icon: '',
-        size
+        size,
       },
     };
 

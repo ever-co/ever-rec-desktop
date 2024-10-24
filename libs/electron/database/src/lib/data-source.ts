@@ -3,6 +3,7 @@ import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import { ScreenshotMetadata } from './entities/screenshot-metadata.entity';
 import { Screenshot } from './entities/screenshot.entity';
+import { TimeLog } from './entities/time-log.entity';
 import { VideoMetadata } from './entities/video-metadata.entity';
 import { Video } from './entities/video.entity';
 import { ScreenshotSubscriber } from './subscribers/screenshot.subscriber';
@@ -16,7 +17,7 @@ const database = FileManager.createFilePathSync(
 export const appDataSource = new DataSource({
   type: 'better-sqlite3',
   database,
-  entities: [Screenshot, ScreenshotMetadata, Video, VideoMetadata],
+  entities: [Screenshot, ScreenshotMetadata, Video, VideoMetadata, TimeLog],
   synchronize: true,
   logging: true,
   subscribers: [ScreenshotSubscriber, VideoSubscriber],

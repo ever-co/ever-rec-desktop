@@ -8,7 +8,9 @@ export * from './lib/interfaces/pagination.interface';
 export * from './lib/interfaces/screen-capture.interface';
 export * from './lib/interfaces/screenshot.interface';
 export * from './lib/interfaces/statistic.interface';
+export * from './lib/interfaces/time-log.interface';
 export * from './lib/interfaces/upload.interface';
 export * from './lib/interfaces/video.config';
 export * from './lib/interfaces/video.interface';
+export * from './lib/time-log.type';
 

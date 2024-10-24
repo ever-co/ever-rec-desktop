@@ -1,6 +1,7 @@
 import {
   ScreenshotMetadataService,
   ScreenshotService,
+  TimeLogService,
   VideoMetadataService,
   VideoService,
 } from '@ever-co/electron-database';
@@ -89,8 +90,8 @@ export async function purgeData() {
   await videoService.deleteAll();
   await videoMetadataService.deleteAll();
 
-  await ScreenshotService.deleteAll();
-  await ScreenshotMetadataService.deleteAll();
+  const timeLogService = new TimeLogService();
+  await timeLogService.deleteAll();
 
   await FileManager.removeAllFiles('screenshots');
   await FileManager.removeAllFiles('videos');

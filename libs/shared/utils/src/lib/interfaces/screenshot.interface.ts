@@ -1,4 +1,5 @@
 import { IBase } from './base.interface';
+import { ITimeLog } from './time-log.interface';
 import type { IVideo } from './video.interface';
 
 export interface IScreenshot extends IBase {
@@ -6,6 +7,7 @@ export interface IScreenshot extends IBase {
   synced?: boolean;
   metadata?: IScreenshotMetadata;
   video?: IVideo
+  timeLog?: ITimeLog
 }
 
 export interface IScreenshotMetadata extends IBase {
