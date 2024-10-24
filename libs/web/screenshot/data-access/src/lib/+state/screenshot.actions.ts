@@ -38,5 +38,7 @@ export const screenshotActions = createActionGroup({
     'ask Success': props<IPaginationResponse<IScreenshot>>(),
     'ask Failure': props<{ error: string }>(),
     'Reset Ask': emptyProps(),
+
+    'Overlay Clicked':  props<{ isOpen: boolean }>(),
   },
 });

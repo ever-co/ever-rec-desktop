@@ -1,6 +1,6 @@
 import { CdkOverlayOrigin, OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
-import { Component, inject, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -20,7 +20,6 @@ import {
   tap,
 } from 'rxjs';
 import { SearchOverlayComponent } from '../search-overlay/search-overlay.component';
-import { SearchService } from './search.service';
 
 @Component({
   selector: 'lib-search',
@@ -36,11 +35,11 @@ import { SearchService } from './search.service';
   ],
   templateUrl: './search.component.html',
   styleUrl: './search.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchComponent {
-  private readonly searchService = inject(SearchService);
-  public overlayOpen = this.searchService.overlayOpen;
-  @ViewChild('overlayPosition') overlay!: CdkOverlayOrigin;
+  @ViewChild('overlayPosition', { static: false })
+  public overlay!: CdkOverlayOrigin;
 
   constructor(private readonly store: Store) {}
   public get offsetWidth() {
@@ -58,7 +57,6 @@ export class SearchComponent {
         tap((filter) => {
           this.store.dispatch(screenshotActions.resetAsk());
           this.store.dispatch(screenshotActions.ask({ filter, page: 1 }));
-          this.searchService.searchTerm.set(filter);
         })
       )
       .subscribe();
@@ -68,5 +66,15 @@ export class SearchComponent {
     return this.store
       .select(selectScreenshotState)
       .pipe(map((state) => state.search.loading));
+  }
+
+  public overlayOpen(isOpen: boolean) {
+    this.store.dispatch(screenshotActions.overlayClicked({ isOpen }));
+  }
+
+  public get overlayOpen$(): Observable<boolean> {
+    return this.store
+      .select(selectScreenshotState)
+      .pipe(map((state) => state.search.overlayOpen));
   }
 }

@@ -1,16 +1,32 @@
-<mat-form-field class="w-full" appearance="outline" cdkOverlayOrigin #overlayPosition="cdkOverlayOrigin" [ngClass]="{'opened mat-elevation-z2': overlayOpen()}">
+<mat-form-field
+  class="w-full"
+  appearance="outline"
+  cdkOverlayOrigin
+  #overlayPosition="cdkOverlayOrigin"
+  [ngClass]="{ 'opened mat-elevation-z2': overlayOpen$ | async }"
+>
   <mat-icon matPrefix class="text-gray-400">search</mat-icon>
-  <input (click)="overlayOpen.set(true)" #search (input)="onChange(search.value)" matInput placeholder="Search for applications, tags, folders, and website names">
+  <input
+    (click)="overlayOpen(true)"
+    class="truncate"
+    #search
+    (input)="onChange(search.value)"
+    matInput
+    placeholder="Search for applications, tags, folders, and website names"
+  />
   @if (isLoading$ | async) {
-    <mat-icon matSuffix>
-      <mat-spinner [diameter]="20" [strokeWidth]="3"></mat-spinner>
-    </mat-icon>
+  <mat-icon matSuffix>
+    <mat-spinner [diameter]="20" [strokeWidth]="3"></mat-spinner>
+  </mat-icon>
   }
 </mat-form-field>
 
-<ng-template cdkConnectedOverlay (overlayOutsideClick)="overlayOpen.set(false)"
+<ng-template
+  cdkConnectedOverlay
+  (overlayOutsideClick)="overlayOpen(false)"
   [cdkConnectedOverlayOrigin]="overlayPosition || null"
-  [cdkConnectedOverlayOpen]="overlayOpen()"
-  [cdkConnectedOverlayWidth]="offsetWidth">
+  [cdkConnectedOverlayOpen]="(overlayOpen$ | async) || false"
+  [cdkConnectedOverlayWidth]="offsetWidth"
+>
   <lib-search-overlay class="w-full"></lib-search-overlay>
 </ng-template>

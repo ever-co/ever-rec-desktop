@@ -1,5 +1,5 @@
 <div class="overlay-container w-full mat-elevation-z2">
-  @if (recents().length > 0) {
+  @if ((recents$ | async)?.length) {
   <div class="text-sm font-medium text-gray-600 flex justify-end w-full p-4 pb-0">
     {{ count$ | async }} results found
   </div>
@@ -8,7 +8,7 @@
     libInfiniteScroll
     (scrolled)="moreResult()"
   >
-    @for (item of recents(); track item) {
+    @for (item of recents$ | async; track item) {
     <mat-list-item class="w-full" (click)="showResult(item)">
       <div matListItemTitle class="flex gap-2 min-w-0 items-center">
         <img
@@ -24,8 +24,8 @@
   } @else {
   <lib-no-data
     [message]="
-      searchTerm()
-        ? 'Your search - ' + searchTerm() + ' - did not match any documents.'
+      searchTerm
+        ? 'Your search - ' + searchTerm + ' - did not match any documents.'
         : 'No data available'
     "
   ></lib-no-data>

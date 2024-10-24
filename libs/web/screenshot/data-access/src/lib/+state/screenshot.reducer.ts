@@ -20,6 +20,7 @@ export interface IScreenshotState {
     count: number;
   };
   search: {
+    overlayOpen: boolean;
     screenshots: IScreenshot[];
     hasNext: boolean;
     count: number;
@@ -43,6 +44,7 @@ export const initialState: IScreenshotState = {
     count: 0,
   },
   search: {
+    overlayOpen: false,
     loading: false,
     screenshots: [],
     filter: '',
@@ -163,10 +165,19 @@ export const reducer = createReducer(
     error,
   })),
 
+  on(screenshotActions.overlayClicked, (state, { isOpen }) => ({
+    ...state,
+    search: {
+      ...state.search,
+      overlayOpen: isOpen,
+    },
+  })),
+
   on(screenshotActions.resetAsk, (state) => ({
     ...state,
     search: {
       ...initialState.search,
+      overlayOpen: state.search.overlayOpen,
     },
   })),
 

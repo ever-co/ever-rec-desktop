@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,7 +14,6 @@ import { InfiniteScrollDirective } from '@ever-co/shared-service';
 import { IScreenshot } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { map, Observable, tap } from 'rxjs';
-import { SearchService } from '../search/search.service';
 
 @Component({
   selector: 'lib-search-overlay',
@@ -32,9 +31,7 @@ import { SearchService } from '../search/search.service';
   styleUrl: './search-overlay.component.scss',
 })
 export class SearchOverlayComponent implements OnInit {
-  private readonly searchService = inject(SearchService);
-  public recents = this.searchService.search;
-  public searchTerm = this.searchService.searchTerm;
+  public searchTerm = '';
   private currentPage = 1;
   private hasNext = false;
 
@@ -44,9 +41,8 @@ export class SearchOverlayComponent implements OnInit {
       .select(selectScreenshotState)
       .pipe(
         tap((state) => {
-          console.log(state);
           this.hasNext = state.search.hasNext;
-          this.searchService.search.set(state.search.screenshots);
+          this.searchTerm = state.search.filter;
         })
       )
       .subscribe();
@@ -62,6 +58,12 @@ export class SearchOverlayComponent implements OnInit {
       .pipe(map((state) => state.search.count));
   }
 
+  public get recents$(): Observable<IScreenshot[]> {
+    return this.store
+      .select(selectScreenshotState)
+      .pipe(map((state) => state.search.screenshots));
+  }
+
   public moreResult(): void {
     if (this.hasNext) {
       this.currentPage++;
@@ -73,7 +75,7 @@ export class SearchOverlayComponent implements OnInit {
     this.store.dispatch(
       screenshotActions.ask({
         page: this.currentPage,
-        filter: this.searchTerm(),
+        filter: this.searchTerm,
       })
     );
   }
