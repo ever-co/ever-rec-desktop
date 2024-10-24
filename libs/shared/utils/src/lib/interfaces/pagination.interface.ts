@@ -7,8 +7,8 @@ export interface IPaginationOptions extends Partial<IRange> {
 }
 
 export interface IRange {
-  start: Date | string | null;
-  end: Date | string | null;
+  start: Date | string;
+  end: Date | string;
 }
 export interface IPaginationResponse<T> {
   data: T[];

@@ -49,8 +49,8 @@ export class DatePickerComponent implements OnInit, OnDestroy {
 
   // Use strongly typed FormGroup with IRange interface
   public readonly range = new FormGroup({
-    start: new FormControl<IRange['start']>(null),
-    end: new FormControl<IRange['end']>(null),
+    start: new FormControl<IRange['start']>(''),
+    end: new FormControl<IRange['end']>(''),
   });
 
   constructor(private store: Store) {}
@@ -73,9 +73,10 @@ export class DatePickerComponent implements OnInit, OnDestroy {
       .pipe(
         debounceTime(300), // Debounce to avoid multiple quick changes
         distinctUntilChanged(), // Only emit if the value actually changed
-        tap((range) =>
-          this.store.dispatch(datePickerActions.selectRange({ range }))
-        ),
+        tap((selectedRange) => {
+          const range = selectedRange as IRange;
+          this.store.dispatch(datePickerActions.selectRange({ range }));
+        }),
         takeUntil(this.destroy$) // Cleanup on destroy
       )
       .subscribe();
