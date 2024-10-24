@@ -30,7 +30,7 @@
         </div>
       </div>
       <div
-        class="flex items-end ml-auto flex-col gap-2 justify-between text-gray-700 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+        class="flex items-end h-fit ml-auto flex-col gap-2 justify-between text-gray-700 rounded-lg hover:bg-gray-100 transition-colors duration-200"
       >
         <button [matMenuTriggerFor]="menu" mat-icon-button>
           <mat-icon>more_vert</mat-icon>
@@ -46,7 +46,7 @@
 
     <!-- video card -->
     @if(screenshot.video; as video) {
-       <!-- tags -->
+    <!-- tags -->
     <mat-chip-set aria-label="screenshot min-w-0 tags">
       <mat-chip>Associate Video</mat-chip>
     </mat-chip-set>
