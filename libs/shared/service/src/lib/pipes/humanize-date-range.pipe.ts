@@ -7,7 +7,12 @@ import moment from 'moment';
   standalone: true,
 })
 export class HumanizeDateRangePipe implements PipeTransform {
-  transform(range: IRange): string {
+  transform(range: IRange | null): string {
+    // Validate dates
+    if (!range) {
+      return 'Select date range';
+    }
+
     const start = moment(range.start);
     const end = moment(range.end);
 

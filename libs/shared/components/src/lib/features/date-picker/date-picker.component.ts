@@ -22,6 +22,8 @@ import {
   debounceTime,
   distinctUntilChanged,
   filter,
+  map,
+  Observable,
   Subject,
   takeUntil,
   tap,
@@ -39,7 +41,7 @@ import { selectDatePickerState } from './+state/date-picker.selectors';
     MatButtonModule,
     FormsModule,
     ReactiveFormsModule,
-    HumanizeDateRangePipe
+    HumanizeDateRangePipe,
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './date-picker.component.html',
@@ -84,8 +86,12 @@ export class DatePickerComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  public get rangeValue(): IRange {
-    return this.range.value as IRange;
+  public get range$(): Observable<IRange> {
+    return this.store.select(selectDatePickerState).pipe(
+      filter(Boolean),
+      map(({ selectedRange }) => selectedRange),
+      takeUntil(this.destroy$)
+    );
   }
 
   ngOnDestroy(): void {

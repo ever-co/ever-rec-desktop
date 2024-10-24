@@ -1,5 +1,5 @@
 <mat-form-field class="w-full" appearance="outline">
-  <mat-label class="truncate">{{ rangeValue | humanizeDateRange}}</mat-label>
+  <mat-label class="truncate">{{ range$ | async | humanizeDateRange | titlecase}}</mat-label>
   <mat-date-range-input
     (click)="picker.open()"
     [formGroup]="range"
