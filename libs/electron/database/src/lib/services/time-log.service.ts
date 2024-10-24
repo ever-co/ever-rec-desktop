@@ -99,7 +99,7 @@ export class TimeLogService implements ILoggable {
     for (const timelog of timelogs) {
       this.logger.info(`Purge conflict ID: ${timelog.id}`);
       const { start, duration } = timelog;
-      const end = moment(start).add(duration, 'seconds').toDate();
+      const end = moment(start).add(duration, 'seconds').toISOString();
       await this.repository.update(timelog.id, { running: false, end });
     }
   }

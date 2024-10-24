@@ -7,6 +7,7 @@ import { VideoGalleryComponent } from '@ever-co/convert-video-feature';
 import { selectScreenshotState } from '@ever-co/screenshot-data-access';
 import { ScreenshotGalleryComponent, ScreenshotStatisticComponent } from '@ever-co/screenshot-feature';
 import { NoDataComponent } from '@ever-co/shared-components';
+import { HumanizePipe } from '@ever-co/shared-service';
 import { Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
 
@@ -20,7 +21,8 @@ import { map, Observable } from 'rxjs';
     MatIconModule,
     ScreenshotGalleryComponent,
     VideoGalleryComponent,
-    ScreenshotStatisticComponent
+    ScreenshotStatisticComponent,
+    HumanizePipe
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
