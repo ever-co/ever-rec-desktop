@@ -52,19 +52,21 @@ export function crudTimeLogEvents() {
   ipcMain.handle(
     Channel.REQUEST_LOG_STATISTICS,
     async (_, options: FindOptionsWhere<ITimeLog>) => {
-      const today = await timeLogService.statistics({
-        start: currentDay().start,
-        end: currentDay().end,
-      });
-      const week = await timeLogService.statistics({
-        start: currentWeek().start,
-        end: currentWeek().end,
-      });
-      const month = await timeLogService.statistics({
-        start: currentMonth().start,
-        end: currentMonth().end,
-      });
-      const range = await timeLogService.statistics(options);
+      const [today, week, month, range] = await Promise.all([
+        timeLogService.statistics({
+          start: currentDay().start,
+          end: currentDay().end,
+        }),
+        timeLogService.statistics({
+          start: currentWeek().start,
+          end: currentWeek().end,
+        }),
+        timeLogService.statistics({
+          start: currentMonth().start,
+          end: currentMonth().end,
+        }),
+        timeLogService.statistics(options),
+      ]);
       return { today, week, month, range };
     }
   );

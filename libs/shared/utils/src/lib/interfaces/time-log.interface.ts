@@ -24,3 +24,10 @@ export interface ITimeLogUpdate {
   duration?: number;
   end?: Date | string;
 }
+
+export interface ITimeLogStatistics {
+  today: number;
+  week: number;
+  month: number;
+  range: number;
+}

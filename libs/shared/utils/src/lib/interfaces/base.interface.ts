@@ -1,4 +1,4 @@
-import { FindOneOptions } from 'typeorm';
+import { FindOneOptions, FindOptionsWhere } from 'typeorm';
 
 export interface IBase {
   id: string;
@@ -8,3 +8,5 @@ export interface IBase {
 }
 
 export type IFindOneOptions = FindOneOptions;
+
+export type IFindOptionsWhere<T> = FindOptionsWhere<T>;

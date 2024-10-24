@@ -27,6 +27,11 @@ export const layoutRoutes: Route[] = [
           import('@ever-co/web-setting-feature').then((r) => r.settingRoutes),
       },
       {
+        path: 'timesheet',
+        loadChildren: () =>
+          import('@ever-co/timesheet-feature').then((r) => r.timesheetFeatureRoutes),
+      },
+      {
         path: 'timeline',
         canActivate: [timelineGuard],
         loadComponent: () =>

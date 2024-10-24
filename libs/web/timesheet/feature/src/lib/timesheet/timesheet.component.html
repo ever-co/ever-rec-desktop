@@ -1,0 +1,150 @@
+<div class="mat-elevation-z0 p-4 bg-white rounded-lg mt-6">
+  <div class="overflow-x-auto max-w-full rounded-lg">
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      matSort
+      class="min-w-full rounded-lg bg-gray-50"
+    >
+      <!-- Start Column -->
+      <ng-container matColumnDef="start">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="px-4 py-2 text-left text-gray-600"
+        >
+          Start
+        </th>
+        <td mat-cell *matCellDef="let log" class="px-4 py-2">
+          {{ log.start | date : 'short' }}
+        </td>
+      </ng-container>
+
+      <!-- End Column (Visible on md screens and above) -->
+      <ng-container matColumnDef="end">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="px-4 py-2 text-left text-gray-600 md:table-cell"
+        >
+          End
+        </th>
+        <td mat-cell *matCellDef="let log" class="px-4 py-2 md:table-cell">
+          {{ log.end | date : 'short' }}
+        </td>
+      </ng-container>
+
+      <!-- Duration Column -->
+      <ng-container matColumnDef="duration">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="px-4 py-2 text-left text-gray-600"
+        >
+          Duration
+        </th>
+        <td mat-cell *matCellDef="let log" class="px-4 py-2">
+          {{ log.duration | humanize : 'seconds' : 'hh:mm:ss' }}
+        </td>
+      </ng-container>
+
+      <!-- Type Column (Visible on lg screens and above) -->
+      <ng-container matColumnDef="type">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="px-4 py-2 text-left text-gray-600 lg:table-cell"
+        >
+          Type
+        </th>
+        <td mat-cell *matCellDef="let log" class="px-4 py-2 lg:table-cell">
+          <div class="flex items-center justify-center">
+          @if(log.type === 'tracked') {
+            <span class="bg-green-500 text-white font-medium rounded-lg p-1">{{ log.type | titlecase }}</span>
+          }
+
+          @if(log.type === 'manual') {
+            <span class="bg-blue-500 text-white font-medium rounded-lg p-1">{{ log.type | titlecase }}</span>
+          }
+
+          @if(log.type === 'idle') {
+            <span class="bg-red-500 text-white font-medium rounded-lg p-1">{{ log.type | titlecase }}</span>
+          }
+        </div>
+
+        </td>
+      </ng-container>
+
+      <!-- Running Column -->
+      <ng-container matColumnDef="running">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="px-4 py-2 text-left text-gray-600"
+        >
+          Running
+        </th>
+        <td mat-cell *matCellDef="let log" class="px-4 py-2">
+          <mat-icon class="text-green-600" *ngIf="log.running"
+            >play_arrow</mat-icon
+          >
+          <mat-icon class="text-red-600" *ngIf="!log.running">stop</mat-icon>
+        </td>
+      </ng-container>
+
+      <!-- Synced Column -->
+      <ng-container matColumnDef="synced">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="px-4 py-2 text-left text-gray-600"
+        >
+          Synced
+        </th>
+        <td mat-cell *matCellDef="let log" class="px-4 py-2">
+          <mat-icon class="text-blue-600" *ngIf="log.synced">sync</mat-icon>
+          <mat-icon class="text-gray-400" *ngIf="!log.synced"
+            >sync_disabled</mat-icon
+          >
+        </td>
+      </ng-container>
+
+      <!-- Table Headers and Rows -->
+      <tr
+        mat-header-row
+        *matHeaderRowDef="displayedColumns"
+        class="bg-gray-200"
+      ></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        class="hover:bg-gray-100"
+      ></tr>
+    </table>
+  </div>
+
+  <!-- Paginator -->
+  <div class="flex justify-end mt-4 rounded-lg">
+    <mat-paginator
+      class="rounded-lg"
+      [length]="count"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="[5, 10, 20]"
+      (page)="onPaginateChange($event)"
+    >
+    </mat-paginator>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div class="flex justify-center mt-4">
+    <mat-progress-spinner
+      *ngIf="loading"
+      mode="indeterminate"
+      class="text-blue-500"
+    ></mat-progress-spinner>
+  </div>
+</div>

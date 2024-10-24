@@ -14,6 +14,7 @@ import { provideConvertVideoDataAccess } from '@ever-co/convert-video-data-acces
 import { provideScreenshotDataAccess } from '@ever-co/screenshot-data-access';
 import { provideDatePickerDataAccess } from '@ever-co/shared-components';
 import { provideSidebarDataAccess } from '@ever-co/sidebar-data-access';
+import { provideTimeLogDataAccess } from '@ever-co/timesheet-data-access';
 import { provideSettingsDataAccess } from '@ever-co/web-setting-data-access';
 import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
@@ -33,6 +34,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(appRoutes, withViewTransitions(), withHashLocation()),
     provideAnimationsAsync(),
-    provideDatePickerDataAccess()
+    provideDatePickerDataAccess(),
+    provideTimeLogDataAccess()
   ],
 };
