@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { HumanizeDateRangePipe } from '@ever-co/shared-service';
 import { IRange } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import {
@@ -38,6 +39,7 @@ import { selectDatePickerState } from './+state/date-picker.selectors';
     MatButtonModule,
     FormsModule,
     ReactiveFormsModule,
+    HumanizeDateRangePipe
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './date-picker.component.html',
@@ -80,6 +82,10 @@ export class DatePickerComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$) // Cleanup on destroy
       )
       .subscribe();
+  }
+
+  public get rangeValue(): IRange {
+    return this.range.value as IRange;
   }
 
   ngOnDestroy(): void {
