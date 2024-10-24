@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
@@ -10,14 +10,25 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
-  ConvertVideoElectronService,
-  generateVideoActions,
+  selectVideoState,
+  videoActions,
 } from '@ever-co/convert-video-data-access';
 import { NoDataComponent, VideoComponent } from '@ever-co/shared-components';
 import { HumanizeBytesPipe, UtcToLocalTimePipe } from '@ever-co/shared-service';
-import { IVideo } from '@ever-co/shared-utils';
+import { IVideo, IVideoMetadata } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
-import { concatMap, filter, Observable } from 'rxjs';
+import {
+  concatMap,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  Observable,
+  of,
+  Subject,
+  takeUntil,
+  tap,
+} from 'rxjs';
 
 @Component({
   selector: 'lib-video-detail',
@@ -35,47 +46,76 @@ import { concatMap, filter, Observable } from 'rxjs';
     HumanizeBytesPipe,
     MatMenuModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
   ],
   templateUrl: './video-detail.component.html',
   styleUrl: './video-detail.component.scss',
 })
-export class VideoDetailComponent implements OnInit {
+export class VideoDetailComponent implements OnInit, OnDestroy {
   public video$!: Observable<IVideo | null>;
-  protected readonly value = signal('');
+  private destroy$ = new Subject<void>();
 
   constructor(
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
-    private readonly videoService: ConvertVideoElectronService,
     private readonly store: Store
   ) {}
   ngOnInit(): void {
-    this.video$ = this.activatedRoute.params.pipe(
-      filter(Boolean),
-      concatMap(async (params) => {
-        if (params['id']) {
-          return this.videoService.getOneVideo({
-            where: {
-              id: params['id'],
-            },
-            relations: ['metadata'],
-          });
-        } else {
-          await this.router.navigate(['/dashboard']);
-          return null;
-        }
-      })
+    this.activatedRoute.params
+      .pipe(
+        filter(Boolean),
+        concatMap(async (params) => {
+          if (params['id']) {
+            this.store.dispatch(
+              videoActions.loadVideo({
+                where: {
+                  id: params['id'],
+                },
+                relations: ['metadata'],
+              })
+            );
+          } else {
+            await this.router.navigate(['/dashboard']);
+          }
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+    this.video$ = this.store.select(selectVideoState).pipe(
+      map((state) => state.video),
+      takeUntil(this.destroy$)
     );
   }
 
   public async deleteVideo(video: IVideo): Promise<void> {
-    this.store.dispatch(generateVideoActions.deleteVideo(video));
+    this.store.dispatch(videoActions.deleteVideo(video));
     await this.router.navigate(['/', 'library', 'screenshots']);
   }
 
-  protected onInput(event: Event) {
-    this.value.set((event.target as HTMLInputElement).value);
-    console.log(this.value())
+  public onInput(summary: string, video: IVideo) {
+    of(summary)
+      .pipe(
+        debounceTime(1000),
+        distinctUntilChanged(),
+        tap((summary) => {
+          const metadata = {
+            ...video.metadata,
+            summary,
+          } as IVideoMetadata;
+          this.store.dispatch(
+            videoActions.updateVideo({
+              ...video,
+              metadata,
+            })
+          );
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

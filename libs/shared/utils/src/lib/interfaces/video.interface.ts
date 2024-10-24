@@ -14,6 +14,7 @@ export interface IVideo extends IBase {
 
 export interface IVideoMetadata extends IBase, Partial<IVideoConfig> {
   video?: IVideo;
+  summary?: string;
 }
 
 export interface IVideoInput extends Partial<IVideoConfig> {
@@ -25,7 +26,7 @@ export interface IVideoInput extends Partial<IVideoConfig> {
   metadataId?: string;
 }
 
-export type IVideoMetadataInput = Partial<IVideoConfig> & {
+export type IVideoMetadataInput = Partial<IVideoMetadata> & {
   videoId?: string;
 };
 

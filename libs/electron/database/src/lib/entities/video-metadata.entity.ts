@@ -14,6 +14,9 @@ export class VideoMetadata extends Base implements IVideoMetadata {
   @Column({ default: 'libx264', type: 'text' })
   codec?: string;
 
+  @Column({ nullable: true, type: 'text' })
+  summary?: string;
+
   @Column({ default: 100, type: 'integer' })
   batch?: number;
 

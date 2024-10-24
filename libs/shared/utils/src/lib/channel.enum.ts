@@ -23,5 +23,6 @@ export enum Channel {
   'REQUEST_DELETE_ONE_VIDEO' = 'request::delete::one::video',
   'GET_USED_SIZE' = 'get::used::size',
   'REQUEST_SCREENSHOTS_STATISTICS' = 'request::screenshot::statistics',
-  'REQUEST_DELETE_ONE_SCREENSHOT' = 'request::delete::one::screenshot'
+  'REQUEST_DELETE_ONE_SCREENSHOT' = 'request::delete::one::screenshot',
+  'REQUEST_VIDEO_METADATA_UPDATE' = 'request::video::metadata::update'
 }

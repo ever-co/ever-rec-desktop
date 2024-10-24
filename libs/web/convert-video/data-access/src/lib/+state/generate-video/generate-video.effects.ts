@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { LocalstorageService } from '@ever-co/shared-service';
-import { IPaginationOptions, IVideo } from '@ever-co/shared-utils';
+import { IVideo } from '@ever-co/shared-utils';
 import { Action } from '@ngrx/store';
-import { from, of } from 'rxjs';
+import { of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { ConvertVideoElectronService } from '../../services/convert-video-electron.service';
 import { generateVideoActions } from './generate-video.actions';
@@ -101,34 +101,6 @@ export class GenerateVideoEffects {
           catchError((error) => of(generateVideoActions.failure({ error })))
         );
       })
-    )
-  );
-
-  getAllVideos$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(generateVideoActions.loadVideos),
-      mergeMap((options) =>
-        from(this.convertVideoElectronService.getAllVideos(options as IPaginationOptions)).pipe(
-          map((response) => generateVideoActions.loadVideosSuccess(response)),
-          catchError((error) =>
-            of(generateVideoActions.loadVideosFailure({ error }))
-          )
-        )
-      )
-    )
-  );
-
-  deleteVideo$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(generateVideoActions.deleteVideo),
-      mergeMap((video) =>
-        from(this.convertVideoElectronService.deleteVideo(video)).pipe(
-          map(() => generateVideoActions.deleteVideoSuccess({ id: video.id })),
-          catchError((error) =>
-            of(generateVideoActions.deleteVideoFailure({ error }))
-          )
-        )
-      )
     )
   );
 

@@ -12,7 +12,7 @@
     </div>
     <mat-form-field appearance="outline" class="w-full rounded-xl h-auto">
       <mat-label>Summary</mat-label>
-      <textarea [value]="" (input)="onInput($event)" matInput></textarea>
+      <textarea [value]="video.metadata?.summary" #area (input)="onInput(area.value, video)" matInput></textarea>
     </mat-form-field>
   </div>
 

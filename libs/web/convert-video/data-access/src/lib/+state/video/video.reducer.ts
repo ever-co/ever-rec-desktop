@@ -1,0 +1,104 @@
+import { IVideo } from '@ever-co/shared-utils';
+import { createFeature, createReducer, on } from '@ngrx/store';
+import { videoActions } from './video.actions';
+
+export const videoFeatureKey = 'video';
+
+export interface IVideoState {
+  error: string;
+  video: IVideo;
+  videos: IVideo[];
+  hasNext: boolean;
+  count: number;
+  loading: boolean;
+}
+
+export const initialState: IVideoState = {
+  video: {} as IVideo,
+  videos: [],
+  error: '',
+  count: 0,
+  hasNext: false,
+  loading: false,
+};
+
+export const reducer = createReducer(
+  initialState,
+  // Load Videos
+  on(videoActions.loadVideos, (state) => ({
+    ...state,
+    loading: true,
+    error: '',
+  })),
+  on(videoActions.loadVideosSuccess, (state, { data, hasNext, count }) => ({
+    ...state,
+    count,
+    hasNext,
+    videos: [
+      ...new Map(
+        [...state.videos, ...data].map((item) => [item.id, item])
+      ).values(),
+    ],
+    loading: false,
+    error: '',
+  })),
+  on(videoActions.loadVideosFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  })),
+
+  // Load Video
+  on(videoActions.loadVideo, (state) => ({
+    ...state,
+    loading: true,
+    error: '',
+  })),
+  on(videoActions.loadVideoSuccess, (state, { video }) => ({
+    ...state,
+    video,
+    loading: false,
+    error: '',
+  })),
+  on(videoActions.loadVideosFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  })),
+
+  // Delete Video
+  on(videoActions.deleteVideoSuccess, (state, { id }) => ({
+    ...state,
+    video: state.video?.id === id ? initialState.video : state.video,
+    videos: state.videos.filter((video) => video.id !== id),
+  })),
+
+  on(videoActions.deleteVideoFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  })),
+
+  // Update Video
+  on(videoActions.updateVideo, (state) => ({
+    ...state,
+    loading: true,
+  })),
+
+  on(videoActions.updateVideoSuccess, (state, video) => ({
+    ...state,
+    video,
+    videos: state.videos.map((v) => (video.id === video.id ? video : v)),
+  })),
+
+  on(videoActions.deleteVideoFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  }))
+);
+
+export const videoFeature = createFeature({
+  name: videoFeatureKey,
+  reducer,
+});

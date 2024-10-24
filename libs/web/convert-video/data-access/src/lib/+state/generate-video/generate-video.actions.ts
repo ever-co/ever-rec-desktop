@@ -1,4 +1,4 @@
-import { IPaginationOptions, IPaginationResponse, IVideo, IVideoConvertPayload } from '@ever-co/shared-utils';
+import { IVideo, IVideoConvertPayload } from '@ever-co/shared-utils';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 export const generateVideoActions = createActionGroup({
@@ -14,13 +14,6 @@ export const generateVideoActions = createActionGroup({
     failure: props<{ error: string }>(),
     'Trigger Error': props<{ error: string }>(),
     'Load Last Video': emptyProps(),
-    'Load Last Video Success': props<{ video: IVideo | null }>(),
-    'Load Videos': props<IPaginationOptions>(),
-    'Load Videos Success': props<IPaginationResponse<IVideo>>(),
-    'Load Videos Failure': props<{ error: string }>(),
-
-    'Delete Video': props<IVideo>(),
-    'Delete Video Success': props<{id: string}>(),
-    'Delete Video Failure': props<{ error: string }>(),
+    'Load Last Video Success': props<{ video: IVideo | null }>()
   },
 });

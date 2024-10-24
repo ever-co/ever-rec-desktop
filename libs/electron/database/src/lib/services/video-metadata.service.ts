@@ -41,6 +41,7 @@ export class VideoMetadataService {
       codec: input.codec,
       batch: input.batch,
       size: input.size,
+      summary: input.summary
     });
 
     // Save the updated video entity

@@ -46,6 +46,10 @@ export class ConvertVideoElectronService {
     return this.electronService.invoke(Channel.REQUEST_DELETE_ONE_VIDEO, video);
   }
 
+  public updateVideo(video: IVideo): Promise<IVideo> {
+    return this.electronService.invoke(Channel.REQUEST_VIDEO_METADATA_UPDATE, video);
+  }
+
   public onError(callback: (error: string) => void): void {
     this.electronService.on(Channel.GENERATION_ERROR, (_, error: string) =>
       callback(error)

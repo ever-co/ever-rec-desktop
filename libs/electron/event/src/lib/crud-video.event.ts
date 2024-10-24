@@ -1,4 +1,8 @@
-import { MetadataService, VideoService } from '@ever-co/electron-database';
+import {
+  MetadataService,
+  VideoMetadataService,
+  VideoService,
+} from '@ever-co/electron-database';
 import { FileManager } from '@ever-co/electron-utils';
 import { Channel, IPaginationOptions, IVideo } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
@@ -6,6 +10,7 @@ import { IsNull, Not } from 'typeorm';
 
 export function crudVideoEvents() {
   const videoService = new VideoService();
+  const metadataService = new VideoMetadataService();
   // Get all screenshots
   ipcMain.handle(
     Channel.REQUEST_RECENT_VIDEOS,
@@ -45,6 +50,17 @@ export function crudVideoEvents() {
     const metadataService = new MetadataService();
     return metadataService.getUsedSize();
   });
+
+  // Update video metadata
+  ipcMain.handle(
+    Channel.REQUEST_VIDEO_METADATA_UPDATE,
+    async (_, video: IVideo) => {
+      const { metadata } = video;
+      if (!metadata) throw Error("We can't update this video");
+      video.metadata = await metadataService.update(metadata.id, metadata);
+      return video;
+    }
+  );
 }
 
 // Removes any handler for channels, if present.
@@ -53,6 +69,7 @@ export function removeCrudVideoEvent(): void {
     Channel.REQUEST_RECENT_VIDEOS,
     Channel.REQUEST_ONE_VIDEO,
     Channel.GET_USED_SIZE,
+    Channel.REQUEST_VIDEO_METADATA_UPDATE,
   ];
   channels.forEach((channel) => ipcMain.removeHandler(channel));
 }

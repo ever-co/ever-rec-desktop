@@ -12,7 +12,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { Router } from '@angular/router';
-import { generateVideoActions } from '@ever-co/convert-video-data-access';
+import { videoActions } from '@ever-co/convert-video-data-access';
 import { UtcToLocalTimePipe } from '@ever-co/shared-service';
 import { IVideo } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
@@ -99,7 +99,7 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
   }
 
   public async delete(video: IVideo): Promise<void> {
-    this.store.dispatch(generateVideoActions.deleteVideo(video));
+    this.store.dispatch(videoActions.deleteVideo(video));
   }
 
   ngOnDestroy(): void {

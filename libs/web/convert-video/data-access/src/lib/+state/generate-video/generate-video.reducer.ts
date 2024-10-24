@@ -62,44 +62,6 @@ export const reducer = createReducer(
     ...state,
     video: video ?? state.video,
   })),
-
-  on(generateVideoActions.loadVideos, (state) => ({
-    ...state,
-    loading: true,
-    error: '',
-  })),
-  on(
-    generateVideoActions.loadVideosSuccess,
-    (state, { data, hasNext, count }) => ({
-      ...state,
-      count,
-      hasNext,
-      videos: [
-        ...new Map(
-          [...state.videos, ...data].map((item) => [item.id, item])
-        ).values(),
-      ],
-      loading: false,
-      error: '',
-    })
-  ),
-  on(generateVideoActions.loadVideosFailure, (state, { error }) => ({
-    ...state,
-    loading: false,
-    error,
-  })),
-
-  on(generateVideoActions.deleteVideoSuccess, (state, { id }) => ({
-    ...state,
-    video: state.video?.id === id ? initialState.video : state.video,
-    videos: state.videos.filter((video) => video.id !== id),
-  })),
-
-  on(generateVideoActions.deleteVideoFailure, (state, { error }) => ({
-    ...state,
-    loading: false,
-    error,
-  }))
 );
 
 export const generateVideoFeature = createFeature({

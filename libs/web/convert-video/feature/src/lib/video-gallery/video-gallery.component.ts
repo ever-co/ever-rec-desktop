@@ -5,8 +5,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router, RouterLink } from '@angular/router';
 import {
-  generateVideoActions,
-  selectGenerateVideoState,
+  selectVideoState,
+  videoActions
 } from '@ever-co/convert-video-data-access';
 import { NoDataComponent, VideoComponent } from '@ever-co/shared-components';
 import {
@@ -46,7 +46,7 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.store
-      .select(selectGenerateVideoState)
+      .select(selectVideoState)
       .pipe(
         tap((state) => {
           this.hasNext = state.hasNext;
@@ -54,12 +54,12 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe();
-    this.isAvailable$ = this.store.select(selectGenerateVideoState).pipe(
+    this.isAvailable$ = this.store.select(selectVideoState).pipe(
       map((state) => state.count > 0),
       takeUntil(this.destroy$)
     );
 
-    this.videos$ = this.store.select(selectGenerateVideoState).pipe(
+    this.videos$ = this.store.select(selectVideoState).pipe(
       map((state) => state.videos),
       takeUntil(this.destroy$)
     );
@@ -76,7 +76,7 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
 
   public loadVideos(): void {
     this.store.dispatch(
-      generateVideoActions.loadVideos({ page: this.currentPage })
+      videoActions.loadVideos({ page: this.currentPage })
     );
   }
 
