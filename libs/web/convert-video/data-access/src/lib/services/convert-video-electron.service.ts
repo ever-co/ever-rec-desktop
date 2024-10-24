@@ -2,7 +2,6 @@ import { Injectable, inject } from '@angular/core';
 import { ElectronService } from '@ever-co/electron-data-access';
 import {
   Channel,
-  IPaginationResponse,
   IVideo,
   IVideoConvertPayload
 } from '@ever-co/shared-utils';
@@ -32,22 +31,6 @@ export class ConvertVideoElectronService {
     this.electronService.on(Channel.SCREESHOTS_CONVERTED, (_, video: IVideo) =>
       callback(video)
     );
-  }
-
-  public getAllVideos(options = {}): Promise<IPaginationResponse<IVideo>> {
-    return this.electronService.invoke(Channel.REQUEST_RECENT_VIDEOS, options);
-  }
-
-  public getOneVideo<T>(options: T): Promise<IVideo> {
-    return this.electronService.invoke(Channel.REQUEST_ONE_VIDEO, options);
-  }
-
-  public deleteVideo(video: IVideo): Promise<void> {
-    return this.electronService.invoke(Channel.REQUEST_DELETE_ONE_VIDEO, video);
-  }
-
-  public updateVideo(video: IVideo): Promise<IVideo> {
-    return this.electronService.invoke(Channel.REQUEST_VIDEO_METADATA_UPDATE, video);
   }
 
   public onError(callback: (error: string) => void): void {
