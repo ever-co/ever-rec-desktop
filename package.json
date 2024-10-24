@@ -78,6 +78,7 @@
     "@types/ffprobe-static": "^2.0.3",
     "@types/fluent-ffmpeg": "^2.1.24",
     "@types/jest": "29.5.13",
+    "@types/moment": "^2.13.0",
     "@types/node": "^18.16.9",
     "@typescript-eslint/eslint-plugin": "7.18.0",
     "@typescript-eslint/parser": "7.18.0",

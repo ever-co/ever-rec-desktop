@@ -7,7 +7,14 @@ import {
   ITimeLogUpdate,
 } from '@ever-co/shared-utils';
 import * as moment from 'moment';
-import { Brackets, FindManyOptions, FindOneOptions, In, IsNull } from 'typeorm';
+import {
+  Brackets,
+  FindManyOptions,
+  FindOneOptions,
+  FindOptionsWhere,
+  In,
+  IsNull,
+} from 'typeorm';
 import { TimeLog } from '../entities/time-log.entity';
 import { TimeLogRepository } from '../repositories/time-log.repository';
 
@@ -54,7 +61,7 @@ export class TimeLogService implements ILoggable {
       const running = false;
       const duration = moment().diff(timeLog.start, 'seconds', true);
       await this.repository.update(timeLog.id, { end, running, duration });
-    }else {
+    } else {
       this.logger.info('No running time log');
     }
   }
@@ -65,7 +72,7 @@ export class TimeLogService implements ILoggable {
     if (timeLog) {
       const duration = moment().diff(timeLog.start, 'seconds', true);
       await this.repository.update(timeLog.id, { duration });
-    }else {
+    } else {
       this.logger.info('No running time log');
     }
   }
@@ -120,5 +127,12 @@ export class TimeLogService implements ILoggable {
     await this.repository.delete(
       screenshotIds ? { id: In(screenshotIds) } : {}
     );
+  }
+
+  public async statistics(
+    options: FindOptionsWhere<ITimeLog>
+  ): Promise<number> {
+    const sum = await this.repository.sum('duration', options);
+    return sum || 0;
   }
 }

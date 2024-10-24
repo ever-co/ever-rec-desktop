@@ -8,20 +8,29 @@ import {
 import { FileManager } from '@ever-co/electron-utils';
 import {
   Channel,
+  currentDay,
   IPaginationOptions,
   IScreenshot,
 } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
-import { ILike } from 'typeorm';
+import { Between, ILike } from 'typeorm';
 
 export function crudScreeshotEvents() {
   // Get all screenshots
   ipcMain.handle(
     Channel.REQUEST_SCREENSHOTS,
     async (_, options = {} as IPaginationOptions) => {
-      const { page = 1, limit = 10 } = options;
+      const {
+        page = 1,
+        limit = 10,
+        start = currentDay().start,
+        end = currentDay().end,
+      } = options;
 
       const [data, count] = await ScreenshotService.findAndCount({
+        where: {
+          createdAt: Between(start, end),
+        },
         order: { createdAt: 'DESC' },
         relations: ['metadata'],
         skip: (page - 1) * limit,

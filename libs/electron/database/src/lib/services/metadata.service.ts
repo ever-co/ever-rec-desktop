@@ -7,22 +7,22 @@ export class MetadataService {
     ScreenshotMetadataRepository.instance;
   private readonly videoMetadataRepository = VideoMetadataRepository.instance;
 
-  public async getUsedSize(): Promise<IUsedSize> {
+  public async getUsedSize(options = {}): Promise<IUsedSize> {
     // Execute both sum queries concurrently for performance
     const [screenshotTotalSize, videoTotalSize] = await Promise.all([
-      this.screenshotMetadataRepository.sum('size', {}),
-      this.videoMetadataRepository.sum('size', {}),
+      this.screenshotMetadataRepository.sum('size', options),
+      this.videoMetadataRepository.sum('size', options),
     ]);
 
-    const screenshot = (screenshotTotalSize || 0);
-    const video = (videoTotalSize || 0);
+    const screenshot = screenshotTotalSize || 0;
+    const video = videoTotalSize || 0;
     const total = screenshot + video;
 
     // Ensure both sums default to 0 if they are falsy (like null or undefined)
     return {
       total,
       screenshot,
-      video
+      video,
     };
   }
 }

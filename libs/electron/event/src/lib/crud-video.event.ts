@@ -4,9 +4,15 @@ import {
   VideoService,
 } from '@ever-co/electron-database';
 import { FileManager } from '@ever-co/electron-utils';
-import { Channel, IPaginationOptions, IVideo } from '@ever-co/shared-utils';
+import {
+  Channel,
+  currentDay,
+  IPaginationOptions,
+  IRange,
+  IVideo
+} from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
-import { IsNull, Not } from 'typeorm';
+import { Between, IsNull, Not } from 'typeorm';
 
 export function crudVideoEvents() {
   const videoService = new VideoService();
@@ -15,10 +21,16 @@ export function crudVideoEvents() {
   ipcMain.handle(
     Channel.REQUEST_RECENT_VIDEOS,
     async (_, options = {} as IPaginationOptions) => {
-      const { page = 1, limit = 10 } = options;
+      const {
+        page = 1,
+        limit = 10,
+        start = currentDay().start,
+        end = currentDay().end,
+      } = options;
 
       const [data, count] = await videoService.findAndCount({
         where: {
+          createdAt: Between(start, end),
           chunks: {
             id: Not(IsNull()),
           },
@@ -46,9 +58,11 @@ export function crudVideoEvents() {
   });
 
   // Get one video
-  ipcMain.handle(Channel.GET_USED_SIZE, () => {
+  ipcMain.handle(Channel.GET_USED_SIZE, (_, options: IRange) => {
+    const { start = currentDay().start, end = currentDay().end } =
+      options || {};
     const metadataService = new MetadataService();
-    return metadataService.getUsedSize();
+    return metadataService.getUsedSize({ createdAt: Between(start, end) });
   });
 
   // Update video metadata

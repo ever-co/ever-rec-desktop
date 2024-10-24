@@ -1,4 +1,4 @@
-export interface IPaginationOptions {
+export interface IPaginationOptions extends Partial<IRange> {
   page?: number;
   limit?: number;
   sortField?: string;
@@ -6,6 +6,10 @@ export interface IPaginationOptions {
   filter?: string;
 }
 
+export interface IRange {
+  start: Date | string;
+  end: Date | string;
+}
 export interface IPaginationResponse<T> {
   data: T[];
   count: number;
