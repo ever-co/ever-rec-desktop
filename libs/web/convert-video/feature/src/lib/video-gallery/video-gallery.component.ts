@@ -8,12 +8,12 @@ import {
   selectVideoState,
   videoActions
 } from '@ever-co/convert-video-data-access';
-import { NoDataComponent, VideoComponent } from '@ever-co/shared-components';
+import { NoDataComponent, VideoComponent, selectDatePickerState } from '@ever-co/shared-components';
 import {
   InfiniteScrollDirective,
   UtcToLocalTimePipe,
 } from '@ever-co/shared-service';
-import { IVideo } from '@ever-co/shared-utils';
+import { IRange, IVideo } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { Observable, Subject, map, takeUntil, tap } from 'rxjs';
 
@@ -41,6 +41,7 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
   public store = inject(Store);
   private currentPage = 1;
   private hasNext = false;
+  private range!: IRange
 
   constructor(private readonly router: Router) {}
 
@@ -64,6 +65,16 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     );
 
+    this.store
+    .select(selectDatePickerState)
+    .pipe(
+      tap((state) => {
+        this.range = state.selectedRange;
+      }),
+      takeUntil(this.destroy$)
+    )
+    .subscribe();
+
     this.loadVideos();
   }
 
@@ -76,7 +87,7 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
 
   public loadVideos(): void {
     this.store.dispatch(
-      videoActions.loadVideos({ page: this.currentPage })
+      videoActions.loadVideos({ page: this.currentPage, ...this.range })
     );
   }
 

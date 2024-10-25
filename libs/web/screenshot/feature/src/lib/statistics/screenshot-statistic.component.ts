@@ -9,11 +9,14 @@ import {
   screenshotActions,
   selectScreenshotState,
 } from '@ever-co/screenshot-data-access';
-import { NoDataComponent } from '@ever-co/shared-components';
+import {
+  NoDataComponent,
+  selectDatePickerState,
+} from '@ever-co/shared-components';
 import { InfiniteScrollDirective } from '@ever-co/shared-service';
-import { IScreenshotMetadataStatistic } from '@ever-co/shared-utils';
+import { IRange, IScreenshotMetadataStatistic } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'lib-screenshot-statistic',
@@ -32,9 +35,11 @@ import { map, Observable, tap } from 'rxjs';
   styleUrl: './screenshot-statistic.component.scss',
 })
 export class ScreenshotStatisticComponent implements OnInit {
+  private destroy$ = new Subject<void>();
   public statistics$!: Observable<IScreenshotMetadataStatistic[]>;
   private currentPage = 1;
   private hasNext = false;
+  private range!: IRange;
 
   constructor(private readonly store: Store) {}
   ngOnInit(): void {
@@ -49,6 +54,16 @@ export class ScreenshotStatisticComponent implements OnInit {
     this.statistics$ = this.store
       .select(selectScreenshotState)
       .pipe(map((state) => state.statistic.currents));
+
+    this.store
+      .select(selectDatePickerState)
+      .pipe(
+        tap((state) => {
+          this.range = state.selectedRange;
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
   public calculateProgress(count: number, total: number): number {
@@ -74,7 +89,10 @@ export class ScreenshotStatisticComponent implements OnInit {
 
   public loadStats(): void {
     this.store.dispatch(
-      screenshotActions.getScreenshotsStatistics({ page: this.currentPage })
+      screenshotActions.getScreenshotsStatistics({
+        page: this.currentPage,
+        ...this.range,
+      })
     );
   }
 }

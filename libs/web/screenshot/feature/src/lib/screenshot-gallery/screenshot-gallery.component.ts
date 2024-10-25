@@ -7,12 +7,16 @@ import {
   screenshotActions,
   selectScreenshotState,
 } from '@ever-co/screenshot-data-access';
-import { NoDataComponent, ScreenshotComponent } from '@ever-co/shared-components';
+import {
+  NoDataComponent,
+  ScreenshotComponent,
+  selectDatePickerState,
+} from '@ever-co/shared-components';
 import {
   InfiniteScrollDirective,
   UtcToLocalTimePipe,
 } from '@ever-co/shared-service';
-import { IScreenshot } from '@ever-co/shared-utils';
+import { IRange, IScreenshot } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { Observable, Subject, map, takeUntil, tap } from 'rxjs';
 
@@ -27,7 +31,7 @@ import { Observable, Subject, map, takeUntil, tap } from 'rxjs';
     MatCardModule,
     MatProgressSpinnerModule,
     RouterLink,
-    ScreenshotComponent
+    ScreenshotComponent,
   ],
   templateUrl: './screenshot-gallery.component.html',
   styleUrl: './screenshot-gallery.component.scss',
@@ -40,6 +44,7 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
   public store = inject(Store);
   private currentPage = 1;
   private hasNext = false;
+  private range!: IRange;
 
   ngOnInit(): void {
     this.store
@@ -65,6 +70,15 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
       map((state) => state.screenshots),
       takeUntil(this.destroy$)
     );
+    this.store
+      .select(selectDatePickerState)
+      .pipe(
+        tap((state) => {
+          this.range = state.selectedRange;
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
 
     this.loadScreenshots();
   }
@@ -78,7 +92,10 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
 
   public loadScreenshots(): void {
     this.store.dispatch(
-      screenshotActions.loadScreenshots({ page: this.currentPage })
+      screenshotActions.loadScreenshots({
+        page: this.currentPage,
+        ...this.range,
+      })
     );
   }
 
