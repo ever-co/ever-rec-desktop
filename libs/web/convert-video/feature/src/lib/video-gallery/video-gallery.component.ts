@@ -8,10 +8,11 @@ import {
   selectVideoState,
   videoActions
 } from '@ever-co/convert-video-data-access';
-import { NoDataComponent, VideoComponent, selectDatePickerState } from '@ever-co/shared-components';
+import { NoDataComponent, VideoComponent } from '@ever-co/shared-components';
 import {
   InfiniteScrollDirective,
   UtcToLocalTimePipe,
+  selectDatePickerState,
 } from '@ever-co/shared-service';
 import { IRange, IVideo } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';

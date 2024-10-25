@@ -10,10 +10,9 @@ import {
   selectScreenshotState,
 } from '@ever-co/screenshot-data-access';
 import {
-  NoDataComponent,
-  selectDatePickerState,
+  NoDataComponent
 } from '@ever-co/shared-components';
-import { InfiniteScrollDirective } from '@ever-co/shared-service';
+import { InfiniteScrollDirective, selectDatePickerState } from '@ever-co/shared-service';
 import { IRange, IScreenshotMetadataStatistic } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil, tap } from 'rxjs';

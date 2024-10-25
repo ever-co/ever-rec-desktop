@@ -14,7 +14,7 @@ export const initialState: State = {
 
 export const reducer = createReducer(
   initialState,
-  on(datePickerActions.selectRange, (state, { range }) => ({
+  on(datePickerActions.selectRange, (state, range) => ({
     ...state,
     selectedRange: {
       ...state.selectedRange,

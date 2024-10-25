@@ -15,7 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { HumanizeDateRangePipe } from '@ever-co/shared-service';
+import { datePickerActions, HumanizeDateRangePipe, selectDatePickerState } from '@ever-co/shared-service';
 import { IRange } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import {
@@ -28,8 +28,6 @@ import {
   takeUntil,
   tap,
 } from 'rxjs';
-import { datePickerActions } from './+state/date-picker.actions';
-import { selectDatePickerState } from './+state/date-picker.selectors';
 
 @Component({
   selector: 'lib-date-picker',
@@ -79,7 +77,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
         distinctUntilChanged(), // Only emit if the value actually changed
         tap((selectedRange) => {
           const range = selectedRange as IRange;
-          this.store.dispatch(datePickerActions.selectRange({ range }));
+          this.store.dispatch(datePickerActions.selectRange(range));
         }),
         takeUntil(this.destroy$) // Cleanup on destroy
       )

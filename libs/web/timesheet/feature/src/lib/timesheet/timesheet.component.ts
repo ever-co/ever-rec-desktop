@@ -6,8 +6,8 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { NoDataComponent, selectDatePickerState } from '@ever-co/shared-components';
-import { HumanizePipe } from '@ever-co/shared-service';
+import { NoDataComponent } from '@ever-co/shared-components';
+import { HumanizePipe, selectDatePickerState } from '@ever-co/shared-service';
 import { IPaginationOptions, IRange, ITimeLog } from '@ever-co/shared-utils';
 import {
   selectTimeLogState,

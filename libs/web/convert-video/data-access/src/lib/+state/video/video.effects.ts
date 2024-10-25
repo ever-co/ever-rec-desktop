@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { datePickerActions } from '@ever-co/shared-service';
 import { IPaginationOptions } from '@ever-co/shared-utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { from, of } from 'rxjs';
@@ -26,7 +27,8 @@ export class VideoEffects {
       ofType(
         videoActions.loadVideos,
         generateVideoActions.finishSuccess,
-        generateVideoActions.loadLastVideoSuccess
+        generateVideoActions.loadLastVideoSuccess,
+        datePickerActions.selectRange
       ),
       mergeMap((options) =>
         from(

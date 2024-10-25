@@ -10,11 +10,11 @@ import {
 import {
   NoDataComponent,
   ScreenshotComponent,
-  selectDatePickerState,
 } from '@ever-co/shared-components';
 import {
   InfiniteScrollDirective,
   UtcToLocalTimePipe,
+  selectDatePickerState,
 } from '@ever-co/shared-service';
 import { IRange, IScreenshot } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';

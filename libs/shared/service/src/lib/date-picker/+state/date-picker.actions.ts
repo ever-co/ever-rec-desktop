@@ -4,6 +4,6 @@ import { createActionGroup, props } from '@ngrx/store';
 export const datePickerActions = createActionGroup({
   source: 'DatePicker',
   events: {
-    'Select Range': props<{ range:  Partial<IRange>}>(),
+    'Select Range': props<Partial<IRange>>(),
   }
 });
