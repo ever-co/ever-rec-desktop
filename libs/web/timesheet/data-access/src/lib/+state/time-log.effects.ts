@@ -28,7 +28,6 @@ export class TimeLogEffects {
     this.actions$.pipe(
       ofType(
         timeLogActions.loadTimeLogs,
-        screenshotActions.captureSuccess,
         screenshotActions.stopCaptureSuccess,
         screenshotActions.startCaptureSuccess,
         datePickerActions.selectRange
@@ -38,6 +37,24 @@ export class TimeLogEffects {
           this.timeLogElectronService.getLogs(options as IPaginationOptions)
         ).pipe(
           map((response) => timeLogActions.loadTimeLogsSuccess(response)),
+          catchError((error) =>
+            of(timeLogActions.loadTimeLogsFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  updateDuration$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(screenshotActions.captureSuccess),
+      mergeMap((options) =>
+        from(
+          this.timeLogElectronService.getLogs(options as IPaginationOptions)
+        ).pipe(
+          map((response) =>
+            timeLogActions.updateTimeLogDurationSuccess(response)
+          ),
           catchError((error) =>
             of(timeLogActions.loadTimeLogsFailure({ error }))
           )

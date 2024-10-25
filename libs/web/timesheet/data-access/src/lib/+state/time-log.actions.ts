@@ -19,5 +19,7 @@ export const timeLogActions = createActionGroup({
     'Get TimeLog Statistics': props<IFindOptionsWhere<ITimeLog>>(),
     'Get TimeLog Statistics Success': props<ITimeLogStatistics>(),
     'Get TimeLog Statistics Failure': props<{ error: string }>(),
+
+    'Update TimeLog Duration Success': props<IPaginationResponse<ITimeLog>>(),
   }
 });

@@ -41,7 +41,7 @@ export const reducer = createReducer(
     ...state,
     count,
     hasNext,
-    timeLogs: data,
+    timeLogs: [...data],
     loading: false,
     error: '',
   })),
@@ -105,7 +105,15 @@ export const reducer = createReducer(
     ...state,
     loading: false,
     error,
-  }))
+  })),
+
+  on(timeLogActions.updateTimeLogDurationSuccess, (state, { data }) => {
+    const dataMap = new Map(data.map(d => [d.id, d]));
+    return {
+      ...state,
+      timeLogs: state.timeLogs.map(timeLog => dataMap.get(timeLog.id) || timeLog),
+    };
+  })
 );
 
 export const timeLogFeature = createFeature({
