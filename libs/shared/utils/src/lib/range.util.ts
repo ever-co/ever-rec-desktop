@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-ignore
 import moment from 'moment';
 import { IRange } from './interfaces/pagination.interface';
 
