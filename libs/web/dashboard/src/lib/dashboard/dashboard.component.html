@@ -67,7 +67,7 @@
         <div class="flex items-center justify-between">
           <div class="space-y-1">
             <p class="text-sm font-medium text-gray-600">Worked</p>
-            <h6 class="text-2xl font-bold">{{screenshotCount$ | async | humanize: 's'}}</h6>
+            <h6 class="text-2xl font-bold">{{range$ | async | humanize: 's'}}</h6>
           </div>
           <mat-icon class="h-6 w-6 text-gray-600 transition-all duration-300 hover:text-blue-500 hover:scale-110">timer</mat-icon>
         </div>

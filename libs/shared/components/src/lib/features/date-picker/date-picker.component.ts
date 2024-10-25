@@ -22,6 +22,7 @@ import {
 } from '@ever-co/shared-service';
 import { IRange } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
+import moment from 'moment';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -52,7 +53,6 @@ import {
 })
 export class DatePickerComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  private selectedRange!: IRange;
 
   // Use strongly typed FormGroup with IRange interface
   public readonly range = new FormGroup({
@@ -69,7 +69,6 @@ export class DatePickerComponent implements OnInit, OnDestroy {
       .pipe(
         filter(Boolean), // Ensure truthy value
         tap(({ selectedRange }) => {
-          this.selectedRange = selectedRange;
           this.range.patchValue(selectedRange, { emitEvent: false });
         }), // Don't trigger valueChanges on patch
         takeUntil(this.destroy$) // Cleanup on destroy
@@ -79,22 +78,21 @@ export class DatePickerComponent implements OnInit, OnDestroy {
     // Listen for changes and dispatch action
     this.range.valueChanges
       .pipe(
-        filter((range) => this.deepComparaison(range)),
+        map((state) => state as IRange),
         debounceTime(300), // Debounce to avoid multiple quick changes
-        distinctUntilChanged(), // Only emit if the value actually changed
-        tap((selectedRange) => {
-          this.selectedRange = selectedRange as IRange;
-          this.store.dispatch(
-            datePickerActions.selectRange(this.selectedRange)
-          );
-        }),
+        distinctUntilChanged(this.deepComparaison), // Only emit if the value actually changed
+        tap((range) =>
+          this.store.dispatch(datePickerActions.selectRange(range))
+        ),
         takeUntil(this.destroy$) // Cleanup on destroy
       )
       .subscribe();
   }
 
-  public deepComparaison<T>(range: T): boolean {
-    return JSON.stringify(range) !== JSON.stringify(this.selectedRange);
+  public deepComparaison(prev: IRange, curr: IRange): boolean {
+    return (
+      moment(prev.start).isSame(curr.start) && moment(prev.end).isSame(curr.end)
+    );
   }
 
   public get range$(): Observable<IRange> {

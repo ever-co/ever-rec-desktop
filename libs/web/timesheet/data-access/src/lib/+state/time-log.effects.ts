@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { screenshotActions } from '@ever-co/screenshot-data-access';
-import { datePickerActions } from '@ever-co/shared-service';
 import { IPaginationOptions } from '@ever-co/shared-utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { from, of } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import {
+  catchError,
+  map,
+  mergeMap
+} from 'rxjs/operators';
 import { TimeLogElectronService } from '../services/time-log-electron.service';
 import { timeLogActions } from './time-log.actions';
 
@@ -30,7 +33,6 @@ export class TimeLogEffects {
         timeLogActions.loadTimeLogs,
         screenshotActions.stopCaptureSuccess,
         screenshotActions.startCaptureSuccess,
-        datePickerActions.selectRange
       ),
       mergeMap((options) =>
         from(

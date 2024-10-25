@@ -1,8 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-
-import { datePickerActions } from '@ever-co/shared-service';
 import { IPaginationOptions } from '@ever-co/shared-utils';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { from, of } from 'rxjs';
 import { catchError, debounceTime, map, mergeMap } from 'rxjs/operators';
@@ -56,7 +54,7 @@ export class ScreenshotEffects {
 
   getAllScreenshots = createEffect(() =>
     this.actions$.pipe(
-      ofType(screenshotActions.loadScreenshots, datePickerActions.selectRange),
+      ofType(screenshotActions.loadScreenshots),
       mergeMap((options) =>
         from(this.electronService.getAllScreenshots(options)).pipe(
           map((response) => screenshotActions.loadScreenshotsSuccess(response)),
@@ -117,7 +115,6 @@ export class ScreenshotEffects {
         screenshotActions.captureSuccess,
         screenshotActions.deleteScreenshotsSuccess,
         screenshotActions.deleteScreenshotSuccess,
-        datePickerActions.selectRange
       ),
       mergeMap((options) =>
         from(
