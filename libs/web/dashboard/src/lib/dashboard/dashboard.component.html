@@ -89,8 +89,8 @@
     >
       <mat-card-content class="p-6">
         <div class="flex items-center justify-between">
-          <div class="space-y-1">
-            <p class="text-sm font-medium text-gray-600">
+          <div class="space-y-1 min-w-0">
+            <p class="text-sm font-medium truncate text-gray-600">
               {{ dateRange$ | async | humanizeDateRange | titlecase }}
             </p>
             <h6 class="text-2xl font-bold">
