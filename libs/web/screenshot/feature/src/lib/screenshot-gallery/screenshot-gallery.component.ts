@@ -75,12 +75,11 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
       .pipe(
         tap((state) => {
           this.range = state.selectedRange;
+          this.loadScreenshots();
         }),
         takeUntil(this.destroy$)
       )
       .subscribe();
-
-    this.loadScreenshots();
   }
 
   public moreScreenshots(): void {

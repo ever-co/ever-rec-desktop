@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import {
   selectVideoState,
   videoActions
@@ -44,8 +44,6 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
   private hasNext = false;
   private range!: IRange
 
-  constructor(private readonly router: Router) {}
-
   ngOnInit(): void {
     this.store
       .select(selectVideoState)
@@ -71,12 +69,11 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
     .pipe(
       tap((state) => {
         this.range = state.selectedRange;
+        this.loadVideos();
       }),
       takeUntil(this.destroy$)
     )
     .subscribe();
-
-    this.loadVideos();
   }
 
   public moreVideos(): void {

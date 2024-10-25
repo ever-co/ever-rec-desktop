@@ -59,6 +59,7 @@ export class ScreenshotStatisticComponent implements OnInit {
       .pipe(
         tap((state) => {
           this.range = state.selectedRange;
+          this.loadStats();
         }),
         takeUntil(this.destroy$)
       )

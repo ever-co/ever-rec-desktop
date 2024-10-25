@@ -1,4 +1,5 @@
 import {
+  currentDay,
   IPaginationOptions,
   IPaginationResponse,
   IScreenshotMetadata,
@@ -57,7 +58,12 @@ export class ScreenshotMetadataService {
   public static async statistics(
     options: IPaginationOptions = {}
   ): Promise<IPaginationResponse<IScreenshotMetadataStatistic>> {
-    const { page = 1, limit = 10 } = options;
+    const {
+      page = 1,
+      limit = 10,
+      start = currentDay().start,
+      end = currentDay().end,
+    } = options;
 
     const query = this.repository
       .createQueryBuilder('metadata')
@@ -65,6 +71,10 @@ export class ScreenshotMetadataService {
       .addSelect('metadata.icon', 'icon')
       .addSelect('COUNT(metadata.name)', 'count')
       .addSelect('SUM(COUNT(metadata.id)) OVER()', 'total')
+      .where('metadata.createdAt BETWEEN :start AND :end', {
+        start,
+        end,
+      })
       .groupBy('metadata.name')
       .orderBy('count', 'DESC')
       .skip((page - 1) * limit)
