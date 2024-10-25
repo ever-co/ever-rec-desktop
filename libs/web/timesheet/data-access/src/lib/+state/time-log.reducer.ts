@@ -113,7 +113,13 @@ export const reducer = createReducer(
       ...state,
       timeLogs: state.timeLogs.map(timeLog => dataMap.get(timeLog.id) || timeLog),
     };
-  })
+  }),
+
+  // Reset TimeLogs
+  on(timeLogActions.resetTimeLog, (state) => ({
+    ...state,
+    timeLogs: [],
+  })),
 );
 
 export const timeLogFeature = createFeature({

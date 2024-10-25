@@ -69,6 +69,8 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
     .pipe(
       tap((state) => {
         this.range = state.selectedRange;
+        this.currentPage = 1;
+        this.store.dispatch(videoActions.resetVideos());
         this.loadVideos();
       }),
       takeUntil(this.destroy$)

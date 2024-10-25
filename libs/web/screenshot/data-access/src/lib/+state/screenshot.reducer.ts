@@ -198,7 +198,22 @@ export const reducer = createReducer(
         count,
       },
     })
-  )
+  ),
+
+  // Reset screenshots
+  on(screenshotActions.resetScreenshots, (state) => ({
+    ...state,
+    screenshots: initialState.screenshots,
+  })),
+
+  // Reset screenshots statistics
+  on(screenshotActions.resetScreenshotsStatistics, (state) => ({
+    ...state,
+    statistic: {
+      ...state.statistic,
+      currents: []
+    },
+  }))
 );
 
 export const screenshotFeature = createFeature({

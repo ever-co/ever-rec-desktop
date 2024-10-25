@@ -9,10 +9,11 @@ import {
   screenshotActions,
   selectScreenshotState,
 } from '@ever-co/screenshot-data-access';
+import { NoDataComponent } from '@ever-co/shared-components';
 import {
-  NoDataComponent
-} from '@ever-co/shared-components';
-import { InfiniteScrollDirective, selectDatePickerState } from '@ever-co/shared-service';
+  InfiniteScrollDirective,
+  selectDatePickerState,
+} from '@ever-co/shared-service';
 import { IRange, IScreenshotMetadataStatistic } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
@@ -59,6 +60,8 @@ export class ScreenshotStatisticComponent implements OnInit {
       .pipe(
         tap((state) => {
           this.range = state.selectedRange;
+          this.currentPage = 1;
+          this.store.dispatch(screenshotActions.resetScreenshotsStatistics());
           this.loadStats();
         }),
         takeUntil(this.destroy$)

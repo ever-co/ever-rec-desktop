@@ -29,10 +29,12 @@ export const screenshotActions = createActionGroup({
     'Delete Screenshots': emptyProps(),
     'Delete Screenshots Success': emptyProps(),
     'Delete Screenshots Failure': props<{ error: string }>(),
+    'Reset Screenshots': emptyProps(),
 
     'Get Screenshots Statistics': props<IPaginationOptions>(),
     'Get Screenshots Statistics Success': props<IPaginationResponse<IScreenshotMetadataStatistic>>(),
     'Get Screenshots Statistics Failure': props<{ error: string }>(),
+    'Reset Screenshots Statistics': emptyProps(),
 
     ask: props<IPaginationOptions>(),
     'ask Success': props<IPaginationResponse<IScreenshot>>(),

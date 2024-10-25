@@ -95,6 +95,12 @@ export const reducer = createReducer(
     ...state,
     loading: false,
     error,
+  })),
+
+  // Reset videos
+  on(videoActions.resetVideos, (state) => ({
+    ...state,
+    videos: initialState.videos,
   }))
 );
 

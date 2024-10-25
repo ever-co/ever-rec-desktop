@@ -1,5 +1,5 @@
 import { IFindOneOptions, IPaginationOptions, IPaginationResponse, IVideo } from '@ever-co/shared-utils';
-import { createActionGroup, props } from '@ngrx/store';
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 export const videoActions = createActionGroup({
   source: 'Video',
@@ -19,5 +19,7 @@ export const videoActions = createActionGroup({
     'Update Video': props<Partial<IVideo>>(),
     'Update Video Success': props<IVideo>(),
     'Update Video Failure': props<{ error: string }>(),
+
+    'Reset Videos': emptyProps()
   },
 });

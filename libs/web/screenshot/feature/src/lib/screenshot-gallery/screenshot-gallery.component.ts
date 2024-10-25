@@ -75,6 +75,8 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
       .pipe(
         tap((state) => {
           this.range = state.selectedRange;
+          this.currentPage = 1;
+          this.store.dispatch(screenshotActions.resetScreenshots());
           this.loadScreenshots();
         }),
         takeUntil(this.destroy$)

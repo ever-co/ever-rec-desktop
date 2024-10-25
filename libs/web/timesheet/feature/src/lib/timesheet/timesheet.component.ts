@@ -72,11 +72,11 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       .pipe(
         tap((state) => {
           this.range = state.selectedRange;
+          this.loadTimeLogs(0, this.pageSize)
         }),
         takeUntil(this.destroy$)
       )
       .subscribe();
-    this.loadTimeLogs();
   }
 
   public loadTimeLogs(pageIndex = 0, pageSize = 10) {
@@ -87,6 +87,9 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       limit: pageSize,
       ...this.range,
     } as IPaginationOptions;
+
+    pageSize = this.pageSize;
+
     this.store.dispatch(timeLogActions.loadTimeLogs(params));
   }
 
