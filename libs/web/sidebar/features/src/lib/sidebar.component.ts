@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { Router } from '@angular/router';
@@ -10,7 +10,7 @@ import {
   SidebarActions,
 } from '@ever-co/sidebar-data-access';
 import { Store } from '@ngrx/store';
-import { map, Observable } from 'rxjs';
+import { map, Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'lib-sidebar',
@@ -19,17 +19,23 @@ import { map, Observable } from 'rxjs';
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss',
 })
-export class SidebarComponent {
-  selectedItem$: Observable<INavigationState>;
-  navigationItems$: Observable<INavigationState[]>;
+export class SidebarComponent implements OnDestroy {
+  private readonly destroy$ = new Subject<void>();
 
-  constructor(private readonly store: Store, private readonly router: Router) {
-    const sidebarState$ = this.store.select(selectSidebarState);
-    this.selectedItem$ = sidebarState$.pipe(map((state) => {
-      return state.selectedItem}));
-    this.navigationItems$ = sidebarState$.pipe(
-      map((state) => state.navigationItems)
+  constructor(private readonly store: Store, private readonly router: Router) {}
+
+  public get selectedItem$(): Observable<INavigationState> {
+    return this.store.select(selectSidebarState).pipe(
+      map((state) => {
+        return state.selectedItem;
+      })
     );
+  }
+
+  public get navigationItems$(): Observable<INavigationState[]> {
+    return this.store
+      .select(selectSidebarState)
+      .pipe(map((state) => state.navigationItems));
   }
 
   public async onSelect(selectedItem: INavigationState) {
@@ -40,5 +46,10 @@ export class SidebarComponent {
     );
     this.store.dispatch(SidebarActions.selectNavigationItem({ selectedItem }));
     await this.router.navigate([selectedItem.route]);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
