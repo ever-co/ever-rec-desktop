@@ -116,7 +116,8 @@ export class ScreenshotEffects {
         screenshotActions.loadScreenshots,
         screenshotActions.captureSuccess,
         screenshotActions.deleteScreenshotsSuccess,
-        screenshotActions.deleteScreenshotSuccess
+        screenshotActions.deleteScreenshotSuccess,
+        datePickerActions.selectRange
       ),
       mergeMap((options) =>
         from(
