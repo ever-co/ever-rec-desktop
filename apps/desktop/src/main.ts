@@ -34,11 +34,7 @@ export default class Main {
     const logger: ILogger = new ElectronLogger();
 
     process.on('uncaughtException', (error) => {
-      logger.error(
-        'Uncaught Exception:' + error.stack ??
-          error.message ??
-          JSON.stringify(error)
-      );
+      logger.error('Uncaught Exception:' + error.stack);
     });
 
     process.on('unhandledRejection', (reason, promise) => {
