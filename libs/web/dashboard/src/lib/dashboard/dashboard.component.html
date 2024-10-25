@@ -96,15 +96,13 @@
               }
             </p>
             <h6 class="text-2xl font-bold">
-              @if (capturing$ | async) {
+              @if ((capturing$ | async )) {
               {{
                 (statistics$ | async)?.today || 0 | humanize : 's' : 'hh:mm:ss'
               }}
-              }@else {
-              {{
-                (statistics$ | async)?.range || 0 | humanize : 's' | titlecase
-              }}
-              }
+              }@else { @if(!(statistics$ | async)?.range) { No work }@else {
+              {{ (statistics$ | async)?.range || 0 | humanize : 's' }}
+              } }
             </h6>
           </div>
           <mat-icon
