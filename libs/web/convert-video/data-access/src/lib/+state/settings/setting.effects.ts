@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-
-import { LocalstorageService } from '@ever-co/shared-service';
+import { LocalStorageService } from '@ever-co/shared-service';
 import { IVideoConfig } from '@ever-co/shared-utils';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, concatMap, map } from 'rxjs/operators';
 import { settingActions } from './setting.actions';
@@ -15,7 +14,7 @@ export class SettingEffects {
     return this.actions$.pipe(
       ofType(settingActions.load),
       concatMap(() =>
-        this.localstorageService.getItem<IVideoConfig>(this.key).pipe(
+        this.localStorageService.getItem<IVideoConfig>(this.key).pipe(
           map((videoConfig) => settingActions.loadSuccess({ videoConfig })),
           catchError((error) => of(settingActions.failure({ error })))
         )
@@ -27,7 +26,7 @@ export class SettingEffects {
     return this.actions$.pipe(
       ofType(settingActions.update),
       concatMap(({ videoConfig }) =>
-        this.localstorageService
+        this.localStorageService
           .setItem<IVideoConfig>(this.key, videoConfig)
           .pipe(
             map(() => settingActions.load()),
@@ -39,6 +38,6 @@ export class SettingEffects {
 
   constructor(
     private actions$: Actions,
-    private readonly localstorageService: LocalstorageService
+    private readonly localStorageService: LocalStorageService
   ) {}
 }

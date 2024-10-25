@@ -6,7 +6,7 @@ import {
   videoActions,
 } from '@ever-co/convert-video-data-access';
 import { screenshotActions } from '@ever-co/screenshot-data-access';
-import { LocalstorageService } from '@ever-co/shared-service';
+import { LocalStorageService } from '@ever-co/shared-service';
 import { from, of } from 'rxjs';
 import { catchError, concatMap, map, mergeMap } from 'rxjs/operators';
 import { StorageElectronService } from '../services/storage-electron.service';
@@ -21,7 +21,7 @@ export class SettingStorageEffects {
     return this.actions$.pipe(
       ofType(settingStorageActions.load),
       concatMap(() =>
-        this.localstorageService.getItem<IStorageState>(this.key).pipe(
+        this.localStorageService.getItem<IStorageState>(this.key).pipe(
           map((storage) => settingStorageActions.loadSuccess(storage)),
           catchError((error) => of(settingStorageActions.failure({ error })))
         )
@@ -33,8 +33,8 @@ export class SettingStorageEffects {
     return this.actions$.pipe(
       ofType(settingStorageActions.update),
       concatMap((storage) =>
-        this.localstorageService
-          .setItem<Partial<IStorageState>>(this.key, storage)
+        this.localStorageService
+          .setItem<Partial<IStorageState>>(this.key, storage, { merge: true })
           .pipe(
             map(() => settingStorageActions.load()),
             catchError((error) => of(settingStorageActions.failure({ error })))
@@ -64,7 +64,7 @@ export class SettingStorageEffects {
 
   constructor(
     private actions$: Actions,
-    private readonly localstorageService: LocalstorageService,
+    private readonly localStorageService: LocalStorageService,
     private readonly storageElectronService: StorageElectronService
   ) {}
 }

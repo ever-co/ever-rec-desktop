@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
-import { LocalstorageService } from '@ever-co/shared-service';
+import { LocalStorageService } from '@ever-co/shared-service';
 import { IVideo } from '@ever-co/shared-utils';
 import { Action } from '@ngrx/store';
 import { of } from 'rxjs';
@@ -107,6 +107,6 @@ export class GenerateVideoEffects {
   constructor(
     private actions$: Actions,
     private readonly convertVideoElectronService: ConvertVideoElectronService,
-    private readonly storageService: LocalstorageService
+    private readonly storageService: LocalStorageService
   ) {}
 }

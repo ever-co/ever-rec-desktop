@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
-import { LocalstorageService } from '@ever-co/shared-service';
+import { LocalStorageService } from '@ever-co/shared-service';
 import { IScreenCaptureConfig } from '@ever-co/shared-utils';
 import { of } from 'rxjs';
 import { catchError, concatMap, map } from 'rxjs/operators';
@@ -15,9 +15,13 @@ export class SettingScreenCaptureEffects {
     return this.actions$.pipe(
       ofType(settingScreenCaptureActions.load),
       concatMap(() =>
-        this.localstorageService.getItem<IScreenCaptureConfig>(this.key).pipe(
-          map((screenCaptureConfig) => settingScreenCaptureActions.loadSuccess({ screenCaptureConfig })),
-          catchError((error) => of(settingScreenCaptureActions.failure({ error })))
+        this.localStorageService.getItem<IScreenCaptureConfig>(this.key).pipe(
+          map((screenCaptureConfig) =>
+            settingScreenCaptureActions.loadSuccess({ screenCaptureConfig })
+          ),
+          catchError((error) =>
+            of(settingScreenCaptureActions.failure({ error }))
+          )
         )
       )
     );
@@ -27,11 +31,13 @@ export class SettingScreenCaptureEffects {
     return this.actions$.pipe(
       ofType(settingScreenCaptureActions.update),
       concatMap(({ screenCaptureConfig }) =>
-        this.localstorageService
+        this.localStorageService
           .setItem<IScreenCaptureConfig>(this.key, screenCaptureConfig)
           .pipe(
             map(() => settingScreenCaptureActions.load()),
-            catchError((error) => of(settingScreenCaptureActions.failure({ error })))
+            catchError((error) =>
+              of(settingScreenCaptureActions.failure({ error }))
+            )
           )
       )
     );
@@ -39,6 +45,6 @@ export class SettingScreenCaptureEffects {
 
   constructor(
     private actions$: Actions,
-    private readonly localstorageService: LocalstorageService
+    private readonly localStorageService: LocalStorageService
   ) {}
 }
