@@ -57,10 +57,6 @@ export class ScreenshotElectronService {
   public getStatistics(
     options = {} as IPaginationOptions
   ): Promise<IPaginationResponse<IScreenshotMetadataStatistic>> {
-    const { page = 1, limit = 10 } = options;
-    return this.electronService.invoke(Channel.REQUEST_SCREENSHOTS_STATISTICS, {
-      page,
-      limit,
-    });
+    return this.electronService.invoke(Channel.REQUEST_SCREENSHOTS_STATISTICS, options);
   }
 }

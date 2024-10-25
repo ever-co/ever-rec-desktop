@@ -1,12 +1,13 @@
 import { TimeLogService } from '@ever-co/electron-database';
 import {
   Channel,
-  IPaginationOptions,
-  ITimeLog,
-  IVideo,
   currentDay,
   currentMonth,
   currentWeek,
+  IPaginationOptions,
+  IRange,
+  ITimeLog,
+  IVideo,
 } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
 import { Between, FindOptionsWhere } from 'typeorm';
@@ -65,7 +66,7 @@ export function crudTimeLogEvents() {
           start: currentMonth().start,
           end: currentMonth().end,
         }),
-        timeLogService.statistics(options),
+        timeLogService.statistics(options as IRange),
       ]);
       return { today, week, month, range };
     }

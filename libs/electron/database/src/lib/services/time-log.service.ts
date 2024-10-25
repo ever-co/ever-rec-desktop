@@ -8,10 +8,10 @@ import {
 } from '@ever-co/shared-utils';
 import * as moment from 'moment';
 import {
+  Between,
   Brackets,
   FindManyOptions,
   FindOneOptions,
-  FindOptionsWhere,
   In,
   IsNull,
 } from 'typeorm';
@@ -129,10 +129,10 @@ export class TimeLogService implements ILoggable {
     );
   }
 
-  public async statistics(
-    options: FindOptionsWhere<ITimeLog>
-  ): Promise<number> {
-    const sum = await this.repository.sum('duration', options);
+  public async statistics({ start, end }): Promise<number> {
+    const sum = await this.repository.sum('duration', {
+      createdAt: Between(start, end),
+    });
     return sum || 0;
   }
 }
