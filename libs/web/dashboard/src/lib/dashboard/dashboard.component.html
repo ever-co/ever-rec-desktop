@@ -3,32 +3,41 @@
   <!-- Status Cards - Stack on mobile, grid on larger screens -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
     <!-- State Card -->
-    <mat-card class="w-full transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1" appearance="outlined">
+    <mat-card
+      class="w-full transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+      appearance="outlined"
+    >
       <mat-card-content class="p-6">
         <div class="flex items-center justify-between">
           <div class="space-y-1">
-            <p class="text-sm font-medium text-gray-600 transition-opacity duration-200">State</p>
+            <p
+              class="text-sm font-medium text-gray-600 transition-opacity duration-200"
+            >
+              State
+            </p>
             <h6 class="text-2xl font-bold">
               @if (capturing$ | async) {
-                <div class="flex items-center space-x-2">
-                  <span class="animate-fade-in">Capturing</span>
-                  <span class="flex space-x-1">
-                    <ng-container *ngTemplateOutlet="loading"></ng-container>
-                  </span>
-                </div>
+              <div class="flex items-center space-x-2">
+                <span class="animate-fade-in">Capturing</span>
+                <span class="flex space-x-1">
+                  <ng-container *ngTemplateOutlet="loading"></ng-container>
+                </span>
+              </div>
               } @else if (generating$ | async) {
-                <div class="flex items-center space-x-2">
-                  <span class="animate-fade-in">Generating</span>
-                  <span class="flex space-x-1">
-                    <ng-container *ngTemplateOutlet="loading"></ng-container>
-                  </span>
-                </div>
+              <div class="flex items-center space-x-2">
+                <span class="animate-fade-in">Generating</span>
+                <span class="flex space-x-1">
+                  <ng-container *ngTemplateOutlet="loading"></ng-container>
+                </span>
+              </div>
               } @else {
-                <span class="animate-fade-in text-gray-500">Not Running</span>
+              <span class="animate-fade-in text-gray-500">Not Running</span>
               }
             </h6>
           </div>
-          <mat-icon class="h-6 w-6 text-gray-600 transition-all duration-300 hover:text-blue-500 hover:scale-110">
+          <mat-icon
+            class="h-6 w-6 text-gray-600 transition-all duration-300 hover:text-blue-500 hover:scale-110"
+          >
             photo_camera
           </mat-icon>
         </div>
@@ -36,40 +45,62 @@
     </mat-card>
 
     <!-- Videos Card -->
-    <mat-card class="w-full transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1" appearance="outlined">
+    <mat-card
+      class="w-full transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+      appearance="outlined"
+    >
       <mat-card-content class="p-6">
         <div class="flex items-center justify-between">
           <div class="space-y-1">
             <p class="text-sm font-medium text-gray-600">Videos</p>
             <h6 class="text-2xl font-bold">{{ videoCount$ | async }}</h6>
           </div>
-          <mat-icon class="h-6 w-6 text-gray-600 transition-all duration-300 hover:text-blue-500 hover:scale-110">videocam</mat-icon>
+          <mat-icon
+            class="h-6 w-6 text-gray-600 transition-all duration-300 hover:text-blue-500 hover:scale-110"
+            >videocam</mat-icon
+          >
         </div>
       </mat-card-content>
     </mat-card>
 
     <!-- Screenshots Card -->
-    <mat-card class="w-full transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1" appearance="outlined">
+    <mat-card
+      class="w-full transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+      appearance="outlined"
+    >
       <mat-card-content class="p-6">
         <div class="flex items-center justify-between">
           <div class="space-y-1">
             <p class="text-sm font-medium text-gray-600">Screenshots</p>
-            <h6 class="text-2xl font-bold">{{screenshotCount$ | async}}</h6>
+            <h6 class="text-2xl font-bold">{{ screenshotCount$ | async }}</h6>
           </div>
-          <mat-icon class="h-6 w-6 text-gray-600 transition-all duration-300 hover:text-blue-500 hover:scale-110">photo_library</mat-icon>
+          <mat-icon
+            class="h-6 w-6 text-gray-600 transition-all duration-300 hover:text-blue-500 hover:scale-110"
+            >photo_library</mat-icon
+          >
         </div>
       </mat-card-content>
     </mat-card>
 
-     <!-- Screenshots Card -->
-     <mat-card class="w-full transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1" appearance="outlined">
+    <!-- Screenshots Card -->
+    <mat-card
+      class="w-full transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+      appearance="outlined"
+    >
       <mat-card-content class="p-6">
         <div class="flex items-center justify-between">
           <div class="space-y-1">
-            <p class="text-sm font-medium text-gray-600">Worked</p>
-            <h6 class="text-2xl font-bold">{{range$ | async | humanize: 's'}}</h6>
+            <p class="text-sm font-medium text-gray-600">
+              {{ dateRange$ | async | humanizeDateRange | titlecase }}
+            </p>
+            <h6 class="text-2xl font-bold">
+              {{ range$ | async | humanize : 's' }}
+            </h6>
           </div>
-          <mat-icon class="h-6 w-6 text-gray-600 transition-all duration-300 hover:text-blue-500 hover:scale-110">timer</mat-icon>
+          <mat-icon
+            class="h-6 w-6 text-gray-600 transition-all duration-300 hover:text-blue-500 hover:scale-110"
+            >timer</mat-icon
+          >
         </div>
       </mat-card-content>
     </mat-card>
@@ -80,7 +111,7 @@
     <!-- Recent Screenshots -->
     <mat-card class="w-full" appearance="outlined">
       <mat-card-content class="p-6 h-full">
-        <p class="text-sm font-medium text-gray-600 mb-4 ">Recent Screenshots</p>
+        <p class="text-sm font-medium text-gray-600 mb-4">Recent Screenshots</p>
         <div class="h-full">
           <lib-screenshot-gallery class="dashboard"></lib-screenshot-gallery>
         </div>
@@ -97,14 +128,18 @@
       </mat-card-content>
     </mat-card>
   </div>
-   <!-- Content Cards - Stack on mobile, 2 columns on larger screens -->
-   <div class="grid grid-cols-1">
+  <!-- Content Cards - Stack on mobile, 2 columns on larger screens -->
+  <div class="grid grid-cols-1">
     <!-- Statistics Overview -->
     <mat-card class="w-full" appearance="outlined">
       <mat-card-content class="p-6 h-full">
-        <p class="text-sm font-medium text-gray-600 mb-4">Statistics Overview</p>
+        <p class="text-sm font-medium text-gray-600 mb-4">
+          Statistics Overview
+        </p>
         <div class="h-full">
-          <lib-screenshot-statistic class="dashboard"></lib-screenshot-statistic>
+          <lib-screenshot-statistic
+            class="dashboard"
+          ></lib-screenshot-statistic>
         </div>
       </mat-card-content>
     </mat-card>
@@ -112,7 +147,7 @@
 </div>
 
 <ng-template #loading>
-    <span class="animate-bounce-dot delay-0">.</span>
-    <span class="animate-bounce-dot delay-150">.</span>
-    <span class="animate-bounce-dot delay-300">.</span>
+  <span class="animate-bounce-dot delay-0">.</span>
+  <span class="animate-bounce-dot delay-150">.</span>
+  <span class="animate-bounce-dot delay-300">.</span>
 </ng-template>

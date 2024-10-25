@@ -11,12 +11,14 @@ import {
 } from '@ever-co/screenshot-feature';
 import { NoDataComponent } from '@ever-co/shared-components';
 import { HumanizePipe, selectDatePickerState } from '@ever-co/shared-service';
+import { IRange } from '@ever-co/shared-utils';
 import {
   selectTimeLogState,
   timeLogActions,
 } from '@ever-co/timesheet-data-access';
 import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
+import { HumanizeDateRangePipe } from '../../../../../shared/service/src/lib/pipes/humanize-date-range.pipe';
 
 @Component({
   selector: 'lib-dashboard',
@@ -30,6 +32,7 @@ import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
     VideoGalleryComponent,
     ScreenshotStatisticComponent,
     HumanizePipe,
+    HumanizeDateRangePipe
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
@@ -56,6 +59,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public get range$(): Observable<number> {
     return this.store.select(selectTimeLogState).pipe(
       map((state) => state.statistics.range),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  public get dateRange$(): Observable<IRange> {
+    return this.store.select(selectDatePickerState).pipe(
+      map((state) => state.selectedRange),
       takeUntil(this.destroy$)
     );
   }
