@@ -25,8 +25,8 @@ export const reducer = createReducer(
   on(settingStorageActions.load, (state) => ({ ...state, error: '' })),
   on(settingStorageActions.loadSuccess, (state, { retention, used }) => ({
     ...state,
-    retention: retention ?? initialState.retention,
-    used: used ?? initialState.used
+    retention: retention ?? state.retention,
+    used: used ?? state.used,
   })),
   on(settingStorageActions.failure, (state, { error }) => ({
     ...state,
