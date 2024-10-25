@@ -2,8 +2,10 @@ import { TimeLogService, VideoService } from '@ever-co/electron-database';
 import { ElectronLogger, FileManager } from '@ever-co/electron-utils';
 import { Channel, IVideo } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-ignore
+import moment from 'moment';
 import { LessThan } from 'typeorm';
-import moment = require('moment');
 
 let interval: NodeJS.Timeout | null = null;
 
@@ -19,47 +21,54 @@ export function retentionEvents() {
     }
 
     logger.info('Starting clean-up check every 24 hours.');
+
+    await cleanup(retention);
+
     interval = setInterval(async () => {
-      logger.info('Checking time logs for clean-up...');
-
-      const timeLogs = await timeLogService.findAll({
-        where: {
-          createdAt: LessThan(moment().subtract(retention, 'days').toDate()),
-        },
-        relations: ['screenshots', 'screenshots.video'],
-      });
-
-      if (timeLogs.length === 0) {
-        logger.info('No time logs found for cleaning.');
-        return;
-      }
-
-      logger.info(`Cleaning up ${timeLogs.length} time logs...`);
-      const timeLogIds = timeLogs.map(({ id }) => id);
-      const screenshotsPathnames = timeLogs.flatMap(({ screenshots }) =>
-        screenshots.map(({ pathname }) => pathname)
-      );
-      const videos = timeLogs
-        .flatMap(({ screenshots }) => screenshots.map(({ video }) => video))
-        .filter(Boolean) as IVideo[];
-      const videoIds = videos.map(({ id }) => id);
-      const videoPathnames = videos.map(({ pathname }) => pathname);
-
-      try {
-        await Promise.all([
-          timeLogService.deleteAll(timeLogIds),
-          videoService.deleteAll(videoIds),
-          ...screenshotsPathnames.map((pathname) =>
-            FileManager.deleteFile(pathname)
-          ),
-          ...videoPathnames.map((pathname) => FileManager.deleteFile(pathname)),
-        ]);
-        logger.info('Clean-up completed successfully.');
-      } catch (error) {
-        logger.error(`Error during clean-up`, error);
-      }
+      await cleanup(retention);
     }, 1000 * 3600 * 24);
   });
+
+  async function cleanup(retention: number) {
+    logger.info('Checking time logs for clean-up...');
+
+    const timeLogs = await timeLogService.findAll({
+      where: {
+        createdAt: LessThan(moment().subtract(retention, 'days').toDate()),
+      },
+      relations: ['screenshots', 'screenshots.video'],
+    });
+
+    if (timeLogs.length === 0) {
+      logger.info('No time logs found for cleaning.');
+      return;
+    }
+
+    logger.info(`Cleaning up ${timeLogs.length} time logs...`);
+    const timeLogIds = timeLogs.map(({ id }) => id);
+    const screenshotsPathnames = timeLogs.flatMap(({ screenshots }) =>
+      screenshots.map(({ pathname }) => pathname)
+    );
+    const videos = timeLogs
+      .flatMap(({ screenshots }) => screenshots.map(({ video }) => video))
+      .filter(Boolean) as IVideo[];
+    const videoIds = videos.map(({ id }) => id);
+    const videoPathnames = videos.map(({ pathname }) => pathname);
+
+    try {
+      await Promise.all([
+        timeLogService.deleteAll(timeLogIds),
+        videoService.deleteAll(videoIds),
+        ...screenshotsPathnames.map((pathname) =>
+          FileManager.deleteFile(pathname)
+        ),
+        ...videoPathnames.map((pathname) => FileManager.deleteFile(pathname)),
+      ]);
+      logger.info('Clean-up completed successfully.');
+    } catch (error) {
+      logger.error(`Error during clean-up`, error);
+    }
+  }
 }
 
 export function removeRetentionEvents(): void {
