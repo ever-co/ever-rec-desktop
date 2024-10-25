@@ -29,6 +29,8 @@ export class TimeLogEffects {
       ofType(
         timeLogActions.loadTimeLogs,
         screenshotActions.captureSuccess,
+        screenshotActions.stopCaptureSuccess,
+        screenshotActions.startCaptureSuccess,
         datePickerActions.selectRange
       ),
       mergeMap((options) =>
