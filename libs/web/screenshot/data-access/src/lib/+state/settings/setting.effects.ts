@@ -9,7 +9,7 @@ import { settingScreenCaptureActions } from './setting.actions';
 
 @Injectable()
 export class SettingScreenCaptureEffects {
-  private key = '_screenCaptureConfiguration';
+  private key = '_screen_capture_config';
 
   loadSettings$ = createEffect(() => {
     return this.actions$.pipe(

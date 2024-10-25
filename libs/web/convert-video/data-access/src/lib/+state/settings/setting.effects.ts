@@ -8,7 +8,7 @@ import { settingActions } from './setting.actions';
 
 @Injectable()
 export class SettingEffects {
-  private key = '_videoConfiguration';
+  private key = '_video_config';
 
   loadSettings$ = createEffect(() => {
     return this.actions$.pipe(

@@ -15,7 +15,7 @@ import { IStorageState } from './storage-setting.reducer';
 
 @Injectable()
 export class SettingStorageEffects {
-  private key = '_storageRetention';
+  private key = '_storage_retention';
 
   loadSettings$ = createEffect(() => {
     return this.actions$.pipe(
