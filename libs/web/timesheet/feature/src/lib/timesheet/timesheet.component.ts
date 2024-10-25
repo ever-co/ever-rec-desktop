@@ -62,7 +62,6 @@ export class TimesheetComponent implements OnInit, OnDestroy {
           this.count = state.count;
           this.dataSource.data = state.timeLogs;
           this.loading = state.loading;
-          console.log(state);
         }),
         takeUntil(this.destroy$)
       )
