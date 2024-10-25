@@ -1,5 +1,6 @@
-<div class="mat-elevation-z0 p-4 bg-white rounded-lg mt-6">
-  <div class="overflow-x-auto max-w-full rounded-lg">
+<div class="mat-elevation-z0 p-4 bg-white rounded-lg mt-4">
+  <div class="overflow-x-auto h-96 max-w-full rounded-lg">
+    @if(dataSource.data.length){
     <table
       mat-table
       [dataSource]="dataSource"
@@ -16,7 +17,11 @@
         >
           Start
         </th>
-        <td mat-cell *matCellDef="let log" class="px-4 py-2">
+        <td
+          mat-cell
+          *matCellDef="let log"
+          class="px-4 py-2 truncate md:table-cell"
+        >
           {{ log.start | date : 'short' }}
         </td>
       </ng-container>
@@ -31,8 +36,14 @@
         >
           End
         </th>
-        <td mat-cell *matCellDef="let log" class="px-4 py-2 md:table-cell">
+        <td
+          mat-cell
+          *matCellDef="let log"
+          class="px-4 py-2 truncate md:table-cell"
+        >
+          @if(log.end ) {
           {{ log.end | date : 'short' }}
+          }@else { Now }
         </td>
       </ng-container>
 
@@ -63,19 +74,20 @@
         </th>
         <td mat-cell *matCellDef="let log" class="px-4 py-2 lg:table-cell">
           <div class="flex items-center justify-center">
-          @if(log.type === 'tracked') {
-            <span class="bg-green-500 text-white font-medium rounded-lg p-1">{{ log.type | titlecase }}</span>
-          }
-
-          @if(log.type === 'manual') {
-            <span class="bg-blue-500 text-white font-medium rounded-lg p-1">{{ log.type | titlecase }}</span>
-          }
-
-          @if(log.type === 'idle') {
-            <span class="bg-red-500 text-white font-medium rounded-lg p-1">{{ log.type | titlecase }}</span>
-          }
-        </div>
-
+            @if(log.type === 'tracked') {
+            <span class="bg-green-500 text-white font-medium rounded-lg p-1">{{
+              log.type | titlecase
+            }}</span>
+            } @if(log.type === 'manual') {
+            <span class="bg-blue-500 text-white font-medium rounded-lg p-1">{{
+              log.type | titlecase
+            }}</span>
+            } @if(log.type === 'idle') {
+            <span class="bg-red-500 text-white font-medium rounded-lg p-1">{{
+              log.type | titlecase
+            }}</span>
+            }
+          </div>
         </td>
       </ng-container>
 
@@ -125,6 +137,9 @@
         class="hover:bg-gray-100"
       ></tr>
     </table>
+    }@else {
+    <lib-no-data message="No timesheet available"></lib-no-data>
+    }
   </div>
 
   <!-- Paginator -->
@@ -140,11 +155,12 @@
   </div>
 
   <!-- Loading Spinner -->
-  <div class="flex justify-center mt-4">
+  @if (loading) {
+  <div class="flex justify-center w-full mt-4">
     <mat-progress-spinner
-      *ngIf="loading"
       mode="indeterminate"
       class="text-blue-500"
     ></mat-progress-spinner>
   </div>
+  }
 </div>

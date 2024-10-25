@@ -6,7 +6,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { selectDatePickerState } from '@ever-co/shared-components';
+import { NoDataComponent, selectDatePickerState } from '@ever-co/shared-components';
 import { HumanizePipe } from '@ever-co/shared-service';
 import { IPaginationOptions, IRange, ITimeLog } from '@ever-co/shared-utils';
 import {
@@ -27,7 +27,8 @@ import { Subject, takeUntil, tap } from 'rxjs';
     MatIconModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-    HumanizePipe
+    HumanizePipe,
+    NoDataComponent
   ],
   templateUrl: './timesheet.component.html',
   styleUrl: './timesheet.component.scss',
@@ -93,9 +94,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   }
 
   public onPaginateChange(event: any) {
-    if (this.hasNext) {
-      this.loadTimeLogs(event.pageIndex, event.pageSize);
-    }
+    this.loadTimeLogs(event.pageIndex, event.pageSize);
   }
 
   ngOnDestroy(): void {

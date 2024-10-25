@@ -41,11 +41,7 @@ export const reducer = createReducer(
     ...state,
     count,
     hasNext,
-    timeLogs: [
-      ...new Map(
-        [...state.timeLogs, ...data].map((item) => [item.id, item])
-      ).values(),
-    ],
+    timeLogs: data,
     loading: false,
     error: '',
   })),
