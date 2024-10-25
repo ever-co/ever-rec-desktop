@@ -47,7 +47,6 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   public pageSize = 10;
   public count = 0;
   private destroy$ = new Subject<void>();
-  private hasNext = false;
   private range!: IRange;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -60,7 +59,6 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       .select(selectTimeLogState)
       .pipe(
         tap((state) => {
-          this.hasNext = state.hasNext;
           this.count = state.count;
           this.dataSource.data = state.timeLogs;
           this.loading = state.loading;
