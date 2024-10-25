@@ -10,15 +10,14 @@ import {
   ScreenshotStatisticComponent,
 } from '@ever-co/screenshot-feature';
 import { NoDataComponent } from '@ever-co/shared-components';
-import { HumanizePipe, selectDatePickerState } from '@ever-co/shared-service';
-import { IRange } from '@ever-co/shared-utils';
+import { HumanizeDateRangePipe, HumanizePipe, selectDatePickerState } from '@ever-co/shared-service';
+import { IRange, ITimeLogStatistics } from '@ever-co/shared-utils';
 import {
   selectTimeLogState,
   timeLogActions,
 } from '@ever-co/timesheet-data-access';
 import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
-import { HumanizeDateRangePipe } from '../../../../../shared/service/src/lib/pipes/humanize-date-range.pipe';
 
 @Component({
   selector: 'lib-dashboard',
@@ -56,9 +55,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  public get range$(): Observable<number> {
+  public get statistics$(): Observable<ITimeLogStatistics> {
     return this.store.select(selectTimeLogState).pipe(
-      map((state) => state.statistics.range),
+      map((state) => state.statistics),
       takeUntil(this.destroy$)
     );
   }

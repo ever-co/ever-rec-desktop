@@ -3,11 +3,7 @@ import { screenshotActions } from '@ever-co/screenshot-data-access';
 import { IPaginationOptions } from '@ever-co/shared-utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { from, of } from 'rxjs';
-import {
-  catchError,
-  map,
-  mergeMap
-} from 'rxjs/operators';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 import { TimeLogElectronService } from '../services/time-log-electron.service';
 import { timeLogActions } from './time-log.actions';
 
@@ -32,7 +28,7 @@ export class TimeLogEffects {
       ofType(
         timeLogActions.loadTimeLogs,
         screenshotActions.stopCaptureSuccess,
-        screenshotActions.startCaptureSuccess,
+        screenshotActions.startCaptureSuccess
       ),
       mergeMap((options) =>
         from(
@@ -81,7 +77,10 @@ export class TimeLogEffects {
 
   timeLogStatistics$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(timeLogActions.getTimeLogStatistics),
+      ofType(
+        timeLogActions.getTimeLogStatistics,
+        screenshotActions.captureSuccess
+      ),
       mergeMap((options) =>
         from(this.timeLogElectronService.getLogStatistics(options)).pipe(
           map((response) =>
