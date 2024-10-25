@@ -2628,6 +2628,60 @@
     lodash "^4.17.15"
     tmp-promise "^3.0.2"
 
+"@miniben90/x-win-darwin-arm64@1.10.3":
+  version "1.10.3"
+  resolved "https://registry.yarnpkg.com/@miniben90/x-win-darwin-arm64/-/x-win-darwin-arm64-1.10.3.tgz#3f45118df49e4317897d3369934dfa989b14da40"
+  integrity sha512-L0iaj42g+NxkBB2Ls1utJgBWO12YP0hlRBBvH9YiPBpDMHDtfD35mGDRRhNoZ/q6HpEj7JcNEPC18zL4ykyuzQ==
+
+"@miniben90/x-win-darwin-universal@1.10.3":
+  version "1.10.3"
+  resolved "https://registry.yarnpkg.com/@miniben90/x-win-darwin-universal/-/x-win-darwin-universal-1.10.3.tgz#2b1432ce3dcc2662edf0a9963221ee8998e913c3"
+  integrity sha512-AzyY1RdBr2abrqXh800Y+49tba05bcjLdgLRXX7H/xwH671+C1f4k84cdkdP5Y7tu9N5ULbPnChbSnrsgltQGg==
+
+"@miniben90/x-win-darwin-x64@1.10.3":
+  version "1.10.3"
+  resolved "https://registry.yarnpkg.com/@miniben90/x-win-darwin-x64/-/x-win-darwin-x64-1.10.3.tgz#dd26ed98cb2d16da449d4fc94ccdbfe70a27a3f8"
+  integrity sha512-5kW2sGBzKzqCSIkSOtfnOEBpXKbxTwhCcqKAyXvAlEk2hn5olGKl9ENzgZctv0iK5qrWpVVxBANo5E0e3zHPLQ==
+
+"@miniben90/x-win-linux-x64-gnu@1.10.3":
+  version "1.10.3"
+  resolved "https://registry.yarnpkg.com/@miniben90/x-win-linux-x64-gnu/-/x-win-linux-x64-gnu-1.10.3.tgz#87cc1d9cbf34dc9916c4c6ceaf67a8d97bbc3afc"
+  integrity sha512-3/VOB18SQaLYDbErtLgGHAzteH8pvAqyEw1F/b+leII1m0njA27tsxEel276RbM9p+A+KBPW2yLfqrGJnpllPQ==
+
+"@miniben90/x-win-linux-x64-musl@1.10.3":
+  version "1.10.3"
+  resolved "https://registry.yarnpkg.com/@miniben90/x-win-linux-x64-musl/-/x-win-linux-x64-musl-1.10.3.tgz#93f550f9cc9cac1269b174cc633188b4862123b4"
+  integrity sha512-ErV8RvQ9CC5wxffR78thGtEyD43l4bm++D16ANoAlDJ3HF2K/bM8afzf9fK4nMlnAaxMGd96eetcJGUh1G0Mjw==
+
+"@miniben90/x-win-win32-arm64-msvc@1.10.3":
+  version "1.10.3"
+  resolved "https://registry.yarnpkg.com/@miniben90/x-win-win32-arm64-msvc/-/x-win-win32-arm64-msvc-1.10.3.tgz#10d914b53554fe592cdd80b9c7471976787d7fe3"
+  integrity sha512-83huvCuuSgPffE/XalWxDsPtPwBtJO29BxsHEzMXZG98kakaKMvMZrbDxVxTXDvKmEuGpDjhtSKjd37PfGtUeQ==
+
+"@miniben90/x-win-win32-ia32-msvc@1.10.3":
+  version "1.10.3"
+  resolved "https://registry.yarnpkg.com/@miniben90/x-win-win32-ia32-msvc/-/x-win-win32-ia32-msvc-1.10.3.tgz#493b7f9518f18cd96ccda394e2b95422e5446cab"
+  integrity sha512-HXlgPUeCllmPWm0/gq+Z2Ji2RyGySXkrjrJ4iPU1zHrs0s3k3BXnAduCH0fQm9T/8cXYubJyYE9ux/jaJ34xiw==
+
+"@miniben90/x-win-win32-x64-msvc@1.10.3":
+  version "1.10.3"
+  resolved "https://registry.yarnpkg.com/@miniben90/x-win-win32-x64-msvc/-/x-win-win32-x64-msvc-1.10.3.tgz#aa3b244dfbd4e2d7a61a8bad59393c40e0201d5e"
+  integrity sha512-QTFSl47A+VeqhaEZw0vBErGVsFhu0OcujAyAYkzJp5tRI4W9JUNtnYADBRqmAQDxDlb26aaaGQyPHvfXMqRCKQ==
+
+"@miniben90/x-win@^1.10.3":
+  version "1.10.3"
+  resolved "https://registry.yarnpkg.com/@miniben90/x-win/-/x-win-1.10.3.tgz#5cddf497bbe358e67f1260085f1afb23c5db51cc"
+  integrity sha512-LeR2VvJ4DMbiNBC9yKU0uHd9OnnKceVkzdk2O4YGJZDSW88CtpNAN1ea1TTS9OjvIInj/TQf+ObvMdPfQG5WOg==
+  optionalDependencies:
+    "@miniben90/x-win-darwin-arm64" "1.10.3"
+    "@miniben90/x-win-darwin-universal" "1.10.3"
+    "@miniben90/x-win-darwin-x64" "1.10.3"
+    "@miniben90/x-win-linux-x64-gnu" "1.10.3"
+    "@miniben90/x-win-linux-x64-musl" "1.10.3"
+    "@miniben90/x-win-win32-arm64-msvc" "1.10.3"
+    "@miniben90/x-win-win32-ia32-msvc" "1.10.3"
+    "@miniben90/x-win-win32-x64-msvc" "1.10.3"
+
 "@module-federation/bridge-react-webpack-plugin@0.6.11":
   version "0.6.11"
   resolved "https://registry.yarnpkg.com/@module-federation/bridge-react-webpack-plugin/-/bridge-react-webpack-plugin-0.6.11.tgz#6022239491196238c0d41b6aee66d2737bc3b68e"

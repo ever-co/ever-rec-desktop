@@ -9,15 +9,18 @@ import {
   IScreenCaptureConfig,
   IScreenshot,
   IScreenshotInput,
+  IScreenshotMetadata,
   SCREENSHOT_INTERVAL_DELAY,
   Source,
 } from '@ever-co/shared-utils';
 import { desktopCapturer, ipcMain, IpcMainEvent } from 'electron';
 import { EventManager } from './event.manager';
+import { GetScreenShotMetadataQuery } from './get-screenshot-metadata.query';
 
 // Constants
-const SCREENSHOT_DIR = 'screenshots';
+export const SCREENSHOT_DIR = 'screenshots';
 const logger = new ElectronLogger();
+const metadataQuery = new GetScreenShotMetadataQuery();
 const eventManager = EventManager.getInstance();
 let captureInterval: NodeJS.Timeout | null = null;
 const timeLogService = new TimeLogService();
@@ -56,88 +59,75 @@ async function takeScreenshot(
   sourceType = Source.SCREEN
 ): Promise<IScreenshot | null> {
   try {
-    const [screenSource, windowSource] = await Promise.all([
-      getScreenSource(),
-      getWindowSource(),
-    ]);
+    const sources = await (sourceType === Source.SCREEN
+      ? getScreenSource()
+      : getWindowSource());
+    const metadata = await metadataQuery.execute();
 
-    if (!screenSource && sourceType === Source.SCREEN) {
-      logger.warn('Screen source not found.');
-      return null;
-    }
-
-    if (!windowSource && sourceType === Source.WINDOW) {
-      logger.warn('Screen source not found.');
-      return null;
-    }
-
-    const source = sourceType === Source.SCREEN ? screenSource : windowSource;
-
-    const screenshotBuffer = source.thumbnail.toPNG();
-    const fileName = `screenshot-${Date.now()}.png`;
-    const screenshotPath = await FileManager.write(
-      SCREENSHOT_DIR,
-      fileName,
-      screenshotBuffer
-    );
-
-    const size = await FileManager.fileSize(screenshotPath);
-
-    if (!size) {
-      return null;
-    }
-
-    const screenshot: IScreenshotInput = {
-      pathname: screenshotPath,
-      metadata: {
-        name: windowSource?.name || '',
-        description: getWindowDescription(windowSource),
-        icon: '',
-        size,
-      },
-    };
-
-    if (windowSource?.appIcon && !windowSource.appIcon.isEmpty()) {
-      const iconBuffer = windowSource.appIcon.toPNG();
-      const iconPath = await FileManager.write(
-        SCREENSHOT_DIR,
-        `icon-${fileName}`,
-        iconBuffer
+    if (!sources.length) {
+      logger.warn(
+        `${
+          sourceType === Source.SCREEN ? 'Screen' : 'Window'
+        } sources not found.`
       );
-      screenshot.metadata.icon = iconPath;
+      return null;
     }
 
-    return ScreenshotService.save(screenshot);
+    const screenshotPromises = sources.map((source) =>
+      createScreenshot(source, metadata)
+    );
+    const [screenshot] = await Promise.all(screenshotPromises);
+
+    return screenshot;
   } catch (error) {
-    logger.error('Error taking screenshot:' + error);
+    logger.error(`Error taking screenshot: ${error}`);
     return null;
   }
 }
 
+async function createScreenshot(
+  source: Electron.DesktopCapturerSource,
+  metadata: Omit<IScreenshotMetadata, 'id'>
+): Promise<IScreenshot | null> {
+  const imageBuffer = source.thumbnail.toPNG();
+  const imageName = `screenshot-${Date.now()}.png`;
+  const imagePath = await FileManager.write(
+    SCREENSHOT_DIR,
+    imageName,
+    imageBuffer
+  );
+
+  const imageSize = await FileManager.fileSize(imagePath);
+
+  if (!imageSize) {
+    return null;
+  }
+
+  const screenshotData: IScreenshotInput = {
+    pathname: imagePath,
+    metadata: {
+      ...metadata,
+      size: imageSize,
+    },
+  };
+
+  return ScreenshotService.save(screenshotData);
+}
+
 async function getScreenSource() {
-  const sources = await desktopCapturer.getSources({
+  return desktopCapturer.getSources({
     types: [Source.SCREEN],
     thumbnailSize: getWindowSize(),
     fetchWindowIcons: false,
   });
-
-  return sources[0];
 }
 
 async function getWindowSource() {
-  const windows = await desktopCapturer.getSources({
+  return desktopCapturer.getSources({
     types: [Source.WINDOW],
     thumbnailSize: getWindowSize(),
-    fetchWindowIcons: true,
+    fetchWindowIcons: false,
   });
-
-  return windows[0];
-}
-
-function getWindowDescription(
-  windowSource: Electron.DesktopCapturerSource | undefined
-): string {
-  return windowSource ? windowSource.name : '';
 }
 
 export function removeCaptureScreenEvent(): void {
