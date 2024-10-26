@@ -12,4 +12,11 @@
   .header {
     display: none;
   }
+
+  .main {
+    display: flex;
+    mat-card{
+      min-width: 300px;
+    }
+  }
 }
