@@ -27,7 +27,7 @@ export class SettingEffects {
       ofType(settingActions.update),
       concatMap(({ videoConfig }) =>
         this.localStorageService
-          .setItem<IVideoConfig>(this.key, videoConfig)
+          .setItem<IVideoConfig>(this.key, videoConfig, { merge: true })
           .pipe(
             map(() => settingActions.load()),
             catchError((error) => of(settingActions.failure({ error })))
