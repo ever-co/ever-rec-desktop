@@ -4,11 +4,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {
+  generateVideoActions,
+  selectSettingState,
+} from '@ever-co/convert-video-data-access';
+import {
   screenshotActions,
   selectScreenshotState,
   selectSettingScreenCaptureState,
 } from '@ever-co/screenshot-data-access';
-import { IScreenCaptureConfig } from '@ever-co/shared-utils';
+import { IScreenCaptureConfig, IVideoConfig } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { Observable, Subject, map, takeUntil, tap } from 'rxjs';
 
@@ -23,7 +27,8 @@ export class StartComponent implements OnInit, OnDestroy {
   private readonly store = inject(Store);
   public notCapturing$ = new Observable<boolean>();
   private destroy$ = new Subject<void>();
-  private config!: IScreenCaptureConfig;
+  private screenCaptureConfig!: IScreenCaptureConfig;
+  private videoConfig!: IVideoConfig;
 
   public ngOnInit(): void {
     this.notCapturing$ = this.store.select(selectScreenshotState).pipe(
@@ -33,14 +38,32 @@ export class StartComponent implements OnInit, OnDestroy {
     this.store
       .select(selectSettingScreenCaptureState)
       .pipe(
-        tap(({ screenCaptureConfig }) => (this.config = screenCaptureConfig)),
+        tap(
+          ({ screenCaptureConfig }) =>
+            (this.screenCaptureConfig = screenCaptureConfig)
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+
+    this.store
+      .select(selectSettingState)
+      .pipe(
+        tap(({ videoConfig }) => (this.videoConfig = videoConfig)),
         takeUntil(this.destroy$)
       )
       .subscribe();
   }
 
   public startCapture(): void {
-    this.store.dispatch(screenshotActions.startCapture(this.config));
+    if (this.videoConfig.autoGenerate) {
+      this.store.dispatch(
+        generateVideoActions.autoGenerate({ config: this.videoConfig })
+      );
+    }
+    this.store.dispatch(
+      screenshotActions.startCapture(this.screenCaptureConfig)
+    );
   }
 
   public stopCapture() {

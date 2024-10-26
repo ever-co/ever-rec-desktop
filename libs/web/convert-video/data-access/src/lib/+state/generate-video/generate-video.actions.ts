@@ -1,9 +1,14 @@
-import { IVideo, IVideoConvertPayload } from '@ever-co/shared-utils';
+import {
+  IVideo,
+  IVideoConfig,
+  IVideoConvertPayload,
+} from '@ever-co/shared-utils';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 export const generateVideoActions = createActionGroup({
   source: 'GenerateVideo',
   events: {
+    'Auto Generate': props<{ config: IVideoConfig }>(),
     start: props<IVideoConvertPayload>(),
     'Start Success': emptyProps(),
     cancel: emptyProps(),
@@ -14,6 +19,6 @@ export const generateVideoActions = createActionGroup({
     failure: props<{ error: string }>(),
     'Trigger Error': props<{ error: string }>(),
     'Load Last Video': emptyProps(),
-    'Load Last Video Success': props<{ video: IVideo | null }>()
+    'Load Last Video Success': props<{ video: IVideo | null }>(),
   },
 });
