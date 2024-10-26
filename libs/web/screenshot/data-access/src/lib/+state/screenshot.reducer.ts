@@ -68,7 +68,7 @@ export const reducer = createReducer(
     count: state.count + 1,
     screenshots:
       state.screenshots.length <= 10
-        ? [...state.screenshots, screenshot]
+        ? [screenshot, ...state.screenshots]
         : state.screenshots,
     error: '',
   })),
