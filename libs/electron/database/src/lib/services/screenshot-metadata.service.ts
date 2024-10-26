@@ -5,6 +5,7 @@ import {
   IScreenshotMetadata,
   IScreenshotMetadataStatistic,
 } from '@ever-co/shared-utils';
+import moment from 'moment';
 import { FindManyOptions, FindOneOptions, In } from 'typeorm';
 import { ScreenshotMetadata } from '../entities/screenshot-metadata.entity';
 import { ScreenshotMetadataRepository } from '../repositories/screenshot-metadata.repository';
@@ -65,6 +66,17 @@ export class ScreenshotMetadataService {
       end = currentDay().end,
     } = options;
 
+    const duration = moment(end).diff(start, 'days');
+
+    const prevStart = moment(start)
+      .subtract(duration + 1, 'days')
+      .toISOString();
+    const prevEnd = moment(end)
+      .subtract(duration + 1, 'days')
+      .toISOString();
+
+    console.log({ prevStart, prevEnd });
+
     const query = this.repository
       .createQueryBuilder('metadata')
       .select('metadata.name', 'name')
@@ -82,10 +94,45 @@ export class ScreenshotMetadataService {
 
     const data = await query.getRawMany();
 
+    const trendQuery = this.repository
+      .createQueryBuilder('trend_metadata')
+      .select('trend_metadata.name', 'name')
+      .addSelect('trend_metadata.icon', 'icon')
+      .addSelect('COUNT(trend_metadata.name)', 'count')
+      .addSelect('SUM(COUNT(trend_metadata.id)) OVER()', 'total')
+      .where('trend_metadata.createdAt BETWEEN :prevStart AND :prevEnd', {
+        prevStart,
+        prevEnd,
+      })
+      .groupBy('trend_metadata.name')
+      .orderBy('count', 'DESC')
+      .skip((page - 1) * limit)
+      .take(limit);
+
+    const previousData = await trendQuery.getRawMany();
+
     // Get the total count from the first result (as `total` is calculated per row)
     const count = data.length > 0 ? parseInt(data[0].total, 10) : 0;
     const hasNext = page * limit < count;
 
-    return { data, count, hasNext };
+    // Calculate the trend
+    const trendData = data.map((current) => {
+      const previous = previousData.find((prev) => prev.name === current.name);
+      const previousCount = previous ? Number(previous.count) : 0;
+      const trend =
+        previousCount === 0
+          ? 100
+          : ((Number(current.count) - previousCount) / previousCount) * 100;
+
+      return {
+        name: current.name,
+        icon: current.icon,
+        total: Number(current.total),
+        count: Number(current.count),
+        trend: Math.round(trend * 100) / 100, // Round the trend percentage
+      };
+    });
+
+    return { data: trendData, count, hasNext };
   }
 }
