@@ -1,0 +1,46 @@
+<mat-card
+  class="w-full transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+  appearance="outlined"
+>
+  <mat-card-content class="p-6">
+    <div class="flex items-center justify-between">
+      <div class="space-y-1">
+        <p
+          class="text-sm font-medium text-gray-600 transition-opacity duration-200"
+        >
+          State
+        </p>
+        <h6 class="text-2xl font-bold">
+          @if (capturing$ | async) {
+          <div class="flex items-center space-x-2">
+            <span class="animate-fade-in">Capturing</span>
+            <span class="flex space-x-1">
+              <ng-container *ngTemplateOutlet="loading"></ng-container>
+            </span>
+          </div>
+          } @else if (generating$ | async) {
+          <div class="flex items-center space-x-2">
+            <span class="animate-fade-in">Generating</span>
+            <span class="flex space-x-1">
+              <ng-container *ngTemplateOutlet="loading"></ng-container>
+            </span>
+          </div>
+          } @else {
+          <span class="animate-fade-in text-gray-500">Not Running</span>
+          }
+        </h6>
+      </div>
+      <mat-icon
+        class="h-6 w-6 text-gray-600 transition-all duration-300 hover:text-blue-500 hover:scale-110"
+      >
+        photo_camera
+      </mat-icon>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #loading>
+  <span class="animate-bounce-dot delay-0">.</span>
+  <span class="animate-bounce-dot delay-150">.</span>
+  <span class="animate-bounce-dot delay-300">.</span>
+</ng-template>

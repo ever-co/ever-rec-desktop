@@ -3,115 +3,16 @@
   <!-- Status Cards - Stack on mobile, grid on larger screens -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
     <!-- State Card -->
-    <mat-card
-      class="w-full transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
-      appearance="outlined"
-    >
-      <mat-card-content class="p-6">
-        <div class="flex items-center justify-between">
-          <div class="space-y-1">
-            <p
-              class="text-sm font-medium text-gray-600 transition-opacity duration-200"
-            >
-              State
-            </p>
-            <h6 class="text-2xl font-bold">
-              @if (capturing$ | async) {
-              <div class="flex items-center space-x-2">
-                <span class="animate-fade-in">Capturing</span>
-                <span class="flex space-x-1">
-                  <ng-container *ngTemplateOutlet="loading"></ng-container>
-                </span>
-              </div>
-              } @else if (generating$ | async) {
-              <div class="flex items-center space-x-2">
-                <span class="animate-fade-in">Generating</span>
-                <span class="flex space-x-1">
-                  <ng-container *ngTemplateOutlet="loading"></ng-container>
-                </span>
-              </div>
-              } @else {
-              <span class="animate-fade-in text-gray-500">Not Running</span>
-              }
-            </h6>
-          </div>
-          <mat-icon
-            class="h-6 w-6 text-gray-600 transition-all duration-300 hover:text-blue-500 hover:scale-110"
-          >
-            photo_camera
-          </mat-icon>
-        </div>
-      </mat-card-content>
-    </mat-card>
+    <lib-state></lib-state>
 
     <!-- Videos Card -->
-    <mat-card
-      class="w-full transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
-      appearance="outlined"
-    >
-      <mat-card-content class="p-6">
-        <div class="flex items-center justify-between">
-          <div class="space-y-1">
-            <p class="text-sm font-medium text-gray-600">Videos</p>
-            <h6 class="text-2xl font-bold">{{ videoCount$ | async }}</h6>
-          </div>
-          <mat-icon
-            class="h-6 w-6 text-gray-600 transition-all duration-300 hover:text-blue-500 hover:scale-110"
-            >videocam</mat-icon
-          >
-        </div>
-      </mat-card-content>
-    </mat-card>
+    <lib-video></lib-video>
 
     <!-- Screenshots Card -->
-    <mat-card
-      class="w-full transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
-      appearance="outlined"
-    >
-      <mat-card-content class="p-6">
-        <div class="flex items-center justify-between">
-          <div class="space-y-1">
-            <p class="text-sm font-medium text-gray-600">Screenshots</p>
-            <h6 class="text-2xl font-bold">{{ screenshotCount$ | async }}</h6>
-          </div>
-          <mat-icon
-            class="h-6 w-6 text-gray-600 transition-all duration-300 hover:text-blue-500 hover:scale-110"
-            >photo_library</mat-icon
-          >
-        </div>
-      </mat-card-content>
-    </mat-card>
+    <lib-screenshot></lib-screenshot>
 
-    <!-- Screenshots Card -->
-    <mat-card
-      class="w-full transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
-      appearance="outlined"
-    >
-      <mat-card-content class="p-6">
-        <div class="flex items-center justify-between">
-          <div class="space-y-1 min-w-0">
-            <p class="text-sm font-medium truncate text-gray-600">
-              @if (capturing$ | async) { Today }@else {
-              {{ dateRange$ | async | humanizeDateRange | titlecase }}
-              }
-            </p>
-            <h6 class="text-2xl font-bold">
-              @if ((capturing$ | async )) {
-              {{
-                (statistics$ | async)?.today || 0 | humanize : 's' : 'hh:mm:ss'
-              }}
-              }@else { @if(!(statistics$ | async)?.range) { No work }@else {
-              {{ (statistics$ | async)?.range || 0 | humanize : 's' }}
-              } }
-            </h6>
-          </div>
-          <mat-icon
-            class="h-6 w-6 text-gray-600 transition-all duration-300 hover:text-blue-500 hover:scale-110"
-            >timer</mat-icon
-          >
-        </div>
-      </mat-card-content>
-    </mat-card>
+    <!-- Time Log Statistics Card -->
+    <lib-timelog-stat></lib-timelog-stat>
   </div>
 
   <!-- Content Cards - Stack on mobile, 2 columns on larger screens -->

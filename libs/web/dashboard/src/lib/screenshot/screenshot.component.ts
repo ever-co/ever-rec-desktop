@@ -1,0 +1,49 @@
+import { CommonModule } from '@angular/common';
+import { Component, OnDestroy } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { VideoGalleryComponent } from '@ever-co/convert-video-feature';
+import { selectScreenshotState } from '@ever-co/screenshot-data-access';
+import {
+  ScreenshotGalleryComponent,
+  ScreenshotStatisticComponent,
+} from '@ever-co/screenshot-feature';
+import { NoDataComponent } from '@ever-co/shared-components';
+import { HumanizeDateRangePipe, HumanizePipe } from '@ever-co/shared-service';
+import { Store } from '@ngrx/store';
+import { map, Observable, Subject, takeUntil } from 'rxjs';
+
+@Component({
+  selector: 'lib-screenshot',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatCardModule,
+    NoDataComponent,
+    MatIconModule,
+    ScreenshotGalleryComponent,
+    VideoGalleryComponent,
+    ScreenshotStatisticComponent,
+    HumanizePipe,
+    HumanizeDateRangePipe,
+  ],
+  templateUrl: './screenshot.component.html',
+  styleUrl: './screenshot.component.scss',
+})
+export class ScreenshotComponent implements OnDestroy {
+  private destroy$ = new Subject<void>();
+
+  constructor(private readonly store: Store) {}
+
+  public get screenshotCount$(): Observable<number> {
+    return this.store.select(selectScreenshotState).pipe(
+      map((state) => state.count),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+}

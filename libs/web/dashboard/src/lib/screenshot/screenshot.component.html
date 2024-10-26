@@ -1,0 +1,17 @@
+<mat-card
+  class="w-full transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+  appearance="outlined"
+>
+  <mat-card-content class="p-6">
+    <div class="flex items-center justify-between">
+      <div class="space-y-1">
+        <p class="text-sm font-medium text-gray-600">Screenshots</p>
+        <h6 class="text-2xl font-bold">{{ screenshotCount$ | async }}</h6>
+      </div>
+      <mat-icon
+        class="h-6 w-6 text-gray-600 transition-all duration-300 hover:text-blue-500 hover:scale-110"
+        >photo_library</mat-icon
+      >
+    </div>
+  </mat-card-content>
+</mat-card>
