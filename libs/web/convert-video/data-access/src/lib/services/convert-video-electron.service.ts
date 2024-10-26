@@ -3,7 +3,8 @@ import { ElectronService } from '@ever-co/electron-data-access';
 import {
   Channel,
   IVideo,
-  IVideoConvertPayload
+  IVideoConfig,
+  IVideoConvertPayload,
 } from '@ever-co/shared-utils';
 
 @Injectable({
@@ -37,5 +38,13 @@ export class ConvertVideoElectronService {
     this.electronService.on(Channel.GENERATION_ERROR, (_, error: string) =>
       callback(error)
     );
+  }
+
+  public onAutoGenerate(callback: () => void): void {
+    this.electronService.on(Channel.AUTO_VIDEO_GENERATE, () => callback());
+  }
+
+  public autoGenerate(config: Partial<IVideoConfig>): void {
+    this.electronService.send(Channel.AUTO_VIDEO_GENERATE, config);
   }
 }

@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
+import { screenshotActions } from '@ever-co/screenshot-data-access';
 import { LocalStorageService } from '@ever-co/shared-service';
 import { IVideo } from '@ever-co/shared-utils';
-import { Action } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { of } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
 import { ConvertVideoElectronService } from '../../services/convert-video-electron.service';
+import { selectSettingState } from '../settings/setting.selectors';
 import { generateVideoActions } from './generate-video.actions';
 
 @Injectable()
@@ -80,6 +82,25 @@ export class GenerateVideoEffects {
     )
   );
 
+  onAutoGenerate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(screenshotActions.startCapture),
+      switchMap(() =>
+        this.store.select(selectSettingState).pipe(
+          mergeMap(({ videoConfig }) => {
+            return new Promise<Action<string>>((resolve) => {
+              this.convertVideoElectronService.autoGenerate(videoConfig);
+              this.convertVideoElectronService.onAutoGenerate(() => {
+                resolve(generateVideoActions.start({ config: videoConfig }));
+              });
+            });
+          })
+        )
+      ),
+      catchError((error) => of(generateVideoActions.failure({ error })))
+    )
+  );
+
   onFinish$ = createEffect(() =>
     this.actions$.pipe(
       ofType(generateVideoActions.finish),
@@ -107,6 +128,7 @@ export class GenerateVideoEffects {
   constructor(
     private actions$: Actions,
     private readonly convertVideoElectronService: ConvertVideoElectronService,
-    private readonly storageService: LocalStorageService
+    private readonly storageService: LocalStorageService,
+    private readonly store: Store
   ) {}
 }
