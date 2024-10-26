@@ -25,7 +25,7 @@ export function autoVideoGenerateEvent() {
     }
 
     if (!autoGenerate) {
-      logger.info('Auto-generate is disabled');
+      logger.warn('Auto-generate is disabled');
       return;
     }
 
