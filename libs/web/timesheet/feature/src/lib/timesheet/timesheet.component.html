@@ -22,7 +22,7 @@
           *matCellDef="let log"
           class="px-4 py-2 truncate md:table-cell"
         >
-          {{ log.start | date : 'short' }}
+          {{ log.start | date : 'MMM d, h:mm a' }}
         </td>
       </ng-container>
 
@@ -42,7 +42,7 @@
           class="px-4 py-2 truncate md:table-cell"
         >
           @if(log.end ) {
-          {{ log.end | date : 'short' }}
+          {{ log.end | date : 'MMM d, h:mm a' }}
           }@else { Now }
         </td>
       </ng-container>
