@@ -67,7 +67,6 @@ export class ScreenshotMetadataService {
     } = options;
 
     const duration = moment(end).diff(start, 'days');
-
     const prevStart = moment(start)
       .subtract(duration + 1, 'days')
       .toISOString();
@@ -75,64 +74,51 @@ export class ScreenshotMetadataService {
       .subtract(duration + 1, 'days')
       .toISOString();
 
-    console.log({ prevStart, prevEnd });
+    const fetchStatistics = async (
+      startDate: string | Date,
+      endDate: string | Date
+    ) => {
+      return this.repository
+        .createQueryBuilder('metadata')
+        .select(['metadata.name AS name', 'metadata.icon AS icon'])
+        .addSelect('COUNT(metadata.name)', 'count')
+        .addSelect('SUM(COUNT(metadata.id)) OVER()', 'total')
+        .where('metadata.createdAt BETWEEN :start AND :end', {
+          start: startDate,
+          end: endDate,
+        })
+        .groupBy('metadata.name')
+        .orderBy('count', 'DESC')
+        .skip((page - 1) * limit)
+        .take(limit)
+        .getRawMany();
+    };
 
-    const query = this.repository
-      .createQueryBuilder('metadata')
-      .select('metadata.name', 'name')
-      .addSelect('metadata.icon', 'icon')
-      .addSelect('COUNT(metadata.name)', 'count')
-      .addSelect('SUM(COUNT(metadata.id)) OVER()', 'total')
-      .where('metadata.createdAt BETWEEN :start AND :end', {
-        start,
-        end,
-      })
-      .groupBy('metadata.name')
-      .orderBy('count', 'DESC')
-      .skip((page - 1) * limit)
-      .take(limit);
+    const [currentData, previousData] = await Promise.all([
+      fetchStatistics(start, end),
+      fetchStatistics(prevStart, prevEnd),
+    ]);
 
-    const data = await query.getRawMany();
+    const total =
+      currentData.length > 0 ? parseInt(currentData[0].total, 10) : 0;
+    const hasNext = page * limit < total;
 
-    const trendQuery = this.repository
-      .createQueryBuilder('trend_metadata')
-      .select('trend_metadata.name', 'name')
-      .addSelect('trend_metadata.icon', 'icon')
-      .addSelect('COUNT(trend_metadata.name)', 'count')
-      .addSelect('SUM(COUNT(trend_metadata.id)) OVER()', 'total')
-      .where('trend_metadata.createdAt BETWEEN :prevStart AND :prevEnd', {
-        prevStart,
-        prevEnd,
-      })
-      .groupBy('trend_metadata.name')
-      .orderBy('count', 'DESC')
-      .skip((page - 1) * limit)
-      .take(limit);
-
-    const previousData = await trendQuery.getRawMany();
-
-    // Get the total count from the first result (as `total` is calculated per row)
-    const count = data.length > 0 ? parseInt(data[0].total, 10) : 0;
-    const hasNext = page * limit < count;
-
-    // Calculate the trend
-    const trendData = data.map((current) => {
+    const trendData = currentData.map((current) => {
       const previous = previousData.find((prev) => prev.name === current.name);
       const previousCount = previous ? Number(previous.count) : 0;
-      const trend =
-        previousCount === 0
-          ? 100
-          : ((Number(current.count) - previousCount) / previousCount) * 100;
+      const trend = previousCount
+        ? ((Number(current.count) - previousCount) / previousCount) * 100
+        : 100;
 
       return {
         name: current.name,
         icon: current.icon,
         total: Number(current.total),
         count: Number(current.count),
-        trend: Math.round(trend * 100) / 100, // Round the trend percentage
+        trend: Math.round(trend * 100) / 100,
       };
     });
 
-    return { data: trendData, count, hasNext };
+    return { data: trendData, count: total, hasNext };
   }
 }
