@@ -10,7 +10,7 @@
     <div
       class="overlay flex items-end flex-col gap-2 justify-between text-gray-700 rounded-lg hover:bg-gray-100 transition-colors duration-200"
     >
-      <button [matMenuTriggerFor]="menu" mat-icon-button>
+      <button [libPopover]="menu" mat-icon-button>
         <mat-icon>more_vert</mat-icon>
       </button>
     </div>
@@ -41,42 +41,10 @@
 </mat-card>
 
 <!-- Enhanced Menu -->
-<mat-menu
-  #menu="matMenu"
-  class="min-w-[200px]"
-  [classList]="'rounded-xl shadow-lg'"
->
-  <!-- View Button -->
-  <button
-    mat-menu-item
-    (click)="view()"
-    class="group flex items-center hover:bg-blue-50 transition-colors duration-200"
-  >
-    <mat-icon
-      class="text-gray-500 transition-colors duration-200"
-    >
-      visibility
-    </mat-icon>
-    <span class="text-sm font-medium text-gray-700">
-      View
-    </span>
-  </button>
-
-  <!-- Delete Button -->
-  <button
-    mat-menu-item
-    (click)="delete(screenshot)"
-    class="group flex items-center hover:bg-red-50 transition-colors duration-200"
-  >
-    <mat-icon
-      color="warn"
-      class="group-hover:text-red-600 transition-colors duration-200"
-    >
-      delete
-    </mat-icon>
-    <span class="text-sm font-medium text-gray-700 group-hover:text-red-600">
-      Delete
-    </span>
-  </button>
-</mat-menu>
+<ng-template #menu>
+  <lib-action-button-group
+    [data]="screenshot"
+    [buttons]="actionButtons"
+  ></lib-action-button-group>
+</ng-template>
 }

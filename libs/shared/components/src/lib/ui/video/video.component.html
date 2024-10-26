@@ -16,7 +16,7 @@
     <div
       class="overlay flex items-end flex-col gap-2 justify-between text-gray-700 rounded-lg hover:bg-gray-100 transition-colors duration-200"
     >
-      <button [matMenuTriggerFor]="menu" mat-icon-button>
+      <button [libPopover]="menu" mat-icon-button>
         <mat-icon>more_vert</mat-icon>
       </button>
       <button (click)="fullscreen()" mat-icon-button>
@@ -48,24 +48,10 @@
   </mat-card-content>
   }
 </mat-card>
-<mat-menu #menu="matMenu">
-  <button (click)="view(video)" mat-menu-item>
-    <mat-icon>visibility</mat-icon>
-    <span>View</span>
-  </button>
-  <button
-    class="group flex items-center hover:bg-red-50 transition-colors duration-200"
-    (click)="delete(video)"
-    mat-menu-item
-  >
-    <mat-icon
-      color="warn"
-      class="group-hover:text-red-600 transition-colors duration-200"
-      >delete</mat-icon
-    >
-    <span class="text-sm font-medium text-gray-700 group-hover:text-red-600"
-      >Delete</span
-    >
-  </button>
-</mat-menu>
+<ng-template #menu>
+  <lib-action-button-group
+    [data]="video"
+    [buttons]="actionButtons"
+  ></lib-action-button-group>
+</ng-template>
 }

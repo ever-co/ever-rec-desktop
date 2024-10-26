@@ -5,18 +5,18 @@ import {
   ElementRef,
   Input,
   OnDestroy,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { videoActions } from '@ever-co/convert-video-data-access';
-import { UtcToLocalTimePipe } from '@ever-co/shared-service';
-import { IVideo } from '@ever-co/shared-utils';
+import { PopoverDirective, UtcToLocalTimePipe } from '@ever-co/shared-service';
+import { IActionButton, IVideo } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, fromEvent, Subject, takeUntil, tap } from 'rxjs';
+import { ActionButtonGroupComponent } from '../action-button-group/group/action-button-group.component';
 
 @Component({
   selector: 'lib-video',
@@ -27,7 +27,8 @@ import { BehaviorSubject, fromEvent, Subject, takeUntil, tap } from 'rxjs';
     MatButtonModule,
     MatIconModule,
     UtcToLocalTimePipe,
-    MatMenuModule
+    PopoverDirective,
+    ActionButtonGroupComponent
   ],
   templateUrl: './video.component.html',
   styleUrl: './video.component.scss',
@@ -46,7 +47,22 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private readonly router: Router, private readonly store: Store){}
+  public actionButtons: IActionButton[] = [
+    {
+      icon: 'visibility',
+      label: 'View',
+      variant: 'default',
+      action: this.view.bind(this),
+    },
+    {
+      icon: 'delete',
+      label: 'Delete',
+      variant: 'danger',
+      action: this.delete.bind(this),
+    },
+  ];
+
+  constructor(private readonly router: Router, private readonly store: Store) {}
 
   ngAfterViewInit(): void {
     fromEvent(this.player, 'play')

@@ -3,12 +3,12 @@ import { Component, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
 import { Router, RouterLink } from '@angular/router';
 import { screenshotActions } from '@ever-co/screenshot-data-access';
-import { UtcToLocalTimePipe } from '@ever-co/shared-service';
-import { IScreenshot } from '@ever-co/shared-utils';
+import { PopoverDirective, UtcToLocalTimePipe } from '@ever-co/shared-service';
+import { IActionButton, IScreenshot } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
+import { ActionButtonGroupComponent } from "../action-button-group/group/action-button-group.component";
 
 @Component({
   selector: 'lib-screenshot',
@@ -18,15 +18,30 @@ import { Store } from '@ngrx/store';
     MatCardModule,
     RouterLink,
     UtcToLocalTimePipe,
-    MatMenuModule,
+    PopoverDirective,
     MatIconModule,
     MatButtonModule,
-  ],
+    ActionButtonGroupComponent
+],
   templateUrl: './screenshot.component.html',
   styleUrl: './screenshot.component.scss',
 })
 export class ScreenshotComponent {
   @Input() screenshot!: IScreenshot;
+  public actionButtons: IActionButton[] = [
+    {
+      icon: 'visibility',
+      label: 'View',
+      variant: 'default',
+      action: this.view.bind(this),
+    },
+    {
+      icon: 'delete',
+      label: 'Delete',
+      variant: 'danger',
+      action: this.delete.bind(this),
+    },
+  ];
 
   constructor(private readonly router: Router, private readonly store: Store) {}
 
