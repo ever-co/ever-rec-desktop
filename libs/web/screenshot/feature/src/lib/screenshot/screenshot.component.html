@@ -55,27 +55,10 @@
   </div>
 </div>
 <ng-template #menu>
-  <div class="flex flex-col p-2 rounded-xl bg-gray-50 shadow-lg">
-    <button
-      class="group flex items-center rounded-lg hover:bg-gray-200 p-2 transition-colors duration-200"
-    >
-      <mat-icon class="group-hover:text-gray-600 transition-colors duration-200">copy</mat-icon>
-      <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900">Duplicate</span>
-    </button>
-    <button
-      class="group flex items-center rounded-lg hover:bg-red-50 p-2 transition-colors duration-200"
-      (click)="delete(screenshot)"
-    >
-      <mat-icon
-        color="warn"
-        class="group-hover:text-red-600 transition-colors duration-200"
-        >delete</mat-icon
-      >
-      <span class="text-sm font-medium text-gray-700 group-hover:text-red-600"
-        >Delete</span
-      >
-    </button>
-  </div>
+  <lib-action-button-group
+    [data]="screenshot"
+    [buttons]="actionButtons"
+  ></lib-action-button-group>
 </ng-template>
 }@else {
 <lib-no-data

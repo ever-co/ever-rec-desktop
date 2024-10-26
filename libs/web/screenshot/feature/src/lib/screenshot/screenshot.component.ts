@@ -8,9 +8,17 @@ import {
   screenshotActions,
   ScreenshotElectronService,
 } from '@ever-co/screenshot-data-access';
-import { NoDataComponent, VideoComponent } from '@ever-co/shared-components';
-import { HumanizeBytesPipe, PopoverDirective, UtcToLocalTimePipe } from '@ever-co/shared-service';
-import { IScreenshot } from '@ever-co/shared-utils';
+import {
+  ActionButtonGroupComponent,
+  NoDataComponent,
+  VideoComponent,
+} from '@ever-co/shared-components';
+import {
+  HumanizeBytesPipe,
+  PopoverDirective,
+  UtcToLocalTimePipe,
+} from '@ever-co/shared-service';
+import { IActionButton, IScreenshot } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { concatMap, filter, Observable } from 'rxjs';
 
@@ -26,13 +34,27 @@ import { concatMap, filter, Observable } from 'rxjs';
     MatChipsModule,
     VideoComponent,
     HumanizeBytesPipe,
-    PopoverDirective
+    PopoverDirective,
+    ActionButtonGroupComponent,
   ],
   templateUrl: './screenshot.component.html',
   styleUrl: './screenshot.component.scss',
 })
 export class ScreenshotComponent implements OnInit {
   public screenshot$!: Observable<IScreenshot | null>;
+  public actionButtons: IActionButton[] = [
+    {
+      icon: 'copy',
+      label: 'Duplicate',
+      variant: 'default',
+    },
+    {
+      icon: 'delete',
+      label: 'Delete',
+      variant: 'danger',
+      action: this.delete.bind(this),
+    },
+  ];
   constructor(
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,

@@ -1,0 +1,10 @@
+<button class="w-full" [ngClass]="getButtonClasses()" (click)="onAction()">
+  <mat-icon [ngClass]="getIconClasses()" [color]="getIconColor()">{{
+    button.icon
+  }}</mat-icon>
+  <span
+    class="text-sm font-medium text-gray-700"
+    [ngClass]="getLabelClasses()"
+    >{{ button.label }}</span
+  >
+</button>

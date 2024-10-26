@@ -1,0 +1,9 @@
+<div class="flex flex-col p-2 w-full rounded-xl bg-gray-50 shadow-lg">
+  @for (button of buttons; track button.label) {
+  <lib-action-button
+    [button]="button"
+    (actionTriggered)="onActionTriggered(button)"
+    [data]="data"
+  ></lib-action-button>
+  }
+</div>
