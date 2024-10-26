@@ -18,7 +18,7 @@
           } }
         </h6>
       </div>
-      <button matTooltip="More statistics">
+      <button [libPopover]="statistics" matTooltip="More statistics">
         <mat-icon
           class="h-6 w-6 text-gray-600 transition-all duration-300 hover:text-blue-500 hover:scale-110"
           >timer</mat-icon
@@ -27,3 +27,64 @@
     </div>
   </mat-card-content>
 </mat-card>
+
+<ng-template #statistics>
+  <div
+    class="flex flex-col gap-4 bg-gradient-to-br from-white to-gray-50 shadow-lg p-4 rounded-2xl max-w-sm mx-auto border border-gray-200"
+  >
+    <!-- Today Section -->
+    <div class="flex items-center gap-4">
+      <div
+        class="flex items-center justify-center w-10 h-10 bg-blue-100 rounded-full text-blue-600"
+      >
+        <mat-icon>today</mat-icon>
+      </div>
+      <div>
+        <div class="text-lg font-semibold text-gray-700">Today</div>
+        <div class="text-xl font-bold text-blue-600">
+          {{
+            (statistics$ | async)?.today || 0
+              | humanize : 's' : 'h[h] m[m] s[s]'
+          }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Week Section -->
+    <div class="flex items-center gap-4">
+      <div
+        class="flex items-center justify-center w-10 h-10 bg-indigo-100 rounded-full text-indigo-600"
+      >
+        <mat-icon>date_range</mat-icon>
+      </div>
+      <div>
+        <div class="text-lg font-semibold text-gray-700">Week</div>
+        <div class="text-xl font-bold text-indigo-600">
+          {{
+            (statistics$ | async)?.week || 0 | humanize : 's' : 'h[h] m[m] s[s]'
+          }}
+        </div>
+      </div>
+    </div>
+
+    @if(showMonth$ | async) {
+    <!-- Month Section -->
+    <div class="flex items-center gap-4">
+      <div
+        class="flex items-center justify-center w-10 h-10 bg-purple-100 rounded-full text-purple-600"
+      >
+        <mat-icon>calendar_month</mat-icon>
+      </div>
+      <div>
+        <div class="text-lg font-semibold text-gray-700">Month</div>
+        <div class="text-xl font-bold text-purple-600">
+          {{
+            (statistics$ | async)?.month || 0
+              | humanize : 's' : 'h[h] m[m] s[s]'
+          }}
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</ng-template>

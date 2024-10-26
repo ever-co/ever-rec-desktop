@@ -4,12 +4,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { selectScreenshotState } from '@ever-co/screenshot-data-access';
-import { HumanizeDateRangePipe, HumanizePipe, selectDatePickerState } from '@ever-co/shared-service';
+import { HumanizeDateRangePipe, HumanizePipe, PopoverDirective, selectDatePickerState } from '@ever-co/shared-service';
 import { IRange, ITimeLogStatistics } from '@ever-co/shared-utils';
 import {
   selectTimeLogState,
   timeLogActions,
 } from '@ever-co/timesheet-data-access';
+import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 
@@ -22,7 +23,8 @@ import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
     MatIconModule,
     HumanizePipe,
     HumanizeDateRangePipe,
-    MatTooltipModule
+    MatTooltipModule,
+    PopoverDirective
   ],
   templateUrl: './timelog-stat.component.html',
   styleUrl: './timelog-stat.component.scss',
@@ -63,6 +65,13 @@ export class TimeLogStaComponent implements OnInit, OnDestroy {
   public get capturing$(): Observable<boolean> {
     return this.store.select(selectScreenshotState).pipe(
       map((state) => state.capturing),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  public get showMonth$(): Observable<boolean> {
+    return this.store.select(selectSettingStorageState).pipe(
+      map((state) => state.retention > 7),
       takeUntil(this.destroy$)
     );
   }
