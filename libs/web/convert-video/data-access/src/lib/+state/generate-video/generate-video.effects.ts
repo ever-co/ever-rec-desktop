@@ -3,9 +3,9 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { screenshotActions } from '@ever-co/screenshot-data-access';
 import { LocalStorageService } from '@ever-co/shared-service';
-import { IVideo } from '@ever-co/shared-utils';
+import { IVideo, IVideoConfig } from '@ever-co/shared-utils';
 import { Action, Store } from '@ngrx/store';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
 import { ConvertVideoElectronService } from '../../services/convert-video-electron.service';
 import { selectSettingState } from '../settings/setting.selectors';
@@ -87,19 +87,26 @@ export class GenerateVideoEffects {
       ofType(screenshotActions.startCapture),
       switchMap(() =>
         this.store.select(selectSettingState).pipe(
-          mergeMap(({ videoConfig }) => {
-            return new Promise<Action<string>>((resolve) => {
-              this.convertVideoElectronService.autoGenerate(videoConfig);
-              this.convertVideoElectronService.onAutoGenerate(() => {
-                resolve(generateVideoActions.start({ config: videoConfig }));
-              });
-            });
-          })
+          switchMap(({ videoConfig }) => this.autoGenerateVideo(videoConfig)),
+          catchError((error) => of(generateVideoActions.failure({ error })))
         )
-      ),
-      catchError((error) => of(generateVideoActions.failure({ error })))
+      )
     )
   );
+
+  private autoGenerateVideo(videoConfig: IVideoConfig): Observable<Action> {
+    return new Observable<Action>((observer) => {
+      try {
+        this.convertVideoElectronService.autoGenerate(videoConfig);
+        this.convertVideoElectronService.onAutoGenerate(() => {
+          observer.next(generateVideoActions.start({ config: videoConfig }));
+          observer.complete();
+        });
+      } catch (error) {
+        observer.error(error);
+      }
+    });
+  }
 
   onFinish$ = createEffect(() =>
     this.actions$.pipe(
