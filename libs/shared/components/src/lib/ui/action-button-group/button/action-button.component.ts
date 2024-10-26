@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { IActionButton } from '@ever-co/shared-utils';
 
 @Component({
   selector: 'lib-action-button',
   standalone: true,
-  imports: [CommonModule, MatIconModule],
+  imports: [CommonModule, MatIconModule, MatProgressSpinnerModule],
   templateUrl: './action-button.component.html',
   styleUrl: './action-button.component.scss',
 })
@@ -42,10 +43,21 @@ export class ActionButtonComponent {
 
   public getLabelClasses(): string {
     const variantClasses = {
-      default: 'group-hover:text-gray-900',
+      default: 'group-hover:text-gray-600',
       danger: 'group-hover:text-red-600',
       warning: 'group-hover:text-yellow-600',
       success: 'group-hover:text-green-600',
+    };
+
+    return variantClasses[this.button.variant || 'default'];
+  }
+
+  public getSpinnerColor(): string {
+    const variantClasses = {
+      default: 'gray',
+      danger: 'red',
+      warning: 'rgb(202 138 4)',
+      success: 'green',
     };
 
     return variantClasses[this.button.variant || 'default'];

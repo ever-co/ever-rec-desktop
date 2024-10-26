@@ -1,5 +1,9 @@
-<button class="w-full flex items-center gap-1" [ngClass]="getButtonClasses()" (click)="onAction()">
-  <mat-icon [ngClass]="getIconClasses()" [color]="getIconColor()">{{
+<button
+  class="w-full flex items-center gap-1"
+  [ngClass]="getButtonClasses()"
+  (click)="onAction()"
+>
+  <mat-icon [ngClass]="getIconClasses()">{{
     button.icon
   }}</mat-icon>
   <span
@@ -7,4 +11,13 @@
     [ngClass]="getLabelClasses()"
     >{{ button.label }}</span
   >
+  @if(button.loading | async) {
+  <mat-spinner
+    diameter="16"
+    [ngStyle]="{ stroke: getSpinnerColor() }"
+    [ngClass]="getIconClasses()"
+    [color]="getIconColor()"
+  >
+  </mat-spinner>
+  }
 </button>
