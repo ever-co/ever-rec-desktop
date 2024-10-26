@@ -3,14 +3,13 @@ import { Component, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   screenshotActions,
   ScreenshotElectronService,
 } from '@ever-co/screenshot-data-access';
 import { NoDataComponent, VideoComponent } from '@ever-co/shared-components';
-import { HumanizeBytesPipe, UtcToLocalTimePipe } from '@ever-co/shared-service';
+import { HumanizeBytesPipe, PopoverDirective, UtcToLocalTimePipe } from '@ever-co/shared-service';
 import { IScreenshot } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { concatMap, filter, Observable } from 'rxjs';
@@ -27,7 +26,7 @@ import { concatMap, filter, Observable } from 'rxjs';
     MatChipsModule,
     VideoComponent,
     HumanizeBytesPipe,
-    MatMenuModule,
+    PopoverDirective
   ],
   templateUrl: './screenshot.component.html',
   styleUrl: './screenshot.component.scss',

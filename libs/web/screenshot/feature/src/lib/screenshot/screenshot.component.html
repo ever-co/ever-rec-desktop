@@ -32,7 +32,7 @@
       <div
         class="flex items-end h-fit ml-auto flex-col gap-2 justify-between text-gray-700 rounded-lg hover:bg-gray-100 transition-colors duration-200"
       >
-        <button [matMenuTriggerFor]="menu" mat-icon-button>
+        <button [libPopover]="menu" mat-icon-button>
           <mat-icon>more_vert</mat-icon>
         </button>
       </div>
@@ -54,26 +54,29 @@
     }
   </div>
 </div>
-<mat-menu #menu="matMenu">
-  <button mat-menu-item>
-    <mat-icon>copy</mat-icon>
-    <span>Duplicate</span>
-  </button>
-  <button
-    class="group flex items-center hover:bg-red-50 transition-colors duration-200"
-    (click)="delete(screenshot)"
-    mat-menu-item
-  >
-    <mat-icon
-      color="warn"
-      class="group-hover:text-red-600 transition-colors duration-200"
-      >delete</mat-icon
+<ng-template #menu>
+  <div class="flex flex-col p-2 rounded-xl bg-gray-50 shadow-lg">
+    <button
+      class="group flex items-center rounded-lg hover:bg-gray-200 p-2 transition-colors duration-200"
     >
-    <span class="text-sm font-medium text-gray-700 group-hover:text-red-600"
-      >Delete</span
+      <mat-icon class="group-hover:text-gray-600 transition-colors duration-200">copy</mat-icon>
+      <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900">Duplicate</span>
+    </button>
+    <button
+      class="group flex items-center rounded-lg hover:bg-red-50 p-2 transition-colors duration-200"
+      (click)="delete(screenshot)"
     >
-  </button>
-</mat-menu>
+      <mat-icon
+        color="warn"
+        class="group-hover:text-red-600 transition-colors duration-200"
+        >delete</mat-icon
+      >
+      <span class="text-sm font-medium text-gray-700 group-hover:text-red-600"
+        >Delete</span
+      >
+    </button>
+  </div>
+</ng-template>
 }@else {
 <lib-no-data
   class="min-h-96 flex justify-center items-center"
