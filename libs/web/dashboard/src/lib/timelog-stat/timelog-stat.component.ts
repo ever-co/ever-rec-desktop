@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { selectScreenshotState } from '@ever-co/screenshot-data-access';
 import { HumanizeDateRangePipe, HumanizePipe, selectDatePickerState } from '@ever-co/shared-service';
 import { IRange, ITimeLogStatistics } from '@ever-co/shared-utils';
@@ -20,7 +21,8 @@ import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
     MatCardModule,
     MatIconModule,
     HumanizePipe,
-    HumanizeDateRangePipe
+    HumanizeDateRangePipe,
+    MatTooltipModule
   ],
   templateUrl: './timelog-stat.component.html',
   styleUrl: './timelog-stat.component.scss',
