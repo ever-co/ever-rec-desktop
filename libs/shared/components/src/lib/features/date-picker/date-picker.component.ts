@@ -68,9 +68,9 @@ export class DatePickerComponent implements OnInit, OnDestroy {
       .select(selectDatePickerState)
       .pipe(
         filter(Boolean), // Ensure truthy value
-        tap(({ selectedRange }) => {
-          this.range.patchValue(selectedRange, { emitEvent: false });
-        }), // Don't trigger valueChanges on patch
+        tap(({ selectedRange }) =>
+          this.range.patchValue(selectedRange, { emitEvent: false })
+        ), // Don't trigger valueChanges on patch
         takeUntil(this.destroy$) // Cleanup on destroy
       )
       .subscribe();
@@ -78,7 +78,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
     // Listen for changes and dispatch action
     this.range.valueChanges
       .pipe(
-        map((state) => state as IRange),
+        map((range) => this.rangeAdapter(range as IRange)),
         debounceTime(300), // Debounce to avoid multiple quick changes
         distinctUntilChanged(this.deepComparaison), // Only emit if the value actually changed
         tap((range) =>
@@ -93,6 +93,27 @@ export class DatePickerComponent implements OnInit, OnDestroy {
     return (
       moment(prev.start).isSame(curr.start) && moment(prev.end).isSame(curr.end)
     );
+  }
+
+  public rangeAdapter({ start, end }: IRange): IRange {
+    if (moment(start).isSame(end)) {
+      return {
+        start: moment(start).toISOString(),
+        end: moment(start).endOf('day').toISOString(),
+      };
+    }
+
+    if (end) {
+      const duration = moment(end).diff(moment(start), 'days');
+      return {
+        start: moment(start).toISOString(),
+        end: moment(start).add(duration, 'days').endOf('day').toISOString(),
+      };
+    }
+    return {
+      start: moment(start).toISOString(),
+      end: moment(end).toISOString(),
+    };
   }
 
   public get range$(): Observable<IRange> {
