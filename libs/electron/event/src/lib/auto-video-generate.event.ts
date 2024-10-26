@@ -10,29 +10,38 @@ let interval: NodeJS.Timeout | null = null;
 export function autoVideoGenerateEvent() {
   const logger = new ElectronLogger('Auto video generate events');
 
-  ipcMain.on(
-    Channel.AUTO_VIDEO_GENERATE,
-    (event, { autoGeneration, period }) => {
-      if (interval) {
-        clearInterval(interval);
-        interval = null;
-      }
+  ipcMain.on(Channel.AUTO_VIDEO_GENERATE, (event, { autoGenerate, period }) => {
+    logger.info(
+      'AUTO_VIDEO_GENERATE event received with autoGenerate:',
+      autoGenerate,
+      'and period:',
+      period
+    );
 
-      if (!autoGeneration) {
-        return;
-      }
-
-      logger.info('Event received');
-
-      interval = setInterval(async () => {
-        logger.info('Auto generating videos...');
-        event.reply(Channel.AUTO_VIDEO_GENERATE);
-      }, moment.duration(period, 'minutes').asMilliseconds());
+    if (interval) {
+      logger.info('Clearing existing interval');
+      clearInterval(interval);
+      interval = null;
     }
-  );
+
+    if (!autoGenerate) {
+      logger.info('Auto-generate is disabled');
+      return;
+    }
+
+    logger.info('Setting up new interval for auto video generation');
+
+    interval = setInterval(async () => {
+      logger.info('Auto generating videos...');
+      event.reply(Channel.AUTO_VIDEO_GENERATE);
+    }, moment.duration(period, 'minutes').asMilliseconds());
+  });
 
   ipcMain.on(Channel.STOP_CAPTURE_SCREEN, () => {
+    logger.info('STOP_CAPTURE_SCREEN event received');
+
     if (interval) {
+      logger.info('Clearing interval');
       clearInterval(interval);
       interval = null;
     }
@@ -44,5 +53,5 @@ export function removeAutoVideoGenerateEvent(): void {
     clearInterval(interval);
     interval = null;
   }
-  ipcMain.removeAllListeners(Channel.CLEAN_UP_DATA);
+  ipcMain.removeAllListeners(Channel.AUTO_VIDEO_GENERATE);
 }
