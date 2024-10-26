@@ -40,13 +40,14 @@ export function autoVideoGenerateEvent() {
     }
   );
 
-  ipcMain.on(Channel.STOP_CAPTURE_SCREEN, () => {
+  ipcMain.on(Channel.STOP_CAPTURE_SCREEN, (event) => {
     logger.info('Stop event received');
 
     if (interval) {
       logger.info('Clearing interval');
       clearInterval(interval);
       interval = null;
+      event.sender.send(Channel.AUTO_VIDEO_GENERATE, true);
     }
   });
 }

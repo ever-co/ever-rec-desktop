@@ -40,8 +40,11 @@ export class ConvertVideoElectronService {
     );
   }
 
-  public onAutoGenerate(callback: () => void): void {
-    this.electronService.on(Channel.AUTO_VIDEO_GENERATE, () => callback());
+  public onAutoGenerate(callback: (completed: boolean) => void): void {
+    this.electronService.on(
+      Channel.AUTO_VIDEO_GENERATE,
+      (_, completed = false) => callback(completed)
+    );
   }
 
   public autoGenerate(config: Partial<IVideoConfig>): void {
