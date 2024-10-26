@@ -1,3 +1,4 @@
+import { autoVideoGenerateEvent, removeAutoVideoGenerateEvent } from './auto-video-generate.event';
 import {
   captureScreenEvent,
   removeCaptureScreenEvent,
@@ -23,6 +24,7 @@ export function subscribeEvents() {
   crudVideoEvents();
   crudTimeLogEvents();
   retentionEvents();
+  autoVideoGenerateEvent()
 }
 
 export function unsubscribeEvents() {
@@ -33,4 +35,5 @@ export function unsubscribeEvents() {
   removeCrudVideoEvent();
   removeCrudTimeLogEvent();
   removeRetentionEvents();
+  removeAutoVideoGenerateEvent()
 }

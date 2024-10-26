@@ -29,5 +29,6 @@ export enum Channel {
   'REQUEST_LOG_STATISTICS' = 'request::log::statistics',
   'REQUEST_DELETE_ONE_LOG' = 'request::delete::one::log',
   'REQUEST_ONE_LOG' = 'request::one::log',
-  'CLEAN_UP_DATA' = 'clean::up::data'
+  'CLEAN_UP_DATA' = 'clean::up::data',
+  'AUTO_VIDEO_GENERATE' = 'auto::video::generate'
 }

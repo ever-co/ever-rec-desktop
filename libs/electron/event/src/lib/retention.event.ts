@@ -26,7 +26,7 @@ export function retentionEvents() {
 
     interval = setInterval(async () => {
       await cleanup(retention);
-    }, 1000 * 3600 * 24);
+    }, moment.duration(1, 'day').asMilliseconds());
   });
 
   async function cleanup(retention: number) {
