@@ -38,6 +38,7 @@
     "@ngrx/operators": "^18.0.0",
     "@ngrx/router-store": "18.1.0",
     "@ngrx/store": "18.1.0",
+    "@ngx-popovers/popover": "^18.2.0",
     "@nx/angular": "19.8.3",
     "better-sqlite3": "^9.6.0",
     "electron-log": "5.2.0",
