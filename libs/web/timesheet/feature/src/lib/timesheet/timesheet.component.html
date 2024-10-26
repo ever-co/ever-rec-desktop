@@ -75,17 +75,20 @@
         <td mat-cell *matCellDef="let log" class="px-4 py-2 lg:table-cell">
           <div class="flex items-center justify-center">
             @if(log.type === 'tracked') {
-            <span class="bg-green-100 text-emerald-600 font-medium rounded-lg p-1 pl-2 pr-2">{{
-              log.type | titlecase
-            }}</span>
+            <span
+              class="bg-green-100 text-emerald-600 font-medium rounded-lg p-1 pl-2 pr-2"
+              >{{ log.type | titlecase }}</span
+            >
             } @if(log.type === 'manual') {
-            <span class="bg-blue-100 text-sky-600 font-medium rounded-lg p-1 pl-2 pr-2">{{
-              log.type | titlecase
-            }}</span>
+            <span
+              class="bg-blue-100 text-sky-600 font-medium rounded-lg p-1 pl-2 pr-2"
+              >{{ log.type | titlecase }}</span
+            >
             } @if(log.type === 'idle') {
-            <span class="bg-red-100 text-rose-600 font-medium rounded-lg p-1 pl-2 pr-2">{{
-              log.type | titlecase
-            }}</span>
+            <span
+              class="bg-red-100 text-rose-600 font-medium rounded-lg p-1 pl-2 pr-2"
+              >{{ log.type | titlecase }}</span
+            >
             }
           </div>
         </td>
