@@ -12,7 +12,12 @@
     </div>
     <mat-form-field appearance="outline" class="w-full rounded-xl h-auto">
       <mat-label>Summary</mat-label>
-      <textarea [value]="video.metadata?.summary" #area (input)="onInput(area.value, video)" matInput></textarea>
+      <textarea
+        [value]="video.metadata?.summary"
+        #area
+        (input)="onInput(area.value, video)"
+        matInput
+      ></textarea>
     </mat-form-field>
   </div>
 
@@ -32,7 +37,7 @@
         <div
           class="flex items-end h-fit flex-col ml-auto gap-2 justify-between text-gray-700 rounded-lg hover:bg-gray-100 transition-colors duration-200"
         >
-          <button [matMenuTriggerFor]="menu" mat-icon-button>
+          <button [libPopover]="menu" mat-icon-button>
             <mat-icon>more_vert</mat-icon>
           </button>
         </div>
@@ -93,30 +98,12 @@
     }
   </div>
 </div>
-<mat-menu #menu="matMenu">
-  <button mat-menu-item>
-    <mat-icon>copy</mat-icon>
-    <span>Duplicate</span>
-  </button>
-  <button mat-menu-item>
-    <mat-icon>summarize</mat-icon>
-    <span>Summarize</span>
-  </button>
-  <button
-    class="group flex items-center hover:bg-red-50 transition-colors duration-200"
-    (click)="deleteVideo(video)"
-    mat-menu-item
-  >
-    <mat-icon
-      color="warn"
-      class="group-hover:text-red-600 transition-colors duration-200"
-      >delete</mat-icon
-    >
-    <span class="text-sm font-medium text-gray-700 group-hover:text-red-600"
-      >Delete</span
-    >
-  </button>
-</mat-menu>
+<ng-template #menu>
+  <lib-action-button-group
+    [data]="video"
+    [buttons]="actionButtons"
+  ></lib-action-button-group>
+</ng-template>
 } @else {
 <div class="min-h-96 flex justify-center items-center bg-gray-100 rounded-xl">
   <lib-no-data class="text-gray-700" message="No video available">

@@ -6,16 +6,23 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   selectVideoState,
   videoActions,
 } from '@ever-co/convert-video-data-access';
-import { NoDataComponent, VideoComponent } from '@ever-co/shared-components';
-import { HumanizeBytesPipe, UtcToLocalTimePipe } from '@ever-co/shared-service';
-import { IVideo, IVideoMetadata } from '@ever-co/shared-utils';
+import {
+  ActionButtonGroupComponent,
+  NoDataComponent,
+  VideoComponent,
+} from '@ever-co/shared-components';
+import {
+  HumanizeBytesPipe,
+  PopoverDirective,
+  UtcToLocalTimePipe,
+} from '@ever-co/shared-service';
+import { IActionButton, IVideo, IVideoMetadata } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import {
   concatMap,
@@ -44,9 +51,10 @@ import {
     MatTooltipModule,
     MatIconModule,
     HumanizeBytesPipe,
-    MatMenuModule,
     MatFormFieldModule,
     MatInputModule,
+    PopoverDirective,
+    ActionButtonGroupComponent,
   ],
   templateUrl: './video-detail.component.html',
   styleUrl: './video-detail.component.scss',
@@ -54,6 +62,24 @@ import {
 export class VideoDetailComponent implements OnInit, OnDestroy {
   public video$!: Observable<IVideo | null>;
   private destroy$ = new Subject<void>();
+  public actionButtons: IActionButton[] = [
+    {
+      icon: 'copy',
+      label: 'Duplicate',
+      variant: 'default',
+    },
+    {
+      icon: 'summarize',
+      label: 'Summarize',
+      variant: 'warning',
+    },
+    {
+      icon: 'delete',
+      label: 'Delete',
+      variant: 'danger',
+      action: this.deleteVideo.bind(this),
+    },
+  ];
 
   constructor(
     private readonly router: Router,
