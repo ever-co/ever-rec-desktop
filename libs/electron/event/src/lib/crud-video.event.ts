@@ -8,7 +8,6 @@ import {
   Channel,
   currentDay,
   IPaginationOptions,
-  IRange,
   IVideo
 } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
@@ -58,11 +57,9 @@ export function crudVideoEvents() {
   });
 
   // Get one video
-  ipcMain.handle(Channel.GET_USED_SIZE, (_, options: IRange) => {
-    const { start = currentDay().start, end = currentDay().end } =
-      options || {};
+  ipcMain.handle(Channel.GET_USED_SIZE, () => {
     const metadataService = new MetadataService();
-    return metadataService.getUsedSize({ createdAt: Between(start, end) });
+    return metadataService.getUsedSize();
   });
 
   // Update video metadata
