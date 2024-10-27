@@ -1,7 +1,7 @@
 <div class="w-full relative">
   @if(isMobileView() && (((hideAction$ | async) === false) ||
   actionButtons.length > 1)) {
-  <div class="flex w-full absolute -top-12 justify-end">
+  <div class="flex w-full absolute -top-10 justify-end">
     <button [libPopover]="actions" mat-icon-button>
       <mat-icon>more_vert</mat-icon>
     </button>
