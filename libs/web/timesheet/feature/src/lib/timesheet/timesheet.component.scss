@@ -1,0 +1,6 @@
+.row {
+  cursor: pointer;
+  &.selected-row {
+    @apply bg-indigo-50;
+  }
+}

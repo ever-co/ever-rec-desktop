@@ -60,11 +60,6 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   private selectedRow: ITimeLog | null = null;
   public actionButtons: IActionButton[] = [
     {
-      icon: 'edit',
-      label: 'Edit',
-      variant: 'default',
-    },
-    {
       icon: 'delete',
       label: 'Delete',
       variant: 'danger',
@@ -121,7 +116,8 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     this.loadTimeLogs(event.pageIndex, event.pageSize);
   }
 
-  public select(timeLog: ITimeLog): void {
+  public select(log: ITimeLog): void {
+    const timeLog = (this.selectedRow?.id === log.id ? null : log) as ITimeLog;
     this.store.dispatch(timeLogActions.loadTimeLogSuccess({ timeLog }));
   }
 
