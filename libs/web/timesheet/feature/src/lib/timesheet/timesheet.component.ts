@@ -50,6 +50,7 @@ import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 })
 export class TimesheetComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = [
+    'createdAt',
     'start',
     'end',
     'duration',

@@ -21,6 +21,24 @@
         class="min-w-full rounded-lg bg-gray-50"
         (matSortChange)="sortChange()"
       >
+       <!-- CreatedAt Column -->
+       <ng-container matColumnDef="createdAt">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="px-4 py-2 text-left text-gray-600"
+        >
+          Date
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let log"
+          class="px-4 py-2 truncate md:table-cell"
+        >
+          {{ log.createdAt | date : 'EEEE, MMM d, y' }}
+        </td>
+      </ng-container>
         <!-- Start Column -->
         <ng-container matColumnDef="start">
           <th
@@ -36,7 +54,7 @@
             *matCellDef="let log"
             class="px-4 py-2 truncate md:table-cell"
           >
-            {{ log.start | date : 'MMM d, h:mm a' }}
+            {{ log.start | date : 'h:mm a' }}
           </td>
         </ng-container>
 
@@ -56,7 +74,7 @@
             class="px-4 py-2 truncate md:table-cell"
           >
             @if(log.end ) {
-            {{ log.end | date : 'MMM d, h:mm a' }}
+            {{ log.end | date : 'h:mm a' }}
             }@else { Not Yet }
           </td>
         </ng-container>
