@@ -23,7 +23,7 @@ export class ScreenshotSubscriber
 
   public async beforeInsert(event: InsertEvent<Screenshot>): Promise<void> {
     this.logger.info('Prepare screenshot');
-    const timeLog = await this.timeLog.running();
+    const timeLog = await this.timeLog.findLatest();
     if (timeLog) {
       this.logger.info('Add time log to screenshot');
       event.entity.timeLog = timeLog;
