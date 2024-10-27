@@ -12,5 +12,6 @@ export interface IVideoConfig {
 
 export interface IVideoConvertPayload {
   filter?: string;
+  timeLogId?: string;
   config: IVideoConfig;
 }

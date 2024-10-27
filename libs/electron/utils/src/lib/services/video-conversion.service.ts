@@ -34,7 +34,23 @@ export class VideoConversionService implements ILoggable {
     private videoService: IVideoService
   ) {}
 
-  async convert() {
+  /**
+   * Start converting screenshots to a video. This function will split the list
+   * of screenshots into batches and create a worker for each batch. Each worker
+   * will convert the screenshots in the batch to a video and save it to the
+   * database. The final video will be created by combining all the videos from
+   * the batches.
+   *
+   * If the video already exists, it will be reused.
+   *
+   * If an error occurs during the conversion process, an error event will be
+   * emitted.
+   *
+   * If the conversion process is canceled, a cancel event will be emitted.
+   *
+   * @returns {Promise<void>}.
+   */
+  public async convert(): Promise<void> {
     this.logger.info('Start converting video...');
 
     const optimized = !!this.config?.optimized;
@@ -224,6 +240,12 @@ export class VideoConversionService implements ILoggable {
     });
   }
 
+  /**
+   * Handles the completion of a worker.
+   * @param index - The index of the completed worker.
+   * @param path - The path of the generated video.
+   * @param totalBatches - The total number of batches.
+   */
   private handleWorkerCompletion(
     index: number,
     path: string,
@@ -238,7 +260,11 @@ export class VideoConversionService implements ILoggable {
     }
   }
 
-  private async combineVideos() {
+  /**
+   * Combines the generated videos into a single video
+   * @returns {Promise<void>}
+   */
+  private async combineVideos(): Promise<void> {
     const finalOutputPath = this.fileManager.createFilePathSync(
       'videos',
       `output-${Date.now()}.mp4`
@@ -321,6 +347,16 @@ export class VideoConversionService implements ILoggable {
     );
   }
 
+  /**
+   * Generates a file path for a video batch output.
+   *
+   * The path is constructed using a directory named 'videos' and a filename
+   * that includes the batch index and the current timestamp to ensure
+   * uniqueness.
+   *
+   * @param {number} batchIndex - The index of the video batch.
+   * @returns {string} The generated file path for the batch output.
+   */
   private getBatchOutputPath(batchIndex: number): string {
     return this.fileManager.createFilePathSync(
       'videos',
