@@ -25,6 +25,7 @@ export class ScreenshotSubscriber
     this.logger.info('Prepare screenshot');
     const timeLog = await this.timeLog.running();
     if (timeLog) {
+      this.logger.info('Add time log to screenshot');
       event.entity.timeLog = timeLog;
     }
   }

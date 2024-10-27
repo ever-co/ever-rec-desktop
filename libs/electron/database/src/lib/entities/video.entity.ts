@@ -26,6 +26,9 @@ export class Video extends Base implements IVideo {
   @Column({ default: false, type: 'boolean' })
   synced?: boolean;
 
+  @Column({ default: false, type: 'boolean' })
+  timeLine?: boolean;
+
   @ManyToOne(() => Video, (video) => video.chunks, {
     nullable: true,
     onDelete: 'CASCADE',
