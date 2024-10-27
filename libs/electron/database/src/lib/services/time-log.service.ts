@@ -5,15 +5,15 @@ import {
   ITimeLog,
   ITimeLogSave,
   ITimeLogUpdate,
+  moment,
 } from '@ever-co/shared-utils';
-import * as moment from 'moment';
 import {
   Between,
   Brackets,
   FindManyOptions,
   FindOneOptions,
   In,
-  IsNull
+  IsNull,
 } from 'typeorm';
 import { TimeLog } from '../entities/time-log.entity';
 import { TimeLogRepository } from '../repositories/time-log.repository';
@@ -141,7 +141,7 @@ export class TimeLogService implements ILoggable {
     return this.findOne({
       order: {
         createdAt: 'DESC',
-      }
+      },
     });
   }
 }

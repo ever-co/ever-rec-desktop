@@ -1,7 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-//@ts-ignore
-import moment from 'moment';
 import { IRange } from './interfaces/pagination.interface';
+import { moment } from './moment.util';
 
 export function currentDay(): IRange {
   return {

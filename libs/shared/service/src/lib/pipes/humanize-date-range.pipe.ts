@@ -1,6 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { IRange } from '@ever-co/shared-utils';
-import moment from 'moment';
+import { IRange, moment } from '@ever-co/shared-utils';
 
 interface DateCheck {
   condition: (start: moment.Moment, end: moment.Moment, reference: moment.Moment) => boolean;

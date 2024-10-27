@@ -1,10 +1,7 @@
 import { TimeLogService } from '@ever-co/electron-database';
 import { ElectronLogger } from '@ever-co/electron-utils';
-import { Channel, IVideoConfig } from '@ever-co/shared-utils';
+import { Channel, IVideoConfig, moment } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-//@ts-ignore
-import moment from 'moment';
 
 let interval: NodeJS.Timeout | null = null;
 

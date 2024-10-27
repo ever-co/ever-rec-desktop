@@ -4,10 +4,8 @@ import {
   IPaginationResponse,
   IScreenshotMetadata,
   IScreenshotMetadataStatistic,
+  moment
 } from '@ever-co/shared-utils';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import moment from 'moment';
 import { FindManyOptions, FindOneOptions, In } from 'typeorm';
 import { ScreenshotMetadata } from '../entities/screenshot-metadata.entity';
 import { ScreenshotMetadataRepository } from '../repositories/screenshot-metadata.repository';

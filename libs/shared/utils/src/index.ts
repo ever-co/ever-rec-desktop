@@ -13,6 +13,7 @@ export * from './lib/interfaces/time-log.interface';
 export * from './lib/interfaces/upload.interface';
 export * from './lib/interfaces/video.config';
 export * from './lib/interfaces/video.interface';
+export * from './lib/moment.util';
 export * from './lib/range.util';
 export * from './lib/time-log.type';
 

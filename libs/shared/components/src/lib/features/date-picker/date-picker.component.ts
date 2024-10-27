@@ -12,7 +12,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { provideNativeDateAdapter } from '@angular/material/core';
+import { DateAdapter, provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {
@@ -20,9 +20,8 @@ import {
   HumanizeDateRangePipe,
   selectDatePickerState,
 } from '@ever-co/shared-service';
-import { IRange } from '@ever-co/shared-utils';
+import { IRange, moment } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
-import moment from 'moment';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -60,7 +59,10 @@ export class DatePickerComponent implements OnInit, OnDestroy {
     end: new FormControl<IRange['end']>(''),
   });
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, private dateAdapter: DateAdapter<Date>) {
+    this.dateAdapter.getFirstDayOfWeek = () =>
+      moment().startOf('week').isoWeekday();
+  }
 
   ngOnInit(): void {
     // Select and patch initial value from store

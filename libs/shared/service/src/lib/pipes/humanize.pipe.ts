@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import moment from 'moment';
+import { moment } from '@ever-co/shared-utils';
 import 'moment-duration-format';
 
 @Pipe({
