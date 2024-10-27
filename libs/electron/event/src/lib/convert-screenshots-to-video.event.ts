@@ -19,6 +19,8 @@ export function convertScreenshotsToVideoEvent() {
   ipcMain.on(
     Channel.START_CONVERT_TO_VIDEO,
     async (event, { filter, config, timeLogId }: IVideoConvertPayload) => {
+      const logger = new ElectronLogger('Screenshots --> Video');
+      const splitter = new BatchSplitter();
       const videoService = new VideoService();
       const timeLogService = new TimeLogService();
 
@@ -31,28 +33,26 @@ export function convertScreenshotsToVideoEvent() {
       }
 
       const screenshots = await ScreenshotService.findAll({
-        ...(filter && {
-          where: {
+        where: {
+          ...(filter && {
             metadata: {
               description: ILike(`%${filter}%`),
             },
-          },
-        }),
-        ...(timeLog && {
-          where: {
+          }),
+          ...(timeLog && {
             timeLog: {
               id: timeLog.id,
             },
-            video: {
-              id: IsNull(),
-            },
+          }),
+          video: {
+            id: IsNull(),
           },
-        }),
+        },
         order: { createdAt: 'ASC' },
       });
 
-      const splitter = new BatchSplitter();
-      const logger = new ElectronLogger('Screenshots --> Video');
+      logger.info(`Find ${screenshots.length} to convert`);
+
       const videoConversionService = new VideoConversionService(
         event,
         screenshots,
