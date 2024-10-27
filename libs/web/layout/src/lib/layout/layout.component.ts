@@ -14,6 +14,7 @@ import { RouterOutlet } from '@angular/router';
 import { breadcrumbActions } from '@ever-co/breadcrumb-data-access';
 import { BreadcrumbComponent } from '@ever-co/breadcrumb-feature';
 import { DatePickerComponent, StartComponent } from '@ever-co/shared-components';
+import { LayoutService } from '@ever-co/shared-service';
 import { SidebarComponent } from '@ever-co/sidebar-feature';
 import { SearchComponent } from '@ever-co/web-search';
 import { Store } from '@ngrx/store';
@@ -49,7 +50,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
   public isMobileView = false;
   constructor(
     private readonly store: Store,
-    private readonly breakpointObserver: BreakpointObserver
+    private readonly breakpointObserver: BreakpointObserver,
+    private readonly layoutService: LayoutService
   ) {}
   public ngOnInit(): void {
     this.store.dispatch(
@@ -63,11 +65,14 @@ export class LayoutComponent implements OnInit, OnDestroy {
       .subscribe((result) => {
         this.isMobileView = result.matches;
         this.isExpanded = !this.isMobileView;
+        this.layoutService.isMobileView.set(this.isMobileView);
+        this.layoutService.isExpanded.set(this.isExpanded);
       });
   }
 
   public toggleSidenav() {
     this.isExpanded = !this.isExpanded;
+    this.layoutService.isExpanded.set(this.isExpanded);
   }
 
   public ngOnDestroy(): void {

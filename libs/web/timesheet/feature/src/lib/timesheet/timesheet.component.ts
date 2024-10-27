@@ -10,7 +10,12 @@ import {
   ActionButtonGroupComponent,
   NoDataComponent,
 } from '@ever-co/shared-components';
-import { HumanizePipe, selectDatePickerState } from '@ever-co/shared-service';
+import {
+  HumanizePipe,
+  LayoutService,
+  PopoverDirective,
+  selectDatePickerState,
+} from '@ever-co/shared-service';
 import {
   IActionButton,
   IPaginationOptions,
@@ -38,6 +43,7 @@ import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
     HumanizePipe,
     NoDataComponent,
     ActionButtonGroupComponent,
+    PopoverDirective,
   ],
   templateUrl: './timesheet.component.html',
   styleUrl: './timesheet.component.scss',
@@ -71,7 +77,10 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private readonly store: Store) {}
+  constructor(
+    private readonly store: Store,
+    private readonly layoutService: LayoutService
+  ) {}
 
   ngOnInit() {
     this.store
@@ -139,6 +148,10 @@ export class TimesheetComponent implements OnInit, OnDestroy {
         return this.selectedRow;
       })
     );
+  }
+
+  public get isMobileView() {
+    return this.layoutService.isMobileView;
   }
 
   public get hideAction$(): Observable<boolean> {

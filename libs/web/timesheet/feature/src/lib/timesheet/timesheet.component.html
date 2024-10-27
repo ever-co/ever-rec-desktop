@@ -1,10 +1,16 @@
 <div class="w-full relative">
-  <div class="flex w-full absolute -top-16 justify-end">
-    <lib-action-button-group
-      class="inline"
-      [buttons]="actionButtons"
-    ></lib-action-button-group>
+  @if(isMobileView() && (((hideAction$ | async) === false) ||
+  actionButtons.length > 1)) {
+  <div class="flex w-full absolute -top-12 justify-end">
+    <button [libPopover]="actions" mat-icon-button>
+      <mat-icon>more_vert</mat-icon>
+    </button>
   </div>
+  }@else {
+  <div class="flex w-full absolute -top-16 justify-end">
+    <ng-container *ngTemplateOutlet="actions"></ng-container>
+  </div>
+  }
   <div class="mat-elevation-z0 p-4 bg-white rounded-lg mt-6">
     <div class="overflow-x-auto h-96 max-w-full rounded-lg">
       @if(dataSource.data.length){
@@ -146,7 +152,7 @@
           mat-row
           *matRowDef="let row; columns: displayedColumns"
           (click)="select(row)"
-          [ngClass]="{'selected-row': row.id === (selectedRow$| async)?.id}"
+          [ngClass]="{ 'selected-row': row.id === (selectedRow$ | async)?.id }"
           class="row hover:bg-gray-200"
         ></tr>
       </table>
@@ -178,3 +184,10 @@
     }
   </div>
 </div>
+
+<ng-template #actions>
+  <lib-action-button-group
+    [ngClass]="{ inline: isMobileView() === false }"
+    [buttons]="actionButtons"
+  ></lib-action-button-group>
+</ng-template>
