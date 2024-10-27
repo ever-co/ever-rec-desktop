@@ -40,10 +40,13 @@ export class ConvertVideoElectronService {
     );
   }
 
-  public onAutoGenerate(callback: (completed: boolean) => void): void {
+  public onAutoGenerate(
+    callback: (trigger: { completed: boolean; timeLogId: string }) => void
+  ): void {
     this.electronService.on(
       Channel.AUTO_VIDEO_GENERATE,
-      (_, completed = false) => callback(completed)
+      (_, { completed = false, timeLogId = null }) =>
+        callback({ completed, timeLogId })
     );
   }
 

@@ -92,12 +92,16 @@ export class GenerateVideoEffects {
     return new Observable<Action>((observer) => {
       try {
         this.convertVideoElectronService.autoGenerate(videoConfig);
-        this.convertVideoElectronService.onAutoGenerate((completed) => {
-          observer.next(generateVideoActions.start({ config: videoConfig }));
-          if (completed) {
-            observer.complete();
+        this.convertVideoElectronService.onAutoGenerate(
+          ({ completed, timeLogId }) => {
+            observer.next(
+              generateVideoActions.start({ timeLogId, config: videoConfig })
+            );
+            if (completed) {
+              observer.complete();
+            }
           }
-        });
+        );
       } catch (error) {
         observer.error(error);
       }

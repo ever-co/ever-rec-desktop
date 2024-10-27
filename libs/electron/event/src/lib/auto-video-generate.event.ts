@@ -1,3 +1,4 @@
+import { TimeLogService } from '@ever-co/electron-database';
 import { ElectronLogger } from '@ever-co/electron-utils';
 import { Channel, IVideoConfig } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
@@ -40,14 +41,21 @@ export function autoVideoGenerateEvent() {
     }
   );
 
-  ipcMain.on(Channel.STOP_CAPTURE_SCREEN, (event) => {
+  ipcMain.on(Channel.STOP_CAPTURE_SCREEN, async (event) => {
     logger.info('Stop event received');
 
     if (interval) {
       logger.info('Clearing interval');
       clearInterval(interval);
       interval = null;
-      event.sender.send(Channel.AUTO_VIDEO_GENERATE, true);
+
+      const timeLogService = new TimeLogService();
+      const timeLog = await timeLogService.findLatest();
+
+      event.sender.send(Channel.AUTO_VIDEO_GENERATE, {
+        completed: true,
+        timeLogId: timeLog?.id ?? null,
+      });
     }
   });
 }

@@ -13,7 +13,7 @@ import {
   FindManyOptions,
   FindOneOptions,
   In,
-  IsNull,
+  IsNull
 } from 'typeorm';
 import { TimeLog } from '../entities/time-log.entity';
 import { TimeLogRepository } from '../repositories/time-log.repository';
@@ -134,5 +134,14 @@ export class TimeLogService implements ILoggable {
       createdAt: Between(start, end),
     });
     return sum || 0;
+  }
+
+  public findLatest(): Promise<ITimeLog | null> {
+    this.logger.info('Get last time log');
+    return this.findOne({
+      order: {
+        createdAt: 'DESC',
+      }
+    });
   }
 }
