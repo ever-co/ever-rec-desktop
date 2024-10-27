@@ -1,7 +1,8 @@
-import { IScreenshot, ITimeLog, TimeLogType } from '@ever-co/shared-utils';
+import { IScreenshot, ITimeLog, IVideo, TimeLogType } from '@ever-co/shared-utils';
 import { Column, Entity, OneToMany, Relation } from 'typeorm';
 import { Base } from './base.entity';
 import { Screenshot } from './screenshot.entity';
+import { Video } from './video.entity';
 
 @Entity('time_log')
 export class TimeLog extends Base implements ITimeLog {
@@ -28,4 +29,10 @@ export class TimeLog extends Base implements ITimeLog {
     onDelete: 'SET NULL',
   })
   screenshots: Relation<IScreenshot[]>;
+
+  @OneToMany(() => Video, (video) => video.timeLog, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  videos: Relation<IVideo[]>;
 }

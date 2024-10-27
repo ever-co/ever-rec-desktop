@@ -1,6 +1,7 @@
 import { FindManyOptions, FindOneOptions } from 'typeorm';
 import { IBase } from './base.interface';
 import type { IScreenshot } from './screenshot.interface';
+import { ITimeLog } from './time-log.interface';
 import { IVideoConfig } from './video.config';
 
 export interface IVideo extends IBase {
@@ -10,6 +11,7 @@ export interface IVideo extends IBase {
   chunks?: IVideo[];
   screenshots?: IScreenshot[];
   metadata?: IVideoMetadata;
+  timeLog?: ITimeLog;
 }
 
 export interface IVideoMetadata extends IBase, Partial<IVideoConfig> {
@@ -24,6 +26,7 @@ export interface IVideoInput extends Partial<IVideoConfig> {
   chunkIds?: string[];
   screenshotIds?: string[];
   metadataId?: string;
+  timeLogId?: string;
 }
 
 export type IVideoMetadataInput = Partial<IVideoMetadata> & {

@@ -1,6 +1,7 @@
 import { TimeLogType } from '../time-log.type';
 import { IBase } from './base.interface';
 import type { IScreenshot } from './screenshot.interface';
+import type { IVideo } from './video.interface';
 
 export interface ITimeLog extends IBase {
   start: Date | string;
@@ -8,12 +9,13 @@ export interface ITimeLog extends IBase {
   duration: number;
   type: TimeLogType;
   screenshots: IScreenshot[];
+  videos: IVideo[];
   running: boolean;
   synced: boolean;
 }
 
 export interface ITimeLogSave {
-  running: boolean,
+  running: boolean;
   start?: Date | string;
 }
 

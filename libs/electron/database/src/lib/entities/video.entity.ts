@@ -1,11 +1,13 @@
 import type {
   IScreenshot,
+  ITimeLog,
   IVideo,
   IVideoMetadata,
 } from '@ever-co/shared-utils';
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -13,6 +15,7 @@ import {
 } from 'typeorm';
 import { Base } from './base.entity';
 import { Screenshot } from './screenshot.entity';
+import { TimeLog } from './time-log.entity';
 import { VideoMetadata } from './video-metadata.entity';
 
 @Entity('video')
@@ -46,4 +49,11 @@ export class Video extends Base implements IVideo {
     onDelete: 'CASCADE',
   })
   metadata?: Relation<IVideoMetadata>;
+
+  @ManyToOne(() => TimeLog, (timeLog) => timeLog.videos, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn()
+  timeLog?: Relation<ITimeLog>;
 }

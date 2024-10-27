@@ -3,12 +3,14 @@ import { FindManyOptions, FindOneOptions, In } from 'typeorm';
 import { Video } from '../entities/video.entity';
 import { VideoRepository } from '../repositories/video.repository';
 import { ScreenshotService } from './screenshot.service';
+import { TimeLogService } from './time-log.service';
 import { VideoMetadataService } from './video-metadata.service';
 
 export class VideoService implements IVideoService {
   private readonly repository = VideoRepository.instance;
   private readonly screenshotService = ScreenshotService;
   private readonly metadataService = new VideoMetadataService();
+  private readonly timeLogService = new TimeLogService();
 
   public async save(input: IVideoInput): Promise<IVideo> {
     if (!input) {
@@ -84,24 +86,36 @@ export class VideoService implements IVideoService {
     Object.assign(existingVideo, input);
 
     // Update relationships
+    // Update parent
     if (input.parentId) {
       existingVideo.parent = await this.repository.findOneBy({
         id: input.parentId,
       });
     }
+
+    // Update chunks
     if (input.chunkIds) {
       existingVideo.chunks = await this.repository.findBy({
         id: In(input.chunkIds),
       });
     }
+
+    // Update screenshots
     if (input.screenshotIds) {
       existingVideo.screenshots = await this.screenshotService.findAll({
         where: { id: In(input.screenshotIds) },
       });
     }
 
+    // Update time Log
+    if (input.timeLogId) {
+      existingVideo.timeLog = await this.timeLogService.findOneById(
+        input.timeLogId
+      );
+    }
+
     // Save the updated video entity
-    await this.repository.save(existingVideo);
+    await this.repository.update(id, existingVideo);
 
     // Return the updated video entity
     return this.findOneById(id);
