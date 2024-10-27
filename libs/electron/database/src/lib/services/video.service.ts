@@ -52,6 +52,17 @@ export class VideoService implements IVideoService {
         video.screenshots = screenshots;
       }
 
+      // Handle time log association
+      if (input.timeLogId) {
+        const timeLog = await this.timeLogService.findOneById(input.timeLogId);
+        if (!timeLog) {
+          throw new Error(
+            `Time Log video with ID ${input.timeLogId} not found`
+          );
+        }
+        video.timeLog = timeLog;
+      }
+
       const metadata = await this.metadataService.save(input);
       video.metadata = metadata;
 

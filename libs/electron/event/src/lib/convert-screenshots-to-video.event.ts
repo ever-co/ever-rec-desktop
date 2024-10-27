@@ -56,7 +56,7 @@ export function convertScreenshotsToVideoEvent() {
       const videoConversionService = new VideoConversionService(
         event,
         screenshots,
-        config,
+        { ...config, timeLogId },
         splitter,
         WorkerFactory,
         FileManager,

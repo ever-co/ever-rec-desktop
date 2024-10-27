@@ -25,7 +25,7 @@ export class VideoConversionService implements ILoggable {
   constructor(
     private event: Electron.IpcMainEvent,
     private screenshots: IScreenshot[],
-    private config: IVideoConfig,
+    private config: IVideoConfig & { timeLogId: string | undefined },
     private splitter: ISplitterStrategy,
     private workerFactory: typeof WorkerFactory,
     private fileManager: typeof FileManager,
@@ -200,6 +200,7 @@ export class VideoConversionService implements ILoggable {
             const chunk = await this.videoService.save({
               pathname,
               size,
+              timeLogId: this.config?.timeLogId,
               duration: batch.length / this.config.frameRate,
               resolution: this.config.resolution,
               frameRate: this.config.frameRate,
@@ -295,7 +296,7 @@ export class VideoConversionService implements ILoggable {
       async (idx, message) => {
         try {
           this.logger.info(`Processing final batch [${idx}]...`);
-          const { frameRate, resolution, codec, batch } = this.config;
+          const { frameRate, resolution, codec, batch, timeLogId } = this.config;
           const screenshotIds = this.screenshots.map(({ id }) => id);
           const chunkScreenshotIds = this.chunks
             .flatMap((chunk) => chunk?.screenshots?.map(({ id }) => id) || [])
@@ -307,6 +308,7 @@ export class VideoConversionService implements ILoggable {
           const size = await this.fileManager.fileSize(pathname);
           const { id } = await this.videoService.save({
             pathname,
+            timeLogId,
             size,
             duration: uniqueScreenshotIds.length / frameRate,
             resolution,
