@@ -138,10 +138,10 @@ export class TimeLogService implements ILoggable {
 
   public findLatest(): Promise<ITimeLog | null> {
     this.logger.info('Get last time log');
-    return this.findOne({
-      order: {
-        createdAt: 'DESC',
-      },
-    });
+    return this.repository
+      .createQueryBuilder('time_log')
+      .orderBy('time_log.createdAt', 'DESC')
+      .take(1)
+      .getOne();
   }
 }
