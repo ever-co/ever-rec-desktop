@@ -57,6 +57,10 @@ export const reducer = createReducer(
   initialState,
   on(screenshotActions.startCapture, (state) => ({
     ...state,
+    capturing: true
+  })),
+  on(screenshotActions.startCaptureSuccess, (state) => ({
+    ...state,
     capturing: true,
   })),
   on(screenshotActions.stopCapture, (state) => ({

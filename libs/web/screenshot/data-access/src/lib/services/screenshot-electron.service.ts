@@ -16,6 +16,7 @@ export class ScreenshotElectronService {
   private electronService = inject(ElectronService);
 
   public onScreenshotCaptured(callback: (screenshot: IScreenshot) => void) {
+    this.electronService.removeAllListeners(Channel.SCREENSHOT_CAPTURED);
     this.electronService.on(
       Channel.SCREENSHOT_CAPTURED,
       (_, screenshot: IScreenshot) => callback(screenshot)

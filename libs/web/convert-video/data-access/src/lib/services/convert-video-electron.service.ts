@@ -22,6 +22,7 @@ export class ConvertVideoElectronService {
   }
 
   public onProgress(callback: (progress: number) => void): void {
+    this.electronService.removeAllListeners(Channel.CONVERSION_IN_PROGRESS);
     this.electronService.on(
       Channel.CONVERSION_IN_PROGRESS,
       (_, progress: number) => callback(progress)
@@ -29,12 +30,14 @@ export class ConvertVideoElectronService {
   }
 
   public onDone(callback: (video: IVideo) => void): void {
+    this.electronService.removeAllListeners(Channel.SCREESHOTS_CONVERTED);
     this.electronService.on(Channel.SCREESHOTS_CONVERTED, (_, video: IVideo) =>
       callback(video)
     );
   }
 
   public onError(callback: (error: string) => void): void {
+    this.electronService.removeAllListeners(Channel.GENERATION_ERROR);
     this.electronService.on(Channel.GENERATION_ERROR, (_, error: string) =>
       callback(error)
     );
@@ -43,6 +46,7 @@ export class ConvertVideoElectronService {
   public onAutoGenerate(
     callback: (trigger: { completed: boolean; timeLogId: string }) => void
   ): void {
+    this.electronService.removeAllListeners(Channel.AUTO_VIDEO_GENERATE);
     this.electronService.on(
       Channel.AUTO_VIDEO_GENERATE,
       (_, { completed = false, timeLogId = null }) =>
