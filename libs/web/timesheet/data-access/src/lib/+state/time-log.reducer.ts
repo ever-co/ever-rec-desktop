@@ -80,6 +80,8 @@ export const reducer = createReducer(
     ...state,
     timeLog: state.timeLog?.id === id ? initialState.timeLog : state.timeLog,
     timeLogs: state.timeLogs.filter((t) => t.id !== id),
+    loading: false,
+    error: '',
   })),
 
   on(timeLogActions.deleteTimeLogFailure, (state, { error }) => ({
