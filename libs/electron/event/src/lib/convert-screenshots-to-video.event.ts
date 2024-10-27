@@ -52,7 +52,7 @@ export function convertScreenshotsToVideoEvent() {
       });
 
       const splitter = new BatchSplitter();
-      const logger = new ElectronLogger();
+      const logger = new ElectronLogger('Screenshots --> Video');
       const videoConversionService = new VideoConversionService(
         event,
         screenshots,

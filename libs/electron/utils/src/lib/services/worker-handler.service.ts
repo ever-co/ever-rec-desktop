@@ -18,7 +18,7 @@ export class WorkerHandler implements ILoggable {
     this.worker.on(
       'message',
       (evt: { status: string; message: string | number }) => {
-        this.logger.info(`Worker ${this.index} send message: ${evt}`);
+        this.logger.info(`Worker ${this.index} send message:`, evt);
         if (evt.status === 'progress') {
           this.event.reply(this.channel.CONVERSION_IN_PROGRESS, evt.message);
         }
@@ -36,7 +36,7 @@ export class WorkerHandler implements ILoggable {
     );
 
     this.worker.on('error', (error: string) => {
-      this.logger.error(`Worker error in batch ${this.index}: ${error}`);
+      this.logger.error(`Worker error in batch ${this.index}:`, error);
       this.onError(error);
     });
 
