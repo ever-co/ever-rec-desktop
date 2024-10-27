@@ -1,3 +1,9 @@
+<div class="flex w-full justify-end">
+  <lib-action-button-group
+    class="inline"
+    [buttons]="actionButtons"
+  ></lib-action-button-group>
+</div>
 <div class="mat-elevation-z0 p-4 bg-white rounded-lg mt-4">
   <div class="overflow-x-auto h-96 max-w-full rounded-lg">
     @if(dataSource.data.length){
@@ -6,6 +12,7 @@
       [dataSource]="dataSource"
       matSort
       class="min-w-full rounded-lg bg-gray-50"
+      (matSortChange)="sortChange()"
     >
       <!-- Start Column -->
       <ng-container matColumnDef="start">
@@ -137,6 +144,8 @@
       <tr
         mat-row
         *matRowDef="let row; columns: displayedColumns"
+        (click)="select(row)"
+        [ngClass]="{'bg-blue-100': row.id === (selectedRow$| async)?.id}"
         class="hover:bg-gray-100"
       ></tr>
     </table>

@@ -6,15 +6,23 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { NoDataComponent } from '@ever-co/shared-components';
+import {
+  ActionButtonGroupComponent,
+  NoDataComponent,
+} from '@ever-co/shared-components';
 import { HumanizePipe, selectDatePickerState } from '@ever-co/shared-service';
-import { IPaginationOptions, IRange, ITimeLog } from '@ever-co/shared-utils';
+import {
+  IActionButton,
+  IPaginationOptions,
+  IRange,
+  ITimeLog,
+} from '@ever-co/shared-utils';
 import {
   selectTimeLogState,
   timeLogActions,
 } from '@ever-co/timesheet-data-access';
 import { Store } from '@ngrx/store';
-import { Subject, takeUntil, tap } from 'rxjs';
+import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'lib-timesheet-feature',
@@ -28,7 +36,8 @@ import { Subject, takeUntil, tap } from 'rxjs';
     MatButtonModule,
     MatProgressSpinnerModule,
     HumanizePipe,
-    NoDataComponent
+    NoDataComponent,
+    ActionButtonGroupComponent,
   ],
   templateUrl: './timesheet.component.html',
   styleUrl: './timesheet.component.scss',
@@ -48,6 +57,21 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   public count = 0;
   private destroy$ = new Subject<void>();
   private range!: IRange;
+  private selectedRow: ITimeLog | null = null;
+  public actionButtons: IActionButton[] = [
+    {
+      icon: 'edit',
+      label: 'Edit',
+      variant: 'default',
+    },
+    {
+      icon: 'delete',
+      label: 'Delete',
+      variant: 'danger',
+      hide: this.hideAction$,
+      action: this.delete.bind(this),
+    },
+  ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -72,7 +96,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       .pipe(
         tap((state) => {
           this.range = state.selectedRange;
-          this.loadTimeLogs(0, this.pageSize)
+          this.loadTimeLogs(0, this.pageSize);
         }),
         takeUntil(this.destroy$)
       )
@@ -80,7 +104,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   }
 
   public loadTimeLogs(pageIndex = 0, pageSize = 10) {
-    const params = {
+    const params: IPaginationOptions = {
       page: pageIndex + 1,
       sortField: this.sort?.active || 'start',
       sortOrder: this.sort?.direction?.toUpperCase() || 'DESC',
@@ -95,6 +119,36 @@ export class TimesheetComponent implements OnInit, OnDestroy {
 
   public onPaginateChange(event: any) {
     this.loadTimeLogs(event.pageIndex, event.pageSize);
+  }
+
+  public select(timeLog: ITimeLog): void {
+    this.store.dispatch(timeLogActions.loadTimeLogSuccess({ timeLog }));
+  }
+
+  public sortChange(): void {
+    this.loadTimeLogs(0, this.pageSize);
+  }
+
+  public delete(): void {
+    if (!this.selectedRow) return;
+    this.store.dispatch(
+      timeLogActions.deleteTimeLog({ timeLog: this.selectedRow })
+    );
+  }
+
+  public get selectedRow$(): Observable<ITimeLog> {
+    return this.store.select(selectTimeLogState).pipe(
+      map((state) => {
+        this.selectedRow = state.timeLog;
+        return this.selectedRow;
+      })
+    );
+  }
+
+  public get hideAction$(): Observable<boolean> {
+    return this.store
+      .select(selectTimeLogState)
+      .pipe(map((state) => (state.timeLog?.id ? false : true)));
   }
 
   ngOnDestroy(): void {
