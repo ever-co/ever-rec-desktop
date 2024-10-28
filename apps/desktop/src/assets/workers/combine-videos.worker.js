@@ -114,7 +114,6 @@ async function combineVideos(
   } = {}
 ) {
   const startTime = Date.now();
-  let lastProgressUpdate = 0;
 
   try {
     // Validate output directory
