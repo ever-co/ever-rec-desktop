@@ -60,29 +60,6 @@ export class TimelineComponent implements OnInit, OnDestroy {
   private mergeIcons(screenshots: IScreenshot[]): AggregatedScreenshot[] {
     const size = screenshots.length;
     if (!size) return [];
-
-    const result: AggregatedScreenshot[] = [];
-    let current: AggregatedScreenshot = {
-      ...screenshots[0],
-      xTimeIcon: 1,
-      width: this.clamp(1920 / size),
-    };
-
-    for (let i = 1; i < size; i++) {
-      const screenshot = screenshots[i];
-      if (current.metadata?.name === screenshot.metadata?.name) {
-        current.xTimeIcon++;
-      } else {
-        result.push(current);
-        current = {
-          ...screenshot,
-          xTimeIcon: 1,
-          width: this.clamp(1920 / size),
-        };
-      }
-    }
-    result.push(current);
-
     return screenshots.map((screenshot) => ({
       ...screenshot,
       xTimeIcon: 1,
