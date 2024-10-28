@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {
   selectGenerateVideoState,
@@ -13,7 +19,11 @@ import { map, Observable, Subject, takeUntil } from 'rxjs';
 import { ProgressComponent } from '../progress/progress.component';
 import { VideoComponent } from '../video/video.component';
 
-type AggregatedScreenshot = IScreenshot & { xTimeIcon: number; width: number };
+type AggregatedScreenshot = IScreenshot & {
+  xTimeIcon: number;
+  width: number;
+  position: number;
+};
 
 @Component({
   selector: 'lib-timeline',
@@ -34,6 +44,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
   public isAvailable$ = new Observable<boolean>();
   public scrollPercentage = 0;
   private destroy$ = new Subject<void>();
+  @ViewChild('timelineContainer')
+  timelineContainer!: ElementRef<HTMLDivElement>;
 
   constructor(private readonly store: Store) {}
 
@@ -57,12 +69,29 @@ export class TimelineComponent implements OnInit, OnDestroy {
     );
   }
 
+  public jumpTo({ position }: AggregatedScreenshot): void {
+    const timeline = this.timelineContainer?.nativeElement;
+    if (!timeline) return;
+    const percentage = position * 100;
+    const width = timeline.scrollWidth - timeline.clientWidth;
+    timeline.scrollTo({
+      left: width * position,
+      behavior: 'smooth',
+    });
+    this.store.dispatch(
+      videoRemoteControlActions.setScrollPercentage({
+        percentage,
+      })
+    );
+  }
+
   private mergeIcons(screenshots: IScreenshot[]): AggregatedScreenshot[] {
     const size = screenshots.length;
     if (!size) return [];
-    return screenshots.map((screenshot) => ({
+    return screenshots.map((screenshot, index) => ({
       ...screenshot,
       xTimeIcon: 1,
+      position: index / size,
       width: this.clamp(1920 / size),
     }));
   }

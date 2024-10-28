@@ -1,4 +1,4 @@
-@if (isAvailable$ | async) {
+<!-- @if (isAvailable$ | async) { -->
 <div class="container">
   <div class="row">
     <div class="image-now">
@@ -6,10 +6,10 @@
     </div>
   </div>
   <div class="row">
-    <div (scroll)="onScroll($event)" class="image-container shadow-inner bg-indigo-50 p-2 rounded-lg">
+    <div (scroll)="onScroll($event)" #timelineContainer class="image-container shadow-inner bg-indigo-50 p-2 rounded-lg">
       @for (screenshot of screenshots$ | async; track screenshot.id; let idx =
       $index, isFirst=$first, isLast=$last) {
-      <div class="line-container">
+      <div (click)="jumpTo(screenshot)" class="line-container">
         @if (screenshot?.metadata?.icon) {
         <div
           [ngStyle]="{ width: screenshot.xTimeIcon * screenshot.width + 'px' }"
@@ -36,7 +36,7 @@
     <div class="cursor" [style.left.%]="scrollPercentage"></div>
   </div>
 </div>
-} @else {
+<!-- } @else {
 <lib-no-data
   class="min-h-96 flex justify-center items-center"
   [message]="
@@ -46,4 +46,4 @@
   "
 ></lib-no-data>
 <lib-progress class="w-full max-w-md"></lib-progress>
-}
+} -->
