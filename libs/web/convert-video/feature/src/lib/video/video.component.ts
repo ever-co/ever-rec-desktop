@@ -1,34 +1,32 @@
 /* eslint-disable @angular-eslint/no-input-rename */
 import { CommonModule } from '@angular/common';
 import {
-    AfterContentInit,
-    AfterViewInit,
-    Component,
-    ElementRef,
-    Input,
-    OnDestroy,
-    OnInit,
-    ViewChild,
-    inject,
+  AfterContentInit,
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  inject,
 } from '@angular/core';
 import {
-    generateVideoActions,
-    selectGenerateVideoState,
-    selectSettingState,
-    selectVideoRemoteControlState,
+  generateVideoActions,
+  selectGenerateVideoState,
+  selectVideoRemoteControlState,
 } from '@ever-co/convert-video-data-access';
-import { selectScreenshotState } from '@ever-co/screenshot-data-access';
+import { IVideo } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import {
-    Observable,
-    Subject,
-    catchError,
-    combineLatest,
-    filter,
-    map,
-    of,
-    takeUntil,
-    tap,
+  Observable,
+  Subject,
+  catchError,
+  filter,
+  map,
+  of,
+  takeUntil,
+  tap,
 } from 'rxjs';
 
 @Component({
@@ -55,6 +53,7 @@ export class VideoComponent
 
   public source$!: Observable<string>;
   public generating$!: Observable<boolean>;
+  private video!: IVideo;
 
   ngOnInit(): void {
     this.setupSourceObservable();
@@ -79,7 +78,10 @@ export class VideoComponent
 
   private setupSourceObservable(): void {
     this.source$ = this.store.select(selectGenerateVideoState).pipe(
-      map((state) => state.video.pathname),
+      map((state) => {
+        this.video = state.video;
+        return state.video.pathname;
+      }),
       catchError((err) => {
         console.error('Error in source observable', err);
         return '';
@@ -100,19 +102,15 @@ export class VideoComponent
   }
 
   private setupRemoteControlObservable(): void {
-    combineLatest([
-      this.store.select(selectVideoRemoteControlState),
-      this.store.select(selectSettingState),
-      this.store.select(selectScreenshotState),
-    ])
+    this.store
+      .select(selectVideoRemoteControlState)
       .pipe(
-        filter(() => this.isControlledRemotely && !!this.videoPlayer),
-        tap(([remoteState, settingState, screenshotState]) => {
-          this.handleRemoteControlState(
-            remoteState,
-            settingState,
-            screenshotState
-          );
+        filter(() => this.isControlledRemotely && !!this.player),
+        tap((remoteState) => {
+          const videoDuration = this.video.metadata?.duration || 0;
+          const scrollDuration =
+            (videoDuration * remoteState.scrollPercentage) / 100;
+          this.player.currentTime = scrollDuration;
         }),
         catchError((err) => {
           console.error('Error in remote control observable', err);
@@ -123,24 +121,16 @@ export class VideoComponent
       .subscribe();
   }
 
-  private handleRemoteControlState(
-    remoteState: any,
-    settingState: any,
-    screenshotState: any
-  ): void {
-    const frameRate = settingState.videoConfig.frameRate;
-    const frameCount = screenshotState.count;
-    const videoDuration = frameCount / frameRate;
-    const scrollDuration = (videoDuration * remoteState.scrollPercentage) / 100;
-    this.videoPlayer.nativeElement.currentTime = scrollDuration;
-  }
-
   private reload(): void {
-    if (this.videoPlayer) {
-      this.videoPlayer.nativeElement.load();
+    if (this.player) {
+      this.player.load();
     } else {
       console.warn('videoPlayer is not ready yet...');
     }
+  }
+
+  private get player(): HTMLVideoElement {
+    return this.videoPlayer?.nativeElement;
   }
 
   ngOnDestroy(): void {

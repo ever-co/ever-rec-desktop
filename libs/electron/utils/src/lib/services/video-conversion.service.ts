@@ -293,10 +293,11 @@ export class VideoConversionService implements ILoggable {
       -1, // no specific index for combine operation
       this.event,
       this.channel,
-      async (idx, message) => {
+      async (idx, message, metadata) => {
         try {
           this.logger.info(`Processing final batch [${idx}]...`);
-          const { frameRate, resolution, codec, batch, timeLogId } = this.config;
+          const { frameRate, resolution, codec, batch, timeLogId } =
+            this.config;
           const screenshotIds = this.screenshots.map(({ id }) => id);
           const chunkScreenshotIds = this.chunks
             .flatMap((chunk) => chunk?.screenshots?.map(({ id }) => id) || [])
@@ -306,11 +307,13 @@ export class VideoConversionService implements ILoggable {
           ];
           const pathname = this.fileManager.encodePath(String(message));
           const size = await this.fileManager.fileSize(pathname);
+          const duration =
+            metadata?.totalDuration || uniqueScreenshotIds.length / frameRate;
           const { id } = await this.videoService.save({
             pathname,
             timeLogId,
             size,
-            duration: uniqueScreenshotIds.length / frameRate,
+            duration,
             resolution,
             frameRate,
             codec,
@@ -321,7 +324,7 @@ export class VideoConversionService implements ILoggable {
 
           const video = await this.videoService.findOne({
             where: { id },
-            relations: ['screenshots', 'screenshots.metadata'],
+            relations: ['screenshots', 'screenshots.metadata', 'metadata'],
             order: {
               screenshots: {
                 createdAt: 'ASC',

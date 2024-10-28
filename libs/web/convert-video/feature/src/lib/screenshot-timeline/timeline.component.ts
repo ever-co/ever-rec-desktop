@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import {
   selectGenerateVideoState,
   videoRemoteControlActions,
@@ -16,7 +17,7 @@ type AggregatedScreenshot = IScreenshot & { xTimeIcon: number; width: number };
 @Component({
   selector: 'lib-timeline',
   standalone: true,
-  imports: [CommonModule, VideoComponent, NoDataComponent],
+  imports: [CommonModule, VideoComponent, NoDataComponent, MatTooltipModule],
   templateUrl: './timeline.component.html',
   styleUrl: './timeline.component.scss',
 })
@@ -24,9 +25,10 @@ export class TimelineComponent implements OnInit, OnDestroy {
   public screenshots$ = new Observable<AggregatedScreenshot[]>();
   public capturing$ = new Observable<boolean>();
   public isAvailable$ = new Observable<boolean>();
-  private destroy$ = new Subject<void>();
-  public store = inject(Store);
   public scrollPercentage = 0;
+  private destroy$ = new Subject<void>();
+
+  constructor(private readonly store: Store) {}
 
   ngOnInit(): void {
     this.capturing$ = this.store.select(selectScreenshotState).pipe(
@@ -50,29 +52,33 @@ export class TimelineComponent implements OnInit, OnDestroy {
     const size = screenshots.length;
     if (!size) return [];
 
-    const result: AggregatedScreenshot[] = [];
-    let current: AggregatedScreenshot = {
-      ...screenshots[0],
+    // const result: AggregatedScreenshot[] = [];
+    // let current: AggregatedScreenshot = {
+    //   ...screenshots[0],
+    //   xTimeIcon: 1,
+    //   width: this.clamp(1920 / size),
+    // };
+
+    // for (let i = 1; i < size; i++) {
+    //   const screenshot = screenshots[i];
+    //   if (current.metadata?.name === screenshot.metadata?.name) {
+    //     current.xTimeIcon++;
+    //   } else {
+    //     result.push(current);
+    //     current = {
+    //       ...screenshot,
+    //       xTimeIcon: 1,
+    //       width: this.clamp(1920 / size),
+    //     };
+    //   }
+    // }
+    // result.push(current);
+
+    return screenshots.map((screenshot) => ({
+      ...screenshot,
       xTimeIcon: 1,
       width: this.clamp(1920 / size),
-    };
-
-    for (let i = 1; i < size; i++) {
-      const screenshot = screenshots[i];
-      if (current.metadata?.name === screenshot.metadata?.name) {
-        current.xTimeIcon++;
-      } else {
-        result.push(current);
-        current = {
-          ...screenshot,
-          xTimeIcon: 1,
-          width: this.clamp(1920 / size),
-        };
-      }
-    }
-    result.push(current);
-
-    return result;
+    }));
   }
 
   private clamp(value: number, min = 64, max = 1920): number {

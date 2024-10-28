@@ -7,7 +7,11 @@ export class WorkerHandler implements ILoggable {
     private index: number,
     private event: Electron.IpcMainEvent,
     private channel: typeof Channel,
-    private onComplete: (index: number, message: string | number) => void,
+    private onComplete: (
+      index: number,
+      message: string | number,
+      metadata?: { totalDuration: number }
+    ) => void,
     private onError: (error: string) => void,
     public logger: ILogger
   ) {
@@ -17,14 +21,20 @@ export class WorkerHandler implements ILoggable {
   private initializeWorker() {
     this.worker.on(
       'message',
-      (evt: { status: string; message: string | number }) => {
+      (evt: {
+        status: string;
+        message: string | number;
+        totalDuration: number;
+      }) => {
         this.logger.info(`Worker ${this.index} send message:`, evt);
         if (evt.status === 'progress') {
           this.event.reply(this.channel.CONVERSION_IN_PROGRESS, evt.message);
         }
         if (evt.status === 'done') {
           this.logger.info(`Worker ${this.index} finished successfully`);
-          this.onComplete(this.index, evt.message);
+          this.onComplete(this.index, evt.message, {
+            totalDuration: evt.totalDuration,
+          });
         }
         if (evt.status === 'error') {
           this.logger.info(
