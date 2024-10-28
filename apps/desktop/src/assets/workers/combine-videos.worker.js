@@ -35,7 +35,7 @@ function sendMessage(status, message, extra = {}) {
       status,
       message,
       timestamp: Date.now(),
-      ...extra
+      ...extra,
     });
   }
 }
@@ -67,27 +67,29 @@ async function validateVideos(videoPaths) {
   let totalFrames = 0;
   let totalDuration = 0;
 
-  await Promise.all(videoPaths.map(async (videoPath) => {
-    try {
-      await fs.access(videoPath);
-      const info = await getVideoInfo(videoPath);
+  await Promise.all(
+    videoPaths.map(async (videoPath) => {
+      try {
+        await fs.access(videoPath);
+        const info = await getVideoInfo(videoPath);
 
-      const stream = info.streams.find(s => s.codec_type === 'video');
-      if (!stream) {
-        throw new Error(`No video stream found in ${videoPath}`);
+        const stream = info.streams.find((s) => s.codec_type === 'video');
+        if (!stream) {
+          throw new Error(`No video stream found in ${videoPath}`);
+        }
+
+        // Calculate frames and duration
+        const duration = parseFloat(info.format.duration);
+        const frameRate = eval(stream.r_frame_rate); // Convert fraction to number
+        const frames = Math.ceil(duration * frameRate);
+
+        totalFrames += frames;
+        totalDuration += duration;
+      } catch (error) {
+        throw new Error(`Error processing ${videoPath}: ${error.message}`);
       }
-
-      // Calculate frames and duration
-      const duration = parseFloat(info.format.duration);
-      const frameRate = eval(stream.r_frame_rate); // Convert fraction to number
-      const frames = Math.ceil(duration * frameRate);
-
-      totalFrames += frames;
-      totalDuration += duration;
-    } catch (error) {
-      throw new Error(`Error processing ${videoPath}: ${error.message}`);
-    }
-  }));
+    })
+  );
 
   return { totalFrames, totalDuration };
 }
@@ -108,12 +110,11 @@ async function combineVideos(
     pixelFormat = 'yuv420p',
     videoBitrate = '0', // Auto
     maxBitrate = null,
-    bufsize = null
+    bufsize = null,
   } = {}
 ) {
   const startTime = Date.now();
   let lastProgressUpdate = 0;
-  const progressUpdateInterval = 100; // ms
 
   try {
     // Validate output directory
@@ -121,13 +122,18 @@ async function combineVideos(
     await fs.mkdir(outputDir, { recursive: true });
 
     // Validate videos and get total frames/duration
-    const { totalFrames, totalDuration } = await validateVideos(batchVideoPaths);
-    sendMessage('info', 'Videos validated successfully', { totalFrames, totalDuration });
+    const { totalFrames, totalDuration } = await validateVideos(
+      batchVideoPaths
+    );
+    sendMessage('info', 'Videos validated successfully', {
+      totalFrames,
+      totalDuration,
+    });
 
     const command = new FfmpegCommand();
 
     // Add input videos
-    batchVideoPaths.forEach(video => {
+    batchVideoPaths.forEach((video) => {
       command.input(video);
     });
 
@@ -139,11 +145,11 @@ async function combineVideos(
         options: {
           n: batchVideoPaths.length,
           v: 1,
-          a: 0
+          a: 0,
         },
         inputs: inputs,
-        outputs: 'output'
-      }
+        outputs: 'output',
+      },
     ];
 
     // Configure output options
@@ -153,7 +159,7 @@ async function combineVideos(
       `-preset ${preset}`,
       `-crf ${crf}`,
       `-pix_fmt ${pixelFormat}`,
-      '-movflags +faststart'
+      '-movflags +faststart',
     ];
 
     // Add bitrate control if specified
@@ -177,35 +183,31 @@ async function combineVideos(
       })
       .on('progress', (progress) => {
         const now = Date.now();
-        // Throttle progress updates
-        if (now - lastProgressUpdate >= progressUpdateInterval) {
-          const percent = (progress.frames * 100) / totalFrames;
-          const elapsedTime = now - startTime;
-          const estimatedTotalTime = (elapsedTime / percent) * 100;
+        // Progress updates
+        const percent = (progress.frames * 100) / totalFrames;
+        const elapsedTime = now - startTime;
+        const estimatedTotalTime = (elapsedTime / percent) * 100;
 
-          sendMessage('progress', percent, {
-            frames: progress.frames,
-            totalFrames,
-            fps: progress.currentFps,
-            timemark: progress.timemark,
-            elapsedTime,
-            estimatedTimeRemaining: estimatedTotalTime - elapsedTime
-          });
-
-          lastProgressUpdate = now;
-        }
+        sendMessage('progress', percent, {
+          frames: progress.frames,
+          totalFrames,
+          fps: progress.currentFps,
+          timemark: progress.timemark,
+          elapsedTime,
+          estimatedTimeRemaining: estimatedTotalTime - elapsedTime,
+        });
       })
       .on('end', () => {
         const duration = Date.now() - startTime;
         sendMessage('done', finalOutputPath, {
           duration,
           totalDuration,
-          processingSpeed: (totalDuration / (duration / 1000)).toFixed(2) + 'x'
+          processingSpeed: (totalDuration / (duration / 1000)).toFixed(2) + 'x',
         });
       })
       .on('error', (error) => {
         sendMessage('error', error.message, {
-          command: command._getArguments().join(' ')
+          command: command._getArguments().join(' '),
         });
       });
 

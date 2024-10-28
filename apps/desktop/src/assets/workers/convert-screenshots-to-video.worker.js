@@ -151,23 +151,30 @@ async function convertImagesToVideo(
       })
       .on('progress', (progress) => {
         const now = Date.now();
-        // Throttle progress updates
-        if (now - lastProgressUpdate >= progressUpdateInterval) {
-          const percent = (progress.frames / totalFrames) * 100;
-          const elapsedTime = now - startTime;
-          const estimatedTotalTime = (elapsedTime / percent) * 100;
+        const elapsedTime = now - startTime;
+        // Progress updates
+        const processedFrames = Math.min(progress.frames, totalFrames);
+        const percent = Math.min(
+          Math.max((processedFrames * 100) / totalFrames, 0),
+          100
+        ).toFixed(2);
+        // Estimate remaining time based on current progress
+        const percentComplete = parseFloat(percent) / 100;
+        const estimatedTotalTime =
+          percentComplete > 0 ? elapsedTime / percentComplete : 0;
+        const estimatedTimeRemaining = Math.max(
+          0,
+          estimatedTotalTime - elapsedTime
+        );
 
-          sendMessage('progress', percent, {
-            frames: progress.frames,
-            totalFrames,
-            fps: progress.currentFps,
-            timemark: progress.timemark,
-            elapsedTime,
-            estimatedTimeRemaining: estimatedTotalTime - elapsedTime,
-          });
-
-          lastProgressUpdate = now;
-        }
+        sendMessage('progress', percent, {
+          frames: progress.frames,
+          totalFrames,
+          fps: progress.currentFps,
+          timemark: progress.timemark,
+          elapsedTime,
+          estimatedTimeRemaining,
+        });
       })
       .on('end', () => {
         const duration = Date.now() - startTime;
