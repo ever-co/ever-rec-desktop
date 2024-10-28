@@ -1,6 +1,8 @@
 @if (generating$ | async; as generating$) {
-<div class="row">
-  <div>Generating...</div>
-  <progress [value]="progress$ | async" max="100"></progress>
-</div>
-}
+    <mat-progress-bar
+      class="w-full max-w-md"
+      [mode]="'determinate'"
+      [value]="progress$ | async"
+      color="primary">
+    </mat-progress-bar>
+  }
