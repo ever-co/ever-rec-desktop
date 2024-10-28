@@ -1,4 +1,4 @@
-<!-- @if (isAvailable$ | async) { -->
+@if (isAvailable$ | async) {
 <div class="container">
   <div class="row">
     <div class="image-now">
@@ -36,7 +36,7 @@
     <div class="cursor" [style.left.%]="percentage$ | async"></div>
   </div>
 </div>
-<!-- } @else {
+} @else {
 <lib-no-data
   class="min-h-96 flex justify-center items-center"
   [message]="
@@ -46,4 +46,4 @@
   "
 ></lib-no-data>
 <lib-progress class="w-full max-w-md"></lib-progress>
-} -->
+}
