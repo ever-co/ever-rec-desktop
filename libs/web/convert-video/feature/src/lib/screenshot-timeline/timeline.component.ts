@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {
+  AfterViewInit,
   Component,
   ElementRef,
   OnDestroy,
@@ -9,6 +10,7 @@ import {
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {
   selectGenerateVideoState,
+  selectVideoRemoteControlState,
   videoRemoteControlActions,
 } from '@ever-co/convert-video-data-access';
 import { selectScreenshotState } from '@ever-co/screenshot-data-access';
@@ -38,16 +40,18 @@ type AggregatedScreenshot = IScreenshot & {
   templateUrl: './timeline.component.html',
   styleUrl: './timeline.component.scss',
 })
-export class TimelineComponent implements OnInit, OnDestroy {
+export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   public screenshots$ = new Observable<AggregatedScreenshot[]>();
   public capturing$ = new Observable<boolean>();
   public isAvailable$ = new Observable<boolean>();
-  public scrollPercentage = 0;
   private destroy$ = new Subject<void>();
   @ViewChild('timelineContainer')
   timelineContainer!: ElementRef<HTMLDivElement>;
 
   constructor(private readonly store: Store) {}
+  ngAfterViewInit(): void {
+    this.jumpTo({ position: 0 } as AggregatedScreenshot);
+  }
 
   ngOnInit(): void {
     this.capturing$ = this.store.select(selectScreenshotState).pipe(
@@ -85,6 +89,12 @@ export class TimelineComponent implements OnInit, OnDestroy {
     );
   }
 
+  public get percentage$(): Observable<number> {
+    return this.store
+      .select(selectVideoRemoteControlState)
+      .pipe(map((state) => state.scrollPercentage));
+  }
+
   private mergeIcons(screenshots: IScreenshot[]): AggregatedScreenshot[] {
     const size = screenshots.length;
     if (!size) return [];
@@ -107,12 +117,11 @@ export class TimelineComponent implements OnInit, OnDestroy {
     return Math.max(min, Math.min(max, value));
   }
 
-  public onScroll(event: any) {
-    const element = event.target;
+  public onScroll(event: Event) {
+    const element = event.target as HTMLElement;
     const width = element.scrollWidth - element.clientWidth;
     const left = element.scrollLeft;
     const percentage = (left / width) * 100 + ((24 - 5) * 100) / width;
-    this.scrollPercentage = percentage;
     this.store.dispatch(
       videoRemoteControlActions.setScrollPercentage({ percentage })
     );
