@@ -7,7 +7,7 @@
     </svg>
   </div>
   }
-  <video #videoPlayer class="video" [controls]="!isControlledRemotely">
+  <video #videoPlayer class="video aspect-video" [controls]="!isControlledRemotely">
     <source [src]="source$ | async" type="video/mp4">
     Your browser does not support HTML video.
   </video>

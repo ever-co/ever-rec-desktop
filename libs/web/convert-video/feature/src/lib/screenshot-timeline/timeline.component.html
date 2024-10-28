@@ -6,7 +6,7 @@
     </div>
   </div>
   <div class="row">
-    <div (scroll)="onScroll($event)" class="image-container">
+    <div (scroll)="onScroll($event)" class="image-container shadow-inner bg-indigo-50 p-2 rounded-lg">
       @for (screenshot of screenshots$ | async; track screenshot.id; let idx =
       $index, isFirst=$first, isLast=$last) {
       <div class="line-container">
