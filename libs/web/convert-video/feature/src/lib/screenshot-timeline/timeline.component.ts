@@ -5,7 +5,7 @@ import {
   ElementRef,
   OnDestroy,
   OnInit,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {
@@ -17,15 +17,15 @@ import { selectScreenshotState } from '@ever-co/screenshot-data-access';
 import { NoDataComponent } from '@ever-co/shared-components';
 import { IScreenshot, moment } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
-import { map, Observable, Subject, take, takeUntil, tap } from 'rxjs';
+import { map, Observable, Subject, take, takeUntil } from 'rxjs';
 import { ProgressComponent } from '../progress/progress.component';
 import { VideoComponent } from '../video/video.component';
 
-type AggregatedScreenshot = IScreenshot & {
+interface AggregatedScreenshot extends IScreenshot {
   xTimeIcon: number;
   width: number;
   position: number;
-};
+}
 
 @Component({
   selector: 'lib-timeline',
@@ -38,38 +38,103 @@ type AggregatedScreenshot = IScreenshot & {
     ProgressComponent,
   ],
   templateUrl: './timeline.component.html',
-  styleUrl: './timeline.component.scss',
+  styleUrls: ['./timeline.component.scss'],
 })
 export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
-  public screenshots$ = new Observable<AggregatedScreenshot[]>();
-  public capturing$ = new Observable<boolean>();
-  public isAvailable$ = new Observable<boolean>();
-  private destroy$ = new Subject<void>();
-  @ViewChild('timelineContainer')
-  timelineContainer!: ElementRef<HTMLDivElement>;
+  public screenshots$!: Observable<AggregatedScreenshot[]>;
+  public capturing$!: Observable<boolean>;
+  public isAvailable$!: Observable<boolean>;
+  public generating$!: Observable<boolean>;
+  public percentage$!: Observable<number>;
 
+  @ViewChild('timelineContainer')
+  private timelineContainer!: ElementRef<HTMLDivElement>;
+
+  private readonly destroy$ = new Subject<void>();
   private width = 48;
   private clientWidth = 1920;
 
   constructor(private readonly store: Store) {}
-  ngAfterViewInit(): void {
+
+  public ngOnInit(): void {
+    this.initializeObservables();
+  }
+
+  public ngAfterViewInit(): void {
+    this.initializeTimeline();
+  }
+
+  public ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  public jumpTo({ position, width }: AggregatedScreenshot): void {
+    const timeline = this.timelineContainer?.nativeElement;
+    if (!timeline) return;
+
+    this.width = width;
+    this.clientWidth = timeline.clientWidth || 1920;
+    const scrollWidth = timeline.scrollWidth - this.clientWidth;
+    if (!scrollWidth) return;
+
+    const percentage = position * 100 + ((width / 2) * 100) / scrollWidth;
+    timeline.scrollTo({
+      left: scrollWidth * position + width / 2 - 5,
+      behavior: 'smooth',
+    });
+
+    this.dispatchScrollPercentage(percentage);
+  }
+
+  public onScroll(event: Event): void {
+    const element = event.target as HTMLElement;
+    this.clientWidth = element.clientWidth;
+    const scrollWidth = element.scrollWidth - this.clientWidth;
+    const scrollLeft = element.scrollLeft;
+    if (!scrollWidth) return;
+
+    const percentage = (scrollLeft + this.width / 2 - 5) * (100 / scrollWidth);
+    this.dispatchScrollPercentage(percentage);
+  }
+
+  private initializeObservables(): void {
+    this.capturing$ = this.store.select(selectScreenshotState).pipe(
+      map((state) => state.capturing || state.loading),
+      takeUntil(this.destroy$)
+    );
+
+    this.isAvailable$ = this.store.select(selectGenerateVideoState).pipe(
+      map(({ video }) => !!video.pathname),
+      takeUntil(this.destroy$)
+    );
+
+    this.generating$ = this.store.select(selectGenerateVideoState).pipe(
+      map((state) => state.generating),
+      takeUntil(this.destroy$)
+    );
+
+    this.percentage$ = this.store
+      .select(selectVideoRemoteControlState)
+      .pipe(map((state) => state.scrollPercentage));
+  }
+
+  private initializeTimeline(): void {
     this.store
       .select(selectGenerateVideoState)
-      .pipe(
-        take(1),
-        tap(({ video }) => {
-          const screenshots = video?.screenshots || [];
-          this.clientWidth =
-            this.timelineContainer?.nativeElement?.clientWidth || 1920;
-          if (screenshots.length)
-            this.jumpTo({
-              position: 0,
-              width: this.clamp(this.clientWidth / screenshots.length),
-            } as AggregatedScreenshot);
-        }),
-        takeUntil(this.destroy$)
-      )
-      .subscribe();
+      .pipe(take(1), takeUntil(this.destroy$))
+      .subscribe(({ video }) => {
+        const screenshots = video?.screenshots || [];
+        this.clientWidth =
+          this.timelineContainer?.nativeElement?.clientWidth || 1920;
+        if (screenshots.length) {
+          this.jumpTo({
+            position: 0,
+            width: this.clamp(this.clientWidth / screenshots.length),
+          } as AggregatedScreenshot);
+        }
+      });
+
     this.screenshots$ = this.store.select(selectGenerateVideoState).pipe(
       map(({ video }) => {
         const screenshots = [...(video?.screenshots || [])].sort((a, b) =>
@@ -79,42 +144,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       }),
       takeUntil(this.destroy$)
     );
-  }
-
-  ngOnInit(): void {
-    this.capturing$ = this.store.select(selectScreenshotState).pipe(
-      map((state) => state.capturing || state.loading),
-      takeUntil(this.destroy$)
-    );
-    this.isAvailable$ = this.store.select(selectGenerateVideoState).pipe(
-      map(({ video }) => !!video.pathname),
-      takeUntil(this.destroy$)
-    );
-  }
-
-  public jumpTo({ position, width }: AggregatedScreenshot): void {
-    const timeline = this.timelineContainer?.nativeElement;
-    if (!timeline) return;
-    this.width = width;
-    this.clientWidth = timeline.clientWidth || 1920;
-    const scrollWidth = timeline.scrollWidth - this.clientWidth;
-    if (!scrollWidth) return;
-    const percentage = position * 100 + ((width / 2) * 100) / scrollWidth;
-    timeline.scrollTo({
-      left: scrollWidth * position + width / 2 - 5,
-      behavior: 'smooth',
-    });
-    this.store.dispatch(
-      videoRemoteControlActions.setScrollPercentage({
-        percentage,
-      })
-    );
-  }
-
-  public get percentage$(): Observable<number> {
-    return this.store
-      .select(selectVideoRemoteControlState)
-      .pipe(map((state) => state.scrollPercentage));
   }
 
   private mergeIcons(screenshots: IScreenshot[]): AggregatedScreenshot[] {
@@ -128,31 +157,13 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     }));
   }
 
-  public get generating$(): Observable<boolean> {
-    return this.store.select(selectGenerateVideoState).pipe(
-      map((state) => state.generating),
-      takeUntil(this.destroy$)
-    );
-  }
-
   private clamp(value: number, min = 48, max = 1920): number {
     return Math.max(min, Math.min(max, value));
   }
 
-  public onScroll(event: Event) {
-    const element = event.target as HTMLElement;
-    this.clientWidth = element.clientWidth;
-    const scrollWidth = element.scrollWidth - this.clientWidth;
-    const scrollLeft = element.scrollLeft;
-    if (!scrollWidth) return;
-    const percentage = (scrollLeft + this.width / 2 - 5) * (100 / scrollWidth);
+  private dispatchScrollPercentage(percentage: number): void {
     this.store.dispatch(
       videoRemoteControlActions.setScrollPercentage({ percentage })
     );
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

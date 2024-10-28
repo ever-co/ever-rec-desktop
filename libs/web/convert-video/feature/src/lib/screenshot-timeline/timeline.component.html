@@ -10,7 +10,7 @@
       @for (screenshot of screenshots$ | async; track screenshot.id; let idx =
       $index, isFirst=$first, isLast=$last) {
       <div (click)="jumpTo(screenshot)" class="line-container">
-        @if (screenshot?.metadata?.icon) {
+        @if (screenshot.metadata?.icon) {
         <div
           [ngStyle]="{ width: screenshot.xTimeIcon * screenshot.width + 'px' }"
           class="line-image"
