@@ -72,10 +72,10 @@ export class TimelineComponent implements OnInit, OnDestroy {
   public jumpTo({ position }: AggregatedScreenshot): void {
     const timeline = this.timelineContainer?.nativeElement;
     if (!timeline) return;
-    const percentage = position * 100;
     const width = timeline.scrollWidth - timeline.clientWidth;
+    const percentage = position * 100 + (48 * 100) / width;
     timeline.scrollTo({
-      left: width * position,
+      left: width * position + 24 - 5,
       behavior: 'smooth',
     });
     this.store.dispatch(
@@ -109,9 +109,9 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
   public onScroll(event: any) {
     const element = event.target;
-    const scrollHeight = element.scrollWidth - element.clientWidth;
-    const scrollTop = element.scrollLeft;
-    const percentage = (scrollTop / scrollHeight) * 100;
+    const width = element.scrollWidth - element.clientWidth;
+    const left = element.scrollLeft;
+    const percentage = (left / width) * 100 + ((24 - 5) * 100) / width;
     this.scrollPercentage = percentage;
     this.store.dispatch(
       videoRemoteControlActions.setScrollPercentage({ percentage })
