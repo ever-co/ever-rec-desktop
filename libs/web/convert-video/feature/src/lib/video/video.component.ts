@@ -11,6 +11,8 @@ import {
   ViewChild,
   inject,
 } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import {
   generateVideoActions,
   selectGenerateVideoState,
@@ -32,7 +34,7 @@ import {
 @Component({
   selector: 'lib-video',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatTooltipModule, MatIconModule],
   templateUrl: './video.component.html',
   styleUrls: ['./video.component.scss'], // Fixed typo
 })
