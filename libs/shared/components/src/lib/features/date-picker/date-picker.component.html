@@ -4,6 +4,7 @@
     (click)="picker.open()"
     [formGroup]="range"
     [rangePicker]="picker"
+    [max]="maxDate"
   >
     <input class="truncate" formControlName="start" matStartDate placeholder="Start date" />
     <input class="truncate" formControlName="end" matEndDate placeholder="End date" />

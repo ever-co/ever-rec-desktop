@@ -100,7 +100,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
   public rangeAdapter({ start, end }: IRange): IRange {
     if (moment(start).isSame(end)) {
       return {
-        start: moment(start).toISOString(),
+        start: moment(start).startOf('day').toISOString(),
         end: moment(start).endOf('day').toISOString(),
       };
     }
@@ -108,13 +108,13 @@ export class DatePickerComponent implements OnInit, OnDestroy {
     if (end) {
       const duration = moment(end).diff(moment(start), 'days');
       return {
-        start: moment(start).toISOString(),
+        start: moment(start).startOf('day').toISOString(),
         end: moment(start).add(duration, 'days').endOf('day').toISOString(),
       };
     }
     return {
-      start: moment(start).toISOString(),
-      end: moment(end).toISOString(),
+      start: moment(start).startOf('day').toISOString(),
+      end: moment(end).endOf('day').toISOString(),
     };
   }
 
@@ -124,6 +124,10 @@ export class DatePickerComponent implements OnInit, OnDestroy {
       map(({ selectedRange }) => selectedRange),
       takeUntil(this.destroy$)
     );
+  }
+
+  public get maxDate(): Date {
+    return moment().endOf('day').toDate();
   }
 
   ngOnDestroy(): void {
