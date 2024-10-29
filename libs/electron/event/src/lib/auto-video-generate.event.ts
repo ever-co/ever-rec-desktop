@@ -33,7 +33,10 @@ export function autoVideoGenerateEvent() {
 
       interval = setInterval(async () => {
         logger.info('Auto generating videos...');
-        event.reply(Channel.AUTO_VIDEO_GENERATE);
+        event.reply(Channel.AUTO_VIDEO_GENERATE, {
+          completed: false,
+          timeLogId: null,
+        });
       }, moment.duration(period, 'minutes').asMilliseconds());
     }
   );
