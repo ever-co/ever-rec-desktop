@@ -1,7 +1,6 @@
 /* eslint-disable @angular-eslint/no-input-rename */
 import { CommonModule } from '@angular/common';
 import {
-  AfterContentInit,
   AfterViewInit,
   Component,
   ElementRef,
@@ -21,10 +20,12 @@ import {
 import { IVideo } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import {
+  BehaviorSubject,
   Observable,
   Subject,
   catchError,
   filter,
+  fromEvent,
   map,
   of,
   takeUntil,
@@ -38,14 +39,12 @@ import {
   templateUrl: './video.component.html',
   styleUrls: ['./video.component.scss'], // Fixed typo
 })
-export class VideoComponent
-  implements OnInit, AfterViewInit, AfterContentInit, OnDestroy
-{
+export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
   private store = inject(Store);
   private destroy$ = new Subject<void>();
 
   @ViewChild('videoPlayer', { static: false })
-  public videoPlayer!: ElementRef<HTMLVideoElement>;
+  private videoPlayer!: ElementRef<HTMLVideoElement>;
 
   @Input({
     alias: 'remote',
@@ -56,11 +55,13 @@ export class VideoComponent
   public source$!: Observable<string>;
   public generating$!: Observable<boolean>;
   private video!: IVideo;
+  public played$ = new BehaviorSubject<boolean>(false);
 
   ngOnInit(): void {
     this.setupSourceObservable();
     this.setupGeneratingObservable();
     this.setupRemoteControlObservable();
+    this.store.dispatch(generateVideoActions.loadLastVideo());
   }
 
   ngAfterViewInit(): void {
@@ -72,10 +73,45 @@ export class VideoComponent
         takeUntil(this.destroy$)
       )
       .subscribe();
+    fromEvent(this.player, 'play')
+      .pipe(
+        tap(() => this.played$.next(true)),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+
+    fromEvent(this.player, 'pause')
+      .pipe(
+        tap(() => this.played$.next(false)),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
-  ngAfterContentInit(): void {
-    this.store.dispatch(generateVideoActions.loadLastVideo());
+  public async togglePlayPause(): Promise<void> {
+    if (!this.player) {
+      console.error('Video player is not available');
+      return;
+    }
+
+    if (this.isPaused) {
+      await this.player.play();
+    } else {
+      this.player.pause();
+    }
+  }
+
+  public async fullscreen(): Promise<void> {
+    if (!this.player) {
+      console.error('Video player is not available');
+      return;
+    }
+
+    await this.player.requestFullscreen();
+  }
+
+  public get isPaused(): boolean {
+    return this.player?.paused;
   }
 
   private setupSourceObservable(): void {
@@ -131,7 +167,7 @@ export class VideoComponent
     }
   }
 
-  private get player(): HTMLVideoElement {
+  public get player(): HTMLVideoElement {
     return this.videoPlayer?.nativeElement;
   }
 

@@ -51,6 +51,9 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('timelineContainer')
   private timelineContainer!: ElementRef<HTMLDivElement>;
 
+  @ViewChild('videoContainer')
+  private videoComponent!: VideoComponent;
+
   private readonly destroy$ = new Subject<void>();
   private width = 48;
   private clientWidth = 1920;
