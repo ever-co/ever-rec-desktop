@@ -1,38 +1,30 @@
-.card {
-  cursor: pointer;
+/* video.component.scss */
+:host {
+  display: block;
 }
 
-mat-icon {
-  overflow: unset;
+.mat-mdc-card {
+  @apply overflow-hidden;
 }
 
 .video-container {
-  position: relative;
+  @apply relative;
+}
 
-  .overlay {
-    position: absolute;
-    right: 1rem;
-    bottom: 1rem;
-    top: 1rem;
-    left: 1rem;
-
-    mat-icon {
-      display: none;
-    }
-
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.5);
-      @apply rounded-md;
-
-      mat-icon {
-        display: block;
-        color: white;
-      }
-    }
-  }
+mat-icon {
+  @apply transition-all duration-200;
 }
 
 ::ng-deep .mat-mdc-menu-content {
-  padding: 0 !important;
-  background: white;
+  @apply p-0 bg-white;
 }
+
+// Custom styles for action buttons
+::ng-deep .action-button {
+  @apply flex items-center gap-2 w-full px-4 py-2 text-left hover:bg-gray-100 transition-colors duration-200;
+
+  &.danger {
+    @apply hover:bg-red-50 text-red-600;
+  }
+}
+

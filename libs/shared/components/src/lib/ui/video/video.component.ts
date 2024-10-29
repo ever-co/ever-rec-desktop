@@ -9,7 +9,9 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatRippleModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
 import { videoActions } from '@ever-co/convert-video-data-access';
 import { PopoverDirective, UtcToLocalTimePipe } from '@ever-co/shared-service';
@@ -28,7 +30,9 @@ import { ActionButtonGroupComponent } from '../action-button-group/group/action-
     MatIconModule,
     UtcToLocalTimePipe,
     PopoverDirective,
-    ActionButtonGroupComponent
+    ActionButtonGroupComponent,
+    MatRippleModule,
+    MatTooltipModule,
   ],
   templateUrl: './video.component.html',
   styleUrl: './video.component.scss',

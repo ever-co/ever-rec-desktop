@@ -1,57 +1,64 @@
+<!-- video.component.html -->
 @if (video) {
-<mat-card class="card" appearance="outlined">
-  <div class="video-container p-4">
-    <video
-      #videoPlayer
-      mat-card-image
-      [src]="video.pathname"
-      alt="Video"
-      class="w-full max-w-full h-auto object-cover rounded-md"
-      [controls]="controls"
-    >
-      <source [src]="video.pathname" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
-    @if(!controls){
-    <div
-      class="overlay flex items-end flex-col gap-2 justify-between text-gray-700 rounded-lg hover:bg-gray-100 transition-colors duration-200"
-    >
-      <button [libPopover]="menu" mat-icon-button>
-        <mat-icon>more_vert</mat-icon>
-      </button>
-      <button (click)="fullscreen()" mat-icon-button>
-        <mat-icon>fullscreen</mat-icon>
-      </button>
-    </div>
-    }
-  </div>
+  <mat-card appearance="outlined" class="transform transition-transform duration-300 scale-[0.98] hover:scale-[1.00]">
+    <div class="relative group">
+      <video
+        #videoPlayer
+        mat-card-image
+        [src]="video.pathname"
+        alt="Video"
+        class="w-full h-full object-cover rounded-t-lg"
+        [controls]="controls"
+      >
+        <source [src]="video.pathname" type="video/mp4" />
+        <p class="text-gray-500">Your browser does not support the video tag.</p>
+      </video>
 
-  @if(!controls){
-  <mat-card-content>
-    <div class="flex w-full gap-4">
-      <button mat-icon-button (click)="togglePlayPause()">
-        <mat-icon class="rounded-full">{{
-          (played$ | async) ? 'pause' : 'play_arrow'
-        }}</mat-icon>
-      </button>
-      <div class="flex-1 min-w-0">
-        @if(video.pathname) {
-        <div class="text-lg truncate">
-          {{ video.pathname }}
-        </div>
-        }
-        <div class="text-sm text-gray-500 truncate">
-          {{ video.createdAt | utcToLocalTime }}
+      @if(!controls){
+      <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 rounded-t-lg">
+        <div class="absolute bg-gradient-to-t from-black/80 to-transparent h-full w-full justify-between items-end flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <button [libPopover]="menu" mat-icon-button class="bg-black">
+            <mat-icon class="text-white hover:text-blue-400 transition-colors">more_vert</mat-icon>
+          </button>
+          <button (click)="fullscreen()" mat-icon-button class="bg-black">
+            <mat-icon class="text-white hover:text-blue-400 transition-colors">fullscreen</mat-icon>
+          </button>
         </div>
       </div>
+      }
     </div>
-  </mat-card-content>
+
+    @if(!controls){
+    <mat-card-content class="p-4">
+      <div class="flex items-center gap-4">
+        <button
+          mat-icon-button
+          (click)="togglePlayPause()"
+          class="bg-primary-100 hover:bg-primary-200 transition-colors duration-200"
+        >
+          <mat-icon class="text-primary-600">{{
+            (played$ | async) ? 'pause' : 'play_arrow'
+          }}</mat-icon>
+        </button>
+        <div class="flex-1 min-w-0">
+          @if(video.pathname) {
+          <div class="text-lg font-medium text-gray-900 truncate">
+            {{ video.pathname }}
+          </div>
+          }
+          <p class="text-sm text-gray-500 truncate">
+            {{ video.createdAt | utcToLocalTime }}
+          </p>
+        </div>
+      </div>
+    </mat-card-content>
+    }
+  </mat-card>
+
+  <ng-template #menu>
+      <lib-action-button-group
+        [data]="video"
+        [buttons]="actionButtons"
+      ></lib-action-button-group>
+  </ng-template>
   }
-</mat-card>
-<ng-template #menu>
-  <lib-action-button-group
-    [data]="video"
-    [buttons]="actionButtons"
-  ></lib-action-button-group>
-</ng-template>
-}
