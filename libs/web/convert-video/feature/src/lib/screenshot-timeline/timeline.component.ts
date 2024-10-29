@@ -18,7 +18,7 @@ import { selectScreenshotState } from '@ever-co/screenshot-data-access';
 import { NoDataComponent } from '@ever-co/shared-components';
 import { IScreenshot, moment } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
-import { map, Observable, Subject, take, takeUntil } from 'rxjs';
+import { filter, map, Observable, Subject, take, takeUntil, tap } from 'rxjs';
 import { ProgressComponent } from '../progress/progress.component';
 import { VideoComponent } from '../video/video.component';
 
@@ -180,6 +180,20 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       }),
       takeUntil(this.destroy$)
     );
+
+    this.videoComponent.currentTime$
+      .pipe(
+        map(() => this.videoComponent.player),
+        filter((player) => !player.paused),
+        tap((player) =>
+          this.jumpTo({
+            position: player.currentTime / player.duration,
+            width: this.width,
+          } as AggregatedScreenshot)
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
   private mergeIcons(screenshots: IScreenshot[]): AggregatedScreenshot[] {

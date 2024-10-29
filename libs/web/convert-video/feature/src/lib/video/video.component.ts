@@ -188,7 +188,7 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
               .duration(videoDuration, 'seconds')
               .format('hh:mm:ss', { trim: false })
           );
-          this.player.currentTime = scrollDuration;
+          if (this.isPaused) this.player.currentTime = scrollDuration;
         }),
         catchError((err) => {
           console.error('Error in remote control observable', err);
