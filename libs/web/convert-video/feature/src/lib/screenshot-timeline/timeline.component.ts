@@ -78,14 +78,12 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     this.width = width;
     this.clientWidth = timeline.clientWidth || 1920;
     const scrollWidth = timeline.scrollWidth - this.clientWidth;
-    if (!scrollWidth) return;
+    if (scrollWidth <= 0) return;
 
-    const percentage = position * 100 + ((width / 2) * 100) / scrollWidth;
-    timeline.scrollTo({
-      left: scrollWidth * position + width / 2 - 5,
-      behavior: 'smooth',
-    });
+    const scrollLeft = this.calculateScrollLeft(position, width, scrollWidth);
+    const percentage = this.calculatePercentage(scrollLeft, scrollWidth);
 
+    this.scrollTimeline(timeline, scrollLeft, scrollWidth);
     this.dispatchScrollPercentage(percentage);
   }
 
@@ -93,11 +91,39 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     const element = event.target as HTMLElement;
     this.clientWidth = element.clientWidth;
     const scrollWidth = element.scrollWidth - this.clientWidth;
-    const scrollLeft = element.scrollLeft;
-    if (!scrollWidth) return;
+    if (scrollWidth <= 0) return;
 
-    const percentage = (scrollLeft + this.width / 2 - 5) * (100 / scrollWidth);
+    const scrollLeft = this.clamp(
+      element.scrollLeft,
+      0,
+      scrollWidth - this.width / 2 - 5
+    );
+
+    const percentage = this.calculatePercentage(scrollLeft, scrollWidth);
     this.dispatchScrollPercentage(percentage);
+  }
+
+  private calculateScrollLeft(
+    position: number,
+    width: number,
+    scrollWidth: number
+  ): number {
+    return scrollWidth * position + width / 2 - 5;
+  }
+
+  private calculatePercentage(scrollLeft: number, scrollWidth: number): number {
+    return (scrollLeft + this.width / 2 - 5) * (100 / scrollWidth);
+  }
+
+  private scrollTimeline(
+    timeline: HTMLElement,
+    scrollLeft: number,
+    scrollWidth: number
+  ): void {
+    timeline.scrollTo({
+      left: this.clamp(scrollLeft, 0, scrollWidth - this.width / 2 - 5),
+      behavior: 'smooth',
+    });
   }
 
   private initializeObservables(): void {
