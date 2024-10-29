@@ -5,9 +5,9 @@ import { MatListModule } from '@angular/material/list';
 import { Router } from '@angular/router';
 import { breadcrumbActions } from '@ever-co/breadcrumb-data-access';
 import {
-  INavigationState,
-  selectSidebarState,
-  SidebarActions,
+    INavigationState,
+    selectSidebarState,
+    sidebarActions,
 } from '@ever-co/sidebar-data-access';
 import { Store } from '@ngrx/store';
 import { map, Observable, Subject } from 'rxjs';
@@ -44,7 +44,7 @@ export class SidebarComponent implements OnDestroy {
         breadcrumbs: [{ label: selectedItem.title, url: selectedItem.route }],
       })
     );
-    this.store.dispatch(SidebarActions.selectNavigationItem({ selectedItem }));
+    this.store.dispatch(sidebarActions.selectNavigationItem({ selectedItem }));
     await this.router.navigate([selectedItem.route]);
   }
 

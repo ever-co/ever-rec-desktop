@@ -1,5 +1,5 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
-import { SidebarActions } from './sidebar.actions';
+import { sidebarActions } from './sidebar.actions';
 
 export const sidebarFeatureKey = 'sidebar';
 
@@ -29,11 +29,29 @@ export const initialState: ISidebarState = {
 
 export const reducer = createReducer(
   initialState,
-  on(SidebarActions.loadSidebars, (state) => state),
-  on(SidebarActions.selectNavigationItem, (state, { selectedItem }) => ({
+  on(sidebarActions.loadSidebars, (state) => state),
+  on(sidebarActions.selectNavigationItem, (state, { selectedItem }) => ({
     ...state,
     selectedItem,
-  }))
+  })),
+  on(sidebarActions.navigate, (state, { route }) => {
+    if (!route) {
+      return { ...state };
+    }
+
+    const matchedItem = navigationItems.find((item) =>
+      item.route.includes(route)
+    );
+
+    if (!matchedItem) {
+      return { ...state };
+    }
+
+    return {
+      ...state,
+      selectedItem: matchedItem,
+    };
+  })
 );
 
 export const sidebarFeature = createFeature({

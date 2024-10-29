@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
 import { selectVideoState } from '@ever-co/convert-video-data-access';
 import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil } from 'rxjs';
@@ -9,7 +10,7 @@ import { map, Observable, Subject, takeUntil } from 'rxjs';
 @Component({
   selector: 'lib-video',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatIconModule],
+  imports: [CommonModule, MatCardModule, MatIconModule, RouterLink],
   templateUrl: './video.component.html',
   styleUrl: './video.component.scss',
 })
