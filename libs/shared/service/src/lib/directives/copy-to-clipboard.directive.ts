@@ -87,7 +87,7 @@ export class CopyToClipboardDirective implements OnInit, OnDestroy {
         );
         this.renderer.removeClass(this.iconElement, 'text-green-500');
         this.renderer.addClass(this.iconElement, 'text-gray-400');
-      }, 1500);
+      }, 2000);
     } else {
       // If no icon, add a temporary success message
       const successElement = this.renderer.createElement('span');
@@ -100,7 +100,7 @@ export class CopyToClipboardDirective implements OnInit, OnDestroy {
       // Remove the success message after 1.5 seconds
       this.setTimeoutSafely(() => {
         this.renderer.removeChild(this.el.nativeElement, successElement);
-      }, 1500);
+      }, 2000);
     }
   }
 
