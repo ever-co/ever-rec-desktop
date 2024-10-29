@@ -67,6 +67,13 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   private selectedRow: ITimeLog | null = null;
   public actionButtons: IActionButton[] = [
     {
+      icon: 'video_camera_back_add',
+      label: 'Generate',
+      variant: 'warning',
+      hide: this.hideAction$,
+      tooltip: 'Generate a video from this selected timesheet',
+    },
+    {
       icon: 'delete',
       label: 'Delete',
       variant: 'danger',

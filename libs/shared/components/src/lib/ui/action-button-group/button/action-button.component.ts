@@ -2,12 +2,18 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { IActionButton } from '@ever-co/shared-utils';
 
 @Component({
   selector: 'lib-action-button',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatProgressSpinnerModule],
+  imports: [
+    CommonModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
+    MatTooltipModule,
+  ],
   templateUrl: './action-button.component.html',
   styleUrl: './action-button.component.scss',
 })
