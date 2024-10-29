@@ -1,16 +1,24 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { breadcrumbActions } from '@ever-co/breadcrumb-data-access';
 import {
-    INavigationState,
-    selectSidebarState,
-    sidebarActions,
+  INavigationState,
+  selectSidebarState,
+  sidebarActions,
 } from '@ever-co/sidebar-data-access';
 import { Store } from '@ngrx/store';
-import { map, Observable, Subject } from 'rxjs';
+import {
+  distinctUntilChanged,
+  filter,
+  map,
+  Observable,
+  Subject,
+  takeUntil,
+  tap,
+} from 'rxjs';
 
 @Component({
   selector: 'lib-sidebar',
@@ -19,23 +27,37 @@ import { map, Observable, Subject } from 'rxjs';
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss',
 })
-export class SidebarComponent implements OnDestroy {
+export class SidebarComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
   constructor(private readonly store: Store, private readonly router: Router) {}
+
+  ngOnInit(): void {
+    this.router.events
+      .pipe(
+        map((evt) => (evt as NavigationEnd).urlAfterRedirects),
+        filter(Boolean),
+        distinctUntilChanged(),
+        tap((route) => this.store.dispatch(sidebarActions.navigate({ route }))),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
 
   public get selectedItem$(): Observable<INavigationState> {
     return this.store.select(selectSidebarState).pipe(
       map((state) => {
         return state.selectedItem;
-      })
+      }),
+      takeUntil(this.destroy$)
     );
   }
 
   public get navigationItems$(): Observable<INavigationState[]> {
-    return this.store
-      .select(selectSidebarState)
-      .pipe(map((state) => state.navigationItems));
+    return this.store.select(selectSidebarState).pipe(
+      map((state) => state.navigationItems),
+      takeUntil(this.destroy$)
+    );
   }
 
   public async onSelect(selectedItem: INavigationState) {

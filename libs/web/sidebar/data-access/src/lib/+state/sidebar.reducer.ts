@@ -40,7 +40,7 @@ export const reducer = createReducer(
     }
 
     const matchedItem = navigationItems.find((item) =>
-      item.route.includes(route)
+      route.includes(item.route)
     );
 
     if (!matchedItem) {
