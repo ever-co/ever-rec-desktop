@@ -50,8 +50,8 @@ export class CopyToClipboardDirective implements OnInit, OnDestroy {
         'content_copy'
       );
       this.renderer.addClass(this.iconElement, 'ml-2');
-      this.renderer.addClass(this.iconElement, 'text-gray-400');
-      this.renderer.addClass(this.iconElement, 'text-sm');
+      this.renderer.addClass(this.iconElement, 'text-gray-600');
+      this.renderer.addClass(this.iconElement, 'text-md');
       this.renderer.appendChild(this.el.nativeElement, this.iconElement);
     }
   }
@@ -75,7 +75,7 @@ export class CopyToClipboardDirective implements OnInit, OnDestroy {
         'textContent',
         'check'
       );
-      this.renderer.removeClass(this.iconElement, 'text-gray-400');
+      this.renderer.removeClass(this.iconElement, 'text-gray-500');
       this.renderer.addClass(this.iconElement, 'text-green-500');
 
       // Revert back after 1.5 seconds
@@ -86,7 +86,7 @@ export class CopyToClipboardDirective implements OnInit, OnDestroy {
           'content_copy'
         );
         this.renderer.removeClass(this.iconElement, 'text-green-500');
-        this.renderer.addClass(this.iconElement, 'text-gray-400');
+        this.renderer.addClass(this.iconElement, 'text-gray-500');
       }, 2000);
     } else {
       // If no icon, add a temporary success message

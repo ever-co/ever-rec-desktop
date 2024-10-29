@@ -18,6 +18,7 @@ import {
   VideoComponent,
 } from '@ever-co/shared-components';
 import {
+  CopyToClipboardDirective,
   HumanizeBytesPipe,
   HumanizePipe,
   PopoverDirective,
@@ -56,7 +57,8 @@ import {
     MatInputModule,
     PopoverDirective,
     ActionButtonGroupComponent,
-    HumanizePipe
+    HumanizePipe,
+    CopyToClipboardDirective
   ],
   templateUrl: './video-detail.component.html',
   styleUrl: './video-detail.component.scss',

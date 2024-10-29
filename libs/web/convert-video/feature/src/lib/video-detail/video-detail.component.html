@@ -11,9 +11,13 @@
         ></lib-video>
       </div>
       <div class="mt-6">
-        <div class="text-xl font-bold text-gray-600 mb-4">Video Summary</div>
+        <div class="text-xl font-bold flex justify-between text-gray-600 mb-4">
+          <span>Video Summary</span>
+          @if(area.value) {
+            <span [libCopyToClipboard]="area.value"></span>
+          }
+        </div>
         <mat-form-field appearance="outline" class="w-full">
-          <mat-label>Add your summary here</mat-label>
           <textarea
             [value]="video.metadata?.summary"
             #area
