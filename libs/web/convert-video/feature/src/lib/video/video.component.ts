@@ -83,6 +83,21 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
       )
       .subscribe();
 
+    fromEvent(this.player, 'timeupdate')
+      .pipe(
+        map((event) => event.target as HTMLVideoElement),
+        filter(Boolean),
+        tap((player) =>
+          this.currentTime$.next(
+            moment
+              .duration(player.currentTime, 'seconds')
+              .format('hh:mm:ss.SS', { trim: false })
+          )
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+
     fromEvent(this.player, 'pause')
       .pipe(
         tap(() => this.isPlaying$.next(false)),
@@ -168,11 +183,6 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
           const videoDuration = this.video.metadata?.duration || 0;
           const scrollDuration =
             (videoDuration * remoteState.scrollPercentage) / 100;
-          this.currentTime$.next(
-            moment
-              .duration(scrollDuration, 'seconds')
-              .format('hh:mm:ss.SS', { trim: false })
-          );
           this.duration$.next(
             moment
               .duration(videoDuration, 'seconds')
