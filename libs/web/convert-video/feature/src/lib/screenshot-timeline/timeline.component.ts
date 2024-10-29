@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   OnDestroy,
@@ -67,7 +68,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   private width = 48;
   private clientWidth = 1920;
 
-  constructor(private readonly store: Store) {}
+  constructor(private readonly store: Store, private cdr: ChangeDetectorRef) {}
 
   public ngOnInit(): void {
     this.initializeObservables();
@@ -76,6 +77,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public ngAfterViewInit(): void {
     this.initializeTimeline();
+    this.cdr.detectChanges();
   }
 
   public ngOnDestroy(): void {
