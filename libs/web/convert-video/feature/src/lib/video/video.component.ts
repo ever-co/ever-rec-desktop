@@ -60,8 +60,6 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
   public isFullscreen$ = new BehaviorSubject<boolean>(false);
   public currentTime$ = new BehaviorSubject<string>('00:00:00');
   public duration$ = new BehaviorSubject<string>('00:00');
-  private _skipBackward$ = new BehaviorSubject<boolean>(false);
-  private _skipForward$ = new BehaviorSubject<boolean>(false);
 
   ngOnInit(): void {
     this.setupSourceObservable();
@@ -103,31 +101,11 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
         event.preventDefault();
         this.togglePlayPause();
         break;
-      case 'ArrowLeft':
-        event.preventDefault();
-        this.skipBackward();
-        break;
-      case 'ArrowRight':
-        event.preventDefault();
-        this.skipForward();
-        break;
       case 'KeyF':
         event.preventDefault();
         this.fullscreen();
         break;
     }
-  }
-
-  private skipBackward() {
-    const state = this._skipBackward$.getValue();
-    this._skipForward$.next(state);
-    this._skipBackward$.next(!state);
-  }
-
-  private skipForward() {
-    const state = this._skipForward$.getValue();
-    this._skipBackward$.next(state);
-    this._skipForward$.next(!state);
   }
 
   public async togglePlayPause(): Promise<void> {
@@ -221,13 +199,6 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public get player(): HTMLVideoElement {
     return this.videoPlayer?.nativeElement;
-  }
-
-  public get skipBackward$(): Observable<boolean> {
-    return this._skipBackward$.asObservable();
-  }
-  public get skipForward$(): Observable<boolean> {
-    return this._skipForward$.asObservable();
   }
 
   ngOnDestroy(): void {
