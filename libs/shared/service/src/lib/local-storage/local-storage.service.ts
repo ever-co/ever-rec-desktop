@@ -53,8 +53,7 @@ export class LocalStorageService {
       const result = operation();
       return of(result);
     } catch (error) {
-      const errorDetails =
-        error instanceof Error ? error.message : String(error);
+      const errorDetails = error instanceof Error ? error.message : String(error);
       return throwError(() => new Error(`${errorMessage}: ${errorDetails}`));
     }
   }
@@ -78,10 +77,7 @@ export class LocalStorageService {
       if (options.merge && typeof value === 'object') {
         const existingItem = this.getItemSync<T>(key);
         if (existingItem) {
-          storageItem.value = {
-            ...existingItem,
-            ...value,
-          } as T;
+          storageItem.value = { ...existingItem, ...value } as T;
         }
       }
 
@@ -93,10 +89,7 @@ export class LocalStorageService {
    * Gets an item from localStorage with expiry check
    */
   public getItem<T>(key: string): Observable<T | null> {
-    return this.handleLocalStorageOperation(() => {
-      const item = this.getItemSync<T>(key);
-      return item;
-    }, 'Failed to get item from localStorage');
+    return this.handleLocalStorageOperation(() => this.getItemSync<T>(key), 'Failed to get item from localStorage');
   }
 
   /**
@@ -148,11 +141,11 @@ export class LocalStorageService {
    * Gets all keys stored by this service
    */
   public getAllKeys(): Observable<string[]> {
-    return this.handleLocalStorageOperation(() => {
-      return Object.keys(localStorage)
+    return this.handleLocalStorageOperation(() =>
+      Object.keys(localStorage)
         .filter((key) => key.startsWith(this.prefix))
-        .map((key) => key.slice(this.prefix.length));
-    }, 'Failed to get localStorage keys');
+        .map((key) => key.slice(this.prefix.length)),
+    'Failed to get localStorage keys');
   }
 
   /**
