@@ -73,7 +73,7 @@ export class CopyToClipboardDirective implements OnInit, OnDestroy {
       this.renderer.setProperty(
         this.iconElement,
         'textContent',
-        'check_circle'
+        'check'
       );
       this.renderer.removeClass(this.iconElement, 'text-gray-400');
       this.renderer.addClass(this.iconElement, 'text-green-500');
