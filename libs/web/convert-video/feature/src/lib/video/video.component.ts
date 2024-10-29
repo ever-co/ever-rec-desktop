@@ -17,7 +17,7 @@ import {
   selectGenerateVideoState,
   selectVideoRemoteControlState,
 } from '@ever-co/convert-video-data-access';
-import { IVideo } from '@ever-co/shared-utils';
+import { IVideo, moment } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import {
   BehaviorSubject,
@@ -55,12 +55,14 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
   public source$!: Observable<string>;
   public generating$!: Observable<boolean>;
   private video!: IVideo;
-  public played$ = new BehaviorSubject<boolean>(false);
+  public isPlaying$ = new BehaviorSubject<boolean>(false);
+  public isFullscreen$ = new BehaviorSubject<boolean>(false);
+  public currentTime$ = new BehaviorSubject<string>('00:00:00');
+  public duration$ = new BehaviorSubject<string>('00:00');
 
   ngOnInit(): void {
     this.setupSourceObservable();
     this.setupGeneratingObservable();
-    this.setupRemoteControlObservable();
     this.store.dispatch(generateVideoActions.loadLastVideo());
   }
 
@@ -75,17 +77,18 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe();
     fromEvent(this.player, 'play')
       .pipe(
-        tap(() => this.played$.next(true)),
+        tap(() => this.isPlaying$.next(true)),
         takeUntil(this.destroy$)
       )
       .subscribe();
 
     fromEvent(this.player, 'pause')
       .pipe(
-        tap(() => this.played$.next(false)),
+        tap(() => this.isPlaying$.next(false)),
         takeUntil(this.destroy$)
       )
       .subscribe();
+    this.setupRemoteControlObservable();
   }
 
   public async togglePlayPause(): Promise<void> {
@@ -148,6 +151,16 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
           const videoDuration = this.video.metadata?.duration || 0;
           const scrollDuration =
             (videoDuration * remoteState.scrollPercentage) / 100;
+          this.currentTime$.next(
+            moment
+              .duration(scrollDuration, 'seconds')
+              .format('h:mm:ss', { trim: false })
+          );
+          this.duration$.next(
+            moment
+              .duration(videoDuration, 'seconds')
+              .format('mm:ss', { trim: false })
+          );
           this.player.currentTime = scrollDuration;
         }),
         catchError((err) => {

@@ -23,4 +23,48 @@
     <source [src]="source$ | async" type="video/mp4" />
     Your browser does not support HTML video.
   </video>
+
+  <!-- Enhanced Playback Controls -->
+  @if(isControlledRemotely) {
+  <div
+    class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4"
+  >
+    <div class="flex items-center justify-between gap-4">
+      <div class="flex items-center justify-between gap-4">
+        <button
+          mat-icon-button
+          class="text-white hover:text-blue-400 flex items-center justify-between transition-colors"
+          (click)="togglePlayPause()"
+          [matTooltip]="(isPlaying$ | async) ? 'Pause (Space)' : 'Play (Space)'"
+        >
+          <mat-icon
+            [ngClass]="{ 'scale-110': (isPlaying$ | async) === false }"
+            >{{ (isPlaying$ | async) ? 'pause' : 'play_arrow' }}</mat-icon
+          >
+        </button>
+        <div class="flex flex-col">
+          <span class="text-white text-sm font-medium">{{
+            currentTime$ | async
+          }}</span>
+          <span class="text-gray-400 text-xs">{{ duration$ | async }}</span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button
+          mat-icon-button
+          class="text-white hover:text-blue-400 transition-colors"
+          (click)="fullscreen()"
+          [matTooltip]="
+            (isFullscreen$ | async) ? 'Exit Fullscreen (F)' : 'Fullscreen (F)'
+          "
+        >
+          <mat-icon>{{
+            (isFullscreen$ | async) ? 'fullscreen_exit' : 'fullscreen'
+          }}</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+  }
 </div>
