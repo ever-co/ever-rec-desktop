@@ -5,10 +5,11 @@ import {
   ElementRef,
   OnDestroy,
   OnInit,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {
+  generateVideoActions,
   selectGenerateVideoState,
   selectVideoRemoteControlState,
   videoRemoteControlActions,
@@ -58,6 +59,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public ngOnInit(): void {
     this.initializeObservables();
+    this.store.dispatch(generateVideoActions.loadLastVideo());
   }
 
   public ngAfterViewInit(): void {
