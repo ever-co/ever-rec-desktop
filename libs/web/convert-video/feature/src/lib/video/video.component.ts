@@ -193,12 +193,12 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
           this.currentTime$.next(
             moment
               .duration(scrollDuration, 'seconds')
-              .format('h:mm:ss', { trim: false })
+              .format('hh:mm:ss.SS', { trim: false })
           );
           this.duration$.next(
             moment
               .duration(videoDuration, 'seconds')
-              .format('mm:ss', { trim: false })
+              .format('hh:mm:ss', { trim: false })
           );
           this.player.currentTime = scrollDuration;
         }),
