@@ -19,8 +19,9 @@ import {
 } from '@ever-co/shared-components';
 import {
   HumanizeBytesPipe,
+  HumanizePipe,
   PopoverDirective,
-  UtcToLocalTimePipe,
+  UtcToLocalTimePipe
 } from '@ever-co/shared-service';
 import { IActionButton, IVideo, IVideoMetadata } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
@@ -55,6 +56,7 @@ import {
     MatInputModule,
     PopoverDirective,
     ActionButtonGroupComponent,
+    HumanizePipe
   ],
   templateUrl: './video-detail.component.html',
   styleUrl: './video-detail.component.scss',

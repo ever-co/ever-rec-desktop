@@ -8,9 +8,9 @@ import 'moment-duration-format';
 })
 export class HumanizePipe implements PipeTransform {
   transform(
-    value: string | number | null,
+    value: string | number | null | undefined,
     unit: moment.DurationInputArg2,
-    format?: any
+    format?: string | moment.TemplateFunction
   ): string {
     const duration = moment.duration(value, unit);
     return format ? duration.format(format, { trim: false, trunc: true }) : duration.humanize();
