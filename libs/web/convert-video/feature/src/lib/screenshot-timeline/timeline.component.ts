@@ -78,7 +78,12 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     this.width = width;
     this.clientWidth = timeline.clientWidth || 1920;
     const scrollWidth = timeline.scrollWidth - this.clientWidth;
-    if (scrollWidth <= 0) return;
+
+    if (scrollWidth <= 0) {
+      const percentage = (position + this.width / 2 / this.clientWidth) * 100;
+      this.dispatchScrollPercentage(percentage);
+      return;
+    }
 
     const scrollLeft = this.calculateScrollLeft(position, width, scrollWidth);
     const percentage = this.calculatePercentage(scrollLeft, scrollWidth);
