@@ -17,7 +17,7 @@
         >
           <img
             class="image transition ease-in-out delay-100 hover:scale-110"
-            [matTooltip]="screenshot.metadata?.name"
+            [matTooltip]="formatTooltipMessage(screenshot)"
             [src]="screenshot.metadata?.icon"
             alt="screenshot"
           />

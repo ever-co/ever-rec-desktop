@@ -222,6 +222,12 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     return Math.max(min, Math.min(max, value));
   }
 
+  public formatTooltipMessage(screenshot: IScreenshot): string {
+    return `${screenshot.metadata?.name || 'Screenshot'} - ${moment(
+      screenshot.createdAt
+    ).format('MMM D, YYYY — hh:mm a')}`;
+  }
+
   private dispatchScrollPercentage(percentage: number): void {
     this.store.dispatch(
       videoRemoteControlActions.setScrollPercentage({ percentage })
