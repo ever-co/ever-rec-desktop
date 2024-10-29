@@ -48,13 +48,13 @@
           </div>
           <div class="space-y-3">
             <div class="flex justify-between items-center">
-              <span class="text-sm text-gray-400">Name</span>
+              <span class="text-sm text-gray-500">Name</span>
               <span class="text-sm font-medium text-gray-800">{{
                 'VIDEO_' + video.metadata.id.substring(0, 4)
               }}</span>
             </div>
             <div class="flex justify-between items-center">
-              <span class="text-sm text-gray-400">Created</span>
+              <span class="text-sm text-gray-500">Created</span>
               <span class="text-sm font-medium text-gray-800">{{
                 video.metadata.createdAt | date : 'MMM d, y • h:mm a'
               }}</span>
@@ -72,25 +72,25 @@
           </div>
           <div class="space-y-3">
             <div class="flex justify-between items-center">
-              <span class="text-sm text-gray-400">Codec</span>
+              <span class="text-sm text-gray-500">Codec</span>
               <span class="text-sm font-medium text-gray-800">{{
                 video.metadata.codec
               }}</span>
             </div>
             <div class="flex justify-between items-center">
-              <span class="text-sm text-gray-400">Frame Rate</span>
+              <span class="text-sm text-gray-500">Frame Rate</span>
               <span class="text-sm font-medium text-gray-800"
                 >{{ video.metadata.frameRate }} FPS</span
               >
             </div>
             <div class="flex justify-between items-center">
-              <span class="text-sm text-gray-400">Resolution</span>
+              <span class="text-sm text-gray-500">Resolution</span>
               <span class="text-sm font-medium text-gray-800">{{
                 video.metadata.resolution
               }}</span>
             </div>
             <div class="flex justify-between items-center">
-              <span class="text-sm text-gray-400">Batch</span>
+              <span class="text-sm text-gray-500">Batch</span>
               <span class="text-sm font-medium text-gray-800">{{
                 video.metadata.batch
               }}</span>
@@ -108,13 +108,13 @@
           </div>
           <div class="space-y-3">
             <div class="flex justify-between items-center">
-              <span class="text-sm text-gray-400">Size</span>
+              <span class="text-sm text-gray-500">Size</span>
               <span class="text-sm font-medium text-gray-800">{{
                 video.metadata.size | humanizeBytes
               }}</span>
             </div>
             <div class="flex justify-between items-center">
-              <span class="text-sm text-gray-400">Duration</span>
+              <span class="text-sm text-gray-500">Duration</span>
               <span class="text-sm font-medium text-gray-800"
                 >{{ video.metadata.duration | humanize: 's': 'ss.SS [sec]' }}</span
               >
