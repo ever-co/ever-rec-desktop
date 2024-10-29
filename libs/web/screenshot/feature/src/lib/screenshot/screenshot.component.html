@@ -1,68 +1,74 @@
 @if (screenshot$ | async; as screenshot) {
-<div class="flex lg:flex-row justify-center items-start flex-col gap-4">
-  <div class="flex justify-center w-full lg:w-2/3 items-center rounded-lg">
-    <img
-      [src]="screenshot.pathname"
-      alt="Screenshot"
-      class="max-w-full h-auto rounded-md"
-    />
-  </div>
-  <div class="flex flex-col w-full lg:w-1/3 gap-4">
-    <div class="flex gap-2">
-      @if(screenshot.metadata?.icon) {
-      <img
-        mat-card-avatar
-        [src]="screenshot.metadata?.icon"
-        [alt]="screenshot.metadata?.name"
-        class="w-10 h-10 rounded-full"
-      />
-      }
-      <div>
-        @if(screenshot.metadata?.name) {
-        <div class="text-lg font-medium">
-          {{ screenshot.metadata?.name }}
+    <div class="max-w-7xl mx-auto bg-white rounded-3xl overflow-hidden">
+      <div class="flex flex-col lg:flex-row">
+        <!-- Screenshot Display Section -->
+        <div class="w-full lg:w-2/3 p-4">
+          <div class="rounded-xl overflow-hidden bg-gray-800 flex items-center justify-center">
+            <img
+              [src]="screenshot.pathname"
+              alt="Screenshot"
+              class="max-w-full h-auto"
+            />
+          </div>
         </div>
-        }
-        <div class="text-sm text-gray-500">
-          <span>{{ screenshot.createdAt | utcToLocalTime }}</span>
-          <span class="mx-1">|</span>
-          <span>{{ screenshot.metadata?.size | humanizeBytes }}</span>
-        </div>
-      </div>
-      <div
-        class="flex items-end h-fit ml-auto flex-col gap-2 justify-between text-gray-700 rounded-lg hover:bg-gray-100 transition-colors duration-200"
-      >
-        <button [libPopover]="menu" mat-icon-button>
-          <mat-icon>more_vert</mat-icon>
-        </button>
-      </div>
-    </div>
-    <!-- description -->
-    @if(screenshot.metadata?.description) {
-    <div class="text-sm text-gray-500">
-      {{ screenshot.metadata?.description }}
-    </div>
-    }
 
-    <!-- video card -->
-    @if(screenshot.video; as video) {
-    <!-- tags -->
-    <mat-chip-set aria-label="screenshot min-w-0 tags">
-      <mat-chip>Associate Video</mat-chip>
-    </mat-chip-set>
-    <lib-video class="max-w-80" [video]="video"></lib-video>
-    }
+        <!-- Metadata Section -->
+        <div class="w-full lg:w-1/3 bg-gray-100 p-4">
+          <div class="flex items-start gap-4 mb-4">
+            @if(screenshot.metadata?.icon) {
+            <img
+              [src]="screenshot.metadata?.icon"
+              [alt]="screenshot.metadata?.name"
+              class="w-12 h-12 rounded-full shadow-md"
+            />
+            }
+            <div class="flex-grow">
+              @if(screenshot.metadata?.name) {
+              <div class="text-xl font-bold text-gray-800 mb-1">
+                {{ screenshot.metadata?.name }}
+              </div>
+              }
+              <div class="text-sm text-gray-600 flex items-center flex-wrap">
+                <span class="mr-2">{{ screenshot.createdAt | utcToLocalTime }}</span>
+                <span class="text-gray-400 mr-2">•</span>
+                <span>{{ screenshot.metadata?.size | humanizeBytes }}</span>
+              </div>
+            </div>
+            <button [libPopover]="menu" mat-icon-button class="text-gray-500 hover:text-gray-700 transition-colors">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+          </div>
+
+          @if(screenshot.metadata?.description) {
+          <div class="bg-white rounded-xl p-4 mb-4">
+            <div class="text-lg font-semibold text-gray-700 mb-2">Description</div>
+            <p class="text-gray-600">{{ screenshot.metadata?.description }}</p>
+          </div>
+          }
+
+          @if(screenshot.video; as video) {
+          <div class="bg-white rounded-xl p-4">
+            <div class="text-lg font-semibold text-gray-600 mb-2">Associated Video</div>
+            <lib-video class="w-full rounded-lg overflow-hidden" [video]="video"></lib-video>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+
+  <ng-template #menu>
+    <lib-action-button-group
+      [data]="screenshot"
+      [buttons]="actionButtons"
+    ></lib-action-button-group>
+  </ng-template>
+  } @else {
+  <div class="min-h-screen flex justify-center items-center bg-gradient-to-br from-gray-50 to-gray-100">
+    <div class="bg-white p-8 rounded-2xl shadow-xl">
+      <lib-no-data
+        class="text-gray-700"
+        message="No screenshot available"
+      ></lib-no-data>
+    </div>
   </div>
-</div>
-<ng-template #menu>
-  <lib-action-button-group
-    [data]="screenshot"
-    [buttons]="actionButtons"
-  ></lib-action-button-group>
-</ng-template>
-}@else {
-<lib-no-data
-  class="min-h-96 flex justify-center items-center"
-  message="No screenshot available"
-></lib-no-data>
-}
+  }
