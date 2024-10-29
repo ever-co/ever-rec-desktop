@@ -6,11 +6,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import {
   generateVideoActions,
   selectSettingState,
+  settingActions,
 } from '@ever-co/convert-video-data-access';
 import {
   screenshotActions,
   selectScreenshotState,
   selectSettingScreenCaptureState,
+  settingScreenCaptureActions,
 } from '@ever-co/screenshot-data-access';
 import { IScreenCaptureConfig, IVideoConfig } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
@@ -53,6 +55,9 @@ export class StartComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe();
+
+    this.store.dispatch(settingActions.load());
+    this.store.dispatch(settingScreenCaptureActions.load());
   }
 
   public startCapture(): void {
@@ -61,6 +66,7 @@ export class StartComponent implements OnInit, OnDestroy {
         generateVideoActions.autoGenerate({ config: this.videoConfig })
       );
     }
+
     this.store.dispatch(
       screenshotActions.startCapture(this.screenCaptureConfig)
     );

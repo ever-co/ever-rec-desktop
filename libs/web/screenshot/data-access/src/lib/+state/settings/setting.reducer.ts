@@ -1,7 +1,4 @@
-import {
-  IScreenCaptureConfig,
-  Source
-} from '@ever-co/shared-utils';
+import { IScreenCaptureConfig, Source } from '@ever-co/shared-utils';
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { settingScreenCaptureActions } from './setting.actions';
 
@@ -15,7 +12,7 @@ export interface State {
 const initialState: State = {
   screenCaptureConfig: {
     period: 2,
-    source: Source.SCREEN
+    source: Source.SCREEN,
   },
   error: '',
 };
@@ -23,10 +20,16 @@ const initialState: State = {
 export const reducer = createReducer(
   initialState,
   on(settingScreenCaptureActions.load, (state) => ({ ...state, error: '' })),
-  on(settingScreenCaptureActions.loadSuccess, (state, { screenCaptureConfig }) => ({
-    ...state,
-    screenCaptureConfig: screenCaptureConfig ?? state.screenCaptureConfig,
-  })),
+  on(
+    settingScreenCaptureActions.loadSuccess,
+    (state, { screenCaptureConfig }) => ({
+      ...state,
+      screenCaptureConfig: {
+        ...state.screenCaptureConfig,
+        ...screenCaptureConfig,
+      },
+    })
+  ),
   on(settingScreenCaptureActions.failure, (state, { error }) => ({
     ...state,
     error,
