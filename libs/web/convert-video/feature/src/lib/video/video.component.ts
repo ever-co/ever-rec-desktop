@@ -180,7 +180,7 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(
         filter(() => this.isControlledRemotely && !!this.player),
         tap((remoteState) => {
-          const videoDuration = this.video.metadata?.duration || 0;
+          const videoDuration = this.player.duration || 0;
           const scrollDuration =
             (videoDuration * remoteState.scrollPercentage) / 100;
           this.duration$.next(

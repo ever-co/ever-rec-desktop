@@ -18,7 +18,16 @@ import { selectScreenshotState } from '@ever-co/screenshot-data-access';
 import { NoDataComponent } from '@ever-co/shared-components';
 import { IScreenshot, moment } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
-import { filter, map, Observable, Subject, take, takeUntil, tap } from 'rxjs';
+import {
+  filter,
+  fromEvent,
+  map,
+  Observable,
+  Subject,
+  take,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import { ProgressComponent } from '../progress/progress.component';
 import { VideoComponent } from '../video/video.component';
 
@@ -181,9 +190,9 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       takeUntil(this.destroy$)
     );
 
-    this.videoComponent.currentTime$
+    fromEvent(this.videoComponent?.player, 'timeupdate')
       .pipe(
-        map(() => this.videoComponent.player),
+        map((event) => event.target as HTMLVideoElement),
         filter((player) => !player.paused),
         tap((player) =>
           this.jumpTo({

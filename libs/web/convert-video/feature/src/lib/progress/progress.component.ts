@@ -23,7 +23,14 @@ export class ProgressComponent {
   }
   public get progress$(): Observable<number> {
     return this.store.select(selectGenerateVideoState).pipe(
-      map((state) => state.progress),
+      map((state) => (state.progress || 0) / 100),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  public get progressBar$(): Observable<number> {
+    return this.store.select(selectGenerateVideoState).pipe(
+      map((state) => state.progress || 0),
       takeUntil(this.destroy$)
     );
   }
