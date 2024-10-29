@@ -4,6 +4,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  HostListener,
   Input,
   OnDestroy,
   OnInit,
@@ -89,6 +90,38 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
       )
       .subscribe();
     this.setupRemoteControlObservable();
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  private handleKeydown(event: KeyboardEvent): void {
+    if (event.target instanceof HTMLInputElement) return;
+
+    switch (event.code) {
+      case 'Space':
+        event.preventDefault();
+        this.togglePlayPause();
+        break;
+      case 'ArrowLeft':
+        event.preventDefault();
+        this.skipBackward();
+        break;
+      case 'ArrowRight':
+        event.preventDefault();
+        this.skipForward();
+        break;
+      case 'KeyF':
+        event.preventDefault();
+        this.fullscreen();
+        break;
+    }
+  }
+
+  public skipBackward() {
+    //TODO
+  }
+
+  public skipForward() {
+    //TODO
   }
 
   public async togglePlayPause(): Promise<void> {
