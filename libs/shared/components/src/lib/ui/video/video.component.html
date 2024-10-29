@@ -1,6 +1,6 @@
 <!-- video.component.html -->
 @if (video) {
-  <mat-card appearance="outlined" class="transform transition-transform duration-300 scale-[0.98] hover:scale-[1.00]">
+  <mat-card appearance="outlined" class="transform transition-transform duration-300 scale-[0.99] hover:scale-[1.00]">
     <div class="relative group">
       <video
         #videoPlayer
@@ -16,7 +16,7 @@
 
       @if(!controls){
       <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 rounded-t-lg">
-        <div class="absolute bg-gradient-to-t from-black/80 to-transparent h-full w-full justify-between items-end flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div class="absolute p-1 bg-gradient-to-t from-black/80 to-transparent h-full w-full justify-between items-end flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <button [libPopover]="menu" mat-icon-button class="bg-black">
             <mat-icon class="text-white hover:text-blue-400 transition-colors">more_vert</mat-icon>
           </button>

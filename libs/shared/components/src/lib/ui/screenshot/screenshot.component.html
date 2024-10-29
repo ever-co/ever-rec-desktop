@@ -1,26 +1,34 @@
 @if (screenshot) {
-<mat-card class="card" appearance="outlined">
-  <div class="screenshot-container p-4">
+<mat-card
+  appearance="outlined"
+  class="transform transition-transform rounded-t-lg duration-300 scale-[0.99] hover:scale-[1.00]"
+>
+  <div class="relative rounded-t-lg group">
     <img
       mat-card-image
       [src]="screenshot.pathname"
       alt="Screenshot"
-      class="w-full h-auto object-cover rounded-md"
+      class="w-full h-full object-cover rounded-t-lg"
     />
     <div
-      class="overlay flex items-end flex-col gap-2 justify-between text-gray-700 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+      class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 rounded-t-lg"
     >
-      <button [libPopover]="menu" mat-icon-button>
-        <mat-icon>more_vert</mat-icon>
-      </button>
+      <div
+        class="absolute p-1 bg-gradient-to-t from-black/80 to-transparent h-full w-full justify-between items-end flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+      >
+        <button [libPopover]="menu" mat-icon-button class="bg-black">
+          <mat-icon class="text-white hover:text-blue-400 transition-colors"
+            >more_vert</mat-icon
+          >
+        </button>
+      </div>
     </div>
   </div>
 
-  <mat-card-content>
-    <div class="flex gap-4 w-full items-center">
+  <mat-card-content class="p-4">
+    <div class="flex items-center gap-4">
       @if (screenshot.metadata?.icon) {
       <img
-        mat-card-avatar
         [src]="screenshot.metadata?.icon"
         [alt]="screenshot.metadata?.name"
         class="w-10 h-10 rounded-full object-cover"
@@ -28,19 +36,18 @@
       }
       <div class="flex-1 min-w-0">
         @if (screenshot.metadata?.name) {
-        <div class="text-lg font-medium truncate">
+        <div class="text-lg font-medium text-gray-900 truncate">
           {{ screenshot.metadata?.name }}
         </div>
         }
-        <div class="text-sm text-gray-500 truncate">
+        <p class="text-sm text-gray-500 truncate">
           {{ screenshot.createdAt | utcToLocalTime }}
-        </div>
+        </p>
       </div>
     </div>
   </mat-card-content>
 </mat-card>
 
-<!-- Enhanced Menu -->
 <ng-template #menu>
   <lib-action-button-group
     [data]="screenshot"
