@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { NavigationEnd, Router } from '@angular/router';
@@ -27,12 +27,10 @@ import {
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss',
 })
-export class SidebarComponent implements OnInit, OnDestroy {
+export class SidebarComponent implements OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
-  constructor(private readonly store: Store, private readonly router: Router) {}
-
-  ngOnInit(): void {
+  constructor(private readonly store: Store, private readonly router: Router) {
     this.router.events
       .pipe(
         map((evt) => (evt as NavigationEnd).urlAfterRedirects),
