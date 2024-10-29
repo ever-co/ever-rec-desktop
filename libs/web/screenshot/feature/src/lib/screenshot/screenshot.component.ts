@@ -14,9 +14,10 @@ import {
   VideoComponent,
 } from '@ever-co/shared-components';
 import {
+  CopyToClipboardDirective,
   HumanizeBytesPipe,
   PopoverDirective,
-  UtcToLocalTimePipe,
+  UtcToLocalTimePipe
 } from '@ever-co/shared-service';
 import { IActionButton, IScreenshot } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
@@ -36,6 +37,7 @@ import { concatMap, filter, Observable } from 'rxjs';
     HumanizeBytesPipe,
     PopoverDirective,
     ActionButtonGroupComponent,
+    CopyToClipboardDirective
   ],
   templateUrl: './screenshot.component.html',
   styleUrl: './screenshot.component.scss',

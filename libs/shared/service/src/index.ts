@@ -3,6 +3,7 @@ export * from './lib/date-picker/+state/date-picker.effects';
 export * from './lib/date-picker/+state/date-picker.reducer';
 export * from './lib/date-picker/+state/date-picker.selectors';
 export * from './lib/date-picker/date-picker-access-provider.module';
+export * from './lib/directives/copy-to-clipboard.directive';
 export * from './lib/directives/infinite-scroll.directive';
 export * from './lib/directives/popover/popover.directive';
 export * from './lib/directives/popover/popover.type';
