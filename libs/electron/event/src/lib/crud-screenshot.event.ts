@@ -102,8 +102,10 @@ export function crudScreeshotEvents() {
         // Delete screenshots from the database
         await ScreenshotService.deleteAll(ids);
 
-        // Delete files in parallel, capturing any file deletion errors
-        await Promise.all(paths.map(FileManager.deleteFile));
+        // Delete files concurrently
+        await Promise.all(
+          paths.map(async (pathname) => await FileManager.deleteFile(pathname))
+        );
       } catch (error) {
         console.error('Error deleting screenshots:', error);
         throw new Error('Failed to delete selected screenshots.');

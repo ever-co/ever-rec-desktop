@@ -80,6 +80,7 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
       icon: 'delete',
       label: 'Delete',
       variant: 'danger',
+      loading: this.deleting$,
       action: this.deleteScreenshots.bind(this),
     },
   ];
@@ -196,6 +197,18 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
     const screenshots = this.selectedScreenshots.map((item) => item.data);
      this.store.dispatch(
       screenshotActions.deleteSelectedScreenshots({ screenshots })
+    );
+  }
+
+  public get deleting$(): Observable<boolean> {
+    return this.store.select(selectScreenshotState).pipe(
+      tap((screenshot) => {
+        if (screenshot.deleting) {
+          this.selectedScreenshots = [];
+        }
+      }),
+      map((screenshot) => screenshot.deleting),
+      takeUntil(this.destroy$)
     );
   }
 
