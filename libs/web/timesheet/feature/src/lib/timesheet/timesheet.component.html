@@ -1,17 +1,31 @@
-<div class="w-full relative">
-  @if(isMobileView() && (((hideAction$ | async) === false) ||
-  actionButtons.length > 1)) {
-  <div class="flex w-full absolute -top-0 justify-end">
-    <button [libPopover]="actions" mat-icon-button>
-      <mat-icon>more_vert</mat-icon>
-    </button>
+<div class="w-full">
+  <div class="w-full relative">
+    @if(isMobileView() && actionButtons.length > 1) { @if((hideAction$ | async)
+    === false) {
+    <div class="flex w-full absolute top-0 justify-end">
+      <button [libPopover]="actions" mat-icon-button>
+        <mat-icon>more_vert</mat-icon>
+      </button>
+    </div>
+    } }@else {
+    <div class="flex w-full absolute top-0 justify-end">
+      <ng-container *ngTemplateOutlet="actions"></ng-container>
+    </div>
+    }
+    <div class="flex gap-1 items-center">
+      <h4 class="text-xl md:text-xl font-bold">
+        {{ dateRange$ | async | humanizeDateRange | titlecase }}
+      </h4>
+      <button
+        class="mb-4"
+        [libPopover]="timeLogStatisticsComponent"
+        matTooltip="More statistics"
+        mat-icon-button
+      >
+        <mat-icon>timer</mat-icon>
+      </button>
+    </div>
   </div>
-  }@else {
-  <div class="flex w-full absolute -top-4 justify-end">
-    <ng-container *ngTemplateOutlet="actions"></ng-container>
-  </div>
-  }
-  <h4 class="text-xl md:text-xl font-bold mb-6">{{ dateRange$ | async | humanizeDateRange | titlecase }}</h4>
   <!-- Timesheet Table  -->
   <div class="mat-elevation-z0 p-4 bg-white rounded-lg mt-2">
     <div class="overflow-x-auto h-96 max-w-full rounded-lg">
@@ -23,24 +37,24 @@
         class="min-w-full rounded-lg bg-gray-50"
         (matSortChange)="sortChange()"
       >
-       <!-- CreatedAt Column -->
-       <ng-container matColumnDef="createdAt">
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-          mat-sort-header
-          class="px-4 py-2 text-left text-gray-600"
-        >
-          Date
-        </th>
-        <td
-          mat-cell
-          *matCellDef="let log"
-          class="px-4 py-2 truncate md:table-cell"
-        >
-          {{ log.createdAt | date : 'EEEE, MMM d, y' }}
-        </td>
-      </ng-container>
+        <!-- CreatedAt Column -->
+        <ng-container matColumnDef="createdAt">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            class="px-4 py-2 text-left text-gray-600"
+          >
+            Date
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let log"
+            class="px-4 py-2 truncate md:table-cell"
+          >
+            {{ log.createdAt | date : 'EEEE, MMM d, y' }}
+          </td>
+        </ng-container>
         <!-- Start Column -->
         <ng-container matColumnDef="start">
           <th

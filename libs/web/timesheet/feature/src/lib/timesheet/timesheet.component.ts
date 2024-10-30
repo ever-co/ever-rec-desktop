@@ -6,9 +6,11 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import {
   ActionButtonGroupComponent,
   NoDataComponent,
+  TimeLogStatisticsComponent,
 } from '@ever-co/shared-components';
 import {
   HumanizeDateRangePipe,
@@ -45,7 +47,9 @@ import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
     NoDataComponent,
     ActionButtonGroupComponent,
     PopoverDirective,
-    HumanizeDateRangePipe
+    HumanizeDateRangePipe,
+    PopoverDirective,
+    MatTooltipModule
   ],
   templateUrl: './timesheet.component.html',
   styleUrl: './timesheet.component.scss',
@@ -180,6 +184,10 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       map((state) => state.selectedRange),
       takeUntil(this.destroy$)
     );
+  }
+
+  public get timeLogStatisticsComponent() {
+    return TimeLogStatisticsComponent
   }
 
   ngOnDestroy(): void {

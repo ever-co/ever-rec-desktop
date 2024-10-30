@@ -4,13 +4,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { selectScreenshotState } from '@ever-co/screenshot-data-access';
+import { TimeLogStatisticsComponent } from '@ever-co/shared-components';
 import { HumanizeDateRangePipe, HumanizePipe, PopoverDirective, selectDatePickerState } from '@ever-co/shared-service';
 import { IRange, ITimeLogStatistics } from '@ever-co/shared-utils';
 import {
   selectTimeLogState,
   timeLogActions,
 } from '@ever-co/timesheet-data-access';
-import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 
@@ -69,11 +69,8 @@ export class TimeLogStaComponent implements OnInit, OnDestroy {
     );
   }
 
-  public get showMonth$(): Observable<boolean> {
-    return this.store.select(selectSettingStorageState).pipe(
-      map((state) => state.retention > 7),
-      takeUntil(this.destroy$)
-    );
+  public get timeLogStatisticsComponent() {
+    return TimeLogStatisticsComponent
   }
 
   ngOnDestroy(): void {
