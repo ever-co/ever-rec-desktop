@@ -13,8 +13,10 @@
     </div>
     }
     <div class="flex gap-1 items-center">
-      <h4 class="text-xl md:text-xl font-bold">
-        {{ dateRange$ | async | humanizeDateRange | titlecase }}
+      <h4 class="text-xl md:text-xl truncate font-bold">
+        {{ dateRange$ | async | humanizeDateRange | titlecase }} &mdash; @if(!(statistics$ | async)?.range) { No work }@else {
+          {{ (statistics$ | async)?.range || 0 | humanize : 's' }}
+          }
       </h4>
       <button
         class="mb-4"

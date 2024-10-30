@@ -24,6 +24,7 @@ import {
   IPaginationOptions,
   IRange,
   ITimeLog,
+  ITimeLogStatistics,
 } from '@ever-co/shared-utils';
 import {
   selectTimeLogState,
@@ -49,7 +50,7 @@ import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
     PopoverDirective,
     HumanizeDateRangePipe,
     PopoverDirective,
-    MatTooltipModule
+    MatTooltipModule,
   ],
   templateUrl: './timesheet.component.html',
   styleUrl: './timesheet.component.scss',
@@ -187,7 +188,14 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   }
 
   public get timeLogStatisticsComponent() {
-    return TimeLogStatisticsComponent
+    return TimeLogStatisticsComponent;
+  }
+
+  public get statistics$(): Observable<ITimeLogStatistics> {
+    return this.store.select(selectTimeLogState).pipe(
+      map((state) => state.statistics),
+      takeUntil(this.destroy$)
+    );
   }
 
   ngOnDestroy(): void {
