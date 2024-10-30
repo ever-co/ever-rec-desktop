@@ -80,6 +80,7 @@ export class TimeLogEffects {
     this.actions$.pipe(
       ofType(
         timeLogActions.getTimeLogStatistics,
+        timeLogActions.loadTimeLogs,
         datePickerActions.selectRange,
         screenshotActions.loadScreenshots
       ),
