@@ -7,6 +7,7 @@
         class="rounded-xl overflow-hidden bg-gray-800 flex items-center justify-center transform transition-transform duration-300 scale-[0.99] hover:scale-[1.00]"
       >
         <img
+          libImgFallback
           [src]="screenshot.pathname"
           alt="Screenshot"
           class="max-w-full h-auto"
@@ -19,9 +20,10 @@
       <div class="flex items-start gap-4 mb-4">
         @if(screenshot.metadata?.icon) {
         <img
+          libIconFallback
           [src]="screenshot.metadata?.icon"
           [alt]="screenshot.metadata?.name"
-          class="w-12 h-12 rounded-full shadow-md"
+          class="w-12 h-12"
         />
         }
         <div class="flex-grow">

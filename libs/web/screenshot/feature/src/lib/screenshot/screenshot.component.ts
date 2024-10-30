@@ -16,6 +16,8 @@ import {
 import {
   CopyToClipboardDirective,
   HumanizeBytesPipe,
+  IconFallbackDirective,
+  ImgFallbackDirective,
   PopoverDirective,
   UtcToLocalTimePipe
 } from '@ever-co/shared-service';
@@ -37,7 +39,9 @@ import { concatMap, filter, Observable } from 'rxjs';
     HumanizeBytesPipe,
     PopoverDirective,
     ActionButtonGroupComponent,
-    CopyToClipboardDirective
+    CopyToClipboardDirective,
+    ImgFallbackDirective,
+    IconFallbackDirective
   ],
   templateUrl: './screenshot.component.html',
   styleUrl: './screenshot.component.scss',

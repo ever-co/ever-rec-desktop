@@ -5,7 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink } from '@angular/router';
 import { screenshotActions } from '@ever-co/screenshot-data-access';
-import { PopoverDirective, UtcToLocalTimePipe } from '@ever-co/shared-service';
+import { IconFallbackDirective, ImgFallbackDirective, PopoverDirective, UtcToLocalTimePipe } from '@ever-co/shared-service';
 import { IActionButton, IScreenshot } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { ActionButtonGroupComponent } from "../action-button-group/group/action-button-group.component";
@@ -21,7 +21,9 @@ import { ActionButtonGroupComponent } from "../action-button-group/group/action-
     PopoverDirective,
     MatIconModule,
     MatButtonModule,
-    ActionButtonGroupComponent
+    ActionButtonGroupComponent,
+    ImgFallbackDirective,
+    IconFallbackDirective
 ],
   templateUrl: './screenshot.component.html',
   styleUrl: './screenshot.component.scss',
