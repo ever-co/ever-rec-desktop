@@ -51,6 +51,18 @@ export class VideoEffects {
     )
   );
 
+  deleteVideos$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(videoActions.deleteVideos),
+      mergeMap(({ videos }) =>
+        from(this.videoElectronService.deleteVideos(videos)).pipe(
+          map(() => videoActions.deleteVideosSuccess({ videos })),
+          catchError((error) => of(videoActions.deleteVideoFailure({ error })))
+        )
+      )
+    )
+  );
+
   updateVideo$ = createEffect(() =>
     this.actions$.pipe(
       ofType(videoActions.updateVideo),

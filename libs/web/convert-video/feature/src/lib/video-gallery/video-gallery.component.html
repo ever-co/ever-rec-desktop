@@ -2,7 +2,7 @@
 <div
   libInfiniteScroll
   (scrolled)="moreVideos()"
-  class="grid grid-cols-1 static md:grid-cols-2 lg:grid-cols-3 gap-4 pr-4 overflow-auto max-h-svh main"
+  class="grid grid-cols-1 static md:grid-cols-2 lg:grid-cols-3 gap-4 pr-4 overflow-auto max-h-custom main"
 >
   @for (video of videos$ | async; track video.id) {
   <lib-video
@@ -10,7 +10,7 @@
     [video]="video"
     (selected)="selectVideo($event)"
   ></lib-video>
-  } @if(selectedVideos.length > 0) {
+  } @if((size$ | async)) {
   <div class="absolute inset-x-0 action-button-group">
     <div class="flex justify-center">
       <div
@@ -21,7 +21,7 @@
           [buttons]="actionButtons"
         ></lib-action-button-group>
         <div class="text-blue-500 font-semibold">
-          {{ selectedVideos.length }} selected
+          {{ (size$ | async) }} selected
         </div>
       </div>
     </div>

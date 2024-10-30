@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import {
   selectVideoState,
   videoActions,
@@ -25,7 +25,14 @@ import {
   IVideo,
 } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
-import { Observable, Subject, map, takeUntil, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  Subject,
+  map,
+  takeUntil,
+  tap,
+} from 'rxjs';
 
 @Component({
   selector: 'lib-video-gallery',
@@ -53,29 +60,31 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
   private currentPage = 1;
   private hasNext = false;
   private range!: IRange;
-  public selectedVideos: ISelected<IVideo>[] = [];
+  public _selectedVideos$ = new BehaviorSubject<ISelected<IVideo>[]>([]);
   public actionButtons: IActionButton[] = [
     {
-      icon: 'done_all',
-      label: 'Select All',
-      variant: 'success',
-    },
-    {
-      icon: 'remove_done',
-      label: 'Unselect All',
+      icon: 'visibility',
+      label: 'View',
       variant: 'default',
+      hide: this.moreThanOneSelected$,
+      action: this.view.bind(this),
     },
     {
       icon: 'merge',
       label: 'Merge',
       variant: 'warning',
+      hide: this.lessThanOneSelected$,
     },
     {
       icon: 'delete',
       label: 'Delete',
       variant: 'danger',
+      loading: this.deleting$,
+      action: this.deleteVideos.bind(this),
     },
   ];
+
+  constructor(private readonly router: Router) {}
 
   ngOnInit(): void {
     this.store
@@ -111,6 +120,20 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
+  private async view(): Promise<void> {
+    await this.router.navigate([
+      '/',
+      'library',
+      'videos',
+      this.selectedVideos[0].data.id,
+    ]);
+  }
+
+  private deleteVideos(): void {
+    const videos = this.selectedVideos.map((item) => item.data);
+    this.store.dispatch(videoActions.deleteVideos({ videos }));
+  }
+
   public moreVideos(): void {
     if (this.hasNext) {
       this.currentPage++;
@@ -130,6 +153,42 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
         [...this.selectedVideos, video].map((item) => [item.data.id, item])
       ).values(),
     ].filter((item) => item.selected);
+  }
+
+  public get selectedVideos(): ISelected<IVideo>[] {
+    return this._selectedVideos$.getValue();
+  }
+
+  public set selectedVideos(values: ISelected<IVideo>[]) {
+    this._selectedVideos$.next(values);
+  }
+
+  public get selectedVideos$(): Observable<ISelected<IVideo>[]> {
+    return this._selectedVideos$.asObservable().pipe(takeUntil(this.destroy$));
+  }
+
+  public get moreThanOneSelected$(): Observable<boolean> {
+    return this.selectedVideos$.pipe(map((videos) => videos.length > 1));
+  }
+
+  public get lessThanOneSelected$(): Observable<boolean> {
+    return this.selectedVideos$.pipe(map((videos) => videos.length <= 1));
+  }
+
+  public get size$(): Observable<number> {
+    return this.selectedVideos$.pipe(map((videos) => videos.length));
+  }
+
+  public get deleting$(): Observable<boolean> {
+    return this.store.select(selectVideoState).pipe(
+      tap((video) => {
+        if (video.deleting) {
+          this.selectedVideos = [];
+        }
+      }),
+      map((video) => video.deleting),
+      takeUntil(this.destroy$)
+    );
   }
 
   ngOnDestroy(): void {

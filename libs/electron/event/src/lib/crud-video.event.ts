@@ -50,10 +50,27 @@ export function crudVideoEvents() {
     return videoService.findOne(options);
   });
 
-  // Get one video
+  // Delete one video
   ipcMain.handle(Channel.REQUEST_DELETE_ONE_VIDEO, async (_, video: IVideo) => {
     await videoService.delete(video.id);
     await FileManager.deleteFile(video.pathname);
+  });
+
+  // Delete Many Videos
+  ipcMain.handle(Channel.REQUEST_DELETE_ALL_VIDEO, async (_, videos: IVideo[]) => {
+    // Extract IDs
+    const ids = videos.map(({ id }) => id);
+
+    // Extract Pathnames
+    const pathnames = videos.map(({ pathname }) => pathname);
+
+    // Delete videos in the database
+    await videoService.deleteAll(ids);
+
+    // Delete files concurrently
+    await Promise.all(
+      pathnames.map(async (pathname) => await FileManager.deleteFile(pathname))
+    );
   });
 
   // Get one video

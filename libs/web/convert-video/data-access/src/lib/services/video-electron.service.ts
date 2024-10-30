@@ -1,10 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { ElectronService } from '@ever-co/electron-data-access';
-import {
-  Channel,
-  IPaginationResponse,
-  IVideo
-} from '@ever-co/shared-utils';
+import { Channel, IPaginationResponse, IVideo } from '@ever-co/shared-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +20,17 @@ export class VideoElectronService {
     return this.electronService.invoke(Channel.REQUEST_DELETE_ONE_VIDEO, video);
   }
 
+  public deleteVideos(videos: IVideo[]): Promise<void> {
+    return this.electronService.invoke(
+      Channel.REQUEST_DELETE_ALL_VIDEO,
+      videos
+    );
+  }
+
   public updateVideo(video: Partial<IVideo>): Promise<IVideo> {
-    return this.electronService.invoke(Channel.REQUEST_VIDEO_METADATA_UPDATE, video);
+    return this.electronService.invoke(
+      Channel.REQUEST_VIDEO_METADATA_UPDATE,
+      video
+    );
   }
 }

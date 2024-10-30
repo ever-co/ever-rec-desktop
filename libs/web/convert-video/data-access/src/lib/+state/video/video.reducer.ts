@@ -11,6 +11,7 @@ export interface IVideoState {
   hasNext: boolean;
   count: number;
   loading: boolean;
+  deleting: boolean;
 }
 
 export const initialState: IVideoState = {
@@ -20,6 +21,7 @@ export const initialState: IVideoState = {
   count: 0,
   hasNext: false,
   loading: false,
+  deleting: false
 };
 
 export const reducer = createReducer(
@@ -66,16 +68,48 @@ export const reducer = createReducer(
     error,
   })),
 
-  // Delete Video
+  // Delete Video Actions Reducers
+  on(videoActions.deleteVideo, (state) => ({
+    ...state,
+    deleting: true,
+  })),
+
+  on(videoActions.deleteVideos, (state) => ({
+    ...state,
+    deleting: true,
+  })),
+
   on(videoActions.deleteVideoSuccess, (state, { id }) => ({
     ...state,
     video: state.video?.id === id ? initialState.video : state.video,
     videos: state.videos.filter((video) => video.id !== id),
+    deleting: false,
   })),
+
+  on(videoActions.deleteVideosSuccess, (state, { videos }) => {
+    const videoIdsDeleted = videos.map((video) => video.id);
+
+    // Determine the current video state
+    const updatedVideo = state.video?.id && videoIdsDeleted.includes(state.video.id)
+      ? state.video
+      : initialState.video;
+
+    // Filter out deleted videos
+    const updatedVideos = state.videos.filter(
+      (video) => !videoIdsDeleted.includes(video.id)
+    );
+
+    return {
+      ...state,
+      video: updatedVideo,
+      videos: updatedVideos,
+      deleting: false,
+    };
+  }),
 
   on(videoActions.deleteVideoFailure, (state, { error }) => ({
     ...state,
-    loading: false,
+    deleting: false,
     error,
   })),
 
