@@ -23,13 +23,15 @@ export function crudTimeLogEvents() {
         limit = 10,
         start = currentDay().start,
         end = currentDay().end,
+        sortField = 'createdAt',
+        sortOrder = 'DESC',
       } = options;
 
       const [data, count] = await timeLogService.findAndCount({
         where: {
           createdAt: Between(start, end),
         },
-        order: { createdAt: 'DESC' },
+        order: { [`${sortField}`]: sortOrder },
         skip: (page - 1) * limit,
         take: limit,
       });
