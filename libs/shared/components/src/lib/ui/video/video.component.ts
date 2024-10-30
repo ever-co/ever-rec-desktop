@@ -3,19 +3,22 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnDestroy,
+  Output,
   ViewChild,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRippleModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
 import { videoActions } from '@ever-co/convert-video-data-access';
 import { PopoverDirective, UtcToLocalTimePipe } from '@ever-co/shared-service';
-import { IActionButton, IVideo } from '@ever-co/shared-utils';
+import { IActionButton, ISelected, IVideo } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, fromEvent, Subject, takeUntil, tap } from 'rxjs';
 import { ActionButtonGroupComponent } from '../action-button-group/group/action-button-group.component';
@@ -33,6 +36,7 @@ import { ActionButtonGroupComponent } from '../action-button-group/group/action-
     ActionButtonGroupComponent,
     MatRippleModule,
     MatTooltipModule,
+    MatCheckboxModule,
   ],
   templateUrl: './video.component.html',
   styleUrl: './video.component.scss',
@@ -47,9 +51,14 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
   @Input()
   public video!: IVideo;
 
+  @Output()
+  public selected = new EventEmitter<ISelected<IVideo>>();
+
   public played$ = new BehaviorSubject<boolean>(false);
 
   private destroy$ = new Subject<void>();
+
+  public checked = false;
 
   public actionButtons: IActionButton[] = [
     {
@@ -120,6 +129,14 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
 
   public async delete(video: IVideo): Promise<void> {
     this.store.dispatch(videoActions.deleteVideo(video));
+  }
+
+  public onSelected(checked: boolean): void {
+    this.checked = checked;
+    this.selected.emit({
+      data: this.video,
+      selected: checked,
+    });
   }
 
   ngOnDestroy(): void {

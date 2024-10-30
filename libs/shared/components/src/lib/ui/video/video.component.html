@@ -19,21 +19,34 @@
 
     @if(!controls){
     <div
+      [ngClass]="{ 'bg-opacity-20': checked }"
       class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 rounded-t-lg"
     >
       <div
-        class="absolute p-1 bg-gradient-to-t from-black/80 to-transparent h-full w-full justify-between items-end flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        [ngClass]="{ 'opacity-100': checked }"
+        class="absolute p-1 bg-gradient-to-t from-black/80 to-transparent h-full w-full justify-between items-start flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
       >
-        <button [libPopover]="menu" mat-icon-button class="bg-black">
-          <mat-icon class="text-white hover:text-blue-400 transition-colors"
-            >more_vert</mat-icon
+        <div class="flex items-center group">
+          <mat-checkbox
+            [checked]="checked"
+            (change)="onSelected($event.checked)"
+            [color]="'primary'"
+            class="relative text-white transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900 rounded group-hover:text-blue-400"
           >
-        </button>
-        <button (click)="fullscreen()" mat-icon-button class="bg-black">
-          <mat-icon class="text-white hover:text-blue-400 transition-colors"
-            >fullscreen</mat-icon
-          >
-        </button>
+          </mat-checkbox>
+        </div>
+        <div class="flex flex-col justify-between h-full">
+          <button [libPopover]="menu" mat-icon-button class="bg-black">
+            <mat-icon class="text-white hover:text-blue-400 transition-colors"
+              >more_vert</mat-icon
+            >
+          </button>
+          <button (click)="fullscreen()" mat-icon-button class="bg-black">
+            <mat-icon class="text-white hover:text-blue-400 transition-colors"
+              >fullscreen</mat-icon
+            >
+          </button>
+        </div>
       </div>
     </div>
     }

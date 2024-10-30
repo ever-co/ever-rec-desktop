@@ -10,3 +10,8 @@ export interface IBase {
 export type IFindOneOptions = FindOneOptions;
 
 export type IFindOptionsWhere<T> = FindOptionsWhere<T>;
+
+export interface ISelected<T> {
+  data: T,
+  selected: boolean
+}
