@@ -11,6 +11,7 @@ import {
   NoDataComponent,
 } from '@ever-co/shared-components';
 import {
+  HumanizeDateRangePipe,
   HumanizePipe,
   LayoutService,
   PopoverDirective,
@@ -44,6 +45,7 @@ import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
     NoDataComponent,
     ActionButtonGroupComponent,
     PopoverDirective,
+    HumanizeDateRangePipe
   ],
   templateUrl: './timesheet.component.html',
   styleUrl: './timesheet.component.scss',
@@ -171,6 +173,13 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     return this.store
       .select(selectTimeLogState)
       .pipe(map((state) => (state.timeLog?.id ? false : true)));
+  }
+
+  public get dateRange$(): Observable<IRange> {
+    return this.store.select(selectDatePickerState).pipe(
+      map((state) => state.selectedRange),
+      takeUntil(this.destroy$)
+    );
   }
 
   ngOnDestroy(): void {

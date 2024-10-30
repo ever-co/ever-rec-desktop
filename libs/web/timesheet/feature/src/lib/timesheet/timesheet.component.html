@@ -1,17 +1,19 @@
 <div class="w-full relative">
   @if(isMobileView() && (((hideAction$ | async) === false) ||
   actionButtons.length > 1)) {
-  <div class="flex w-full absolute -top-10 justify-end">
+  <div class="flex w-full absolute -top-0 justify-end">
     <button [libPopover]="actions" mat-icon-button>
       <mat-icon>more_vert</mat-icon>
     </button>
   </div>
   }@else {
-  <div class="flex w-full absolute -top-16 justify-end">
+  <div class="flex w-full absolute -top-4 justify-end">
     <ng-container *ngTemplateOutlet="actions"></ng-container>
   </div>
   }
-  <div class="mat-elevation-z0 p-4 bg-white rounded-lg mt-6">
+  <h4 class="text-xl md:text-xl font-bold mb-6">{{ dateRange$ | async | humanizeDateRange | titlecase }}</h4>
+  <!-- Timesheet Table  -->
+  <div class="mat-elevation-z0 p-4 bg-white rounded-lg mt-2">
     <div class="overflow-x-auto h-96 max-w-full rounded-lg">
       @if(dataSource.data.length){
       <table
