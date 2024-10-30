@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { VideoGalleryComponent } from '@ever-co/convert-video-feature';
 import { selectScreenshotState } from '@ever-co/screenshot-data-access';
@@ -27,7 +28,8 @@ import { map, Observable, Subject, takeUntil } from 'rxjs';
     ScreenshotStatisticComponent,
     HumanizePipe,
     HumanizeDateRangePipe,
-    RouterLink
+    RouterLink,
+    MatTooltipModule
   ],
   templateUrl: './screenshot.component.html',
   styleUrl: './screenshot.component.scss',
