@@ -14,7 +14,7 @@
         <div class="text-xl font-bold flex justify-between text-gray-600 mb-4">
           <span>Video Summary</span>
           @if(area.value) {
-            <span [libCopyToClipboard]="area.value"></span>
+          <span [libCopyToClipboard]="area.value"></span>
           }
         </div>
         <mat-form-field appearance="outline" class="w-full">
@@ -119,9 +119,13 @@
             </div>
             <div class="flex justify-between items-center">
               <span class="text-sm text-gray-500">Duration</span>
-              <span class="text-sm font-medium text-gray-800"
-                >{{ video.metadata.duration | humanize: 's': 'ss.SS [sec]' }}</span
-              >
+              <span class="text-sm font-medium text-gray-800">{{
+                video.metadata.duration
+                  | humanize
+                    : 's'
+                    : 'h[h] m[min] s[sec] SS[ms]'
+                    : { trim: true }
+              }}</span>
             </div>
           </div>
         </div>

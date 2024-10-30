@@ -13,6 +13,7 @@ import { NoDataComponent } from '@ever-co/shared-components';
 import {
   InfiniteScrollDirective,
   selectDatePickerState,
+  IconFallbackDirective
 } from '@ever-co/shared-service';
 import { IRange, IScreenshotMetadataStatistic } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
@@ -30,6 +31,7 @@ import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
     MatSelectModule,
     NoDataComponent,
     InfiniteScrollDirective,
+    IconFallbackDirective
   ],
   templateUrl: './screenshot-statistic.component.html',
   styleUrl: './screenshot-statistic.component.scss',
