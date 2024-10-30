@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { screenshotActions } from '@ever-co/screenshot-data-access';
+import { DatePickerService } from '@ever-co/shared-service';
 import { IPaginationOptions } from '@ever-co/shared-utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { from, of } from 'rxjs';
@@ -80,10 +81,17 @@ export class TimeLogEffects {
       ofType(
         timeLogActions.getTimeLogStatistics,
         timeLogActions.loadTimeLogs,
-        screenshotActions.loadScreenshots
+        screenshotActions.loadScreenshots,
+        screenshotActions.captureSuccess
       ),
       mergeMap((options) =>
-        from(this.timeLogElectronService.getLogStatistics(options)).pipe(
+        from(
+          this.timeLogElectronService.getLogStatistics({
+            start: this.datePickerService.start,
+            end: this.datePickerService.end,
+            ...options,
+          })
+        ).pipe(
           map((response) =>
             timeLogActions.getTimeLogStatisticsSuccess(response)
           ),
@@ -97,6 +105,7 @@ export class TimeLogEffects {
 
   constructor(
     private actions$: Actions,
-    private readonly timeLogElectronService: TimeLogElectronService
+    private readonly timeLogElectronService: TimeLogElectronService,
+    private readonly datePickerService: DatePickerService
   ) {}
 }
