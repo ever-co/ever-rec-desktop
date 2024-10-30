@@ -8,13 +8,22 @@ import {
   selectVideoState,
   videoActions,
 } from '@ever-co/convert-video-data-access';
-import { ActionButtonGroupComponent, NoDataComponent, VideoComponent } from '@ever-co/shared-components';
+import {
+  ActionButtonGroupComponent,
+  NoDataComponent,
+  VideoComponent,
+} from '@ever-co/shared-components';
 import {
   InfiniteScrollDirective,
   UtcToLocalTimePipe,
   selectDatePickerState,
 } from '@ever-co/shared-service';
-import { IActionButton, IRange, ISelected, IVideo } from '@ever-co/shared-utils';
+import {
+  IActionButton,
+  IRange,
+  ISelected,
+  IVideo,
+} from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { Observable, Subject, map, takeUntil, tap } from 'rxjs';
 
@@ -31,7 +40,7 @@ import { Observable, Subject, map, takeUntil, tap } from 'rxjs';
     RouterLink,
     MatIconModule,
     VideoComponent,
-    ActionButtonGroupComponent
+    ActionButtonGroupComponent,
   ],
   templateUrl: './video-gallery.component.html',
   styleUrl: './video-gallery.component.scss',
@@ -47,16 +56,26 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
   public selectedVideos: ISelected<IVideo>[] = [];
   public actionButtons: IActionButton[] = [
     {
-      icon: 'videocam',
+      icon: 'done_all',
+      label: 'Select All',
+      variant: 'success',
+    },
+    {
+      icon: 'remove_done',
+      label: 'Unselect All',
+      variant: 'default',
+    },
+    {
+      icon: 'merge',
       label: 'Merge',
       variant: 'warning',
     },
-      {
-        icon: 'delete',
-        label: 'Delete',
-        variant: 'danger',
-      },
-  ]
+    {
+      icon: 'delete',
+      label: 'Delete',
+      variant: 'danger',
+    },
+  ];
 
   ngOnInit(): void {
     this.store
