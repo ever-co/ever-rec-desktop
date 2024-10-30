@@ -2,12 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import {
   screenshotActions,
   selectScreenshotState,
 } from '@ever-co/screenshot-data-access';
 import {
+  ActionButtonGroupComponent,
   NoDataComponent,
   ScreenshotComponent,
 } from '@ever-co/shared-components';
@@ -16,9 +17,21 @@ import {
   UtcToLocalTimePipe,
   selectDatePickerState,
 } from '@ever-co/shared-service';
-import { IRange, IScreenshot } from '@ever-co/shared-utils';
+import {
+  IActionButton,
+  IRange,
+  IScreenshot,
+  ISelected,
+} from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
-import { Observable, Subject, map, takeUntil, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  Subject,
+  map,
+  takeUntil,
+  tap,
+} from 'rxjs';
 
 @Component({
   selector: 'lib-screenshot-gallery',
@@ -32,6 +45,7 @@ import { Observable, Subject, map, takeUntil, tap } from 'rxjs';
     MatProgressSpinnerModule,
     RouterLink,
     ScreenshotComponent,
+    ActionButtonGroupComponent,
   ],
   templateUrl: './screenshot-gallery.component.html',
   styleUrl: './screenshot-gallery.component.scss',
@@ -45,6 +59,32 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
   private currentPage = 1;
   private hasNext = false;
   private range!: IRange;
+  public _selectedScreenshots$ = new BehaviorSubject<ISelected<IScreenshot>[]>(
+    []
+  );
+  public actionButtons: IActionButton[] = [
+    {
+      icon: 'visibility',
+      label: 'View',
+      variant: 'default',
+      hide: this.moreThanOneSelected$,
+      action: this.view.bind(this),
+    },
+    {
+      icon: 'videocam',
+      label: 'Generate',
+      variant: 'warning',
+      hide: this.lessThanOneSelected$,
+    },
+    {
+      icon: 'delete',
+      label: 'Delete',
+      variant: 'danger',
+      action: this.deleteScreenshots.bind(this),
+    },
+  ];
+
+  constructor(private readonly router: Router) {}
 
   ngOnInit(): void {
     this.store
@@ -97,6 +137,65 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
         page: this.currentPage,
         ...this.range,
       })
+    );
+  }
+
+  public selectScreenshot(screenshot: ISelected<IScreenshot>): void {
+    this.selectedScreenshots = [
+      ...new Map(
+        [...this.selectedScreenshots, screenshot].map((item) => [
+          item.data.id,
+          item,
+        ])
+      ).values(),
+    ].filter((item) => item.selected);
+  }
+
+  public get selectedScreenshots(): ISelected<IScreenshot>[] {
+    return this._selectedScreenshots$.getValue();
+  }
+
+  public set selectedScreenshots(values: ISelected<IScreenshot>[]) {
+    this._selectedScreenshots$.next(values);
+  }
+
+  public get selectedScreenshots$(): Observable<ISelected<IScreenshot>[]> {
+    return this._selectedScreenshots$
+      .asObservable()
+      .pipe(takeUntil(this.destroy$));
+  }
+
+  public get moreThanOneSelected$(): Observable<boolean> {
+    return this.selectedScreenshots$.pipe(
+      map((screenshots) => screenshots.length > 1)
+    );
+  }
+
+  public get lessThanOneSelected$(): Observable<boolean> {
+    return this.selectedScreenshots$.pipe(
+      map((screenshots) => screenshots.length <= 1)
+    );
+  }
+
+  public get size$(): Observable<number> {
+    return this.selectedScreenshots$.pipe(
+      map((screenshots) => screenshots.length)
+    );
+  }
+
+  private async view(): Promise<void> {
+    await this.router.navigate([
+      '/',
+      'library',
+      'screenshots',
+      this.selectedScreenshots[0].data.id,
+    ]);
+  }
+
+  private deleteScreenshots(): void {
+    const screenshots = this.selectedScreenshots.map((item) => item.data);
+     this.store.dispatch(
+      screenshotActions.deleteSelectedScreenshots({ screenshots })
     );
   }
 

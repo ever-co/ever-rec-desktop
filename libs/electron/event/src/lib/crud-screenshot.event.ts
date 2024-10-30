@@ -90,6 +90,26 @@ export function crudScreeshotEvents() {
       await FileManager.deleteFile(screenshot.pathname);
     }
   );
+
+  ipcMain.handle(
+    Channel.REQUEST_DELETE_SELECTED_SCREENSHOTS,
+    async (_, screenshots: IScreenshot[]) => {
+      try {
+        // Extract IDs and paths in a single step for clarity
+        const ids = screenshots.map(({ id }) => id);
+        const paths = screenshots.map(({ pathname }) => pathname);
+
+        // Delete screenshots from the database
+        await ScreenshotService.deleteAll(ids);
+
+        // Delete files in parallel, capturing any file deletion errors
+        await Promise.all(paths.map(FileManager.deleteFile));
+      } catch (error) {
+        console.error('Error deleting screenshots:', error);
+        throw new Error('Failed to delete selected screenshots.');
+      }
+    }
+  );
 }
 
 export async function purgeData() {

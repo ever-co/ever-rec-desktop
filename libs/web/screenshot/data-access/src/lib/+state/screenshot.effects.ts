@@ -114,7 +114,7 @@ export class ScreenshotEffects {
         screenshotActions.loadScreenshots,
         screenshotActions.captureSuccess,
         screenshotActions.deleteScreenshotsSuccess,
-        screenshotActions.deleteScreenshotSuccess,
+        screenshotActions.deleteScreenshotSuccess
       ),
       mergeMap((options) =>
         from(
@@ -129,6 +129,22 @@ export class ScreenshotEffects {
           ),
           catchError((error) =>
             of(screenshotActions.getScreenshotsStatisticsFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  deleteSelectedVideos$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(screenshotActions.deleteSelectedScreenshots),
+      mergeMap(({ screenshots }) =>
+        from(this.electronService.deleteSelectedScreenshots(screenshots)).pipe(
+          map(() =>
+            screenshotActions.deleteSelectedScreenshotsSuccess({ screenshots })
+          ),
+          catchError((error) =>
+            of(screenshotActions.deleteSelectedScreenshotsFailure({ error }))
           )
         )
       )

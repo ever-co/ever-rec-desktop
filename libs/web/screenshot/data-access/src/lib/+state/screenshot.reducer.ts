@@ -14,6 +14,7 @@ export interface IScreenshotState {
   count: number;
   loading: boolean;
   filter: string;
+  deleting: boolean;
   statistic: {
     currents: IScreenshotMetadataStatistic[];
     hasNext: boolean;
@@ -38,6 +39,7 @@ export const initialState: IScreenshotState = {
   hasNext: false,
   count: 0,
   error: '',
+  deleting: false,
   statistic: {
     currents: [],
     hasNext: false,
@@ -57,7 +59,7 @@ export const reducer = createReducer(
   initialState,
   on(screenshotActions.startCapture, (state) => ({
     ...state,
-    capturing: true
+    capturing: true,
   })),
   on(screenshotActions.startCaptureSuccess, (state) => ({
     ...state,
@@ -215,9 +217,44 @@ export const reducer = createReducer(
     ...state,
     statistic: {
       ...state.statistic,
-      currents: []
+      currents: [],
     },
-  }))
+  })),
+
+  // Delete selected screenshots
+  on(screenshotActions.deleteSelectedScreenshots, (state) => ({
+    ...state,
+    deleting: true,
+    error: '',
+  })),
+  on(
+    screenshotActions.deleteSelectedScreenshotsSuccess,
+    (state, { screenshots }) => {
+      const screenshotIdsDeleted = screenshots.map(
+        (screenshot) => screenshot.id
+      );
+
+      // Filter out deleted videos
+      const updatedScreenshots = state.screenshots.filter(
+        (screenshot) => !screenshotIdsDeleted.includes(screenshot.id)
+      );
+
+      return {
+        ...state,
+        videos: updatedScreenshots,
+        deleting: false,
+      };
+    }
+  ),
+
+  on(
+    screenshotActions.deleteSelectedScreenshotsFailure,
+    (state, { error }) => ({
+      ...state,
+      deleting: false,
+      error,
+    })
+  )
 );
 
 export const screenshotFeature = createFeature({

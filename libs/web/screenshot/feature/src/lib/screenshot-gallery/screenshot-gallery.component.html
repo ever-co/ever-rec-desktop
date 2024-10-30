@@ -2,10 +2,14 @@
 <div
   libInfiniteScroll
   (scrolled)="moreScreenshots()"
-  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pr-4 overflow-auto max-h-svh main"
+  class="grid grid-cols-1 static md:grid-cols-2 lg:grid-cols-3 gap-4 pr-4 overflow-auto max-h-custom main"
 >
   @for (screenshot of screenshots$ | async; track screenshot.id) {
-   <lib-screenshot class="card" [screenshot]="screenshot"></lib-screenshot>
+  <lib-screenshot
+    (selected)="selectScreenshot($event)"
+    class="card"
+    [screenshot]="screenshot"
+  ></lib-screenshot>
   } @if(capturing$ | async) {
   <mat-card
     appearance="outlined"
@@ -15,7 +19,24 @@
   </mat-card>
   }
 </div>
-} @else {
+
+@if((size$ | async)) {
+<div class="absolute inset-x-0 action-button-group">
+  <div class="flex justify-center">
+    <div
+      class="flex justify-center bg-indigo-50 rounded-xl shadow-xl items-center pr-2 gap-2"
+    >
+      <lib-action-button-group
+        class="inline"
+        [buttons]="actionButtons"
+      ></lib-action-button-group>
+      <div class="text-blue-500 font-semibold">
+        {{ size$ | async }} selected
+      </div>
+    </div>
+  </div>
+</div>
+} } @else {
 <div class="flex h-full items-center p-4 justify-center">
   <lib-no-data
     message="No screenshots available"

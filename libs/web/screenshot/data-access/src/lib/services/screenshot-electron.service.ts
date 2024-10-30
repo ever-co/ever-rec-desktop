@@ -46,7 +46,10 @@ export class ScreenshotElectronService {
   }
 
   public deleteScreenshot(screenshot: IScreenshot): Promise<void> {
-    return this.electronService.invoke(Channel.REQUEST_DELETE_ONE_SCREENSHOT, screenshot);
+    return this.electronService.invoke(
+      Channel.REQUEST_DELETE_ONE_SCREENSHOT,
+      screenshot
+    );
   }
 
   public askFor(
@@ -58,6 +61,16 @@ export class ScreenshotElectronService {
   public getStatistics(
     options = {} as IPaginationOptions
   ): Promise<IPaginationResponse<IScreenshotMetadataStatistic>> {
-    return this.electronService.invoke(Channel.REQUEST_SCREENSHOTS_STATISTICS, options);
+    return this.electronService.invoke(
+      Channel.REQUEST_SCREENSHOTS_STATISTICS,
+      options
+    );
+  }
+
+  public deleteSelectedScreenshots(screenshots: IScreenshot[]): Promise<void> {
+    return this.electronService.invoke(
+      Channel.REQUEST_DELETE_SELECTED_SCREENSHOTS,
+      screenshots
+    );
   }
 }
