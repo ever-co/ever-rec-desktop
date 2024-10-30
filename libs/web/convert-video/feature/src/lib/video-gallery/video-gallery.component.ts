@@ -44,8 +44,13 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
   private currentPage = 1;
   private hasNext = false;
   private range!: IRange;
-  private selectedVideos: ISelected<IVideo>[] = [];
+  public selectedVideos: ISelected<IVideo>[] = [];
   public actionButtons: IActionButton[] = [
+    {
+      icon: 'videocam',
+      label: 'Merge',
+      variant: 'warning',
+    },
       {
         icon: 'delete',
         label: 'Delete',
