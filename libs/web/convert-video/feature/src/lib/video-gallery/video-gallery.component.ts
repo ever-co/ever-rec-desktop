@@ -6,15 +6,15 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterLink } from '@angular/router';
 import {
   selectVideoState,
-  videoActions
+  videoActions,
 } from '@ever-co/convert-video-data-access';
-import { NoDataComponent, VideoComponent } from '@ever-co/shared-components';
+import { ActionButtonGroupComponent, NoDataComponent, VideoComponent } from '@ever-co/shared-components';
 import {
   InfiniteScrollDirective,
   UtcToLocalTimePipe,
   selectDatePickerState,
 } from '@ever-co/shared-service';
-import { IRange, IVideo } from '@ever-co/shared-utils';
+import { IActionButton, IRange, ISelected, IVideo } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { Observable, Subject, map, takeUntil, tap } from 'rxjs';
 
@@ -31,6 +31,7 @@ import { Observable, Subject, map, takeUntil, tap } from 'rxjs';
     RouterLink,
     MatIconModule,
     VideoComponent,
+    ActionButtonGroupComponent
   ],
   templateUrl: './video-gallery.component.html',
   styleUrl: './video-gallery.component.scss',
@@ -42,7 +43,15 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
   public store = inject(Store);
   private currentPage = 1;
   private hasNext = false;
-  private range!: IRange
+  private range!: IRange;
+  private selectedVideos: ISelected<IVideo>[] = [];
+  public actionButtons: IActionButton[] = [
+      {
+        icon: 'delete',
+        label: 'Delete',
+        variant: 'danger',
+      },
+  ]
 
   ngOnInit(): void {
     this.store
@@ -65,17 +74,17 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
     );
 
     this.store
-    .select(selectDatePickerState)
-    .pipe(
-      tap((state) => {
-        this.range = state.selectedRange;
-        this.currentPage = 1;
-        this.store.dispatch(videoActions.resetVideos());
-        this.loadVideos();
-      }),
-      takeUntil(this.destroy$)
-    )
-    .subscribe();
+      .select(selectDatePickerState)
+      .pipe(
+        tap((state) => {
+          this.range = state.selectedRange;
+          this.currentPage = 1;
+          this.store.dispatch(videoActions.resetVideos());
+          this.loadVideos();
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
   public moreVideos(): void {
@@ -89,6 +98,14 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
     this.store.dispatch(
       videoActions.loadVideos({ page: this.currentPage, ...this.range })
     );
+  }
+
+  public selectVideo(video: ISelected<IVideo>): void {
+    this.selectedVideos = [
+      ...new Map(
+        [...this.selectedVideos, video].map((item) => [item.data.id, item])
+      ).values(),
+    ].filter((item) => item.selected);
   }
 
   ngOnDestroy(): void {
