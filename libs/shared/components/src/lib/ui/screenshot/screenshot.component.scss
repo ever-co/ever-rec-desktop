@@ -52,3 +52,7 @@ mat-icon {
   @apply h-auto;
   @apply leading-none;
 }
+
+::ng-deep .mdc-checkbox__native-control:not(:checked)~.mdc-checkbox__background {
+  border-color: rgb(240, 240, 240) !important;
+}

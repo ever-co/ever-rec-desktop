@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink } from '@angular/router';
 import { screenshotActions } from '@ever-co/screenshot-data-access';
 import { IconFallbackDirective, ImgFallbackDirective, PopoverDirective, UtcToLocalTimePipe } from '@ever-co/shared-service';
-import { IActionButton, IScreenshot } from '@ever-co/shared-utils';
+import { IActionButton, IScreenshot, ISelected } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { ActionButtonGroupComponent } from "../action-button-group/group/action-button-group.component";
 
@@ -23,13 +24,21 @@ import { ActionButtonGroupComponent } from "../action-button-group/group/action-
     MatButtonModule,
     ActionButtonGroupComponent,
     ImgFallbackDirective,
-    IconFallbackDirective
+    IconFallbackDirective,
+    MatCheckboxModule
 ],
   templateUrl: './screenshot.component.html',
   styleUrl: './screenshot.component.scss',
 })
 export class ScreenshotComponent {
   @Input() screenshot!: IScreenshot;
+
+  @Input()
+  public checked = false;
+
+  @Output()
+  public selected = new EventEmitter<ISelected<IScreenshot>>();
+
   public actionButtons: IActionButton[] = [
     {
       icon: 'visibility',
@@ -54,6 +63,14 @@ export class ScreenshotComponent {
       'screenshots',
       this.screenshot.id,
     ]);
+  }
+
+  public onSelected(checked: boolean): void {
+    this.checked = checked;
+    this.selected.emit({
+      data: this.screenshot,
+      selected: checked,
+    });
   }
 
   public delete(screenshot: IScreenshot) {

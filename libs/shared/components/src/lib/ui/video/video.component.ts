@@ -51,14 +51,15 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
   @Input()
   public video!: IVideo;
 
+  @Input()
+  public checked = false;
+
   @Output()
   public selected = new EventEmitter<ISelected<IVideo>>();
 
   public played$ = new BehaviorSubject<boolean>(false);
 
   private destroy$ = new Subject<void>();
-
-  public checked = false;
 
   public actionButtons: IActionButton[] = [
     {
