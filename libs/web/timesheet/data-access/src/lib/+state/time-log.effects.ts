@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { screenshotActions } from '@ever-co/screenshot-data-access';
-import { datePickerActions } from '@ever-co/shared-service';
 import { IPaginationOptions } from '@ever-co/shared-utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { from, of } from 'rxjs';
@@ -81,7 +80,6 @@ export class TimeLogEffects {
       ofType(
         timeLogActions.getTimeLogStatistics,
         timeLogActions.loadTimeLogs,
-        datePickerActions.selectRange,
         screenshotActions.loadScreenshots
       ),
       mergeMap((options) =>

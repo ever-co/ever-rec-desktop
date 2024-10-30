@@ -120,6 +120,9 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       .pipe(
         tap((state) => {
           this.range = state.selectedRange;
+          this.store.dispatch(
+            timeLogActions.getTimeLogStatistics(state.selectedRange)
+          );
           this.loadTimeLogs(0, this.pageSize);
         }),
         takeUntil(this.destroy$)
