@@ -43,3 +43,8 @@ export interface IVideoService {
   delete(id: string): Promise<void>;
   deleteAll(videoIds?: string[]): Promise<void>;
 }
+
+export interface IBatchVideo {
+  path: IVideo['pathname'];
+  index: number;
+}

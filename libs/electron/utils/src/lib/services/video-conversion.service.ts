@@ -1,5 +1,6 @@
 import {
   Channel,
+  IBatchVideo,
   ILoggable,
   ILogger,
   IScreenshot,
@@ -19,7 +20,7 @@ import { WorkerHandler } from './worker-handler.service';
 
 export class VideoConversionService implements ILoggable {
   private completedWorkers = 0;
-  private batchVideo: { index: number; path: string }[] = [];
+  private batchVideo: IBatchVideo[] = [];
   private chunks: IVideo[] = [];
 
   constructor(
@@ -257,20 +258,30 @@ export class VideoConversionService implements ILoggable {
 
     if (this.completedWorkers === totalBatches) {
       this.logger.info(`Process images to video batch finished...`);
-      this.combineVideos();
+      this.combineVideos(this.batchVideo);
     }
   }
 
-  /**
-   * Combines the generated videos into a single video
-   * @returns {Promise<void>}
-   */
-  private async combineVideos(): Promise<void> {
+
+/**
+ * Combines multiple batch video segments into a single final video file.
+ *
+ * This function creates and manages a worker responsible for combining
+ * the video segments specified in the `batchVideo` array. The combined
+ * video is saved to a specified output path and metadata is stored in
+ * the database. The function logs the process and handles errors by
+ * emitting relevant events.
+ *
+ * @param {IBatchVideo[]} batchVideo - Array of batch videos to be combined.
+ * @returns {Promise<void>} - A promise that resolves when the video
+ *   combination process is complete.
+ */
+  private async combineVideos(batchVideo: IBatchVideo[]): Promise<void> {
     const finalOutputPath = this.fileManager.createFilePathSync(
       'videos',
       `output-${Date.now()}.mp4`
     );
-    const batchVideoPaths = this.batchVideo
+    const batchVideoPaths = batchVideo
       .sort((a, b) => a.index - b.index)
       .map((batch) => batch.path);
     const workerPath = join(
