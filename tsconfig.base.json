@@ -37,6 +37,10 @@
         "libs/web/sidebar/data-access/src/index.ts"
       ],
       "@ever-co/sidebar-feature": ["libs/web/sidebar/features/src/index.ts"],
+      "@ever-co/timeline-data-access": [
+        "libs/web/timeline/data-access/src/index.ts"
+      ],
+      "@ever-co/timeline-feature": ["libs/web/timeline/features/src/index.ts"],
       "@ever-co/timesheet-data-access": [
         "libs/web/timesheet/data-access/src/index.ts"
       ],
