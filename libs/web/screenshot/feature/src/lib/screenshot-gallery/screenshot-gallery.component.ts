@@ -9,6 +9,7 @@ import {
 } from '@ever-co/screenshot-data-access';
 import {
   ActionButtonGroupComponent,
+  GalleryButtonsActionComponent,
   NoDataComponent,
   ScreenshotComponent,
 } from '@ever-co/shared-components';
@@ -45,7 +46,7 @@ import {
     MatProgressSpinnerModule,
     RouterLink,
     ScreenshotComponent,
-    ActionButtonGroupComponent,
+    GalleryButtonsActionComponent,
   ],
   templateUrl: './screenshot-gallery.component.html',
   styleUrl: './screenshot-gallery.component.scss',

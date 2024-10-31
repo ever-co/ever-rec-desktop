@@ -9,9 +9,9 @@ import {
   videoActions,
 } from '@ever-co/convert-video-data-access';
 import {
-  ActionButtonGroupComponent,
+  GalleryButtonsActionComponent,
   NoDataComponent,
-  VideoComponent,
+  VideoComponent
 } from '@ever-co/shared-components';
 import {
   InfiniteScrollDirective,
@@ -47,7 +47,7 @@ import {
     RouterLink,
     MatIconModule,
     VideoComponent,
-    ActionButtonGroupComponent,
+    GalleryButtonsActionComponent,
   ],
   templateUrl: './video-gallery.component.html',
   styleUrl: './video-gallery.component.scss',

@@ -12,19 +12,10 @@
   ></lib-video>
   } @if((size$ | async)) {
   <div class="absolute inset-x-0 action-button-group">
-    <div class="flex justify-center">
-      <div
-        class="flex justify-center bg-indigo-50 rounded-xl shadow-xl items-center pr-2 gap-2"
-      >
-        <lib-action-button-group
-          class="inline"
-          [buttons]="actionButtons"
-        ></lib-action-button-group>
-        <div class="text-blue-500 font-semibold">
-          {{ (size$ | async) }} selected
-        </div>
-      </div>
-    </div>
+    <lib-gallery-buttons-action
+      [buttons]="actionButtons"
+      [size]="size$ | async"
+    ></lib-gallery-buttons-action>
   </div>
   }
 </div>
