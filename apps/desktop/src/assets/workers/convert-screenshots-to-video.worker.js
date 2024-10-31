@@ -104,8 +104,6 @@ async function convertImagesToVideo(
   } = {}
 ) {
   const startTime = Date.now();
-  let lastProgressUpdate = 0;
-  const progressUpdateInterval = 100; // ms
 
   try {
     await validateInputs(filePathnames, outputPath, { frameRate, resolution });
