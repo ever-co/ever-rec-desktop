@@ -51,7 +51,14 @@ export function convertScreenshotsToVideoEvent() {
         order: { createdAt: 'ASC' },
       });
 
-      logger.info(`Find ${screenshots.length} to convert`);
+      const size = screenshots.length;
+
+      if (size === 0) {
+        logger.info('No screenshots found to convert.');
+        return event.reply(Channel.CANCEL_CONVERSION);
+      }
+
+      logger.info(`Find ${size} screenshots to convert`);
 
       const videoConversionService = new VideoConversionService(
         event,
