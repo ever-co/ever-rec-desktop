@@ -234,14 +234,14 @@ export const reducer = createReducer(
         (screenshot) => screenshot.id
       );
 
-      // Filter out deleted videos
+      // Filter out deleted screenshots
       const updatedScreenshots = state.screenshots.filter(
         (screenshot) => !screenshotIdsDeleted.includes(screenshot.id)
       );
 
       return {
         ...state,
-        videos: updatedScreenshots,
+        screenshots: updatedScreenshots,
         deleting: false,
       };
     }
