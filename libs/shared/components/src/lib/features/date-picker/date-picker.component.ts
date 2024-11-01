@@ -21,6 +21,7 @@ import {
   selectDatePickerState,
 } from '@ever-co/shared-service';
 import { IRange, moment } from '@ever-co/shared-utils';
+import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
 import {
   debounceTime,
@@ -128,6 +129,15 @@ export class DatePickerComponent implements OnInit, OnDestroy {
 
   public get maxDate(): Date {
     return moment().endOf('day').toDate();
+  }
+
+  public get minDate$(): Observable<Date> {
+    return this.store.select(selectSettingStorageState).pipe(
+      map(({ retention }) =>
+        moment(this.maxDate).subtract(retention, 'days').toDate()
+      ),
+      takeUntil(this.destroy$)
+    );
   }
 
   ngOnDestroy(): void {

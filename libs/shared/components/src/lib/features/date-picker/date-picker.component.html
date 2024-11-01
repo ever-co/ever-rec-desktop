@@ -5,6 +5,7 @@
     [formGroup]="range"
     [rangePicker]="picker"
     [max]="maxDate"
+    [min]="minDate$ | async"
   >
     <input class="truncate" formControlName="start" matStartDate placeholder="Start date" />
     <input class="truncate" formControlName="end" matEndDate placeholder="End date" />
