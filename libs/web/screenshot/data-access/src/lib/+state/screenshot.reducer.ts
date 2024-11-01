@@ -272,7 +272,7 @@ export const reducer = createReducer(
   // Unselect Screenshot
   on(screenshotActions.unselectScreenshot, (state, { screenshot }) => ({
     ...state,
-    selectedVideos: state.selectedScreenshots.filter(
+    selectedScreenshots: state.selectedScreenshots.filter(
       ({ data }) => screenshot.data.id !== data.id
     ),
   })),
