@@ -1,20 +1,19 @@
-$width: 250px;
+/* layout.component.scss */
+$sidenav-width: 250px;
+$tablet-breakpoint: 768px;
+$desktop-breakpoint: 1025px;
 
-@media (min-width: 1025px) {
-  .sidenav {
-    width: $width;
+.sidenav {
+  @media (min-width: $desktop-breakpoint) {
+    width: $sidenav-width;
   }
-}
 
-@media (max-width: 767px) {
-  .sidenav {
+  @media (max-width: #{$tablet-breakpoint - 1px}) {
     min-width: 50%;
-    width: $width;
+    width: $sidenav-width;
   }
-}
 
-@media (min-width: 768px) and (max-width: 1024px) {
-  .sidenav {
+  @media (min-width: $tablet-breakpoint) and (max-width: #{$desktop-breakpoint - 1px}) {
     width: fit-content;
     min-width: fit-content;
   }

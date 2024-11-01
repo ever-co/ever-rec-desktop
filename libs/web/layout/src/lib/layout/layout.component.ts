@@ -1,3 +1,4 @@
+// layout.component.ts
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
@@ -22,7 +23,7 @@ import { LayoutService } from '@ever-co/shared-service';
 import { SidebarComponent } from '@ever-co/sidebar-feature';
 import { SearchComponent } from '@ever-co/web-search';
 import { Store } from '@ngrx/store';
-import { Subject, debounceTime, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'lib-layout',
@@ -47,58 +48,59 @@ import { Subject, debounceTime, takeUntil } from 'rxjs';
     MatTooltipModule,
   ],
   templateUrl: './layout.component.html',
-  styleUrl: './layout.component.scss',
+  styleUrls: ['./layout.component.scss']
 })
 export class LayoutComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
+
   constructor(
     private readonly store: Store,
     private readonly breakpointObserver: BreakpointObserver,
     private readonly layoutService: LayoutService
   ) {}
+
   public ngOnInit(): void {
     this.store.dispatch(
       breadcrumbActions.set({
         breadcrumbs: [{ label: 'Dashboard', url: 'dashboard' }],
       })
     );
+
     this.breakpointObserver
       .observe([
         '(max-width: 767px)',
         '(min-width: 768px) and (max-width: 1024px)',
       ])
-      .pipe(debounceTime(100), takeUntil(this.destroy$))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((result) => {
         const isMobile = result.breakpoints['(max-width: 767px)'];
-        const isTablet =
-          result.breakpoints['(min-width: 768px) and (max-width: 1024px)'];
+        const isTablet = result.breakpoints['(min-width: 768px) and (max-width: 1024px)'];
 
-        this.layoutService.isMobileView.set(isMobile);
-        this.layoutService.isTabletView.set(isTablet);
-        this.layoutService.isExpanded.set(!isMobile || isTablet);
+        this.layoutService.updateViewports({
+          isMobile,
+          isTablet,
+          isExpanded: !isMobile || isTablet
+        });
       });
   }
 
-  public get isExpanded() {
+  public get isExpanded(): boolean {
     return this.layoutService.isExpanded();
   }
 
-  public set isExpanded(value: boolean) {
-    this.layoutService.isExpanded.set(value);
-  }
-  public get isMobileView() {
+  public get isMobileView(): boolean {
     return this.layoutService.isMobileView();
   }
-  public get isTablet() {
+
+  public get isTablet(): boolean {
     return this.layoutService.isTabletView();
   }
 
-  public toggleSidenav() {
+  public toggleSidenav(): void {
     this.layoutService.isExpanded.set(!this.isExpanded);
   }
 
   public ngOnDestroy(): void {
-    // Complete the destroy$ observable to unsubscribe all subscriptions
     this.destroy$.next();
     this.destroy$.complete();
   }
