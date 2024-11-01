@@ -13,6 +13,7 @@ const initialState: State = {
   screenCaptureConfig: {
     period: 2,
     source: Source.SCREEN,
+    captureAll: false,
   },
   error: '',
 };

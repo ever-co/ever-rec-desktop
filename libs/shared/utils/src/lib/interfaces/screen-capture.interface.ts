@@ -6,4 +6,5 @@ export enum Source {
 export interface IScreenCaptureConfig {
   source: Source;
   period: number;
+  captureAll: boolean;
 }

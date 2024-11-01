@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { selectSettingScreenCaptureState, settingScreenCaptureActions } from '@ever-co/screenshot-data-access';
 import { Source } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
@@ -27,6 +28,7 @@ import { Subject, takeUntil, tap } from 'rxjs';
     MatIconModule,
     MatFormFieldModule,
     MatSelectModule,
+    MatSlideToggleModule
   ],
   templateUrl: './setting.component.html',
   styleUrl: './setting.component.scss',
@@ -42,6 +44,7 @@ export class SettingComponent implements OnInit, OnDestroy {
     this.formGroup = new FormGroup({
       period: new FormControl('2', [Validators.required, Validators.min(1)]),
       source: new FormControl(this.sources[0], [Validators.required]),
+      captureAll: new FormControl(false),
     });
 
     this.store

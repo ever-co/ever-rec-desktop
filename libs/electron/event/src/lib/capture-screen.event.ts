@@ -40,7 +40,7 @@ export function captureScreen(
   }
   timeLogService.start();
   captureInterval = setInterval(async () => {
-    const screenshot = await takeScreenshot(config.source);
+    const screenshot = await takeScreenshot(config);
     if (screenshot) {
       eventManager.reply(Channel.SCREENSHOT_CAPTURED, screenshot);
     }
@@ -56,8 +56,10 @@ export async function stopCaptureScreen() {
 }
 
 async function takeScreenshot(
-  sourceType = Source.SCREEN
+  config: IScreenCaptureConfig
 ): Promise<IScreenshot | null> {
+  const { source: sourceType = Source.SCREEN, captureAll = false } =
+    config || {};
   try {
     const sources = await (sourceType === Source.SCREEN
       ? getScreenSource()
@@ -73,12 +75,16 @@ async function takeScreenshot(
       return null;
     }
 
-    const screenshotPromises = sources.map((source) =>
-      createScreenshot(source, metadata)
-    );
-    const [screenshot] = await Promise.all(screenshotPromises);
+    if (captureAll) {
+      const screenshotPromises = sources.map((source) =>
+        createScreenshot(source, metadata)
+      );
+      const [screenshot] = await Promise.all(screenshotPromises);
 
-    return screenshot;
+      return screenshot;
+    } else {
+      return createScreenshot(sources[0], metadata);
+    }
   } catch (error) {
     logger.error(`Error taking screenshot: ${error}`);
     return null;
