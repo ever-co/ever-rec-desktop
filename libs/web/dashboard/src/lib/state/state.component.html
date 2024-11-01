@@ -3,14 +3,14 @@
   appearance="outlined"
 >
   <mat-card-content class="p-6">
-    <div class="flex items-center justify-between">
-      <div class="space-y-1">
+    <div class="flex items-center w-full justify-between">
+      <div class="space-y-1 min-w-0 ">
         <p
           class="text-sm font-medium text-gray-600 transition-opacity duration-200"
         >
           State
         </p>
-        <h6 class="text-2xl font-bold">
+        <h6 class="text-2xl w-full font-bold">
           @if (capturing$ | async) {
           <div class="flex items-center space-x-2">
             <span class="animate-fade-in">Capturing</span>
@@ -26,7 +26,7 @@
             </span>
           </div>
           } @else {
-          <span class="animate-fade-in text-gray-500">Not Running</span>
+          <span class="animate-fade-in text-gray-500 truncate">Not Running</span>
           }
         </h6>
       </div>
