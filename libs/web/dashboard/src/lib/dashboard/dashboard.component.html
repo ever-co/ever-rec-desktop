@@ -20,7 +20,17 @@
     <!-- Recent Screenshots -->
     <mat-card class="w-full" appearance="outlined">
       <mat-card-content class="p-6 h-full">
-        <p class="text-sm font-medium text-gray-600 mb-4">Recent Screenshots</p>
+        <div class="flex items-center justify-between mb-4">
+          <div class="text-sm font-medium text-gray-600">Recent Screenshots</div>
+          <button
+            mat-stroked-button
+            [routerLink]="['/', 'library', 'screenshots']"
+            matTooltip="See more screenshots"
+            class="text-gray-600 cursor-pointer transition-all duration-300 scale-[0.95] hover:text-blue-500 hover:scale-[1.00]"
+          >
+          <span> View All </span>
+          </button>
+        </div>
         <div class="h-full">
           <lib-screenshot-gallery class="dashboard"></lib-screenshot-gallery>
         </div>
@@ -30,7 +40,17 @@
     <!-- Recent Videos -->
     <mat-card class="w-full" appearance="outlined">
       <mat-card-content class="p-6 h-full">
-        <p class="text-sm font-medium text-gray-600 mb-4">Recent Videos</p>
+        <div class="flex items-center justify-between mb-4">
+          <div class="text-sm font-medium text-gray-600">Recent Videos</div>
+          <button
+            mat-stroked-button
+            [routerLink]="['/', 'library', 'videos']"
+            matTooltip="See more screenshots"
+            class="text-gray-600 cursor-pointer transition-all duration-300 scale-[0.95] hover:text-blue-500 hover:scale-[1.00]"
+          >
+          <span> View All </span>
+          </button>
+        </div>
         <div class="h-full">
           <lib-video-gallery class="dashboard"></lib-video-gallery>
         </div>
