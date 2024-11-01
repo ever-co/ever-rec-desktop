@@ -4,10 +4,10 @@
   [ngClass]="getButtonClasses()"
   (click)="onAction()"
 >
-  <mat-icon class="text-[18px]" [ngClass]="getIconClasses()">{{ button.icon }}</mat-icon>
+  <mat-icon class="text-[22px]" [ngClass]="getIconClasses()">{{ button.icon }}</mat-icon>
   @if (button.label) {
   <div
-    class="text-sm font-medium text-gray-700"
+    class="text-md font-medium text-gray-700"
     [ngClass]="getLabelClasses()"
     >{{ button.label }}</div
   >

@@ -1,12 +1,12 @@
 <div class="overlay-container w-full mat-elevation-z2">
   @if ((recents$ | async)?.length) {
-  <div class="flex justify-between w-full p-4 pb-0">
-    <button [libPopover]="menu" mat-button-icon>
-      <mat-icon>more_horiz</mat-icon>
-    </button>
-    <div class="text-sm font-medium text-gray-600">
+  <div class="flex justify-end items-center w-full p-3 pb-0">
+    <div class="font-medium text-gray-600">
       {{ count$ | async }} results found
     </div>
+    <button class="text-sm" [libPopover]="menu" mat-icon-button>
+      <mat-icon>more_vert</mat-icon>
+    </button>
   </div>
   <mat-action-list
     class="overflow-y-auto rounded-bl-[2rem] rounded-br-[2rem] max-h-80"
