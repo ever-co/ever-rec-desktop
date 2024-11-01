@@ -13,4 +13,5 @@ import { ActionButtonGroupComponent } from '../group/action-button-group.compone
 export class GalleryButtonsActionComponent {
   @Input() buttons: IActionButton[] = [];
   @Input() size: number | null = 0;
+  @Input() data: any;
 }
