@@ -48,7 +48,7 @@ import { Subject, takeUntil } from 'rxjs';
     MatTooltipModule,
   ],
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.scss']
+  styleUrls: ['./layout.component.scss'],
 })
 export class LayoutComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
@@ -74,18 +74,23 @@ export class LayoutComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((result) => {
         const isMobile = result.breakpoints['(max-width: 767px)'];
-        const isTablet = result.breakpoints['(min-width: 768px) and (max-width: 1024px)'];
+        const isTablet =
+          result.breakpoints['(min-width: 768px) and (max-width: 1024px)'];
 
         this.layoutService.updateViewports({
           isMobile,
           isTablet,
-          isExpanded: !isMobile || isTablet
+          isExpanded: !isMobile || isTablet,
         });
       });
   }
 
   public get isExpanded(): boolean {
     return this.layoutService.isExpanded();
+  }
+
+  public set isExpanded(value: boolean) {
+    this.layoutService.isExpanded.set(value);
   }
 
   public get isMobileView(): boolean {

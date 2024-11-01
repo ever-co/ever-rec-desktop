@@ -2,7 +2,7 @@
 <mat-sidenav-container class="flex flex-col md:flex-row h-screen bg-gray-50">
   <mat-sidenav
     [mode]="isMobileView ? 'over' : 'side'"
-    [opened]="isExpanded"
+    [(opened)]="isExpanded"
     class="sidenav bg-white border-gray-200 md:flex md:flex-col"
   >
     <!-- Header -->
