@@ -11,7 +11,7 @@ import { generateVideoActions } from './generate-video.actions';
 
 @Injectable()
 export class GenerateVideoEffects {
-  private readonly KEY = '_lastGeneratedVideo';
+  private readonly KEY = '_last_generated_video';
   startGenerateVideos$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(generateVideoActions.start),
