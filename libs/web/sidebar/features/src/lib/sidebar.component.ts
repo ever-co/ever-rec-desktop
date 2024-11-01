@@ -2,8 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { NavigationEnd, Router } from '@angular/router';
 import { breadcrumbActions } from '@ever-co/breadcrumb-data-access';
+import { LayoutService } from '@ever-co/shared-service';
 import {
   INavigationState,
   selectSidebarState,
@@ -23,14 +25,18 @@ import {
 @Component({
   selector: 'lib-sidebar',
   standalone: true,
-  imports: [CommonModule, MatListModule, MatIconModule],
+  imports: [CommonModule, MatListModule, MatIconModule, MatTooltipModule],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss',
 })
 export class SidebarComponent implements OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
-  constructor(private readonly store: Store, private readonly router: Router) {
+  constructor(
+    private readonly store: Store,
+    private readonly router: Router,
+    private readonly layoutService: LayoutService
+  ) {
     this.router.events
       .pipe(
         map((evt) => (evt as NavigationEnd).urlAfterRedirects),
@@ -66,6 +72,10 @@ export class SidebarComponent implements OnDestroy {
     );
     this.store.dispatch(sidebarActions.selectNavigationItem({ selectedItem }));
     await this.router.navigate([selectedItem.route]);
+  }
+
+  public get isTabletView() {
+    return this.layoutService.isTabletView();
   }
 
   ngOnDestroy(): void {

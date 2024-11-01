@@ -1,10 +1,28 @@
 <nav class="p-2">
   <mat-nav-list>
     @for (item of navigationItems$ | async; track item.title) {
-      <a mat-list-item (click)="onSelect(item)" [ngClass]="{'bg-indigo-50': (selectedItem$ | async)?.title === item.title}" [class.bg-indigo-50]="(selectedItem$ | async)?.title === item.title">
-        <mat-icon [fontSet]="(selectedItem$ | async)?.title === item.title ? 'selected': ''" matListItemIcon>{{ item.icon }}</mat-icon>
-        <span matListItemTitle>{{ item.title }}</span>
-      </a>
+    <a
+      mat-list-item
+      [matTooltip]="item.title"
+      [matTooltipDisabled]="!isTabletView"
+      (click)="onSelect(item)"
+      [ngClass]="{
+        'bg-indigo-50': (selectedItem$ | async)?.title === item.title,
+        tablet: isTabletView
+      }"
+      [class.bg-indigo-50]="(selectedItem$ | async)?.title === item.title"
+    >
+      <mat-icon
+        [fontSet]="
+          (selectedItem$ | async)?.title === item.title ? 'selected' : ''
+        "
+        matListItemIcon
+        >{{ item.icon }}</mat-icon
+      >
+      @if (!isTabletView) {
+      <span matListItemTitle>{{ item.title }}</span>
+      }
+    </a>
     }
   </mat-nav-list>
 </nav>

@@ -1,9 +1,21 @@
-.sidenav {
-  width: 250px;
+$width: 250px;
+
+@media (min-width: 1025px) {
+  .sidenav {
+    width: $width;
+  }
 }
 
 @media (max-width: 767px) {
   .sidenav {
     min-width: 50%;
+    width: $width;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .sidenav {
+    width: fit-content;
+    min-width: fit-content;
   }
 }

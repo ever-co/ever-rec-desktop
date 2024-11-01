@@ -10,10 +10,14 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterOutlet } from '@angular/router';
 import { breadcrumbActions } from '@ever-co/breadcrumb-data-access';
 import { BreadcrumbComponent } from '@ever-co/breadcrumb-feature';
-import { DatePickerComponent, StartComponent } from '@ever-co/shared-components';
+import {
+  DatePickerComponent,
+  StartComponent,
+} from '@ever-co/shared-components';
 import { LayoutService } from '@ever-co/shared-service';
 import { SidebarComponent } from '@ever-co/sidebar-feature';
 import { SearchComponent } from '@ever-co/web-search';
@@ -39,15 +43,14 @@ import { Subject, debounceTime, takeUntil } from 'rxjs';
     RouterOutlet,
     SearchComponent,
     StartComponent,
-    DatePickerComponent
+    DatePickerComponent,
+    MatTooltipModule,
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
 })
 export class LayoutComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
-  public isExpanded = false;
-  public isMobileView = false;
   constructor(
     private readonly store: Store,
     private readonly breakpointObserver: BreakpointObserver,
@@ -60,19 +63,38 @@ export class LayoutComponent implements OnInit, OnDestroy {
       })
     );
     this.breakpointObserver
-      .observe(['(max-width: 767px)'])
+      .observe([
+        '(max-width: 767px)',
+        '(min-width: 768px) and (max-width: 1024px)',
+      ])
       .pipe(debounceTime(100), takeUntil(this.destroy$))
       .subscribe((result) => {
-        this.isMobileView = result.matches;
-        this.isExpanded = !this.isMobileView;
-        this.layoutService.isMobileView.set(this.isMobileView);
-        this.layoutService.isExpanded.set(this.isExpanded);
+        const isMobile = result.breakpoints['(max-width: 767px)'];
+        const isTablet =
+          result.breakpoints['(min-width: 768px) and (max-width: 1024px)'];
+
+        this.layoutService.isMobileView.set(isMobile);
+        this.layoutService.isTabletView.set(isTablet);
+        this.layoutService.isExpanded.set(!isMobile || isTablet);
       });
   }
 
+  public get isExpanded() {
+    return this.layoutService.isExpanded();
+  }
+
+  public set isExpanded(value: boolean) {
+    this.layoutService.isExpanded.set(value);
+  }
+  public get isMobileView() {
+    return this.layoutService.isMobileView();
+  }
+  public get isTablet() {
+    return this.layoutService.isTabletView();
+  }
+
   public toggleSidenav() {
-    this.isExpanded = !this.isExpanded;
-    this.layoutService.isExpanded.set(this.isExpanded);
+    this.layoutService.isExpanded.set(!this.isExpanded);
   }
 
   public ngOnDestroy(): void {

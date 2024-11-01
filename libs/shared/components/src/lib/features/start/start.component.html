@@ -1,24 +1,47 @@
-@if (notCapturing$ | async) {
-  <button
-    mat-stroked-button
-    class="relative group"
-    (click)="startCapture()"
-    matTooltip="Start continuous screenshots capture"
-  >
-    <mat-icon>play_arrow</mat-icon>
-    <span>Start</span>
-    <span class="ml-1 hidden group-hover:inline">Capturing</span>
-  </button>
-} @else {
-  <button
-    mat-stroked-button
-    color="warn"
-    class="relative group"
-    (click)="stopCapture()"
-    matTooltip="Stop continuous screenshots capture"
-  >
-    <mat-icon>pause</mat-icon>
-    <span class="inline group-hover:hidden">Capturing</span>
-    <span class="ml-1 hidden group-hover:inline">Stop Capturing</span>
-  </button>
+@if(isTabletView) {
+  @if (notCapturing$ | async) {
+    <button
+      mat-icon-button
+      class="relative group"
+      (click)="startCapture()"
+      matTooltip="Start continuous screenshots capture"
+    >
+      <mat-icon>play_arrow</mat-icon>
+    </button>
+  } @else {
+    <button
+      mat-icon-button
+      color="warn"
+      class="relative group"
+      (click)="stopCapture()"
+      matTooltip="Stop continuous screenshots capture"
+    >
+      <mat-icon>pause</mat-icon>
+    </button>
+  }
+}@else {
+  @if (notCapturing$ | async) {
+    <button
+      mat-stroked-button
+      class="relative group"
+      (click)="startCapture()"
+      matTooltip="Start continuous screenshots capture"
+    >
+      <mat-icon>play_arrow</mat-icon>
+      <span>Start</span>
+      <span class="ml-1 hidden group-hover:inline">Capturing</span>
+    </button>
+  } @else {
+    <button
+      mat-stroked-button
+      color="warn"
+      class="relative group"
+      (click)="stopCapture()"
+      matTooltip="Stop continuous screenshots capture"
+    >
+      <mat-icon>pause</mat-icon>
+      <span class="inline group-hover:hidden">Capturing</span>
+      <span class="ml-1 hidden group-hover:inline">Stop Capturing</span>
+    </button>
+  }
 }

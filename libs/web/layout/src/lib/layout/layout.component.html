@@ -6,8 +6,10 @@
   >
     <div class="p-6 pr-2 border-b border-gray-200">
       <div class="flex items-center gap-2">
-        <mat-icon class="text-gray-700">terminal</mat-icon>
-        <span class="text-xl text-gray-700 font-semibold">Ever Capture</span>
+        <mat-icon matTooltip="Ever Capture" [matTooltipDisabled]="!isTablet" class="text-gray-700">terminal</mat-icon>
+        @if(!isTablet) {
+          <span class="text-xl text-gray-700 font-semibold">Ever Capture</span>
+        }
         @if(isMobileView){
         <button class="ml-auto" mat-icon-button (click)="toggleSidenav()">
           <mat-icon>close</mat-icon>

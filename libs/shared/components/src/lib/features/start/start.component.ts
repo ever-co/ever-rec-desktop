@@ -14,6 +14,7 @@ import {
   selectSettingScreenCaptureState,
   settingScreenCaptureActions,
 } from '@ever-co/screenshot-data-access';
+import { LayoutService } from '@ever-co/shared-service';
 import { IScreenCaptureConfig, IVideoConfig } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { Observable, Subject, map, takeUntil, tap } from 'rxjs';
@@ -31,6 +32,8 @@ export class StartComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   private screenCaptureConfig!: IScreenCaptureConfig;
   private videoConfig!: IVideoConfig;
+
+  constructor( private readonly layoutService: LayoutService){}
 
   public ngOnInit(): void {
     this.notCapturing$ = this.store.select(selectScreenshotState).pipe(
@@ -74,6 +77,10 @@ export class StartComponent implements OnInit, OnDestroy {
 
   public stopCapture() {
     this.store.dispatch(screenshotActions.stopCapture());
+  }
+
+  public get isTabletView() {
+    return this.layoutService.isTabletView();
   }
 
   ngOnDestroy(): void {
