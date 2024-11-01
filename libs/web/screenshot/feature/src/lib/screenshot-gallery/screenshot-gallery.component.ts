@@ -8,10 +8,9 @@ import {
   selectScreenshotState,
 } from '@ever-co/screenshot-data-access';
 import {
-  ActionButtonGroupComponent,
   GalleryButtonsActionComponent,
   NoDataComponent,
-  ScreenshotComponent,
+  ScreenshotComponent
 } from '@ever-co/shared-components';
 import {
   InfiniteScrollDirective,
@@ -26,12 +25,12 @@ import {
 } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import {
-  BehaviorSubject,
   Observable,
   Subject,
+  filter,
   map,
   takeUntil,
-  tap,
+  tap
 } from 'rxjs';
 
 @Component({
@@ -60,9 +59,6 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
   private currentPage = 1;
   private hasNext = false;
   private range!: IRange;
-  public _selectedScreenshots$ = new BehaviorSubject<ISelected<IScreenshot>[]>(
-    []
-  );
   public actionButtons: IActionButton[] = [
     {
       icon: 'visibility',
@@ -76,6 +72,20 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
       label: 'Generate',
       variant: 'warning',
       hide: this.lessThanOneSelected$,
+    },
+    {
+      icon: 'remove_done',
+      label: 'Unselect All',
+      variant: 'default',
+      hide: this.lessThanOneSelected$,
+      action: this.unselectAll.bind(this),
+    },
+    {
+      icon: 'remove_done',
+      label: 'Unselect',
+      variant: 'default',
+      hide: this.moreThanOneSelected$,
+      action: this.unselectAll.bind(this),
     },
     {
       icon: 'delete',
@@ -124,6 +134,14 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe();
+    this.store
+      .select(selectScreenshotState)
+      .pipe(
+        filter(({ deleting }) => deleting),
+        tap(() => this.unselectAll()),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
   public moreScreenshots(): void {
@@ -143,74 +161,73 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
   }
 
   public selectScreenshot(screenshot: ISelected<IScreenshot>): void {
-    this.selectedScreenshots = [
-      ...new Map(
-        [...this.selectedScreenshots, screenshot].map((item) => [
-          item.data.id,
-          item,
-        ])
-      ).values(),
-    ].filter((item) => item.selected);
-  }
-
-  public get selectedScreenshots(): ISelected<IScreenshot>[] {
-    return this._selectedScreenshots$.getValue();
-  }
-
-  public set selectedScreenshots(values: ISelected<IScreenshot>[]) {
-    this._selectedScreenshots$.next(values);
+    this.store.dispatch(
+      screenshot.selected
+        ? screenshotActions.selectScreenshot({ screenshot })
+        : screenshotActions.unselectScreenshot({ screenshot })
+    );
   }
 
   public get selectedScreenshots$(): Observable<ISelected<IScreenshot>[]> {
-    return this._selectedScreenshots$
-      .asObservable()
-      .pipe(takeUntil(this.destroy$));
+    return this.store.select(selectScreenshotState).pipe(
+      map((state) => state.selectedScreenshots),
+      takeUntil(this.destroy$)
+    );
   }
 
   public get moreThanOneSelected$(): Observable<boolean> {
     return this.selectedScreenshots$.pipe(
-      map((screenshots) => screenshots.length > 1)
+      map((screenshots) => screenshots.length > 1),
+      takeUntil(this.destroy$)
     );
   }
 
   public get lessThanOneSelected$(): Observable<boolean> {
     return this.selectedScreenshots$.pipe(
-      map((screenshots) => screenshots.length <= 1)
+      map((screenshots) => screenshots.length <= 1),
+      takeUntil(this.destroy$)
     );
   }
 
   public get size$(): Observable<number> {
     return this.selectedScreenshots$.pipe(
-      map((screenshots) => screenshots.length)
+      map((screenshots) => screenshots.length),
+      takeUntil(this.destroy$)
     );
   }
 
-  private async view(): Promise<void> {
-    await this.router.navigate([
-      '/',
-      'library',
-      'screenshots',
-      this.selectedScreenshots[0].data.id,
-    ]);
+
+  private async view(selectedScreenshots: ISelected<IScreenshot>[]): Promise<void> {
+    const screenshotId = selectedScreenshots[0].data.id;
+    await this.router.navigate(['/', 'library', 'screenshots', screenshotId]);
+    this.store.dispatch(
+      screenshotActions.unselectScreenshot({ screenshot: selectedScreenshots[0] })
+    );
   }
 
-  private deleteScreenshots(): void {
-    const screenshots = this.selectedScreenshots.map((item) => item.data);
-     this.store.dispatch(
-      screenshotActions.deleteSelectedScreenshots({ screenshots })
-    );
+  private deleteScreenshots(selectedScreenshots: ISelected<IScreenshot>[]): void {
+    const screenshots = selectedScreenshots.map((screenshot) => screenshot.data);
+    this.store.dispatch(screenshotActions.deleteSelectedScreenshots({ screenshots }));
   }
 
   public get deleting$(): Observable<boolean> {
     return this.store.select(selectScreenshotState).pipe(
-      tap((screenshot) => {
-        if (screenshot.deleting) {
-          this.selectedScreenshots = [];
-        }
-      }),
       map((screenshot) => screenshot.deleting),
       takeUntil(this.destroy$)
     );
+  }
+
+  public isSelected(screenshot: IScreenshot): Observable<boolean> {
+    return this.selectedScreenshots$.pipe(
+      map((selectedScreenshots) =>
+        selectedScreenshots.some((v) => v.data.id === screenshot.id)
+      ),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  public unselectAll(): void {
+    this.store.dispatch(screenshotActions.unselectAllScreenshots());
   }
 
   ngOnDestroy(): void {

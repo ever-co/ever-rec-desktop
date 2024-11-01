@@ -3,7 +3,8 @@ import {
   IPaginationResponse,
   IScreenCaptureConfig,
   IScreenshot,
-  IScreenshotMetadataStatistic
+  IScreenshotMetadataStatistic,
+  ISelected
 } from '@ever-co/shared-utils';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
@@ -44,6 +45,10 @@ export const screenshotActions = createActionGroup({
     'ask Success': props<IPaginationResponse<IScreenshot>>(),
     'ask Failure': props<{ error: string }>(),
     'Reset Ask': emptyProps(),
+
+    'Unselect All Screenshots': emptyProps(),
+    'Unselect Screenshot':  props<{screenshot: ISelected<IScreenshot>}>(),
+    'Select Screenshot':  props<{screenshot: ISelected<IScreenshot>}>(),
 
     'Overlay Clicked':  props<{ isOpen: boolean }>(),
   },

@@ -2,6 +2,7 @@ import {
   IFindOneOptions,
   IPaginationOptions,
   IPaginationResponse,
+  ISelected,
   IVideo,
 } from '@ever-co/shared-utils';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
@@ -27,6 +28,10 @@ export const videoActions = createActionGroup({
     'Update Video': props<Partial<IVideo>>(),
     'Update Video Success': props<IVideo>(),
     'Update Video Failure': props<{ error: string }>(),
+
+    'Unselect All Videos': emptyProps(),
+    'Unselect Video':  props<{video: ISelected<IVideo>}>(),
+    'Select Video':  props<{video: ISelected<IVideo>}>(),
 
     'Reset Videos': emptyProps(),
   },

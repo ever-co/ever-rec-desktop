@@ -1,6 +1,7 @@
 import {
   IScreenshot,
   IScreenshotMetadataStatistic,
+  ISelected,
 } from '@ever-co/shared-utils';
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { screenshotActions } from './screenshot.actions';
@@ -15,6 +16,7 @@ export interface IScreenshotState {
   loading: boolean;
   filter: string;
   deleting: boolean;
+  selectedScreenshots: ISelected<IScreenshot>[]
   statistic: {
     currents: IScreenshotMetadataStatistic[];
     hasNext: boolean;
@@ -35,6 +37,7 @@ export const initialState: IScreenshotState = {
   capturing: false,
   loading: false,
   screenshots: [],
+  selectedScreenshots: [],
   filter: '',
   hasNext: false,
   count: 0,
@@ -254,7 +257,32 @@ export const reducer = createReducer(
       deleting: false,
       error,
     })
-  )
+  ),
+
+  // Select Screenshot
+  on(screenshotActions.selectScreenshot, (state, { screenshot }) => ({
+    ...state,
+    selectedScreenshots: [
+      ...new Map(
+        [...state.selectedScreenshots, screenshot].map((item) => [item, item])
+      ).values(),
+    ].filter((screenshot) => screenshot.selected),
+  })),
+
+  // Unselect Screenshot
+  on(screenshotActions.unselectScreenshot, (state, { screenshot }) => ({
+    ...state,
+    selectedVideos: state.selectedScreenshots.filter(
+      ({ data }) => screenshot.data.id !== data.id
+    ),
+  })),
+
+  // Unselect All Screenshots
+  on(screenshotActions.unselectAllScreenshots, (state) => ({
+    ...state,
+    deleting: false,
+    selectedScreenshots: [],
+  }))
 );
 
 export const screenshotFeature = createFeature({

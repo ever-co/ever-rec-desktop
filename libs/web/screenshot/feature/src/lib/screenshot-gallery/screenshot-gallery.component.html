@@ -7,6 +7,7 @@
   @for (screenshot of screenshots$ | async; track screenshot.id) {
   <lib-screenshot
     (selected)="selectScreenshot($event)"
+    [checked]="isSelected(screenshot) | async"
     class="card"
     [screenshot]="screenshot"
   ></lib-screenshot>
@@ -25,6 +26,7 @@
   <lib-gallery-buttons-action
     [buttons]="actionButtons"
     [size]="size$ | async"
+    [data]="selectedScreenshots$ | async"
   ></lib-gallery-buttons-action>
 </div>
 } } @else {

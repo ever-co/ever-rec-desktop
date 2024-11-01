@@ -7,6 +7,7 @@
   @for (video of videos$ | async; track video.id) {
   <lib-video
     class="video-card"
+    [checked]="isSelected(video) | async"
     [video]="video"
     (selected)="selectVideo($event)"
   ></lib-video>
@@ -14,6 +15,7 @@
   <div class="absolute inset-x-0 action-button-group">
     <lib-gallery-buttons-action
       [buttons]="actionButtons"
+      [data]="selectedVideos$ | async"
       [size]="size$ | async"
     ></lib-gallery-buttons-action>
   </div>

@@ -11,7 +11,7 @@ import {
 import {
   GalleryButtonsActionComponent,
   NoDataComponent,
-  VideoComponent
+  VideoComponent,
 } from '@ever-co/shared-components';
 import {
   InfiniteScrollDirective,
@@ -25,14 +25,7 @@ import {
   IVideo,
 } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
-import {
-  BehaviorSubject,
-  Observable,
-  Subject,
-  map,
-  takeUntil,
-  tap,
-} from 'rxjs';
+import { Observable, Subject, filter, map, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'lib-video-gallery',
@@ -60,7 +53,6 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
   private currentPage = 1;
   private hasNext = false;
   private range!: IRange;
-  public _selectedVideos$ = new BehaviorSubject<ISelected<IVideo>[]>([]);
   public actionButtons: IActionButton[] = [
     {
       icon: 'visibility',
@@ -74,6 +66,20 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
       label: 'Merge',
       variant: 'warning',
       hide: this.lessThanOneSelected$,
+    },
+    {
+      icon: 'remove_done',
+      label: 'Unselect All',
+      variant: 'default',
+      hide: this.lessThanOneSelected$,
+      action: this.unselectAll.bind(this),
+    },
+    {
+      icon: 'remove_done',
+      label: 'Unselect',
+      variant: 'default',
+      hide: this.moreThanOneSelected$,
+      action: this.unselectAll.bind(this),
     },
     {
       icon: 'delete',
@@ -96,6 +102,7 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe();
+
     this.isAvailable$ = this.store.select(selectVideoState).pipe(
       map((state) => state.count > 0),
       takeUntil(this.destroy$)
@@ -118,19 +125,27 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe();
+
+    this.store
+      .select(selectVideoState)
+      .pipe(
+        filter(({ deleting }) => deleting),
+        tap(() => this.unselectAll()),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
-  private async view(): Promise<void> {
-    await this.router.navigate([
-      '/',
-      'library',
-      'videos',
-      this.selectedVideos[0].data.id,
-    ]);
+  private async view(selectedVideos: ISelected<IVideo>[]): Promise<void> {
+    const videoId = selectedVideos[0].data.id;
+    await this.router.navigate(['/', 'library', 'videos', videoId]);
+    this.store.dispatch(
+      videoActions.unselectVideo({ video: selectedVideos[0] })
+    );
   }
 
-  private deleteVideos(): void {
-    const videos = this.selectedVideos.map((item) => item.data);
+  private deleteVideos(selectedVideos: ISelected<IVideo>[]): void {
+    const videos = selectedVideos.map((video) => video.data);
     this.store.dispatch(videoActions.deleteVideos({ videos }));
   }
 
@@ -148,47 +163,59 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
   }
 
   public selectVideo(video: ISelected<IVideo>): void {
-    this.selectedVideos = [
-      ...new Map(
-        [...this.selectedVideos, video].map((item) => [item.data.id, item])
-      ).values(),
-    ].filter((item) => item.selected);
-  }
-
-  public get selectedVideos(): ISelected<IVideo>[] {
-    return this._selectedVideos$.getValue();
-  }
-
-  public set selectedVideos(values: ISelected<IVideo>[]) {
-    this._selectedVideos$.next(values);
+    this.store.dispatch(
+      video.selected
+        ? videoActions.selectVideo({ video })
+        : videoActions.unselectVideo({ video })
+    );
   }
 
   public get selectedVideos$(): Observable<ISelected<IVideo>[]> {
-    return this._selectedVideos$.asObservable().pipe(takeUntil(this.destroy$));
+    return this.store.select(selectVideoState).pipe(
+      map((state) => state.selectedVideos),
+      takeUntil(this.destroy$)
+    );
   }
 
   public get moreThanOneSelected$(): Observable<boolean> {
-    return this.selectedVideos$.pipe(map((videos) => videos.length > 1));
+    return this.selectedVideos$.pipe(
+      map((videos) => videos.length > 1),
+      takeUntil(this.destroy$)
+    );
   }
 
   public get lessThanOneSelected$(): Observable<boolean> {
-    return this.selectedVideos$.pipe(map((videos) => videos.length <= 1));
+    return this.selectedVideos$.pipe(
+      map((videos) => videos.length <= 1),
+      takeUntil(this.destroy$)
+    );
   }
 
   public get size$(): Observable<number> {
-    return this.selectedVideos$.pipe(map((videos) => videos.length));
+    return this.selectedVideos$.pipe(
+      map((videos) => videos.length),
+      takeUntil(this.destroy$)
+    );
   }
 
   public get deleting$(): Observable<boolean> {
     return this.store.select(selectVideoState).pipe(
-      tap((video) => {
-        if (video.deleting) {
-          this.selectedVideos = [];
-        }
-      }),
       map((video) => video.deleting),
       takeUntil(this.destroy$)
     );
+  }
+
+  public isSelected(video: IVideo): Observable<boolean> {
+    return this.selectedVideos$.pipe(
+      map((selectedVideos) =>
+        selectedVideos.some((v) => v.data.id === video.id)
+      ),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  public unselectAll(): void {
+    this.store.dispatch(videoActions.unselectAllVideos());
   }
 
   ngOnDestroy(): void {

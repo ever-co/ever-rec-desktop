@@ -1,4 +1,4 @@
-import { IVideo } from '@ever-co/shared-utils';
+import { ISelected, IVideo } from '@ever-co/shared-utils';
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { videoActions } from './video.actions';
 
@@ -11,6 +11,7 @@ export interface IVideoState {
   hasNext: boolean;
   count: number;
   loading: boolean;
+  selectedVideos: ISelected<IVideo>[];
   deleting: boolean;
 }
 
@@ -21,7 +22,8 @@ export const initialState: IVideoState = {
   count: 0,
   hasNext: false,
   loading: false,
-  deleting: false
+  deleting: false,
+  selectedVideos: [],
 };
 
 export const reducer = createReducer(
@@ -90,9 +92,10 @@ export const reducer = createReducer(
     const videoIdsDeleted = videos.map((video) => video.id);
 
     // Determine the current video state
-    const updatedVideo = state.video?.id && videoIdsDeleted.includes(state.video.id)
-      ? state.video
-      : initialState.video;
+    const updatedVideo =
+      state.video?.id && videoIdsDeleted.includes(state.video.id)
+        ? state.video
+        : initialState.video;
 
     // Filter out deleted videos
     const updatedVideos = state.videos.filter(
@@ -135,6 +138,31 @@ export const reducer = createReducer(
   on(videoActions.resetVideos, (state) => ({
     ...state,
     videos: initialState.videos,
+  })),
+
+  // Select Video
+  on(videoActions.selectVideo, (state, { video }) => ({
+    ...state,
+    selectedVideos: [
+      ...new Map(
+        [...state.selectedVideos, video].map((item) => [item.data.id, item])
+      ).values(),
+    ].filter((video) => video.selected),
+  })),
+
+  // Unselect Video
+  on(videoActions.unselectVideo, (state, { video }) => ({
+    ...state,
+    selectedVideos: state.selectedVideos.filter(
+      ({ data }) => video.data.id !== data.id
+    ),
+  })),
+
+  // Unselect All Videos
+  on(videoActions.unselectAllVideos, (state) => ({
+    ...state,
+    deleting: false,
+    selectedVideos: [],
   }))
 );
 
