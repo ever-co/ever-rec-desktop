@@ -1,7 +1,12 @@
 <div class="overlay-container w-full mat-elevation-z2">
   @if ((recents$ | async)?.length) {
-  <div class="text-sm font-medium text-gray-600 flex justify-end w-full p-4 pb-0">
-    {{ count$ | async }} results found
+  <div class="flex justify-between w-full p-4 pb-0">
+    <button [libPopover]="menu" mat-button-icon>
+      <mat-icon>more_horiz</mat-icon>
+    </button>
+    <div class="text-sm font-medium text-gray-600">
+      {{ count$ | async }} results found
+    </div>
   </div>
   <mat-action-list
     class="overflow-y-auto rounded-bl-[2rem] rounded-br-[2rem] max-h-80"
@@ -31,3 +36,9 @@
   ></lib-no-data>
   }
 </div>
+
+<ng-template #menu>
+  <lib-action-button-group
+    [buttons]="actionButtons"
+  ></lib-action-button-group>
+</ng-template>

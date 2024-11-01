@@ -9,9 +9,15 @@ import {
   screenshotActions,
   selectScreenshotState,
 } from '@ever-co/screenshot-data-access';
-import { NoDataComponent } from '@ever-co/shared-components';
-import { InfiniteScrollDirective } from '@ever-co/shared-service';
-import { IScreenshot } from '@ever-co/shared-utils';
+import {
+  ActionButtonGroupComponent,
+  NoDataComponent,
+} from '@ever-co/shared-components';
+import {
+  InfiniteScrollDirective,
+  PopoverDirective,
+} from '@ever-co/shared-service';
+import { IActionButton, IScreenshot } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { map, Observable, tap } from 'rxjs';
 
@@ -26,6 +32,8 @@ import { map, Observable, tap } from 'rxjs';
     MatButtonModule,
     NoDataComponent,
     InfiniteScrollDirective,
+    PopoverDirective,
+    ActionButtonGroupComponent,
   ],
   templateUrl: './search-overlay.component.html',
   styleUrl: './search-overlay.component.scss',
@@ -34,6 +42,20 @@ export class SearchOverlayComponent implements OnInit {
   public searchTerm = '';
   private currentPage = 1;
   private hasNext = false;
+  public actionButtons: IActionButton[] = [
+    {
+      icon: 'subscriptions',
+      label: 'Generate',
+      variant: 'warning',
+      tooltip: 'Generate a video from all found screenshots.',
+    },
+    {
+      icon: 'delete',
+      label: 'Delete',
+      variant: 'danger',
+      tooltip: 'Delete all found screenshots.'
+    }
+  ];
 
   constructor(private readonly store: Store, private readonly router: Router) {}
   ngOnInit(): void {

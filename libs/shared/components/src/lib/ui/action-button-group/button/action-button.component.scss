@@ -1,3 +1,8 @@
 :host ::ng-deep mat-spinner .mdc-circular-progress__indeterminate-circle-graphic {
   stroke: inherit;
 }
+
+:host mat-icon {
+  width: 20px;
+  height: 20px;
+}

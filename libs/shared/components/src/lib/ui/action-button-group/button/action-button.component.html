@@ -4,12 +4,12 @@
   [ngClass]="getButtonClasses()"
   (click)="onAction()"
 >
-  <mat-icon [ngClass]="getIconClasses()">{{ button.icon }}</mat-icon>
+  <mat-icon class="text-[18px]" [ngClass]="getIconClasses()">{{ button.icon }}</mat-icon>
   @if (button.label) {
-  <span
+  <div
     class="text-sm font-medium text-gray-700"
     [ngClass]="getLabelClasses()"
-    >{{ button.label }}</span
+    >{{ button.label }}</div
   >
   } @if(button.loading | async) {
   <mat-spinner
