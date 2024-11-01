@@ -79,7 +79,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       hide: this.hideAction$,
     },
     {
-      icon: 'video_camera_back_add',
+      icon: 'subscriptions',
       label: 'Generate',
       variant: 'warning',
       hide: this.hideAction$,

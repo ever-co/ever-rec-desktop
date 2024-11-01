@@ -72,7 +72,7 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
       action: this.view.bind(this),
     },
     {
-      icon: 'videocam',
+      icon: 'subscriptions',
       label: 'Generate',
       variant: 'warning',
       hide: this.lessThanOneSelected$,
