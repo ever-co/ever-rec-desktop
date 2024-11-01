@@ -19,6 +19,7 @@ import { selectScreenshotState } from '@ever-co/screenshot-data-access';
 import { NoDataComponent } from '@ever-co/shared-components';
 import { IconFallbackDirective } from '@ever-co/shared-service';
 import { IScreenshot, moment } from '@ever-co/shared-utils';
+import { TimelineCursorComponent } from '@ever-co/timeline-feature';
 import { Store } from '@ngrx/store';
 import {
   filter,
@@ -48,7 +49,8 @@ interface AggregatedScreenshot extends IScreenshot {
     NoDataComponent,
     MatTooltipModule,
     ProgressComponent,
-    IconFallbackDirective
+    IconFallbackDirective,
+    TimelineCursorComponent
   ],
   templateUrl: './timeline.component.html',
   styleUrls: ['./timeline.component.scss'],

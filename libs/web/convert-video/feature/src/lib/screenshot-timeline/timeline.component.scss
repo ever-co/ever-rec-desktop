@@ -86,12 +86,5 @@ $gap: 4px;
 
 .cursor {
   position: absolute;
-  top: 0;
-  height: 103px;
-  width: 5px;
-  background-color: var(--mat-outlined-button-state-layer-color);
-  transform: translateX(-50%);
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+  width: 100%;
 }
