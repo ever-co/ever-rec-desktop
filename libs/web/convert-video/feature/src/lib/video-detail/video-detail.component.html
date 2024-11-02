@@ -89,7 +89,7 @@
             </div>
             <div class="flex justify-between items-center">
               <span class="text-sm text-gray-500">Resolution</span>
-              <mat-icon>
+              <mat-icon [matTooltip]="video.metadata.resolution | resolution">
                 {{  video.metadata.resolution | resolution : 'icon' }}
               </mat-icon>
             </div>
