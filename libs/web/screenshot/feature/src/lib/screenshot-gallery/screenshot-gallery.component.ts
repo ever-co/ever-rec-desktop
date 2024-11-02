@@ -4,13 +4,18 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router, RouterLink } from '@angular/router';
 import {
+  generateVideoActions,
+  selectGenerateVideoState,
+  selectSettingState,
+} from '@ever-co/convert-video-data-access';
+import {
   screenshotActions,
   selectScreenshotState,
 } from '@ever-co/screenshot-data-access';
 import {
   GalleryButtonsActionComponent,
   NoDataComponent,
-  ScreenshotComponent
+  ScreenshotComponent,
 } from '@ever-co/shared-components';
 import {
   InfiniteScrollDirective,
@@ -24,14 +29,7 @@ import {
   ISelected,
 } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
-import {
-  Observable,
-  Subject,
-  filter,
-  map,
-  takeUntil,
-  tap
-} from 'rxjs';
+import { Observable, Subject, filter, map, take, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'lib-screenshot-gallery',
@@ -72,6 +70,8 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
       label: 'Generate',
       variant: 'warning',
       hide: this.lessThanOneSelected$,
+      action: this.generateVideo.bind(this),
+      loading: this.generating$,
     },
     {
       icon: 'remove_done',
@@ -196,18 +196,51 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
     );
   }
 
-
-  private async view(selectedScreenshots: ISelected<IScreenshot>[]): Promise<void> {
+  private async view(
+    selectedScreenshots: ISelected<IScreenshot>[]
+  ): Promise<void> {
     const screenshotId = selectedScreenshots[0].data.id;
     await this.router.navigate(['/', 'library', 'screenshots', screenshotId]);
     this.store.dispatch(
-      screenshotActions.unselectScreenshot({ screenshot: selectedScreenshots[0] })
+      screenshotActions.unselectScreenshot({
+        screenshot: selectedScreenshots[0],
+      })
     );
   }
 
-  private deleteScreenshots(selectedScreenshots: ISelected<IScreenshot>[]): void {
-    const screenshots = selectedScreenshots.map((screenshot) => screenshot.data);
-    this.store.dispatch(screenshotActions.deleteSelectedScreenshots({ screenshots }));
+  private deleteScreenshots(
+    selectedScreenshots: ISelected<IScreenshot>[]
+  ): void {
+    const screenshots = selectedScreenshots.map(
+      (screenshot) => screenshot.data
+    );
+    this.store.dispatch(
+      screenshotActions.deleteSelectedScreenshots({ screenshots })
+    );
+  }
+
+  private generateVideo(selectedScreenshots: ISelected<IScreenshot>[]): void {
+    const screenshotIds = selectedScreenshots.map(
+      (screenshot) => screenshot.data.id
+    );
+    this.store
+      .select(selectSettingState)
+      .pipe(
+        take(1),
+        tap(({ videoConfig: config }) =>
+          this.store.dispatch(
+            generateVideoActions.start({ screenshotIds, config })
+          )
+        )
+      )
+      .subscribe();
+  }
+
+  private get generating$(): Observable<boolean> {
+    return this.store.select(selectGenerateVideoState).pipe(
+      map((state) => state.generating),
+      takeUntil(this.destroy$)
+    );
   }
 
   public get deleting$(): Observable<boolean> {

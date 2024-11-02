@@ -13,5 +13,6 @@ export interface IVideoConfig {
 export interface IVideoConvertPayload {
   filter?: string;
   timeLogId?: string;
+  screenshotIds?: string[];
   config: IVideoConfig;
 }

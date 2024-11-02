@@ -11,14 +11,22 @@ import {
   WorkerFactory,
 } from '@ever-co/electron-utils';
 
-import { Channel, ITimeLog, IVideoConvertPayload } from '@ever-co/shared-utils';
+import {
+  Channel,
+  IScreenshot,
+  ITimeLog,
+  IVideoConvertPayload,
+} from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
-import { ILike, IsNull } from 'typeorm';
+import { ILike, In, IsNull } from 'typeorm';
 
 export function convertScreenshotsToVideoEvent() {
   ipcMain.on(
     Channel.START_CONVERT_TO_VIDEO,
-    async (event, { filter, config, timeLogId }: IVideoConvertPayload) => {
+    async (
+      event,
+      { filter, config, timeLogId, screenshotIds = [] }: IVideoConvertPayload
+    ) => {
       const logger = new ElectronLogger('Screenshots --> Video');
       const splitter = new BatchSplitter();
       const videoService = new VideoService();
@@ -32,24 +40,38 @@ export function convertScreenshotsToVideoEvent() {
         timeLog = await timeLogService.running();
       }
 
-      const screenshots = await ScreenshotService.findAll({
-        where: {
-          ...(filter && {
-            metadata: {
-              description: ILike(`%${filter}%`),
+      let screenshots: IScreenshot[] = [];
+
+      if (screenshotIds.length === 0) {
+        screenshots = await ScreenshotService.findAll({
+          where: {
+            ...(filter && {
+              metadata: {
+                description: ILike(`%${filter}%`),
+              },
+            }),
+            ...(timeLog && {
+              timeLog: {
+                id: timeLog.id,
+              },
+            }),
+            ...(screenshotIds && {
+              id: In(screenshotIds),
+            }),
+            video: {
+              id: IsNull(),
             },
-          }),
-          ...(timeLog && {
-            timeLog: {
-              id: timeLog.id,
-            },
-          }),
-          video: {
-            id: IsNull(),
           },
-        },
-        order: { createdAt: 'ASC' },
-      });
+          order: { createdAt: 'ASC' },
+        });
+      } else {
+        screenshots = await ScreenshotService.findAll({
+          where: {
+            id: In(screenshotIds),
+          },
+          order: { createdAt: 'ASC' },
+        });
+      }
 
       const size = screenshots.length;
 
