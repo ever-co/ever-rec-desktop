@@ -8,6 +8,11 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {
+  generateVideoActions,
+  selectGenerateVideoState,
+  selectSettingState,
+} from '@ever-co/convert-video-data-access';
+import {
   ActionButtonGroupComponent,
   NoDataComponent,
   TimeLogStatisticsComponent,
@@ -31,7 +36,7 @@ import {
   timeLogActions,
 } from '@ever-co/timesheet-data-access';
 import { Store } from '@ngrx/store';
-import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
+import { map, Observable, Subject, take, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'lib-timesheet-feature',
@@ -84,6 +89,8 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       variant: 'warning',
       hide: this.hideAction$,
       tooltip: 'Generate a video from this selected timesheet',
+      action: this.generateVideo.bind(this),
+      loading: this.generating$,
     },
     {
       icon: 'delete',
@@ -197,6 +204,31 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   public get statistics$(): Observable<ITimeLogStatistics> {
     return this.store.select(selectTimeLogState).pipe(
       map((state) => state.statistics),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  private generateVideo(): void {
+    const timeLogId = this.selectedRow?.id;
+
+    if (!timeLogId) {
+      return;
+    }
+
+    this.store
+      .select(selectSettingState)
+      .pipe(
+        take(1),
+        tap(({ videoConfig: config }) =>
+          this.store.dispatch(generateVideoActions.start({ timeLogId, config }))
+        )
+      )
+      .subscribe();
+  }
+
+  private get generating$(): Observable<boolean> {
+    return this.store.select(selectGenerateVideoState).pipe(
+      map((state) => state.generating),
       takeUntil(this.destroy$)
     );
   }
