@@ -26,7 +26,9 @@
         [ngClass]="{ 'opacity-100': checked }"
         class="absolute p-1 bg-gradient-to-t from-black/80 to-transparent h-full w-full justify-between items-start flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
       >
-        <div class="flex items-center group">
+        <div
+          class="flex items-start flex flex-col justify-between h-full group"
+        >
           <mat-checkbox
             [checked]="checked"
             (change)="onSelected($event.checked)"
@@ -34,6 +36,15 @@
             class="relative text-white transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900 rounded group-hover:text-blue-400"
           >
           </mat-checkbox>
+          <div class="flex gap-1 p-2">
+            <mat-icon class="text-white">
+              {{ video.metadata?.resolution | resolution : 'icon' }}
+            </mat-icon>
+            <span class="text-white">{{
+              video.metadata?.duration
+                | humanize : 's' : 'hh:mm:ss.SS'
+            }}</span>
+          </div>
         </div>
         <div class="flex flex-col justify-between h-full">
           <button [libPopover]="menu" mat-icon-button class="bg-black">

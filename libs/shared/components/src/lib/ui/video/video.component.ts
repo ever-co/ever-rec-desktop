@@ -17,7 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
 import { videoActions } from '@ever-co/convert-video-data-access';
-import { PopoverDirective, UtcToLocalTimePipe } from '@ever-co/shared-service';
+import { HumanizePipe, PopoverDirective, ResolutionPipe, UtcToLocalTimePipe } from '@ever-co/shared-service';
 import { IActionButton, ISelected, IVideo } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, fromEvent, Subject, takeUntil, tap } from 'rxjs';
@@ -37,6 +37,8 @@ import { ActionButtonGroupComponent } from '../action-button-group/group/action-
     MatRippleModule,
     MatTooltipModule,
     MatCheckboxModule,
+    ResolutionPipe,
+    HumanizePipe
   ],
   templateUrl: './video.component.html',
   styleUrl: './video.component.scss',
