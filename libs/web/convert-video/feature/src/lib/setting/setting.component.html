@@ -43,21 +43,16 @@
     <!-- Resolution Input -->
     <mat-form-field appearance="outline" class="w-full">
       <mat-label>Resolution</mat-label>
-      <input
-        matInput
-        type="text"
-        id="resolution"
-        formControlName="resolution"
-        placeholder="Enter resolution"
-      />
-      <mat-error
-        *ngIf="
-          formGroup.controls['resolution'].invalid &&
-          formGroup.controls['resolution'].touched
-        "
-      >
-        Resolution is required.
-      </mat-error>
+      <mat-select formControlName="resolution" required>
+        @for (resolution of resolutions; track resolution) {
+        <mat-option [value]="resolution">{{
+          resolution | resolution
+        }}</mat-option>
+        }
+      </mat-select>
+      @if (formGroup.controls['resolution'].hasError('required')) {
+      <mat-error>Please choose a resolution</mat-error>
+      }
     </mat-form-field>
 
     <!-- Batch Size Input -->
@@ -83,7 +78,11 @@
     <!-- Toggle for Auto Generate -->
     <div class="start flex justify-between items-center">
       <span class="text-gray-700">Auto Generate</span>
-      <mat-slide-toggle (change)="onCheck($event)" formControlName="autoGenerate"> </mat-slide-toggle>
+      <mat-slide-toggle
+        (change)="onCheck($event)"
+        formControlName="autoGenerate"
+      >
+      </mat-slide-toggle>
     </div>
 
     <!-- Select Input -->

@@ -16,5 +16,6 @@ export * from './lib/interfaces/video.config';
 export * from './lib/interfaces/video.interface';
 export * from './lib/moment.util';
 export * from './lib/range.util';
+export * from './lib/resolution.util';
 export * from './lib/time-log.type';
 

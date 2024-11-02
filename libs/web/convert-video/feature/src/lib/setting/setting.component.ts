@@ -19,7 +19,8 @@ import {
   selectSettingState,
   settingActions,
 } from '@ever-co/convert-video-data-access';
-import { HumanizePipe } from '@ever-co/shared-service';
+import { HumanizePipe, ResolutionPipe } from '@ever-co/shared-service';
+import { resolutionMapper } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { Subject, takeUntil, tap } from 'rxjs';
 
@@ -36,6 +37,7 @@ import { Subject, takeUntil, tap } from 'rxjs';
     MatFormFieldModule,
     HumanizePipe,
     MatSelectModule,
+    ResolutionPipe
   ],
   templateUrl: './setting.component.html',
   styleUrl: './setting.component.scss',
@@ -45,12 +47,13 @@ export class SettingComponent implements OnInit, OnDestroy {
   private store = inject(Store);
   private destroy$ = new Subject<void>();
   public periods = [5, 10, 15, 30];
+  public resolutions = Object.keys(resolutionMapper);
 
   ngOnInit(): void {
     this.formGroup = new FormGroup({
       frameRate: new FormControl('', Validators.required),
       codec: new FormControl('', Validators.required),
-      resolution: new FormControl('', Validators.required),
+      resolution: new FormControl('1920:1080', Validators.required),
       batch: new FormControl('', [Validators.required]),
       period: new FormControl('10', [Validators.required]),
       optimized: new FormControl(false),
