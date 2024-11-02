@@ -33,10 +33,10 @@
           <!-- Trend Indicator -->
           @if (statistic.trend !== undefined) {
           <div
-            class="flex items-center hidden sm:block"
+            class="flex items-center relative hidden sm:block"
             [ngClass]="statistic.trend >= 0 ? 'text-green-500' : 'text-red-500'"
           >
-            <mat-icon class="text-sm">
+            <mat-icon class="text-sm absolute -top-3">
               {{ statistic.trend >= 0 ? 'trending_up' : 'trending_down' }}
             </mat-icon>
             <span class="text-sm ml-1">{{ statistic.trend }}%</span>
