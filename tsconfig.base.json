@@ -22,6 +22,7 @@
       "@ever-co/electron-database": ["libs/electron/database/src/index.ts"],
       "@ever-co/electron-events": ["libs/electron/event/src/index.ts"],
       "@ever-co/electron-utils": ["libs/electron/utils/src/index.ts"],
+      "@ever-co/factory": ["libs/shared/factory/src/index.ts"],
       "@ever-co/layout": ["libs/web/layout/src/index.ts"],
       "@ever-co/library": ["libs/web/library/src/index.ts"],
       "@ever-co/screenshot-data-access": [

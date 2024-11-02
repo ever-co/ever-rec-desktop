@@ -20,6 +20,7 @@ import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { appRoutes } from './app.routes';
+import { provideFactoriesDataAccess } from '@ever-co/factory';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -35,6 +36,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes, withViewTransitions(), withHashLocation()),
     provideAnimationsAsync(),
     provideDatePickerDataAccess(),
-    provideTimeLogDataAccess()
+    provideTimeLogDataAccess(),
+    provideFactoriesDataAccess(),
   ],
 };

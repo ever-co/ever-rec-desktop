@@ -16,4 +16,3 @@ export * from './lib/pipes/humanize.pipe';
 export * from './lib/pipes/humanizeBytes.pipe';
 export * from './lib/pipes/utc-to-local-time.pipe';
 export * from './lib/services/layout/layout.service';
-

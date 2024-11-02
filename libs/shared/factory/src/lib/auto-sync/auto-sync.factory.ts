@@ -1,14 +1,15 @@
 import { APP_INITIALIZER } from '@angular/core';
-// eslint-disable-next-line @nx/enforce-module-boundaries
 import {
   generateVideoActions,
   selectSettingState,
 } from '@ever-co/convert-video-data-access';
+import {
+  screenshotActions,
+  ScreenshotElectronService,
+  selectScreenshotState,
+} from '@ever-co/screenshot-data-access';
 import { Store } from '@ngrx/store';
 import { combineLatest, take, tap } from 'rxjs';
-import { screenshotActions } from '../+state/screenshot.actions';
-import { selectScreenshotState } from '../+state/screenshot.selectors';
-import { ScreenshotElectronService } from '../services/screenshot-electron.service';
 
 export function autoSyncFactory(
   store: Store,

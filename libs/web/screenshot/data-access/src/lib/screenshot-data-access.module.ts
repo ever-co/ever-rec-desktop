@@ -5,7 +5,6 @@ import { ScreenshotEffects } from './+state/screenshot.effects';
 import { screenshotFeature } from './+state/screenshot.reducer';
 import { SettingScreenCaptureEffects } from './+state/settings/setting.effects';
 import { settingScreenCaptureFeature } from './+state/settings/setting.reducer';
-import { autoSyncProvider } from './factory/auto-sync.factory';
 
 export function provideScreenshotDataAccess(): EnvironmentProviders {
   return makeEnvironmentProviders([
@@ -13,6 +12,5 @@ export function provideScreenshotDataAccess(): EnvironmentProviders {
     provideEffects([ScreenshotEffects]),
     provideState(settingScreenCaptureFeature),
     provideEffects([SettingScreenCaptureEffects]),
-    autoSyncProvider
   ]);
 }
