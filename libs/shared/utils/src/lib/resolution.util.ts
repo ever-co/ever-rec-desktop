@@ -11,3 +11,17 @@ export const resolutionMapper: Record<string, string> = {
   '2048:1080': '2K (DCI)',
   '4096:2160': '4K (DCI)',
 };
+
+export const iconMapper: Record<string, string> = {
+  '360p': '360', // Use a generic "360" icon
+  '480p': 'sd', // Standard definition
+  '720p': 'hd', // High definition
+  '1080p': 'hd', // High definition
+  '1440p': 'high_quality', // Represents high quality
+  '4K': '4k', // 4K icon
+  '5K': 'high_quality', // Custom use, similar to high quality
+  '6K': 'high_quality', // Custom use, similar to high quality
+  '8K': '8k', // 8K icon
+  '2K (DCI)': 'high_quality', // Custom icon for DCI standards
+  '4K (DCI)': '4k', // Custom icon for DCI 4K
+};

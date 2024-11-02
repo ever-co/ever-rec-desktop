@@ -22,6 +22,7 @@ import {
   HumanizeBytesPipe,
   HumanizePipe,
   PopoverDirective,
+  ResolutionPipe,
   UtcToLocalTimePipe
 } from '@ever-co/shared-service';
 import { IActionButton, IVideo, IVideoMetadata } from '@ever-co/shared-utils';
@@ -58,7 +59,8 @@ import {
     PopoverDirective,
     ActionButtonGroupComponent,
     HumanizePipe,
-    CopyToClipboardDirective
+    CopyToClipboardDirective,
+    ResolutionPipe
   ],
   templateUrl: './video-detail.component.html',
   styleUrl: './video-detail.component.scss',
