@@ -13,7 +13,7 @@ export const resolutionMapper: Record<string, string> = {
 };
 
 export const iconMapper: Record<string, string> = {
-  '360p': '360', // Use a generic "360" icon
+  '360p': 'sd', // Use a generic "360" icon
   '480p': 'sd', // Standard definition
   '720p': 'hd', // High definition
   '1080p': 'hd', // High definition
