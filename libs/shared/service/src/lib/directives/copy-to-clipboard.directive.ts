@@ -70,13 +70,7 @@ export class CopyToClipboardDirective implements OnInit, OnDestroy {
 
     if (this.iconElement) {
       // Change icon to check and color to green
-      this.renderer.setProperty(
-        this.iconElement,
-        'textContent',
-        'check'
-      );
-      this.renderer.removeClass(this.iconElement, 'text-gray-500');
-      this.renderer.addClass(this.iconElement, 'text-green-500');
+      this.renderer.setProperty(this.iconElement, 'textContent', 'check');
 
       // Revert back after 1.5 seconds
       this.setTimeoutSafely(() => {
@@ -85,15 +79,13 @@ export class CopyToClipboardDirective implements OnInit, OnDestroy {
           'textContent',
           'content_copy'
         );
-        this.renderer.removeClass(this.iconElement, 'text-green-500');
-        this.renderer.addClass(this.iconElement, 'text-gray-500');
       }, 2000);
     } else {
       // If no icon, add a temporary success message
       const successElement = this.renderer.createElement('span');
       this.renderer.setProperty(successElement, 'textContent', 'Copied!');
       this.renderer.addClass(successElement, 'ml-2');
-      this.renderer.addClass(successElement, 'text-green-500');
+      this.renderer.addClass(successElement, 'text-gray-500');
       this.renderer.addClass(successElement, 'text-sm');
       this.renderer.appendChild(this.el.nativeElement, successElement);
 
