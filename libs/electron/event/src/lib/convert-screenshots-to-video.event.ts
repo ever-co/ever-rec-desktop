@@ -13,8 +13,10 @@ import {
 
 import {
   Channel,
+  IBatchVideo,
   IScreenshot,
   ITimeLog,
+  IVideo,
   IVideoConvertPayload,
 } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
@@ -25,7 +27,13 @@ export function convertScreenshotsToVideoEvent() {
     Channel.START_CONVERT_TO_VIDEO,
     async (
       event,
-      { filter, config, timeLogId, screenshotIds = [] }: IVideoConvertPayload
+      {
+        filter,
+        config,
+        timeLogId,
+        screenshotIds = [],
+        videoIds = [],
+      }: IVideoConvertPayload
     ) => {
       const logger = new ElectronLogger('Screenshots --> Video');
       const splitter = new BatchSplitter();
@@ -41,6 +49,7 @@ export function convertScreenshotsToVideoEvent() {
       }
 
       let screenshots: IScreenshot[] = [];
+      let videos: IVideo[] = [];
 
       if (screenshotIds.length === 0) {
         screenshots = await ScreenshotService.findAll({
@@ -54,9 +63,6 @@ export function convertScreenshotsToVideoEvent() {
               timeLog: {
                 id: timeLog.id,
               },
-            }),
-            ...(screenshotIds && {
-              id: In(screenshotIds),
             }),
             video: {
               id: IsNull(),
@@ -73,14 +79,32 @@ export function convertScreenshotsToVideoEvent() {
         });
       }
 
-      const size = screenshots.length;
-
-      if (size === 0) {
-        logger.info('No screenshots found to convert.');
-        return event.reply(Channel.CANCEL_CONVERSION);
+      if (videoIds.length > 0) {
+        videos = await videoService.findAll({
+          relations: ['screenshots'],
+          where: {
+            id: In(videoIds),
+          },
+          order: { createdAt: 'ASC' },
+        });
       }
 
-      logger.info(`Find ${size} screenshots to convert`);
+      const screenshotsSize = screenshots.length;
+      const videosSize = videos.length;
+
+      if (screenshotsSize === 0) {
+        logger.info('No screenshots found to convert.');
+        if (videosSize === 0) {
+          logger.info('No videos found to merge.');
+          return event.reply(Channel.GENERATION_ERROR);
+        }
+      } else {
+        logger.info(`Find ${screenshotsSize} screenshots to convert`);
+      }
+
+      if (videosSize) {
+        logger.info(`Find ${videosSize} videos to merge`);
+      }
 
       const videoConversionService = new VideoConversionService(
         event,
@@ -94,7 +118,18 @@ export function convertScreenshotsToVideoEvent() {
         videoService
       );
 
-      await videoConversionService.convert();
+      if (screenshotsSize > 0) {
+        await videoConversionService.convert();
+      }
+
+      if (videosSize > 0) {
+        const batches: IBatchVideo[] = videos.map((video, index) => ({
+          path: FileManager.decodePath(video.pathname),
+          index,
+        }));
+
+        await videoConversionService.combineVideos(batches, videos);
+      }
     }
   );
 }

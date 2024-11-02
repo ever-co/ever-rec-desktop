@@ -258,7 +258,7 @@ export class VideoConversionService implements ILoggable {
 
     if (this.completedWorkers === totalBatches) {
       this.logger.info(`Process images to video batch finished...`);
-      this.combineVideos(this.batchVideo);
+      this.combineVideos(this.batchVideo, this.chunks);
     }
   }
 
@@ -276,7 +276,7 @@ export class VideoConversionService implements ILoggable {
  * @returns {Promise<void>} - A promise that resolves when the video
  *   combination process is complete.
  */
-  private async combineVideos(batchVideo: IBatchVideo[]): Promise<void> {
+  public async combineVideos(batchVideo: IBatchVideo[], chunks: IVideo[]): Promise<void> {
     const finalOutputPath = this.fileManager.createFilePathSync(
       'videos',
       `output-${Date.now()}.mp4`
@@ -310,7 +310,7 @@ export class VideoConversionService implements ILoggable {
           const { frameRate, resolution, codec, batch, timeLogId } =
             this.config;
           const screenshotIds = this.screenshots.map(({ id }) => id);
-          const chunkScreenshotIds = this.chunks
+          const chunkScreenshotIds = chunks
             .flatMap((chunk) => chunk?.screenshots?.map(({ id }) => id) || [])
             .filter((id) => id != null);
           const uniqueScreenshotIds = [
@@ -329,7 +329,7 @@ export class VideoConversionService implements ILoggable {
             frameRate,
             codec,
             batch,
-            chunkIds: this.chunks.map(({ id }) => id),
+            chunkIds: chunks.map(({ id }) => id),
             screenshotIds: uniqueScreenshotIds,
           });
 

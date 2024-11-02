@@ -5,6 +5,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router, RouterLink } from '@angular/router';
 import {
+  generateVideoActions,
+  selectGenerateVideoState,
+  selectSettingState,
   selectVideoState,
   videoActions,
 } from '@ever-co/convert-video-data-access';
@@ -25,7 +28,7 @@ import {
   IVideo,
 } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
-import { Observable, Subject, filter, map, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, filter, map, take, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'lib-video-gallery',
@@ -66,6 +69,8 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
       label: 'Merge',
       variant: 'warning',
       hide: this.lessThanOneSelected$,
+      action: this.mergeVideos.bind(this),
+      loading: this.generating$,
     },
     {
       icon: 'remove_done',
@@ -134,6 +139,13 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe();
+  }
+
+  private get generating$(): Observable<boolean> {
+    return this.store.select(selectGenerateVideoState).pipe(
+      map((state) => state.generating),
+      takeUntil(this.destroy$)
+    );
   }
 
   private async view(selectedVideos: ISelected<IVideo>[]): Promise<void> {
@@ -216,6 +228,20 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
 
   public unselectAll(): void {
     this.store.dispatch(videoActions.unselectAllVideos());
+  }
+
+  private mergeVideos(selectedVideos: ISelected<IVideo>[]): void {
+    const videoIds = selectedVideos.map((video) => video.data.id);
+    console.log(videoIds)
+    this.store
+      .select(selectSettingState)
+      .pipe(
+        take(1),
+        tap(({ videoConfig: config }) =>
+          this.store.dispatch(generateVideoActions.start({ videoIds, config }))
+        )
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {
