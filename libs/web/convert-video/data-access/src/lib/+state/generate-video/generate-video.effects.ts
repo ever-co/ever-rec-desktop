@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
+import { NotificationService } from '@ever-co/notification-data-access';
 import { LocalStorageService } from '@ever-co/shared-service';
 import { IVideo, IVideoConfig } from '@ever-co/shared-utils';
 import { Action } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { ConvertVideoElectronService } from '../../services/convert-video-electron.service';
 import { generateVideoActions } from './generate-video.actions';
 
@@ -17,6 +18,7 @@ export class GenerateVideoEffects {
       ofType(generateVideoActions.start),
       map((action) => {
         this.convertVideoElectronService.startGenerate(action);
+        this.notifcationService.show('Start generating video.', 'success');
         return generateVideoActions.startSuccess();
       }),
       catchError((error) => of(generateVideoActions.failure({ error })))
@@ -31,6 +33,7 @@ export class GenerateVideoEffects {
         generateVideoActions.triggerError
       ),
       map(() => {
+        this.notifcationService.show('Stop generating video.', 'info');
         this.convertVideoElectronService.cancelGenerate();
         return generateVideoActions.cancelSuccess();
       }),
@@ -58,6 +61,7 @@ export class GenerateVideoEffects {
       mergeMap(() => {
         return new Promise<Action<string>>((resolve) => {
           this.convertVideoElectronService.onDone((video) => {
+            this.notifcationService.show('Generating video done.', 'success');
             resolve(generateVideoActions.finish({ video }));
           });
         });
@@ -72,6 +76,7 @@ export class GenerateVideoEffects {
       mergeMap(() => {
         return new Promise<Action<string>>((resolve) => {
           this.convertVideoElectronService.onError((error) => {
+            this.notifcationService.show(`${error}`, 'error');
             resolve(generateVideoActions.triggerError({ error }));
           });
         });
@@ -113,6 +118,7 @@ export class GenerateVideoEffects {
       ofType(generateVideoActions.finish),
       mergeMap(({ video }) => {
         return this.storageService.setItem<IVideo>(this.KEY, video).pipe(
+          tap(() => this.notifcationService.show('Finish generating video.', 'success')),
           map(() => generateVideoActions.finishSuccess()),
           catchError((error) => of(generateVideoActions.failure({ error })))
         );
@@ -135,6 +141,7 @@ export class GenerateVideoEffects {
   constructor(
     private actions$: Actions,
     private readonly convertVideoElectronService: ConvertVideoElectronService,
-    private readonly storageService: LocalStorageService
+    private readonly storageService: LocalStorageService,
+    private readonly notifcationService: NotificationService
   ) {}
 }

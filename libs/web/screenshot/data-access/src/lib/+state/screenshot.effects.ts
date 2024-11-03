@@ -1,4 +1,5 @@
 import { Injectable, inject } from '@angular/core';
+import { NotificationService } from '@ever-co/notification-data-access';
 import { IPaginationOptions } from '@ever-co/shared-utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
@@ -11,13 +12,14 @@ import { screenshotActions } from './screenshot.actions';
 export class ScreenshotEffects {
   private electronService = inject(ScreenshotElectronService);
 
-  constructor(private actions$: Actions) {}
+  constructor(private actions$: Actions, private readonly notificationService: NotificationService) {}
 
   startCaptureScreen$ = createEffect(() =>
     this.actions$.pipe(
       ofType(screenshotActions.startCapture),
       map((action) => {
         this.electronService.startCapture(action);
+        this.notificationService.show('Start capturing screen.', 'success');
         return screenshotActions.startCaptureSuccess();
       }),
       catchError((error) => of(screenshotActions.captureFailure({ error })))
@@ -29,6 +31,7 @@ export class ScreenshotEffects {
       ofType(screenshotActions.stopCapture),
       map(() => {
         this.electronService.stopCapture();
+        this.notificationService.show('Stop capturing screen.', 'success');
         return screenshotActions.stopCaptureSuccess();
       }),
       catchError((error) => of(screenshotActions.captureFailure({ error })))

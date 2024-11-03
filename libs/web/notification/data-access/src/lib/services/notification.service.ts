@@ -21,9 +21,12 @@ export class NotificationService {
       })
     );
     // Show snackbar for immediate feedback
-    this.snackBar.open(message, 'Close', {
+    this.snackBar.open(message, undefined, {
       duration: 3000,
       panelClass: [`bg-${type}`],
+      politeness: 'assertive',
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
     });
   }
 
