@@ -231,6 +231,7 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
       .open({
         title: 'Delete Screenshots?',
         message: `Are you sure you want to delete ${screenshots.length} screenshots?`,
+        variant: 'danger'
       })
       .pipe(
         take(1),
@@ -253,8 +254,12 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
       .open({
         title: 'Generate Video',
         message: `Are you sure you want to generate a video from ${screenshotIds.length} screenshots?`,
-        label: {
-          confirm: 'Generate',
+        button: {
+          confirm: {
+            label: 'Generate',
+            variant: 'warning',
+            icon: 'subscriptions',
+          },
         },
       })
       .pipe(

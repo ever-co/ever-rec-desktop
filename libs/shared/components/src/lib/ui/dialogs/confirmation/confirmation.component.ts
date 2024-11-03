@@ -18,21 +18,35 @@ import { ActionButtonComponent } from '../../action-button-group/button/action-b
 })
 export class ConfirmationComponent {
   public buttonConfirm: IActionButton = {
-    label: this.data?.label?.confirm ?? 'Confirm',
     icon: 'check',
     variant: 'success',
     action: this.onConfirm.bind(this),
+    label: 'Confirm',
+    ...this.data.button?.confirm,
   };
   public buttonCancel: IActionButton = {
-    label: this.data?.label?.cancel ?? 'Cancel',
     icon: 'close',
     variant: 'danger',
     action: this.onCancel.bind(this),
+    label: 'Cancel',
+    ...this.data.button?.cancel,
   };
   constructor(
     public dialogRef: MatDialogRef<ConfirmationComponent>,
     @Inject(MAT_DIALOG_DATA) public data: IConfirmationDialog
   ) {}
+
+  public getColorClass(): string {
+    const variants = {
+      success: ' rgb(5 150 105)',
+      danger: 'rgb(225 29 72)',
+      warning: 'rgb(202 138 4)',
+      primary: 'var(--mat-outlined-button-state-layer-color)',
+      default: 'darkgray',
+      info: ' rgb(37 99 235)',
+    };
+    return variants[this.data.variant || 'default'];
+  }
 
   public onCancel(): void {
     this.dialogRef.close(false);

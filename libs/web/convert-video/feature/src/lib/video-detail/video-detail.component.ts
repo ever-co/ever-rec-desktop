@@ -127,6 +127,7 @@ export class VideoDetailComponent implements OnInit, OnDestroy {
       this.confirationDialogService.open({
         title: 'Delete Video',
         message: 'Are you sure you want to delete this video?',
+        variant: 'danger'
       })
     );
     if (isConfirmed) {

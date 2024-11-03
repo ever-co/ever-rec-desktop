@@ -93,6 +93,7 @@ export class ScreenshotComponent implements OnInit {
       this.confirationDialogService.open({
         title: 'Delete Screenshot',
         message: 'Are you sure you want to delete this screenshot?',
+        variant: 'danger'
       })
     );
     if (isConfirmed) {

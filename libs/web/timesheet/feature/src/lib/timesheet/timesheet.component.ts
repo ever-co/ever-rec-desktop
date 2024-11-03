@@ -175,6 +175,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       .open({
         title: 'Delete Time Log',
         message: `Are you sure you want to delete this time log?`,
+        variant: 'danger'
       })
       .pipe(
         take(1),

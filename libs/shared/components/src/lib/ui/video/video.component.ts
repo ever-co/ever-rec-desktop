@@ -153,6 +153,7 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
       .open({
         title: 'Delete Video',
         message: `Are you sure you want to delete this video?`,
+        variant: 'danger'
       })
       .pipe(
         take(1),

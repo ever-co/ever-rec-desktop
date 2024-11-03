@@ -91,6 +91,7 @@ export class ScreenshotComponent implements OnDestroy, OnDestroy {
       .open({
         title: 'Delete Screenshot',
         message: `Are you sure you want to delete this screenshot?`,
+        variant: 'danger'
       })
       .pipe(
         take(1),

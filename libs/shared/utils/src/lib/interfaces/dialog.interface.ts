@@ -1,8 +1,11 @@
+import { IActionButton } from './action-button.interface';
+
 export interface IConfirmationDialog {
   title: string;
+  variant?: 'success' | 'danger' | 'warning' | 'info' | 'default' | 'primary';
   message: string;
-  label?: {
-    confirm?: string;
-    cancel?: string;
+  button?: {
+    confirm?: IActionButton;
+    cancel?: IActionButton;
   };
 }

@@ -175,6 +175,7 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
       .open({
         title: 'Delete Videos',
         message: `Are you sure you want to delete these ${videos.length} videos?`,
+        variant: 'danger'
       })
       .pipe(
         take(1),
@@ -260,8 +261,13 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
       .open({
         title: 'Merge Videos',
         message: 'Are you sure you want to merge these videos?',
-        label: {
-          confirm: 'Merge',
+        variant: 'warning',
+        button: {
+          confirm: {
+            label: 'Merge',
+            variant: 'warning',
+            icon: 'merge',
+          },
         },
       })
       .pipe(
