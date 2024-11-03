@@ -64,9 +64,11 @@ export function convertScreenshotsToVideoEvent() {
                 id: timeLog.id,
               },
             }),
-            video: {
-              id: IsNull(),
-            },
+            ...(config.optimized && {
+              video: {
+                id: IsNull(),
+              },
+            }),
           },
           order: { createdAt: 'ASC' },
         });
