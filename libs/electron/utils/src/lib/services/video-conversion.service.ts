@@ -238,7 +238,6 @@ export class VideoConversionService implements ILoggable {
     ipcMain.on(this.channel.CANCEL_GENERATING, () => {
       workers.forEach((worker) => worker.terminate());
       this.logger.warn('End Generating...');
-      this.event.reply(this.channel.CANCEL_CONVERSION, 'End Generating...');
     });
   }
 
