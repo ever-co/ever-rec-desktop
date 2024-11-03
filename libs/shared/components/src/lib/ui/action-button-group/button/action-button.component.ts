@@ -44,7 +44,9 @@ export class ActionButtonComponent {
       success: 'group-hover:text-green-600',
     };
 
-    return `${baseClasses} ${variantClasses[this.button.variant || 'default']}`;
+    return `${baseClasses} ${
+      variantClasses[this.button.variant || 'default']
+    } ${this.getSizeClasses()}`;
   }
 
   public getLabelClasses(): string {
@@ -55,7 +57,19 @@ export class ActionButtonComponent {
       success: 'group-hover:text-green-600',
     };
 
-    return variantClasses[this.button.variant || 'default'];
+    return variantClasses[this.button.variant || 'default'].concat(
+      ` ${this.getSizeClasses()}`
+    );
+  }
+
+  public getSizeClasses(): string {
+    const variantClasses = {
+      large: 'text-lg',
+      medium: 'text-md',
+      small: 'text-sm',
+    };
+
+    return variantClasses[this.button.size || 'medium'];
   }
 
   public getSpinnerColor(): string {

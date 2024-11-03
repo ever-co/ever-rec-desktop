@@ -34,6 +34,7 @@ export class ListComponent {
     icon: 'check',
     label: 'Mark as read',
     variant: 'success',
+    size: 'small',
     action: this.markAsRead.bind(this),
   };
 
@@ -41,6 +42,7 @@ export class ListComponent {
     icon: 'close',
     label: 'Remove',
     variant: 'danger',
+    size: 'small',
     action: this.removeNotification.bind(this),
   };
 

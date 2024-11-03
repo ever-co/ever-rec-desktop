@@ -1,4 +1,4 @@
-import { Observable } from "rxjs";
+import { Observable } from 'rxjs';
 
 export interface IActionButton {
   icon: string;
@@ -7,5 +7,6 @@ export interface IActionButton {
   loading?: Observable<boolean>;
   tooltip?: string;
   variant?: 'default' | 'danger' | 'warning' | 'success';
+  size?: 'large' | 'medium' | 'small';
   action?: (data?: any) => any;
 }
