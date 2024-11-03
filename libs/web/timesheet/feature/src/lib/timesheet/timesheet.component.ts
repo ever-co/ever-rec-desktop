@@ -175,7 +175,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       .open({
         title: 'Delete Time Log',
         message: `Are you sure you want to delete this time log?`,
-        variant: 'danger'
+        variant: 'danger',
       })
       .pipe(
         take(1),
@@ -238,6 +238,14 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       .open({
         title: 'Generate Video',
         message: `Are you sure you want to generate a video for this time log?`,
+        variant: 'warning',
+        button: {
+          confirm: {
+            label: 'Generate',
+            variant: 'warning',
+            icon: 'subscriptions',
+          },
+        },
       })
       .pipe(
         take(1),
