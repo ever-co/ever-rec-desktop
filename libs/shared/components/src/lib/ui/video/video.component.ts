@@ -17,11 +17,25 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
 import { videoActions } from '@ever-co/convert-video-data-access';
-import { HumanizePipe, PopoverDirective, ResolutionPipe, UtcToLocalTimePipe } from '@ever-co/shared-service';
+import {
+  HumanizePipe,
+  PopoverDirective,
+  ResolutionPipe,
+  UtcToLocalTimePipe,
+} from '@ever-co/shared-service';
 import { IActionButton, ISelected, IVideo } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject, fromEvent, Subject, takeUntil, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  filter,
+  fromEvent,
+  Subject,
+  take,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import { ActionButtonGroupComponent } from '../action-button-group/group/action-button-group.component';
+import { ConfirmationDialogService } from '../dialogs/services/confirmation-dialog.service';
 
 @Component({
   selector: 'lib-video',
@@ -38,7 +52,7 @@ import { ActionButtonGroupComponent } from '../action-button-group/group/action-
     MatTooltipModule,
     MatCheckboxModule,
     ResolutionPipe,
-    HumanizePipe
+    HumanizePipe,
   ],
   templateUrl: './video.component.html',
   styleUrl: './video.component.scss',
@@ -78,7 +92,11 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
     },
   ];
 
-  constructor(private readonly router: Router, private readonly store: Store) {}
+  constructor(
+    private readonly router: Router,
+    private readonly store: Store,
+    private readonly confirmationDialogService: ConfirmationDialogService
+  ) {}
 
   ngAfterViewInit(): void {
     fromEvent(this.player, 'play')
@@ -130,8 +148,18 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
     await this.router.navigate(['/', 'library', 'videos', video.id]);
   }
 
-  public async delete(video: IVideo): Promise<void> {
-    this.store.dispatch(videoActions.deleteVideo(video));
+  public delete(video: IVideo): void {
+    this.confirmationDialogService
+      .open({
+        title: 'Delete Video',
+        message: `Are you sure you want to delete this video?`,
+      })
+      .pipe(
+        take(1),
+        filter(Boolean),
+        tap(() => this.store.dispatch(videoActions.deleteVideo(video)))
+      )
+      .subscribe();
   }
 
   public onSelected(checked: boolean): void {
