@@ -74,8 +74,8 @@ export class GenerateVideoEffects {
       mergeMap(() => {
         return new Promise<Action<string>>((resolve) => {
           this.convertVideoElectronService.onError((error) => {
-            this.notifcationService.show(`${error}`, 'error');
-            resolve(generateVideoActions.triggerError({ error }));
+            this.notifcationService.show(error, 'error');
+            resolve(generateVideoActions.triggerError({ error }))
           });
         });
       }),
