@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {
+  notificationActions,
   NotificationService,
   selectNotificationState,
 } from '@ever-co/notification-data-access';
@@ -28,18 +29,21 @@ import { ListComponent } from '../list/list.component';
   templateUrl: './badge.component.html',
   styleUrl: './badge.component.scss',
 })
-export class NotificationBadgeComponent {
+export class NotificationBadgeComponent implements OnInit {
   public unreadCount$!: Observable<number>;
 
   constructor(
     private store: Store,
     private notificationService: NotificationService
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.unreadCount$ = this.store
       .select(selectNotificationState)
       .pipe(
         map(({ notifications }) => notifications.filter((n) => !n.read).length)
       );
+    this.store.dispatch(notificationActions.loadNotifications());
   }
 
   clearAll() {

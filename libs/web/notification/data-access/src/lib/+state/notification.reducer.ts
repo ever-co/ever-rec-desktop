@@ -14,7 +14,13 @@ export const initialState: NotificationState = {
 
 export const reducer = createReducer(
   initialState,
-  on(notificationActions.loadNotifications, (state) => state),
+  on(
+    notificationActions.loadNotificationsSuccess,
+    (state, { notifications }) => ({
+      ...state,
+      notifications,
+    })
+  ),
   on(notificationActions.addNotification, (state, { notification }) => ({
     ...state,
     notifications: [notification, ...state.notifications],
