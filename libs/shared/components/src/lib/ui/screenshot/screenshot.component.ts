@@ -14,7 +14,9 @@ import {
 } from '@ever-co/shared-service';
 import { IActionButton, IScreenshot, ISelected } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
+import { filter, take, tap } from 'rxjs';
 import { ActionButtonGroupComponent } from '../action-button-group/group/action-button-group.component';
+import { ConfirmationDialogService } from '../dialogs/services/confirmation-dialog.service';
 
 @Component({
   selector: 'lib-screenshot',
@@ -59,7 +61,11 @@ export class ScreenshotComponent {
     },
   ];
 
-  constructor(private readonly router: Router, private readonly store: Store) {}
+  constructor(
+    private readonly router: Router,
+    private readonly store: Store,
+    private readonly confirmationDialogService: ConfirmationDialogService
+  ) {}
 
   public async view(): Promise<void> {
     await this.router.navigate([
@@ -79,6 +85,18 @@ export class ScreenshotComponent {
   }
 
   public delete(screenshot: IScreenshot) {
-    this.store.dispatch(screenshotActions.deleteScreenshot(screenshot));
+    this.confirmationDialogService
+      .open({
+        title: 'Delete Screenshot',
+        message: `Are you sure you want to delete this screenshot?`,
+      })
+      .pipe(
+        take(1),
+        filter(Boolean),
+        tap(() =>
+          this.store.dispatch(screenshotActions.deleteScreenshot(screenshot))
+        )
+      )
+      .subscribe();
   }
 }
