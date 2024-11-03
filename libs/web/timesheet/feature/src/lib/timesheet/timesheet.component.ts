@@ -89,11 +89,6 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   private selectedRow: ITimeLog | null = null;
   public actionButtons: IActionButton[] = [
     {
-      icon: 'visibility',
-      label: 'View',
-      hide: this.hideAction$,
-    },
-    {
       icon: 'subscriptions',
       label: 'Generate',
       variant: 'warning',
