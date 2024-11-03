@@ -43,6 +43,13 @@ export class ConvertVideoElectronService {
     );
   }
 
+  public onCancel(callback: (reason: string) => void): void {
+    this.electronService.removeAllListeners(Channel.CANCEL_CONVERSION);
+    this.electronService.on(Channel.CANCEL_CONVERSION, (_, reason: string) =>
+      callback(reason)
+    );
+  }
+
   public onAutoGenerate(
     callback: (trigger: { completed: boolean; timeLogId: string }) => void
   ): void {

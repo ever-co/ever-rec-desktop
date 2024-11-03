@@ -33,7 +33,7 @@ export const reducer = createReducer(
     error: '',
     generating: true,
   })),
-  on(generateVideoActions.cancel, (state) => ({
+  on(generateVideoActions.cancelSuccess, (state) => ({
     ...state,
     generating: false,
   })),

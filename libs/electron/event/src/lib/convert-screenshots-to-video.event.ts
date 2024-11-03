@@ -98,7 +98,7 @@ export function convertScreenshotsToVideoEvent() {
         logger.info('No screenshots found to convert.');
         if (videosSize === 0) {
           logger.info('No videos found to merge.');
-          return event.reply(Channel.GENERATION_ERROR);
+          return event.reply(Channel.CANCEL_CONVERSION, 'Videos is already exists');
         }
       } else {
         logger.info(`Find ${screenshotsSize} screenshots to convert`);

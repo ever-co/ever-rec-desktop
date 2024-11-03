@@ -85,6 +85,21 @@ export class GenerateVideoEffects {
     )
   );
 
+  onCancel$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(generateVideoActions.startSuccess),
+      mergeMap(() => {
+        return new Promise<Action<string>>((resolve) => {
+          this.convertVideoElectronService.onCancel((reason) => {
+            this.notifcationService.show(reason, 'warning');
+            resolve(generateVideoActions.cancelSuccess());
+          });
+        });
+      }),
+      catchError((error) => of(generateVideoActions.failure({ error })))
+    )
+  );
+
   onAutoGenerate$ = createEffect(() =>
     this.actions$.pipe(
       ofType(generateVideoActions.autoGenerate),
