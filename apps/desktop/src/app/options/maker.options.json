@@ -6,5 +6,19 @@
     "../../../../../node_modules/ffmpeg-static/package.json"
   ],
   "productName": "Ever Capture",
-  "appId": "com.ever.capture"
+  "appId": "com.ever.capture",
+  "artifactName": "ever-capture-${version}.${ext}",
+  "copyright": "Copyright © 2019-Present. Ever Co. LTD",
+  "directories": {
+    "buildResources": "icons"
+  },
+  "mac": {
+    "icon": "icon.icns"
+  },
+  "win": {
+    "icon": "icon.ico"
+  },
+  "linux": {
+    "icon": "linux"
+  }
 }
