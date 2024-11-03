@@ -11,6 +11,8 @@ import {
 } from '@angular/router';
 import { provideBreadcrumbDataAccess } from '@ever-co/breadcrumb-data-access';
 import { provideConvertVideoDataAccess } from '@ever-co/convert-video-data-access';
+import { provideFactoriesDataAccess } from '@ever-co/factory';
+import { provideNotificationDataAccess } from '@ever-co/notification-data-access';
 import { provideScreenshotDataAccess } from '@ever-co/screenshot-data-access';
 import { provideDatePickerDataAccess } from '@ever-co/shared-service';
 import { provideSidebarDataAccess } from '@ever-co/sidebar-data-access';
@@ -20,7 +22,6 @@ import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { appRoutes } from './app.routes';
-import { provideFactoriesDataAccess } from '@ever-co/factory';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -38,5 +39,6 @@ export const appConfig: ApplicationConfig = {
     provideDatePickerDataAccess(),
     provideTimeLogDataAccess(),
     provideFactoriesDataAccess(),
+    provideNotificationDataAccess(),
   ],
 };

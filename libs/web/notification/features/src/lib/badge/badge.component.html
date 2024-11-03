@@ -1,0 +1,25 @@
+<button mat-icon-button [libPopover]="menu" class="relative">
+  <mat-icon>notifications</mat-icon>
+  @if (unreadCount$ | async; as unreadCount) {
+  <span
+    class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center"
+  >
+    {{ unreadCount }}
+  </span>
+  }
+</button>
+
+<ng-template #menu class="w-80">
+  <div class="p-4 bg-white rounded-xl shadow">
+      <div class="flex justify-between gap-4 items-center mb-4">
+        <div class="text-xl font-semibold">Notifications</div>
+        <button mat-icon-button color="warn" matTooltip="Clear All" (click)="clearAll()">
+          <mat-icon>clear_all</mat-icon>
+        </button>
+      </div>
+
+      <div class="max-h-96 overflow-y-auto">
+        <lib-list></lib-list>
+      </div>
+  </div>
+</ng-template>

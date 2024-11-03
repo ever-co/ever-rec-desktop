@@ -12,9 +12,7 @@ export const layoutRoutes: Route[] = [
       {
         path: 'dashboard',
         loadComponent: () =>
-          import('@ever-co/web-dashboard').then(
-            (r) => r.DashboardComponent
-          ),
+          import('@ever-co/web-dashboard').then((r) => r.DashboardComponent),
       },
       {
         path: 'library',
@@ -29,7 +27,9 @@ export const layoutRoutes: Route[] = [
       {
         path: 'timesheet',
         loadChildren: () =>
-          import('@ever-co/timesheet-feature').then((r) => r.timesheetFeatureRoutes),
+          import('@ever-co/timesheet-feature').then(
+            (r) => r.timesheetFeatureRoutes
+          ),
       },
       {
         path: 'timeline',

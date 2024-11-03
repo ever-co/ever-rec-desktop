@@ -25,6 +25,12 @@
       "@ever-co/factory": ["libs/shared/factory/src/index.ts"],
       "@ever-co/layout": ["libs/web/layout/src/index.ts"],
       "@ever-co/library": ["libs/web/library/src/index.ts"],
+      "@ever-co/notification-data-access": [
+        "libs/web/notification/data-access/src/index.ts"
+      ],
+      "@ever-co/notification-feature": [
+        "libs/web/notification/features/src/index.ts"
+      ],
       "@ever-co/screenshot-data-access": [
         "libs/web/screenshot/data-access/src/index.ts"
       ],

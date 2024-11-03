@@ -263,19 +263,12 @@ export class VideoConversionService implements ILoggable {
   }
 
 
-/**
- * Combines multiple batch video segments into a single final video file.
- *
- * This function creates and manages a worker responsible for combining
- * the video segments specified in the `batchVideo` array. The combined
- * video is saved to a specified output path and metadata is stored in
- * the database. The function logs the process and handles errors by
- * emitting relevant events.
- *
- * @param {IBatchVideo[]} batchVideo - Array of batch videos to be combined.
- * @returns {Promise<void>} - A promise that resolves when the video
- *   combination process is complete.
- */
+  /**
+   * Combine the generated video batches into a single final video.
+   * @param batchVideo - The array of batch video objects.
+   * @param chunks - The array of chunk objects.
+   * @returns A promise that resolves when the video combining is complete.
+   */
   public async combineVideos(batchVideo: IBatchVideo[], chunks: IVideo[]): Promise<void> {
     const finalOutputPath = this.fileManager.createFilePathSync(
       'videos',

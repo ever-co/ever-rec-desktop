@@ -15,6 +15,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterOutlet } from '@angular/router';
 import { breadcrumbActions } from '@ever-co/breadcrumb-data-access';
 import { BreadcrumbComponent } from '@ever-co/breadcrumb-feature';
+import { NotificationBadgeComponent } from '@ever-co/notification-feature';
 import {
   DatePickerComponent,
   StartComponent,
@@ -46,6 +47,7 @@ import { Subject, takeUntil } from 'rxjs';
     StartComponent,
     DatePickerComponent,
     MatTooltipModule,
+    NotificationBadgeComponent
   ],
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
