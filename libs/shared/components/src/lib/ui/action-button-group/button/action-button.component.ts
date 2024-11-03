@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -16,6 +16,7 @@ import { IActionButton } from '@ever-co/shared-utils';
   ],
   templateUrl: './action-button.component.html',
   styleUrl: './action-button.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ActionButtonComponent {
   @Input() data!: any;

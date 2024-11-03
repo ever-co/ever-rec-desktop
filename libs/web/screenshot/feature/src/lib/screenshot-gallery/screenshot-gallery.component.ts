@@ -13,6 +13,7 @@ import {
   selectScreenshotState,
 } from '@ever-co/screenshot-data-access';
 import {
+  ConfirmationDialogService,
   GalleryButtonsActionComponent,
   NoDataComponent,
   ScreenshotComponent,
@@ -29,7 +30,16 @@ import {
   ISelected,
 } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
-import { Observable, Subject, filter, map, take, takeUntil, tap } from 'rxjs';
+import {
+  Observable,
+  Subject,
+  filter,
+  map,
+  take,
+  takeUntil,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 
 @Component({
   selector: 'lib-screenshot-gallery',
@@ -97,7 +107,8 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
   ];
 
   constructor(
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly confirmationDialogService: ConfirmationDialogService
   ) {}
 
   ngOnInit(): void {
@@ -216,24 +227,46 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
     const screenshots = selectedScreenshots.map(
       (screenshot) => screenshot.data
     );
-    this.store.dispatch(
-      screenshotActions.deleteSelectedScreenshots({ screenshots })
-    );
+    this.confirmationDialogService
+      .open({
+        title: 'Delete Screenshots?',
+        message: `Are you sure you want to delete ${screenshots.length} screenshots?`,
+      })
+      .pipe(
+        take(1),
+        filter(Boolean),
+        tap(() =>
+          this.store.dispatch(
+            screenshotActions.deleteSelectedScreenshots({ screenshots })
+          )
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
   private generateVideo(selectedScreenshots: ISelected<IScreenshot>[]): void {
     const screenshotIds = selectedScreenshots.map(
       (screenshot) => screenshot.data.id
     );
-    this.store
-      .select(selectSettingState)
+    this.confirmationDialogService
+      .open({
+        title: 'Generate Video',
+        message: `Are you sure you want to generate a video from ${screenshotIds.length} screenshots?`,
+        label: {
+          confirm: 'Generate',
+        },
+      })
       .pipe(
         take(1),
-        tap(({ videoConfig: config }) =>
+        filter(Boolean),
+        withLatestFrom(this.store.select(selectSettingState)),
+        tap(([, { videoConfig: config }]) =>
           this.store.dispatch(
             generateVideoActions.start({ screenshotIds, config })
           )
-        )
+        ),
+        takeUntil(this.destroy$)
       )
       .subscribe();
   }

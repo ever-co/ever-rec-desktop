@@ -18,7 +18,7 @@ import { ActionButtonComponent } from '../../action-button-group/button/action-b
 })
 export class ConfirmationComponent {
   public buttonConfirm: IActionButton = {
-    label: this.data?.label?.cancel ?? 'Confirm',
+    label: this.data?.label?.confirm ?? 'Confirm',
     icon: 'check',
     variant: 'success',
     action: this.onConfirm.bind(this),
