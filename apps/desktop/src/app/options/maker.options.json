@@ -10,7 +10,7 @@
   "artifactName": "ever-capture-${version}.${ext}",
   "copyright": "Copyright © 2019-Present. Ever Co. LTD",
   "directories": {
-    "buildResources": "icons"
+    "buildResources": "apps/desktop/src/icons"
   },
   "mac": {
     "icon": "icon.icns"
