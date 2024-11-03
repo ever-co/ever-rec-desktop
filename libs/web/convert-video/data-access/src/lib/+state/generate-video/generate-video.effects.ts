@@ -33,7 +33,6 @@ export class GenerateVideoEffects {
         generateVideoActions.triggerError
       ),
       map(() => {
-        this.notifcationService.show('Stop generating video.', 'info');
         this.convertVideoElectronService.cancelGenerate();
         return generateVideoActions.cancelSuccess();
       }),
@@ -61,7 +60,6 @@ export class GenerateVideoEffects {
       mergeMap(() => {
         return new Promise<Action<string>>((resolve) => {
           this.convertVideoElectronService.onDone((video) => {
-            this.notifcationService.show('Generating video done.', 'success');
             resolve(generateVideoActions.finish({ video }));
           });
         });
@@ -133,7 +131,7 @@ export class GenerateVideoEffects {
       ofType(generateVideoActions.finish),
       mergeMap(({ video }) => {
         return this.storageService.setItem<IVideo>(this.KEY, video).pipe(
-          tap(() => this.notifcationService.show('Finish generating video.', 'success')),
+          tap(() => this.notifcationService.show('Generating video done.', 'success')),
           map(() => generateVideoActions.finishSuccess()),
           catchError((error) => of(generateVideoActions.failure({ error })))
         );
