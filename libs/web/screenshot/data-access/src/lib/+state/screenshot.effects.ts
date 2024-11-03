@@ -78,7 +78,7 @@ export class ScreenshotEffects {
       mergeMap(() =>
         from(this.electronService.deleteAllData()).pipe(
           map(() => {
-            this.notificationService.show('All Data Deleted', 'success');
+            this.notificationService.show('All data deleted', 'success');
             return screenshotActions.deleteScreenshotsSuccess();
           }),
           catchError((error) =>
