@@ -1,26 +1,25 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { INotification } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { notificationActions } from '../+state/notification.actions';
+import { Notification } from '../model/notification.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NotificationService {
-  constructor(private store: Store, private snackBar: MatSnackBar) {}
+  constructor(
+    private readonly store: Store,
+    private readonly snackBar: MatSnackBar
+  ) {}
 
   public show(message: string, type: 'success' | 'error' | 'info' | 'warning') {
-    const notification: INotification = {
-      id: crypto.randomUUID(),
-      message,
-      type,
-      timestamp: new Date(),
-      read: false,
-    };
-
-    this.store.dispatch(notificationActions.addNotification({ notification }));
-
+    const notification = new Notification(message, type, new Date(), false);
+    this.store.dispatch(
+      notificationActions.addNotification({
+        notification: notification.toDTO(),
+      })
+    );
     // Show snackbar for immediate feedback
     this.snackBar.open(message, 'Close', {
       duration: 3000,

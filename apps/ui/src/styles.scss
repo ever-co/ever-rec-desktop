@@ -6,6 +6,32 @@
   border-right: none;
 }
 
+.mat-mdc-snack-bar-container {
+  &.bg-success {
+    --mdc-snackbar-container-color: theme('colors.green.100');
+    --mat-mdc-snack-bar-button-color: theme('colors.green.700');
+    --mdc-snackbar-supporting-text-color: theme('colors.green.700');
+  }
+
+  &.bg-error {
+    --mdc-snackbar-container-color: theme('colors.red.100');
+    --mat-mdc-snack-bar-button-color: theme('colors.red.700');
+    --mdc-snackbar-supporting-text-color: theme('colors.red.700');
+  }
+
+  &.bg-info {
+    --mdc-snackbar-container-color: theme('colors.blue.100');
+    --mat-mdc-snack-bar-button-color: theme('colors.blue.700');
+    --mdc-snackbar-supporting-text-color: theme('colors.blue.700');
+  }
+
+  &.bg-warning {
+    --mdc-snackbar-container-color: theme('colors.yellow.100');
+    --mat-mdc-snack-bar-button-color: theme('colors.yellow.700');
+    --mdc-snackbar-supporting-text-color: theme('colors.yellow.700');
+  }
+}
+
 /* You can add global styles to this file, and also import other style files */
 body {
   background-color: #0000002b;

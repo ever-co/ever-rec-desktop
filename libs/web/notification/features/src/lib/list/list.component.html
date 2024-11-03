@@ -1,69 +1,70 @@
 <div class="w-96 max-h-[600px] overflow-y-auto rounded-xl">
-  @if(available$ | async) {
-    @for(notification of notifications$ | async; track notification.id) {
-      <mat-card
-        class="mb-3 notification-card transition-all duration-200 hover:shadow-md"
-        [ngClass]="{
-          'border-l-4 border-blue-500 bg-blue-50': notification.type === 'info',
-          'border-l-4 border-green-500 bg-green-50': notification.type === 'success',
-          'border-l-4 border-yellow-500 bg-yellow-50': notification.type === 'warning',
-          'border-l-4 border-red-500 bg-red-50': notification.type === 'error',
-          'opacity-75': notification.read
-        }"
-      >
-        <mat-card-header class="flex items-center justify-between px-4 pt-3">
-          <div class="flex items-center gap-2">
-            <mat-icon class="text-lg" [ngClass]="{
-              'text-blue-500': notification.type === 'info',
-              'text-green-500': notification.type === 'success',
-              'text-yellow-500': notification.type === 'warning',
-              'text-red-500': notification.type === 'error'
-            }">
-              {{
-                notification.type === 'info' ? 'info' :
-                notification.type === 'success' ? 'check_circle' :
-                notification.type === 'warning' ? 'warning' :
-                'error'
-              }}
-            </mat-icon>
-            <mat-card-title class="text-sm font-medium">
-              {{ notification.type | titlecase }}
-            </mat-card-title>
-          </div>
-          <span class="text-xs text-gray-500">
-            {{ notification.timestamp | date : 'MMM d, h:mm a' }}
-          </span>
-        </mat-card-header>
-
-        <mat-card-content class="px-4 py-3">
-          <p class="text-sm text-gray-700">{{ notification.message }}</p>
-        </mat-card-content>
-
-        <mat-card-actions class="flex justify-end gap-2 px-4 pb-3">
-          @if(!notification.read) {
-            <button
-              mat-button
-              class="text-xs hover:bg-gray-100"
-              (click)="markAsRead(notification.id)"
-            >
-              <mat-icon class="text-sm mr-1">check</mat-icon>
-              Mark as read
-            </button>
-          }
-          <button
-            mat-icon-button
-            class="w-8 h-8 hover:bg-gray-100"
-            (click)="removeNotification(notification.id)"
-          >
-            <mat-icon class="text-sm text-gray-500">close</mat-icon>
-          </button>
-        </mat-card-actions>
-      </mat-card>
-    }
-  } @else {
-    <div class="flex flex-col items-center justify-center p-8 bg-gray-50 rounded-xl">
-      <mat-icon class="text-gray-600 mb-2">notifications_off</mat-icon>
-      <p class="text-gray-600 text-sm">No notifications to display</p>
+  @if(available$ | async) { @for(notification of notifications$ | async; track
+  notification.id) {
+  <div
+    class="mb-3 notification-card transition-all rounded-xl duration-200 hover:shadow-md"
+    [ngClass]="{
+      'border-l-4 border-blue-500 bg-blue-50': notification.type === 'info',
+      'border-l-4 border-green-500 bg-green-50':
+        notification.type === 'success',
+      'border-l-4 border-yellow-500 bg-yellow-50':
+        notification.type === 'warning',
+      'border-l-4 border-red-500 bg-red-50': notification.type === 'error',
+      'opacity-75': notification.read
+    }"
+  >
+    <div class="flex items-center justify-between px-4 pt-3">
+      <div class="flex items-center gap-1">
+        <mat-icon
+          class="text-lg"
+          [ngClass]="{
+            'text-blue-500': notification.type === 'info',
+            'text-green-500': notification.type === 'success',
+            'text-yellow-500': notification.type === 'warning',
+            'text-red-500': notification.type === 'error'
+          }"
+        >
+          {{
+            notification.type === 'info'
+              ? 'info'
+              : notification.type === 'success'
+              ? 'check_circle'
+              : notification.type === 'warning'
+              ? 'warning'
+              : 'error'
+          }}
+        </mat-icon>
+        <div class="text-sm mt-1 font-medium">
+          {{ notification.type | titlecase }}
+        </div>
+      </div>
+      <span class="text-xs text-gray-500">
+        {{ notification.timestamp | date : 'MMM d, h:mm a' }}
+      </span>
     </div>
+
+    <div class="px-4 py-3">
+      <p class="text-gray-700">{{ notification.message }}</p>
+    </div>
+    @if(!notification.read) {
+    <div class="flex justify-end gap-2 px-4 pb-3">
+      <lib-action-button
+        [data]="notification.id"
+        [button]="markAsReadButton"
+      ></lib-action-button>
+      <lib-action-button
+        [data]="notification.id"
+        [button]="removeButton"
+      ></lib-action-button>
+    </div>
+    }
+  </div>
+  } } @else {
+  <div
+    class="flex flex-col items-center justify-center p-8 bg-gray-50 rounded-xl"
+  >
+    <mat-icon class="text-gray-600 mb-2">notifications_off</mat-icon>
+    <p class="text-gray-600 text-sm">No notifications to display</p>
+  </div>
   }
 </div>

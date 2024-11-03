@@ -8,6 +8,7 @@ import {
   selectGenerateVideoState,
   selectSettingState,
 } from '@ever-co/convert-video-data-access';
+import { NotificationService } from '@ever-co/notification-data-access';
 import {
   screenshotActions,
   selectScreenshotState,
@@ -96,7 +97,10 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
     },
   ];
 
-  constructor(private readonly router: Router) {}
+  constructor(
+    private readonly router: Router,
+    private readonly notificationService: NotificationService
+  ) {}
 
   ngOnInit(): void {
     this.store
@@ -223,6 +227,7 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
     const screenshotIds = selectedScreenshots.map(
       (screenshot) => screenshot.data.id
     );
+    this.notificationService.show('Generating Video', 'info');
     this.store
       .select(selectSettingState)
       .pipe(

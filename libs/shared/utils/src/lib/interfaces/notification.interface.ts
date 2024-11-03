@@ -5,3 +5,5 @@ export interface INotification {
   timestamp: Date;
   read: boolean;
 }
+
+export type NotificationDTO = INotification;
