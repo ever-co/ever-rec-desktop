@@ -1,8 +1,8 @@
-<div class="w-96 max-h-[600px] overflow-y-auto rounded-xl">
+<div class="w-96 max-h-[600px] flex flex-col gap-3 overflow-y-auto rounded-xl">
   @if(available$ | async) { @for(notification of notifications$ | async; track
   notification.id) {
   <div
-    class="mb-3 notification-card transition-all rounded-xl duration-200 hover:shadow-md"
+    class="notification-card transition-all rounded-xl duration-200 hover:shadow-md"
     [ngClass]="{
       'border-l-4 border-blue-500 bg-blue-50': notification.type === 'info',
       'border-l-4 border-green-500 bg-green-50':

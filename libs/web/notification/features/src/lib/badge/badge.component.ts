@@ -31,6 +31,7 @@ import { ListComponent } from '../list/list.component';
 })
 export class NotificationBadgeComponent implements OnInit {
   public unreadCount$!: Observable<number>;
+  public available$!: Observable<boolean>;
 
   constructor(
     private store: Store,
@@ -43,6 +44,9 @@ export class NotificationBadgeComponent implements OnInit {
       .pipe(
         map(({ notifications }) => notifications.filter((n) => !n.read).length)
       );
+    this.available$ = this.store
+      .select(selectNotificationState)
+      .pipe(map(({ notifications }) => notifications.length > 0));
     this.store.dispatch(notificationActions.loadNotifications());
   }
 
