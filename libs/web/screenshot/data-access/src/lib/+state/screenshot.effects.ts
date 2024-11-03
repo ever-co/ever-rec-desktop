@@ -12,7 +12,10 @@ import { screenshotActions } from './screenshot.actions';
 export class ScreenshotEffects {
   private electronService = inject(ScreenshotElectronService);
 
-  constructor(private actions$: Actions, private readonly notificationService: NotificationService) {}
+  constructor(
+    private actions$: Actions,
+    private readonly notificationService: NotificationService
+  ) {}
 
   startCaptureScreen$ = createEffect(() =>
     this.actions$.pipe(
@@ -69,12 +72,15 @@ export class ScreenshotEffects {
     )
   );
 
-  deleteAllScreenshots$ = createEffect(() =>
+  deleteAllData$ = createEffect(() =>
     this.actions$.pipe(
       ofType(screenshotActions.deleteScreenshots),
       mergeMap(() =>
-        from(this.electronService.deleteAllScreenshots()).pipe(
-          map(() => screenshotActions.deleteScreenshotsSuccess()),
+        from(this.electronService.deleteAllData()).pipe(
+          map(() => {
+            this.notificationService.show('All Data Deleted', 'success');
+            return screenshotActions.deleteScreenshotsSuccess();
+          }),
           catchError((error) =>
             of(screenshotActions.deleteScreenshotsFailure({ error }))
           )
@@ -88,7 +94,10 @@ export class ScreenshotEffects {
       ofType(screenshotActions.deleteScreenshot),
       mergeMap((screenshot) =>
         from(this.electronService.deleteScreenshot(screenshot)).pipe(
-          map(() => screenshotActions.deleteScreenshotSuccess(screenshot)),
+          map(() => {
+            this.notificationService.show('All Screenshots Deleted', 'success');
+            return screenshotActions.deleteScreenshotSuccess(screenshot);
+          }),
           catchError((error) =>
             of(screenshotActions.deleteScreenshotFailure({ error }))
           )
@@ -143,9 +152,15 @@ export class ScreenshotEffects {
       ofType(screenshotActions.deleteSelectedScreenshots),
       mergeMap(({ screenshots }) =>
         from(this.electronService.deleteSelectedScreenshots(screenshots)).pipe(
-          map(() =>
-            screenshotActions.deleteSelectedScreenshotsSuccess({ screenshots })
-          ),
+          map(() => {
+            this.notificationService.show(
+              'Selected Screenshots Deleted',
+              'success'
+            );
+            return screenshotActions.deleteSelectedScreenshotsSuccess({
+              screenshots,
+            });
+          }),
           catchError((error) =>
             of(screenshotActions.deleteSelectedScreenshotsFailure({ error }))
           )

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { NotificationService } from '@ever-co/notification-data-access';
 import { IPaginationOptions } from '@ever-co/shared-utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { from, of } from 'rxjs';
@@ -44,7 +45,10 @@ export class VideoEffects {
       ofType(videoActions.deleteVideo),
       mergeMap((video) =>
         from(this.videoElectronService.deleteVideo(video)).pipe(
-          map(() => videoActions.deleteVideoSuccess({ id: video.id })),
+          map(() => {
+            this.notificationService.show('Video deleted', 'success');
+            return videoActions.deleteVideoSuccess({ id: video.id });
+          }),
           catchError((error) => of(videoActions.deleteVideoFailure({ error })))
         )
       )
@@ -56,7 +60,10 @@ export class VideoEffects {
       ofType(videoActions.deleteVideos),
       mergeMap(({ videos }) =>
         from(this.videoElectronService.deleteVideos(videos)).pipe(
-          map(() => videoActions.deleteVideosSuccess({ videos })),
+          map(() => {
+            this.notificationService.show('Videos deleted', 'success');
+            return videoActions.deleteVideosSuccess({ videos });
+          }),
           catchError((error) => of(videoActions.deleteVideoFailure({ error })))
         )
       )
@@ -77,6 +84,7 @@ export class VideoEffects {
 
   constructor(
     private actions$: Actions,
-    private readonly videoElectronService: VideoElectronService
+    private readonly videoElectronService: VideoElectronService,
+    private readonly notificationService: NotificationService
   ) {}
 }

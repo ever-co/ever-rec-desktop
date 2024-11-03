@@ -41,7 +41,7 @@ export class ScreenshotElectronService {
     return this.electronService.invoke(Channel.REQUEST_ONE_SCREENSHOT, options);
   }
 
-  public deleteAllScreenshots(): Promise<void> {
+  public deleteAllData(): Promise<void> {
     return this.electronService.invoke(Channel.REQUEST_PURGE);
   }
 
