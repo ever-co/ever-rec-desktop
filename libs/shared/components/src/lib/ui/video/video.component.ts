@@ -157,7 +157,8 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
       .pipe(
         take(1),
         filter(Boolean),
-        tap(() => this.store.dispatch(videoActions.deleteVideo(video)))
+        tap(() => this.store.dispatch(videoActions.deleteVideo(video))),
+        takeUntil(this.destroy$)
       )
       .subscribe();
   }

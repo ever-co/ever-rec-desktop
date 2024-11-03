@@ -12,6 +12,7 @@ import {
   videoActions,
 } from '@ever-co/convert-video-data-access';
 import {
+  ConfirmationDialogService,
   GalleryButtonsActionComponent,
   NoDataComponent,
   VideoComponent,
@@ -28,7 +29,16 @@ import {
   IVideo,
 } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
-import { Observable, Subject, filter, map, take, takeUntil, tap } from 'rxjs';
+import {
+  Observable,
+  Subject,
+  filter,
+  map,
+  take,
+  takeUntil,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 
 @Component({
   selector: 'lib-video-gallery',
@@ -95,7 +105,10 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
     },
   ];
 
-  constructor(private readonly router: Router) {}
+  constructor(
+    private readonly router: Router,
+    private readonly confirmationDialogService: ConfirmationDialogService
+  ) {}
 
   ngOnInit(): void {
     this.store
@@ -158,7 +171,18 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
 
   private deleteVideos(selectedVideos: ISelected<IVideo>[]): void {
     const videos = selectedVideos.map((video) => video.data);
-    this.store.dispatch(videoActions.deleteVideos({ videos }));
+    this.confirmationDialogService
+      .open({
+        title: 'Delete Videos',
+        message: `Are you sure you want to delete these ${videos.length} videos?`,
+      })
+      .pipe(
+        take(1),
+        filter(Boolean),
+        tap(() => this.store.dispatch(videoActions.deleteVideos({ videos }))),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
   public moreVideos(): void {
@@ -232,14 +256,22 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
 
   private mergeVideos(selectedVideos: ISelected<IVideo>[]): void {
     const videoIds = selectedVideos.map((video) => video.data.id);
-    console.log(videoIds)
-    this.store
-      .select(selectSettingState)
+    this.confirmationDialogService
+      .open({
+        title: 'Merge Videos',
+        message: 'Are you sure you want to merge these videos?',
+        label: {
+          confirm: 'Merge',
+        },
+      })
       .pipe(
         take(1),
-        tap(({ videoConfig: config }) =>
+        filter(Boolean),
+        withLatestFrom(this.store.select(selectSettingState)),
+        tap(([, { videoConfig: config }]) =>
           this.store.dispatch(generateVideoActions.start({ videoIds, config }))
-        )
+        ),
+        takeUntil(this.destroy$)
       )
       .subscribe();
   }

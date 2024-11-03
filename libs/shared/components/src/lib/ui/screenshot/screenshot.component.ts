@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -14,7 +14,7 @@ import {
 } from '@ever-co/shared-service';
 import { IActionButton, IScreenshot, ISelected } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
-import { filter, take, tap } from 'rxjs';
+import { filter, Subject, take, takeUntil, tap } from 'rxjs';
 import { ActionButtonGroupComponent } from '../action-button-group/group/action-button-group.component';
 import { ConfirmationDialogService } from '../dialogs/services/confirmation-dialog.service';
 
@@ -37,7 +37,7 @@ import { ConfirmationDialogService } from '../dialogs/services/confirmation-dial
   templateUrl: './screenshot.component.html',
   styleUrl: './screenshot.component.scss',
 })
-export class ScreenshotComponent {
+export class ScreenshotComponent implements OnDestroy, OnDestroy {
   @Input() screenshot!: IScreenshot;
 
   @Input()
@@ -45,6 +45,8 @@ export class ScreenshotComponent {
 
   @Output()
   public selected = new EventEmitter<ISelected<IScreenshot>>();
+
+  private destroy$ = new Subject<void>();
 
   public actionButtons: IActionButton[] = [
     {
@@ -95,8 +97,14 @@ export class ScreenshotComponent {
         filter(Boolean),
         tap(() =>
           this.store.dispatch(screenshotActions.deleteScreenshot(screenshot))
-        )
+        ),
+        takeUntil(this.destroy$)
       )
       .subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
