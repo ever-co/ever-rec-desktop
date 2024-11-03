@@ -254,6 +254,7 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
       .open({
         title: 'Generate Video',
         message: `Are you sure you want to generate a video from ${screenshotIds.length} screenshots?`,
+        variant: 'warning',
         button: {
           confirm: {
             label: 'Generate',
