@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { NotificationService } from '@ever-co/notification-data-access';
 import { screenshotActions } from '@ever-co/screenshot-data-access';
 import { DatePickerService } from '@ever-co/shared-service';
 import { IPaginationOptions } from '@ever-co/shared-utils';
@@ -67,7 +68,10 @@ export class TimeLogEffects {
       ofType(timeLogActions.deleteTimeLog),
       mergeMap(({ timeLog }) =>
         from(this.timeLogElectronService.deleteLog(timeLog)).pipe(
-          map(() => timeLogActions.deleteTimeLogSuccess({ id: timeLog.id })),
+          map(() => {
+            this.notificationService.show('Time log deleted', 'success');
+            return timeLogActions.deleteTimeLogSuccess({ id: timeLog.id });
+          }),
           catchError((error) =>
             of(timeLogActions.deleteTimeLogFailure({ error }))
           )
@@ -106,6 +110,7 @@ export class TimeLogEffects {
   constructor(
     private actions$: Actions,
     private readonly timeLogElectronService: TimeLogElectronService,
-    private readonly datePickerService: DatePickerService
+    private readonly datePickerService: DatePickerService,
+    private readonly notificationService: NotificationService
   ) {}
 }
