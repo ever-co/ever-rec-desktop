@@ -13,6 +13,7 @@ import {
 } from './crud-screenshot.event';
 import { crudTimeLogEvents, removeCrudTimeLogEvent } from './crud-time-log.event';
 import { crudVideoEvents, removeCrudVideoEvent } from './crud-video.event';
+import { MainEvents, removeMainEvents } from './main.event';
 import { removeRetentionEvents, retentionEvents } from './retention.event';
 import { removeUploadEvent, uploadEventListener } from './upload.event';
 
@@ -24,7 +25,8 @@ export function subscribeEvents() {
   crudVideoEvents();
   crudTimeLogEvents();
   retentionEvents();
-  autoVideoGenerateEvent()
+  autoVideoGenerateEvent();
+  MainEvents();
 }
 
 export function unsubscribeEvents() {
@@ -35,5 +37,6 @@ export function unsubscribeEvents() {
   removeCrudVideoEvent();
   removeCrudTimeLogEvent();
   removeRetentionEvents();
-  removeAutoVideoGenerateEvent()
+  removeAutoVideoGenerateEvent();
+  removeMainEvents();
 }

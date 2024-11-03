@@ -6,7 +6,7 @@ export const notificationActions = createActionGroup({
   events: {
     'Load Notifications': emptyProps(),
     'Load Notifications Success': props<{ notifications: INotification[] }>(),
-
+    'Update Icon Badge Count': emptyProps(),
     'Add Notification': props<{ notification: INotification }>(),
     'Remove Notification': props<{ id: string }>(),
     'Mark As Read': props<{ id: string }>(),

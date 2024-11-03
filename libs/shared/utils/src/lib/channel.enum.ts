@@ -33,4 +33,5 @@ export enum Channel {
   'CLEAN_UP_DATA' = 'clean::up::data',
   'AUTO_VIDEO_GENERATE' = 'auto::video::generate',
   'REQUEST_DELETE_SELECTED_SCREENSHOTS' = 'request::delete::selected::screeshots',
+  'UPDATE_ICON_BADGE' = 'update::icon::badge'
 }

@@ -59,6 +59,7 @@ export class ElectronService {
 
   public send(channel: ChEnum, data?: any): void {
     if (this.electronAPI) {
+      this.electronAPI.removeAllListeners(channel);
       this.electronAPI.send(channel, data);
     } else {
       throw new Error('Electron API is not available');
