@@ -154,7 +154,7 @@ export class ScreenshotEffects {
         from(this.electronService.deleteSelectedScreenshots(screenshots)).pipe(
           map(() => {
             this.notificationService.show(
-              'Selected Screenshots Deleted',
+              'Selected screenshots deleted',
               'success'
             );
             return screenshotActions.deleteSelectedScreenshotsSuccess({

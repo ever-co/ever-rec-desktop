@@ -131,7 +131,7 @@ export class GenerateVideoEffects {
       ofType(generateVideoActions.finish),
       mergeMap(({ video }) => {
         return this.storageService.setItem<IVideo>(this.KEY, video).pipe(
-          tap(() => this.notifcationService.show('Generating video done.', 'success')),
+          tap(() => this.notifcationService.show('Video generation complete.', 'success')),
           map(() => generateVideoActions.finishSuccess()),
           catchError((error) => of(generateVideoActions.failure({ error })))
         );
