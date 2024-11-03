@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { NotificationService } from '@ever-co/notification-data-access';
 import { screenshotActions } from '@ever-co/screenshot-data-access';
 import { HumanizeBytesPipe, HumanizePipe } from '@ever-co/shared-service';
 import { IUsedSize } from '@ever-co/shared-utils';
@@ -35,7 +36,7 @@ import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
     MatSelectModule,
     HumanizePipe,
     HumanizeBytesPipe,
-    MatCardModule
+    MatCardModule,
   ],
   templateUrl: './storage.component.html',
   styleUrl: './storage.component.scss',
@@ -46,7 +47,10 @@ export class StorageComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   public size$!: Observable<IUsedSize>;
 
-  constructor(private readonly store: Store) {}
+  constructor(
+    private readonly store: Store,
+    private readonly notificationService: NotificationService
+  ) {}
 
   ngOnInit(): void {
     this.formGroup = new FormGroup({
@@ -74,6 +78,7 @@ export class StorageComponent implements OnInit, OnDestroy {
 
   public onSubmit(): void {
     this.store.dispatch(settingStorageActions.update(this.formGroup.value));
+    this.notificationService.show('Settings storage updated', 'info');
   }
 
   public purge(): void {

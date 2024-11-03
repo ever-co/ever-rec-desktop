@@ -12,7 +12,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { selectSettingScreenCaptureState, settingScreenCaptureActions } from '@ever-co/screenshot-data-access';
+import { NotificationService } from '@ever-co/notification-data-access';
+import {
+  selectSettingScreenCaptureState,
+  settingScreenCaptureActions,
+} from '@ever-co/screenshot-data-access';
 import { Source } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { Subject, takeUntil, tap } from 'rxjs';
@@ -28,7 +32,7 @@ import { Subject, takeUntil, tap } from 'rxjs';
     MatIconModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
   ],
   templateUrl: './setting.component.html',
   styleUrl: './setting.component.scss',
@@ -38,7 +42,10 @@ export class SettingComponent implements OnInit, OnDestroy {
   public sources = Object.values(Source);
   private destroy$ = new Subject<void>();
 
-  constructor(private readonly store: Store) {}
+  constructor(
+    private readonly store: Store,
+    private readonly notificationService: NotificationService
+  ) {}
 
   ngOnInit(): void {
     this.formGroup = new FormGroup({
@@ -63,6 +70,10 @@ export class SettingComponent implements OnInit, OnDestroy {
       settingScreenCaptureActions.update({
         screenCaptureConfig: this.formGroup.value,
       })
+    );
+    this.notificationService.show(
+      'Screenshot capture settings updated.',
+      'info'
     );
   }
 

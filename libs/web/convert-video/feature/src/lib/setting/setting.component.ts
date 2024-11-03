@@ -19,6 +19,7 @@ import {
   selectSettingState,
   settingActions,
 } from '@ever-co/convert-video-data-access';
+import { NotificationService } from '@ever-co/notification-data-access';
 import { HumanizePipe, ResolutionPipe } from '@ever-co/shared-service';
 import { resolutionMapper } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
@@ -48,6 +49,8 @@ export class SettingComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   public periods = [5, 10, 15, 30];
   public resolutions = Object.keys(resolutionMapper);
+
+  constructor(private readonly notificationService: NotificationService){}
 
   ngOnInit(): void {
     this.formGroup = new FormGroup({
@@ -90,6 +93,7 @@ export class SettingComponent implements OnInit, OnDestroy {
     this.store.dispatch(
       settingActions.update({ videoConfig: this.formGroup.value })
     );
+    this.notificationService.show('Generate video settings updated.', 'info');
   }
 
   ngOnDestroy(): void {
