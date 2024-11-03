@@ -14,6 +14,7 @@ import {
 } from '@ever-co/convert-video-data-access';
 import {
   ActionButtonGroupComponent,
+  ConfirmationDialogService,
   NoDataComponent,
   TimeLogStatisticsComponent,
 } from '@ever-co/shared-components';
@@ -36,7 +37,16 @@ import {
   timeLogActions,
 } from '@ever-co/timesheet-data-access';
 import { Store } from '@ngrx/store';
-import { map, Observable, Subject, take, takeUntil, tap } from 'rxjs';
+import {
+  filter,
+  map,
+  Observable,
+  Subject,
+  take,
+  takeUntil,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 
 @Component({
   selector: 'lib-timesheet-feature',
@@ -106,7 +116,8 @@ export class TimesheetComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly store: Store,
-    private readonly layoutService: LayoutService
+    private readonly layoutService: LayoutService,
+    private readonly confirmationDialogService: ConfirmationDialogService
   ) {}
 
   ngOnInit() {
@@ -165,10 +176,22 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   }
 
   public delete(): void {
-    if (!this.selectedRow) return;
-    this.store.dispatch(
-      timeLogActions.deleteTimeLog({ timeLog: this.selectedRow })
-    );
+    this.confirmationDialogService
+      .open({
+        title: 'Delete Time Log',
+        message: `Are you sure you want to delete this time log?`,
+      })
+      .pipe(
+        take(1),
+        filter(Boolean),
+        map(() => this.selectedRow),
+        filter(Boolean),
+        tap((timeLog) =>
+          this.store.dispatch(timeLogActions.deleteTimeLog({ timeLog }))
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
   public get selectedRow$(): Observable<ITimeLog> {
@@ -215,13 +238,19 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.store
-      .select(selectSettingState)
+    this.confirmationDialogService
+      .open({
+        title: 'Generate Video',
+        message: `Are you sure you want to generate a video for this time log?`,
+      })
       .pipe(
         take(1),
-        tap(({ videoConfig: config }) =>
+        filter(Boolean),
+        withLatestFrom(this.store.select(selectSettingState)),
+        tap(([, { videoConfig: config }]) =>
           this.store.dispatch(generateVideoActions.start({ timeLogId, config }))
-        )
+        ),
+        takeUntil(this.destroy$)
       )
       .subscribe();
   }
