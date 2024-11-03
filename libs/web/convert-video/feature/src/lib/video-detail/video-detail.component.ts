@@ -14,6 +14,7 @@ import {
 } from '@ever-co/convert-video-data-access';
 import {
   ActionButtonGroupComponent,
+  ConfirmationDialogService,
   NoDataComponent,
   VideoComponent,
 } from '@ever-co/shared-components';
@@ -23,7 +24,7 @@ import {
   HumanizePipe,
   PopoverDirective,
   ResolutionPipe,
-  UtcToLocalTimePipe
+  UtcToLocalTimePipe,
 } from '@ever-co/shared-service';
 import { IActionButton, IVideo, IVideoMetadata } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
@@ -32,6 +33,7 @@ import {
   debounceTime,
   distinctUntilChanged,
   filter,
+  lastValueFrom,
   map,
   Observable,
   of,
@@ -60,7 +62,7 @@ import {
     ActionButtonGroupComponent,
     HumanizePipe,
     CopyToClipboardDirective,
-    ResolutionPipe
+    ResolutionPipe,
   ],
   templateUrl: './video-detail.component.html',
   styleUrl: './video-detail.component.scss',
@@ -90,6 +92,7 @@ export class VideoDetailComponent implements OnInit, OnDestroy {
   constructor(
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
+    private readonly confirationDialogService: ConfirmationDialogService,
     private readonly store: Store
   ) {}
   ngOnInit(): void {
@@ -120,8 +123,16 @@ export class VideoDetailComponent implements OnInit, OnDestroy {
   }
 
   public async deleteVideo(video: IVideo): Promise<void> {
-    this.store.dispatch(videoActions.deleteVideo(video));
-    await this.router.navigate(['/', 'library', 'screenshots']);
+    const isConfirmed = await lastValueFrom(
+      this.confirationDialogService.open({
+        title: 'Delete Video',
+        message: 'Are you sure you want to delete this video?',
+      })
+    );
+    if (isConfirmed) {
+      this.store.dispatch(videoActions.deleteVideo(video));
+      await this.router.navigate(['/', 'library', 'videos']);
+    }
   }
 
   public onInput(summary: string, video: IVideo) {

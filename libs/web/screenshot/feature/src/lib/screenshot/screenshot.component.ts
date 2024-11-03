@@ -10,6 +10,7 @@ import {
 } from '@ever-co/screenshot-data-access';
 import {
   ActionButtonGroupComponent,
+  ConfirmationDialogService,
   NoDataComponent,
   VideoComponent,
 } from '@ever-co/shared-components';
@@ -19,11 +20,11 @@ import {
   IconFallbackDirective,
   ImgFallbackDirective,
   PopoverDirective,
-  UtcToLocalTimePipe
+  UtcToLocalTimePipe,
 } from '@ever-co/shared-service';
 import { IActionButton, IScreenshot } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
-import { concatMap, filter, Observable } from 'rxjs';
+import { concatMap, filter, lastValueFrom, Observable } from 'rxjs';
 
 @Component({
   selector: 'lib-screenshot',
@@ -41,7 +42,7 @@ import { concatMap, filter, Observable } from 'rxjs';
     ActionButtonGroupComponent,
     CopyToClipboardDirective,
     ImgFallbackDirective,
-    IconFallbackDirective
+    IconFallbackDirective,
   ],
   templateUrl: './screenshot.component.html',
   styleUrl: './screenshot.component.scss',
@@ -65,7 +66,8 @@ export class ScreenshotComponent implements OnInit {
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
     private readonly screenshotService: ScreenshotElectronService,
-    private readonly store: Store
+    private readonly store: Store,
+    private readonly confirationDialogService: ConfirmationDialogService
   ) {}
   ngOnInit(): void {
     this.screenshot$ = this.activatedRoute.params.pipe(
@@ -87,7 +89,15 @@ export class ScreenshotComponent implements OnInit {
   }
 
   public async delete(screenshot: IScreenshot) {
-    this.store.dispatch(screenshotActions.deleteScreenshot(screenshot));
-    await this.router.navigate(['/', 'library', 'screenshots']);
+    const isConfirmed = await lastValueFrom(
+      this.confirationDialogService.open({
+        title: 'Delete Screenshot',
+        message: 'Are you sure you want to delete this screenshot?',
+      })
+    );
+    if (isConfirmed) {
+      this.store.dispatch(screenshotActions.deleteScreenshot(screenshot));
+      await this.router.navigate(['/', 'library', 'screenshots']);
+    }
   }
 }
