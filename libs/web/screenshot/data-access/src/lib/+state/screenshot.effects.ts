@@ -89,13 +89,13 @@ export class ScreenshotEffects {
     )
   );
 
-  deleteAllScreenshot$ = createEffect(() =>
+  deleteScreenshot$ = createEffect(() =>
     this.actions$.pipe(
       ofType(screenshotActions.deleteScreenshot),
       mergeMap((screenshot) =>
         from(this.electronService.deleteScreenshot(screenshot)).pipe(
           map(() => {
-            this.notificationService.show('All Screenshots Deleted', 'success');
+            this.notificationService.show('Screenshot deleted', 'success');
             return screenshotActions.deleteScreenshotSuccess(screenshot);
           }),
           catchError((error) =>
