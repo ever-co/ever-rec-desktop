@@ -121,6 +121,9 @@ export class FileManager {
   }
 
   public static encodePath(filePath: string): string {
+    if (typeof filePath !== 'string') {
+      throw new TypeError(`Expected string for path, but got ${typeof filePath}`);
+    }
     try {
       const absolutePath = resolve(filePath);
       const fileUrl = new URL(
