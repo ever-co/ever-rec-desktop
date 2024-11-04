@@ -18,6 +18,7 @@ const initialState: IStorageState = {
     accessKeySecret: '',
     region: '',
     s3Bucket: '',
+    s3Endpoint: '',
   },
   used: {
     screenshot: 0,

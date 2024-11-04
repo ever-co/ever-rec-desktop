@@ -5,6 +5,7 @@ export interface IS3Config {
   accessKeySecret: string;
   region: string;
   s3Bucket: string;
+  s3Endpoint: string;
 }
 
 export interface IS3ConfigForm {
@@ -12,4 +13,5 @@ export interface IS3ConfigForm {
   accessKeySecret: FormControl<string | null>;
   region: FormControl<string | null>;
   s3Bucket: FormControl<string | null>;
+  s3Endpoint: FormControl<string | null>;
 }

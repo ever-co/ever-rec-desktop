@@ -65,7 +65,7 @@
       type="text"
       id="s3Bucket"
       formControlName="s3Bucket"
-      placeholder="Enter s3 bucket name"
+      placeholder="Enter S3 bucket name"
     />
     <mat-error
       *ngIf="
@@ -73,6 +73,26 @@
       "
     >
       Aws S3 Bucket name is required.
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Aws S3 Bucket Endpoint Input -->
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>S3 Bucket Endpoint</mat-label>
+    <input
+      matInput
+      type="url"
+      id="s3Endpoint"
+      formControlName="s3Endpoint"
+      placeholder="Enter s3 endpoint"
+    />
+    <mat-error
+      *ngIf="
+        form.controls['s3Endpoint'].touched &&
+        form.controls['s3Endpoint'].hasError('invalidUrl')
+      "
+    >
+      This endpoint URL is not valid.
     </mat-error>
   </mat-form-field>
   <!-- Submit and Cancel Buttons -->

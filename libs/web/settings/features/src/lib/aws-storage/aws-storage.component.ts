@@ -10,6 +10,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NotificationService } from '@ever-co/notification-data-access';
+import { urlValidator } from '@ever-co/shared-service';
+import { IS3ConfigForm } from '@ever-co/shared-utils';
 import {
   selectSettingStorageState,
   settingStorageActions,
@@ -38,10 +40,11 @@ export class AwsStorageComponent implements OnInit, OnDestroy {
     private readonly store: Store,
     private readonly notificationService: NotificationService
   ) {
-    this.form = new FormGroup({
+    this.form = new FormGroup<IS3ConfigForm>({
       accessKeyId: new FormControl('', [Validators.required]),
       accessKeySecret: new FormControl('', [Validators.required]),
       region: new FormControl('', [Validators.required]),
+      s3Endpoint: new FormControl('', [urlValidator()]),
       s3Bucket: new FormControl('', [Validators.required]),
     });
   }

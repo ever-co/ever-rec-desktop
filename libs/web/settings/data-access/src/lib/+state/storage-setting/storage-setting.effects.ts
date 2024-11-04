@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-
 import {
   generateVideoActions,
   videoActions,
 } from '@ever-co/convert-video-data-access';
 import { screenshotActions } from '@ever-co/screenshot-data-access';
 import { SecureLocalStorageService } from '@ever-co/shared-service';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { from, of } from 'rxjs';
 import { catchError, concatMap, map, mergeMap } from 'rxjs/operators';
 import { StorageElectronService } from '../services/storage-electron.service';
