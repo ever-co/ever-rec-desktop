@@ -7,21 +7,32 @@ import {
 } from '@miniben90/x-win';
 import { SCREENSHOT_DIR } from './capture-screen.event';
 export class GetScreenShotMetadataQuery {
-  async execute(): Promise<Omit<IScreenshotMetadata, 'id'>> {
+  async execute(): Promise<Omit<IScreenshotMetadata, 'id'> | null> {
     const current: WindowInfo = await activeWindowAsync();
     const iconObj: IconInfo = await current.getIconAsync();
     const iconBuffer = this.convert(iconObj.data);
     const fileName = `screenshot-${Date.now()}.png`;
-    const icon = await FileManager.write(
-      SCREENSHOT_DIR,
-      `icon-${fileName}`,
-      iconBuffer
-    );
+
+    if (!iconBuffer) {
+      return null;
+    }
+
     const { info, title, url } = current;
     const name = info.name;
     const description = [name, title ? ` ${title}` : '', url ? ` ${url}` : '']
       .join('')
       .trim();
+
+    if (!name) {
+      return null;
+    }
+
+    const icon = await FileManager.write(
+      SCREENSHOT_DIR,
+      `icon-${fileName}`,
+      iconBuffer,
+      true
+    );
 
     return { name, description, icon };
   }

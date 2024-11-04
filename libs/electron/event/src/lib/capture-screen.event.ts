@@ -66,6 +66,11 @@ async function takeScreenshot(
       : getWindowSource());
     const metadata = await metadataQuery.execute();
 
+    if (!metadata) {
+      logger.error(`Screenshot metadata not found.`);
+      return null;
+    }
+
     if (!sources.length) {
       logger.warn(
         `${
@@ -97,11 +102,20 @@ async function createScreenshot(
 ): Promise<IScreenshot | null> {
   const imageBuffer = source.thumbnail.toPNG();
   const imageName = `screenshot-${Date.now()}.png`;
+
+  if (!imageBuffer) {
+    return null;
+  }
+
   const imagePath = await FileManager.write(
     SCREENSHOT_DIR,
     imageName,
     imageBuffer
   );
+
+  if (!imagePath) {
+    return null;
+  }
 
   const imageSize = await FileManager.fileSize(imagePath);
 
