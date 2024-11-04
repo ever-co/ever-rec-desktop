@@ -4,7 +4,7 @@
 >
   <mat-card-content class="p-6">
     <div class="flex items-center w-full justify-between">
-      <div class="space-y-1 min-w-0 ">
+      <div class="space-y-1 min-w-0">
         <p
           class="text-sm font-medium text-gray-600 transition-opacity duration-200"
         >
@@ -26,15 +26,31 @@
             </span>
           </div>
           } @else {
-          <span class="animate-fade-in text-gray-500 truncate">Not Running</span>
+          <span class="animate-fade-in text-gray-500 truncate"
+            >Not Running</span
+          >
           }
         </h6>
       </div>
+      @if(generating$ | async) {
+      <div class="relative">
+        <div
+          class="text-[12px] font-bold flex justify-center items-center text-gray-600 absolute top-0 left-0 right-0 bottom-0"
+        >
+          {{ formattedProgress$ | async | percent : '1.0-0' }}
+        </div>
+        <mat-progress-spinner
+          diameter="48"
+          [value]="progress$ | async"
+        ></mat-progress-spinner>
+      </div>
+      }@else {
       <mat-icon
         class="h-6 w-6 text-gray-600 transition-all duration-300 hover:text-blue-500 hover:scale-110"
       >
         photo_camera
       </mat-icon>
+      }
     </div>
   </mat-card-content>
 </mat-card>
