@@ -1,4 +1,4 @@
-import { IUsedSize } from '@ever-co/shared-utils';
+import { IS3Config, IUsedSize } from '@ever-co/shared-utils';
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { settingStorageActions } from './storage-setting.actions';
 
@@ -7,15 +7,22 @@ export const settingStorageFeatureKey = 'settingStorageRetention';
 export interface IStorageState {
   retention: number;
   used: IUsedSize;
+  s3Config: IS3Config;
   error: string;
 }
 
 const initialState: IStorageState = {
   retention: 7,
+  s3Config: {
+    accessKeyId: '',
+    accessKeySecret: '',
+    region: '',
+    s3Bucket: '',
+  },
   used: {
     screenshot: 0,
     video: 0,
-    total: 0
+    total: 0,
   },
   error: '',
 };
@@ -23,11 +30,15 @@ const initialState: IStorageState = {
 export const reducer = createReducer(
   initialState,
   on(settingStorageActions.load, (state) => ({ ...state, error: '' })),
-  on(settingStorageActions.loadSuccess, (state, { retention, used }) => ({
-    ...state,
-    retention: retention ?? state.retention,
-    used: used ?? state.used,
-  })),
+  on(
+    settingStorageActions.loadSuccess,
+    (state, { retention, used, s3Config }) => ({
+      ...state,
+      s3Config: s3Config ?? state.s3Config,
+      retention: retention ?? state.retention,
+      used: used ?? state.used,
+    })
+  ),
   on(settingStorageActions.failure, (state, { error }) => ({
     ...state,
     error,

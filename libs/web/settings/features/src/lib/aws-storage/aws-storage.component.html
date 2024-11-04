@@ -1,0 +1,89 @@
+<form (ngSubmit)="onSubmit()" class="form space-y-2 mt-1" [formGroup]="form">
+  <!-- Aws Access Key ID Input -->
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>Access Key ID</mat-label>
+    <input
+      matInput
+      type="text"
+      id="accessKeyId"
+      formControlName="accessKeyId"
+      placeholder="Enter aws access key ID"
+      type="password"
+    />
+    <mat-error
+      *ngIf="
+        form.controls['accessKeyId'].invalid &&
+        form.controls['accessKeyId'].touched
+      "
+    >
+      Aws access key ID is required.
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Aws Access Key Secret Input -->
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>Access Key Secret</mat-label>
+    <input
+      matInput
+      type="password"
+      id="accessKeySecret"
+      formControlName="accessKeySecret"
+      placeholder="Enter aws access key Secret"
+    />
+    <mat-error
+      *ngIf="
+        form.controls['accessKeySecret'].invalid &&
+        form.controls['accessKeySecret'].touched
+      "
+    >
+      Aws access key secret is required.
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Aws Region Input -->
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>AWS Region</mat-label>
+    <input
+      matInput
+      type="text"
+      id="region"
+      formControlName="region"
+      placeholder="Enter aws region"
+    />
+    <mat-error
+      *ngIf="form.controls['region'].invalid && form.controls['region'].touched"
+    >
+      Aws region is required.
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Aws S3 Bucket Input -->
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>S3 Bucket Name</mat-label>
+    <input
+      matInput
+      type="text"
+      id="s3Bucket"
+      formControlName="s3Bucket"
+      placeholder="Enter s3 bucket name"
+    />
+    <mat-error
+      *ngIf="
+        form.controls['s3Bucket'].invalid && form.controls['s3Bucket'].touched
+      "
+    >
+      Aws S3 Bucket name is required.
+    </mat-error>
+  </mat-form-field>
+  <!-- Submit and Cancel Buttons -->
+  <div class="flex space-x-4">
+    <button
+      mat-stroked-button
+      color="primary"
+      type="submit"
+      [disabled]="form.invalid"
+    >
+      Save
+    </button>
+  </div>
+</form>

@@ -11,6 +11,7 @@ export * from './lib/interfaces/pagination.interface';
 export * from './lib/interfaces/screen-capture.interface';
 export * from './lib/interfaces/screenshot.interface';
 export * from './lib/interfaces/statistic.interface';
+export * from './lib/interfaces/storage.interface';
 export * from './lib/interfaces/time-log.interface';
 export * from './lib/interfaces/timeline.interface';
 export * from './lib/interfaces/upload.interface';

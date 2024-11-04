@@ -6,7 +6,7 @@ import {
   videoActions,
 } from '@ever-co/convert-video-data-access';
 import { screenshotActions } from '@ever-co/screenshot-data-access';
-import { LocalStorageService } from '@ever-co/shared-service';
+import { SecureLocalStorageService } from '@ever-co/shared-service';
 import { from, of } from 'rxjs';
 import { catchError, concatMap, map, mergeMap } from 'rxjs/operators';
 import { StorageElectronService } from '../services/storage-electron.service';
@@ -15,7 +15,7 @@ import { IStorageState } from './storage-setting.reducer';
 
 @Injectable()
 export class SettingStorageEffects {
-  private key = '_storage_retention';
+  private key = '_storage';
 
   loadSettings$ = createEffect(() => {
     return this.actions$.pipe(
@@ -64,7 +64,7 @@ export class SettingStorageEffects {
 
   constructor(
     private actions$: Actions,
-    private readonly localStorageService: LocalStorageService,
+    private readonly localStorageService: SecureLocalStorageService,
     private readonly storageElectronService: StorageElectronService
   ) {}
 }

@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatStepperModule } from '@angular/material/stepper';
 import { NotificationService } from '@ever-co/notification-data-access';
 import { screenshotActions } from '@ever-co/screenshot-data-access';
 import { HumanizeBytesPipe, HumanizePipe } from '@ever-co/shared-service';
@@ -22,6 +23,7 @@ import {
 } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
+import { AwsStorageComponent } from '../aws-storage/aws-storage.component';
 
 @Component({
   selector: 'lib-storage',
@@ -37,6 +39,8 @@ import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
     HumanizePipe,
     HumanizeBytesPipe,
     MatCardModule,
+    AwsStorageComponent,
+    MatStepperModule
   ],
   templateUrl: './storage.component.html',
   styleUrl: './storage.component.scss',
@@ -78,7 +82,7 @@ export class StorageComponent implements OnInit, OnDestroy {
 
   public onSubmit(): void {
     this.store.dispatch(settingStorageActions.update(this.formGroup.value));
-    this.notificationService.show('Settings storage updated', 'info');
+    this.notificationService.show('Retention storage updated', 'info');
   }
 
   public purge(): void {

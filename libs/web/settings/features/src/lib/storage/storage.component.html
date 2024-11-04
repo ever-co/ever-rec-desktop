@@ -1,40 +1,76 @@
 <div class="setting max-w-xl space-y-6 w-full">
-  <p class="text font-bold">Current disk used {{(size$ | async)?.total| humanizeBytes}}</p>
+  <p class="text font-bold">
+    Current disk used {{ (size$ | async)?.total | humanizeBytes }}
+  </p>
   <mat-card appearance="outlined" class="rounded-lg p-4">
     <ul class="divide-y divide-gray-300">
       <li class="flex items-center py-3">
         <mat-icon class="text-blue-500 mr-3">image</mat-icon>
-        <div class="text-sm text-gray-900">Screenshot {{ (size$ | async)?.screenshot | humanizeBytes }}</div>
+        <div class="text-sm text-gray-900">
+          Screenshot {{ (size$ | async)?.screenshot | humanizeBytes }}
+        </div>
       </li>
       <li class="flex items-center py-3">
         <mat-icon class="text-red-500 mr-3">movie</mat-icon>
-        <div class="text-sm text-gray-900">Video {{ (size$ | async)?.video | humanizeBytes }}</div>
+        <div class="text-sm text-gray-900">
+          Video {{ (size$ | async)?.video | humanizeBytes }}
+        </div>
       </li>
     </ul>
   </mat-card>
-  <form [formGroup]="formGroup" class="form space-y-4" (ngSubmit)="onSubmit()">
-    <p>How long do you want to keep your data?</p>
-     <!-- Select Input -->
-     <mat-form-field  appearance="outline" class="w-full">
-      <mat-label>Retention Period</mat-label>
-      <mat-select formControlName="retention" required>
-        @for (period of retentionPeriods; track period) {
-          <mat-option [value]="period">{{period | humanize: 'day' | titlecase}}</mat-option>
-        }
-      </mat-select>
-      @if (formGroup.controls['retention'].hasError('required')) {
-        <mat-error>Please choose a retention period</mat-error>
-      }
-    </mat-form-field>
+  <mat-vertical-stepper animationDuration="1000" [linear]="false" #stepper>
+    <mat-step [stepControl]="formGroup">
+      <ng-template matStepLabel>Retention Period</ng-template>
+      <ng-template matStepContent>
+        <form
+          [formGroup]="formGroup"
+          class="form space-y-4"
+          (ngSubmit)="onSubmit()"
+        >
+          <p>How long do you want to keep your data?</p>
+          <!-- Select Input -->
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Retention Period</mat-label>
+            <mat-select formControlName="retention" required>
+              @for (period of retentionPeriods; track period) {
+              <mat-option [value]="period">{{
+                period | humanize : 'day' | titlecase
+              }}</mat-option>
+              }
+            </mat-select>
+            @if (formGroup.controls['retention'].hasError('required')) {
+            <mat-error>Please choose a retention period</mat-error>
+            }
+          </mat-form-field>
 
-     <!-- Submit and Cancel Buttons -->
-     <div class="flex space-x-4">
-      <button mat-stroked-button color="primary" type="submit" [disabled]="formGroup.invalid">
-        Save
-      </button>
-      <button mat-stroked-button color="warn" (click)="purge()" type="button">
-        Delete All Data...
-      </button>
-    </div>
-  </form>
+          <!-- Submit and Cancel Buttons -->
+          <div class="flex space-x-4">
+            <button
+              mat-stroked-button
+              color="primary"
+              type="submit"
+              [disabled]="formGroup.invalid"
+            >
+              Save
+            </button>
+            <button
+              mat-stroked-button
+              color="warn"
+              (click)="purge()"
+              type="button"
+            >
+              Delete All Data...
+            </button>
+          </div>
+        </form>
+      </ng-template>
+    </mat-step>
+    <!-- AWS Storage -->
+    <mat-step>
+      <ng-template matStepLabel>AWS Cloud Storage</ng-template>
+      <ng-template matStepContent>
+        <lib-aws-storage></lib-aws-storage>
+      </ng-template>
+    </mat-step>
+  </mat-vertical-stepper>
 </div>
