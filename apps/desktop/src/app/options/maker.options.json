@@ -13,12 +13,12 @@
     "buildResources": "apps/desktop/src/icons"
   },
   "mac": {
-    "icon": "icon.icns"
+    "icon": "mac/icon.icns"
   },
   "win": {
-    "icon": "icon.ico"
+    "icon": "win/icon.ico"
   },
   "linux": {
-    "icon": "linux"
+    "icon": "png"
   }
 }
