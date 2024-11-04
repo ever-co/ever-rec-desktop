@@ -76,9 +76,9 @@ async function takeScreenshot(
     }
 
     if (captureAll) {
-      const screenshotPromises = sources.map((source) =>
-        createScreenshot(source, metadata)
-      );
+      const screenshotPromises = sources
+        .map((source) => createScreenshot(source, metadata))
+        .filter((screenshot) => !!screenshot);
       const [screenshot] = await Promise.all(screenshotPromises);
 
       return screenshot;
@@ -124,7 +124,6 @@ async function getScreenSource() {
   return desktopCapturer.getSources({
     types: [Source.SCREEN],
     thumbnailSize: getWindowSize(),
-    fetchWindowIcons: false,
   });
 }
 
@@ -132,7 +131,6 @@ async function getWindowSource() {
   return desktopCapturer.getSources({
     types: [Source.WINDOW],
     thumbnailSize: getWindowSize(),
-    fetchWindowIcons: false,
   });
 }
 
