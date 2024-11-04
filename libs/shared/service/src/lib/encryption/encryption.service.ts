@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable, from, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { KeytarService } from './keytar.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EncryptionService {
+  private readonly encryptionStorageKey = '__KEY__';
   private readonly algorithm = 'AES-GCM';
   private readonly keyConfig = {
     name: this.algorithm,
@@ -14,14 +16,16 @@ export class EncryptionService {
   private readonly ivLength = 12; // 96 bits for AES-GCM
   private encryptionKey!: CryptoKey;
 
-  constructor() {
+  constructor(private readonly keytarService: KeytarService) {
     this.initializeEncryptionKey();
   }
 
   private async initializeEncryptionKey(): Promise<void> {
     try {
       // Try to load existing key from secure storage
-      const savedKey = sessionStorage.getItem('encryption_key');
+      const savedKey = await this.keytarService.getPassword(
+        this.encryptionStorageKey
+      );
       if (savedKey) {
         const keyBuffer = this.base64ToArrayBuffer(savedKey);
         this.encryptionKey = await crypto.subtle.importKey(
@@ -44,7 +48,10 @@ export class EncryptionService {
           this.encryptionKey
         );
         const keyBase64 = this.arrayBufferToBase64(exportedKey);
-        sessionStorage.setItem('encryption_key', keyBase64);
+        await this.keytarService.setPassword(
+          this.encryptionStorageKey,
+          keyBase64
+        );
       }
     } catch (error) {
       console.error('Failed to initialize encryption key:', error);
