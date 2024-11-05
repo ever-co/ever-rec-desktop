@@ -28,6 +28,7 @@ import {
   UtcToLocalTimePipe,
 } from '@ever-co/shared-service';
 import { IActionButton, ISelected, IVideo } from '@ever-co/shared-utils';
+import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
 import {
   BehaviorSubject,
@@ -96,6 +97,7 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
       variant: 'success',
       action: this.upload.bind(this),
       loading: this.uploading$,
+      hide: this.isUploadHidden$,
     },
     {
       icon: 'delete',
@@ -200,6 +202,13 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe();
+  }
+
+  private get isUploadHidden$(): Observable<boolean> {
+    return this.store.select(selectSettingStorageState).pipe(
+      map(({s3Config}) => !s3Config.autoSync),
+      takeUntil(this.destroy$)
+    );
   }
 
   private get uploading$(): Observable<boolean> {

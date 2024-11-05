@@ -30,6 +30,7 @@ import {
   ISelected,
   IVideo,
 } from '@ever-co/shared-utils';
+import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
 import {
   Observable,
@@ -97,6 +98,7 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
       variant: 'success',
       action: this.upload.bind(this),
       loading: this.uploading$,
+      hide: this.isUploadHidden$,
     },
     {
       icon: 'remove_done',
@@ -269,6 +271,13 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
 
   public unselectAll(): void {
     this.store.dispatch(videoActions.unselectAllVideos());
+  }
+
+  private get isUploadHidden$(): Observable<boolean> {
+    return this.store.select(selectSettingStorageState).pipe(
+      map(({s3Config}) => !s3Config.autoSync),
+      takeUntil(this.destroy$)
+    );
   }
 
   private upload(selectedVideos: ISelected<IVideo>[]): void {

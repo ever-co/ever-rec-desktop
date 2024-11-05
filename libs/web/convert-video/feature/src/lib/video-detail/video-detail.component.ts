@@ -9,7 +9,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
+  selectUploadState,
   selectVideoState,
+  uploadActions,
   videoActions,
 } from '@ever-co/convert-video-data-access';
 import {
@@ -27,6 +29,7 @@ import {
   UtcToLocalTimePipe,
 } from '@ever-co/shared-service';
 import { IActionButton, IVideo, IVideoMetadata } from '@ever-co/shared-utils';
+import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
 import {
   concatMap,
@@ -38,6 +41,7 @@ import {
   Observable,
   of,
   Subject,
+  take,
   takeUntil,
   tap,
 } from 'rxjs';
@@ -82,6 +86,14 @@ export class VideoDetailComponent implements OnInit, OnDestroy {
       variant: 'warning',
     },
     {
+      label: 'Upload',
+      variant: 'success',
+      icon: 'backup',
+      hide: this.isUploadHidden$,
+      action: this.upload.bind(this),
+      loading: this.uploading$
+    },
+    {
       icon: 'delete',
       label: 'Delete',
       variant: 'danger',
@@ -92,7 +104,7 @@ export class VideoDetailComponent implements OnInit, OnDestroy {
   constructor(
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
-    private readonly confirationDialogService: ConfirmationDialogService,
+    private readonly confirmationDialogService: ConfirmationDialogService,
     private readonly store: Store
   ) {}
   ngOnInit(): void {
@@ -124,10 +136,10 @@ export class VideoDetailComponent implements OnInit, OnDestroy {
 
   public async deleteVideo(video: IVideo): Promise<void> {
     const isConfirmed = await lastValueFrom(
-      this.confirationDialogService.open({
+      this.confirmationDialogService.open({
         title: 'Delete Video',
         message: 'Are you sure you want to delete this video?',
-        variant: 'danger'
+        variant: 'danger',
       })
     );
     if (isConfirmed) {
@@ -156,6 +168,45 @@ export class VideoDetailComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe();
+  }
+
+  private upload(video: IVideo): void {
+    this.confirmationDialogService
+      .open({
+        title: 'Upload Video',
+        message: `Are you sure you want to upload this video?`,
+        variant: 'primary',
+        button: {
+          confirm: {
+            label: 'Upload',
+            variant: 'success',
+            icon: 'backup',
+          },
+        },
+      })
+      .pipe(
+        take(1),
+        filter(Boolean),
+        tap(() =>
+          this.store.dispatch(uploadActions.uploadVideo({ videos: [video] }))
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
+
+  private get isUploadHidden$(): Observable<boolean> {
+    return this.store.select(selectSettingStorageState).pipe(
+      map(({ s3Config }) => !s3Config.autoSync),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  public get uploading$(): Observable<boolean> {
+    return this.store.select(selectUploadState).pipe(
+      map(({ uploading }) => uploading),
+      takeUntil(this.destroy$)
+    );
   }
 
   ngOnDestroy(): void {
