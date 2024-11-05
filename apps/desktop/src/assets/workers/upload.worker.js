@@ -128,7 +128,7 @@ class UploadManager {
 
     return this.retryStrategy.executeWithRetry(async () => {
       const response = await fetch(this.uploadUrl, {
-        method: 'POST',
+        method: 'PUT',
         body: formData,
         timeout: 30000,
         headers: { ...formData.getHeaders() },
