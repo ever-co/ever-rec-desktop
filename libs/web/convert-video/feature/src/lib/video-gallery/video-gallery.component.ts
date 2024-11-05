@@ -8,7 +8,9 @@ import {
   generateVideoActions,
   selectGenerateVideoState,
   selectSettingState,
+  selectUploadState,
   selectVideoState,
+  uploadActions,
   videoActions,
 } from '@ever-co/convert-video-data-access';
 import {
@@ -88,6 +90,13 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
       variant: 'default',
       hide: this.lessThanOneSelected$,
       action: this.unselectAll.bind(this),
+    },
+    {
+      icon: 'backup',
+      label: 'Upload',
+      variant: 'success',
+      action: this.upload.bind(this),
+      loading: this.uploading$,
     },
     {
       icon: 'remove_done',
@@ -175,7 +184,7 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
       .open({
         title: 'Delete Videos',
         message: `Are you sure you want to delete these ${videos.length} videos?`,
-        variant: 'danger'
+        variant: 'danger',
       })
       .pipe(
         take(1),
@@ -235,6 +244,13 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
     );
   }
 
+  public get uploading$(): Observable<boolean> {
+    return this.store.select(selectUploadState).pipe(
+      map(({ uploading }) => uploading),
+      takeUntil(this.destroy$)
+    );
+  }
+
   public get deleting$(): Observable<boolean> {
     return this.store.select(selectVideoState).pipe(
       map((video) => video.deleting),
@@ -253,6 +269,32 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
 
   public unselectAll(): void {
     this.store.dispatch(videoActions.unselectAllVideos());
+  }
+
+  private upload(selectedVideos: ISelected<IVideo>[]): void {
+    this.confirmationDialogService
+      .open({
+        title: 'Upload Videos',
+        message: `Are you sure you want to upload selected videos?`,
+        variant: 'primary',
+        button: {
+          confirm: {
+            label: 'Upload',
+            variant: 'success',
+            icon: 'backup',
+          },
+        }
+      })
+      .pipe(
+        take(1),
+        filter(Boolean),
+        tap(() => {
+          const videos = selectedVideos.map((video) => video.data);
+          this.store.dispatch(uploadActions.uploadVideo({ videos }));
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
   private mergeVideos(selectedVideos: ISelected<IVideo>[]): void {

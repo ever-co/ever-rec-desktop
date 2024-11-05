@@ -16,7 +16,11 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
-import { videoActions } from '@ever-co/convert-video-data-access';
+import {
+  selectUploadState,
+  uploadActions,
+  videoActions,
+} from '@ever-co/convert-video-data-access';
 import {
   HumanizePipe,
   PopoverDirective,
@@ -29,6 +33,8 @@ import {
   BehaviorSubject,
   filter,
   fromEvent,
+  map,
+  Observable,
   Subject,
   take,
   takeUntil,
@@ -83,6 +89,13 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
       label: 'View',
       variant: 'default',
       action: this.view.bind(this),
+    },
+    {
+      icon: 'backup',
+      label: 'Upload',
+      variant: 'success',
+      action: this.upload.bind(this),
+      loading: this.uploading$,
     },
     {
       icon: 'delete',
@@ -153,7 +166,7 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
       .open({
         title: 'Delete Video',
         message: `Are you sure you want to delete this video?`,
-        variant: 'danger'
+        variant: 'danger',
       })
       .pipe(
         take(1),
@@ -162,6 +175,38 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe();
+  }
+
+  private upload(video: IVideo): void {
+    this.confirmationDialogService
+      .open({
+        title: 'Upload Video',
+        message: `Are you sure you want to upload this video?`,
+        variant: 'primary',
+        button: {
+          confirm: {
+            label: 'Upload',
+            variant: 'success',
+            icon: 'backup',
+          },
+        }
+      })
+      .pipe(
+        take(1),
+        filter(Boolean),
+        tap(() =>
+          this.store.dispatch(uploadActions.uploadVideo({ videos: [video] }))
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
+
+  private get uploading$(): Observable<boolean> {
+    return this.store.select(selectUploadState).pipe(
+      map(({ uploading }) => uploading),
+      takeUntil(this.destroy$)
+    );
   }
 
   public onSelected(checked: boolean): void {
