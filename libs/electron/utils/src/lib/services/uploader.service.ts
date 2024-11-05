@@ -9,12 +9,13 @@ import {
 } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
 import * as path from 'path';
+import { FindManyOptions, In } from 'typeorm';
 import { FileManager } from './files/file-manager';
 import { ElectronLogger } from './logger/electron-logger';
 import { WorkerFactory } from './worker-factory.service';
 
 interface IService {
-  findAll(criteria: any): Promise<IScreenshot[]>;
+  findAll(criteria:  FindManyOptions): Promise<IScreenshot[]>;
 }
 
 export class UploaderService implements ILoggable {
@@ -26,7 +27,7 @@ export class UploaderService implements ILoggable {
   ): Promise<void> {
     this.logger.info('Start uploading...');
     const data = await service.findAll({
-      whereIn: { column: 'id', values: upload.ids },
+      where: { id: In(upload.ids) },
     });
 
     const files: IUploadFile[] = data.map((item: IScreenshot | IVideo) => ({
