@@ -11,6 +11,7 @@ export class S3Service {
       secretAccessKey: s3Config.accessKeySecret,
       region: s3Config.region,
       endpoint: s3Config.s3Endpoint,
+      signatureVersion: 'v4',
     });
   }
   public async signedURL(uploadType: UploadType): Promise<string> {
