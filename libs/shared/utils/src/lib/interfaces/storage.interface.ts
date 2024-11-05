@@ -6,6 +6,7 @@ export interface IS3Config {
   region: string;
   s3Bucket: string;
   s3Endpoint: string;
+  autoSync: boolean;
 }
 
 export interface IS3ConfigForm {
@@ -14,4 +15,5 @@ export interface IS3ConfigForm {
   region: FormControl<string | null>;
   s3Bucket: FormControl<string | null>;
   s3Endpoint: FormControl<string | null>;
+  autoSync: FormControl<boolean | null>;
 }

@@ -13,7 +13,6 @@ export class UploadEffects {
   upload$ = createEffect(() =>
     this.actions$.pipe(
       ofType(generateVideoActions.finish, uploadActions.uploadVideo),
-      tap(() => this.notificationService.show('Uploading...', 'info')),
       map((action) => {
         return action.type === generateVideoActions.finish.type
           ? [action.video]
@@ -27,6 +26,7 @@ export class UploadEffects {
           ids,
         };
         return this.videoUploadService.upload(config).pipe(
+          tap(() => this.notificationService.show('Uploading...', 'info')),
           map(() => uploadActions.inProgress({ config })),
           catchError((error) => {
             this.notificationService.show('Upload failed', 'error');

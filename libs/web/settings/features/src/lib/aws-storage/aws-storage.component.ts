@@ -9,6 +9,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { NotificationService } from '@ever-co/notification-data-access';
 import { urlValidator } from '@ever-co/shared-service';
 import { IS3ConfigForm } from '@ever-co/shared-utils';
@@ -28,6 +29,7 @@ import { Subject, takeUntil, tap } from 'rxjs';
     MatInputModule,
     ReactiveFormsModule,
     MatButtonModule,
+    MatSlideToggleModule,
   ],
   templateUrl: './aws-storage.component.html',
   styleUrl: './aws-storage.component.scss',
@@ -46,6 +48,7 @@ export class AwsStorageComponent implements OnInit, OnDestroy {
       region: new FormControl('', [Validators.required]),
       s3Endpoint: new FormControl('', [urlValidator()]),
       s3Bucket: new FormControl('', [Validators.required]),
+      autoSync: new FormControl(false),
     });
   }
   ngOnInit(): void {

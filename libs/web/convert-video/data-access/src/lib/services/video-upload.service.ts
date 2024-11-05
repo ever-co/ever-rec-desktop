@@ -4,7 +4,7 @@ import { Channel, IUpload } from '@ever-co/shared-utils';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
-import { map, Observable, of, take } from 'rxjs';
+import { filter, map, Observable, of, take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +18,7 @@ export class VideoUploadService {
   public upload(upload: IUpload): Observable<void> {
     return this.store.select(selectSettingStorageState).pipe(
       take(1),
+      filter(({ s3Config }) => s3Config.autoSync),
       map(({ s3Config }) =>
         this.electronService.send(Channel.UPLOAD, { upload, s3Config })
       )
