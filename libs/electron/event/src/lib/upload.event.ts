@@ -19,15 +19,25 @@ export async function uploadVideo(
     upload: IUpload;
   }
 ) {
-  switch (upload.type) {
-    case UploadType.SCREENSHOT:
-      await uploadService.execute(event, upload, ScreenshotService, s3Config);
-      break;
-    case UploadType.VIDEO:
-      await uploadService.execute(event, upload, new VideoService(), s3Config);
-      break;
-    default:
-      break;
+  try {
+    switch (upload.type) {
+      case UploadType.SCREENSHOT:
+        await uploadService.execute(event, upload, ScreenshotService, s3Config);
+        break;
+      case UploadType.VIDEO:
+        await uploadService.execute(
+          event,
+          upload,
+          new VideoService(),
+          s3Config
+        );
+        break;
+      default:
+        break;
+    }
+  } catch (error) {
+    console.error(error);
+    event.reply(Channel.UPLOAD_ERROR, error);
   }
 }
 

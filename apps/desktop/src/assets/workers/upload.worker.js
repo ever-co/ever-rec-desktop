@@ -1,6 +1,7 @@
 const { parentPort, workerData } = require('worker_threads');
 const FormData = require('form-data');
 const fs = require('fs');
+const path = require('path');
 
 function buildFormData(files, formData) {
   let totalSize = 0;
@@ -19,6 +20,13 @@ function buildFormData(files, formData) {
       parentPort.postMessage({
         status: 'progress',
         message: progress.toFixed(2),
+      });
+    });
+
+    readStream.on('error', (error) => {
+      parentPort.postMessage({
+        status: 'error',
+        message: `Error reading file ${pathname}: ${error.message}`,
       });
     });
 
@@ -46,20 +54,19 @@ async function upload(files, uploadUrl) {
     });
 
     if (!response.ok) {
-      return { status: 'error', message: 'Upload failed::' + response.status };
+      return { status: 'error', message: `Upload failed: ${response.status} ${response.statusText}` };
     }
 
     const result = await response.json();
     return { status: 'done', message: result };
   } catch (error) {
-    return { status: 'error', message: error.message ?? error };
+    return { status: 'error', message: `Upload error: ${error.message}` };
   } finally {
-    for (const file of files) {
-      const readStream = fs.createReadStream(file.path);
-      if (readStream) {
-        readStream.close();
-      }
-    }
+    // Ensure all streams are closed properly
+    files.forEach(({ pathname }) => {
+      const readStream = fs.createReadStream(pathname);
+      readStream.close();
+    });
   }
 }
 
@@ -68,7 +75,6 @@ parentPort.on('message', async () => {
   const result = await upload(files, url);
   parentPort.postMessage(result);
 });
-
 
 process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
