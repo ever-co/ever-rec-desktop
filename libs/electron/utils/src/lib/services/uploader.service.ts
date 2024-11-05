@@ -95,5 +95,9 @@ export class UploaderService implements ILoggable {
       event.reply(Channel.UPLOAD_DONE);
       this.logger.error('Canceled...');
     });
+
+    worker.postMessage({
+      status: 'start',
+    });
   }
 }
