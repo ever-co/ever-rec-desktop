@@ -1,10 +1,11 @@
 import {
-    Channel,
-    ILoggable,
-    ILogger,
-    IScreenshot,
-    IUpload,
-    IUploadFile,
+  Channel,
+  ILoggable,
+  ILogger,
+  IScreenshot,
+  IUpload,
+  IUploadFile,
+  IVideo,
 } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
 import * as path from 'path';
@@ -17,23 +18,23 @@ interface IService {
 }
 
 export class UploaderService implements ILoggable {
-  readonly logger: ILogger = new ElectronLogger();
+  readonly logger: ILogger = new ElectronLogger('Uploader Service');
   public async execute<T extends IService>(
     event: Electron.IpcMainEvent,
     upload: IUpload,
     service: T
   ): Promise<void> {
-    this.logger.info('[upload] start uploading...');
-    const screenshots = await service.findAll({
+    this.logger.info('Start uploading...');
+    const data = await service.findAll({
       whereIn: { column: 'id', values: upload.ids },
     });
 
-    const files: IUploadFile[] = screenshots.map((screenshot: IScreenshot) => ({
-      pathname: FileManager.decodePath(screenshot.pathname),
+    const files: IUploadFile[] = data.map((item: IScreenshot | IVideo) => ({
+      pathname: FileManager.decodePath(item.pathname),
       key: upload.key,
     }));
 
-    this.logger.info('[upload] create upload worker...');
+    this.logger.info('Create upload worker...');
 
     const worker = WorkerFactory.createWorker(
       path.join(__dirname, 'assets', 'workers', 'upload.worker.js'),
@@ -43,38 +44,38 @@ export class UploaderService implements ILoggable {
     worker.on('message', (payload) => {
       switch (payload.status) {
         case 'done':
-          this.logger.info('[upload] Done...');
+          this.logger.info('Done...');
           event.reply(Channel.UPLOAD_DONE, payload);
           break;
         case 'progress':
-          this.logger.info('[upload] In Progress::' + payload.message);
+          this.logger.info('In Progress::' + payload.message);
           event.reply(Channel.UPLOAD_PROGRESS, payload);
           break;
         case 'error':
-          this.logger.error('[upload] Error::' + payload.message);
+          this.logger.error('Error::' + payload.message);
           event.reply(Channel.UPLOAD_ERROR, payload);
           break;
         default:
-          this.logger.warn('[upload] Unknown status');
+          this.logger.warn('Unknown status');
           break;
       }
     });
 
     worker.on('error', (error) => {
-      this.logger.error('[upload] Error::' + error);
+      this.logger.error('Error::' + error);
       event.reply(Channel.UPLOAD_ERROR, { status: 'error', message: error });
       worker.terminate();
     });
 
     worker.on('exit', (code) => {
-      this.logger.error(`[upload] Worker exited with code ${code}`);
+      this.logger.error(`Worker exited with code ${code}`);
       worker.terminate();
     });
 
     ipcMain.on(Channel.UPLOAD_CANCELED, (event) => {
       worker.terminate();
       event.reply(Channel.UPLOAD_DONE);
-      this.logger.error('[upload] Canceled...');
+      this.logger.error('Canceled...');
     });
   }
 }
