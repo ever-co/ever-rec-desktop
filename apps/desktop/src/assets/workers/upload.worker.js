@@ -7,29 +7,31 @@ async function buildFormData(files, formData) {
   let totalSize = 0;
   let uploadedBytes = 0;
 
-  await Promise.all(files.map(async ({ pathname, key }) => {
-    const fileStats = await fs.stat(pathname);
-    totalSize += fileStats.size;
+  await Promise.all(
+    files.map(async ({ pathname, key }) => {
+      const fileStats = await fs.stat(pathname);
+      totalSize += fileStats.size;
 
-    const readStream = createReadStream(pathname);
-    formData.append(key, readStream);
+      const readStream = createReadStream(pathname);
+      formData.append(key, readStream);
 
-    readStream.on('data', (chunk) => {
-      uploadedBytes += chunk.length;
-      const progress = (uploadedBytes / totalSize) * 100;
-      parentPort.postMessage({
-        status: 'progress',
-        message: progress.toFixed(2),
+      readStream.on('data', (chunk) => {
+        uploadedBytes += chunk.length;
+        const progress = (uploadedBytes / totalSize) * 100;
+        parentPort.postMessage({
+          status: 'progress',
+          message: progress.toFixed(2),
+        });
       });
-    });
 
-    readStream.on('error', (error) => {
-      parentPort.postMessage({
-        status: 'error',
-        message: `Error reading file ${pathname}: ${error.message}`,
+      readStream.on('error', (error) => {
+        parentPort.postMessage({
+          status: 'error',
+          message: `Error reading file ${pathname}: ${error.message}`,
+        });
       });
-    });
-  }));
+    })
+  );
 
   return formData;
 }
@@ -50,12 +52,15 @@ async function upload(files, uploadUrl) {
       method: 'PUT',
       body: formData,
       signal: controller.signal,
+      header: formData.getHeaders(),
     });
 
     clearTimeout(timeout);
 
     if (!response.ok) {
-      throw new Error(`Upload failed: ${response.status} ${response.statusText}`);
+      throw new Error(
+        `Upload failed: ${response.status} ${response.statusText}`
+      );
     }
 
     return await response.json();
@@ -76,13 +81,15 @@ parentPort.on('message', async () => {
     parentPort.postMessage({ status: 'error', message: error.message });
   } finally {
     // Ensure all streams are closed properly
-    await Promise.all(files.map(async ({ pathname }) => {
-      const readStream = createReadStream(pathname);
-      await new Promise((resolve) => {
-        readStream.on('close', resolve);
-        readStream.destroy();
-      });
-    }));
+    await Promise.all(
+      files.map(async ({ pathname }) => {
+        const readStream = createReadStream(pathname);
+        await new Promise((resolve) => {
+          readStream.on('close', resolve);
+          readStream.destroy();
+        });
+      })
+    );
   }
 });
 
