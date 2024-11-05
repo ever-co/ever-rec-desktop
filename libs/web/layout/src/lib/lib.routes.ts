@@ -32,6 +32,13 @@ export const layoutRoutes: Route[] = [
           ),
       },
       {
+        path: 'activities',
+        loadComponent: () =>
+          import('@ever-co/screenshot-feature').then(
+            (r) => r.ScreenshotStatisticComponent
+          ),
+      },
+      {
         path: 'timeline',
         canActivate: [timelineGuard],
         loadComponent: () =>
