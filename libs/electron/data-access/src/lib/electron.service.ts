@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Injectable, inject } from '@angular/core';
-import { Channel as ChEnum } from '@ever-co/shared-utils';
+import { Channel } from '@ever-co/shared-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +25,7 @@ export class ElectronService {
     return this.window.electronAPI;
   }
 
-  public async invoke<T, U>(channel: ChEnum, data?: T): Promise<U> {
+  public async invoke<T, U>(channel: Channel, data?: T): Promise<U> {
     if (this.electronAPI) {
       return this.electronAPI.invoke(channel, data) as U;
     }
@@ -33,7 +33,7 @@ export class ElectronService {
   }
 
   public on(
-    channel: ChEnum,
+    channel: Channel,
     callback: (event: any, ...args: any[]) => void
   ): void {
     if (this.electronAPI) {
@@ -47,7 +47,7 @@ export class ElectronService {
   }
 
   public once(
-    channel: ChEnum,
+    channel: Channel,
     callback: (event: any, ...args: any[]) => void
   ): void {
     if (this.electronAPI) {
@@ -57,7 +57,7 @@ export class ElectronService {
     }
   }
 
-  public send(channel: ChEnum, data?: any): void {
+  public send(channel: Channel, data?: any): void {
     if (this.electronAPI) {
       this.electronAPI.removeAllListeners(channel);
       this.electronAPI.send(channel, data);
@@ -66,7 +66,7 @@ export class ElectronService {
     }
   }
 
-  public removeAllListeners(channel: ChEnum): void {
+  public removeAllListeners(channel: Channel): void {
     if (this.electronAPI) {
       this.electronAPI.removeAllListeners(channel);
     } else {
@@ -75,7 +75,7 @@ export class ElectronService {
   }
 
   public removeListener(
-    channel: ChEnum,
+    channel: Channel,
     callback: (event: any, ...args: any[]) => void
   ): void {
     if (this.electronAPI) {
