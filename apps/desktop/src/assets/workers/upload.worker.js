@@ -1,7 +1,6 @@
 const { parentPort, workerData } = require('worker_threads');
 const FormData = require('form-data');
 const fs = require('fs');
-const path = require('path');
 
 function buildFormData(files, formData) {
   let totalSize = 0;
@@ -54,7 +53,10 @@ async function upload(files, uploadUrl) {
     });
 
     if (!response.ok) {
-      return { status: 'error', message: `Upload failed: ${response.status} ${response.statusText}` };
+      return {
+        status: 'error',
+        message: `Upload failed: ${response.status} ${response.statusText}`,
+      };
     }
 
     const result = await response.json();
