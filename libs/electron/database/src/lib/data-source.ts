@@ -10,7 +10,7 @@ import { ScreenshotSubscriber } from './subscribers/screenshot.subscriber';
 import { VideoSubscriber } from './subscribers/video.subscriber';
 
 const database = FileManager.createFilePathSync(
-  'databases',
+  'db',
   'ever.capture.sqlite'
 );
 
