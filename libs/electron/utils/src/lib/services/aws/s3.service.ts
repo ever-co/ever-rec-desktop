@@ -1,7 +1,5 @@
 import { IS3Config, UploadType } from '@ever-co/shared-utils';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import S3 from 'aws-sdk/clients/s3';
+import { S3 } from 'aws-sdk';
 
 export class S3Service {
   private s3!: S3;
