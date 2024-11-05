@@ -1,6 +1,6 @@
 const { parentPort, workerData } = require('worker_threads');
-const FormData = require('form-data');
 const fs = require('fs');
+const FormData = require('form-data');
 
 // Constants for configuration
 const CHUNK_SIZE = 16 * 1024; // 16KB chunks
@@ -8,71 +8,83 @@ const PROGRESS_THROTTLE = 100; // Throttle progress updates to 100ms
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000; // 1 second
 
+// Service for file validation
+class FileValidator {
+  static validateFiles(files) {
+    if (!files?.length || !Array.isArray(files)) {
+      throw new Error('Invalid or empty files array');
+    }
+
+    files.forEach(({ pathname }) => {
+      if (!fs.existsSync(pathname)) {
+        throw new Error(`File not found: ${pathname}`);
+      }
+      try {
+        fs.accessSync(pathname, fs.constants.R_OK);
+      } catch {
+        throw new Error(`File not readable: ${pathname}`);
+      }
+    });
+  }
+}
+
+// Service for calculating file sizes
+class FileSizeCalculator {
+  static calculateTotalSize(files) {
+    return files.reduce((total, { pathname }) => {
+      const stats = fs.statSync(pathname);
+      return total + stats.size;
+    }, 0);
+  }
+}
+
+// Retry strategy
+class RetryStrategy {
+  constructor(maxRetries, retryDelay) {
+    this.maxRetries = maxRetries;
+    this.retryDelay = retryDelay;
+  }
+
+  async executeWithRetry(fn, retryCount = 0) {
+    try {
+      return await fn();
+    } catch (error) {
+      if (
+        retryCount < this.maxRetries &&
+        ['ETIMEDOUT', 'ECONNRESET', 'AbortError'].includes(
+          error.code || error.name
+        )
+      ) {
+        await new Promise((resolve) =>
+          setTimeout(resolve, this.retryDelay * (retryCount + 1))
+        );
+        return this.executeWithRetry(fn, retryCount + 1);
+      }
+      throw error;
+    }
+  }
+}
+
+// Upload manager responsible for uploading files
 class UploadManager {
-  constructor(files, uploadUrl) {
+  constructor(files, uploadUrl, progressNotifier, retryStrategy) {
     this.files = files;
     this.uploadUrl = uploadUrl;
+    this.progressNotifier = progressNotifier;
+    this.retryStrategy = retryStrategy;
+
     this.totalSize = 0;
     this.uploadedBytes = 0;
     this.lastProgressUpdate = 0;
     this.activeStreams = new Set();
   }
 
-  /**
-   * Validate input parameters
-   */
-  validate() {
-    if (!this.files?.length || !Array.isArray(this.files)) {
-      throw new Error('Invalid or empty files array');
-    }
-    if (!this.uploadUrl) {
-      throw new Error('Upload URL is required');
-    }
-
-    // Validate file existence and accessibility
-    this.files.forEach(({ pathname }) => {
-      if (!fs.existsSync(pathname)) {
-        throw new Error(`File not found: ${pathname}`);
-      }
-      try {
-        fs.accessSync(pathname, fs.constants.R_OK);
-      } catch (error) {
-        throw new Error(`File not readable: ${pathname}`);
-      }
-    });
+  async prepareUpload() {
+    FileValidator.validateFiles(this.files);
+    this.totalSize = FileSizeCalculator.calculateTotalSize(this.files);
   }
 
-  /**
-   * Calculate total size of all files
-   */
-  calculateTotalSize() {
-    this.totalSize = this.files.reduce((total, { pathname }) => {
-      const stats = fs.statSync(pathname);
-      return total + stats.size;
-    }, 0);
-  }
-
-  /**
-   * Send progress update to parent thread
-   */
-  updateProgress() {
-    const now = Date.now();
-    if (now - this.lastProgressUpdate >= PROGRESS_THROTTLE) {
-      const progress = (this.uploadedBytes / this.totalSize) * 100;
-      parentPort.postMessage({
-        status: 'progress',
-        message: progress,
-        uploadedBytes: this.uploadedBytes,
-        totalSize: this.totalSize,
-      });
-      this.lastProgressUpdate = now;
-    }
-  }
-
-  /**
-   * Build form data with progress tracking
-   */
-  buildFormData() {
+  createFormData() {
     const formData = new FormData();
 
     this.files.forEach(({ pathname, key }) => {
@@ -83,7 +95,10 @@ class UploadManager {
 
       readStream.on('data', (chunk) => {
         this.uploadedBytes += chunk.length;
-        this.updateProgress();
+        this.progressNotifier.notifyProgress(
+          this.uploadedBytes,
+          this.totalSize
+        );
       });
 
       readStream.on('error', (error) => {
@@ -102,34 +117,21 @@ class UploadManager {
     return formData;
   }
 
-  /**
-   * Clean up resources
-   */
   cleanup() {
-    this.activeStreams.forEach((stream) => {
-      stream.destroy();
-    });
+    this.activeStreams.forEach((stream) => stream.destroy());
     this.activeStreams.clear();
   }
 
-  /**
-   * Perform upload with retries
-   */
-  async upload(retryCount = 0) {
-    try {
-      this.validate();
-      this.calculateTotalSize();
-      const formData = this.buildFormData();
+  async upload() {
+    const formData = this.createFormData();
+    const fetch = (await import('node-fetch')).default;
 
-      const fetch = (await import('node-fetch')).default;
-      // Perform upload
+    return this.retryStrategy.executeWithRetry(async () => {
       const response = await fetch(this.uploadUrl, {
         method: 'POST',
         body: formData,
-        timeout: 30000, // 30 second timeout
-        headers: {
-          ...formData.getHeaders(),
-        },
+        timeout: 30000,
+        headers: { ...formData.getHeaders() },
       });
 
       if (!response.ok) {
@@ -137,30 +139,43 @@ class UploadManager {
         throw new Error(`Upload failed: ${response.status} - ${errorText}`);
       }
 
-      const result = await response.json();
-      return { status: 'done', message: result };
-    } catch (error) {
-      this.cleanup();
+      return await response.json();
+    });
+  }
+}
 
-      // Handle retries for specific error types
-      if (
-        retryCount < MAX_RETRIES &&
-        (error.code === 'ETIMEDOUT' ||
-          error.code === 'ECONNRESET' ||
-          error.name === 'AbortError')
-      ) {
-        await new Promise((resolve) =>
-          setTimeout(resolve, RETRY_DELAY * (retryCount + 1))
-        );
-        return this.upload(retryCount + 1);
-      }
+// Progress notification service
+class ProgressNotifier {
+  constructor(progressThrottle, port) {
+    this.progressThrottle = progressThrottle;
+    this.port = port;
+    this.lastProgressUpdate = 0;
+  }
 
-      return {
-        status: 'error',
-        message: error.message,
-        retries: retryCount,
-      };
+  notifyProgress(uploadedBytes, totalSize) {
+    const now = Date.now();
+    if (now - this.lastProgressUpdate >= this.progressThrottle) {
+      const progress = (uploadedBytes / totalSize) * 100;
+      this.port.postMessage({
+        status: 'progress',
+        message: progress,
+        uploadedBytes: uploadedBytes,
+        totalSize: totalSize,
+      });
+      this.lastProgressUpdate = now;
     }
+  }
+}
+
+// Factory to create an UploadManager instance
+class UploadManagerFactory {
+  static create(files, uploadUrl) {
+    const progressNotifier = new ProgressNotifier(
+      PROGRESS_THROTTLE,
+      parentPort
+    );
+    const retryStrategy = new RetryStrategy(MAX_RETRIES, RETRY_DELAY);
+    return new UploadManager(files, uploadUrl, progressNotifier, retryStrategy);
   }
 }
 
@@ -169,16 +184,14 @@ let uploadManager;
 // Worker message handler
 parentPort.on('message', async () => {
   const { files, url } = workerData;
-  uploadManager = new UploadManager(files, url);
+  uploadManager = UploadManagerFactory.create(files, url);
 
   try {
+    await uploadManager.prepareUpload();
     const result = await uploadManager.upload();
-    parentPort.postMessage(result);
+    parentPort.postMessage({ status: 'done', message: result });
   } catch (error) {
-    parentPort.postMessage({
-      status: 'error',
-      message: error.message,
-    });
+    parentPort.postMessage({ status: 'error', message: error.message });
   } finally {
     uploadManager.cleanup();
   }
