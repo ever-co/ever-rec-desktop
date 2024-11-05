@@ -1,0 +1,29 @@
+@if (barChartData$ | async; as barChartData) {
+<ngx-charts-bar-vertical
+  [results]="barChartData"
+  [xAxis]="true"
+  [yAxis]="true"
+  [animations]="true"
+  [gradient]="true"
+  [showGridLines]="true"
+  [showXAxisLabel]="true"
+  [showYAxisLabel]="true"
+  [barPadding]="0"
+  [roundDomains]="true"
+  [roundEdges]="true"
+  [trimXAxisTicks]="true"
+  [rotateXAxisTicks]="true"
+  [wrapTicks]="true"
+  xAxisLabel="Applications"
+  yAxisLabel="Usage (%)"
+>
+  <ng-template #tooltipTemplate let-model="model">
+    <div class="model-container">
+      <div class="text-gray-100 font-semibold">{{ model.name }}</div>
+      <div>{{ model.value / 100 | percent : '1.0-1' }}</div>
+    </div>
+  </ng-template>
+</ngx-charts-bar-vertical>
+}@else {
+  <lib-no-data message="No activities available"></lib-no-data>
+}

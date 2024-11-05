@@ -9,7 +9,7 @@
 }
 
 :host(.dashboard) {
-  .header {
+  .header, .chart, .title {
     display: none;
   }
 

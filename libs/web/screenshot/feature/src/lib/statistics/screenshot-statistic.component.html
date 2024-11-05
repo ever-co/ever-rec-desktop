@@ -1,6 +1,7 @@
 @if((statistics$ | async)?.length) {
 <div class="w-full bg-gray-50">
-  <h4 class="text-xl md:text-xl font-bold mb-6">Applications</h4>
+  <h4 class="text-xl md:text-xl font-bold title mb-6">Applications</h4>
+  <lib-screenshot-statistics-chart class="chart"></lib-screenshot-statistics-chart>
   <!-- Responsive Grid -->
   <div
     libInfiniteScroll

@@ -18,6 +18,7 @@ import {
 import { IRange, IScreenshotMetadataStatistic } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
+import { ScreenshotStatisticsChartComponent } from '../chart/screenshot-statistics-chart.component';
 
 @Component({
   selector: 'lib-screenshot-statistic',
@@ -31,7 +32,8 @@ import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
     MatSelectModule,
     NoDataComponent,
     InfiniteScrollDirective,
-    IconFallbackDirective
+    IconFallbackDirective,
+    ScreenshotStatisticsChartComponent
   ],
   templateUrl: './screenshot-statistic.component.html',
   styleUrl: './screenshot-statistic.component.scss',
