@@ -11,6 +11,5 @@ export interface IUploadFile {
 export interface IUpload {
   type: UploadType;
   key: string;
-  url: string;
   ids: string[];
 }

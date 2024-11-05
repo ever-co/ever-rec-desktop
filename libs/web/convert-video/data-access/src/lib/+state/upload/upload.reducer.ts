@@ -15,7 +15,6 @@ export const initialState: UploadState = {
   config: {
     type: UploadType.VIDEO,
     key: '',
-    url: '',
     ids: [],
   },
   progress: 0,
@@ -25,10 +24,9 @@ export const initialState: UploadState = {
 
 export const reducer = createReducer(
   initialState,
-  on(uploadActions.uploadVideo, (state, { config }) => ({
+  on(uploadActions.uploadVideo, (state) => ({
     ...state,
     uploading: true,
-    config,
   })),
   on(uploadActions.uploadVideoSuccess, (state) => ({
     ...state,
@@ -40,9 +38,10 @@ export const reducer = createReducer(
     progress,
   })),
 
-  on(uploadActions.inProgress, (state) => ({
+  on(uploadActions.inProgress, (state, { config }) => ({
     ...state,
     uploading: true,
+    config,
   })),
 
   on(uploadActions.uploadVideoFailure, (state, { error }) => ({

@@ -1,5 +1,6 @@
 export * from './lib/batch-splitter';
 export * from './lib/interfaces/splitter-strategy.interface';
+export * from './lib/services/aws/s3.service';
 export * from './lib/services/files/file-manager';
 export * from './lib/services/files/file-task-runner';
 export * from './lib/services/keytar.service';

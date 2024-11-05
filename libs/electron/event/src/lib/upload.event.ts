@@ -1,9 +1,6 @@
-import {
-    ScreenshotService,
-    VideoService,
-} from '@ever-co/electron-database';
+import { ScreenshotService, VideoService } from '@ever-co/electron-database';
 import { UploaderService } from '@ever-co/electron-utils';
-import { Channel, IUpload, UploadType } from '@ever-co/shared-utils';
+import { Channel, IS3Config, IUpload, UploadType } from '@ever-co/shared-utils';
 import { ipcMain, IpcMainEvent } from 'electron';
 
 const uploadService = new UploaderService();
@@ -12,13 +9,22 @@ export function uploadEventListener() {
   ipcMain.on(Channel.UPLOAD, uploadVideo);
 }
 
-export async function uploadVideo(event: IpcMainEvent, upload: IUpload) {
+export async function uploadVideo(
+  event: IpcMainEvent,
+  {
+    upload,
+    s3Config,
+  }: {
+    s3Config: IS3Config;
+    upload: IUpload;
+  }
+) {
   switch (upload.type) {
     case UploadType.SCREENSHOT:
-      await uploadService.execute(event, upload, ScreenshotService);
+      await uploadService.execute(event, upload, ScreenshotService, s3Config);
       break;
     case UploadType.VIDEO:
-      await uploadService.execute(event, upload, new VideoService());
+      await uploadService.execute(event, upload, new VideoService(), s3Config);
       break;
     default:
       break;

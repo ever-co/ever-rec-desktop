@@ -1,16 +1,27 @@
 import { Injectable } from '@angular/core';
 import { ElectronService } from '@ever-co/electron-data-access';
 import { Channel, IUpload } from '@ever-co/shared-utils';
-import { Observable, of } from 'rxjs';
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
+import { Store } from '@ngrx/store';
+import { map, Observable, of, take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class VideoUploadService {
-  constructor(private readonly electronService: ElectronService) {}
+  constructor(
+    private readonly electronService: ElectronService,
+    private store: Store
+  ) {}
 
-  public upload(config: IUpload): Observable<void> {
-    return of(this.electronService.send(Channel.UPLOAD, config));
+  public upload(upload: IUpload): Observable<void> {
+    return this.store.select(selectSettingStorageState).pipe(
+      take(1),
+      map(({ s3Config }) =>
+        this.electronService.send(Channel.UPLOAD, { upload, s3Config })
+      )
+    );
   }
 
   public cancel(): Observable<void> {
@@ -45,8 +56,9 @@ export class VideoUploadService {
   public onError(): Observable<string> {
     return new Observable<string>((observer) => {
       this.electronService.removeAllListeners(Channel.UPLOAD_ERROR);
-      this.electronService.on(Channel.UPLOAD_ERROR, (_, error: string) => {
-        observer.error(error);
+      this.electronService.on(Channel.UPLOAD_ERROR, (_, error: Error) => {
+        observer.next(error.message ?? error);
+        observer.complete();
       });
       return () =>
         this.electronService.removeAllListeners(Channel.UPLOAD_ERROR);

@@ -1,30 +1,45 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-
 import { NotificationService } from '@ever-co/notification-data-access';
+import { IUpload, UploadType } from '@ever-co/shared-utils';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, concatMap, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { VideoUploadService } from '../../services/video-upload.service';
+import { generateVideoActions } from '../generate-video/generate-video.actions';
 import { uploadActions } from './upload.actions';
 
 @Injectable()
 export class UploadEffects {
   upload$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(uploadActions.uploadVideo),
+      ofType(generateVideoActions.finish, uploadActions.uploadVideo),
       tap(() => this.notificationService.show('Uploading...', 'info')),
-      concatMap(({ config }) =>
-        this.videoUploadService.upload(config).pipe(
-          map(() => uploadActions.inProgress()),
-          catchError((error) => of(uploadActions.uploadVideoFailure({ error })))
-        )
-      )
+      map((action) => {
+        return action.type === generateVideoActions.finish.type
+          ? [action.video]
+          : action.videos;
+      }),
+      map((videos) => ({ ids: videos.map(({ id }) => id) })),
+      mergeMap(({ ids }) => {
+        const config: IUpload = {
+          type: UploadType.VIDEO,
+          key: 'video',
+          ids,
+        };
+        return this.videoUploadService.upload(config).pipe(
+          map(() => uploadActions.inProgress({ config })),
+          catchError((error) => {
+            this.notificationService.show('Upload failed', 'error');
+            return of(uploadActions.uploadVideoFailure({ error }));
+          })
+        );
+      })
     )
   );
 
   onError$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(uploadActions.uploadVideo),
+      ofType(uploadActions.uploadVideo, generateVideoActions.finish),
       switchMap(() =>
         this.videoUploadService.onError().pipe(
           tap((error) => this.notificationService.show(error, 'error')),

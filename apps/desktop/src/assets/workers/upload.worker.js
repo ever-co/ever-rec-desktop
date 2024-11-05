@@ -1,6 +1,5 @@
 const { parentPort, workerData } = require('worker_threads');
 const FormData = require('form-data');
-const fetch = require('node-fetch');
 const fs = require('fs');
 
 function buildFormData(files, formData) {
@@ -39,9 +38,11 @@ async function upload(files, uploadUrl) {
   const formData = buildFormData(files, new FormData());
 
   try {
+    const fetch = (await import('node-fetch')).default;
     const response = await fetch(uploadUrl, {
-      method: 'POST',
+      method: 'PUT',
       body: formData,
+      timeout: 30000,
     });
 
     if (!response.ok) {
@@ -66,4 +67,13 @@ parentPort.on('message', async () => {
   const { files, url } = workerData;
   const result = await upload(files, url);
   parentPort.postMessage(result);
+});
+
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  parentPort.postMessage({
+    status: 'error',
+    message: 'Unhandled rejection in upload worker',
+  });
 });
