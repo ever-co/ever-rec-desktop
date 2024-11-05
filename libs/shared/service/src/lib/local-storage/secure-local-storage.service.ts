@@ -21,13 +21,19 @@ export class SecureLocalStorageService {
     value: T,
     options: { expiry?: number; merge?: boolean } = {}
   ): Observable<void> {
-    return this.encryption
-      .encrypt(value)
-      .pipe(
-        switchMap((encryptedValue) =>
-          this.localStorage.setItem(key, encryptedValue, options)
-        )
-      );
+    return this.getItem<T>(key).pipe(
+      switchMap((existingItem) => {
+        if (options.merge && typeof value === 'object') {
+          if (existingItem) {
+            value = { ...existingItem, ...value } as T;
+          }
+        }
+        return this.encryption.encrypt(value);
+      }),
+      switchMap((encryptedValue) => {
+        return this.localStorage.setItem(key, encryptedValue, options);
+      })
+    );
   }
 
   /**
