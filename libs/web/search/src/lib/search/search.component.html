@@ -10,9 +10,9 @@
     (click)="overlayOpen(true)"
     class="truncate"
     #search
-    (input)="onChange(search.value)"
+    (keydown.enter)="onChange(search.value)"
     matInput
-    placeholder="Search for applications, tags, folders, and website names"
+    placeholder="Search for applications, tags, folders, and website"
   />
   @if (isLoading$ | async) {
   <mat-icon matSuffix>

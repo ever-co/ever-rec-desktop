@@ -4,7 +4,7 @@ import {
   IScreenCaptureConfig,
   IScreenshot,
   IScreenshotMetadataStatistic,
-  ISelected
+  ISelected,
 } from '@ever-co/shared-utils';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
@@ -27,8 +27,10 @@ export const screenshotActions = createActionGroup({
     'Delete Screenshot Success': props<{ id: string }>(),
     'Delete Screenshot Failure': props<{ error: string }>(),
 
-    'Delete Selected Screenshots': props<{ screenshots: IScreenshot[]}>(),
-    'Delete Selected Screenshots Success': props<{ screenshots: IScreenshot[]}>(),
+    'Delete Selected Screenshots': props<{ screenshots: IScreenshot[] }>(),
+    'Delete Selected Screenshots Success': props<{
+      screenshots: IScreenshot[];
+    }>(),
     'Delete Selected Screenshots Failure': props<{ error: string }>(),
 
     'Delete Screenshots': emptyProps(),
@@ -37,7 +39,8 @@ export const screenshotActions = createActionGroup({
     'Reset Screenshots': emptyProps(),
 
     'Get Screenshots Statistics': props<IPaginationOptions>(),
-    'Get Screenshots Statistics Success': props<IPaginationResponse<IScreenshotMetadataStatistic>>(),
+    'Get Screenshots Statistics Success':
+      props<IPaginationResponse<IScreenshotMetadataStatistic>>(),
     'Get Screenshots Statistics Failure': props<{ error: string }>(),
     'Reset Screenshots Statistics': emptyProps(),
 
@@ -47,9 +50,16 @@ export const screenshotActions = createActionGroup({
     'Reset Ask': emptyProps(),
 
     'Unselect All Screenshots': emptyProps(),
-    'Unselect Screenshot':  props<{screenshot: ISelected<IScreenshot>}>(),
-    'Select Screenshot':  props<{screenshot: ISelected<IScreenshot>}>(),
+    'Unselect Screenshot': props<{ screenshot: ISelected<IScreenshot> }>(),
+    'Select Screenshot': props<{ screenshot: ISelected<IScreenshot> }>(),
 
-    'Overlay Clicked':  props<{ isOpen: boolean }>(),
+    'Overlay Clicked': props<{ isOpen: boolean }>(),
+
+    'Load History': emptyProps(),
+    'Load History Success': props<{ history: string[] }>(),
+    'Load History Failure': props<{ error: string }>(),
+
+    'Add To History': props<{ searchQuery: string }>(),
+    'Remove From History': props<{ searchQuery: string }>(),
   },
 });

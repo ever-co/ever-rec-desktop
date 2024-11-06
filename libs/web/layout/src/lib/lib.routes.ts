@@ -46,6 +46,13 @@ export const layoutRoutes: Route[] = [
             (r) => r.TimelineComponent
           ),
       },
+      {
+        path: 'search',
+        loadComponent: () =>
+          import('@ever-co/screenshot-feature').then(
+            (r) => r.ScreenshotSearchComponent
+          ),
+      },
       { path: '**', redirectTo: '' },
     ],
   },

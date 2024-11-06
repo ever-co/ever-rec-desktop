@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { NotificationService } from '@ever-co/notification-data-access';
+import { LocalStorageService } from '@ever-co/shared-service';
 import { IPaginationOptions } from '@ever-co/shared-utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
@@ -11,10 +12,12 @@ import { screenshotActions } from './screenshot.actions';
 @Injectable()
 export class ScreenshotEffects {
   private electronService = inject(ScreenshotElectronService);
+  private readonly KEY = '_history';
 
   constructor(
     private actions$: Actions,
-    private readonly notificationService: NotificationService
+    private readonly notificationService: NotificationService,
+    private readonly localStorageService: LocalStorageService
   ) {}
 
   startCaptureScreen$ = createEffect(() =>
@@ -163,6 +166,75 @@ export class ScreenshotEffects {
           }),
           catchError((error) =>
             of(screenshotActions.deleteSelectedScreenshotsFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  addToHistory$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(screenshotActions.addToHistory),
+      mergeMap(({ searchQuery }) =>
+        this.localStorageService.getItem<string[]>(this.KEY).pipe(
+          map((history) => history ?? []),
+          mergeMap((history) =>
+            this.localStorageService
+              .setItem<string[]>(this.KEY, [searchQuery, ...history])
+              .pipe(
+                map(() =>
+                  screenshotActions.loadHistorySuccess({
+                    history: [...new Set([searchQuery, ...history])],
+                  })
+                ),
+                catchError((error) =>
+                  of(screenshotActions.loadHistoryFailure({ error }))
+                )
+              )
+          )
+        )
+      )
+    )
+  );
+
+  removeFromHistory$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(screenshotActions.removeFromHistory),
+      mergeMap(({ searchQuery }) =>
+        this.localStorageService.getItem<string[]>(this.KEY).pipe(
+          map((history) => history ?? []),
+          mergeMap((history) =>
+            this.localStorageService
+              .setItem<string[]>(
+                this.KEY,
+                history.filter((q) => q !== searchQuery)
+              )
+              .pipe(
+                map(() =>
+                  screenshotActions.loadHistorySuccess({
+                    history: history.filter((q) => q !== searchQuery),
+                  })
+                ),
+                catchError((error) =>
+                  of(screenshotActions.loadHistoryFailure({ error }))
+                )
+              )
+          )
+        )
+      )
+    )
+  );
+
+  loadHistory$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(screenshotActions.loadHistory),
+      mergeMap(() =>
+        this.localStorageService.getItem<string[]>(this.KEY).pipe(
+          map((history) =>
+            screenshotActions.loadHistorySuccess({ history: history ?? [] })
+          ),
+          catchError((error) =>
+            of(screenshotActions.loadHistoryFailure({ error }))
           )
         )
       )

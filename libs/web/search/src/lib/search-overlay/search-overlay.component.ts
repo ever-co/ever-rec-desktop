@@ -9,15 +9,7 @@ import {
   screenshotActions,
   selectScreenshotState,
 } from '@ever-co/screenshot-data-access';
-import {
-  ActionButtonGroupComponent,
-  NoDataComponent,
-} from '@ever-co/shared-components';
-import {
-  InfiniteScrollDirective,
-  PopoverDirective,
-} from '@ever-co/shared-service';
-import { IActionButton, IScreenshot } from '@ever-co/shared-utils';
+import { NoDataComponent } from '@ever-co/shared-components';
 import { Store } from '@ngrx/store';
 import { map, Observable, tap } from 'rxjs';
 
@@ -31,47 +23,19 @@ import { map, Observable, tap } from 'rxjs';
     MatIconModule,
     MatButtonModule,
     NoDataComponent,
-    InfiniteScrollDirective,
-    PopoverDirective,
-    ActionButtonGroupComponent,
   ],
   templateUrl: './search-overlay.component.html',
   styleUrl: './search-overlay.component.scss',
 })
 export class SearchOverlayComponent implements OnInit {
   public searchTerm = '';
-  private currentPage = 1;
-  private hasNext = false;
-  public actionButtons: IActionButton[] = [
-    {
-      icon: 'subscriptions',
-      label: 'Generate',
-      variant: 'warning',
-      tooltip: 'Generate a video from all found screenshots.',
-    },
-    {
-      icon: 'delete',
-      label: 'Delete',
-      variant: 'danger',
-      tooltip: 'Delete all found screenshots.'
-    }
-  ];
 
   constructor(private readonly store: Store, private readonly router: Router) {}
   ngOnInit(): void {
     this.store
       .select(selectScreenshotState)
-      .pipe(
-        tap((state) => {
-          this.hasNext = state.search.hasNext;
-          this.searchTerm = state.search.filter;
-        })
-      )
+      .pipe(tap((state) => (this.searchTerm = state.search.filter)))
       .subscribe();
-  }
-
-  public async showResult({ id }: IScreenshot) {
-    await this.router.navigate(['/', 'library', 'screenshots', id]);
   }
 
   public get count$(): Observable<number> {
@@ -80,25 +44,14 @@ export class SearchOverlayComponent implements OnInit {
       .pipe(map((state) => state.search.count));
   }
 
-  public get recents$(): Observable<IScreenshot[]> {
+  public get recents$(): Observable<string[]> {
     return this.store
       .select(selectScreenshotState)
-      .pipe(map((state) => state.search.screenshots));
+      .pipe(map((state) => state.search.history));
   }
 
-  public moreResult(): void {
-    if (this.hasNext) {
-      this.currentPage++;
-      this.loadResults();
-    }
-  }
-
-  public loadResults(): void {
-    this.store.dispatch(
-      screenshotActions.ask({
-        page: this.currentPage,
-        filter: this.searchTerm,
-      })
-    );
+  public onRemove(event: Event, searchQuery: string): void {
+    event.stopPropagation();
+    this.store.dispatch(screenshotActions.removeFromHistory({ searchQuery }));
   }
 }

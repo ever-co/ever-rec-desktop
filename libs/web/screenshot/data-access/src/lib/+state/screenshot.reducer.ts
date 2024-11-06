@@ -16,7 +16,7 @@ export interface IScreenshotState {
   loading: boolean;
   filter: string;
   deleting: boolean;
-  selectedScreenshots: ISelected<IScreenshot>[]
+  selectedScreenshots: ISelected<IScreenshot>[];
   statistic: {
     currents: IScreenshotMetadataStatistic[];
     hasNext: boolean;
@@ -25,6 +25,7 @@ export interface IScreenshotState {
   search: {
     overlayOpen: boolean;
     screenshots: IScreenshot[];
+    history: string[];
     hasNext: boolean;
     count: number;
     loading: boolean;
@@ -52,6 +53,7 @@ export const initialState: IScreenshotState = {
     overlayOpen: false,
     loading: false,
     screenshots: [],
+    history: [],
     filter: '',
     hasNext: false,
     count: 0,
@@ -282,6 +284,15 @@ export const reducer = createReducer(
     ...state,
     deleting: false,
     selectedScreenshots: [],
+  })),
+
+  //Search History
+  on(screenshotActions.loadHistorySuccess, (state, { history }) => ({
+    ...state,
+    search: {
+      ...state.search,
+      history,
+    },
   }))
 );
 

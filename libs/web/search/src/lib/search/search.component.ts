@@ -1,16 +1,23 @@
 import { CdkOverlayOrigin, OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { Router } from '@angular/router';
 import {
   screenshotActions,
   selectScreenshotState,
 } from '@ever-co/screenshot-data-access';
 import { Store } from '@ngrx/store';
 import {
+  concatMap,
   debounceTime,
   distinctUntilChanged,
   filter,
@@ -37,11 +44,15 @@ import { SearchOverlayComponent } from '../search-overlay/search-overlay.compone
   styleUrl: './search.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchComponent {
+export class SearchComponent implements OnInit {
   @ViewChild('overlayPosition', { static: false })
   public overlay!: CdkOverlayOrigin;
 
-  constructor(private readonly store: Store) {}
+  constructor(private readonly store: Store, private readonly router: Router) {}
+
+  ngOnInit(): void {
+    this.store.dispatch(screenshotActions.loadHistory());
+  }
   public get offsetWidth() {
     if (this.overlay) {
       return this.overlay.elementRef.nativeElement.offsetWidth;
@@ -57,7 +68,11 @@ export class SearchComponent {
         tap((filter) => {
           this.store.dispatch(screenshotActions.resetAsk());
           this.store.dispatch(screenshotActions.ask({ filter, page: 1 }));
-        })
+          this.store.dispatch(
+            screenshotActions.addToHistory({ searchQuery: filter })
+          );
+        }),
+        concatMap(() => this.router.navigate(['/', 'search']))
       )
       .subscribe();
   }

@@ -2,23 +2,23 @@
   @if ((recents$ | async)?.length) {
   <div class="flex justify-end items-center w-full p-4 pb-0">
     <div class="font-medium text-sm text-gray-600">
-     About {{ count$ | async }} results
+      About {{ count$ | async }} results
     </div>
   </div>
   <mat-action-list
     class="overflow-y-auto rounded-bl-[2rem] rounded-br-[2rem] max-h-80"
-    libInfiniteScroll
-    (scrolled)="moreResult()"
   >
-    @for (item of recents$ | async; track item.id) {
-    <mat-list-item class="w-full" (click)="showResult(item)">
-      <div matListItemTitle class="flex gap-2 min-w-0 items-center">
-        <img
-          class="w-8 h-8 rounded-full"
-          [src]="item?.metadata?.icon"
-          alt="icon"
-        />
-        <p class="truncate">{{ item?.metadata?.name }}</p>
+    @for (item of recents$ | async; track item) {
+    <mat-list-item class="w-full">
+      <mat-icon matListItemIcon>history</mat-icon>
+      <div
+        matListItemTitle
+        class="flex gap-2 min-w-0 items-center justify-between"
+      >
+        <p class="truncate">{{ item }}</p>
+        <button mat-icon-button (click)="onRemove($event, item)">
+          <mat-icon>close</mat-icon>
+        </button>
       </div>
     </mat-list-item>
     }
@@ -28,14 +28,8 @@
     [message]="
       searchTerm
         ? 'Your search - ' + searchTerm + ' - did not match any documents.'
-        : 'No data available'
+        : 'No history available'
     "
   ></lib-no-data>
   }
 </div>
-
-<ng-template #menu>
-  <lib-action-button-group
-    [buttons]="actionButtons"
-  ></lib-action-button-group>
-</ng-template>
