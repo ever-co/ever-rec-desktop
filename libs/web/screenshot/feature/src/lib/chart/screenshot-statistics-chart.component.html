@@ -49,9 +49,13 @@
     [xAxisLabel]="chartConfig.xAxisLabel"
     [yAxisLabel]="'Trend'"
     [animations]="chartConfig.animations"
+    [roundDomains]="true"
     [autoScale]="true"
     [yAxisTickFormatting]="yAxisTickFormatting"
     [timeline]="true"
+    [gradient]="true"
+    [wrapTicks]="true"
+    [curve]="curveBasis"
   >
   </ngx-charts-line-chart>
   } } @else {

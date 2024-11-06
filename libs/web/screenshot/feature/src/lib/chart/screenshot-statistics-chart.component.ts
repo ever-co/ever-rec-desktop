@@ -7,6 +7,7 @@ import { IScreenshotMetadataStatistic } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { Observable, Subject, map, takeUntil } from 'rxjs';
+import * as shape from 'd3-shape';
 
 interface BarChartData {
   name: string;
@@ -34,6 +35,7 @@ export class ScreenshotStatisticsChartComponent implements OnDestroy {
   public readonly chartTypes: ChartType[] = ['bar', 'line'];
   public selectedChartType: ChartType = 'bar';
   public destroy$ = new Subject<void>();
+  public curveBasis = shape.curveBasis;
 
   // Common chart configuration
   readonly chartConfig = {
