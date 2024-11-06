@@ -6,7 +6,9 @@ import {
   IPaginationResponse,
   IScreenCaptureConfig,
   IScreenshot,
+  IScreenshotChartLine,
   IScreenshotMetadataStatistic,
+  TimeSlot,
 } from '@ever-co/shared-utils';
 
 @Injectable({
@@ -72,5 +74,9 @@ export class ScreenshotElectronService {
       Channel.REQUEST_DELETE_SELECTED_SCREENSHOTS,
       screenshots
     );
+  }
+
+  public getScreenshotsChartLine(timeslot = 'minute' as TimeSlot): Promise<IScreenshotChartLine[]> {
+    return this.electronService.invoke(Channel.CHART_LINE_DATA, timeslot);
   }
 }

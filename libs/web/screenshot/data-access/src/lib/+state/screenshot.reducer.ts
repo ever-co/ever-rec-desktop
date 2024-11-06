@@ -1,5 +1,6 @@
 import {
   IScreenshot,
+  IScreenshotChartLine,
   IScreenshotMetadataStatistic,
   ISelected,
 } from '@ever-co/shared-utils';
@@ -31,6 +32,11 @@ export interface IScreenshotState {
     loading: boolean;
     filter: string;
   };
+  chart: {
+    dataLine: IScreenshotChartLine[];
+    loading: boolean;
+    error: string;
+  };
   error: string;
 }
 
@@ -57,6 +63,11 @@ export const initialState: IScreenshotState = {
     filter: '',
     hasNext: false,
     count: 0,
+  },
+  chart: {
+    dataLine: [],
+    loading: false,
+    error: '',
   },
 };
 
@@ -293,6 +304,37 @@ export const reducer = createReducer(
     search: {
       ...state.search,
       history,
+    },
+  })),
+  // Chart Line
+  on(screenshotActions.getScreenshotsChartLine, (state) => ({
+    ...state,
+    chart: {
+      ...state.chart,
+      loading: true,
+      error: '',
+    },
+  })),
+
+  on(
+    screenshotActions.getScreenshotsChartLineSuccess,
+    (state, { dataLine }) => ({
+      ...state,
+      chart: {
+        ...state.chart,
+        dataLine,
+        loading: false,
+        error: '',
+      },
+    })
+  ),
+
+  on(screenshotActions.getScreenshotsChartLineFailure, (state, { error }) => ({
+    ...state,
+    chart: {
+      ...state.chart,
+      loading: false,
+      error,
     },
   }))
 );

@@ -3,6 +3,7 @@ import {
   IPaginationResponse,
   IScreenCaptureConfig,
   IScreenshot,
+  IScreenshotChartLine,
   IScreenshotMetadataStatistic,
   ISelected,
 } from '@ever-co/shared-utils';
@@ -61,5 +62,11 @@ export const screenshotActions = createActionGroup({
 
     'Add To History': props<{ searchQuery: string }>(),
     'Remove From History': props<{ searchQuery: string }>(),
+
+    'Get Screenshots Chart Line': emptyProps(),
+    'Get Screenshots Chart Line Success': props<{
+      dataLine: IScreenshotChartLine[];
+    }>(),
+    'Get Screenshots Chart Line Failure': props<{ error: string }>(),
   },
 });

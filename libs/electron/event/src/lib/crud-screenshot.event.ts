@@ -11,6 +11,7 @@ import {
   currentDay,
   IPaginationOptions,
   IScreenshot,
+  TimeSlot,
 } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
 import { Between, ILike } from 'typeorm';
@@ -46,6 +47,22 @@ export function crudScreeshotEvents() {
   ipcMain.handle(Channel.REQUEST_ONE_SCREENSHOT, async (_, options = {}) => {
     return ScreenshotService.findOne(options);
   });
+
+  ipcMain.handle(
+    Channel.CHART_LINE_DATA,
+    (_, timeSlot: TimeSlot) => {
+      switch (timeSlot) {
+        case 'minute':
+          return ScreenshotService.groupScreenshotsByMinute();
+        case 'tenMinutes':
+          return ScreenshotService.groupScreenshotsByTenMinutes();
+        case 'hour':
+          return ScreenshotService.groupScreenshotsByHour();
+        default:
+          return [];
+      }
+    }
+  );
 
   // searching
   ipcMain.handle(
@@ -136,6 +153,9 @@ export function removeCrudScreenshotEvent(): void {
     Channel.REQUEST_DELETE_ONE_SCREENSHOT,
     Channel.SEARCHING,
     Channel.REQUEST_PURGE,
+    Channel.CHART_LINE_DATA,
+    Channel.REQUEST_SCREENSHOTS_STATISTICS,
+    Channel.REQUEST_DELETE_SELECTED_SCREENSHOTS,
   ];
   channels.forEach((channel) => ipcMain.removeHandler(channel));
 }

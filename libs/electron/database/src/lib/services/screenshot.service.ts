@@ -1,4 +1,9 @@
-import { IScreenshot, IScreenshotInput } from '@ever-co/shared-utils';
+import {
+  IScreenshot,
+  IScreenshotChartLine,
+  IScreenshotInput,
+  moment,
+} from '@ever-co/shared-utils';
 import { FindManyOptions, FindOneOptions, In } from 'typeorm';
 import { Screenshot } from '../entities/screenshot.entity';
 import { ScreenshotRepository } from '../repositories/screenshot.repository';
@@ -56,5 +61,77 @@ export class ScreenshotService {
     await this.repository.delete(
       screenshotIds ? { id: In(screenshotIds) } : {}
     );
+  }
+
+  public static async groupScreenshotsByHour(): Promise<
+    IScreenshotChartLine[]
+  > {
+    const screenshotsGroupedByHour = await this.repository
+      .createQueryBuilder('screenshot')
+      .select("strftime('%H', screenshot.createdAt)", 'hour')
+      .addSelect('COUNT(screenshot.id)', 'count')
+      .where("DATE(screenshot.createdAt) = DATE('now')")
+      .groupBy('hour')
+      .orderBy('hour', 'ASC')
+      .getRawMany();
+
+    const userTimezone = moment.tz.guess();
+    // Convert the map to an array of objects
+    return screenshotsGroupedByHour.map((row) => ({
+      timeSlot: moment.utc(row.hour, 'HH').tz(userTimezone).format('HH[h]'),
+      count: row.count,
+    }));
+  }
+
+  public static async groupScreenshotsByTenMinutes(): Promise<
+    IScreenshotChartLine[]
+  > {
+    const screenshotsGroupedByTenMinutes = await this.repository
+      .createQueryBuilder('screenshot')
+      .select("strftime('%Y-%m-%d %H', screenshot.createdAt)", 'date_hour')
+      .addSelect(
+        "CAST((strftime('%M', screenshot.createdAt) / 10) * 10 AS INTEGER)",
+        'minute_group'
+      )
+      .addSelect('COUNT(screenshot.id)', 'count')
+      .where("DATE(screenshot.createdAt) = DATE('now')")
+      .groupBy('date_hour, minute_group')
+      .orderBy('date_hour, minute_group', 'ASC')
+      .getRawMany();
+
+    const userTimezone = moment.tz.guess();
+
+    return screenshotsGroupedByTenMinutes.map((row) => ({
+      timeSlot: moment
+        .utc(
+          `${row.date_hour}:${row.minute_group.toString().padStart(2, '0')}`
+        )
+        .tz(userTimezone)
+        .format('HH[h] mm[m]'),
+      count: parseInt(row.count, 10),
+    }));
+  }
+
+  public static async groupScreenshotsByMinute(): Promise<
+    IScreenshotChartLine[]
+  > {
+    const screenshotsGroupedByMinute = await this.repository
+      .createQueryBuilder('screenshot')
+      .select("strftime('%Y-%m-%d %H:%M', screenshot.createdAt)", 'date_minute')
+      .addSelect('COUNT(screenshot.id)', 'count')
+      .where("DATE(screenshot.createdAt) = DATE('now')")
+      .groupBy('date_minute')
+      .orderBy('date_minute', 'ASC')
+      .getRawMany();
+
+    const userTimezone = moment.tz.guess();
+
+    return screenshotsGroupedByMinute.map((row) => ({
+      timeSlot: moment
+        .utc(row.date_minute, 'YYYY-MM-DD HH:mm')
+        .tz(userTimezone)
+        .format('HH[h] mm[m]'), // The timestamp formatted as YYYY-MM-DD HH:mm
+      count: parseInt(row.count, 10),
+    }));
   }
 }

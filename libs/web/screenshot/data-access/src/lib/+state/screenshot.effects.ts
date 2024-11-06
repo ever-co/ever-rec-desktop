@@ -240,4 +240,25 @@ export class ScreenshotEffects {
       )
     )
   );
+
+  getScreenshotsChartLine$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(
+        screenshotActions.captureSuccess,
+        screenshotActions.getScreenshotsChartLine,
+        screenshotActions.deleteScreenshotsSuccess,
+        screenshotActions.deleteScreenshotsSuccess
+      ),
+      mergeMap(() =>
+        from(this.electronService.getScreenshotsChartLine()).pipe(
+          map((dataLine) =>
+            screenshotActions.getScreenshotsChartLineSuccess({ dataLine })
+          ),
+          catchError((error) =>
+            of(screenshotActions.getScreenshotsChartLineFailure({ error }))
+          )
+        )
+      )
+    )
+  );
 }

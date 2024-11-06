@@ -1,13 +1,31 @@
 // screenshot-statistics-chart.component.ts
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { selectScreenshotState } from '@ever-co/screenshot-data-access';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import {
+  screenshotActions,
+  selectScreenshotState,
+} from '@ever-co/screenshot-data-access';
 import { NoDataComponent } from '@ever-co/shared-components';
-import { IScreenshotMetadataStatistic } from '@ever-co/shared-utils';
+import {
+  IScreenshot,
+  IScreenshotChartLine,
+  IScreenshotMetadataStatistic,
+  moment,
+} from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { Observable, Subject, map, takeUntil } from 'rxjs';
 import * as shape from 'd3-shape';
+import { Observable, Subject, map, takeUntil } from 'rxjs';
+
+interface IScreenshotGroup {
+  hour: string;
+  screenshots: IScreenshot[];
+}
 
 interface BarChartData {
   name: string;
@@ -17,7 +35,7 @@ interface BarChartData {
 
 interface LineChartData {
   name: string;
-  series: { name: string; value: number }[];
+  series: { value: number; name: string | Date | undefined }[];
 }
 
 type ChartData = BarChartData | LineChartData;
@@ -31,7 +49,7 @@ type ChartType = 'bar' | 'line';
   styleUrls: ['./screenshot-statistics-chart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScreenshotStatisticsChartComponent implements OnDestroy {
+export class ScreenshotStatisticsChartComponent implements OnInit, OnDestroy {
   public readonly chartTypes: ChartType[] = ['bar', 'line'];
   public selectedChartType: ChartType = 'bar';
   public destroy$ = new Subject<void>();
@@ -51,6 +69,9 @@ export class ScreenshotStatisticsChartComponent implements OnDestroy {
   yAxisTickFormatting = (val: any) => `${Math.round(val)}%`;
 
   constructor(private readonly store: Store) {}
+  ngOnInit(): void {
+    this.store.dispatch(screenshotActions.getScreenshotsChartLine());
+  }
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
@@ -58,8 +79,12 @@ export class ScreenshotStatisticsChartComponent implements OnDestroy {
 
   public get chartData$(): Observable<ChartData[]> {
     return this.store.select(selectScreenshotState).pipe(
-      map((state) => state.statistic.currents || []), // Ensure we always have an array
-      map((data) => this.prepareChartData(data)),
+      map((state) =>
+        this.prepareChartData(
+          state.statistic.currents || [],
+          state.chart.dataLine || []
+        )
+      ),
       takeUntil(this.destroy$)
     );
   }
@@ -68,12 +93,14 @@ export class ScreenshotStatisticsChartComponent implements OnDestroy {
     this.selectedChartType = type;
   }
 
-  private prepareChartData(data: IScreenshotMetadataStatistic[]): ChartData[] {
+  private prepareChartData(
+    data: IScreenshotMetadataStatistic[],
+    chartLine: IScreenshotChartLine[]
+  ): ChartData[] {
     if (!data?.length) return [];
-
     return this.selectedChartType === 'bar'
       ? this.prepareBarChartData(data)
-      : this.prepareLineChartData(data);
+      : this.prepareLineChartData(chartLine);
   }
 
   private prepareBarChartData(
@@ -91,15 +118,13 @@ export class ScreenshotStatisticsChartComponent implements OnDestroy {
       });
   }
 
-  private prepareLineChartData(
-    data: IScreenshotMetadataStatistic[]
-  ): LineChartData[] {
+  private prepareLineChartData(data: IScreenshotChartLine[]): LineChartData[] {
     return [
       {
-        name: 'Trend',
+        name: 'Screenshots',
         series: data.map((item) => ({
-          name: item.name || 'Unnamed',
-          value: Number(item.trend) || 0, // Ensure we have a number
+          name: item.timeSlot,
+          value: item.count,
         })),
       },
     ];
@@ -119,8 +144,33 @@ export class ScreenshotStatisticsChartComponent implements OnDestroy {
           ? 'rounded-tl-lg rounded-bl-lg'
           : 'rounded-tr-lg rounded-br-lg'
       }
-      ${isSelected ? 'bg-gradient-to-r from-indigo-600 to-indigo-400 text-white' : 'bg-gray-200 text-black'}
+      ${
+        isSelected
+          ? 'bg-gradient-to-r from-indigo-600 to-indigo-400 text-white'
+          : 'bg-gray-200 text-black'
+      }
       hover:bg-indigo-500 hover:text-white focus:outline-none transition-colors duration-200
     `.trim();
+  }
+
+  groupScreenshotsByHour(screenshots: IScreenshot[]): IScreenshotGroup[] {
+    const groupedScreenshots = new Map<string, IScreenshot[]>();
+
+    screenshots.forEach((screenshot) => {
+      if (screenshot.createdAt) {
+        const hour = moment(screenshot.createdAt).format('HH'); // Format hour as 'HH'
+
+        if (!groupedScreenshots.has(hour)) {
+          groupedScreenshots.set(hour, []);
+        }
+        groupedScreenshots.get(hour)?.push(screenshot);
+      }
+    });
+
+    // Convert the map to an array of objects
+    return Array.from(groupedScreenshots, ([hour, screenshots]) => ({
+      hour,
+      screenshots,
+    }));
   }
 }
