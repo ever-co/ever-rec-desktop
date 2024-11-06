@@ -23,7 +23,9 @@ export class FileManager {
         },
         string
       >('write', { directory, fileName, buffer, log });
-
+      if (!filePath || typeof filePath !== 'string') {
+        throw new Error('Failed to encode path');
+      }
       return this.encodePath(filePath);
     } catch (error) {
       console.error('Failed to save file:', error);
@@ -122,7 +124,9 @@ export class FileManager {
 
   public static encodePath(filePath: string): string {
     if (typeof filePath !== 'string') {
-      throw new TypeError(`Expected string for path, but got ${typeof filePath}`);
+      throw new TypeError(
+        `Expected string for path, but got ${typeof filePath}`
+      );
     }
     try {
       const absolutePath = resolve(filePath);
