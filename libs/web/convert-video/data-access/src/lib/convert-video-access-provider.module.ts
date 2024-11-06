@@ -5,8 +5,6 @@ import { GenerateVideoEffects } from './+state/generate-video/generate-video.eff
 import { generateVideoFeature } from './+state/generate-video/generate-video.reducer';
 import { SettingEffects } from './+state/settings/setting.effects';
 import { settingFeature } from './+state/settings/setting.reducer';
-import { UploadEffects } from './+state/upload/upload.effects';
-import { uploadFeature } from './+state/upload/upload.reducer';
 import { videoRemoteControlFeature } from './+state/video-remote-control/video-remote-control.reducer';
 import { VideoEffects } from './+state/video/video.effects';
 import { videoFeature } from './+state/video/video.reducer';
@@ -19,8 +17,6 @@ export function provideConvertVideoDataAccess(): EnvironmentProviders {
     provideEffects(VideoEffects),
     provideState(settingFeature),
     provideEffects(SettingEffects),
-    provideState(videoRemoteControlFeature),
-    provideEffects(UploadEffects),
-    provideState(uploadFeature),
+    provideState(videoRemoteControlFeature)
   ]);
 }

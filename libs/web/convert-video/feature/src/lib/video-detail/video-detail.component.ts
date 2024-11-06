@@ -9,9 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
-  selectUploadState,
   selectVideoState,
-  uploadActions,
   videoActions,
 } from '@ever-co/convert-video-data-access';
 import {
@@ -29,6 +27,7 @@ import {
   UtcToLocalTimePipe,
 } from '@ever-co/shared-service';
 import { IActionButton, IVideo, IVideoMetadata } from '@ever-co/shared-utils';
+import { selectUploadState, uploadActions } from '@ever-co/upload-data-access';
 import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
 import {
@@ -91,7 +90,7 @@ export class VideoDetailComponent implements OnInit, OnDestroy {
       icon: 'backup',
       hide: this.isUploadHidden$,
       action: this.upload.bind(this),
-      loading: this.uploading$
+      loading: this.uploading$,
     },
     {
       icon: 'delete',

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ElectronService } from '@ever-co/electron-data-access';
 import { Channel, IUpload } from '@ever-co/shared-utils';
-// eslint-disable-next-line @nx/enforce-module-boundaries
 import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
 import { filter, map, Observable, of, take } from 'rxjs';

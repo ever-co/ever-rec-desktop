@@ -16,11 +16,7 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
-import {
-  selectUploadState,
-  uploadActions,
-  videoActions,
-} from '@ever-co/convert-video-data-access';
+import { videoActions } from '@ever-co/convert-video-data-access';
 import {
   HumanizePipe,
   PopoverDirective,
@@ -28,6 +24,7 @@ import {
   UtcToLocalTimePipe,
 } from '@ever-co/shared-service';
 import { IActionButton, ISelected, IVideo } from '@ever-co/shared-utils';
+import { selectUploadState, uploadActions } from '@ever-co/upload-data-access';
 import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
 import {
@@ -191,7 +188,7 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
             variant: 'success',
             icon: 'backup',
           },
-        }
+        },
       })
       .pipe(
         take(1),
@@ -206,7 +203,7 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
 
   private get isUploadHidden$(): Observable<boolean> {
     return this.store.select(selectSettingStorageState).pipe(
-      map(({s3Config}) => !s3Config.autoSync),
+      map(({ s3Config }) => !s3Config.autoSync),
       takeUntil(this.destroy$)
     );
   }

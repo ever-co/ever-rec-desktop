@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
+import { generateVideoActions } from '@ever-co/convert-video-data-access';
 import { NotificationService } from '@ever-co/notification-data-access';
 import { IUpload, UploadType } from '@ever-co/shared-utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
-import { VideoUploadService } from '../../services/video-upload.service';
-import { generateVideoActions } from '../generate-video/generate-video.actions';
+import { VideoUploadService } from '../services/video-upload.service';
 import { uploadActions } from './upload.actions';
 
 @Injectable()

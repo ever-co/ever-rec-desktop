@@ -8,9 +8,7 @@ import {
   generateVideoActions,
   selectGenerateVideoState,
   selectSettingState,
-  selectUploadState,
   selectVideoState,
-  uploadActions,
   videoActions,
 } from '@ever-co/convert-video-data-access';
 import {
@@ -30,6 +28,7 @@ import {
   ISelected,
   IVideo,
 } from '@ever-co/shared-utils';
+import { selectUploadState, uploadActions } from '@ever-co/upload-data-access';
 import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
 import {
@@ -275,7 +274,7 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
 
   private get isUploadHidden$(): Observable<boolean> {
     return this.store.select(selectSettingStorageState).pipe(
-      map(({s3Config}) => !s3Config.autoSync),
+      map(({ s3Config }) => !s3Config.autoSync),
       takeUntil(this.destroy$)
     );
   }
@@ -292,7 +291,7 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
             variant: 'success',
             icon: 'backup',
           },
-        }
+        },
       })
       .pipe(
         take(1),
