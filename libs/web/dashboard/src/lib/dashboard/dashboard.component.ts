@@ -10,6 +10,7 @@ import {
   ScreenshotGalleryComponent,
   ScreenshotStatisticComponent,
 } from '@ever-co/screenshot-feature';
+import { GreetingPipe } from '@ever-co/shared-service';
 import { ScreenshotComponent } from '../screenshot/screenshot.component';
 import { StateComponent } from '../state/state.component';
 import { TimeLogStaComponent } from '../timelog-stat/timelog-stat.component';
@@ -31,7 +32,8 @@ import { VideoComponent } from '../video/video.component';
     RouterLink,
     MatIconModule,
     MatTooltipModule,
-    MatButtonModule
+    MatButtonModule,
+    GreetingPipe
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',

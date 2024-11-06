@@ -14,6 +14,7 @@ export * from './lib/encryption/encryption.service';
 export * from './lib/encryption/keytar.service';
 export * from './lib/local-storage/local-storage.service';
 export * from './lib/local-storage/secure-local-storage.service';
+export * from './lib/pipes/greeting.pipe';
 export * from './lib/pipes/humanize-date-range.pipe';
 export * from './lib/pipes/humanize.pipe';
 export * from './lib/pipes/humanizeBytes.pipe';
