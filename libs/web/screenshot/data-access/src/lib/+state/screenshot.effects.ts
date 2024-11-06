@@ -13,6 +13,7 @@ import { screenshotActions } from './screenshot.actions';
 export class ScreenshotEffects {
   private electronService = inject(ScreenshotElectronService);
   private readonly KEY = '_history';
+  private readonly MAX_HISTORY_ITEMS = 25;
 
   constructor(
     private actions$: Actions,
@@ -172,26 +173,43 @@ export class ScreenshotEffects {
     )
   );
 
+  // Helper method to handle common error scenarios
+  private handleError(error: string) {
+    console.error('Screenshot history operation failed:', error);
+    return screenshotActions.loadHistoryFailure({ error });
+  }
+
+  // Helper method to get current history
+  private getHistory() {
+    return this.localStorageService.getItem<string[]>(this.KEY).pipe(
+      map((history) => history ?? []),
+      catchError((error) => {
+        console.error('Failed to retrieve history:', error);
+        return of([]);
+      })
+    );
+  }
+
+  // Helper method to save history and return success action
+  private saveHistory(history: string[]) {
+    const trimmedHistory = history.slice(0, this.MAX_HISTORY_ITEMS);
+    return this.localStorageService.setItem(this.KEY, trimmedHistory).pipe(
+      map(() =>
+        screenshotActions.loadHistorySuccess({ history: trimmedHistory })
+      ),
+      catchError((error) => of(this.handleError(error)))
+    );
+  }
+
   addToHistory$ = createEffect(() =>
     this.actions$.pipe(
       ofType(screenshotActions.addToHistory),
       mergeMap(({ searchQuery }) =>
-        this.localStorageService.getItem<string[]>(this.KEY).pipe(
-          map((history) => history ?? []),
-          mergeMap((history) =>
-            this.localStorageService
-              .setItem<string[]>(this.KEY, [searchQuery, ...history])
-              .pipe(
-                map(() =>
-                  screenshotActions.loadHistorySuccess({
-                    history: [...new Set([searchQuery, ...history])],
-                  })
-                ),
-                catchError((error) =>
-                  of(screenshotActions.loadHistoryFailure({ error }))
-                )
-              )
-          )
+        this.getHistory().pipe(
+          mergeMap((history) => {
+            const updatedHistory = [...new Set([searchQuery, ...history])];
+            return this.saveHistory(updatedHistory);
+          })
         )
       )
     )
@@ -201,25 +219,11 @@ export class ScreenshotEffects {
     this.actions$.pipe(
       ofType(screenshotActions.removeFromHistory),
       mergeMap(({ searchQuery }) =>
-        this.localStorageService.getItem<string[]>(this.KEY).pipe(
-          map((history) => history ?? []),
-          mergeMap((history) =>
-            this.localStorageService
-              .setItem<string[]>(
-                this.KEY,
-                history.filter((q) => q !== searchQuery)
-              )
-              .pipe(
-                map(() =>
-                  screenshotActions.loadHistorySuccess({
-                    history: history.filter((q) => q !== searchQuery),
-                  })
-                ),
-                catchError((error) =>
-                  of(screenshotActions.loadHistoryFailure({ error }))
-                )
-              )
-          )
+        this.getHistory().pipe(
+          mergeMap((history) => {
+            const updatedHistory = history.filter((q) => q !== searchQuery);
+            return this.saveHistory(updatedHistory);
+          })
         )
       )
     )
@@ -229,13 +233,9 @@ export class ScreenshotEffects {
     this.actions$.pipe(
       ofType(screenshotActions.loadHistory),
       mergeMap(() =>
-        this.localStorageService.getItem<string[]>(this.KEY).pipe(
-          map((history) =>
-            screenshotActions.loadHistorySuccess({ history: history ?? [] })
-          ),
-          catchError((error) =>
-            of(screenshotActions.loadHistoryFailure({ error }))
-          )
+        this.getHistory().pipe(
+          map((history) => screenshotActions.loadHistorySuccess({ history })),
+          catchError((error) => of(this.handleError(error)))
         )
       )
     )
