@@ -86,19 +86,19 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
       loading: this.generating$,
     },
     {
-      icon: 'remove_done',
-      label: 'Unselect All',
-      variant: 'default',
-      hide: this.lessThanOneSelected$,
-      action: this.unselectAll.bind(this),
-    },
-    {
       icon: 'backup',
       label: 'Upload',
       variant: 'success',
       action: this.upload.bind(this),
       loading: this.uploading$,
       hide: this.isUploadHidden$,
+    },
+    {
+      icon: 'remove_done',
+      label: 'Unselect All',
+      variant: 'default',
+      hide: this.lessThanOneSelected$,
+      action: this.unselectAll.bind(this),
     },
     {
       icon: 'remove_done',
