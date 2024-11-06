@@ -59,6 +59,12 @@ export class SearchComponent implements OnInit {
     }
   }
 
+  public get searchTerm$(): Observable<string> {
+    return this.store
+      .select(selectScreenshotState)
+      .pipe(map((state) => state.search.filter));
+  }
+
   public onChange(value: string) {
     of(value)
       .pipe(

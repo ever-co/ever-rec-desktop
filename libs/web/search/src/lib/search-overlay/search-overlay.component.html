@@ -9,7 +9,7 @@
     class="overflow-y-auto rounded-bl-[2rem] rounded-br-[2rem] max-h-80"
   >
     @for (item of recents$ | async; track item) {
-    <mat-list-item class="w-full">
+    <mat-list-item class="w-full" (click)="onSelect(item)">
       <mat-icon matListItemIcon>history</mat-icon>
       <div
         matListItemTitle

@@ -9,6 +9,7 @@
   <input
     (click)="overlayOpen(true)"
     class="truncate"
+    [value]="searchTerm$ | async"
     #search
     (keydown.enter)="onChange(search.value)"
     matInput

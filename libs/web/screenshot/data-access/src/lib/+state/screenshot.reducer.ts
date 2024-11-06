@@ -189,6 +189,7 @@ export const reducer = createReducer(
     search: {
       ...initialState.search,
       overlayOpen: state.search.overlayOpen,
+      history: state.search.history,
     },
   })),
 

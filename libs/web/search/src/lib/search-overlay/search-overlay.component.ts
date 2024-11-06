@@ -54,4 +54,10 @@ export class SearchOverlayComponent implements OnInit {
     event.stopPropagation();
     this.store.dispatch(screenshotActions.removeFromHistory({ searchQuery }));
   }
+
+  public onSelect(searchQuery: string): void {
+    this.store.dispatch(screenshotActions.resetAsk());
+    this.store.dispatch(screenshotActions.ask({ filter: searchQuery, page: 1 }));
+    this.router.navigate(['/', 'search']);
+  }
 }
