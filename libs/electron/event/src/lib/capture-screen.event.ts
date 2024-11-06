@@ -64,6 +64,7 @@ async function takeScreenshot(
     const sources = await (sourceType === Source.SCREEN
       ? getScreenSource()
       : getWindowSource());
+
     const metadata = await metadataQuery.execute();
 
     if (!metadata) {
