@@ -11,7 +11,8 @@
     @for (statistic of statistics$ | async; track statistic.name) {
     <mat-card
       appearance="outlined"
-      class="transform transition-all mt-1 duration-300 bg-white hover:shadow-lg hover:-translate-y-1 break-words"
+      class="transform transition-all mt-1 duration-300 bg-white hover:shadow-lg hover:-translate-y-1 break-words cursor-pointer"
+      (click)="onSearch(statistic)"
     >
       <mat-card-content class="p-4 sm:p-6">
         <!-- Header Section -->

@@ -5,15 +5,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
+import { Router } from '@angular/router';
 import {
   screenshotActions,
   selectScreenshotState,
 } from '@ever-co/screenshot-data-access';
 import { NoDataComponent } from '@ever-co/shared-components';
 import {
+  IconFallbackDirective,
   InfiniteScrollDirective,
   selectDatePickerState,
-  IconFallbackDirective
 } from '@ever-co/shared-service';
 import { IRange, IScreenshotMetadataStatistic } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
@@ -33,7 +34,7 @@ import { ScreenshotStatisticsChartComponent } from '../chart/screenshot-statisti
     NoDataComponent,
     InfiniteScrollDirective,
     IconFallbackDirective,
-    ScreenshotStatisticsChartComponent
+    ScreenshotStatisticsChartComponent,
   ],
   templateUrl: './screenshot-statistic.component.html',
   styleUrl: './screenshot-statistic.component.scss',
@@ -45,7 +46,7 @@ export class ScreenshotStatisticComponent implements OnInit {
   private hasNext = false;
   private range!: IRange;
 
-  constructor(private readonly store: Store) {}
+  constructor(private readonly store: Store, private router: Router) {}
   ngOnInit(): void {
     this.store
       .select(selectScreenshotState)
@@ -101,5 +102,16 @@ export class ScreenshotStatisticComponent implements OnInit {
         ...this.range,
       })
     );
+  }
+
+  public onSearch(statistic: IScreenshotMetadataStatistic) {
+    this.store.dispatch(screenshotActions.resetAsk());
+    this.store.dispatch(
+      screenshotActions.ask({ filter: statistic.name, page: 1 })
+    );
+    this.store.dispatch(
+      screenshotActions.addToHistory({ searchQuery: statistic.name })
+    );
+    this.router.navigate(['/', 'search']);
   }
 }
