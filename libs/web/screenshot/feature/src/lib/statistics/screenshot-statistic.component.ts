@@ -14,6 +14,7 @@ import { NoDataComponent } from '@ever-co/shared-components';
 import {
   IconFallbackDirective,
   InfiniteScrollDirective,
+  NumberSuffixPipe,
   selectDatePickerState,
 } from '@ever-co/shared-service';
 import { IRange, IScreenshotMetadataStatistic } from '@ever-co/shared-utils';
@@ -35,6 +36,7 @@ import { ScreenshotStatisticsChartComponent } from '../chart/screenshot-statisti
     InfiniteScrollDirective,
     IconFallbackDirective,
     ScreenshotStatisticsChartComponent,
+    NumberSuffixPipe,
   ],
   templateUrl: './screenshot-statistic.component.html',
   styleUrl: './screenshot-statistic.component.scss',

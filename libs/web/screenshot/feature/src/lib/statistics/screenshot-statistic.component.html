@@ -54,10 +54,10 @@
           >
             <div class="flex items-baseline gap-2">
               <span class="text-xl sm:text-2xl font-bold text-gray-800">
-                {{ statistic.count | number }}
+                {{ statistic.count | numberSuffix }}
               </span>
               <span class="text-sm text-gray-500">
-                of {{ statistic.total | number }} screenshots
+                of {{ statistic.total | numberSuffix }} screenshots
               </span>
             </div>
             <span class="text-sm hidden sm:inline font-medium text-gray-600">
