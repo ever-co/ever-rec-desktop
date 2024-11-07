@@ -12,6 +12,10 @@ export function retentionEvents() {
   const videoService = new VideoService();
 
   ipcMain.on(Channel.CLEAN_UP_DATA, async (_, { retention }) => {
+    if (retention === -1) {
+      return removeRetentionEvents();
+    }
+
     if (interval) {
       clearInterval(interval);
       logger.info('Interval cleared for clean-up events.');

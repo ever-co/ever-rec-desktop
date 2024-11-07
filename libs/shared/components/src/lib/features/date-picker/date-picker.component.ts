@@ -131,10 +131,12 @@ export class DatePickerComponent implements OnInit, OnDestroy {
     return moment().endOf('day').toDate();
   }
 
-  public get minDate$(): Observable<Date> {
+  public get minDate$(): Observable<Date | null> {
     return this.store.select(selectSettingStorageState).pipe(
       map(({ retention }) =>
-        moment(this.maxDate).subtract(retention, 'days').toDate()
+        retention === -1
+          ? null
+          : moment(this.maxDate).subtract(retention, 'days').toDate()
       ),
       takeUntil(this.destroy$)
     );
