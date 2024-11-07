@@ -7,7 +7,6 @@ import { IVideoConfig } from './video.config';
 export interface IVideo extends IBase {
   pathname: string;
   synced?: boolean;
-  timeLine?: boolean;
   parent?: IVideo;
   chunks?: IVideo[];
   screenshots?: IScreenshot[];
