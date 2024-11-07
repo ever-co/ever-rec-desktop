@@ -110,8 +110,8 @@ export class TimeLogEffects {
   getTimeLogContext$ = createEffect(() =>
     this.actions$.pipe(
       ofType(timeLogActions.getTimeLogContext),
-      mergeMap(({ id }) =>
-        from(this.timeLogElectronService.getContext({ id })).pipe(
+      mergeMap((action) =>
+        from(this.timeLogElectronService.getContext(action)).pipe(
           map((context) =>
             timeLogActions.getTimeLogContextSuccess({ context })
           ),

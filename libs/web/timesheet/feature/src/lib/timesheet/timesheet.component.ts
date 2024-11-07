@@ -92,6 +92,14 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   public actionButtons: IActionButton[] = [
     {
       icon: 'content_copy',
+      tooltip: 'Copy all time logs context to clipboard',
+      variant: 'default',
+      hide: this.hideAction$.pipe(map((hidden) => !hidden)),
+      action: this.getAllContext.bind(this),
+      loading: this.copying$,
+    },
+    {
+      icon: 'content_copy',
       label: 'Context',
       variant: 'default',
       hide: this.hideAction$,
@@ -289,6 +297,17 @@ export class TimesheetComponent implements OnInit, OnDestroy {
 
   private getContext(timeLog: ITimeLog): void {
     this.store.dispatch(timeLogActions.getTimeLogContext(timeLog));
+  }
+
+  private getAllContext(): void {
+    this.dateRange$
+      .pipe(
+        take(1),
+        tap((range) =>
+          this.store.dispatch(timeLogActions.getTimeLogContext({ range }))
+        )
+      )
+      .subscribe();
   }
 
   private get copying$(): Observable<boolean> {

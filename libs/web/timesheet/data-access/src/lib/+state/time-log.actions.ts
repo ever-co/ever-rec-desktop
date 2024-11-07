@@ -3,6 +3,7 @@ import {
   IFindOptionsWhere,
   IPaginationOptions,
   IPaginationResponse,
+  IRange,
   ITimeLog,
   ITimeLogStatistics,
 } from '@ever-co/shared-utils';
@@ -30,7 +31,7 @@ export const timeLogActions = createActionGroup({
     'Update TimeLog Duration Success': props<IPaginationResponse<ITimeLog>>(),
     'Reset TimeLog': emptyProps(),
 
-    'Get TimeLog Context': props<{ id: string }>(),
+    'Get TimeLog Context': props<{ id?: string; range?: IRange }>(),
     'Get TimeLog Context Success': props<{ context: string }>(),
     'Get TimeLog Context Failure': props<{ error: string }>(),
   },
