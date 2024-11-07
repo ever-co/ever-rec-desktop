@@ -12,19 +12,13 @@ import {
 } from '@ever-co/screenshot-data-access';
 import { NoDataComponent } from '@ever-co/shared-components';
 import {
-  IScreenshot,
   IScreenshotChartLine,
-  IScreenshotMetadataStatistic,
+  IScreenshotMetadataStatistic
 } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import * as shape from 'd3-shape';
 import { Observable, Subject, map, takeUntil } from 'rxjs';
-
-interface IScreenshotGroup {
-  hour: string;
-  screenshots: IScreenshot[];
-}
 
 interface BarChartData {
   name: string;
