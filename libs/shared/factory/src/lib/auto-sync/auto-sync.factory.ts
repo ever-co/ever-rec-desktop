@@ -30,11 +30,13 @@ export function autoSyncFactory(
                 store.dispatch(
                   screenshotActions.captureSuccess({ screenshot })
                 );
-                store.dispatch(
-                  generateVideoActions.autoGenerate({
-                    config: videoSettingState.videoConfig,
-                  })
-                );
+                if (videoSettingState.videoConfig.autoGenerate) {
+                  store.dispatch(
+                    generateVideoActions.autoGenerate({
+                      config: videoSettingState.videoConfig,
+                    })
+                  );
+                }
               }
             })
           )
