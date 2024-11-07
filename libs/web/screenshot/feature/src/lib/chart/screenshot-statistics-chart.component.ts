@@ -65,7 +65,7 @@ export class ScreenshotStatisticsChartComponent implements OnInit, OnDestroy {
   };
 
   // Add formatters for the chart
-  yAxisTickFormatting = (val: any) => `${Math.round(val)}%`;
+  yAxisTickFormatting = (val: number) => `${Math.round(val)}%`;
 
   constructor(private readonly store: Store) {}
   ngOnInit(): void {
