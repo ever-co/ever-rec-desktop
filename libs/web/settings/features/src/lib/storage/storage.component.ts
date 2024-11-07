@@ -40,14 +40,14 @@ import { AwsStorageComponent } from '../aws-storage/aws-storage.component';
     HumanizeBytesPipe,
     MatCardModule,
     AwsStorageComponent,
-    MatStepperModule
+    MatStepperModule,
   ],
   templateUrl: './storage.component.html',
   styleUrl: './storage.component.scss',
 })
 export class StorageComponent implements OnInit, OnDestroy {
   public formGroup!: FormGroup;
-  public retentionPeriods = [7, 14, 30, 90, 180, 360];
+  public retentionPeriods = [7, 14, 30, 90, 180, 360, -1];
   private destroy$ = new Subject<void>();
   public size$!: Observable<IUsedSize>;
 

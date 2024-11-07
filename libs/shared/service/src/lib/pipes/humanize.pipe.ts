@@ -13,6 +13,7 @@ export class HumanizePipe implements PipeTransform {
     format?: string | moment.TemplateFunction,
     options?: { trim?: boolean; trunc?: boolean }
   ): string {
+    if (value === -1) return 'Forever';
     const { trim = false, trunc = true } = options || {};
     const duration = moment.duration(value, unit) as any;
     return format
