@@ -18,8 +18,10 @@ export * from './lib/pipes/greeting.pipe';
 export * from './lib/pipes/humanize-date-range.pipe';
 export * from './lib/pipes/humanize.pipe';
 export * from './lib/pipes/humanizeBytes.pipe';
+export * from './lib/pipes/number-suffix.pipe';
 export * from './lib/pipes/resolution.pipe';
 export * from './lib/pipes/utc-to-local-time.pipe';
 export * from './lib/services/layout/layout.service';
 export * from './lib/validators/url.validator';
+export * from './test-setup';
 

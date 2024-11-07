@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { selectVideoState } from '@ever-co/convert-video-data-access';
+import { NumberSuffixPipe } from '@ever-co/shared-service';
 import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil } from 'rxjs';
 
@@ -17,6 +18,7 @@ import { map, Observable, Subject, takeUntil } from 'rxjs';
     MatIconModule,
     RouterLink,
     MatTooltipModule,
+    NumberSuffixPipe
   ],
   templateUrl: './video.component.html',
   styleUrl: './video.component.scss',

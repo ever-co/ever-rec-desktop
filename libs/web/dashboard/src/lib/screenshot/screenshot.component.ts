@@ -11,7 +11,7 @@ import {
   ScreenshotStatisticComponent,
 } from '@ever-co/screenshot-feature';
 import { NoDataComponent } from '@ever-co/shared-components';
-import { HumanizeDateRangePipe, HumanizePipe } from '@ever-co/shared-service';
+import { HumanizeDateRangePipe, HumanizePipe, NumberSuffixPipe } from '@ever-co/shared-service';
 import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil } from 'rxjs';
 
@@ -29,7 +29,8 @@ import { map, Observable, Subject, takeUntil } from 'rxjs';
     HumanizePipe,
     HumanizeDateRangePipe,
     RouterLink,
-    MatTooltipModule
+    MatTooltipModule,
+    NumberSuffixPipe
   ],
   templateUrl: './screenshot.component.html',
   styleUrl: './screenshot.component.scss',

@@ -6,7 +6,7 @@
     <div class="flex items-center justify-between">
       <div class="space-y-1">
         <p class="text-sm font-medium text-gray-600">Videos</p>
-        <h6 class="text-2xl font-bold">{{ videoCount$ | async }}</h6>
+        <h6 class="text-2xl font-bold">{{ videoCount$ | async | numberSuffix }}</h6>
       </div>
       <mat-icon
         matTooltip="See more videos"
