@@ -17,6 +17,7 @@ import { breadcrumbActions } from '@ever-co/breadcrumb-data-access';
 import { BreadcrumbComponent } from '@ever-co/breadcrumb-feature';
 import { NotificationBadgeComponent } from '@ever-co/notification-feature';
 import {
+  CopyContextButtonComponent,
   DatePickerComponent,
   StartComponent,
 } from '@ever-co/shared-components';
@@ -47,7 +48,8 @@ import { Subject, takeUntil } from 'rxjs';
     StartComponent,
     DatePickerComponent,
     MatTooltipModule,
-    NotificationBadgeComponent
+    NotificationBadgeComponent,
+    CopyContextButtonComponent
   ],
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],

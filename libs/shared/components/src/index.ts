@@ -1,3 +1,5 @@
+export * from './lib/features/copy-context/copy-context-button.component';
+export * from './lib/features/copy-context/copy-context.service';
 export * from './lib/features/date-picker/date-picker.component';
 export * from './lib/features/start/start.component';
 export * from './lib/ui/action-button-group/button/action-button.component';
