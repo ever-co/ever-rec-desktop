@@ -2,6 +2,7 @@ import { ElectronLogger } from '@ever-co/electron-utils';
 import {
   ILoggable,
   ILogger,
+  IRange,
   ITimeLog,
   ITimeLogSave,
   ITimeLogUpdate,
@@ -143,5 +144,29 @@ export class TimeLogService implements ILoggable {
       .orderBy('time_log.createdAt', 'DESC')
       .take(1)
       .getOne();
+  }
+
+  public async getContext(range: IRange, id: string): Promise<string> {
+    const query = this.repository
+      .createQueryBuilder('time_log')
+      .leftJoin('time_log.screenshots', 'screenshot')
+      .leftJoin('screenshot.metadata', 'metadata')
+      .select("GROUP_CONCAT(metadata.description, ';')", 'context');
+
+    if (id) {
+      query.andWhere('time_log.id = :id', { id });
+    } else {
+      query.where('time_log.createdAt BETWEEN :start AND :end', range);
+    }
+
+    const result = await query.getRawOne();
+    const duration = await this.repository.sum('duration', {
+      createdAt: Between(String(range.start), String(range.end)),
+    });
+
+    return JSON.stringify({
+      context: result.context || 'Not working',
+      worked: (duration || 0) + 'seconds',
+    });
   }
 }
