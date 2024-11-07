@@ -15,7 +15,6 @@ import {
   IScreenshot,
   IScreenshotChartLine,
   IScreenshotMetadataStatistic,
-  moment,
 } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
@@ -151,26 +150,5 @@ export class ScreenshotStatisticsChartComponent implements OnInit, OnDestroy {
       }
       hover:bg-indigo-500 hover:text-white focus:outline-none transition-colors duration-200
     `.trim();
-  }
-
-  groupScreenshotsByHour(screenshots: IScreenshot[]): IScreenshotGroup[] {
-    const groupedScreenshots = new Map<string, IScreenshot[]>();
-
-    screenshots.forEach((screenshot) => {
-      if (screenshot.createdAt) {
-        const hour = moment(screenshot.createdAt).format('HH'); // Format hour as 'HH'
-
-        if (!groupedScreenshots.has(hour)) {
-          groupedScreenshots.set(hour, []);
-        }
-        groupedScreenshots.get(hour)?.push(screenshot);
-      }
-    });
-
-    // Convert the map to an array of objects
-    return Array.from(groupedScreenshots, ([hour, screenshots]) => ({
-      hour,
-      screenshots,
-    }));
   }
 }
