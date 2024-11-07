@@ -76,7 +76,7 @@ export class ScreenshotElectronService {
     );
   }
 
-  public getScreenshotsChartLine(timeslot = 'hour' as TimeSlot): Promise<IScreenshotChartLine[]> {
+  public getScreenshotsChartLine(timeslot = 'minute' as TimeSlot): Promise<IScreenshotChartLine[]> {
     return this.electronService.invoke(Channel.CHART_LINE_DATA, timeslot);
   }
 }

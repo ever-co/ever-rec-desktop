@@ -107,7 +107,7 @@ export class ScreenshotService {
           `${row.date_hour}:${row.minute_group.toString().padStart(2, '0')}`
         )
         .tz(userTimezone)
-        .format('HH[h] mm[m]'),
+        .format('H[h]m[m]'),
       count: parseInt(row.count, 10),
     }));
   }
@@ -130,7 +130,7 @@ export class ScreenshotService {
       timeSlot: moment
         .utc(row.date_minute, 'YYYY-MM-DD HH:mm')
         .tz(userTimezone)
-        .format('HH[h] mm[m]'), // The timestamp formatted as YYYY-MM-DD HH:mm
+        .format('H[h]mm[m]'), // The timestamp formatted as YYYY-MM-DD HH:mm
       count: parseInt(row.count, 10),
     }));
   }

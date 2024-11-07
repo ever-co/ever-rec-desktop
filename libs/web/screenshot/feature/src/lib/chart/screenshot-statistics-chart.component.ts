@@ -11,9 +11,10 @@ import {
   selectScreenshotState,
 } from '@ever-co/screenshot-data-access';
 import { NoDataComponent } from '@ever-co/shared-components';
+import { LayoutService } from '@ever-co/shared-service';
 import {
   IScreenshotChartLine,
-  IScreenshotMetadataStatistic
+  IScreenshotMetadataStatistic,
 } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
@@ -47,6 +48,7 @@ export class ScreenshotStatisticsChartComponent implements OnInit, OnDestroy {
   public selectedChartType: ChartType = 'bar';
   public destroy$ = new Subject<void>();
   public curveBasis = shape.curveBasis;
+  private ticks: string[] = [];
 
   // Common chart configuration
   readonly chartConfig = {
@@ -61,7 +63,10 @@ export class ScreenshotStatisticsChartComponent implements OnInit, OnDestroy {
   // Add formatters for the chart
   yAxisTickFormatting = (val: number) => `${Math.round(val)}%`;
 
-  constructor(private readonly store: Store) {}
+  constructor(
+    private readonly store: Store,
+    private readonly layoutService: LayoutService
+  ) {}
   ngOnInit(): void {
     this.store.dispatch(screenshotActions.getScreenshotsChartLine());
   }
@@ -99,6 +104,7 @@ export class ScreenshotStatisticsChartComponent implements OnInit, OnDestroy {
   private prepareBarChartData(
     data: IScreenshotMetadataStatistic[]
   ): BarChartData[] {
+    this.ticks = [...data.map((item) => item.name || 'Unnamed')];
     return data
       .filter((item) => item.total > 0) // Prevent division by zero
       .map((item) => {
@@ -112,6 +118,7 @@ export class ScreenshotStatisticsChartComponent implements OnInit, OnDestroy {
   }
 
   private prepareLineChartData(data: IScreenshotChartLine[]): LineChartData[] {
+    this.ticks = [...data.map((item) => item.timeSlot)];
     return [
       {
         name: 'Screenshots',
@@ -144,5 +151,34 @@ export class ScreenshotStatisticsChartComponent implements OnInit, OnDestroy {
       }
       hover:bg-indigo-500 hover:text-white focus:outline-none transition-colors duration-200
     `.trim();
+  }
+
+  public axisFormat(val: string) {
+    const totalTicks = this.ticks.length;
+    const limitTicks = 8;
+
+    if (this.isMobile) {
+      return val;
+    }
+
+    // Show all values if there are 8 or fewer ticks
+    if (totalTicks <= limitTicks) return val;
+
+    // Calculate interval for displaying values (skip values to limit to 8)
+    const interval = Math.ceil(totalTicks / limitTicks);
+
+    const index = this.ticks.indexOf(val);
+    const isKeyPosition = index === 0 || index === totalTicks - 1;
+
+    if (totalTicks - index - 1 < Math.ceil(limitTicks / 2)) {
+      return isKeyPosition ? val : '';
+    }
+
+    // Show the value if it's at an interval position or a key position (first, middle, last)
+    return index % interval === 0 || isKeyPosition ? val : '';
+  }
+
+  public get isMobile(): boolean {
+    return this.layoutService.isMobileView();
   }
 }
