@@ -1,3 +1,4 @@
+import { Clipboard } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -38,6 +39,7 @@ import {
 } from '@ever-co/timesheet-data-access';
 import { Store } from '@ngrx/store';
 import {
+  distinctUntilChanged,
   filter,
   map,
   Observable,
@@ -89,6 +91,14 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   private selectedRow: ITimeLog | null = null;
   public actionButtons: IActionButton[] = [
     {
+      icon: 'content_copy',
+      label: 'Context',
+      variant: 'default',
+      hide: this.hideAction$,
+      action: this.getContext.bind(this),
+      loading: this.copying$,
+    },
+    {
       icon: 'subscriptions',
       label: 'Generate',
       variant: 'warning',
@@ -112,7 +122,8 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   constructor(
     private readonly store: Store,
     private readonly layoutService: LayoutService,
-    private readonly confirmationDialogService: ConfirmationDialogService
+    private readonly confirmationDialogService: ConfirmationDialogService,
+    private readonly clipboard: Clipboard
   ) {}
 
   ngOnInit() {
@@ -124,6 +135,16 @@ export class TimesheetComponent implements OnInit, OnDestroy {
           this.dataSource.data = state.timeLogs;
           this.loading = state.loading;
         }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+
+    this.store
+      .select(selectTimeLogState)
+      .pipe(
+        filter(({ context }) => !!context),
+        distinctUntilChanged(),
+        tap(({ context }) => this.clipboard.copy(context)),
         takeUntil(this.destroy$)
       )
       .subscribe();
@@ -264,6 +285,16 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       map((state) => state.generating),
       takeUntil(this.destroy$)
     );
+  }
+
+  private getContext(timeLog: ITimeLog): void {
+    this.store.dispatch(timeLogActions.getTimeLogContext(timeLog));
+  }
+
+  private get copying$(): Observable<boolean> {
+    return this.store
+      .select(selectTimeLogState)
+      .pipe(map((state) => state.copying));
   }
 
   ngOnDestroy(): void {

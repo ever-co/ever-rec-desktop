@@ -146,7 +146,13 @@ export class TimeLogService implements ILoggable {
       .getOne();
   }
 
-  public async getContext(range: IRange, id: string): Promise<string> {
+  public async getContext({
+    range,
+    id,
+  }: {
+    range?: IRange;
+    id?: string;
+  }): Promise<string> {
     const query = this.repository
       .createQueryBuilder('time_log')
       .leftJoin('time_log.screenshots', 'screenshot')
@@ -154,15 +160,22 @@ export class TimeLogService implements ILoggable {
       .select("GROUP_CONCAT(metadata.description, ';')", 'context');
 
     if (id) {
-      query.andWhere('time_log.id = :id', { id });
-    } else {
+      query
+        .andWhere('time_log.id = :id', { id })
+        .addSelect('time_log.duration', 'duration');
+    } else if (range) {
       query.where('time_log.createdAt BETWEEN :start AND :end', range);
     }
 
+    query.groupBy('time_log.id');
+
     const result = await query.getRawOne();
-    const duration = await this.repository.sum('duration', {
-      createdAt: Between(String(range.start), String(range.end)),
-    });
+
+    const duration = id
+      ? result.duration
+      : await this.repository.sum('duration', {
+          createdAt: Between(String(range.start), String(range.end)),
+        });
 
     return JSON.stringify({
       context: result.context || 'Not working',

@@ -1,4 +1,11 @@
-import { IFindOneOptions, IFindOptionsWhere, IPaginationOptions, IPaginationResponse, ITimeLog, ITimeLogStatistics } from '@ever-co/shared-utils';
+import {
+  IFindOneOptions,
+  IFindOptionsWhere,
+  IPaginationOptions,
+  IPaginationResponse,
+  ITimeLog,
+  ITimeLogStatistics,
+} from '@ever-co/shared-utils';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 export const timeLogActions = createActionGroup({
@@ -12,8 +19,8 @@ export const timeLogActions = createActionGroup({
     'Load TimeLogs Success': props<IPaginationResponse<ITimeLog>>(),
     'Load TimeLogs Failure': props<{ error: string }>(),
 
-    'Delete TimeLog': props<{timeLog: ITimeLog}>(),
-    'Delete TimeLog Success': props<{id: string}>(),
+    'Delete TimeLog': props<{ timeLog: ITimeLog }>(),
+    'Delete TimeLog Success': props<{ id: string }>(),
     'Delete TimeLog Failure': props<{ error: string }>(),
 
     'Get TimeLog Statistics': props<IFindOptionsWhere<ITimeLog>>(),
@@ -22,5 +29,9 @@ export const timeLogActions = createActionGroup({
 
     'Update TimeLog Duration Success': props<IPaginationResponse<ITimeLog>>(),
     'Reset TimeLog': emptyProps(),
-  }
+
+    'Get TimeLog Context': props<{ id: string }>(),
+    'Get TimeLog Context Success': props<{ context: string }>(),
+    'Get TimeLog Context Failure': props<{ error: string }>(),
+  },
 });

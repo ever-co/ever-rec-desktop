@@ -75,8 +75,8 @@ export function crudTimeLogEvents() {
   );
 
   // Get Context
-  ipcMain.handle(Channel.GET_CONTEXT, async (_, { range, id }) => {
-    return timeLogService.getContext(range, id);
+  ipcMain.handle(Channel.GET_CONTEXT, async (_, options = {}) => {
+    return timeLogService.getContext(options);
   });
 }
 

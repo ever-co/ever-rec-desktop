@@ -23,4 +23,8 @@ export class TimeLogElectronService {
   public getLogStatistics(options = {}): Promise<ITimeLogStatistics> {
     return this.electronService.invoke(Channel.REQUEST_LOG_STATISTICS, options);
   }
+
+  public getContext(options = {}): Promise<string> {
+    return this.electronService.invoke(Channel.GET_CONTEXT, options);
+  }
 }

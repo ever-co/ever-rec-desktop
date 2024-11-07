@@ -12,6 +12,8 @@ export interface State {
   count: number;
   loading: boolean;
   statistics: ITimeLogStatistics;
+  context: string;
+  copying: boolean;
 }
 
 export const initialState: State = {
@@ -21,6 +23,8 @@ export const initialState: State = {
   count: 0,
   hasNext: false,
   loading: false,
+  copying: false,
+  context: '',
   statistics: {
     month: 0,
     week: 0,
@@ -110,10 +114,12 @@ export const reducer = createReducer(
   })),
 
   on(timeLogActions.updateTimeLogDurationSuccess, (state, { data }) => {
-    const dataMap = new Map(data.map(d => [d.id, d]));
+    const dataMap = new Map(data.map((d) => [d.id, d]));
     return {
       ...state,
-      timeLogs: state.timeLogs.map(timeLog => dataMap.get(timeLog.id) || timeLog),
+      timeLogs: state.timeLogs.map(
+        (timeLog) => dataMap.get(timeLog.id) || timeLog
+      ),
     };
   }),
 
@@ -122,6 +128,26 @@ export const reducer = createReducer(
     ...state,
     timeLogs: [],
   })),
+
+  // Get Time Logs Context
+  on(timeLogActions.getTimeLogContext, (state) => ({
+    ...state,
+    copying: true,
+  })),
+
+  // Get Time Logs Context Success
+  on(timeLogActions.getTimeLogContextSuccess, (state, { context }) => ({
+    ...state,
+    context,
+    copying: false,
+  })),
+
+  // Get Time Logs Context Failure
+  on(timeLogActions.getTimeLogContextFailure, (state, { error }) => ({
+    ...state,
+    copying: false,
+    error,
+  }))
 );
 
 export const timeLogFeature = createFeature({

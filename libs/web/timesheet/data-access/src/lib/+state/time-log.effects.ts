@@ -5,7 +5,7 @@ import { DatePickerService } from '@ever-co/shared-service';
 import { IPaginationOptions } from '@ever-co/shared-utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { from, of } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import { TimeLogElectronService } from '../services/time-log-electron.service';
 import { timeLogActions } from './time-log.actions';
 
@@ -102,6 +102,29 @@ export class TimeLogEffects {
           catchError((error) =>
             of(timeLogActions.getTimeLogStatisticsFailure({ error }))
           )
+        )
+      )
+    )
+  );
+
+  getTimeLogContext$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(timeLogActions.getTimeLogContext),
+      mergeMap(({ id }) =>
+        from(this.timeLogElectronService.getContext({ id })).pipe(
+          map((context) =>
+            timeLogActions.getTimeLogContextSuccess({ context })
+          ),
+          tap(() =>
+            this.notificationService.show(
+              'Copied time log context to clipboard',
+              'success'
+            )
+          ),
+          catchError((error) => {
+            this.notificationService.show('Failed to copy context', 'error');
+            return of(timeLogActions.getTimeLogContextFailure({ error }));
+          })
         )
       )
     )

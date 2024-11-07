@@ -225,5 +225,6 @@
   <lib-action-button-group
     [ngClass]="{ inline: isMobileView() === false }"
     [buttons]="actionButtons"
+    [data]="selectedRow$ | async"
   ></lib-action-button-group>
 </ng-template>
