@@ -10,6 +10,7 @@ import {
   IScreenshot,
   IScreenshotInput,
   IScreenshotMetadata,
+  moment,
   SCREENSHOT_INTERVAL_DELAY,
   Source,
 } from '@ever-co/shared-utils';
@@ -44,7 +45,7 @@ export function captureScreen(
     if (screenshot) {
       eventManager.reply(Channel.SCREENSHOT_CAPTURED, screenshot);
     }
-  }, config.period * 1000 || SCREENSHOT_INTERVAL_DELAY);
+  }, moment.duration(config.period * 1000 || SCREENSHOT_INTERVAL_DELAY, 'seconds').asMilliseconds());
 }
 
 export async function stopCaptureScreen() {
