@@ -19,9 +19,7 @@ export function autoVideoGenerateEvent() {
       );
 
       if (interval) {
-        logger.info('Clearing existing interval');
-        clearInterval(interval);
-        interval = null;
+        return logger.info('Auto generating videos is already running');
       }
 
       if (!autoGenerate) {
