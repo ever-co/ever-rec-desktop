@@ -45,7 +45,7 @@ export function captureScreen(
     if (screenshot) {
       eventManager.reply(Channel.SCREENSHOT_CAPTURED, screenshot);
     }
-  }, moment.duration(config.period * 1000 || SCREENSHOT_INTERVAL_DELAY, 'seconds').asMilliseconds());
+  }, moment.duration(config.period || SCREENSHOT_INTERVAL_DELAY, 'seconds').asMilliseconds());
 }
 
 export async function stopCaptureScreen() {
@@ -59,12 +59,9 @@ export async function stopCaptureScreen() {
 async function takeScreenshot(
   config: IScreenCaptureConfig
 ): Promise<IScreenshot | null> {
-  const { source: sourceType = Source.SCREEN, captureAll = false } =
-    config || {};
+  const { source: type = Source.SCREEN, captureAll = false } = config || {};
   try {
-    const sources = await (sourceType === Source.SCREEN
-      ? getScreenSource()
-      : getWindowSource());
+    const sources = await getSources(type);
 
     const metadata = await metadataQuery.execute();
 
@@ -74,11 +71,7 @@ async function takeScreenshot(
     }
 
     if (!sources.length) {
-      logger.warn(
-        `${
-          sourceType === Source.SCREEN ? 'Screen' : 'Window'
-        } sources not found.`
-      );
+      logger.warn(`${type} sources not found.`);
       return null;
     }
 
@@ -136,16 +129,9 @@ async function createScreenshot(
   return ScreenshotService.save(screenshotData);
 }
 
-async function getScreenSource() {
+async function getSources(source: Source) {
   return desktopCapturer.getSources({
-    types: [Source.SCREEN],
-    thumbnailSize: getWindowSize(),
-  });
-}
-
-async function getWindowSource() {
-  return desktopCapturer.getSources({
-    types: [Source.WINDOW],
+    types: [source],
     thumbnailSize: getWindowSize(),
   });
 }
