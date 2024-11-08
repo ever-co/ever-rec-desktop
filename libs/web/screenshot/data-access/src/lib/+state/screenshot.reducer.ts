@@ -88,10 +88,7 @@ export const reducer = createReducer(
   on(screenshotActions.captureSuccess, (state, { screenshot }) => ({
     ...state,
     count: state.count + 1,
-    screenshots:
-      state.screenshots.length <= 10
-        ? [screenshot, ...state.screenshots]
-        : state.screenshots,
+    screenshots: [screenshot, ...state.screenshots].slice(0, 10),
     error: '',
   })),
   on(screenshotActions.captureFailure, (state, { error }) => ({
