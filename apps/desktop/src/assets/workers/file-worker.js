@@ -1,14 +1,8 @@
-const {
-  existsSync,
-  promises: fs,
-  readdirSync,
-  rmSync,
-  unlinkSync,
-  createWriteStream,
-  createReadStream,
-} = require('fs');
+const { promises: fs, createWriteStream, createReadStream } = require('fs');
 const { join } = require('path');
 const { parentPort, workerData } = require('worker_threads');
+const { Readable } = require('stream');
+const { pipeline } = require('stream/promises');
 
 // Constants
 const { userDataPath } = workerData;
@@ -23,76 +17,42 @@ function validatePath(path) {
 }
 
 async function ensureDirectory(dirPath) {
-  if (!existsSync(dirPath)) {
+  try {
+    await fs.access(dirPath);
+  } catch {
     await fs.mkdir(dirPath, { recursive: true });
   }
 }
 
 // Operation handlers
-/**
- * @param {Object} payload
- * @param {string} payload.directory - Target directory
- * @param {string} payload.fileName - Name of the file to write
- * @param {Buffer|Uint8Array|number[]} payload.buffer - Data to write
- * @param {boolean} [payload.log] - Whether to log the operation
- * @returns {Promise<void>}
- */
 async function handleWrite(payload) {
   const { directory, fileName, buffer, log } = payload;
 
-  // Input validation
   if (!directory || !fileName || !buffer) {
     throw new Error('Missing required parameters for write operation');
   }
-
   if (!validatePath(directory) || !validatePath(fileName)) {
     throw new Error('Invalid path detected');
   }
 
-  let writeStream;
   try {
-    // Prepare paths
     const dirPath = join(userDataPath, directory);
     const filePath = join(dirPath, fileName);
 
-    // Ensure directory exists
     await ensureDirectory(dirPath);
 
-    // Convert buffer to proper Buffer if it's an array of numbers
     const properBuffer = Buffer.isBuffer(buffer) ? buffer : Buffer.from(buffer);
 
-    // Create write stream with error handling
-    writeStream = createWriteStream(filePath, {
-      flags: 'w',
-    });
-
-    // Write the buffer directly to the stream
-    writeStream.write(properBuffer);
-    writeStream.end();
-
-    // Wait for the 'finish' event
-    await new Promise((resolve, reject) => {
-      writeStream.on('finish', resolve);
-      writeStream.on('error', reject);
-    });
+    // Stream the buffer directly to the file
+    await pipeline(Readable.from(properBuffer), createWriteStream(filePath));
 
     if (log) {
       console.log(`File successfully written: ${filePath}`);
     }
 
-    return sendResponse({
-      status: 'done',
-      data: filePath,
-    });
+    return sendResponse({ status: 'done', data: filePath });
   } catch (error) {
-    // Log error details for debugging
     console.error('Error in handleWrite:', error);
-
-    // Clean up any partially written file if needed
-    if (writeStream && !writeStream.closed) {
-      writeStream.destroy();
-    }
-
     throw new Error(`Failed to write file: ${error.message}`);
   }
 }
@@ -103,20 +63,18 @@ async function handleGetFiles(payload) {
   if (!directory) {
     throw new Error('Directory is required');
   }
-
   if (!validatePath(directory)) {
     throw new Error('Invalid directory path');
   }
 
   const dirPath = join(userDataPath, directory);
 
-  if (!existsSync(dirPath)) {
+  try {
+    const files = await fs.readdir(dirPath);
+    sendResponse({ status: 'done', data: files });
+  } catch (error) {
     sendResponse({ status: 'done', data: [] });
-    return;
   }
-
-  const files = readdirSync(dirPath);
-  sendResponse({ status: 'done', data: files });
 }
 
 async function handleRemoveAllFiles(payload) {
@@ -125,18 +83,19 @@ async function handleRemoveAllFiles(payload) {
   if (!directory) {
     throw new Error('Directory is required');
   }
-
   if (!validatePath(directory)) {
     throw new Error('Invalid directory path');
   }
 
   const dirPath = join(userDataPath, directory);
 
-  if (existsSync(dirPath)) {
-    rmSync(dirPath, { recursive: true });
+  try {
+    await fs.rm(dirPath, { recursive: true, force: true });
+    sendResponse({ status: 'done' });
+  } catch (error) {
+    console.error('Error in handleRemoveAllFiles:', error);
+    throw new Error(`Failed to remove files: ${error.message}`);
   }
-
-  sendResponse({ status: 'done' });
 }
 
 async function handleDeleteFile(payload) {
@@ -145,80 +104,45 @@ async function handleDeleteFile(payload) {
   if (!filePath) {
     throw new Error('File path is required');
   }
-
   if (!validatePath(filePath)) {
     throw new Error('Invalid file path');
   }
 
-  if (existsSync(filePath)) {
-    unlinkSync(filePath);
+  try {
+    await fs.unlink(filePath);
+    sendResponse({ status: 'done' });
+  } catch (error) {
+    console.error('Error in handleDeleteFile:', error);
+    throw new Error(`Failed to delete file: ${error.message}`);
   }
-
-  sendResponse({ status: 'done' });
 }
 
-/**
- * Handles reading a file using direct streaming
- * @param {Object} payload - The input payload
- * @param {string} payload.filePath - Path to the file to read
- * @param {function} payload.onData - Callback for streaming data chunks
- * @returns {Promise<void>}
- */
 async function handleReadFile(payload) {
   const { filePath, onData } = payload;
 
-  // Input validation
   if (!filePath) {
     throw new Error('File path is required');
   }
-
   if (!validatePath(filePath)) {
     throw new Error('Invalid file path');
   }
 
-  let readStream;
-
   try {
-    // Create read stream
-    readStream = createReadStream(filePath, {
-      highWaterMark: 64 * 1024, // 64KB chunks
-      encoding: null, // Read as raw buffer
-    });
+    const readStream = createReadStream(filePath, { highWaterMark: 32 * 1024 });
 
-    // Stream directly to response
     readStream.on('data', (chunk) => {
-      onData({
-        status: 'streaming',
-        data: chunk,
-        done: false,
-      });
+      onData({ status: 'streaming', data: chunk, done: false });
     });
 
-    // Wait for stream to complete
     await new Promise((resolve, reject) => {
       readStream.on('end', resolve);
       readStream.on('error', reject);
     });
 
-    // Send final response
-    return sendResponse({
-      status: 'done',
-      done: true,
-    });
+    sendResponse({ status: 'done', done: true });
   } catch (error) {
-    console.error('Error reading file:', error);
-
-    // Clean up stream if needed
-    if (readStream) {
-      readStream.destroy();
-    }
-
+    console.error('Error in handleReadFile:', error);
     throw new Error(`Failed to read file: ${error.message}`);
-  } finally {
-    // Ensure stream is properly closed
-    if (readStream) {
-      readStream.destroy();
-    }
   }
 }
 
@@ -228,7 +152,6 @@ async function handleCreateFilePath(payload) {
   if (!filename || !directory) {
     throw new Error('Filename and directory are required');
   }
-
   if (!validatePath(directory) || !validatePath(filename)) {
     throw new Error('Invalid path detected');
   }
@@ -236,10 +159,7 @@ async function handleCreateFilePath(payload) {
   const dirPath = join(userDataPath, directory);
   await ensureDirectory(dirPath);
 
-  sendResponse({
-    status: 'done',
-    data: join(dirPath, filename),
-  });
+  sendResponse({ status: 'done', data: join(dirPath, filename) });
 }
 
 async function handleGetFileSize(payload) {
@@ -248,13 +168,17 @@ async function handleGetFileSize(payload) {
   if (!filePath) {
     throw new Error('File path is required');
   }
-
   if (!validatePath(filePath)) {
     throw new Error('Invalid file path');
   }
 
-  const stats = await fs.stat(filePath);
-  sendResponse({ status: 'done', data: stats.size });
+  try {
+    const stats = await fs.stat(filePath);
+    sendResponse({ status: 'done', data: stats.size });
+  } catch (error) {
+    console.error('Error in handleGetFileSize:', error);
+    throw new Error(`Failed to get file size: ${error.message}`);
+  }
 }
 
 // Main message handler
