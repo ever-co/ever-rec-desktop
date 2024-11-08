@@ -1,7 +1,7 @@
 import { app } from 'electron';
 import { existsSync, promises as fsPromises } from 'fs';
 import { platform } from 'os';
-import { join, resolve } from 'path';
+import { join, normalize, resolve } from 'path';
 import { FileTaskRunner } from './file-task-runner';
 
 export class FileManager {
@@ -122,35 +122,113 @@ export class FileManager {
     }
   }
 
+  /**
+   * Converts a file path to a properly encoded file URL.
+   *
+   * @param filePath - The file path to encode
+   * @returns The encoded file URL as a string
+   * @throws {TypeError} If filePath is not a string
+   * @throws {Error} If the path cannot be encoded or is invalid
+   *
+   * @example
+   * ```typescript
+   * const url = encodePath('/path/to/file.txt');
+   *  On Unix: 'file:///path/to/file.txt'
+   *  On Windows: 'file:///C:/path/to/file.txt'
+   * ```
+   */
   public static encodePath(filePath: string): string {
+    // Input validation
     if (typeof filePath !== 'string') {
       throw new TypeError(
         `Expected string for path, but got ${typeof filePath}`
       );
     }
+
+    if (!filePath.trim()) {
+      throw new Error('File path cannot be empty');
+    }
+
     try {
-      const absolutePath = resolve(filePath);
-      const fileUrl = new URL(
-        `file://${platform() === 'win32' ? '/' : ''}${absolutePath}`
-      );
+      // Normalize path separators and resolve to absolute path
+      const normalizedPath = normalize(filePath);
+      const absolutePath = resolve(normalizedPath);
+
+      // Handle Windows paths specially
+      const isWindows = platform() === 'win32';
+      const pathPrefix = isWindows ? '/' : '';
+
+      // Replace backslashes with forward slashes for Windows
+      const formattedPath = isWindows
+        ? absolutePath.replace(/\\/g, '/')
+        : absolutePath;
+
+      // Construct and validate URL
+      const fileUrl = new URL(`file://${pathPrefix}${formattedPath}`);
+
+      // Ensure URL is properly formed
+      if (!fileUrl.protocol || fileUrl.protocol !== 'file:') {
+        throw new Error('Invalid file URL protocol');
+      }
+
+      // return href
       return fileUrl.href;
     } catch (error) {
-      console.error('Error encoding file path:', error);
-      throw new Error('Invalid file path');
+      // Add context to the error and preserve stack trace
+      const enhancedError = new Error(
+        `Failed to encode file path "${filePath}": ${error}`
+      );
+      enhancedError.cause = error;
+      throw enhancedError;
     }
   }
 
+  /**
+   * Decodes a local file system URL path into a regular file system path.
+   * Handles Windows-specific path formatting and URL decoding.
+   *
+   * @param localUrl - A file URL string (e.g., 'file:///C:/path/to/file' or 'file:///usr/local/file')
+   * @returns The decoded filesystem path
+   * @throws {Error} If the URL is invalid or cannot be decoded
+   *
+   * @example
+   * Windows: returns "C:\path\to\file"
+   * decodePath('file:///C:/path/to/file')
+   * Unix: returns "/usr/local/file"
+   * decodePath('file:///usr/local/file')
+   */
   public static decodePath(localUrl: string): string {
+    if (!localUrl) {
+      throw new Error('URL cannot be empty');
+    }
+
     try {
-      const url = new URL(localUrl);
+      // Ensure URL is properly formatted for parsing
+      const urlToProcess = localUrl.startsWith('file://')
+        ? localUrl
+        : `file://${localUrl}`;
+
+      const url = new URL(urlToProcess);
+
+      // Verify it's a file URL
+      if (url.protocol !== 'file:') {
+        throw new Error('URL must be a file protocol');
+      }
+
+      // Handle Windows paths differently
+      const isWindows = platform() === 'win32';
       const pathName =
-        platform() === 'win32' && url.pathname[0] === '/'
+        isWindows && url.pathname[0] === '/'
           ? url.pathname.slice(1)
           : url.pathname;
+
       return decodeURIComponent(pathName);
     } catch (error) {
-      console.error('Error decoding URL:', error);
-      throw new Error('Invalid URL');
+      const errorMessage =
+        error instanceof Error ? error.message : 'Unknown error';
+
+      console.error(`Failed to decode path: ${errorMessage}`);
+      throw new Error(`Invalid URL: ${errorMessage}`);
     }
   }
 }
