@@ -61,9 +61,10 @@ async function takeScreenshot(
 ): Promise<IScreenshot | null> {
   const { source: type = Source.SCREEN, captureAll = false } = config || {};
   try {
-    const sources = await getSources(type);
-
-    const metadata = await metadataQuery.execute();
+    const [sources, metadata] = await Promise.all([
+      getSources(type),
+      metadataQuery.execute(),
+    ]);
 
     if (!metadata) {
       logger.error(`Screenshot metadata not found.`);
