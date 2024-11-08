@@ -100,18 +100,18 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     },
     {
       icon: 'content_copy',
-      label: 'Context',
+      label: 'Summary',
       variant: 'default',
       hide: this.hideAction$,
       action: this.getContext.bind(this),
       loading: this.copying$,
     },
     {
-      icon: 'subscriptions',
-      label: 'Generate',
+      icon: 'visibility',
+      label: 'View',
       variant: 'warning',
       hide: this.hideAction$,
-      tooltip: 'Generate a video from this selected timesheet',
+      tooltip: 'View and Generate a video from this selected timesheet',
       action: this.generateVideo.bind(this),
       loading: this.generating$,
     },
@@ -265,14 +265,14 @@ export class TimesheetComponent implements OnInit, OnDestroy {
 
     this.confirmationDialogService
       .open({
-        title: 'Generate Video',
+        title: 'View Timeline',
         message: `Are you sure you want to generate a video for this time log?`,
         variant: 'warning',
         button: {
           confirm: {
-            label: 'Generate',
             variant: 'warning',
-            icon: 'subscriptions',
+            icon: 'visibility',
+            label: 'View',
           },
         },
       })

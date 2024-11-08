@@ -18,8 +18,7 @@ const navigationItems = [
   { title: 'Dashboard', icon: 'dashboard', route: '/dashboard' },
   { title: 'My Library', icon: 'video_library', route: '/library' },
   { title: 'Activities', icon: 'trending_up', route: '/activities' },
-  { title: 'Timesheet', icon: 'web_stories', route: '/timesheet' },
-  { title: 'Timeline', icon: 'view_timeline', route: '/timeline' },
+  { title: 'Timeline', icon: 'web_stories', route: '/timesheet' },
   { title: 'Settings', icon: 'settings', route: '/settings' }
 ];
 
