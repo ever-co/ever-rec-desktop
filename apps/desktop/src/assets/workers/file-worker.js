@@ -4,10 +4,13 @@ const {
   readFileSync,
   readdirSync,
   rmSync,
-  unlinkSync
+  unlinkSync,
+  createWriteStream,
 } = require('fs');
 const { join } = require('path');
 const { parentPort, workerData } = require('worker_threads');
+const { Readable } = require('stream');
+const { pipeline } = require('stream/promises');
 
 // Constants
 const { userDataPath } = workerData;
@@ -28,9 +31,18 @@ async function ensureDirectory(dirPath) {
 }
 
 // Operation handlers
+/**
+ * @param {Object} payload
+ * @param {string} payload.directory - Target directory
+ * @param {string} payload.fileName - Name of the file to write
+ * @param {Buffer|Uint8Array|number[]} payload.buffer - Data to write
+ * @param {boolean} [payload.log] - Whether to log the operation
+ * @returns {Promise<void>}
+ */
 async function handleWrite(payload) {
   const { directory, fileName, buffer, log } = payload;
 
+  // Input validation
   if (!directory || !fileName || !buffer) {
     throw new Error('Missing required parameters for write operation');
   }
@@ -39,17 +51,52 @@ async function handleWrite(payload) {
     throw new Error('Invalid path detected');
   }
 
-  const dirPath = join(userDataPath, directory);
-  const filePath = join(dirPath, fileName);
+  let writeStream;
+  try {
+    // Prepare paths
+    const dirPath = join(userDataPath, directory);
+    const filePath = join(dirPath, fileName);
 
-  await ensureDirectory(dirPath);
-  await fs.writeFile(filePath, buffer);
+    // Ensure directory exists
+    await ensureDirectory(dirPath);
 
-  if (log) {
-    console.log(`File written: ${filePath}`);
+    // Convert buffer to proper Buffer if it's an array of numbers
+    const properBuffer = Buffer.isBuffer(buffer) ? buffer : Buffer.from(buffer);
+
+    // Create write stream with error handling
+    writeStream = createWriteStream(filePath, {
+      flags: 'w',
+    });
+
+    // Write the buffer directly to the stream
+    writeStream.write(properBuffer);
+    writeStream.end();
+
+    // Wait for the 'finish' event
+    await new Promise((resolve, reject) => {
+      writeStream.on('finish', resolve);
+      writeStream.on('error', reject);
+    });
+
+    if (log) {
+      console.log(`File successfully written: ${filePath}`);
+    }
+
+    return sendResponse({
+      status: 'done',
+      data: filePath,
+    });
+  } catch (error) {
+    // Log error details for debugging
+    console.error('Error in handleWrite:', error);
+
+    // Clean up any partially written file if needed
+    if (writeStream && !writeStream.closed) {
+      writeStream.destroy();
+    }
+
+    throw new Error(`Failed to write file: ${error.message}`);
   }
-
-  sendResponse({ status: 'done', data: filePath });
 }
 
 async function handleGetFiles(payload) {
@@ -187,7 +234,7 @@ parentPort?.on('message', async (message) => {
     console.error(`Error in ${operation} operation:`, error);
     sendResponse({
       status: 'error',
-      error: error instanceof Error ? error : new Error(String(error))
+      error: error instanceof Error ? error : new Error(String(error)),
     });
   }
 });
