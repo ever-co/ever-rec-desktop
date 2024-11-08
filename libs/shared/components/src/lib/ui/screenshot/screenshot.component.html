@@ -10,6 +10,7 @@
       [src]="screenshot.pathname"
       alt="Screenshot"
       class="w-full h-full object-cover rounded-t-lg"
+      loading="lazy"
     />
     <div
       [ngClass]="{ 'bg-opacity-20': checked }"
@@ -47,6 +48,7 @@
         [src]="screenshot.metadata?.icon"
         [alt]="screenshot.metadata?.name"
         class="w-10 h-10 rounded-full object-cover"
+        loading="lazy"
       />
       }
       <div class="flex-1 mt-4 min-w-0">
