@@ -1,7 +1,6 @@
 const {
   existsSync,
   promises: fs,
-  readFileSync,
   readdirSync,
   rmSync,
   unlinkSync,
@@ -10,8 +9,6 @@ const {
 } = require('fs');
 const { join } = require('path');
 const { parentPort, workerData } = require('worker_threads');
-const { Readable } = require('stream');
-const { pipeline } = require('stream/promises');
 
 // Constants
 const { userDataPath } = workerData;
