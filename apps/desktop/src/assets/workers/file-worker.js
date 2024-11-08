@@ -6,6 +6,7 @@ const {
   rmSync,
   unlinkSync,
   createWriteStream,
+  createReadStream,
 } = require('fs');
 const { join } = require('path');
 const { parentPort, workerData } = require('worker_threads');
@@ -159,9 +160,17 @@ async function handleDeleteFile(payload) {
   sendResponse({ status: 'done' });
 }
 
+/**
+ * Handles reading a file using direct streaming
+ * @param {Object} payload - The input payload
+ * @param {string} payload.filePath - Path to the file to read
+ * @param {function} payload.onData - Callback for streaming data chunks
+ * @returns {Promise<void>}
+ */
 async function handleReadFile(payload) {
-  const { filePath } = payload;
+  const { filePath, onData } = payload;
 
+  // Input validation
   if (!filePath) {
     throw new Error('File path is required');
   }
@@ -170,8 +179,50 @@ async function handleReadFile(payload) {
     throw new Error('Invalid file path');
   }
 
-  const data = readFileSync(filePath);
-  sendResponse({ status: 'done', data });
+  let readStream;
+
+  try {
+    // Create read stream
+    readStream = createReadStream(filePath, {
+      highWaterMark: 64 * 1024, // 64KB chunks
+      encoding: null, // Read as raw buffer
+    });
+
+    // Stream directly to response
+    readStream.on('data', (chunk) => {
+      onData({
+        status: 'streaming',
+        data: chunk,
+        done: false,
+      });
+    });
+
+    // Wait for stream to complete
+    await new Promise((resolve, reject) => {
+      readStream.on('end', resolve);
+      readStream.on('error', reject);
+    });
+
+    // Send final response
+    return sendResponse({
+      status: 'done',
+      done: true,
+    });
+  } catch (error) {
+    console.error('Error reading file:', error);
+
+    // Clean up stream if needed
+    if (readStream) {
+      readStream.destroy();
+    }
+
+    throw new Error(`Failed to read file: ${error.message}`);
+  } finally {
+    // Ensure stream is properly closed
+    if (readStream) {
+      readStream.destroy();
+    }
+  }
 }
 
 async function handleCreateFilePath(payload) {
