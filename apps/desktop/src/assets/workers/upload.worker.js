@@ -1,5 +1,5 @@
 const { parentPort, workerData } = require('worker_threads');
-const fs = require('fs');
+const { promises: fs, createReadStream } = require('fs');
 const FormData = require('form-data');
 
 // Constants for configuration
@@ -10,31 +10,29 @@ const RETRY_DELAY = 1000; // 1 second
 
 // Service for file validation
 class FileValidator {
-  static validateFiles(files) {
+  static async validateFiles(files) {
     if (!files?.length || !Array.isArray(files)) {
       throw new Error('Invalid or empty files array');
     }
-
-    files.forEach(({ pathname }) => {
-      if (!fs.existsSync(pathname)) {
-        throw new Error(`File not found: ${pathname}`);
-      }
+    for (const { pathname } of files) {
       try {
-        fs.accessSync(pathname, fs.constants.R_OK);
+        await fs.access(pathname);
       } catch {
-        throw new Error(`File not readable: ${pathname}`);
+        throw new Error(`File not accessible: ${pathname}`);
       }
-    });
+    }
   }
 }
 
 // Service for calculating file sizes
 class FileSizeCalculator {
-  static calculateTotalSize(files) {
-    return files.reduce((total, { pathname }) => {
-      const stats = fs.statSync(pathname);
-      return total + stats.size;
-    }, 0);
+  static async calculateTotalSize(files) {
+    let totalSize = 0;
+    for (const { pathname } of files) {
+      const stats = await fs.stat(pathname);
+      totalSize += stats.size;
+    }
+    return totalSize;
   }
 }
 
@@ -72,23 +70,21 @@ class UploadManager {
     this.uploadUrl = uploadUrl;
     this.progressNotifier = progressNotifier;
     this.retryStrategy = retryStrategy;
-
     this.totalSize = 0;
     this.uploadedBytes = 0;
-    this.lastProgressUpdate = 0;
     this.activeStreams = new Set();
   }
 
   async prepareUpload() {
-    FileValidator.validateFiles(this.files);
-    this.totalSize = FileSizeCalculator.calculateTotalSize(this.files);
+    await FileValidator.validateFiles(this.files);
+    this.totalSize = await FileSizeCalculator.calculateTotalSize(this.files);
   }
 
   createFormData() {
     const formData = new FormData();
 
     this.files.forEach(({ pathname, key }) => {
-      const readStream = fs.createReadStream(pathname, {
+      const readStream = createReadStream(pathname, {
         highWaterMark: CHUNK_SIZE,
       });
       this.activeStreams.add(readStream);
@@ -108,7 +104,6 @@ class UploadManager {
 
       readStream.on('end', () => {
         this.activeStreams.delete(readStream);
-        readStream.destroy();
       });
 
       formData.append(key, readStream);
@@ -130,8 +125,8 @@ class UploadManager {
       const response = await fetch(this.uploadUrl, {
         method: 'PUT',
         body: formData,
+        headers: formData.getHeaders(),
         timeout: 30000,
-        headers: { ...formData.getHeaders() },
       });
 
       if (!response.ok) {
@@ -159,8 +154,8 @@ class ProgressNotifier {
       this.port.postMessage({
         status: 'progress',
         message: progress,
-        uploadedBytes: uploadedBytes,
-        totalSize: totalSize,
+        uploadedBytes,
+        totalSize,
       });
       this.lastProgressUpdate = now;
     }
