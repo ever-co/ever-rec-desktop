@@ -1,5 +1,5 @@
 import { Store } from '@ngrx/store';
-import { distinctUntilChanged, map, tap } from 'rxjs';
+import { distinctUntilChanged, filter, map, tap } from 'rxjs';
 import { StorageElectronService } from '../+state/services/storage-electron.service';
 import { settingStorageActions } from '../+state/storage-setting/storage-setting.actions';
 import { selectSettingStorageState } from '../+state/storage-setting/storage-setting.selectors';
@@ -21,6 +21,8 @@ export function initializeRetentionFactory(
     store
       .select(selectSettingStorageState)
       .pipe(
+        filter((retention) => retention.retention !== -1),
+        distinctUntilChanged(),
         map((state) => state.retention),
         distinctUntilChanged(),
         tap((retention) => storageService.cleanUp({ retention }))
