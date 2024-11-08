@@ -50,7 +50,7 @@ export class TimeLogStatisticsComponent implements OnInit, OnDestroy {
 
   public get showMonth$(): Observable<boolean> {
     return this.store.select(selectSettingStorageState).pipe(
-      map((state) => state.retention > 7),
+      map(({ retention }) => retention > 7 || retention === -1),
       takeUntil(this.destroy$)
     );
   }
