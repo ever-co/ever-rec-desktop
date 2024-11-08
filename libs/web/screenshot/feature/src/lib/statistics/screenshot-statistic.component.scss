@@ -13,6 +13,10 @@
     display: none;
   }
 
+  .no-data {
+    min-height: unset;
+  }
+
   .main {
     display: flex;
     mat-card{
