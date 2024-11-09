@@ -16,4 +16,5 @@ export interface IVideoConvertPayload {
   screenshotIds?: string[];
   videoIds?: string[];
   config: IVideoConfig;
+  isTimeLine?: boolean;
 }

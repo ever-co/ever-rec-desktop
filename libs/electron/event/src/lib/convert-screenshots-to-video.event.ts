@@ -33,6 +33,7 @@ export function convertScreenshotsToVideoEvent() {
         timeLogId,
         screenshotIds = [],
         videoIds = [],
+        isTimeLine = false,
       }: IVideoConvertPayload
     ) => {
       const logger = new ElectronLogger('Screenshots --> Video');
@@ -51,7 +52,7 @@ export function convertScreenshotsToVideoEvent() {
       let screenshots: IScreenshot[] = [];
       let videos: IVideo[] = [];
 
-      if (screenshotIds.length === 0) {
+      if (screenshotIds.length === 0 && videoIds.length === 0 && !isTimeLine) {
         screenshots = await ScreenshotService.findAll({
           where: {
             ...(filter && {
@@ -72,7 +73,7 @@ export function convertScreenshotsToVideoEvent() {
           },
           order: { createdAt: 'ASC' },
         });
-      } else {
+      } else if (videoIds.length === 0 && !isTimeLine) {
         screenshots = await ScreenshotService.findAll({
           where: {
             id: In(screenshotIds),
@@ -91,6 +92,28 @@ export function convertScreenshotsToVideoEvent() {
         });
       }
 
+      if (isTimeLine) {
+        videos = await videoService.findAll({
+          relations: ['screenshots'],
+          where: {
+            timeLog: {
+              id: timeLogId,
+            },
+          },
+          order: { createdAt: 'ASC' },
+        });
+        if (videos.length === 0) {
+          screenshots = await ScreenshotService.findAll({
+            where: {
+              timeLog: {
+                id: timeLogId,
+              },
+            },
+            order: { createdAt: 'ASC' },
+          });
+        }
+      }
+
       const screenshotsSize = screenshots.length;
       const videosSize = videos.length;
 
@@ -98,7 +121,10 @@ export function convertScreenshotsToVideoEvent() {
         logger.info('No screenshots found to convert.');
         if (videosSize === 0) {
           logger.info('No videos found to merge.');
-          return event.reply(Channel.CANCEL_CONVERSION, 'Videos is already exists');
+          return event.reply(
+            Channel.CANCEL_CONVERSION,
+            'We cannot proceed to conversion. No screenshots or videos found.'
+          );
         }
       } else {
         logger.info(`Find ${screenshotsSize} screenshots to convert`);

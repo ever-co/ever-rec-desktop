@@ -8,6 +8,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {
   generateVideoActions,
@@ -50,7 +51,7 @@ interface AggregatedScreenshot extends IScreenshot {
     MatTooltipModule,
     ProgressComponent,
     IconFallbackDirective,
-    TimelineCursorComponent
+    TimelineCursorComponent,
   ],
   templateUrl: './timeline.component.html',
   styleUrls: ['./timeline.component.scss'],
@@ -72,7 +73,11 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   private width = 48;
   private clientWidth = 1920;
 
-  constructor(private readonly store: Store, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private readonly store: Store,
+    private cdr: ChangeDetectorRef,
+    public dialogRef: MatDialogRef<TimelineComponent>
+  ) {}
 
   public ngOnInit(): void {
     this.initializeObservables();

@@ -5,18 +5,18 @@
 
   .video {
     width: 100%;
-    max-height: calc(100vh - 10.85rem);
+    //max-height: calc(100vh - 10.85rem);
     object-fit: contain;
   }
 }
 
 :host(.timeline) {
   .video {
-    height: calc(100vh - 16.5rem);
+    // max-height: calc(100vh - 16.5rem);
   }
 
   .container__loading {
-    height: calc(100vh - 14.5rem);
+    //height: calc(100vh - 14.5rem);
   }
 }
 

@@ -2,6 +2,7 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -13,6 +14,7 @@ import {
   selectGenerateVideoState,
   selectSettingState,
 } from '@ever-co/convert-video-data-access';
+import { TimelineComponent } from '@ever-co/convert-video-feature';
 import {
   ActionButtonGroupComponent,
   ConfirmationDialogService,
@@ -39,6 +41,7 @@ import {
 } from '@ever-co/timesheet-data-access';
 import { Store } from '@ngrx/store';
 import {
+  concatMap,
   distinctUntilChanged,
   filter,
   map,
@@ -131,7 +134,8 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     private readonly store: Store,
     private readonly layoutService: LayoutService,
     private readonly confirmationDialogService: ConfirmationDialogService,
-    private readonly clipboard: Clipboard
+    private readonly clipboard: Clipboard,
+    private readonly matDialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -281,7 +285,14 @@ export class TimesheetComponent implements OnInit, OnDestroy {
         filter(Boolean),
         withLatestFrom(this.store.select(selectSettingState)),
         tap(([, { videoConfig: config }]) =>
-          this.store.dispatch(generateVideoActions.start({ timeLogId, config }))
+          this.store.dispatch(
+            generateVideoActions.start({ timeLogId, config, isTimeLine: true })
+          )
+        ),
+        concatMap(() =>
+          this.matDialog
+            .open(TimelineComponent)
+            .afterClosed()
         ),
         takeUntil(this.destroy$)
       )
