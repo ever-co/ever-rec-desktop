@@ -71,13 +71,18 @@ export interface ITimelineEventHandlers {
 
 // Configuration interface
 export interface ITimelineConfig {
-  minZoom: number;
-  maxZoom: number;
-  defaultDuration: number;
-  autoPlay: boolean;
-  loop: boolean;
-  showThumbnails: boolean;
-  cursorStyle: CursorStyle;
+  minWidth: number;
+  maxWidth: number;
+  height: number;
+  item: {
+    width: number;
+    height: number;
+  };
+  cursor: {
+    width: number;
+    height: number;
+    style: CursorStyle;
+  };
 }
 
 // Combined interface for a complete timeline functionality
@@ -88,4 +93,16 @@ export interface ITimelinePort
     ITimelineZoom,
     ITimelineEventHandlers {
   timeline: ITimeline;
+}
+
+// Error interface
+export interface ITimelineError {
+  code: number;
+  message: string;
+}
+
+// Resize event
+export interface IResizeEvent {
+  width: number;
+  height: number;
 }
