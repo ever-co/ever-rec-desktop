@@ -124,7 +124,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     const scrollLeft = this.clamp(
       element.scrollLeft,
       0,
-      scrollWidth - this.width / 2 - 5
+      scrollWidth - (this.width - 5) / 2
     );
 
     const percentage = this.calculatePercentage(scrollLeft, scrollWidth);
@@ -136,11 +136,11 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     width: number,
     scrollWidth: number
   ): number {
-    return scrollWidth * position + width / 2 - 5;
+    return scrollWidth * position + (width - 5) / 2;
   }
 
   private calculatePercentage(scrollLeft: number, scrollWidth: number): number {
-    return (scrollLeft + this.width / 2 - 5) * (100 / scrollWidth);
+    return (scrollLeft + (this.width - 5) / 2) * (100 / scrollWidth);
   }
 
   private scrollTimeline(
@@ -149,7 +149,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     scrollWidth: number
   ): void {
     timeline.scrollTo({
-      left: this.clamp(scrollLeft, 0, scrollWidth - this.width / 2 - 5),
+      left: this.clamp(scrollLeft, 0, scrollWidth - (this.width - 5) / 2),
       behavior: 'smooth',
     });
   }
