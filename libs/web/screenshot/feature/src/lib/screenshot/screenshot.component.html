@@ -4,14 +4,29 @@
     <!-- Screenshot Display Section -->
     <div class="w-full lg:w-2/3 p-4">
       <div
-        class="rounded-xl overflow-hidden bg-gray-800 flex items-center justify-center transform transition-transform duration-300 scale-[0.99] hover:scale-[1.00]"
+        class="rounded-xl overflow-hidden bg-gray-800 relative w-full h-full flex items-center justify-center transform transition-transform duration-300 scale-[0.99] hover:scale-[1.00]"
       >
         <img
-          libImgFallback
           [src]="screenshot.pathname"
           alt="Screenshot"
-          class="max-w-full h-auto"
+          class="max-w-full max-h-full rounded-lg shadow-lg"
         />
+        <div
+          class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg opacity-0 hover:opacity-100 transition-opacity duration-300"
+        >
+          <div class="p-4 space-y-2">
+            <a
+              [href]="screenshot.pathname"
+              rel="noopener"
+              target="_blank"
+              class="text-white absolute top-2 right-2"
+            >
+              <button mat-icon-button color="primary" aria-label="open_in_new">
+                <mat-icon>open_in_new</mat-icon>
+              </button>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -50,17 +65,16 @@
       </div>
 
       @if(screenshot.metadata?.description) {
-        <div class="bg-white rounded-xl p-4">
-          <div class="flex items-center justify-between mb-2">
-            <div>Description</div>
-            <div
-              [libCopyToClipboard]="screenshot.metadata?.description || ''"
-              class="text-lg font-semibold text-gray-700"
-            >
-            </div>
-          </div>
-          <p class="text-gray-600">{{ screenshot.metadata?.description }}</p>
+      <div class="bg-white rounded-xl p-4">
+        <div class="flex items-center justify-between mb-2">
+          <div>Description</div>
+          <div
+            [libCopyToClipboard]="screenshot.metadata?.description || ''"
+            class="text-lg font-semibold text-gray-700"
+          ></div>
         </div>
+        <p class="text-gray-600">{{ screenshot.metadata?.description }}</p>
+      </div>
       } @if(screenshot.video; as video) {
       <div class="bg-white rounded-xl p-4">
         <div class="text-lg font-semibold text-gray-600 mb-2">
