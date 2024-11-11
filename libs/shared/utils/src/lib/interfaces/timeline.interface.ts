@@ -10,10 +10,6 @@ export interface ITimelinePosition {
   position: number;
 }
 
-export interface ITimelineItem extends ITimelinePosition {
-  frame: ITimelineFrame;
-}
-
 export type ITimelineCursor = ITimelinePosition;
 
 export interface ITimelineVideo {
@@ -23,7 +19,7 @@ export interface ITimelineVideo {
   video: IVideo;
 }
 
-export interface ITimelineTrack extends ITimelinePosition {
+export interface ITimelineTrack {
   frames: ITimelineFrame[];
   hasNext: boolean;
   count: number;
@@ -31,6 +27,16 @@ export interface ITimelineTrack extends ITimelinePosition {
   page: number;
   perPage: number;
   error: string;
+  config: {
+    frame: {
+      width: number;
+      height: number;
+    };
+    track: {
+      width: number;
+      height: number;
+    };
+  };
 }
 
 export interface ITimelineState {

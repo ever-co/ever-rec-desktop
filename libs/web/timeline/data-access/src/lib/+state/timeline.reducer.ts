@@ -19,9 +19,16 @@ const initialState: ITimelineState = {
     page: 1,
     perPage: 20,
     error: '',
-    width: 0,
-    height: 0,
-    position: 0,
+    config: {
+      frame: {
+        width: 48,
+        height: 48,
+      },
+      track: {
+        width: 0,
+        height: 0,
+      },
+    },
   },
   cursor: {
     width: 5,
@@ -90,6 +97,20 @@ export const reducer = createReducer(
     video: {
       ...state.video,
       currentTime,
+    },
+  })),
+
+  on(timelineActions.resizeTimeline, (state, { width, height }) => ({
+    ...state,
+    track: {
+      ...state.track,
+      config: {
+        ...state.track.config,
+        track: {
+          width,
+          height,
+        },
+      },
     },
   }))
 );
