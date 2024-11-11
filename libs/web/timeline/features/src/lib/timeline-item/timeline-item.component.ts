@@ -5,7 +5,7 @@ import { IconFallbackDirective } from '@ever-co/shared-service';
 import { ITimelineFrame, moment } from '@ever-co/shared-utils';
 import { selectTimelineState } from '@ever-co/timeline-data-access';
 import { Store } from '@ngrx/store';
-import { map, Observable } from 'rxjs';
+import { map, Observable, take } from 'rxjs';
 
 @Component({
   selector: 'lib-timeline-item',
@@ -27,8 +27,9 @@ export class TimelineItemComponent {
   }
 
   public get width$(): Observable<number> {
-    return this.store
-      .select(selectTimelineState)
-      .pipe(map((state) => state.track.config.frame.width));
+    return this.store.select(selectTimelineState).pipe(
+      take(1),
+      map((state) => state.track.config.frame.width)
+    );
   }
 }

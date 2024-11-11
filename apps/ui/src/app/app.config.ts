@@ -16,6 +16,7 @@ import { provideNotificationDataAccess } from '@ever-co/notification-data-access
 import { provideScreenshotDataAccess } from '@ever-co/screenshot-data-access';
 import { provideDatePickerDataAccess } from '@ever-co/shared-service';
 import { provideSidebarDataAccess } from '@ever-co/sidebar-data-access';
+import { provideTimelineDataAccess } from '@ever-co/timeline-data-access';
 import { provideTimeLogDataAccess } from '@ever-co/timesheet-data-access';
 import { provideUploadDataAccess } from '@ever-co/upload-data-access';
 import { provideSettingsDataAccess } from '@ever-co/web-setting-data-access';
@@ -42,5 +43,6 @@ export const appConfig: ApplicationConfig = {
     provideFactoriesDataAccess(),
     provideNotificationDataAccess(),
     provideUploadDataAccess(),
+    provideTimelineDataAccess(),
   ],
 };

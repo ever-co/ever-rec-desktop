@@ -1,4 +1,4 @@
-import { FindOptionsWhere } from 'typeorm';
+import { IFindOptionsWhere } from './base.interface';
 
 export interface IPaginationOptions<T> extends Partial<IRange> {
   page?: number;
@@ -6,7 +6,7 @@ export interface IPaginationOptions<T> extends Partial<IRange> {
   sortField?: string;
   sortOrder?: 'ASC' | 'DESC';
   filter?: string;
-  where?: FindOptionsWhere<T>;
+  where?: IFindOptionsWhere<T>;
 }
 
 export interface IRange {

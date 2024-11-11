@@ -1,9 +1,12 @@
-<div [ngStyle]="{ width: (width$ | async) + 'px' }" class="line-image">
-  <img
-    class="image transition ease-in-out delay-100 hover:scale-110"
-    [matTooltip]="formatTooltipMessage(frame)"
-    [src]="frame.metadata?.icon"
-    alt="icon"
-    libIconFallback
-  />
-</div>
+@if(frame) {
+  <div [ngStyle]="{ width: (width$ | async) + 'px' }" class="line-image">
+    <img
+      class="image transition ease-in-out delay-100 hover:scale-110"
+      [matTooltip]="formatTooltipMessage(frame)"
+      [src]="frame.metadata?.icon"
+      alt="icon"
+      libIconFallback
+    />
+  </div>
+
+}

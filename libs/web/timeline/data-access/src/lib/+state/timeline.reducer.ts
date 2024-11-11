@@ -5,7 +5,7 @@ import { timelineActions } from './timeline.actions';
 export const timelineFeatureKey = 'timeline';
 
 const initialState: ITimelineState = {
-  video: {
+  player: {
     currentTime: 0,
     duration: 0,
     isPlaying: false,
@@ -13,6 +13,7 @@ const initialState: ITimelineState = {
   },
   track: {
     frames: [],
+    frame: null,
     hasNext: false,
     count: 0,
     loading: false,
@@ -78,24 +79,28 @@ export const reducer = createReducer(
 
   on(timelineActions.seekTo, (state, { currentTime }) => ({
     ...state,
-    video: {
-      ...state.video,
+    player: {
+      ...state.player,
       currentTime,
+    },
+    cursor: {
+      ...state.cursor,
+      position: (currentTime / state.player.duration) * 100,
     },
   })),
 
-  on(timelineActions.togglePlayback, (state) => ({
+  on(timelineActions.togglePlayback, (state, { isPlaying }) => ({
     ...state,
-    video: {
-      ...state.video,
-      isPlaying: !state.video.isPlaying,
+    player: {
+      ...state.player,
+      isPlaying,
     },
   })),
 
   on(timelineActions.updateCurrentTime, (state, { currentTime }) => ({
     ...state,
-    video: {
-      ...state.video,
+    player: {
+      ...state.player,
       currentTime,
     },
   })),
@@ -111,6 +116,43 @@ export const reducer = createReducer(
           height,
         },
       },
+    },
+  })),
+
+  on(timelineActions.selectFrame, (state, { frame }) => ({
+    ...state,
+    track: {
+      ...state.track,
+      frame,
+    },
+    // cursor: {
+    //   ...state.cursor,
+    // position: frame
+    //   ? (state.track.frames.indexOf(frame) / state.track.count) * 100
+    //   : state.cursor.position,
+    // },
+  })),
+
+  on(timelineActions.loadLastVideo, (state, { video }) => ({
+    ...state,
+    player: {
+      ...state.player,
+      video: video ?? ({} as IVideo),
+      duration: video?.metadata?.duration ?? 0,
+    },
+  })),
+
+  on(timelineActions.cursorPosition, (state, { position }) => ({
+    ...state,
+    player: {
+      ...state.player,
+      currentTime: state.player.isPlaying
+        ? state.player.currentTime
+        : (position / 100) * state.player.duration,
+    },
+    cursor: {
+      ...state.cursor,
+      position: state.player.isPlaying ? state.cursor.position : position,
     },
   }))
 );
@@ -128,17 +170,11 @@ function mergePaginatedFrames(
   framesPerPage: number
 ): ITimelineFrame[] {
   const startIndex = pageIndex * framesPerPage;
-  const result = [...existingFrames];
-
-  // Extend array if needed
-  while (result.length < startIndex + newFrames.length) {
-    result.push(null as any);
-  }
-
-  // Insert new frames at correct position
-  for (let i = 0; i < newFrames.length; i++) {
-    result[startIndex + i] = newFrames[i];
-  }
+  const result = [
+    ...new Map(
+      [...existingFrames, ...newFrames].map((item) => [item.id, item])
+    ).values(),
+  ];
 
   return result;
 }

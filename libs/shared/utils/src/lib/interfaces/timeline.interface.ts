@@ -12,7 +12,7 @@ export interface ITimelinePosition {
 
 export type ITimelineCursor = ITimelinePosition;
 
-export interface ITimelineVideo {
+export interface ITimelinePlayer {
   currentTime: number;
   isPlaying: boolean;
   duration: number;
@@ -21,6 +21,7 @@ export interface ITimelineVideo {
 
 export interface ITimelineTrack {
   frames: ITimelineFrame[];
+  frame: ITimelineFrame | null;
   hasNext: boolean;
   count: number;
   loading: boolean;
@@ -40,7 +41,7 @@ export interface ITimelineTrack {
 }
 
 export interface ITimelineState {
-  video: ITimelineVideo;
+  player: ITimelinePlayer;
   track: ITimelineTrack;
   cursor: ITimelineCursor;
 }

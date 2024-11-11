@@ -10,6 +10,7 @@ export * from './lib/directives/img-fallback.directive';
 export * from './lib/directives/infinite-scroll.directive';
 export * from './lib/directives/popover/popover.directive';
 export * from './lib/directives/popover/popover.type';
+export * from './lib/directives/resize.directive';
 export * from './lib/encryption/encryption.service';
 export * from './lib/encryption/keytar.service';
 export * from './lib/local-storage/local-storage.service';

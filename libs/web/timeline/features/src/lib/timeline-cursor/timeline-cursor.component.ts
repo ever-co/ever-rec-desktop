@@ -1,8 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { selectVideoRemoteControlState } from '@ever-co/convert-video-data-access';
+import { ITimelineCursor } from '@ever-co/shared-utils';
+import { selectTimelineState } from '@ever-co/timeline-data-access';
 import { Store } from '@ngrx/store';
-import { map, Observable, Subject, takeUntil } from 'rxjs';
+import {
+  distinctUntilChanged,
+  map,
+  Observable,
+  Subject,
+  take,
+  takeUntil,
+} from 'rxjs';
 
 @Component({
   selector: 'lib-timeline-cursor',
@@ -17,9 +25,34 @@ export class TimelineCursorComponent implements OnDestroy {
 
   constructor(private readonly store: Store) {}
 
-  public get percentage$(): Observable<number> {
-    return this.store.select(selectVideoRemoteControlState).pipe(
-      map(({ scrollPercentage }) => scrollPercentage),
+  public get position$(): Observable<number> {
+    return this.cursor$.pipe(
+      map(({ position }) => position),
+      distinctUntilChanged(),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  private get cursor$(): Observable<ITimelineCursor> {
+    return this.store.select(selectTimelineState).pipe(
+      map(({ cursor }) => cursor),
+      distinctUntilChanged(),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  public get width$(): Observable<number> {
+    return this.cursor$.pipe(
+      take(1),
+      map(({ width }) => width),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  public get height$(): Observable<number> {
+    return this.cursor$.pipe(
+      take(1),
+      map(({ height }) => height),
       takeUntil(this.destroy$)
     );
   }

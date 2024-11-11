@@ -1,12 +1,163 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import {
+  InfiniteScrollDirective,
+  ResizeDirective,
+} from '@ever-co/shared-service';
+import {
+  IResizeEvent,
+  ITimelineFrame,
+  ITimelineState,
+  ITimelineTrack,
+  IVideo,
+} from '@ever-co/shared-utils';
+import {
+  selectTimelineState,
+  timelineActions,
+} from '@ever-co/timeline-data-access';
+import { Store } from '@ngrx/store';
+import { distinctUntilChanged, filter, map, Observable, tap } from 'rxjs';
+import { TimelineItemComponent } from '../timeline-item/timeline-item.component';
 
 @Component({
   selector: 'lib-timeline-track',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    TimelineItemComponent,
+    ResizeDirective,
+    InfiniteScrollDirective,
+  ],
   templateUrl: './timeline-track.component.html',
   styleUrl: './timeline-track.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TimelineTrackComponent {}
+export class TimelineTrackComponent implements OnInit, AfterViewInit {
+  @ViewChild('trackContainer')
+  private trackContainer!: ElementRef<HTMLDivElement>;
+
+  videoId!: string;
+  frame: ITimelineFrame | null = null;
+  page = 1;
+  hasNext = false;
+  limit = 20;
+
+  constructor(private readonly store: Store) {}
+
+  ngAfterViewInit(): void {
+    this.timeline$
+      .pipe(
+        filter(({ player }) => player.isPlaying),
+        map(({ cursor, track }) => ({ cursor, track })),
+        distinctUntilChanged(
+          (curr, prev) =>
+            curr.cursor === prev.cursor && curr.track === prev.track
+        ),
+        tap(({ cursor, track }) => {
+          const width = track.config.frame.width * track.count;
+          this.track.scroll({
+            left: width * (cursor.position / 100),
+            behavior: 'smooth',
+          });
+        })
+      )
+      .subscribe();
+  }
+  ngOnInit(): void {
+    this.source$
+      .pipe(
+        tap((videoId) => {
+          this.videoId = videoId;
+          this.loadFrames();
+        })
+      )
+      .subscribe();
+    this.track$
+      .pipe(
+        tap((state) => {
+          this.hasNext = state.hasNext;
+          this.page = state.page;
+        })
+      )
+      .subscribe();
+  }
+
+  public get frames$(): Observable<ITimelineFrame[]> {
+    return this.track$.pipe(map(({ frames }) => frames));
+  }
+
+  private get track$(): Observable<ITimelineTrack> {
+    return this.store.select(selectTimelineState).pipe(
+      map(({ track }) => track),
+      distinctUntilChanged()
+    );
+  }
+
+  private get timeline$(): Observable<ITimelineState> {
+    return this.store.select(selectTimelineState).pipe(distinctUntilChanged());
+  }
+
+  private get source$(): Observable<string> {
+    return this.store.select(selectTimelineState).pipe(
+      map(({ player }) => player.video.id),
+      distinctUntilChanged()
+    );
+  }
+
+  public onSelect(selectedFrame: ITimelineFrame): void {
+    const selectedFrameIsCurrentFrame = selectedFrame === this.frame;
+    const frame = selectedFrameIsCurrentFrame ? null : selectedFrame;
+
+    this.frame = frame;
+    this.store.dispatch(timelineActions.selectFrame({ frame }));
+  }
+
+  public onTrackResize(event: IResizeEvent): void {
+    this.store.dispatch(timelineActions.resizeTimeline(event));
+  }
+
+  public get track(): HTMLDivElement {
+    return this.trackContainer?.nativeElement;
+  }
+
+  public moreFrames() {
+    if (this.hasNext) {
+      this.page++;
+      this.loadFrames();
+    }
+  }
+
+  public onScroll(event: Event) {
+    const element = event.target as HTMLElement;
+    const scrollLeft = element.scrollLeft;
+    const scrollWidth = element.scrollWidth;
+    this.store.dispatch(
+      timelineActions.cursorPosition({
+        position: (scrollLeft / scrollWidth) * 100,
+      })
+    );
+  }
+
+  public loadFrames() {
+    this.store.dispatch(
+      timelineActions.loadFrames({
+        page: this.page,
+        limit: this.limit,
+        sortField: 'createdAt',
+        sortOrder: 'ASC',
+        where: {
+          video: {
+            id: this.videoId,
+          } as IVideo,
+        },
+      })
+    );
+  }
+}

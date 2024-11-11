@@ -1,1 +1,6 @@
-<div class="cursor" [style.left.%]="percentage$ | async"></div>
+<div
+  class="cursor"
+  [style.width.px]="width$ | async"
+  [style.height.px]="height$ | async"
+  [style.left.%]="position$ | async"
+></div>

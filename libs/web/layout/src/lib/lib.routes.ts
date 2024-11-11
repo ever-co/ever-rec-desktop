@@ -42,8 +42,8 @@ export const layoutRoutes: Route[] = [
         path: 'timeline',
         canActivate: [timelineGuard],
         loadComponent: () =>
-          import('@ever-co/convert-video-feature').then(
-            (r) => r.TimelineComponent
+          import('@ever-co/timeline-feature').then(
+            (r) => r.TimelineContainerComponent
           ),
       },
       {
