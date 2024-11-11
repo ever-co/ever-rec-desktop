@@ -14,7 +14,7 @@ export const videoActions = createActionGroup({
     'Load Video Success': props<{ video: IVideo }>(),
     'Load Video Failure': props<{ error: string }>(),
 
-    'Load Videos': props<IPaginationOptions>(),
+    'Load Videos': props<IPaginationOptions<IVideo>>(),
     'Load Videos Success': props<IPaginationResponse<IVideo>>(),
     'Load Videos Failure': props<{ error: string }>(),
 

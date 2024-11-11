@@ -34,7 +34,7 @@ export class ScreenshotElectronService {
   }
 
   public getAllScreenshots(
-    options: IPaginationOptions
+    options: IPaginationOptions<IScreenshot>
   ): Promise<IPaginationResponse<IScreenshot>> {
     return this.electronService.invoke(Channel.REQUEST_SCREENSHOTS, options);
   }
@@ -55,13 +55,13 @@ export class ScreenshotElectronService {
   }
 
   public askFor(
-    options: IPaginationOptions
+    options:  IPaginationOptions<IScreenshot>
   ): Promise<IPaginationResponse<IScreenshot>> {
     return this.electronService.invoke(Channel.SEARCHING, options);
   }
 
   public getStatistics(
-    options = {} as IPaginationOptions
+    options = {} as IPaginationOptions<IScreenshotMetadataStatistic>
   ): Promise<IPaginationResponse<IScreenshotMetadataStatistic>> {
     return this.electronService.invoke(
       Channel.REQUEST_SCREENSHOTS_STATISTICS,

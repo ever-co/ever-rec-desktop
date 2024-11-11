@@ -11,6 +11,7 @@ import {
   currentDay,
   IPaginationOptions,
   IScreenshot,
+  IScreenshotMetadataStatistic,
   TimeSlot,
 } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
@@ -20,17 +21,19 @@ export function crudScreeshotEvents() {
   // Get all screenshots
   ipcMain.handle(
     Channel.REQUEST_SCREENSHOTS,
-    async (_, options = {} as IPaginationOptions) => {
+    async (_, options = {} as IPaginationOptions<IScreenshot>) => {
       const {
         page = 1,
         limit = 10,
         start = currentDay().start,
         end = currentDay().end,
+        where = {},
       } = options;
 
       const [data, count] = await ScreenshotService.findAndCount({
         where: {
           createdAt: Between(start, end),
+          ...where,
         },
         order: { createdAt: 'DESC' },
         relations: ['metadata'],
@@ -67,7 +70,7 @@ export function crudScreeshotEvents() {
   // searching
   ipcMain.handle(
     Channel.SEARCHING,
-    async (_, options = {} as IPaginationOptions) => {
+    async (_, options = {} as IPaginationOptions<IScreenshot>) => {
       const { page = 1, limit = 10, filter = '' } = options;
 
       const [data, count] = await ScreenshotService.findAndCount({
@@ -96,7 +99,7 @@ export function crudScreeshotEvents() {
   // Request statistics
   ipcMain.handle(
     Channel.REQUEST_SCREENSHOTS_STATISTICS,
-    (_, options: IPaginationOptions) =>
+    (_, options: IPaginationOptions<IScreenshotMetadataStatistic>) =>
       ScreenshotMetadataService.statistics(options)
   );
 

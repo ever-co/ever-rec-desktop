@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { NotificationService } from '@ever-co/notification-data-access';
 import { screenshotActions } from '@ever-co/screenshot-data-access';
 import { DatePickerService } from '@ever-co/shared-service';
-import { IPaginationOptions } from '@ever-co/shared-utils';
+import { IPaginationOptions, ITimeLog } from '@ever-co/shared-utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { from, of } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
@@ -34,7 +34,7 @@ export class TimeLogEffects {
       ),
       mergeMap((options) =>
         from(
-          this.timeLogElectronService.getLogs(options as IPaginationOptions)
+          this.timeLogElectronService.getLogs(options as IPaginationOptions<ITimeLog>)
         ).pipe(
           map((response) => timeLogActions.loadTimeLogsSuccess(response)),
           catchError((error) =>
@@ -50,7 +50,7 @@ export class TimeLogEffects {
       ofType(screenshotActions.captureSuccess),
       mergeMap((options) =>
         from(
-          this.timeLogElectronService.getLogs(options as IPaginationOptions)
+          this.timeLogElectronService.getLogs(options as  IPaginationOptions<ITimeLog>)
         ).pipe(
           map((response) =>
             timeLogActions.updateTimeLogDurationSuccess(response)

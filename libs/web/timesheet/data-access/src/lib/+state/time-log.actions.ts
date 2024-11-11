@@ -5,7 +5,7 @@ import {
   IPaginationResponse,
   IRange,
   ITimeLog,
-  ITimeLogStatistics,
+  ITimeLogStatistics
 } from '@ever-co/shared-utils';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
@@ -16,7 +16,7 @@ export const timeLogActions = createActionGroup({
     'Load TimeLog Success': props<{ timeLog: ITimeLog }>(),
     'Load TimeLog Failure': props<{ error: string }>(),
 
-    'Load TimeLogs': props<IPaginationOptions>(),
+    'Load TimeLogs': props<IPaginationOptions<ITimeLog>>(),
     'Load TimeLogs Success': props<IPaginationResponse<ITimeLog>>(),
     'Load TimeLogs Failure': props<{ error: string }>(),
 

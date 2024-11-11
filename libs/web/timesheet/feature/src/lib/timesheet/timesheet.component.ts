@@ -177,13 +177,13 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   }
 
   public loadTimeLogs(pageIndex = 0, pageSize = 10) {
-    const params: IPaginationOptions = {
+    const params = {
       page: pageIndex + 1,
       sortField: this.sort?.active || 'start',
       sortOrder: this.sort?.direction?.toUpperCase() || 'DESC',
       limit: pageSize,
       ...this.range,
-    } as IPaginationOptions;
+    } as IPaginationOptions<ITimeLog>;
 
     pageSize = this.pageSize;
 

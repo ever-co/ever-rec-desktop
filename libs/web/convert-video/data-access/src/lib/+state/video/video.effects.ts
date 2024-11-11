@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NotificationService } from '@ever-co/notification-data-access';
-import { IPaginationOptions } from '@ever-co/shared-utils';
+import { IPaginationOptions, IVideo } from '@ever-co/shared-utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { from, of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
@@ -31,7 +31,7 @@ export class VideoEffects {
       ),
       mergeMap((options) =>
         from(
-          this.videoElectronService.getAllVideos(options as IPaginationOptions)
+          this.videoElectronService.getAllVideos(options as IPaginationOptions<IVideo>)
         ).pipe(
           map((response) => videoActions.loadVideosSuccess(response)),
           catchError((error) => of(videoActions.loadVideosFailure({ error })))

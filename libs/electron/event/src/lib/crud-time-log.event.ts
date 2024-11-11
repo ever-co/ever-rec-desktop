@@ -17,7 +17,7 @@ export function crudTimeLogEvents() {
   // Get all screenshots
   ipcMain.handle(
     Channel.REQUEST_RECENT_LOGS,
-    async (_, options = {} as IPaginationOptions) => {
+    async (_, options = {} as IPaginationOptions<ITimeLog>) => {
       const {
         page = 1,
         limit = 10,

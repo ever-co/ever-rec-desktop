@@ -1,16 +1,23 @@
-import { ITimelineItem } from '@ever-co/shared-utils';
-import { createActionGroup, props } from '@ngrx/store';
+import {
+  IPaginationOptions,
+  IPaginationResponse,
+  IResizeEvent,
+  ITimelineFrame,
+} from '@ever-co/shared-utils';
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
-export const TimelineActions = createActionGroup({
+export const timelineActions = createActionGroup({
   source: 'Timeline',
   events: {
-    'Timeline Add Item': props<{ item: ITimelineItem }>(),
-    'Timeline Remove Item': props<{ item: ITimelineItem }>(),
-    'Timeline Update Item': props<{ item: ITimelineItem }>(),
+    'Load Frames': props<IPaginationOptions<ITimelineFrame>>(),
+    'Load Frames Success': props<IPaginationResponse<ITimelineFrame>>(),
+    'Load Frames Failure': props<{ error: string }>(),
 
-    'Timeline Reorder Items': props<{ items: ITimelineItem[] }>(),
+    'Seek To': props<{ currentTime: number }>(),
+    'Toggle Playback': emptyProps(),
+    'Update Current Time': props<{ currentTime: number }>(),
 
-    'Timeline Move Cursor': props<{ position: number }>(),
-    'Timeline Move Cursor To Item': props<{ item: ITimelineItem }>(),
+    'Resize Timeline': props<IResizeEvent>(),
+    'Cursor Position': props<{ position: number }>(),
   },
 });

@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { NotificationService } from '@ever-co/notification-data-access';
 import { LocalStorageService } from '@ever-co/shared-service';
-import { IPaginationOptions } from '@ever-co/shared-utils';
+import { IPaginationOptions, IScreenshotMetadataStatistic } from '@ever-co/shared-utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { from, of } from 'rxjs';
@@ -134,7 +134,7 @@ export class ScreenshotEffects {
       ),
       mergeMap((options) =>
         from(
-          this.electronService.getStatistics(options as IPaginationOptions)
+          this.electronService.getStatistics(options as IPaginationOptions<IScreenshotMetadataStatistic>)
         ).pipe(
           map(({ hasNext, count, data }) =>
             screenshotActions.getScreenshotsStatisticsSuccess({

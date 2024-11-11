@@ -19,7 +19,7 @@ export function crudVideoEvents() {
   // Get all screenshots
   ipcMain.handle(
     Channel.REQUEST_RECENT_VIDEOS,
-    async (_, options = {} as IPaginationOptions) => {
+    async (_, options = {} as IPaginationOptions<IVideo>) => {
       const {
         page = 1,
         limit = 10,

@@ -57,7 +57,7 @@ export class ScreenshotMetadataService {
   }
 
   public static async statistics(
-    options: IPaginationOptions = {}
+    options: IPaginationOptions<IScreenshotMetadataStatistic> = {}
   ): Promise<IPaginationResponse<IScreenshotMetadataStatistic>> {
     const {
       page = 1,
