@@ -34,7 +34,6 @@ import {
   ITimeLog,
   ITimeLogStatistics,
 } from '@ever-co/shared-utils';
-import { TimelineContainerComponent } from '@ever-co/timeline-feature';
 import {
   selectTimeLogState,
   timeLogActions,
@@ -52,6 +51,7 @@ import {
   tap,
   withLatestFrom,
 } from 'rxjs';
+import { TimesheetViewComponent } from '../timesheet-view/timesheet-view.component';
 
 @Component({
   selector: 'lib-timesheet-feature',
@@ -290,9 +290,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
           )
         ),
         concatMap(() =>
-          this.matDialog
-            .open(TimelineContainerComponent)
-            .afterClosed()
+          this.matDialog.open(TimesheetViewComponent).afterClosed()
         ),
         takeUntil(this.destroy$)
       )
