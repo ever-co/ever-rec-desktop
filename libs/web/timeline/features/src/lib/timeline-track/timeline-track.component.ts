@@ -23,7 +23,7 @@ import {
   timelineActions,
 } from '@ever-co/timeline-data-access';
 import { Store } from '@ngrx/store';
-import { distinctUntilChanged, filter, map, Observable, tap } from 'rxjs';
+import { distinctUntilChanged, filter, map, Observable, take, tap } from 'rxjs';
 import { TimelineItemComponent } from '../timeline-item/timeline-item.component';
 
 @Component({
@@ -55,11 +55,6 @@ export class TimelineTrackComponent implements OnInit, AfterViewInit {
     this.timeline$
       .pipe(
         filter(({ player }) => player.isPlaying),
-        map(({ cursor, track }) => ({ cursor, track })),
-        distinctUntilChanged(
-          (curr, prev) =>
-            curr.cursor === prev.cursor && curr.track === prev.track
-        ),
         tap(({ cursor, track }) => {
           const width = track.config.frame.width * track.count;
           this.track.scroll({
@@ -116,7 +111,22 @@ export class TimelineTrackComponent implements OnInit, AfterViewInit {
     const frame = selectedFrameIsCurrentFrame ? null : selectedFrame;
 
     this.frame = frame;
-    this.store.dispatch(timelineActions.selectFrame({ frame }));
+    this.timeline$
+      .pipe(
+        take(1),
+        tap(({ track: { config, count, frames } }) => {
+          if (!this.frame) return;
+          const width = config.frame.width * count;
+          const scrollWidth = width - this.track.clientWidth;
+          const position =
+            frames.findIndex((frame) => frame.id === this.frame?.id) / count;
+          this.track.scroll({
+            left: scrollWidth * position,
+            behavior: 'smooth',
+          });
+        })
+      )
+      .subscribe();
   }
 
   public onTrackResize(event: IResizeEvent): void {
@@ -135,14 +145,25 @@ export class TimelineTrackComponent implements OnInit, AfterViewInit {
   }
 
   public onScroll(event: Event) {
-    const element = event.target as HTMLElement;
-    const scrollLeft = element.scrollLeft;
-    const scrollWidth = element.scrollWidth;
-    this.store.dispatch(
-      timelineActions.cursorPosition({
-        position: (scrollLeft / scrollWidth) * 100,
-      })
-    );
+    this.timeline$
+      .pipe(
+        take(1),
+        tap(({ track: { config, count } }) => {
+          const element = event.target as HTMLElement;
+          const scrollLeft = element.scrollLeft;
+          const width = config.frame.width * count;
+          const scrollWidth = width - this.track.clientWidth;
+
+          const position = (scrollLeft * 100) / scrollWidth;
+
+          this.store.dispatch(
+            timelineActions.cursorPosition({
+              position: Math.max(0, Math.min(100, position)),
+            })
+          );
+        })
+      )
+      .subscribe();
   }
 
   public loadFrames() {

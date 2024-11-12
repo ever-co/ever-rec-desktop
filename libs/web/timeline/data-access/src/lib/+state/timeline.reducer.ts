@@ -79,10 +79,6 @@ export const reducer = createReducer(
 
   on(timelineActions.seekTo, (state, { currentTime }) => ({
     ...state,
-    player: {
-      ...state.player,
-      currentTime,
-    },
     cursor: {
       ...state.cursor,
       position: (currentTime / state.player.duration) * 100,
@@ -125,12 +121,13 @@ export const reducer = createReducer(
       ...state.track,
       frame,
     },
-    // cursor: {
-    //   ...state.cursor,
-    // position: frame
-    //   ? (state.track.frames.indexOf(frame) / state.track.count) * 100
-    //   : state.cursor.position,
-    // },
+    player: {
+      ...state.player,
+      currentTime: frame
+        ? (state.track.frames.indexOf(frame) / state.track.count) *
+          state.player.duration
+        : state.player.currentTime,
+    },
   })),
 
   on(timelineActions.loadLastVideo, (state, { video }) => ({
