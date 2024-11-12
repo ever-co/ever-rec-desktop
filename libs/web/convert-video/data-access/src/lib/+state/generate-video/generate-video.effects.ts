@@ -75,7 +75,7 @@ export class GenerateVideoEffects {
         return new Promise<Action<string>>((resolve) => {
           this.convertVideoElectronService.onError((error) => {
             this.notifcationService.show(error, 'error');
-            resolve(generateVideoActions.triggerError({ error }))
+            resolve(generateVideoActions.triggerError({ error }));
           });
         });
       }),
@@ -131,7 +131,12 @@ export class GenerateVideoEffects {
       ofType(generateVideoActions.finish),
       mergeMap(({ video }) => {
         return this.storageService.setItem<IVideo>(this.KEY, video).pipe(
-          tap(() => this.notifcationService.show('Video generation complete.', 'success')),
+          tap(() =>
+            this.notifcationService.show(
+              'Video generation complete.',
+              'success'
+            )
+          ),
           map(() => generateVideoActions.finishSuccess()),
           catchError((error) => of(generateVideoActions.failure({ error })))
         );
@@ -145,6 +150,18 @@ export class GenerateVideoEffects {
       mergeMap(() => {
         return this.storageService.getItem<IVideo>(this.KEY).pipe(
           map((video) => generateVideoActions.loadLastVideoSuccess({ video })),
+          catchError((error) => of(generateVideoActions.failure({ error })))
+        );
+      })
+    )
+  );
+
+  onResetLastVideo$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(generateVideoActions.reset),
+      mergeMap(() => {
+        return this.storageService.removeItem(this.KEY).pipe(
+          map(() => generateVideoActions.resetSuccess()),
           catchError((error) => of(generateVideoActions.failure({ error })))
         );
       })

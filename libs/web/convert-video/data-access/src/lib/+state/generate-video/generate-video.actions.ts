@@ -21,5 +21,6 @@ export const generateVideoActions = createActionGroup({
     'Load Last Video': emptyProps(),
     'Load Last Video Success': props<{ video: IVideo | null }>(),
     Reset: emptyProps(),
+    'Reset Success': emptyProps(),
   },
 });
