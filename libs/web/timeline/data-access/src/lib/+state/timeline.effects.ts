@@ -12,7 +12,13 @@ export class TimelineEffects {
     this.actions$.pipe(
       ofType(timelineActions.loadFrames),
       switchMap((action) =>
-        from(this.frameService.getAllScreenshots(action)).pipe(
+        from(
+          this.frameService.getAllScreenshots({
+            ...action,
+            sortField: 'createdAt',
+            sortOrder: 'ASC',
+          })
+        ).pipe(
           map((frames) => timelineActions.loadFramesSuccess(frames)),
           catchError((error) =>
             of(

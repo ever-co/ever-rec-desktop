@@ -28,6 +28,8 @@ export function crudScreeshotEvents() {
         start = currentDay().start,
         end = currentDay().end,
         where = {},
+        sortField = 'createdAt',
+        sortOrder = 'DESC',
       } = options;
 
       const [data, count] = await ScreenshotService.findAndCount({
@@ -35,7 +37,7 @@ export function crudScreeshotEvents() {
           createdAt: Between(start, end),
           ...where,
         },
-        order: { createdAt: 'DESC' },
+        order: { [`${sortField}`]: sortOrder },
         relations: ['metadata'],
         skip: (page - 1) * limit,
         take: limit,
@@ -51,21 +53,18 @@ export function crudScreeshotEvents() {
     return ScreenshotService.findOne(options);
   });
 
-  ipcMain.handle(
-    Channel.CHART_LINE_DATA,
-    (_, timeSlot: TimeSlot) => {
-      switch (timeSlot) {
-        case 'minute':
-          return ScreenshotService.groupScreenshotsByMinute();
-        case 'tenMinutes':
-          return ScreenshotService.groupScreenshotsByTenMinutes();
-        case 'hour':
-          return ScreenshotService.groupScreenshotsByHour();
-        default:
-          return [];
-      }
+  ipcMain.handle(Channel.CHART_LINE_DATA, (_, timeSlot: TimeSlot) => {
+    switch (timeSlot) {
+      case 'minute':
+        return ScreenshotService.groupScreenshotsByMinute();
+      case 'tenMinutes':
+        return ScreenshotService.groupScreenshotsByTenMinutes();
+      case 'hour':
+        return ScreenshotService.groupScreenshotsByHour();
+      default:
+        return [];
     }
-  );
+  });
 
   // searching
   ipcMain.handle(
