@@ -62,6 +62,8 @@ export const reducer = createReducer(
     ...state,
     video: video ?? state.video,
   })),
+
+  on(generateVideoActions.reset, () => initialState)
 );
 
 export const generateVideoFeature = createFeature({

@@ -46,6 +46,13 @@ export class TimelineEffects {
     )
   );
 
+  reset$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(timelineActions.resetTimeline),
+      map(() => generateVideoActions.reset())
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private readonly frameService: ScreenshotElectronService

@@ -283,6 +283,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       .pipe(
         take(1),
         filter(Boolean),
+        tap(() => this.store.dispatch(generateVideoActions.reset())),
         withLatestFrom(this.store.select(selectSettingState)),
         tap(([, { videoConfig: config }]) =>
           this.store.dispatch(

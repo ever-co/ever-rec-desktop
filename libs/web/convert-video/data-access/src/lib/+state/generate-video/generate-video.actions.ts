@@ -20,5 +20,6 @@ export const generateVideoActions = createActionGroup({
     'Trigger Error': props<{ error: string }>(),
     'Load Last Video': emptyProps(),
     'Load Last Video Success': props<{ video: IVideo | null }>(),
+    Reset: emptyProps(),
   },
 });
