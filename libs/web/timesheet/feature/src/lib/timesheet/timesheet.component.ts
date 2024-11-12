@@ -14,7 +14,6 @@ import {
   selectGenerateVideoState,
   selectSettingState,
 } from '@ever-co/convert-video-data-access';
-import { TimelineComponent } from '@ever-co/convert-video-feature';
 import {
   ActionButtonGroupComponent,
   ConfirmationDialogService,
@@ -35,6 +34,7 @@ import {
   ITimeLog,
   ITimeLogStatistics,
 } from '@ever-co/shared-utils';
+import { TimelineContainerComponent } from '@ever-co/timeline-feature';
 import {
   selectTimeLogState,
   timeLogActions,
@@ -291,7 +291,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
         ),
         concatMap(() =>
           this.matDialog
-            .open(TimelineComponent)
+            .open(TimelineContainerComponent)
             .afterClosed()
         ),
         takeUntil(this.destroy$)

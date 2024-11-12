@@ -19,7 +19,6 @@ const navigationItems = [
   { title: 'My Library', icon: 'video_library', route: '/library' },
   { title: 'Activities', icon: 'trending_up', route: '/activities' },
   { title: 'Timeline', icon: 'web_stories', route: '/timesheet' },
-  { title: 'Test', icon: 'web_stories', route: '/timeline' },
   { title: 'Settings', icon: 'settings', route: '/settings' }
 ];
 
