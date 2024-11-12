@@ -130,13 +130,6 @@ export const reducer = createReducer(
       ...state.track,
       frame,
     },
-    player: {
-      ...state.player,
-      currentTime: frame
-        ? (state.track.frames.indexOf(frame) / state.track.count) *
-          state.player.duration
-        : state.player.currentTime,
-    },
   })),
 
   on(timelineActions.loadLastVideo, (state, { video }) => ({

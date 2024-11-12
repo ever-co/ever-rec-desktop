@@ -124,6 +124,9 @@ export class TimelineTrackComponent implements OnInit, AfterViewInit {
             left: scrollWidth * position,
             behavior: 'smooth',
           });
+          this.store.dispatch(
+            timelineActions.selectFrame({ frame: this.frame })
+          );
           if (scrollWidth < 1) {
             this.store.dispatch(
               timelineActions.cursorPosition({

@@ -1,1 +1,18 @@
-<p>timeline-preview works!</p>
+<div
+  class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center"
+>
+  <div class="bg-white rounded-[2rem] p-4 shadow-xl xl:w-[60%] md:w-[72%]">
+    <button
+      class="absolute top-2 right-2 text-gray-300 hover:text-gray-100"
+      (click)="close()"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+    <div class="flex flex-col items-center justify-center h-full">
+      <lib-screenshot
+        [data]="frame$ | async"
+        class="w-full h-full"
+      ></lib-screenshot>
+    </div>
+  </div>
+</div>

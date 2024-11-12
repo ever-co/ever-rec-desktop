@@ -11,6 +11,8 @@
     [src]="frame.metadata?.icon"
     alt="icon"
     libIconFallback
+    libClickHandler
+    (doubleClick)="showPreview($event)"
   />
 </div>
 }

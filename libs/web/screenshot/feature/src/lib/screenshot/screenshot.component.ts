@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
@@ -86,6 +86,20 @@ export class ScreenshotComponent implements OnInit {
         }
       })
     );
+    if (this.data) {
+      this.screenshot$ = new Observable((observer) => observer.next(this.data));
+    }
+  }
+
+  private _data!: IScreenshot | null;
+
+  @Input()
+  public get data(): IScreenshot | null {
+    return this._data;
+  }
+
+  public set data(value: IScreenshot | null) {
+    this._data = value;
   }
 
   public async delete(screenshot: IScreenshot) {
@@ -93,7 +107,7 @@ export class ScreenshotComponent implements OnInit {
       this.confirationDialogService.open({
         title: 'Delete Screenshot',
         message: 'Are you sure you want to delete this screenshot?',
-        variant: 'danger'
+        variant: 'danger',
       })
     );
     if (isConfirmed) {

@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {
+  ClickHandlerDirective,
   IconFallbackDirective,
   ResizeDirective,
 } from '@ever-co/shared-service';
@@ -12,6 +14,7 @@ import {
 } from '@ever-co/timeline-data-access';
 import { Store } from '@ngrx/store';
 import { map, Observable, take } from 'rxjs';
+import { TimelinePreviewComponent } from '../timeline-preview/timeline-preview.component';
 
 @Component({
   selector: 'lib-timeline-item',
@@ -21,6 +24,7 @@ import { map, Observable, take } from 'rxjs';
     MatTooltipModule,
     IconFallbackDirective,
     ResizeDirective,
+    ClickHandlerDirective,
   ],
   templateUrl: './timeline-item.component.html',
   styleUrl: './timeline-item.component.scss',
@@ -29,7 +33,10 @@ import { map, Observable, take } from 'rxjs';
 export class TimelineItemComponent {
   @Input() frame!: ITimelineFrame;
 
-  constructor(private readonly store: Store) {}
+  constructor(
+    private readonly store: Store,
+    private readonly dialog: MatDialog
+  ) {}
 
   public formatTooltipMessage(frame: ITimelineFrame): string {
     return `${frame.metadata?.name || 'frame'} - ${moment(
@@ -42,6 +49,13 @@ export class TimelineItemComponent {
       take(1),
       map((state) => state.track.config.frame.width)
     );
+  }
+
+  public showPreview(event: Event) {
+    event.stopPropagation();
+    this.dialog.open(TimelinePreviewComponent, {
+      minWidth: '420px'
+    });
   }
 
   public onResize(event: IResizeEvent) {
