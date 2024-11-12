@@ -1,4 +1,7 @@
+import { FindOneOptions } from 'typeorm';
+import { IBase } from './base.interface';
 import { IScreenshot } from './screenshot.interface';
+import { ITimeLog } from './time-log.interface';
 import { IVideo } from './video.interface';
 
 // Enhanced interfaces
@@ -50,4 +53,16 @@ export interface ITimelineState {
 export interface IResizeEvent {
   width: number;
   height: number;
+}
+
+export interface ITimeline extends IBase {
+  video?: IVideo;
+  videoId?: IVideo['id'];
+  timeLog?: ITimeLog;
+  timeLogId?: ITimeLog['id'];
+}
+
+export interface ITimelineService {
+  save(input: Partial<ITimeline>): Promise<ITimeline>;
+  findOne(options: FindOneOptions): Promise<ITimeline>;
 }

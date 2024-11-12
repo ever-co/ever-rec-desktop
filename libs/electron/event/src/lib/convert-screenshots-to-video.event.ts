@@ -1,5 +1,6 @@
 import {
   ScreenshotService,
+  TimelineService,
   TimeLogService,
   VideoService,
 } from '@ever-co/electron-database';
@@ -40,6 +41,7 @@ export function convertScreenshotsToVideoEvent() {
       const splitter = new BatchSplitter();
       const videoService = new VideoService();
       const timeLogService = new TimeLogService();
+      const timelineService = new TimelineService();
 
       let timeLog: ITimeLog | null;
 
@@ -51,6 +53,32 @@ export function convertScreenshotsToVideoEvent() {
 
       let screenshots: IScreenshot[] = [];
       let videos: IVideo[] = [];
+
+      if (isTimeLine) {
+        try {
+          const video = await videoService.findOne({
+            where: {
+              timelines: {
+                timeLogId,
+              },
+            },
+          });
+
+          if (video) {
+            logger.info('Timeline video found');
+            event.reply(Channel.SCREESHOTS_CONVERTED, video);
+            return;
+          } else {
+            logger.info('Timeline video not found');
+          }
+        } catch (error) {
+          logger.error('Error finding timeline video:', error);
+          return event.reply(
+            Channel.CANCEL_CONVERSION,
+            'Error finding timeline video'
+          );
+        }
+      }
 
       if (screenshotIds.length === 0 && videoIds.length === 0 && !isTimeLine) {
         screenshots = await ScreenshotService.findAll({
@@ -143,7 +171,8 @@ export function convertScreenshotsToVideoEvent() {
         FileManager,
         Channel,
         logger,
-        videoService
+        videoService,
+        timelineService
       );
 
       if (screenshotsSize > 0) {
@@ -156,7 +185,7 @@ export function convertScreenshotsToVideoEvent() {
           index,
         }));
 
-        await videoConversionService.combineVideos(batches, videos);
+        await videoConversionService.combineVideos(batches, videos, isTimeLine);
       }
     }
   );

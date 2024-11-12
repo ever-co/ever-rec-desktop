@@ -1,5 +1,6 @@
 import type {
   IScreenshot,
+  ITimeline,
   ITimeLog,
   IVideo,
   IVideoMetadata,
@@ -16,6 +17,7 @@ import {
 import { Base } from './base.entity';
 import { Screenshot } from './screenshot.entity';
 import { TimeLog } from './time-log.entity';
+import { Timeline } from './timeline.entity';
 import { VideoMetadata } from './video-metadata.entity';
 
 @Entity('video')
@@ -43,6 +45,12 @@ export class Video extends Base implements IVideo {
     onDelete: 'SET NULL',
   })
   screenshots?: Relation<IScreenshot[]>;
+
+  @OneToMany(() => Timeline, (timeline) => timeline.video, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  timelines?: Relation<ITimeline[]>;
 
   @OneToOne(() => VideoMetadata, (metadata) => metadata.video, {
     nullable: true,

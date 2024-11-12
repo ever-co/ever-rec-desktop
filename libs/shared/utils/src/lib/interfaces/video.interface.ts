@@ -2,6 +2,7 @@ import { FindManyOptions, FindOneOptions } from 'typeorm';
 import { IBase } from './base.interface';
 import type { IScreenshot } from './screenshot.interface';
 import { ITimeLog } from './time-log.interface';
+import type { ITimeline } from './timeline.interface';
 import { IVideoConfig } from './video.config';
 
 export interface IVideo extends IBase {
@@ -12,6 +13,7 @@ export interface IVideo extends IBase {
   screenshots?: IScreenshot[];
   metadata?: IVideoMetadata;
   timeLog?: ITimeLog;
+  timelines?: ITimeline[];
 }
 
 export interface IVideoMetadata extends IBase, Partial<IVideoConfig> {

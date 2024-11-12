@@ -4,6 +4,7 @@ import {
   ILoggable,
   ILogger,
   IScreenshot,
+  ITimelineService,
   IVideo,
   IVideoConfig,
   IVideoService,
@@ -32,7 +33,8 @@ export class VideoConversionService implements ILoggable {
     private fileManager: typeof FileManager,
     private channel: typeof Channel,
     public logger: ILogger,
-    private videoService: IVideoService
+    private videoService: IVideoService,
+    private timelineService: ITimelineService
   ) {}
 
   /**
@@ -261,14 +263,17 @@ export class VideoConversionService implements ILoggable {
     }
   }
 
-
   /**
    * Combine the generated video batches into a single final video.
    * @param batchVideo - The array of batch video objects.
    * @param chunks - The array of chunk objects.
    * @returns A promise that resolves when the video combining is complete.
    */
-  public async combineVideos(batchVideo: IBatchVideo[], chunks: IVideo[]): Promise<void> {
+  public async combineVideos(
+    batchVideo: IBatchVideo[],
+    chunks: IVideo[],
+    isTimeline = false
+  ): Promise<void> {
     const finalOutputPath = this.fileManager.createFilePathSync(
       'videos',
       `output-${Date.now()}.mp4`
@@ -329,6 +334,10 @@ export class VideoConversionService implements ILoggable {
             where: { id },
             relations: ['metadata'],
           });
+
+          if (isTimeline) {
+            await this.timelineService.save({ videoId: id, timeLogId });
+          }
 
           this.logger.info(`Final video output pathname: ${message}`);
           this.event.reply(this.channel.SCREESHOTS_CONVERTED, video);
