@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { ITimelineCursor } from '@ever-co/shared-utils';
+import { ITimelineCursor, ITimelineState } from '@ever-co/shared-utils';
 import { selectTimelineState } from '@ever-co/timeline-data-access';
 import { Store } from '@ngrx/store';
 import {
@@ -26,11 +26,21 @@ export class TimelineCursorComponent implements OnDestroy {
   constructor(private readonly store: Store) {}
 
   public get position$(): Observable<number> {
-    return this.cursor$.pipe(
-      map(({ position }) => position),
-      distinctUntilChanged(),
-      takeUntil(this.destroy$)
-    );
+    return this.store
+      .select(selectTimelineState)
+      .pipe(
+        map(this.compute.bind(this)),
+        distinctUntilChanged(),
+        takeUntil(this.destroy$)
+      );
+  }
+
+  private compute({ cursor, track }: ITimelineState): number {
+    const offset =
+      ((track.config.frame.width + cursor.width) * 100) /
+      (track.config.track.width * 2);
+    const position = cursor.position + offset;
+    return Math.max(offset, Math.min(100 - offset, position));
   }
 
   private get cursor$(): Observable<ITimelineCursor> {

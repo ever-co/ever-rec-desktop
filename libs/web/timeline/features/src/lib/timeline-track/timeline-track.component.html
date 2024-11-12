@@ -5,11 +5,12 @@
   [threshold]="0.75"
   (scrolled)="moreFrames()"
   (scroll)="onScroll($event)"
-  class="flex overflow-auto shadow-inner bg-indigo-50 p-2 pl-0 pr-0 rounded-lg"
+  class="flex overflow-auto w-full shadow-inner bg-indigo-50 p-2 pl-0 pr-0 rounded-lg"
   #trackContainer
 >
   @for (frame of frames$ | async; track frame.id) {
   <lib-timeline-item
+    class="w-full"
     (click)="onSelect(frame)"
     [frame]="frame"
   ></lib-timeline-item>

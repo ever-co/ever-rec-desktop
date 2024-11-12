@@ -115,6 +115,20 @@ export const reducer = createReducer(
     },
   })),
 
+  on(timelineActions.resizeTimelineItem, (state, { width, height }) => ({
+    ...state,
+    track: {
+      ...state.track,
+      config: {
+        ...state.track.config,
+        item: {
+          width,
+          height,
+        },
+      },
+    },
+  })),
+
   on(timelineActions.selectFrame, (state, { frame }) => ({
     ...state,
     track: {

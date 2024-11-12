@@ -5,7 +5,7 @@ import {
   ITimelineFrame,
   IVideo,
 } from '@ever-co/shared-utils';
-import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import { createActionGroup, props } from '@ngrx/store';
 
 export const timelineActions = createActionGroup({
   source: 'Timeline',
@@ -23,6 +23,7 @@ export const timelineActions = createActionGroup({
     'Update Current Time': props<{ currentTime: number }>(),
 
     'Resize Timeline': props<IResizeEvent>(),
+    'Resize Timeline Item': props<IResizeEvent>(),
     'Cursor Position': props<{ position: number }>(),
   },
 });
