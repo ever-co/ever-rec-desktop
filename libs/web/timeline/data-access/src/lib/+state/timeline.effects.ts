@@ -14,9 +14,9 @@ export class TimelineEffects {
       switchMap((action) =>
         from(
           this.frameService.getAllScreenshots({
-            ...action,
             sortField: 'createdAt',
             sortOrder: 'ASC',
+            ...action,
           })
         ).pipe(
           map((frames) => timelineActions.loadFramesSuccess(frames)),

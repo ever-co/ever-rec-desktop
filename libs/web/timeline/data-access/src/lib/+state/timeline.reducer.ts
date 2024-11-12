@@ -56,12 +56,7 @@ export const reducer = createReducer(
     track: {
       ...state.track,
       loading: false,
-      frames: mergePaginatedFrames(
-        state.track.frames,
-        data,
-        state.track.page,
-        state.track.perPage
-      ),
+      frames: mergePaginatedFrames(state.track.frames, data),
       count,
       hasNext,
       error: '',
@@ -165,7 +160,9 @@ export const reducer = createReducer(
       ...state.cursor,
       position: state.player.isPlaying ? state.cursor.position : position,
     },
-  }))
+  })),
+
+  on(timelineActions.resetTimeline, () => ({ ...initialState }))
 );
 
 export const timelineFeature = createFeature({
@@ -176,11 +173,8 @@ export const timelineFeature = createFeature({
 // Helper function to merge new frames with existing ones
 function mergePaginatedFrames(
   existingFrames: ITimelineFrame[],
-  newFrames: ITimelineFrame[],
-  pageIndex: number,
-  framesPerPage: number
+  newFrames: ITimelineFrame[]
 ): ITimelineFrame[] {
-  const startIndex = pageIndex * framesPerPage;
   const result = [
     ...new Map(
       [...existingFrames, ...newFrames].map((item) => [item.id, item])
