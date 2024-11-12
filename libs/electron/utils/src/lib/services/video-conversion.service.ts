@@ -327,12 +327,7 @@ export class VideoConversionService implements ILoggable {
 
           const video = await this.videoService.findOne({
             where: { id },
-            relations: ['screenshots', 'screenshots.metadata', 'metadata'],
-            order: {
-              screenshots: {
-                createdAt: 'ASC',
-              },
-            },
+            relations: ['metadata'],
           });
 
           this.logger.info(`Final video output pathname: ${message}`);
