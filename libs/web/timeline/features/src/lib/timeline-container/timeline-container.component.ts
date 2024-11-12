@@ -1,7 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { generateVideoActions } from '@ever-co/convert-video-data-access';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import { selectGenerateVideoState } from '@ever-co/convert-video-data-access';
+import { timelineActions } from '@ever-co/timeline-data-access';
 import { Store } from '@ngrx/store';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { TimelineCursorComponent } from '../timeline-cursor/timeline-cursor.component';
 import { TimelineTrackComponent } from '../timeline-track/timeline-track.component';
 import { TimelineVideoComponent } from '../timeline-video/timeline-video.component';
@@ -19,10 +26,25 @@ import { TimelineVideoComponent } from '../timeline-video/timeline-video.compone
   styleUrl: './timeline-container.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TimelineContainerComponent implements OnInit {
+export class TimelineContainerComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   constructor(private readonly store: Store) {}
 
   ngOnInit(): void {
-    this.store.dispatch(generateVideoActions.loadLastVideo());
+    this.store
+      .select(selectGenerateVideoState)
+      .pipe(
+        tap((state) =>
+          this.store.dispatch(timelineActions.loadLastVideo(state))
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

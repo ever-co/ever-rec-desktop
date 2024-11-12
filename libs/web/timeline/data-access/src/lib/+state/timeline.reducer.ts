@@ -137,7 +137,17 @@ export const reducer = createReducer(
     player: {
       ...state.player,
       video: video ?? ({} as IVideo),
+      currentTime: 0,
       duration: video?.metadata?.duration ?? 0,
+    },
+    track: {
+      ...state.track,
+      frames: [],
+      frame: null,
+    },
+    cursor: {
+      ...state.cursor,
+      position: 0,
     },
   })),
 
