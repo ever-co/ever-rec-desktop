@@ -26,7 +26,7 @@ export class TimelineVideoStrategy implements IConversionStrategy {
     private splitter: ISplitterStrategy
   ) {}
 
-  async execute(event: Electron.IpcMainEvent) {
+  public async execute(event: Electron.IpcMainEvent) {
     this.logger.info('Handling timeline video');
     try {
       let video: IVideo | null = await this.videoService.findOne({
