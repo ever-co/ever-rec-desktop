@@ -1,3 +1,6 @@
+import { IScreenshot } from './screenshot.interface';
+import { IVideo } from './video.interface';
+
 export interface IVideoConfig {
   frameRate: number;
   resolution: string;
@@ -17,4 +20,9 @@ export interface IVideoConvertPayload {
   videoIds?: string[];
   config: IVideoConfig;
   isTimeLine?: boolean;
+}
+
+export interface IConversionPayload extends IVideoConvertPayload {
+  screenshots?: IScreenshot[];
+  videos?: IVideo[];
 }
