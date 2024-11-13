@@ -63,6 +63,35 @@ export function convertScreenshotsToVideoEvent() {
               },
             },
           });
+          if (!video) {
+            const [data, count] = await videoService.findAndCount({
+              where: {
+                timeLog: {
+                  id: timeLogId,
+                },
+                parent: {
+                  id: IsNull(),
+                },
+              },
+            });
+
+            const video = count === 1 ? data[0] : null;
+
+            console.log('Event', count, video);
+
+            if (video) {
+              logger.info(
+                'Assigning video',
+                video.id,
+                'to timeline',
+                timeLogId
+              );
+              await timelineService.save({
+                videoId: video.id,
+                timeLogId,
+              });
+            }
+          }
 
           if (video) {
             logger.info('Timeline video found');
@@ -126,6 +155,9 @@ export function convertScreenshotsToVideoEvent() {
           where: {
             timeLog: {
               id: timeLogId,
+            },
+            parent: {
+              id: IsNull(),
             },
           },
           order: { createdAt: 'ASC' },
