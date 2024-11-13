@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   HostListener,
@@ -37,6 +38,7 @@ import {
   imports: [CommonModule, MatTooltipModule, MatIconModule],
   templateUrl: './timeline-video.component.html',
   styleUrl: './timeline-video.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimelineVideoComponent
   implements OnInit, OnDestroy, AfterViewInit

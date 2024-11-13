@@ -23,7 +23,16 @@ import {
   timelineActions,
 } from '@ever-co/timeline-data-access';
 import { Store } from '@ngrx/store';
-import { distinctUntilChanged, filter, map, Observable, take, tap } from 'rxjs';
+import {
+  distinctUntilChanged,
+  filter,
+  map,
+  Observable,
+  Subject,
+  take,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import { TimelineItemComponent } from '../timeline-item/timeline-item.component';
 
 @Component({
@@ -42,6 +51,7 @@ import { TimelineItemComponent } from '../timeline-item/timeline-item.component'
 export class TimelineTrackComponent implements OnInit, AfterViewInit {
   @ViewChild('trackContainer')
   private trackContainer!: ElementRef<HTMLDivElement>;
+  private destroy$ = new Subject<void>();
 
   videoId!: string;
   frame: ITimelineFrame | null = null;
@@ -61,25 +71,27 @@ export class TimelineTrackComponent implements OnInit, AfterViewInit {
             left: width * (cursor.position / 100),
             behavior: 'smooth',
           });
-        })
+        }),
+        takeUntil(this.destroy$)
       )
       .subscribe();
   }
   ngOnInit(): void {
     this.source$
       .pipe(
-        tap((videoId) => {
-          this.videoId = videoId;
-          this.loadFrames();
-        })
+        filter(Boolean),
+        distinctUntilChanged(),
+        tap((videoId) => (this.videoId = videoId)),
+        takeUntil(this.destroy$)
       )
-      .subscribe();
+      .subscribe(() => this.loadFrames());
     this.track$
       .pipe(
         tap((state) => {
           this.hasNext = state.hasNext;
           this.page = state.page;
-        })
+        }),
+        takeUntil(this.destroy$)
       )
       .subscribe();
   }
@@ -91,18 +103,22 @@ export class TimelineTrackComponent implements OnInit, AfterViewInit {
   private get track$(): Observable<ITimelineTrack> {
     return this.store.select(selectTimelineState).pipe(
       map(({ track }) => track),
-      distinctUntilChanged()
+      distinctUntilChanged(),
+      takeUntil(this.destroy$)
     );
   }
 
   private get timeline$(): Observable<ITimelineState> {
-    return this.store.select(selectTimelineState).pipe(distinctUntilChanged());
+    return this.store
+      .select(selectTimelineState)
+      .pipe(distinctUntilChanged(), takeUntil(this.destroy$));
   }
 
   private get source$(): Observable<string> {
     return this.store.select(selectTimelineState).pipe(
       map(({ player }) => player.video.id),
-      distinctUntilChanged()
+      distinctUntilChanged(),
+      takeUntil(this.destroy$)
     );
   }
 
@@ -176,7 +192,8 @@ export class TimelineTrackComponent implements OnInit, AfterViewInit {
       .subscribe();
   }
 
-  public loadFrames() {
+  public loadFrames(): void {
+    if (!this.videoId) return;
     this.store.dispatch(
       timelineActions.loadFrames({
         page: this.page,
