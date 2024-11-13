@@ -40,6 +40,7 @@ export interface IVideoService {
   findAll(options: FindManyOptions<IVideo>): Promise<IVideo[]>;
   update(id: string, video: Partial<IVideoInput>): Promise<IVideo>;
   findOne(options: FindOneOptions<IVideo>): Promise<IVideo>;
+  findAndCount(options: FindOneOptions<IVideo>): Promise<[IVideo[], number]>;
   findOneById(id: string): Promise<IVideo>;
   delete(id: string): Promise<void>;
   deleteAll(videoIds?: string[]): Promise<void>;
