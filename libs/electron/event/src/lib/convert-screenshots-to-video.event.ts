@@ -62,6 +62,7 @@ export function convertScreenshotsToVideoEvent() {
           logger.info('Time log ID:', timeLogId);
 
           let video: IVideo | null = await videoService.findOne({
+            relations: ['metadata'],
             where: {
               timelines: {
                 timeLogId,
@@ -81,6 +82,7 @@ export function convertScreenshotsToVideoEvent() {
             logger.info('Video not found, searching for one');
 
             const [data, count] = await videoService.findAndCount({
+              relations: ['metadata'],
               where: {
                 timeLog: {
                   id: timeLogId,
