@@ -21,7 +21,7 @@ import {
   IVideoConvertPayload,
 } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
-import { ILike, In, IsNull } from 'typeorm';
+import { ILike, In, IsNull, Not } from 'typeorm';
 
 export function convertScreenshotsToVideoEvent() {
   ipcMain.on(
@@ -54,16 +54,32 @@ export function convertScreenshotsToVideoEvent() {
       let screenshots: IScreenshot[] = [];
       let videos: IVideo[] = [];
 
-      if (isTimeLine) {
+      const assignVideoToTimeline = async () => {
+        if (!isTimeLine) return null;
+        logger.info('Is time line:', isTimeLine);
+
         try {
-          const video = await videoService.findOne({
+          logger.info('Time log ID:', timeLogId);
+
+          let video: IVideo | null = await videoService.findOne({
             where: {
               timelines: {
                 timeLogId,
               },
+              screenshots: {
+                id: Not(IsNull()),
+              },
+              parent: {
+                id: IsNull(),
+              },
             },
           });
-          if (!video) {
+
+          if (video) {
+            logger.info('Video found with ID:', video.id);
+          } else {
+            logger.info('Video not found, searching for one');
+
             const [data, count] = await videoService.findAndCount({
               where: {
                 timeLog: {
@@ -75,9 +91,9 @@ export function convertScreenshotsToVideoEvent() {
               },
             });
 
-            const video = count === 1 ? data[0] : null;
+            logger.info('Number of videos found:', count);
 
-            console.log('Event', count, video);
+            video = count === 1 ? data[0] : null;
 
             if (video) {
               logger.info(
@@ -95,129 +111,146 @@ export function convertScreenshotsToVideoEvent() {
 
           if (video) {
             logger.info('Timeline video found');
-            event.reply(Channel.SCREESHOTS_CONVERTED, video);
-            return;
+            return video;
           } else {
             logger.info('Timeline video not found');
+            return null;
           }
         } catch (error) {
           logger.error('Error finding timeline video:', error);
-          return event.reply(
-            Channel.CANCEL_CONVERSION,
-            'Error finding timeline video'
-          );
+          event.reply(Channel.CANCEL_CONVERSION, error);
+          return null;
         }
-      }
+      };
 
-      if (screenshotIds.length === 0 && videoIds.length === 0 && !isTimeLine) {
-        screenshots = await ScreenshotService.findAll({
-          where: {
-            ...(filter && {
-              metadata: {
-                description: ILike(`%${filter}%`),
-              },
-            }),
-            ...(timeLog && {
-              timeLog: {
-                id: timeLog.id,
-              },
-            }),
-            ...(config.optimized && {
-              video: {
-                id: IsNull(),
-              },
-            }),
-          },
-          order: { createdAt: 'ASC' },
-        });
-      } else if (videoIds.length === 0 && !isTimeLine) {
-        screenshots = await ScreenshotService.findAll({
-          where: {
-            id: In(screenshotIds),
-          },
-          order: { createdAt: 'ASC' },
-        });
-      }
+      const video = await assignVideoToTimeline();
 
-      if (videoIds.length > 0) {
-        videos = await videoService.findAll({
-          relations: ['screenshots'],
-          where: {
-            id: In(videoIds),
-          },
-          order: { createdAt: 'ASC' },
-        });
-      }
+      if (video && isTimeLine) {
+        logger.info('Timeline video found');
+        return event.reply(Channel.SCREESHOTS_CONVERTED, video);
+      } else {
+        logger.info('Timeline video not found');
 
-      if (isTimeLine) {
-        videos = await videoService.findAll({
-          relations: ['screenshots'],
-          where: {
-            timeLog: {
-              id: timeLogId,
-            },
-            parent: {
-              id: IsNull(),
-            },
-          },
-          order: { createdAt: 'ASC' },
-        });
-        if (videos.length === 0) {
+        if (
+          screenshotIds.length === 0 &&
+          videoIds.length === 0 &&
+          !isTimeLine
+        ) {
           screenshots = await ScreenshotService.findAll({
             where: {
-              timeLog: {
-                id: timeLogId,
-              },
+              ...(filter && {
+                metadata: {
+                  description: ILike(`%${filter}%`),
+                },
+              }),
+              ...(timeLog && {
+                timeLog: {
+                  id: timeLog.id,
+                },
+              }),
+              ...(config.optimized && {
+                video: {
+                  id: IsNull(),
+                },
+              }),
+            },
+            order: { createdAt: 'ASC' },
+          });
+        } else if (videoIds.length === 0 && !isTimeLine) {
+          screenshots = await ScreenshotService.findAll({
+            where: {
+              id: In(screenshotIds),
             },
             order: { createdAt: 'ASC' },
           });
         }
-      }
 
-      const screenshotsSize = screenshots.length;
-      const videosSize = videos.length;
-
-      if (screenshotsSize === 0) {
-        logger.info('No screenshots found to convert.');
-        if (videosSize === 0) {
-          logger.info('No videos found to merge.');
-          return event.reply(
-            Channel.CANCEL_CONVERSION,
-            'We cannot proceed to conversion. No screenshots or videos found.'
-          );
+        if (videoIds.length > 0) {
+          videos = await videoService.findAll({
+            relations: ['screenshots'],
+            where: {
+              id: In(videoIds),
+            },
+            order: { createdAt: 'ASC' },
+          });
         }
-      } else {
-        logger.info(`Find ${screenshotsSize} screenshots to convert`);
-      }
 
-      if (videosSize) {
-        logger.info(`Find ${videosSize} videos to merge`);
-      }
+        if (isTimeLine) {
+          videos = await videoService.findAll({
+            relations: ['screenshots'],
+            where: {
+              timeLog: {
+                id: timeLogId,
+              },
+              parent: {
+                id: IsNull(),
+              },
+            },
+            order: { createdAt: 'ASC' },
+          });
+          if (videos.length === 0) {
+            screenshots = await ScreenshotService.findAll({
+              where: {
+                timeLog: {
+                  id: timeLogId,
+                },
+              },
+              order: { createdAt: 'ASC' },
+            });
+          }
+        }
 
-      const videoConversionService = new VideoConversionService(
-        event,
-        screenshots,
-        { ...config, timeLogId },
-        splitter,
-        WorkerFactory,
-        FileManager,
-        Channel,
-        logger,
-        videoService,
-        timelineService
-      );
+        const screenshotsSize = screenshots.length;
+        const videosSize = videos.length;
 
-      if (screenshotsSize > 0) {
-        await videoConversionService.convert();
-      }
+        if (screenshotsSize === 0) {
+          logger.info('No screenshots found to convert.');
+          if (videosSize === 0) {
+            logger.info('No videos found to merge.');
+            return event.reply(
+              Channel.CANCEL_CONVERSION,
+              'We cannot proceed to conversion. No screenshots or videos found.'
+            );
+          }
+        } else {
+          logger.info(`Find ${screenshotsSize} screenshots to convert`);
+        }
 
-      if (videosSize > 0) {
-        const batches: IBatchVideo[] = videos.map((video, index) => ({
-          path: FileManager.decodePath(video.pathname),
-          index,
-        }));
+        if (videosSize) {
+          logger.info(`Find ${videosSize} videos to merge`);
+        }
 
-        await videoConversionService.combineVideos(batches, videos, isTimeLine);
+        const videoConversionService = new VideoConversionService(
+          event,
+          screenshots,
+          { ...config, timeLogId },
+          splitter,
+          WorkerFactory,
+          FileManager,
+          Channel,
+          logger,
+          videoService,
+          timelineService
+        );
+
+        if (screenshotsSize > 1) {
+          await videoConversionService.convert();
+        }
+
+        if (videosSize > 1) {
+          const batches: IBatchVideo[] = videos.map((video, index) => ({
+            path: FileManager.decodePath(video.pathname),
+            index,
+          }));
+
+          await videoConversionService.combineVideos(
+            batches,
+            videos,
+            isTimeLine
+          );
+        } else if (videosSize === 1) {
+          return event.reply(Channel.SCREESHOTS_CONVERTED, videos[0]);
+        }
       }
     }
   );
