@@ -44,7 +44,9 @@ export class ConversionFactory {
         timeLogId,
         videoService,
         timelineService,
-        logger
+        logger,
+        config,
+        splitter
       );
     }
 
