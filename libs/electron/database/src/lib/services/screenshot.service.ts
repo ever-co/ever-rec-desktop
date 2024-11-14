@@ -2,6 +2,7 @@ import {
   IScreenshot,
   IScreenshotChartLine,
   IScreenshotInput,
+  IScreenshotService,
   moment,
 } from '@ever-co/shared-utils';
 import { FindManyOptions, FindOneOptions, In } from 'typeorm';
@@ -9,28 +10,26 @@ import { Screenshot } from '../entities/screenshot.entity';
 import { ScreenshotRepository } from '../repositories/screenshot.repository';
 import { ScreenshotMetadataService } from './screenshot-metadata.service';
 
-export class ScreenshotService {
-  private static readonly repository = ScreenshotRepository.instance;
-  private static readonly metadataService = ScreenshotMetadataService;
+export class ScreenshotService implements IScreenshotService {
+  private readonly repository = ScreenshotRepository.instance;
+  private readonly metadataService = ScreenshotMetadataService;
 
-  public static async save(input: IScreenshotInput): Promise<IScreenshot> {
+  public async save(input: IScreenshotInput): Promise<IScreenshot> {
     const screenshot = new Screenshot();
     screenshot.pathname = input.pathname;
     screenshot.metadata = await this.metadataService.save(input.metadata);
     return this.repository.save(screenshot);
   }
 
-  public static async findAll(
-    options: FindManyOptions
-  ): Promise<IScreenshot[]> {
+  public async findAll(options: FindManyOptions): Promise<IScreenshot[]> {
     return this.repository.find(options);
   }
 
-  public static async findAndCount(options?: FindManyOptions<IScreenshot>) {
+  public async findAndCount(options?: FindManyOptions<IScreenshot>) {
     return this.repository.findAndCount(options);
   }
 
-  public static async update(
+  public async update(
     id: string,
     screenshot: Partial<IScreenshot>
   ): Promise<IScreenshot> {
@@ -38,34 +37,32 @@ export class ScreenshotService {
     return this.findOneById(id);
   }
 
-  public static async updateMany(
+  public async updateMany(
     ids: string[],
     screenshot: Partial<IScreenshot>
   ): Promise<void> {
     await this.repository.update({ id: In(ids) }, screenshot);
   }
 
-  public static async findOne(options: FindOneOptions): Promise<IScreenshot> {
+  public async findOne(options: FindOneOptions): Promise<IScreenshot> {
     return this.repository.findOne(options);
   }
 
-  public static async findOneById(id: string): Promise<IScreenshot> {
+  public async findOneById(id: string): Promise<IScreenshot> {
     return this.repository.findOneBy({ id });
   }
 
-  public static async delete(id: string): Promise<void> {
+  public async delete(id: string): Promise<void> {
     await this.repository.delete({ id });
   }
 
-  public static async deleteAll(screenshotIds?: string[]): Promise<void> {
+  public async deleteAll(screenshotIds?: string[]): Promise<void> {
     await this.repository.delete(
       screenshotIds ? { id: In(screenshotIds) } : {}
     );
   }
 
-  public static async groupScreenshotsByHour(): Promise<
-    IScreenshotChartLine[]
-  > {
+  public async groupScreenshotsByHour(): Promise<IScreenshotChartLine[]> {
     const screenshotsGroupedByHour = await this.repository
       .createQueryBuilder('screenshot')
       .select("strftime('%H', screenshot.createdAt)", 'hour')
@@ -83,9 +80,7 @@ export class ScreenshotService {
     }));
   }
 
-  public static async groupScreenshotsByTenMinutes(): Promise<
-    IScreenshotChartLine[]
-  > {
+  public async groupScreenshotsByTenMinutes(): Promise<IScreenshotChartLine[]> {
     const screenshotsGroupedByTenMinutes = await this.repository
       .createQueryBuilder('screenshot')
       .select("strftime('%Y-%m-%d %H', screenshot.createdAt)", 'date_hour')
@@ -103,18 +98,14 @@ export class ScreenshotService {
 
     return screenshotsGroupedByTenMinutes.map((row) => ({
       timeSlot: moment
-        .utc(
-          `${row.date_hour}:${row.minute_group.toString().padStart(2, '0')}`
-        )
+        .utc(`${row.date_hour}:${row.minute_group.toString().padStart(2, '0')}`)
         .tz(userTimezone)
         .format('H[h]m[m]'),
       count: parseInt(row.count, 10),
     }));
   }
 
-  public static async groupScreenshotsByMinute(): Promise<
-    IScreenshotChartLine[]
-  > {
+  public async groupScreenshotsByMinute(): Promise<IScreenshotChartLine[]> {
     const screenshotsGroupedByMinute = await this.repository
       .createQueryBuilder('screenshot')
       .select("strftime('%Y-%m-%d %H:%M', screenshot.createdAt)", 'date_minute')

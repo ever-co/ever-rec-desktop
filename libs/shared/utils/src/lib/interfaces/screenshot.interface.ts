@@ -43,4 +43,7 @@ export interface IScreenshotService {
   findOneById(id: string): Promise<IScreenshot>;
   delete(id: string): Promise<void>;
   deleteAll(videoIds?: string[]): Promise<void>;
+  groupScreenshotsByHour(): Promise<IScreenshotChartLine[]>;
+  groupScreenshotsByTenMinutes(): Promise<IScreenshotChartLine[]>;
+  groupScreenshotsByMinute(): Promise<IScreenshotChartLine[]>;
 }

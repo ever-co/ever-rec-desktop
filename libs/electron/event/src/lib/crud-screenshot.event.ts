@@ -18,6 +18,7 @@ import { ipcMain } from 'electron';
 import { Between, ILike } from 'typeorm';
 
 export function crudScreeshotEvents() {
+  const screenshotService = new ScreenshotService();
   // Get all screenshots
   ipcMain.handle(
     Channel.REQUEST_SCREENSHOTS,
@@ -32,7 +33,7 @@ export function crudScreeshotEvents() {
         sortOrder = 'DESC',
       } = options;
 
-      const [data, count] = await ScreenshotService.findAndCount({
+      const [data, count] = await screenshotService.findAndCount({
         where: {
           createdAt: Between(start, end),
           ...where,
@@ -50,17 +51,17 @@ export function crudScreeshotEvents() {
 
   // Get one screenshot
   ipcMain.handle(Channel.REQUEST_ONE_SCREENSHOT, async (_, options = {}) => {
-    return ScreenshotService.findOne(options);
+    return screenshotService.findOne(options);
   });
 
   ipcMain.handle(Channel.CHART_LINE_DATA, (_, timeSlot: TimeSlot) => {
     switch (timeSlot) {
       case 'minute':
-        return ScreenshotService.groupScreenshotsByMinute();
+        return screenshotService.groupScreenshotsByMinute();
       case 'tenMinutes':
-        return ScreenshotService.groupScreenshotsByTenMinutes();
+        return screenshotService.groupScreenshotsByTenMinutes();
       case 'hour':
-        return ScreenshotService.groupScreenshotsByHour();
+        return screenshotService.groupScreenshotsByHour();
       default:
         return [];
     }
@@ -72,7 +73,7 @@ export function crudScreeshotEvents() {
     async (_, options = {} as IPaginationOptions<IScreenshot>) => {
       const { page = 1, limit = 10, filter = '' } = options;
 
-      const [data, count] = await ScreenshotService.findAndCount({
+      const [data, count] = await screenshotService.findAndCount({
         relations: ['metadata'],
         ...(filter && {
           where: {
@@ -105,7 +106,7 @@ export function crudScreeshotEvents() {
   ipcMain.handle(
     Channel.REQUEST_DELETE_ONE_SCREENSHOT,
     async (_, screenshot: IScreenshot) => {
-      await ScreenshotService.delete(screenshot.id);
+      await screenshotService.delete(screenshot.id);
       await FileManager.deleteFile(screenshot.pathname);
     }
   );
@@ -119,7 +120,7 @@ export function crudScreeshotEvents() {
         const paths = screenshots.map(({ pathname }) => pathname);
 
         // Delete screenshots from the database
-        await ScreenshotService.deleteAll(ids);
+        await screenshotService.deleteAll(ids);
 
         // Delete files concurrently
         await Promise.all(

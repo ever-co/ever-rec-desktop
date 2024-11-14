@@ -25,6 +25,7 @@ const metadataQuery = new GetScreenShotMetadataQuery();
 const eventManager = EventManager.getInstance();
 let captureInterval: NodeJS.Timeout | null = null;
 const timeLogService = new TimeLogService();
+const screenshotService = new ScreenshotService();
 
 export function captureScreenEvent(): void {
   ipcMain.on(Channel.START_CAPTURE_SCREEN, captureScreen);
@@ -127,7 +128,7 @@ async function createScreenshot(
     },
   };
 
-  return ScreenshotService.save(screenshotData);
+  return screenshotService.save(screenshotData);
 }
 
 async function getSources(source: Source) {

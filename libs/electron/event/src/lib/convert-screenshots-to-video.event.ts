@@ -36,6 +36,7 @@ export function convertScreenshotsToVideoEvent() {
     ) => {
       const videoService = new VideoService();
       const timeLogService = new TimeLogService();
+      const screenshotService = new ScreenshotService();
 
       const timeLog = timeLogId
         ? await timeLogService.findOneById(timeLogId)
@@ -44,12 +45,12 @@ export function convertScreenshotsToVideoEvent() {
       let videos: IVideo[] = [];
 
       if (screenshotIds.length > 0) {
-        screenshots = await ScreenshotService.findAll({
+        screenshots = await screenshotService.findAll({
           where: { id: In(screenshotIds) },
           order: { createdAt: 'ASC' },
         });
       } else if (filter || timeLog) {
-        screenshots = await ScreenshotService.findAll({
+        screenshots = await screenshotService.findAll({
           where: {
             ...(filter && { metadata: { description: ILike(`%${filter}%`) } }),
             ...(timeLog && { timeLog: { id: timeLog.id } }),
@@ -78,10 +79,10 @@ export function convertScreenshotsToVideoEvent() {
 
       const services = {
         videoService,
+        screenshotService,
         fileManager: FileManager,
         splitter: new BatchSplitter(),
         timelineService: new TimelineService(),
-        screenshotService: ScreenshotService,
         logger: new ElectronLogger('Screenshots --> Video'),
       };
 
