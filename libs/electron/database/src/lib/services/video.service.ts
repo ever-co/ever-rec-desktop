@@ -7,10 +7,10 @@ import { TimeLogService } from './time-log.service';
 import { VideoMetadataService } from './video-metadata.service';
 
 export class VideoService implements IVideoService {
-  private readonly repository = VideoRepository.instance;
-  private readonly screenshotService = new ScreenshotService();
   private readonly metadataService = new VideoMetadataService();
+  private readonly screenshotService = new ScreenshotService();
   private readonly timeLogService = new TimeLogService();
+  private readonly repository = VideoRepository.instance;
 
   public async save(input: IVideoInput): Promise<IVideo> {
     if (!input) {
