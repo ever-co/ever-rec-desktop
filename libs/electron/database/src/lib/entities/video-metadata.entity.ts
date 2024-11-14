@@ -5,6 +5,9 @@ import { Video } from './video.entity';
 
 @Entity('video_metadata')
 export class VideoMetadata extends Base implements IVideoMetadata {
+  @Column({ nullable: true, type: 'text' })
+  name?: string;
+
   @Column({ default: '15', type: 'integer' })
   frameRate?: number;
 

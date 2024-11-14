@@ -1,3 +1,6 @@
+import { IScreenshotService } from './screenshot.interface';
+import { IVideoService } from './video.interface';
+
 export enum UploadType {
   VIDEO = 'video',
   SCREENSHOT = 'screenshot',
@@ -13,3 +16,5 @@ export interface IUpload {
   key: string;
   ids: string[];
 }
+
+export type IUploadableService = IVideoService | IScreenshotService;

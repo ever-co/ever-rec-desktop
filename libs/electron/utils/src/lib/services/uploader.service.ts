@@ -5,27 +5,24 @@ import {
   IS3Config,
   IScreenshot,
   IUpload,
+  IUploadableService,
   IUploadFile,
-  IVideo,
+  IVideo
 } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
 import * as path from 'path';
-import { FindManyOptions, In } from 'typeorm';
+import { In } from 'typeorm';
 import { S3Service } from './aws/s3.service';
 import { FileManager } from './files/file-manager';
 import { ElectronLogger } from './logger/electron-logger';
 import { WorkerFactory } from './worker-factory.service';
 
-interface IService {
-  findAll(criteria: FindManyOptions): Promise<IScreenshot[]>;
-}
-
 export class UploaderService implements ILoggable {
   readonly logger: ILogger = new ElectronLogger('Uploader Service');
-  public async execute<T extends IService>(
+  public async execute(
     event: Electron.IpcMainEvent,
     upload: IUpload,
-    service: T,
+    service: IUploadableService,
     s3Config: IS3Config
   ): Promise<void> {
     this.logger.info('Start uploading...');

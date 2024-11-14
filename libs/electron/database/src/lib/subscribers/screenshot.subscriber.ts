@@ -4,8 +4,7 @@ import {
   EntitySubscriberInterface,
   EventSubscriber,
   InsertEvent,
-  RemoveEvent,
-  UpdateEvent,
+  UpdateEvent
 } from 'typeorm';
 import { Screenshot } from '../entities/screenshot.entity';
 import { TimeLogService } from '../services/time-log.service';
@@ -39,7 +38,7 @@ export class ScreenshotSubscriber
     this.logger.info(`Entity updated ID`, event.entity);
   }
 
-  public async afterRemove(event: RemoveEvent<Screenshot>): Promise<void> {
+  public async afterRemove(): Promise<void> {
     this.logger.info('Entity deleted');
   }
 }

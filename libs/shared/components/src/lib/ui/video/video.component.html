@@ -77,9 +77,9 @@
         }}</mat-icon>
       </button>
       <div class="flex-1 mt-4 min-w-0">
-        @if(video.pathname) {
+        @if(video.metadata?.name) {
         <div class="text-lg font-medium text-gray-900 truncate">
-          {{ video.pathname }}
+          {{ video.metadata?.name }}
         </div>
         }
         <p class="text-sm text-gray-500 truncate">

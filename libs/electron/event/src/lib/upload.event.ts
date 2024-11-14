@@ -22,7 +22,12 @@ export async function uploadVideo(
   try {
     switch (upload.type) {
       case UploadType.SCREENSHOT:
-        await uploadService.execute(event, upload, ScreenshotService, s3Config);
+        await uploadService.execute(
+          event,
+          upload,
+          new ScreenshotService(),
+          s3Config
+        );
         break;
       case UploadType.VIDEO:
         await uploadService.execute(

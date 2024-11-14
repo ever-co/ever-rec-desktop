@@ -17,6 +17,7 @@ export interface IVideo extends IBase {
 }
 
 export interface IVideoMetadata extends IBase, Partial<IVideoConfig> {
+  name?: string;
   video?: IVideo;
   summary?: string;
 }

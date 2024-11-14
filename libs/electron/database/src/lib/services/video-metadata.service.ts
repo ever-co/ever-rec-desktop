@@ -15,6 +15,8 @@ export class VideoMetadataService {
     metadata.codec = input.codec;
     metadata.batch = input.batch;
     metadata.size = input.size;
+    metadata.name = input.name;
+
     return this.repository.save(metadata);
   }
 
@@ -41,7 +43,8 @@ export class VideoMetadataService {
       codec: input.codec,
       batch: input.batch,
       size: input.size,
-      summary: input.summary
+      summary: input.summary,
+      name: input.name,
     });
 
     // Save the updated video entity

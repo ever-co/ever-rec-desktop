@@ -4,8 +4,6 @@ import {
   EntitySubscriberInterface,
   EventSubscriber,
   InsertEvent,
-  RemoveEvent,
-  UpdateEvent,
 } from 'typeorm';
 import { Video } from '../entities/video.entity';
 import { TimeLogService } from '../services/time-log.service';
@@ -30,11 +28,11 @@ export class VideoSubscriber
     }
   }
 
-  public async afterUpdate(event: UpdateEvent<Video>): Promise<void> {
+  public async afterUpdate(): Promise<void> {
     this.logger.info('Video updated');
   }
 
-  public async afterRemove(event: RemoveEvent<Video>): Promise<void> {
+  public async afterRemove(): Promise<void> {
     this.logger.info('Video deleted');
   }
 }

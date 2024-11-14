@@ -8,6 +8,7 @@ import { Timeline } from './entities/timeline.entity';
 import { VideoMetadata } from './entities/video-metadata.entity';
 import { Video } from './entities/video.entity';
 import { ScreenshotSubscriber } from './subscribers/screenshot.subscriber';
+import { VideoMetadataSubscriber } from './subscribers/video-metadata.subscriber';
 import { VideoSubscriber } from './subscribers/video.subscriber';
 
 const database = FileManager.createFilePathSync('db', 'ever.capture.sqlite');
@@ -25,7 +26,7 @@ export const appDataSource = new DataSource({
   ],
   synchronize: true,
   logging: true,
-  subscribers: [ScreenshotSubscriber, VideoSubscriber],
+  subscribers: [ScreenshotSubscriber, VideoSubscriber, VideoMetadataSubscriber],
   enableWAL: true,
   prepareDatabase: (db) => {
     db.pragma('cipher = "sqlcipher"');
