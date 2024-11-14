@@ -13,7 +13,7 @@ export const initialState: State = {
   videoConfig: {
     codec: 'libx264',
     resolution: '1920:1080',
-    frameRate: 30,
+    frameRate: 15,
     duration: 60,
     batch: 100,
     optimized: true,
