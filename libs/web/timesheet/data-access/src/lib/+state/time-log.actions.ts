@@ -34,5 +34,6 @@ export const timeLogActions = createActionGroup({
     'Get TimeLog Context': props<{ id?: string; range?: IRange }>(),
     'Get TimeLog Context Success': props<{ context: string }>(),
     'Get TimeLog Context Failure': props<{ error: string }>(),
+    'Reset TimeLog Context': emptyProps(),
   },
 });

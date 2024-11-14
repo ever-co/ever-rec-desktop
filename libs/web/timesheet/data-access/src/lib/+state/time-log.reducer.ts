@@ -147,7 +147,13 @@ export const reducer = createReducer(
     ...state,
     copying: false,
     error,
-  }))
+  })),
+
+  // Reset Time Logs Context
+  on(timeLogActions.resetTimeLogContext, (state) => ({
+    ...state,
+    context: ''
+  })),
 );
 
 export const timeLogFeature = createFeature({

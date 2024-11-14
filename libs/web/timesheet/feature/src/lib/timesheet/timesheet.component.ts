@@ -14,6 +14,7 @@ import {
   selectGenerateVideoState,
   selectSettingState,
 } from '@ever-co/convert-video-data-access';
+import { NotificationService } from '@ever-co/notification-data-access';
 import {
   ActionButtonGroupComponent,
   ConfirmationDialogService,
@@ -41,11 +42,11 @@ import {
 import { Store } from '@ngrx/store';
 import {
   concatMap,
-  distinctUntilChanged,
   filter,
   map,
   Observable,
   Subject,
+  switchMap,
   take,
   takeUntil,
   tap,
@@ -135,7 +136,8 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     private readonly layoutService: LayoutService,
     private readonly confirmationDialogService: ConfirmationDialogService,
     private readonly clipboard: Clipboard,
-    private readonly matDialog: MatDialog
+    private readonly matDialog: MatDialog,
+    private readonly notificationService: NotificationService
   ) {}
 
   ngOnInit() {
@@ -154,9 +156,36 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     this.store
       .select(selectTimeLogState)
       .pipe(
-        filter(({ context }) => !!context),
-        distinctUntilChanged(),
-        tap(({ context }) => this.clipboard.copy(context)),
+        map(({ context }) => context),
+        filter(Boolean),
+        switchMap((context) =>
+          this.confirmationDialogService
+            .open({
+              title: 'Summary',
+              message: context,
+              variant: 'primary',
+              button: {
+                confirm: {
+                  variant: 'default',
+                  icon: 'copy',
+                  label: 'Copy',
+                },
+              },
+            })
+            .pipe(
+              tap(() =>
+                this.store.dispatch(timeLogActions.resetTimeLogContext())
+              ),
+              filter(Boolean),
+              tap(() => {
+                this.clipboard.copy(context);
+                this.notificationService.show(
+                  'Copied time log context to clipboard',
+                  'success'
+                );
+              })
+            )
+        ),
         takeUntil(this.destroy$)
       )
       .subscribe();
