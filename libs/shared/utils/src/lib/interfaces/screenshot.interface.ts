@@ -1,3 +1,4 @@
+import { FindManyOptions, FindOneOptions } from 'typeorm';
 import { IBase } from './base.interface';
 import { ITimeLog } from './time-log.interface';
 import type { IVideo } from './video.interface';
@@ -30,3 +31,16 @@ export type IScreenshotInput =
     };
 
 export type IScreenshotTimeLine = IScreenshot & { duration: number };
+
+export interface IScreenshotService {
+  save(input: IScreenshotInput): Promise<IScreenshot>;
+  findAll(options: FindManyOptions<IScreenshot>): Promise<IScreenshot[]>;
+  update(id: string, video: Partial<IScreenshotInput>): Promise<IScreenshot>;
+  findOne(options: FindOneOptions<IScreenshot>): Promise<IScreenshot>;
+  findAndCount(
+    options: FindOneOptions<IScreenshot>
+  ): Promise<[IScreenshot[], number]>;
+  findOneById(id: string): Promise<IScreenshot>;
+  delete(id: string): Promise<void>;
+  deleteAll(videoIds?: string[]): Promise<void>;
+}
