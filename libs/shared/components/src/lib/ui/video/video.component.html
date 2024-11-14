@@ -79,7 +79,7 @@
       <div class="flex-1 mt-4 min-w-0">
         @if(video.metadata?.name) {
         <div class="text-lg font-medium text-gray-900 truncate">
-          {{ video.metadata?.name }}
+          {{ video.metadata?.name?.split('-')?.[0]}}
         </div>
         }
         <p class="text-sm text-gray-500 truncate">

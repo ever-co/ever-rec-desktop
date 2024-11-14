@@ -1,9 +1,14 @@
 import { ElectronLogger } from '@ever-co/electron-utils';
-import { generateVideoName, ILoggable, ILogger } from '@ever-co/shared-utils';
+import {
+  generateVideoName,
+  ILoggable,
+  ILogger,
+  moment,
+} from '@ever-co/shared-utils';
 import {
   EntitySubscriberInterface,
   EventSubscriber,
-  InsertEvent
+  InsertEvent,
 } from 'typeorm';
 import { VideoMetadata } from '../entities/video-metadata.entity';
 import { TimeLogService } from '../services/time-log.service';
@@ -21,13 +26,15 @@ export class VideoMetadataSubscriber
 
   public async beforeInsert(event: InsertEvent<VideoMetadata>): Promise<void> {
     this.logger.info('Prepare video metadata');
-    const timeLog = await this.timeLog.running();
-    if (timeLog) {
+    if (!event.entity.name) {
       this.logger.info('Generate video name');
-      event.entity.name = generateVideoName(event.entity.id, {
-        start: timeLog.start,
-        end: timeLog.end,
-      });
+      const timeLog = await this.timeLog.running();
+      event.entity.name = timeLog
+        ? generateVideoName({
+            start: timeLog.start,
+            end: moment().toISOString(),
+          })
+        : generateVideoName();
     }
   }
 

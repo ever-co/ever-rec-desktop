@@ -53,8 +53,8 @@
           <div class="space-y-3">
             <div class="flex justify-between items-center">
               <span class="text-sm text-gray-500">Name</span>
-              <span class="text-sm font-medium text-gray-800">{{
-                 video.metadata.name
+              <span class="text-sm font-medium text-gray-800 truncate">{{
+                 video.metadata.name?.split('-')?.[0]
               }}</span>
             </div>
             <div class="flex justify-between items-center">
@@ -90,7 +90,7 @@
             <div class="flex justify-between items-center">
               <span class="text-sm text-gray-500">Resolution</span>
               <mat-icon [matTooltip]="video.metadata.resolution | resolution">
-                {{  video.metadata.resolution | resolution : 'icon' }}
+                {{ video.metadata.resolution | resolution : 'icon' }}
               </mat-icon>
             </div>
             <div class="flex justify-between items-center">

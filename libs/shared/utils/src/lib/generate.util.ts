@@ -1,9 +1,10 @@
 import { IRange } from './interfaces/pagination.interface';
 import { moment } from './moment.util';
 
-export function generateVideoName(id: string, range: IRange): string {
-  if (!id || !range || !range.start || !range.end) {
-    throw new Error('Invalid input: id, start date, and end date are required');
+export function generateVideoName(range?: IRange): string {
+
+  if (!range || !range.start || !range.end) {
+    return `Video #${crypto.randomUUID()}`;
   }
 
   const start = moment(range.start);
@@ -16,5 +17,5 @@ export function generateVideoName(id: string, range: IRange): string {
     ? startFormatted
     : `${startFormatted} to ${endFormatted}`;
 
-  return `Video #${id} (${duration})`;
+  return `Video #${crypto.randomUUID()} (${duration})`;
 }
