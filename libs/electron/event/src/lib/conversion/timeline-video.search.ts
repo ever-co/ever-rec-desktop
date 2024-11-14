@@ -22,7 +22,7 @@ export class TimelineVideoSearch {
    * The array will contain at most one video if a timeline is found.
    * Otherwise, it will contain all videos associated with the time log.
    */
-  public async tryFindVideo(): Promise<[IVideo[], number]> {
+  public async execute(): Promise<[IVideo[], number]> {
     // First, try to find a video with a timeline
     const video = await this.videoService.findOne({
       relations: ['metadata'],

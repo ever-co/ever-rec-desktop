@@ -68,6 +68,10 @@ export class ScreenshotConversionStrategy implements IConversionStrategy {
     } else {
       // Log a message if there are not enough screenshots
       this.logger.info('Not enough screenshots to convert.');
+      event.reply(
+        Channel.CANCEL_CONVERSION,
+        'Not enough screenshots to convert.'
+      );
     }
   }
 }

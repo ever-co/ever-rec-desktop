@@ -1,3 +1,4 @@
+import { ScreenshotService } from '@ever-co/electron-database';
 import {
   FileManager,
   ISplitterStrategy,
@@ -40,6 +41,7 @@ export class ConversionFactory {
       videoService: IVideoService;
       timelineService: ITimelineService;
       fileManager: typeof FileManager;
+      screenshotService: typeof ScreenshotService;
     }
   ): IConversionStrategy {
     const {
@@ -49,13 +51,20 @@ export class ConversionFactory {
       videos = [],
       config,
     } = payload || {};
-    const { logger, splitter, videoService, timelineService, fileManager } =
-      services || {};
+    const {
+      logger,
+      splitter,
+      videoService,
+      timelineService,
+      fileManager,
+      screenshotService,
+    } = services || {};
 
     if (isTimeLine && timeLogId) {
       return new TimelineVideoStrategy(
         timeLogId,
         videoService,
+        screenshotService,
         timelineService,
         logger,
         config,

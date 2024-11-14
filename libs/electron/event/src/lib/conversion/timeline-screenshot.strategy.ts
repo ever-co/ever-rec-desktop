@@ -1,4 +1,3 @@
-import { ScreenshotService } from '@ever-co/electron-database';
 import {
   FileManager,
   ISplitterStrategy,
@@ -13,16 +12,13 @@ import {
   IVideoConfig,
   IVideoService,
 } from '@ever-co/shared-utils';
-import { ScreenshotConversionStrategy } from './screenshot-conversion.strategy';
-import { TimelineScreenshotSearch } from './timeline-screenshot.search';
 import { TimelineVideoSearch } from './timeline-video.search';
 import { VideoMergeStrategy } from './video-merge.strategy';
 
-export class TimelineVideoStrategy implements IConversionStrategy {
+export class TimelineScreeStrategy implements IConversionStrategy {
 /**
  * @param timeLogId The ID of the time log to associate with the timeline video.
  * @param videoService The service to interact with the video database.
- * @param screenshotService The service to interact with the screenshot database.
  * @param timelineService The service to interact with the timeline database.
  * @param logger The logger to log messages.
  * @param config The video configuration settings.
@@ -31,7 +27,6 @@ export class TimelineVideoStrategy implements IConversionStrategy {
   constructor(
     private timeLogId: string,
     private videoService: IVideoService,
-    private screenshotService: typeof ScreenshotService,
     private timelineService: ITimelineService,
     private logger: ILogger,
     private config: IVideoConfig,
@@ -41,7 +36,7 @@ export class TimelineVideoStrategy implements IConversionStrategy {
   /**
    * Converts the timeline to a video.
    * Searches for existing videos associated with the timeline and merges them if found.
-   * If no videos are found, it logs the absence and attempts to convert screenshots instead.
+   * If no videos are found, it logs the absence and replies with a cancellation message.
    *
    * @param event The ipcMainEvent that triggered the conversion.
    * @returns A promise that resolves when the conversion is completed.
@@ -51,39 +46,15 @@ export class TimelineVideoStrategy implements IConversionStrategy {
     this.logger.info('Handling timeline video');
 
     // Initiate a search for videos associated with the timeline
-    const videoSearch = new TimelineVideoSearch(this.videoService, this.timeLogId);
+    const search = new TimelineVideoSearch(this.videoService, this.timeLogId);
 
     // Attempt to find videos related to the timeline
-    const [videos, count] = await videoSearch.execute();
+    const [videos, count] = await search.execute();
 
     if (!count) {
       // Log and reply if no suitable video is found for the timeline
-      this.logger.info('No suitable video found, attempting screenshot conversion');
-
-      // Initiate a search for screenshots associated with the timeline
-      const screenshotSearch = new TimelineScreenshotSearch(
-        this.screenshotService,
-        this.timeLogId,
-        this.config
-      );
-
-      // Retrieve screenshots for conversion
-      const screenshots = await screenshotSearch.execute();
-
-      // Create a strategy to convert screenshots to video
-      const screenshotStrategy = new ScreenshotConversionStrategy(
-        screenshots,
-        { ...this.config, timeLogId: this.timeLogId },
-        this.logger,
-        this.videoService,
-        this.splitter,
-        WorkerFactory,
-        FileManager,
-        this.timelineService
-      );
-
-      // Execute the screenshot conversion strategy
-      await screenshotStrategy.execute(event);
+      this.logger.info('No suitable video found for the timeline');
+      event.reply(Channel.CANCEL_CONVERSION, 'Timeline video not found');
     } else {
       // Create a merge strategy for the found videos
       const mergeStrategy = new VideoMergeStrategy(
@@ -104,7 +75,6 @@ export class TimelineVideoStrategy implements IConversionStrategy {
           this.timelineService
         )
       );
-
       // Execute the merge strategy
       await mergeStrategy.execute(event);
     }

@@ -81,6 +81,7 @@ export function convertScreenshotsToVideoEvent() {
         fileManager: FileManager,
         splitter: new BatchSplitter(),
         timelineService: new TimelineService(),
+        screenshotService: ScreenshotService,
         logger: new ElectronLogger('Screenshots --> Video'),
       };
 
