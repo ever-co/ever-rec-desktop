@@ -14,9 +14,10 @@
     }
     <div class="flex gap-1 items-center">
       <h4 class="text-xl md:text-xl truncate font-bold">
-        {{ dateRange$ | async | humanizeDateRange | titlecase }} &mdash; @if(!(statistics$ | async)?.range) { No work }@else {
-          {{ (statistics$ | async)?.range || 0 | humanize : 's' }}
-          }
+        {{ dateRange$ | async | humanizeDateRange | titlecase }} &mdash;
+        @if(!(statistics$ | async)?.range) { No work }@else {
+        {{ (statistics$ | async)?.range || 0 | humanize : 's' }}
+        }
       </h4>
       <button
         class="mb-4"
@@ -154,10 +155,13 @@
             Running
           </th>
           <td mat-cell *matCellDef="let log" class="px-4 py-2">
-            <mat-icon class="text-green-600" *ngIf="log.running"
+            @if(log.running){
+            <mat-icon matTooltip="Running" class="text-green-600"
               >play_arrow</mat-icon
             >
-            <mat-icon class="text-red-600" *ngIf="!log.running">stop</mat-icon>
+            }@else {
+            <mat-icon matTooltip="Stopped" class="text-red-600">stop</mat-icon>
+            }
           </td>
         </ng-container>
 
@@ -171,10 +175,11 @@
             Synced
           </th>
           <td mat-cell *matCellDef="let log" class="px-4 py-2">
-            <mat-icon class="text-blue-600" *ngIf="log.synced">sync</mat-icon>
-            <mat-icon class="text-gray-400" *ngIf="!log.synced"
-              >sync_disabled</mat-icon
-            >
+            @if(log.synced){
+            <mat-icon class="text-blue-600">sync</mat-icon>
+            }@else {
+            <mat-icon class="text-gray-400">sync_disabled</mat-icon>
+            }
           </td>
         </ng-container>
 
