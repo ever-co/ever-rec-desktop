@@ -18,6 +18,16 @@ import { TimelineVideoStrategy } from './timeline-video.strategy';
 import { VideoMergeStrategy } from './video-merge.strategy';
 
 export class ConversionFactory {
+  /**
+   * Creates a conversion strategy based on the payload and services provided.
+   * If the payload has isTimeLine set to true and a timeLogId, it will create
+   * a TimelineVideoStrategy. If the payload has videos array, it will create
+   * a VideoMergeStrategy. Otherwise, it will create a ScreenshotConversionStrategy.
+   * @param event - The ipcMainEvent that triggered the conversion
+   * @param payload - The conversion payload
+   * @param services - The services required for the conversion
+   * @returns The created conversion strategy
+   */
   public static createStrategy(
     event: IpcMainEvent,
     payload: IConversionPayload,
