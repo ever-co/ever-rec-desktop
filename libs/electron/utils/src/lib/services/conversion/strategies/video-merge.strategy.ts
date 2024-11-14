@@ -12,7 +12,6 @@ export class VideoMergeStrategy implements IConversionStrategy {
   /**
    * @param videos The list of videos to merge together.
    * @param logger The logger to write messages to.
-   * @param fileManager The file manager to interact with the file system.
    * @param isTimeline Whether the video is a timeline video or not.
    * @param videoConversionService The video conversion service to use to merge the videos.
    */
@@ -20,7 +19,6 @@ export class VideoMergeStrategy implements IConversionStrategy {
     private readonly videos: IVideo[],
     private readonly logger: ILogger,
     private readonly fileManager: typeof FileManager,
-    private readonly isTimeline: boolean | undefined,
     private readonly videoConversionService: VideoConversionService
   ) {}
 
@@ -47,8 +45,7 @@ export class VideoMergeStrategy implements IConversionStrategy {
       // Perform the video merging operation
       await this.videoConversionService.combineVideos(
         batches,
-        this.videos,
-        this.isTimeline
+        this.videos
       );
     } else if (this.videos.length === 1) {
       // Reply with the single video if only one video exists

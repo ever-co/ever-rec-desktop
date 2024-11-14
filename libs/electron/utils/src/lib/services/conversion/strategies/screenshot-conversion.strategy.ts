@@ -14,14 +14,17 @@ import { WorkerFactory } from '../../worker-factory.service';
 
 export class ScreenshotConversionStrategy implements IConversionStrategy {
   /**
-   * @param screenshots The list of screenshots to be converted to a video.
-   * @param config The video config that contains the timeLogId and other video config.
-   * @param logger The logger to log messages.
-   * @param videoService The video service to interact with the database.
-   * @param splitter The ISplitterStrategy to split the video.
-   * @param workerFactory The worker factory to create the worker.
-   * @param fileManager The file manager to interact with the file system.
-   * @param timelineService The timeline service to interact with the timeline database.
+   * Initializes a new instance of the ScreenshotConversionStrategy class.
+   *
+   * @param screenshots - The list of screenshots to be converted to a video.
+   * @param config - The video config that contains the timeLogId and other video settings.
+   * @param logger - The logger to log messages.
+   * @param videoService - The video service to interact with the database.
+   * @param splitter - The strategy to split the video.
+   * @param workerFactory - The factory to create workers.
+   * @param fileManager - The manager to interact with the file system.
+   * @param timelineService - The service to interact with the timeline database.
+   * @param isTimeline - A boolean indicating if the operation is part of a timeline.
    */
   constructor(
     private screenshots: IScreenshot[],
@@ -31,7 +34,8 @@ export class ScreenshotConversionStrategy implements IConversionStrategy {
     private splitter: ISplitterStrategy,
     private workerFactory: typeof WorkerFactory,
     private fileManager: typeof FileManager,
-    private timelineService: ITimelineService
+    private timelineService: ITimelineService,
+    private isTimeline: boolean
   ) {}
 
   /**
@@ -58,7 +62,8 @@ export class ScreenshotConversionStrategy implements IConversionStrategy {
         Channel,
         this.logger,
         this.videoService,
-        this.timelineService
+        this.timelineService,
+        this.isTimeline
       );
 
       // Perform the conversion

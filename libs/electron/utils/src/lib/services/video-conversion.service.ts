@@ -24,6 +24,21 @@ export class VideoConversionService implements ILoggable {
   private batchVideo: IBatchVideo[] = [];
   private chunks: IVideo[] = [];
 
+  /**
+   * Initializes a new instance of the VideoConversionService class.
+   *
+   * @param event - The ipcMainEvent that triggered the video conversion.
+   * @param screenshots - The list of screenshots to be converted to a video.
+   * @param config - The video configuration including optional timeLogId.
+   * @param splitter - The strategy to split the video processing tasks.
+   * @param workerFactory - Factory for creating workers for processing.
+   * @param fileManager - The manager to handle file system operations.
+   * @param channel - The communication channel for IPC messages.
+   * @param logger - The logger used for logging information and errors.
+   * @param videoService - The service for interacting with video-related operations.
+   * @param timelineService - The service for handling timeline-related operations.
+   * @param isTimeline - Indicates if the operation is part of a timeline; defaults to false.
+   */
   constructor(
     private event: Electron.IpcMainEvent,
     private screenshots: IScreenshot[],
@@ -34,7 +49,8 @@ export class VideoConversionService implements ILoggable {
     private channel: typeof Channel,
     public logger: ILogger,
     private videoService: IVideoService,
-    private timelineService: ITimelineService
+    private timelineService: ITimelineService,
+    private isTimeline = false
   ) {}
 
   /**
@@ -271,8 +287,7 @@ export class VideoConversionService implements ILoggable {
    */
   public async combineVideos(
     batchVideo: IBatchVideo[],
-    chunks: IVideo[],
-    isTimeline = false
+    chunks: IVideo[]
   ): Promise<void> {
     const finalOutputPath = this.fileManager.createFilePathSync(
       'videos',
@@ -335,7 +350,7 @@ export class VideoConversionService implements ILoggable {
             relations: ['metadata'],
           });
 
-          if (isTimeline) {
+          if (this.isTimeline) {
             await this.timelineService.save({ videoId: id, timeLogId });
           }
 

@@ -82,7 +82,8 @@ export class TimelineVideoStrategy implements IConversionStrategy {
         this.splitter,
         WorkerFactory,
         FileManager,
-        this.timelineService
+        this.timelineService,
+        true
       );
 
       // Execute the screenshot conversion strategy
@@ -93,7 +94,6 @@ export class TimelineVideoStrategy implements IConversionStrategy {
         videos,
         this.logger,
         FileManager,
-        true,
         new VideoConversionService(
           event,
           [],
@@ -104,7 +104,8 @@ export class TimelineVideoStrategy implements IConversionStrategy {
           Channel,
           this.logger,
           this.videoService,
-          this.timelineService
+          this.timelineService,
+          true
         )
       );
 

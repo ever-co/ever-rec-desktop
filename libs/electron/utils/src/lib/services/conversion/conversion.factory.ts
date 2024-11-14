@@ -77,7 +77,6 @@ export class ConversionFactory {
         videos,
         logger,
         fileManager,
-        isTimeLine,
         new VideoConversionService(
           event,
           [], // No screenshots
@@ -88,7 +87,8 @@ export class ConversionFactory {
           Channel,
           logger,
           videoService,
-          timelineService
+          timelineService,
+          false
         )
       );
     }
@@ -103,7 +103,8 @@ export class ConversionFactory {
       splitter,
       WorkerFactory,
       fileManager,
-      timelineService
+      timelineService,
+      false
     );
   }
 }
