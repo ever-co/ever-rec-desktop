@@ -35,9 +35,9 @@ export class ConversionFactory {
       screenshots = [],
       videos = [],
       config,
-    } = payload;
+    } = payload || {};
     const { logger, splitter, videoService, timelineService, fileManager } =
-      services;
+      services || {};
 
     if (isTimeLine && timeLogId) {
       return new TimelineVideoStrategy(
