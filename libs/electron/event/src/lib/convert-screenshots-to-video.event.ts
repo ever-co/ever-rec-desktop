@@ -6,6 +6,7 @@ import {
 } from '@ever-co/electron-database';
 import {
   BatchSplitter,
+  ConversionFactory,
   ElectronLogger,
   FileManager,
 } from '@ever-co/electron-utils';
@@ -18,7 +19,6 @@ import {
 } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
 import { ILike, In, IsNull } from 'typeorm';
-import { ConversionFactory } from './conversion/conversion.factory';
 
 export function convertScreenshotsToVideoEvent() {
   ipcMain.on(
