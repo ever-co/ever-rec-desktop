@@ -16,7 +16,7 @@ export class VideoMergeStrategy implements IConversionStrategy {
     private readonly videoConversionService: VideoConversionService
   ) {}
 
-  async execute(event: Electron.IpcMainEvent) {
+  public async execute(event: Electron.IpcMainEvent): Promise<void> {
     if (this.videos.length > 1) {
       const batches: IBatchVideo[] = this.videos.map((video, index) => ({
         path: this.fileManager.decodePath(video.pathname),

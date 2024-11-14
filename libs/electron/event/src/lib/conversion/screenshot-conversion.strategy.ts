@@ -26,7 +26,7 @@ export class ScreenshotConversionStrategy implements IConversionStrategy {
     private timelineService: ITimelineService
   ) {}
 
-  async execute(event: Electron.IpcMainEvent) {
+  public async execute(event: Electron.IpcMainEvent): Promise<void> {
     if (this.screenshots.length > 1) {
       this.logger.info(`Converting ${this.screenshots.length} screenshots`);
       const videoConversionService = new VideoConversionService(
