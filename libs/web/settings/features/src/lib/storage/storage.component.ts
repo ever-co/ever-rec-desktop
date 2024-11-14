@@ -15,6 +15,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
 import { NotificationService } from '@ever-co/notification-data-access';
 import { screenshotActions } from '@ever-co/screenshot-data-access';
+import { ConfirmationDialogService } from '@ever-co/shared-components';
 import { HumanizeBytesPipe, HumanizePipe } from '@ever-co/shared-service';
 import { IUsedSize } from '@ever-co/shared-utils';
 import {
@@ -22,7 +23,7 @@ import {
   settingStorageActions,
 } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
-import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
+import { filter, map, Observable, Subject, take, takeUntil, tap } from 'rxjs';
 import { AwsStorageComponent } from '../aws-storage/aws-storage.component';
 
 @Component({
@@ -53,7 +54,8 @@ export class StorageComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly store: Store,
-    private readonly notificationService: NotificationService
+    private readonly notificationService: NotificationService,
+    private readonly confirmationDialogService: ConfirmationDialogService
   ) {}
 
   ngOnInit(): void {
@@ -86,7 +88,19 @@ export class StorageComponent implements OnInit, OnDestroy {
   }
 
   public purge(): void {
-    this.store.dispatch(screenshotActions.deleteScreenshots());
+    this.confirmationDialogService
+      .open({
+        title: 'Delete All Stored Data?',
+        message: `This action will permanently delete all stored data and cannot be undone. Are you sure you wish to proceed?`,
+        variant: 'danger',
+      })
+      .pipe(
+        take(1),
+        filter(Boolean),
+        tap(() => this.store.dispatch(screenshotActions.deleteScreenshots())),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {
