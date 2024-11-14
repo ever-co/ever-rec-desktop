@@ -20,9 +20,12 @@ import { VideoMergeStrategy } from './video-merge.strategy';
 export class ConversionFactory {
   /**
    * Creates a conversion strategy based on the payload and services provided.
-   * If the payload has isTimeLine set to true and a timeLogId, it will create
-   * a TimelineVideoStrategy. If the payload has videos array, it will create
-   * a VideoMergeStrategy. Otherwise, it will create a ScreenshotConversionStrategy.
+   *
+   * The strategy will be one of:
+   * - TimelineVideoStrategy if the payload has isTimeLine set to true and a timeLogId.
+   * - VideoMergeStrategy if the payload has videos array.
+   * - ScreenshotConversionStrategy otherwise.
+   *
    * @param event - The ipcMainEvent that triggered the conversion
    * @param payload - The conversion payload
    * @param services - The services required for the conversion
@@ -61,6 +64,8 @@ export class ConversionFactory {
     }
 
     if (videos.length > 0) {
+      // Create a VideoMergeStrategy to merge the videos
+      // The strategy will merge the videos and return the resulting video
       return new VideoMergeStrategy(
         videos,
         logger,
@@ -68,8 +73,8 @@ export class ConversionFactory {
         isTimeLine,
         new VideoConversionService(
           event,
-          [],
-          { ...config, timeLogId },
+          [], // No screenshots
+          { ...config, timeLogId }, // Use the timeLogId from the payload
           splitter,
           WorkerFactory,
           FileManager,
@@ -81,6 +86,8 @@ export class ConversionFactory {
       );
     }
 
+    // Create a ScreenshotConversionStrategy to convert the screenshots
+    // The strategy will convert the screenshots to a video and return the video
     return new ScreenshotConversionStrategy(
       screenshots,
       { ...config, timeLogId },
