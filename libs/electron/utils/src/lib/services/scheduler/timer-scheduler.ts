@@ -1,8 +1,8 @@
 import { EventEmitter } from 'events';
 
 /**
- * TimerScheduler is a singleton class that manages a timer which emits a 'tick' event every second.
- * It ensures only one instance of the timer is created and that the timer is managed efficiently.
+ * TimerScheduler is a singleton class that manages a timer, which emits a 'tick' event every second.
+ * The timer is efficiently managed and only one instance exists at a time.
  */
 export class TimerScheduler extends EventEmitter {
   private static instance: TimerScheduler;
@@ -10,7 +10,7 @@ export class TimerScheduler extends EventEmitter {
   private secondsElapsed = 0;
 
   /**
-   * Private constructor to enforce singleton pattern.
+   * Private constructor to enforce the singleton pattern.
    * Initializes the timer state.
    */
   private constructor() {
@@ -32,28 +32,36 @@ export class TimerScheduler extends EventEmitter {
 
   /**
    * Starts the timer and begins emitting the 'tick' event every second.
+   * Emits a 'start' event if the timer was successfully started.
    * If the timer is already running, this method does nothing.
    */
   public start(): void {
     if (this.intervalId !== null) return; // Prevent starting if already running
 
+    this.emit('start'); // Emit 'start' event
+
     this.intervalId = setInterval(() => {
       this.secondsElapsed++;
-      this.emit('tick', this.secondsElapsed);
+      this.emit('tick', this.secondsElapsed); // Emit 'tick' event every second
     }, 1000);
   }
 
   /**
    * Stops the timer and stops emitting the 'tick' event.
+   * Emits a 'stop' event if the timer was successfully stopped.
    * If the timer is not running, this method does nothing.
    */
   public stop(): void {
-    if (this.intervalId !== null) {
-      clearInterval(this.intervalId);
-      this.intervalId = null;
-      this.secondsElapsed = 0; // Reset elapsed time when stopping the timer
-      this.removeAllListeners('tick');
-    }
+    if (this.intervalId === null) return; // Prevent stopping if not running
+
+    clearInterval(this.intervalId); // Stop the interval
+    this.intervalId = null; // Reset the intervalId
+    const elapsedTime = this.secondsElapsed;
+    this.secondsElapsed = 0; // Reset elapsed time
+
+    this.emit('stop', elapsedTime); // Emit 'stop' event with the last elapsed time
+    this.removeAllListeners('tick'); // Remove listeners for 'tick' event
+    this.removeAllListeners('start'); // Remove listeners for 'start' event
   }
 
   /**
@@ -76,11 +84,23 @@ export class TimerScheduler extends EventEmitter {
   }
 
   /**
-   * Removes the 'tick' event listener to prevent memory leaks.
+   * Registers a callback to be executed when the 'stop' event is emitted.
+   * The callback will be triggered when the timer is stopped and receives the total elapsed time.
    *
-   * @param callback - The callback function to remove.
+   * @param callback - Function that will be executed when the timer is stopped.
    */
-  public offTick(callback: (secondsElapsed: number) => void): void {
-    this.off('tick', callback);
+  public onStop(callback: (elapsedTime: number) => void): void {
+    this.on('stop', () => this.removeAllListeners('stop')); // Remove listeners for 'stop' event;
+    this.on('stop', callback);
+  }
+
+  /**
+   * Registers a callback to be executed when the 'start' event is emitted.
+   * The callback will be triggered when the timer is started.
+   *
+   * @param callback - Function that will be executed when the timer is started.
+   */
+  public onStart(callback: () => void): void {
+    this.on('start', callback);
   }
 }
