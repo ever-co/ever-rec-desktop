@@ -102,7 +102,6 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       hide: this.hideAction$.pipe(map((hidden) => !hidden)),
       action: this.getAllContext.bind(this),
       loading: this.copying$,
-      disable: this.capturing$,
     },
     {
       icon: 'content_copy',
@@ -111,7 +110,6 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       hide: this.hideAction$,
       action: this.getContext.bind(this),
       loading: this.copying$,
-      disable: this.isRunning$,
       tooltip: 'Get context from selected timeline',
     },
     {
