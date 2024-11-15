@@ -1,20 +1,105 @@
+import { ILoggable, ILogger } from '@ever-co/shared-utils';
 import { EventEmitter } from 'events';
+import { join } from 'path';
+import { ElectronLogger } from '../logger/electron-logger';
+import { WorkerFactory } from '../worker-factory.service';
 
 /**
  * TimerScheduler is a singleton class that manages a timer, which emits a 'tick' event every second.
  * The timer is efficiently managed and only one instance exists at a time.
  */
-export class TimerScheduler extends EventEmitter {
+export class TimerScheduler extends EventEmitter implements ILoggable {
   private static instance: TimerScheduler;
-  private intervalId: NodeJS.Timeout | null = null;
   private secondsElapsed = 0;
+  private worker = WorkerFactory.createWorker(
+    join(__dirname, 'assets', 'workers', 'timer.worker')
+  );
+  public logger: ILogger = new ElectronLogger('Timer Scheduler');
 
   /**
-   * Private constructor to enforce the singleton pattern.
-   * Initializes the timer state.
+   * Initializes a new instance of the TimerScheduler class.
+   * Sets up event listeners for the worker to handle messages and errors.
+   * The 'message' event is handled by binding the handleWorkerMessage function,
+   * and the 'error' event logs the error using the logger.
+   * This constructor is private to ensure that the TimerScheduler class remains a singleton.
    */
   private constructor() {
     super();
+    this.worker.on('message', this.handleWorkerMessage.bind(this));
+    this.worker.on('error', (error) => {
+      this.logger.error('Worker error:', error);
+    });
+  }
+
+  /**
+   * Handles messages from the worker.
+   * The message will be an object with an 'action' and 'secondsElapsed' property.
+   * The 'action' property can have the following values:
+   * - 'tick': The worker emits this event every second.
+   * - 'stop': The worker emits this event when it is stopped.
+   * - 'start': The worker emits this event when it is started.
+   * The 'secondsElapsed' property is the number of seconds that have elapsed since the worker was started.
+   * @param message - The message object with 'action' and 'secondsElapsed' properties.
+   */
+  private handleWorkerMessage({
+    action,
+    secondsElapsed,
+    error,
+  }: {
+    action: string;
+    secondsElapsed: number;
+    error?: Error;
+  }): void {
+    switch (action) {
+      case 'tick':
+        /**
+         * Emits the 'tick' event with the number of seconds elapsed since the worker was started.
+         * @event TimerScheduler#tick
+         * @property {number} secondsElapsed - The number of seconds that have elapsed since the worker was started.
+         */
+        this.secondsElapsed = secondsElapsed;
+        this.emit('tick', this.secondsElapsed);
+        break;
+      case 'error':
+      case 'stop':
+        if (error) {
+          this.logger.error('Worker error:', error);
+        }
+        /**
+         * Emits the 'stop' event with the number of seconds elapsed since the worker was started.
+         * @event TimerScheduler#stop
+         * @property {number} secondsElapsed - The number of seconds that have elapsed since the worker was started.
+         */
+        this.emit('stop', this.secondsElapsed);
+        this.secondsElapsed = 0; // Reset
+        /**
+         * Removes all listeners for the 'tick' event.
+         */
+        this.removeAllListeners('tick');
+        /**
+         * Removes all listeners for the 'start' event.
+         */
+        this.removeAllListeners('start');
+        /**
+         * Removes all listeners for the 'stop' event.
+         */
+        this.removeAllListeners('stop');
+        break;
+      case 'start':
+        /**
+         * Removes all listeners for the 'start' event.
+         */
+        this.removeAllListeners('start');
+        /**
+         * Emits the 'start' event.
+         * @event TimerScheduler#start
+         */
+        this.emit('start');
+        break;
+      default:
+        this.logger.warn('Unknown action:', action);
+        break;
+    }
   }
 
   /**
@@ -31,37 +116,32 @@ export class TimerScheduler extends EventEmitter {
   }
 
   /**
-   * Starts the timer and begins emitting the 'tick' event every second.
-   * Emits a 'start' event if the timer was successfully started.
-   * If the timer is already running, this method does nothing.
+   * Starts the timer.
+   *
+   * If the timer is already running, this call has no effect.
    */
   public start(): void {
-    if (this.intervalId !== null) return; // Prevent starting if already running
-
-    this.emit('start'); // Emit 'start' event
-
-    this.intervalId = setInterval(() => {
-      this.secondsElapsed++;
-      this.emit('tick', this.secondsElapsed); // Emit 'tick' event every second
-    }, 1000);
+    if (this.worker) {
+      /**
+       * Sends a message to the worker to start the timer.
+       */
+      this.worker.postMessage({ action: 'start' });
+    }
   }
 
   /**
-   * Stops the timer and stops emitting the 'tick' event.
-   * Emits a 'stop' event if the timer was successfully stopped.
-   * If the timer is not running, this method does nothing.
+   * Stops the timer.
+   *
+   * Sends a message to the worker to stop the timer if the worker is available.
+   * This will result in the 'stop' event being emitted with the total seconds elapsed.
    */
   public stop(): void {
-    if (this.intervalId === null) return; // Prevent stopping if not running
-
-    clearInterval(this.intervalId); // Stop the interval
-    this.intervalId = null; // Reset the intervalId
-    const elapsedTime = this.secondsElapsed;
-    this.secondsElapsed = 0; // Reset elapsed time
-
-    this.emit('stop', elapsedTime); // Emit 'stop' event with the last elapsed time
-    this.removeAllListeners('tick'); // Remove listeners for 'tick' event
-    this.removeAllListeners('start'); // Remove listeners for 'start' event
+    if (this.worker) {
+      /**
+       * Sends a message to the worker to stop the timer.
+       */
+      this.worker.postMessage({ action: 'stop' });
+    }
   }
 
   /**
