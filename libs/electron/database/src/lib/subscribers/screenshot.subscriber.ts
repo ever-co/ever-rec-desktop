@@ -4,7 +4,7 @@ import {
   EntitySubscriberInterface,
   EventSubscriber,
   InsertEvent,
-  UpdateEvent
+  UpdateEvent,
 } from 'typeorm';
 import { Screenshot } from '../entities/screenshot.entity';
 import { TimeLogService } from '../services/time-log.service';
@@ -22,16 +22,16 @@ export class ScreenshotSubscriber
 
   public async beforeInsert(event: InsertEvent<Screenshot>): Promise<void> {
     this.logger.info('Prepare screenshot');
-    const timeLog = await this.timeLog.findLatest();
+    const timeLog = await this.timeLog.running();
+
     if (timeLog) {
       this.logger.info('Add time log to screenshot');
       event.entity.timeLog = timeLog;
     }
   }
 
-  public async afterInsert(event: InsertEvent<Screenshot>): Promise<void> {
+  public afterInsert(event: InsertEvent<Screenshot>): void {
     this.logger.info('Entity inserted ID:', event.entityId);
-    await this.timeLog.updateDuration();
   }
 
   public async afterUpdate(event: UpdateEvent<Screenshot>): Promise<void> {

@@ -48,6 +48,7 @@ export function captureScreen(
         eventManager.reply(Channel.SCREENSHOT_CAPTURED, screenshot);
       }
     }
+    await timeLogService.updateDuration();
   });
 
   timerScheduler.onStop(() => timeLogService.stop());
