@@ -15,7 +15,6 @@ import {
   selectSettingState,
 } from '@ever-co/convert-video-data-access';
 import { NotificationService } from '@ever-co/notification-data-access';
-import { selectScreenshotState } from '@ever-co/screenshot-data-access';
 import {
   ActionButtonGroupComponent,
   ConfirmationDialogService,
@@ -346,16 +345,9 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     );
   }
 
-  private get capturing$(): Observable<boolean> {
-    return this.store.select(selectScreenshotState).pipe(
-      map((state) => state.capturing),
-      takeUntil(this.destroy$)
-    );
-  }
-
   private get isRunning$(): Observable<boolean> {
     return this.store.select(selectTimeLogState).pipe(
-      map(({ timeLog }) => timeLog.running),
+      map(({ timeLog }) => timeLog?.running),
       takeUntil(this.destroy$)
     );
   }
