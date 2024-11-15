@@ -43,11 +43,11 @@ import {
 import { Store } from '@ngrx/store';
 import {
   concatMap,
+  exhaustMap,
   filter,
   map,
   Observable,
   Subject,
-  switchMap,
   take,
   takeUntil,
   tap,
@@ -168,7 +168,8 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       .pipe(
         map(({ context }) => context),
         filter(Boolean),
-        switchMap((context) =>
+        // Use exhaustMap to ignore new emissions while dialog is open
+        exhaustMap((context) =>
           this.confirmationDialogService
             .open({
               title: 'Summary',
@@ -183,9 +184,13 @@ export class TimesheetComponent implements OnInit, OnDestroy {
               },
             })
             .pipe(
-              tap(() =>
-                this.store.dispatch(timeLogActions.resetTimeLogContext())
-              ),
+              // Reset context regardless of confirmation result
+              tap({
+                finalize: () => {
+                  this.store.dispatch(timeLogActions.resetTimeLogContext());
+                },
+              }),
+              // Only proceed with copy if confirmed
               filter(Boolean),
               tap(() => {
                 this.clipboard.copy(context);
