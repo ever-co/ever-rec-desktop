@@ -36,18 +36,20 @@ export function autoVideoGenerateEvent() {
           });
         }
       });
-
-      timerScheduler.onStop(async () => {
-        const timeLogService = new TimeLogService();
-        const timeLog = await timeLogService.findLatest();
-
-        event.sender.send(Channel.AUTO_VIDEO_GENERATE, {
-          completed: true,
-          timeLogId: timeLog?.id ?? null,
-        });
-      });
     }
   );
+
+  ipcMain.on(Channel.STOP_CAPTURE_SCREEN, async (event) => {
+    const timeLogService = new TimeLogService();
+    const timeLog = await timeLogService.running();
+
+    event.sender.send(Channel.AUTO_VIDEO_GENERATE, {
+      completed: true,
+      timeLogId: timeLog?.id ?? null,
+    });
+
+    timerScheduler.stop();
+  });
 }
 
 export function removeAutoVideoGenerateEvent(): void {

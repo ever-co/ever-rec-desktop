@@ -30,8 +30,6 @@ const timerScheduler = TimerScheduler.getInstance();
 
 export function captureScreenEvent(): void {
   ipcMain.on(Channel.START_CAPTURE_SCREEN, captureScreen);
-
-  ipcMain.on(Channel.STOP_CAPTURE_SCREEN, stopCaptureScreen);
 }
 
 export function captureScreen(
@@ -52,12 +50,9 @@ export function captureScreen(
     }
   });
 
-  timerScheduler.start();
-}
+  timerScheduler.onStop(() => timeLogService.stop());
 
-export async function stopCaptureScreen() {
-  await timeLogService.stop();
-  timerScheduler.stop();
+  timerScheduler.start();
 }
 
 async function takeScreenshot(
