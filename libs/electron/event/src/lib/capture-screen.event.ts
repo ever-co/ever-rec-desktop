@@ -3,6 +3,7 @@ import {
   ElectronLogger,
   FileManager,
   getWindowSize,
+  TimerScheduler,
 } from '@ever-co/electron-utils';
 import {
   Channel,
@@ -23,9 +24,9 @@ export const SCREENSHOT_DIR = 'screenshots';
 const logger = new ElectronLogger();
 const metadataQuery = new GetScreenShotMetadataQuery();
 const eventManager = EventManager.getInstance();
-let captureInterval: NodeJS.Timeout | null = null;
 const timeLogService = new TimeLogService();
 const screenshotService = new ScreenshotService();
+const timerScheduler = TimerScheduler.getInstance();
 
 export function captureScreenEvent(): void {
   ipcMain.on(Channel.START_CAPTURE_SCREEN, captureScreen);
@@ -37,24 +38,26 @@ export function captureScreen(
   event: IpcMainEvent,
   config: IScreenCaptureConfig
 ) {
-  if (captureInterval) {
-    clearInterval(captureInterval);
-  }
+  const delay = moment
+    .duration(config.period || SCREENSHOT_INTERVAL_DELAY, 'seconds')
+    .asSeconds();
   timeLogService.start();
-  captureInterval = setInterval(async () => {
-    const screenshot = await takeScreenshot(config);
-    if (screenshot) {
-      eventManager.reply(Channel.SCREENSHOT_CAPTURED, screenshot);
+
+  timerScheduler.onTick(async (seconds) => {
+    if (seconds % delay === 0) {
+      const screenshot = await takeScreenshot(config);
+      if (screenshot) {
+        eventManager.reply(Channel.SCREENSHOT_CAPTURED, screenshot);
+      }
     }
-  }, moment.duration(config.period || SCREENSHOT_INTERVAL_DELAY, 'seconds').asMilliseconds());
+  });
+
+  timerScheduler.start();
 }
 
 export async function stopCaptureScreen() {
-  if (captureInterval) {
-    clearInterval(captureInterval);
-    captureInterval = null;
-    await timeLogService.stop();
-  }
+  await timeLogService.stop();
+  timerScheduler.stop();
 }
 
 async function takeScreenshot(
