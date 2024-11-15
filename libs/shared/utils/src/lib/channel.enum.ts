@@ -37,6 +37,7 @@ export enum Channel {
   'DELETE_PASSWORD' = 'keytar::delete',
   'SET_PASSWORD' = 'keytar::set',
   'GET_PASSWORD' = 'keytar::get',
-  'CHART_LINE_DATA' = "chart::line::data",
-  'GET_CONTEXT' = "get::context",
+  'CHART_LINE_DATA' = 'chart::line::data',
+  'GET_CONTEXT' = 'get::context',
+  'TICK' = 'tick::update',
 }

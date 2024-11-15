@@ -34,7 +34,9 @@ export class TimeLogEffects {
       ),
       mergeMap((options) =>
         from(
-          this.timeLogElectronService.getLogs(options as IPaginationOptions<ITimeLog>)
+          this.timeLogElectronService.getLogs(
+            options as IPaginationOptions<ITimeLog>
+          )
         ).pipe(
           map((response) => timeLogActions.loadTimeLogsSuccess(response)),
           catchError((error) =>
@@ -47,10 +49,12 @@ export class TimeLogEffects {
 
   updateDuration$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(screenshotActions.captureSuccess),
+      ofType(timeLogActions.tick),
       mergeMap((options) =>
         from(
-          this.timeLogElectronService.getLogs(options as  IPaginationOptions<ITimeLog>)
+          this.timeLogElectronService.getLogs(
+            options as IPaginationOptions<ITimeLog>
+          )
         ).pipe(
           map((response) =>
             timeLogActions.updateTimeLogDurationSuccess(response)
@@ -59,6 +63,17 @@ export class TimeLogEffects {
             of(timeLogActions.loadTimeLogsFailure({ error }))
           )
         )
+      )
+    )
+  );
+
+  onTick$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(screenshotActions.startCaptureSuccess),
+      mergeMap(() =>
+        this.timeLogElectronService
+          .onTick()
+          .pipe(map(() => timeLogActions.tick()))
       )
     )
   );
@@ -86,7 +101,7 @@ export class TimeLogEffects {
         timeLogActions.getTimeLogStatistics,
         timeLogActions.loadTimeLogs,
         screenshotActions.loadScreenshots,
-        screenshotActions.captureSuccess
+        timeLogActions.tick
       ),
       mergeMap((options) =>
         from(

@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ElectronService } from '@ever-co/electron-data-access';
-import { Channel, IPaginationResponse, ITimeLog, ITimeLogStatistics } from '@ever-co/shared-utils';
+import {
+  Channel,
+  IPaginationResponse,
+  ITimeLog,
+  ITimeLogStatistics,
+} from '@ever-co/shared-utils';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -26,5 +32,13 @@ export class TimeLogElectronService {
 
   public getContext(options = {}): Promise<string> {
     return this.electronService.invoke(Channel.GET_CONTEXT, options);
+  }
+
+  public onTick(): Observable<void> {
+    return new Observable((observer) => {
+      this.electronService.on(Channel.TICK, () => {
+        observer.next();
+      });
+    });
   }
 }
