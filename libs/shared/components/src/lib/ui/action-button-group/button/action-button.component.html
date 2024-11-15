@@ -1,7 +1,10 @@
 <button
   class="w-full flex items-center gap-1"
-  [matTooltip]="button.tooltip"
+  [matTooltip]="
+    (button.disable | async) ? 'Action is unavalaible' : button.tooltip
+  "
   [ngClass]="getButtonClasses()"
+  [disabled]="button.disable | async"
   (click)="onAction()"
 >
   @if(button.loading | async) {

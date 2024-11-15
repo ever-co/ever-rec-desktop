@@ -15,6 +15,7 @@ import {
   selectSettingState,
 } from '@ever-co/convert-video-data-access';
 import { NotificationService } from '@ever-co/notification-data-access';
+import { selectScreenshotState } from '@ever-co/screenshot-data-access';
 import {
   ActionButtonGroupComponent,
   ConfirmationDialogService,
@@ -101,6 +102,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       hide: this.hideAction$.pipe(map((hidden) => !hidden)),
       action: this.getAllContext.bind(this),
       loading: this.copying$,
+      disable: this.capturing$,
     },
     {
       icon: 'content_copy',
@@ -109,15 +111,21 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       hide: this.hideAction$,
       action: this.getContext.bind(this),
       loading: this.copying$,
+      disable: this.isRunning$,
+      tooltip: 'Get context from selected timeline',
     },
     {
       icon: 'visibility',
       label: 'View',
       variant: 'warning',
       hide: this.hideAction$,
-      tooltip: 'View and Generate a video from this selected timesheet',
+      tooltip: 'View and Generate a video from this selected timeline',
       action: this.generateVideo.bind(this),
       loading: this.generating$,
+      disable: this.isRunning$.pipe(
+        withLatestFrom(this.generating$),
+        map(([isRunning, generating]) => isRunning || generating)
+      ),
     },
     {
       icon: 'delete',
@@ -125,6 +133,8 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       variant: 'danger',
       hide: this.hideAction$,
       action: this.delete.bind(this),
+      disable: this.isRunning$,
+      tooltip: 'Delete selected timeline',
     },
   ];
 
@@ -329,6 +339,20 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   private get generating$(): Observable<boolean> {
     return this.store.select(selectGenerateVideoState).pipe(
       map((state) => state.generating),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  private get capturing$(): Observable<boolean> {
+    return this.store.select(selectScreenshotState).pipe(
+      map((state) => state.capturing),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  private get isRunning$(): Observable<boolean> {
+    return this.store.select(selectTimeLogState).pipe(
+      map(({ timeLog }) => timeLog.running),
       takeUntil(this.destroy$)
     );
   }
