@@ -31,11 +31,14 @@ export function crudScreeshotEvents() {
         where = {},
         sortField = 'createdAt',
         sortOrder = 'DESC',
+        ignoreRange = false,
       } = options;
 
       const [data, count] = await screenshotService.findAndCount({
         where: {
-          createdAt: Between(start, end),
+          ...(!ignoreRange && {
+            createdAt: Between(start, end),
+          }),
           ...where,
         },
         order: { [`${sortField}`]: sortOrder },

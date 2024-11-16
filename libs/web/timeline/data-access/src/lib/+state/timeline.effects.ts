@@ -16,6 +16,7 @@ export class TimelineEffects {
           this.frameService.getAllScreenshots({
             sortField: 'createdAt',
             sortOrder: 'ASC',
+            ignoreRange: true,
             ...action,
           })
         ).pipe(

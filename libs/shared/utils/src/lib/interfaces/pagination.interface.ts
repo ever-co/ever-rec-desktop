@@ -7,6 +7,7 @@ export interface IPaginationOptions<T> extends Partial<IRange> {
   sortOrder?: 'ASC' | 'DESC';
   filter?: string;
   where?: IFindOptionsWhere<T>;
+  ignoreRange?: boolean;
 }
 
 export interface IRange {
