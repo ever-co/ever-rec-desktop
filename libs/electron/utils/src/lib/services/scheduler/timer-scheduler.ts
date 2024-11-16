@@ -158,7 +158,6 @@ export class TimerScheduler implements ILoggable {
    * @param callback - Function that will be executed when the timer is stopped.
    */
   public onStop(callback: (elapsedTime: number) => void): void {
-    this.emitter.on('stop', () => this.emitter.removeAllListeners('stop')); // Remove listeners for 'stop' event;
     this.emitter.on('stop', callback);
   }
 
@@ -169,7 +168,6 @@ export class TimerScheduler implements ILoggable {
    * @param callback - Function that will be executed when the timer is started.
    */
   public onStart(callback: () => void): void {
-    this.emitter.on('start', () => this.emitter.removeAllListeners('start'));
     this.emitter.on('start', callback);
   }
 }
