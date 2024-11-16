@@ -39,6 +39,10 @@ class TimerState {
     // No-op
   }
 
+  getValidTransitions() {
+    // No-op
+  }
+
   validateTransition(action) {
     const validTransitions = this.getValidTransitions();
     if (!validTransitions.includes(action)) {
