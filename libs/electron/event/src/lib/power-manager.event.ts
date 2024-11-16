@@ -13,8 +13,6 @@ export function powerManagerHandlerEvents(): void {
   const powerEventManager = PowerEventManager.getInstance();
 
   timerScheduler.onStart(() => {
-    console.log('Start listening to power events');
-
     powerEventManager.registerHandler('suspend', new SuspendHandler());
     powerEventManager.registerHandler('resume', new ResumeHandler());
     powerEventManager.registerHandler(
