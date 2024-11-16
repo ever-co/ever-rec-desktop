@@ -28,7 +28,7 @@ export function autoVideoGenerateEvent() {
       const delay = moment.duration(period, 'minutes').asSeconds();
 
       timerScheduler.onTick((seconds) => {
-        if (seconds % 30 === 0) {
+        if (seconds % delay === 0) {
           logger.info('Auto generating videos...');
           event.reply(Channel.AUTO_VIDEO_GENERATE, {
             completed: false,
