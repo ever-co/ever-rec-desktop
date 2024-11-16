@@ -1,31 +1,190 @@
 const { parentPort } = require('worker_threads');
+const { EventEmitter } = require('events');
 
-class Timer {
-  constructor() {
+// Interface for time provider
+class TimeProvider {
+  getInterval() {
+    throw new Error('Method not implemented');
+  }
+
+  clearInterval(id) {
+    throw new Error('Method not implemented');
+  }
+}
+
+// Concrete implementation of time provider
+class NodeTimeProvider extends TimeProvider {
+  getInterval(callback, delay) {
+    return setInterval(callback, delay);
+  }
+
+  clearInterval(id) {
+    clearInterval(id);
+  }
+}
+
+// Message port adapter to abstract worker thread communication
+class MessagePortAdapter {
+  constructor(port) {
+    this.port = port;
+  }
+
+  send(action, data = {}) {
+    try {
+      this.port.postMessage({ action, ...data });
+    } catch (error) {
+      throw new Error(`Failed to send message: ${error.message}`);
+    }
+  }
+
+  onMessage(callback) {
+    this.port.on('message', callback);
+  }
+
+  onClose(callback) {
+    this.port.on('close', callback);
+  }
+}
+
+// State management using State pattern
+class TimerState {
+  constructor(timer) {
+    this.timer = timer;
+  }
+
+  start() {
+    throw new Error('Method not implemented');
+  }
+
+  stop() {
+    throw new Error('Method not implemented');
+  }
+
+  pause() {
+    throw new Error('Method not implemented');
+  }
+
+  resume() {
+    throw new Error('Method not implemented');
+  }
+}
+
+class StoppedState extends TimerState {
+  start() {
+    this.timer.isRunning = true;
+    this.timer.messagePort.send('start');
+    this.timer.startCounting();
+    return new RunningState(this.timer);
+  }
+
+  stop() {
+    throw new Error('Timer is not running');
+  }
+
+  pause() {
+    throw new Error('Timer is not running');
+  }
+
+  resume() {
+    throw new Error('Timer is not running');
+  }
+}
+
+class RunningState extends TimerState {
+  start() {
+    throw new Error('Timer is already running');
+  }
+
+  stop() {
+    this.timer.cleanup();
+    this.timer.messagePort.send('stop', { secondsElapsed: this.timer.secondsElapsed });
+    this.timer.secondsElapsed = 0;
+    return new StoppedState(this.timer);
+  }
+
+  pause() {
+    this.timer.isPaused = true;
+    this.timer.messagePort.send('pause');
+    this.timer.stopCounting();
+    return new PausedState(this.timer);
+  }
+
+  resume() {
+    throw new Error('Timer is not paused');
+  }
+}
+
+class PausedState extends TimerState {
+  start() {
+    throw new Error('Timer is already running');
+  }
+
+  stop() {
+    this.timer.cleanup();
+    this.timer.messagePort.send('stop', { secondsElapsed: this.timer.secondsElapsed });
+    this.timer.secondsElapsed = 0;
+    return new StoppedState(this.timer);
+  }
+
+  pause() {
+    throw new Error('Timer is already paused');
+  }
+
+  resume() {
+    this.timer.isPaused = false;
+    this.timer.messagePort.send('resume');
+    this.timer.startCounting();
+    return new RunningState(this.timer);
+  }
+}
+
+// Error handler
+class ErrorHandler {
+  constructor(messagePort) {
+    this.messagePort = messagePort;
+  }
+
+  handle(error) {
+    console.error('Worker error:', error);
+    this.messagePort.send('error', {
+      error: {
+        message: error.message,
+        stack: error.stack,
+      },
+    });
+  }
+}
+
+// Main Timer class
+class Timer extends EventEmitter {
+  constructor(messagePort, timeProvider, errorHandler) {
+    super();
+    this.messagePort = messagePort;
+    this.timeProvider = timeProvider;
+    this.errorHandler = errorHandler;
     this.secondsElapsed = 0;
     this.intervalId = null;
     this.isRunning = false;
+    this.isPaused = false;
+    this.state = new StoppedState(this);
     this.setupEventHandlers();
   }
 
   setupEventHandlers() {
-    // Handle worker messages
-    parentPort.on('message', (message) => {
+    this.messagePort.onMessage((message) => {
       try {
         this.handleMessage(message);
       } catch (error) {
-        this.handleError(error);
+        this.errorHandler.handle(error);
       }
     });
 
-    // Handle worker termination
-    parentPort.on('close', () => {
+    this.messagePort.onClose(() => {
       this.cleanup();
     });
 
-    // Handle uncaught errors
     process.on('uncaughtException', (error) => {
-      this.handleError(error);
+      this.errorHandler.handle(error);
       this.cleanup();
     });
   }
@@ -35,80 +194,55 @@ class Timer {
 
     switch (action) {
       case 'start':
-        this.start();
+        this.state = this.state.start();
         break;
       case 'stop':
-        this.stop();
+        this.state = this.state.stop();
         break;
       case 'getElapsed':
         this.getElapsed();
+        break;
+      case 'pause':
+        this.state = this.state.pause();
+        break;
+      case 'resume':
+        this.state = this.state.resume();
         break;
       default:
         throw new Error(`Unknown action: ${action}`);
     }
   }
 
-  start() {
-    if (this.isRunning) {
-      this.handleError(new Error('Timer is already running'));
-      return;
-    }
-
-    this.isRunning = true;
-
-    this.sendMessage('start');
-
-    this.intervalId = setInterval(() => {
+  startCounting() {
+    this.intervalId = this.timeProvider.getInterval(() => {
       try {
         this.secondsElapsed++;
-        this.sendMessage('tick', { secondsElapsed: this.secondsElapsed });
+        this.messagePort.send('tick', { secondsElapsed: this.secondsElapsed });
       } catch (error) {
-        this.handleError(error);
+        this.errorHandler.handle(error);
       }
     }, 1000);
   }
 
-  stop() {
-    if (!this.isRunning) {
-      this.handleError(new Error('Timer is not running'));
-      return;
+  stopCounting() {
+    if (this.intervalId) {
+      this.timeProvider.clearInterval(this.intervalId);
+      this.intervalId = null;
     }
-
-    this.cleanup();
-    this.sendMessage('stop', { secondsElapsed: this.secondsElapsed });
-    this.secondsElapsed = 0;
   }
 
   getElapsed() {
-    this.sendMessage('getElapsed', { secondsElapsed: this.secondsElapsed });
+    this.messagePort.send('getElapsed', { secondsElapsed: this.secondsElapsed });
   }
 
   cleanup() {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-      this.intervalId = null;
-    }
+    this.stopCounting();
     this.isRunning = false;
-  }
-
-  sendMessage(action, data) {
-    try {
-      parentPort.postMessage({ action, ...data });
-    } catch (error) {
-      this.handleError(error);
-    }
-  }
-
-  handleError(error) {
-    console.error('Worker error:', error);
-    this.sendMessage('error', {
-      error: {
-        message: error.message,
-        stack: error.stack,
-      },
-    });
   }
 }
 
-// Initialize timer
-new Timer();
+// Initialize dependencies and timer
+const messagePort = new MessagePortAdapter(parentPort);
+const timeProvider = new NodeTimeProvider();
+const errorHandler = new ErrorHandler(messagePort);
+new Timer(messagePort, timeProvider, errorHandler);

@@ -117,6 +117,37 @@ export class TimerScheduler implements ILoggable {
     }
   }
 
+/**
+ * Pauses the timer.
+ *
+ * If the worker is available, sends a message to pause the timer.
+ * This will result in the timer being paused until it is resumed or stopped.
+ */
+  public pause(): void {
+    if (this.worker) {
+      /**
+       * Sends a message to the worker to start the timer.
+       */
+      this.worker.postMessage({ action: 'pause' });
+    }
+  }
+
+
+  /**
+   * Resumes the timer from a paused state.
+   *
+   * If the timer is currently paused, this will resume it. If the timer is not paused,
+   * this has no effect.
+   */
+  public resume(): void {
+    if (this.worker) {
+      /**
+       * Sends a message to the worker to start the timer.
+       */
+      this.worker.postMessage({ action: 'resume' });
+    }
+  }
+
   /**
    * Stops the timer.
    *
