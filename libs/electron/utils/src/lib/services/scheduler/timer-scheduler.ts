@@ -61,10 +61,9 @@ export class TimerScheduler implements ILoggable {
         this.emitter.emit('tick', this.secondsElapsed);
         break;
       case 'error':
+        this.logger.error('Worker error:', error);
+        break;
       case 'stop':
-        if (error) {
-          this.logger.error('Worker error:', error);
-        }
         /**
          * Removes all listeners for the 'tick' event.
          */
@@ -117,12 +116,12 @@ export class TimerScheduler implements ILoggable {
     }
   }
 
-/**
- * Pauses the timer.
- *
- * If the worker is available, sends a message to pause the timer.
- * This will result in the timer being paused until it is resumed or stopped.
- */
+  /**
+   * Pauses the timer.
+   *
+   * If the worker is available, sends a message to pause the timer.
+   * This will result in the timer being paused until it is resumed or stopped.
+   */
   public pause(): void {
     if (this.worker) {
       /**
@@ -131,7 +130,6 @@ export class TimerScheduler implements ILoggable {
       this.worker.postMessage({ action: 'pause' });
     }
   }
-
 
   /**
    * Resumes the timer from a paused state.

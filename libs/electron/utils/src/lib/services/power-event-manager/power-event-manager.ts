@@ -1,4 +1,9 @@
-import { ILoggable, ILogger, IPowerEventHandler } from '@ever-co/shared-utils';
+import {
+  IEventType,
+  ILoggable,
+  ILogger,
+  IPowerEventHandler,
+} from '@ever-co/shared-utils';
 import { powerMonitor } from 'electron';
 import { ElectronLogger } from '../logger/electron-logger';
 
@@ -7,12 +12,13 @@ import { ElectronLogger } from '../logger/electron-logger';
  */
 export class PowerEventManager implements ILoggable {
   public logger: ILogger = new ElectronLogger('Power Event Manager');
-  private handlers: Map<string, IPowerEventHandler[]> = new Map();
+  private handlers: Map<IEventType, IPowerEventHandler[]> = new Map();
+  private registeredEvents: Set<IEventType> = new Set();
   private isListening = false;
   private static instance: PowerEventManager;
 
   private constructor() {
-    //Not instanciable out of this class
+    // Prevent instantiation from outside
   }
 
   /**
@@ -22,10 +28,10 @@ export class PowerEventManager implements ILoggable {
    * @returns The singleton instance of PowerEventManager.
    */
   public static getInstance(): PowerEventManager {
-    if (!this.instance) {
-      this.instance = new PowerEventManager();
+    if (!PowerEventManager.instance) {
+      PowerEventManager.instance = new PowerEventManager();
     }
-    return this.instance;
+    return PowerEventManager.instance;
   }
 
   /**
@@ -33,11 +39,17 @@ export class PowerEventManager implements ILoggable {
    * @param eventType The type of the power event (e.g., 'suspend', 'resume').
    * @param handler The handler instance implementing the PowerEventHandler interface.
    */
-  public registerHandler(eventType: string, handler: IPowerEventHandler): void {
+  public registerHandler(
+    eventType: IEventType,
+    handler: IPowerEventHandler
+  ): void {
     if (!this.handlers.has(eventType)) {
       this.handlers.set(eventType, []);
     }
     this.handlers.get(eventType)?.push(handler);
+
+    // Ensure listener is registered for this event type
+    this.registerEventListener(eventType);
   }
 
   /**
@@ -50,13 +62,6 @@ export class PowerEventManager implements ILoggable {
       return;
     }
     this.isListening = true;
-
-    powerMonitor.on('suspend', this.createListener('suspend'));
-    powerMonitor.on('resume', this.createListener('resume'));
-    powerMonitor.on('on-ac', this.createListener('on-ac'));
-    powerMonitor.on('on-battery', this.createListener('on-battery'));
-    powerMonitor.on('lock-screen', this.createListener('lock-screen'));
-    powerMonitor.on('unlock-screen', this.createListener('unlock-screen'));
 
     this.logger.info('Started listening to power events.');
   }
@@ -72,6 +77,7 @@ export class PowerEventManager implements ILoggable {
     this.isListening = false;
 
     powerMonitor.removeAllListeners();
+    this.registeredEvents.clear();
     this.logger.info('Stopped listening to power events.');
   }
 
@@ -79,9 +85,37 @@ export class PowerEventManager implements ILoggable {
    * Dispatches the event to all registered handlers for the specified event type.
    * @param eventType The event type to dispatch.
    */
-  private dispatchEvent(eventType: string): void {
+  private dispatchEvent(eventType: IEventType): void {
     const handlers = this.handlers.get(eventType) || [];
     handlers.forEach((handler) => handler.handleEvent(eventType));
+  }
+
+  /**
+   * Registers a listener for a specific event type if not already registered.
+   * @param eventType The type of the power event.
+   */
+  private registerEventListener(eventType: IEventType): void {
+    if (this.registeredEvents.has(eventType)) {
+      this.logger.debug(`Listener already registered for event: ${eventType}`);
+      return;
+    }
+
+    const existingListeners = powerMonitor.rawListeners(eventType);
+    const listener = this.createListener(eventType);
+
+    // Check if our specific listener is already registered
+    if (existingListeners.includes(listener)) {
+      this.logger.debug(
+        `Specific listener already registered for event: ${eventType}`
+      );
+      return;
+    }
+
+    // Add the listener and register the event
+    powerMonitor.on(eventType as any, listener);
+    this.registeredEvents.add(eventType);
+
+    this.logger.info(`Listener registered for event: ${eventType}`);
   }
 
   /**
@@ -89,7 +123,7 @@ export class PowerEventManager implements ILoggable {
    * @param eventType The type of the power event.
    * @returns A listener function bound to the event type.
    */
-  private createListener(eventType: string): () => void {
+  private createListener(eventType: IEventType): () => void {
     return () => {
       this.logger.info(`Received event - ${eventType}`);
       this.dispatchEvent(eventType);
