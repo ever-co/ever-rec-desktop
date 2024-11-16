@@ -2,96 +2,12 @@
 const { parentPort } = require('worker_threads');
 
 // Constants
-const TIMER_STATES = {
-  STOPPED: 'STOPPED',
-  RUNNING: 'RUNNING',
-  PAUSED: 'PAUSED',
-};
-
-const ERROR_CODES = {
+const ERROR_CODES = Object.freeze({
   INVALID_STATE: 'INVALID_STATE',
   INVALID_TRANSITION: 'INVALID_TRANSITION',
   COMMAND_ERROR: 'COMMAND_ERROR',
   UNKNOWN_ACTION: 'UNKNOWN_ACTION',
-};
-
-// Base Interfaces
-class ITimeProvider {
-  getInterval() {
-    throw new Error('Not implemented');
-  }
-  clearInterval() {
-    throw new Error('Not implemented');
-  }
-}
-
-class IMessagePort {
-  send() {
-    throw new Error('Not implemented');
-  }
-  onMessage() {
-    throw new Error('Not implemented');
-  }
-  onClose() {
-    throw new Error('Not implemented');
-  }
-}
-
-// Implementations
-class NodeTimeProvider extends ITimeProvider {
-  getInterval(callback, delay) {
-    if (typeof callback !== 'function') {
-      throw new TimerError(
-        'Invalid callback provided',
-        ERROR_CODES.COMMAND_ERROR
-      );
-    }
-    return setInterval(callback, delay);
-  }
-
-  clearInterval(id) {
-    if (id) clearInterval(id);
-  }
-}
-
-class MessagePortAdapter extends IMessagePort {
-  constructor(port) {
-    super();
-    if (!port)
-      throw new TimerError('Invalid message port', ERROR_CODES.COMMAND_ERROR);
-    this.port = port;
-  }
-
-  send(action, data = {}) {
-    try {
-      if (!action)
-        throw new TimerError('Invalid action', ERROR_CODES.COMMAND_ERROR);
-      this.port.postMessage({ action, ...data });
-    } catch (error) {
-      throw new TimerError(
-        `MessagePort error: ${error.message}`,
-        ERROR_CODES.COMMAND_ERROR
-      );
-    }
-  }
-
-  onMessage(callback) {
-    if (typeof callback !== 'function') {
-      throw new TimerError(
-        'Invalid message callback',
-        ERROR_CODES.COMMAND_ERROR
-      );
-    }
-    this.port.on('message', callback);
-  }
-
-  onClose(callback) {
-    if (typeof callback !== 'function') {
-      throw new TimerError('Invalid close callback', ERROR_CODES.COMMAND_ERROR);
-    }
-    this.port.on('close', callback);
-  }
-}
+});
 
 // Enhanced Error Handling
 class TimerError extends Error {
@@ -104,6 +20,266 @@ class TimerError extends Error {
   }
 }
 
+// Base State Class
+class TimerState {
+  constructor(context) {
+    this.context = context;
+  }
+
+  enter() {
+    // No-op
+  }
+  exit() {
+    // No-op
+  }
+  handleAction() {
+    // No-op
+  }
+  getStateName() {
+    // No-op
+  }
+
+  validateTransition(action) {
+    const validTransitions = this.getValidTransitions();
+    if (!validTransitions.includes(action)) {
+      throw new TimerError(
+        `Invalid transition: ${action} from ${this.getStateName()}`,
+        ERROR_CODES.INVALID_TRANSITION
+      );
+    }
+  }
+}
+
+// Concrete States
+class StoppedState extends TimerState {
+  getStateName() {
+    return 'STOPPED';
+  }
+
+  enter() {
+    this.context.cleanup();
+    this.context.notifyStateChange('stop');
+  }
+
+  exit() {
+    this.context.resetElapsedTime();
+  }
+
+  handleAction(action) {
+    this.validateTransition(action);
+    if (action === 'start') {
+      this.context.transitionTo(new RunningState(this.context));
+    }
+  }
+
+  getValidTransitions() {
+    return ['start'];
+  }
+}
+
+class RunningState extends TimerState {
+  getStateName() {
+    return 'RUNNING';
+  }
+
+  enter() {
+    this.context.startCounting();
+    this.context.notifyStateChange('start');
+  }
+
+  exit() {
+    this.context.stopCounting();
+  }
+
+  handleAction(action) {
+    this.validateTransition(action);
+    switch (action) {
+      case 'pause':
+        this.context.transitionTo(new PausedState(this.context));
+        break;
+      case 'stop':
+        this.context.transitionTo(new StoppedState(this.context));
+        break;
+    }
+  }
+
+  getValidTransitions() {
+    return ['pause', 'stop'];
+  }
+}
+
+class ResumeState extends TimerState {
+  getStateName() {
+    return 'RUNNING RESUMED';
+  }
+
+  enter() {
+    this.context.startCounting();
+    this.context.notifyStateChange('resume');
+  }
+
+  exit() {
+    this.context.stopCounting();
+  }
+
+  handleAction(action) {
+    this.validateTransition(action);
+    switch (action) {
+      case 'pause':
+        this.context.transitionTo(new PausedState(this.context));
+        break;
+      case 'stop':
+        this.context.transitionTo(new StoppedState(this.context));
+        break;
+    }
+  }
+
+  getValidTransitions() {
+    return ['pause', 'stop'];
+  }
+}
+
+class PausedState extends TimerState {
+  getStateName() {
+    return 'PAUSED';
+  }
+
+  enter() {
+    this.context.notifyStateChange('pause');
+  }
+
+  exit() {
+    // No-op
+  }
+
+  handleAction(action) {
+    this.validateTransition(action);
+    switch (action) {
+      case 'resume':
+        this.context.transitionTo(new ResumeState(this.context));
+        break;
+      case 'stop':
+        this.context.transitionTo(new StoppedState(this.context));
+        break;
+    }
+  }
+
+  getValidTransitions() {
+    return ['resume', 'stop'];
+  }
+}
+
+// Context Class
+class TimerContext {
+  constructor(messagePort, timeProvider) {
+    this.messagePort = messagePort;
+    this.timeProvider = timeProvider;
+    this.state = new StoppedState(this);
+    this.secondsElapsed = 0;
+    this.intervalId = null;
+  }
+
+  transitionTo(newState) {
+    this.state?.exit();
+    this.state = newState;
+    this.state.enter();
+  }
+
+  handleAction(action) {
+    this.state.handleAction(action);
+  }
+
+  startCounting() {
+    this.stopCounting();
+    this.intervalId = this.timeProvider.getInterval(() => {
+      this.secondsElapsed++;
+      this.notifyTick();
+    }, 1000);
+  }
+
+  stopCounting() {
+    if (this.intervalId) {
+      this.timeProvider.clearInterval(this.intervalId);
+      this.intervalId = null;
+    }
+  }
+
+  cleanup() {
+    this.stopCounting();
+    this.messagePort.send('cleanup', {
+      finalState: this.state.getStateName(),
+      secondsElapsed: this.secondsElapsed,
+    });
+  }
+
+  resetElapsedTime() {
+    this.secondsElapsed = 0;
+  }
+
+  notifyStateChange(action) {
+    this.messagePort.send(action, {
+      secondsElapsed: this.secondsElapsed,
+      state: this.state.getStateName(),
+    });
+  }
+
+  notifyTick() {
+    this.messagePort.send('tick', {
+      secondsElapsed: this.secondsElapsed,
+      state: this.state.getStateName(),
+    });
+  }
+
+  getElapsedTime() {
+    return this.secondsElapsed;
+  }
+}
+
+// Provider Implementations
+class NodeTimeProvider {
+  getInterval(callback, delay) {
+    if (typeof callback !== 'function') {
+      throw new TimerError('Invalid callback', ERROR_CODES.COMMAND_ERROR);
+    }
+    return setInterval(callback, delay);
+  }
+
+  clearInterval(id) {
+    if (id) clearInterval(id);
+  }
+}
+
+class MessagePortAdapter {
+  constructor(port) {
+    if (!port) {
+      throw new TimerError('Invalid message port', ERROR_CODES.COMMAND_ERROR);
+    }
+    this.port = port;
+  }
+
+  send(action, data = {}) {
+    if (!action) {
+      throw new TimerError('Invalid action', ERROR_CODES.COMMAND_ERROR);
+    }
+    this.port.postMessage({ action, ...data });
+  }
+
+  onMessage(callback) {
+    if (typeof callback !== 'function') {
+      throw new TimerError('Invalid callback', ERROR_CODES.COMMAND_ERROR);
+    }
+    this.port.on('message', callback);
+  }
+
+  onClose(callback) {
+    if (typeof callback !== 'function') {
+      throw new TimerError('Invalid callback', ERROR_CODES.COMMAND_ERROR);
+    }
+    this.port.on('close', callback);
+  }
+}
+
+// Error Handler
 class WorkerErrorHandler {
   constructor(messagePort) {
     this.messagePort = messagePort;
@@ -127,239 +303,105 @@ class WorkerErrorHandler {
   }
 }
 
-// State Management
-class StateManager {
-  constructor(timer) {
-    this.timer = timer;
-    this.currentState = TIMER_STATES.STOPPED;
-    this.transitions = {
-      [TIMER_STATES.STOPPED]: { start: TIMER_STATES.RUNNING },
-      [TIMER_STATES.RUNNING]: {
-        stop: TIMER_STATES.STOPPED,
-        pause: TIMER_STATES.PAUSED,
-      },
-      [TIMER_STATES.PAUSED]: {
-        resume: TIMER_STATES.RUNNING,
-        stop: TIMER_STATES.STOPPED,
-      },
-    };
+// Command Pattern
+class Command {
+  constructor(context) {
+    this.context = context;
   }
 
-  transition(action) {
-    const nextState = this.transitions[this.currentState]?.[action];
-
-    if (!nextState) {
-      throw new TimerError(
-        `Invalid state transition: ${action} from ${this.currentState}`,
-        ERROR_CODES.INVALID_TRANSITION,
-        { currentState: this.currentState, action }
-      );
-    }
-
-    this.currentState = nextState;
-    return this.currentState;
-  }
-
-  getState() {
-    return this.currentState;
+  execute() {
+    throw new Error('Command must implement execute method');
   }
 }
 
-// Command Pattern Implementation
-class TimerCommandExecutor {
-  constructor(timer) {
-    this.timer = timer;
-    this.commands = {
-      start: () => this.executeStart(),
-      stop: () => this.executeStop(),
-      pause: () => this.executePause(),
-      resume: () => this.executeResume(),
-      getElapsed: () => this.executeGetElapsed(),
-    };
+class StateTransitionCommand extends Command {
+  constructor(action, context) {
+    super(context);
+    this.action = action;
   }
 
-  execute(action) {
-    const command = this.commands[action];
-    if (!command) {
-      throw new TimerError(
-        `Unknown command: ${action}`,
-        ERROR_CODES.UNKNOWN_ACTION,
-        { availableCommands: Object.keys(this.commands) }
-      );
-    }
-    return command();
+  execute() {
+    this.context.handleAction(this.action);
   }
+}
 
-  executeStart() {
-    this.timer.stateManager.transition('start');
-    this.timer.startCounting();
-    this.timer.messagePort.send('start');
-  }
-
-  executeStop() {
-    this.timer.stateManager.transition('stop');
-    this.timer.cleanup();
-    this.timer.messagePort.send('stop', {
-      secondsElapsed: this.timer.secondsElapsed,
-    });
-  }
-
-  executePause() {
-    this.timer.stateManager.transition('pause');
-    this.timer.stopCounting();
-    this.timer.messagePort.send('pause', {
-      secondsElapsed: this.timer.secondsElapsed,
-    });
-  }
-
-  executeResume() {
-    this.timer.stateManager.transition('resume');
-    this.timer.startCounting();
-    this.timer.messagePort.send('resume', {
-      secondsElapsed: this.timer.secondsElapsed,
-    });
-  }
-
-  executeGetElapsed() {
-    this.timer.messagePort.send('getElapsed', {
-      secondsElapsed: this.timer.secondsElapsed,
-      state: this.timer.stateManager.getState(),
+class GetElapsedCommand extends Command {
+  execute() {
+    const elapsed = this.context.getElapsedTime();
+    this.context.messagePort.send('getElapsed', {
+      secondsElapsed: elapsed,
+      state: this.context.state.getStateName(),
     });
   }
 }
 
-// Main Timer Class
-class Timer {
-  constructor(messagePort, timeProvider, errorHandler) {
-    this.messagePort = messagePort;
-    this.timeProvider = timeProvider;
-    this.errorHandler = errorHandler;
-    this.secondsElapsed = 0;
-    this.intervalId = null;
-    this.stateManager = new StateManager(this);
-    this.commandExecutor = new TimerCommandExecutor(this);
-
-    this.setupEventHandlers();
-  }
-
-  setupEventHandlers() {
-    try {
-      this.messagePort.onMessage(this.handleMessage.bind(this));
-      this.messagePort.onClose(this.cleanup.bind(this));
-
-      process.on('uncaughtException', (error) => {
-        this.errorHandler.handle(error);
-        this.cleanup();
-      });
-    } catch (error) {
-      this.errorHandler.handle(
-        new TimerError(
-          'Failed to setup event handlers',
-          ERROR_CODES.COMMAND_ERROR,
-          { originalError: error.message }
-        )
-      );
-    }
-  }
-
-  handleMessage(message) {
-    try {
-      const { action } = message;
-
-      if (!action) {
+// Command Factory
+class CommandFactory {
+  static createCommand(action, context) {
+    switch (action) {
+      case 'start':
+      case 'stop':
+      case 'pause':
+      case 'resume':
+        return new StateTransitionCommand(action, context);
+      case 'getElapsed':
+        return new GetElapsedCommand(context);
+      default:
         throw new TimerError(
-          'Invalid message format: missing action',
-          ERROR_CODES.COMMAND_ERROR,
-          { receivedMessage: message }
+          `Unknown command: ${action}`,
+          ERROR_CODES.UNKNOWN_ACTION
         );
-      }
-
-      this.commandExecutor.execute(action);
-    } catch (error) {
-      this.errorHandler.handle(error);
-    }
-  }
-
-  startCounting() {
-    try {
-      this.stopCounting();
-      this.intervalId = this.timeProvider.getInterval(() => {
-        this.secondsElapsed++;
-        this.messagePort.send('tick', {
-          secondsElapsed: this.secondsElapsed,
-          state: this.stateManager.getState(),
-        });
-      }, 1000);
-    } catch (error) {
-      this.errorHandler.handle(
-        new TimerError('Failed to start counting', ERROR_CODES.COMMAND_ERROR, {
-          originalError: error.message,
-        })
-      );
-    }
-  }
-
-  stopCounting() {
-    try {
-      if (this.intervalId) {
-        this.timeProvider.clearInterval(this.intervalId);
-        this.intervalId = null;
-      }
-    } catch (error) {
-      this.errorHandler.handle(
-        new TimerError('Failed to stop counting', ERROR_CODES.COMMAND_ERROR, {
-          originalError: error.message,
-        })
-      );
-    }
-  }
-
-  cleanup() {
-    try {
-      this.stopCounting();
-      this.messagePort.send('cleanup', {
-        finalState: this.stateManager.getState(),
-        secondsElapsed: this.secondsElapsed,
-      });
-    } catch (error) {
-      this.errorHandler.handle(
-        new TimerError('Failed to cleanup timer', ERROR_CODES.COMMAND_ERROR, {
-          originalError: error.message,
-        })
-      );
     }
   }
 }
 
-// Timer Factory with validation
+// Timer Factory
 class TimerFactory {
   static create(parentPort) {
     if (!parentPort) {
       throw new TimerError(
         'Parent port is required',
-        ERROR_CODES.COMMAND_ERROR,
-        { component: 'TimerFactory' }
+        ERROR_CODES.COMMAND_ERROR
       );
     }
 
-    try {
-      const messagePort = new MessagePortAdapter(parentPort);
-      const timeProvider = new NodeTimeProvider();
-      const errorHandler = new WorkerErrorHandler(messagePort);
+    const messagePort = new MessagePortAdapter(parentPort);
+    const timeProvider = new NodeTimeProvider();
+    const errorHandler = new WorkerErrorHandler(messagePort);
+    const context = new TimerContext(messagePort, timeProvider);
 
-      return new Timer(messagePort, timeProvider, errorHandler);
-    } catch (error) {
-      console.error('Failed to create timer:', error);
-      throw new TimerError(
-        'Failed to create timer instance',
-        ERROR_CODES.COMMAND_ERROR,
-        { originalError: error.message }
-      );
-    }
+    // Setup message handling
+    messagePort.onMessage((message) => {
+      try {
+        if (!message?.action) {
+          throw new TimerError(
+            'Invalid message format',
+            ERROR_CODES.COMMAND_ERROR
+          );
+        }
+
+        const command = CommandFactory.createCommand(message.action, context);
+        command.execute();
+      } catch (error) {
+        errorHandler.handle(error);
+      }
+    });
+
+    messagePort.onClose(() => {
+      context.cleanup();
+    });
+
+    // Setup process error handling
+    process.on('uncaughtException', (error) => {
+      errorHandler.handle(error);
+      context.cleanup();
+    });
+
+    return context;
   }
 }
 
-// Initialize worker with error handling
+// Initialize worker
 try {
   TimerFactory.create(parentPort);
 } catch (error) {
