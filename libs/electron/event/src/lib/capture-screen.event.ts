@@ -145,6 +145,7 @@ export function removeCaptureScreenEvent(): void {
     Channel.SCREENSHOT_CAPTURED,
     Channel.START_CAPTURE_SCREEN,
     Channel.STOP_CAPTURE_SCREEN,
+    Channel.TICK,
   ];
   channels.forEach((channel) => ipcMain.removeAllListeners(channel));
 }
