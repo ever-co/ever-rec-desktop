@@ -84,6 +84,7 @@ class RunningState extends TimerState {
 
   enter() {
     this.context.startCounting();
+    if (this.context.isQuietTransition) return;
     this.context.notifyStateChange('start');
   }
 
@@ -110,16 +111,16 @@ class RunningState extends TimerState {
 
 class ResumeState extends TimerState {
   getStateName() {
-    return 'RUNNING RESUMED';
+    return 'RESUMING';
   }
 
   enter() {
-    this.context.startCounting();
     this.context.notifyStateChange('resume');
+    this.context.transitionTo(new RunningState(this.context), true);
   }
 
   exit() {
-    this.context.stopCounting();
+    // No-op
   }
 
   handleAction(action) {
@@ -177,12 +178,15 @@ class TimerContext {
     this.state = new StoppedState(this);
     this.secondsElapsed = 0;
     this.intervalId = null;
+    this.isQuietTransition = false;
   }
 
-  transitionTo(newState) {
+  transitionTo(newState, isQuiet = false) {
+    this.isQuietTransition = isQuiet;
     this.state?.exit();
     this.state = newState;
     this.state.enter();
+    this.isQuietTransition = false;
   }
 
   handleAction(action) {
