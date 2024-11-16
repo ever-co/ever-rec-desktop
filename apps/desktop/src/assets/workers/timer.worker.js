@@ -1,7 +1,7 @@
 const { parentPort } = require('worker_threads');
 const { EventEmitter } = require('events');
 
-// Interface for time provider
+// Base TimeProvider interface
 class TimeProvider {
   getInterval() {
     throw new Error('Method not implemented');
@@ -12,7 +12,7 @@ class TimeProvider {
   }
 }
 
-// Concrete implementation of time provider
+// Node.js implementation of TimeProvider
 class NodeTimeProvider extends TimeProvider {
   getInterval(callback, delay) {
     return setInterval(callback, delay);
@@ -23,7 +23,7 @@ class NodeTimeProvider extends TimeProvider {
   }
 }
 
-// Message port adapter to abstract worker thread communication
+// Adapter for communication via MessagePort
 class MessagePortAdapter {
   constructor(port) {
     this.port = port;
@@ -46,26 +46,32 @@ class MessagePortAdapter {
   }
 }
 
-// State management using State pattern
+// Base class for Timer states
 class TimerState {
   constructor(timer) {
     this.timer = timer;
   }
 
   start() {
-    this.timer.errorHandler.handle('Method not implemented');
+    this.timer.errorHandler.handle(
+      'Start operation not allowed in this state.'
+    );
   }
 
   stop() {
-    this.timer.errorHandler.handle('Method not implemented');
+    this.timer.errorHandler.handle('Stop operation not allowed in this state.');
   }
 
   pause() {
-    this.timer.errorHandler.handle('Method not implemented');
+    this.timer.errorHandler.handle(
+      'Pause operation not allowed in this state.'
+    );
   }
 
   resume() {
-    this.timer.errorHandler.handle('Method not implemented');
+    this.timer.errorHandler.handle(
+      'Resume operation not allowed in this state.'
+    );
   }
 }
 
@@ -76,31 +82,14 @@ class StoppedState extends TimerState {
     this.timer.startCounting();
     return new RunningState(this.timer);
   }
-
-  stop() {
-    this.timer.errorHandler.handle('Timer is not running');
-  }
-
-  pause() {
-    this.timer.errorHandler.handle('Timer is not running');
-  }
-
-  resume() {
-    this.timer.errorHandler.handle('Timer is not running');
-  }
 }
 
 class RunningState extends TimerState {
-  start() {
-    this.timer.errorHandler.handle('Timer is already running');
-  }
-
   stop() {
     this.timer.cleanup();
     this.timer.messagePort.send('stop', {
       secondsElapsed: this.timer.secondsElapsed,
     });
-    this.timer.secondsElapsed = 0;
     return new StoppedState(this.timer);
   }
 
@@ -109,28 +98,15 @@ class RunningState extends TimerState {
     this.timer.stopCounting();
     return new PausedState(this.timer);
   }
-
-  resume() {
-    this.timer.errorHandler.handle('Timer is not paused');
-  }
 }
 
 class PausedState extends TimerState {
-  start() {
-    this.timer.errorHandler.handle('Timer is already running');
-  }
-
   stop() {
     this.timer.cleanup();
     this.timer.messagePort.send('stop', {
       secondsElapsed: this.timer.secondsElapsed,
     });
-    this.timer.secondsElapsed = 0;
     return new StoppedState(this.timer);
-  }
-
-  pause() {
-    this.timer.errorHandler.handle('Timer is already paused');
   }
 
   resume() {
@@ -140,7 +116,7 @@ class PausedState extends TimerState {
   }
 }
 
-// Error handler
+// Handles errors and sends them via MessagePort
 class ErrorHandler {
   constructor(messagePort) {
     this.messagePort = messagePort;
@@ -181,9 +157,7 @@ class Timer extends EventEmitter {
       }
     });
 
-    this.messagePort.onClose(() => {
-      this.cleanup();
-    });
+    this.messagePort.onClose(() => this.cleanup());
 
     process.on('uncaughtException', (error) => {
       this.errorHandler.handle(error);
@@ -191,9 +165,7 @@ class Timer extends EventEmitter {
     });
   }
 
-  handleMessage(message) {
-    const { action } = message;
-
+  handleMessage({ action }) {
     switch (action) {
       case 'start':
         this.state = this.state.start();
@@ -212,18 +184,14 @@ class Timer extends EventEmitter {
         break;
       default:
         this.errorHandler.handle(`Unknown action: ${action}`);
-        break;
     }
   }
 
   startCounting() {
+    this.stopCounting();
     this.intervalId = this.timeProvider.getInterval(() => {
-      try {
-        this.secondsElapsed++;
-        this.messagePort.send('tick', { secondsElapsed: this.secondsElapsed });
-      } catch (error) {
-        this.errorHandler.handle(error);
-      }
+      this.secondsElapsed++;
+      this.messagePort.send('tick', { secondsElapsed: this.secondsElapsed });
     }, 1000);
   }
 
@@ -246,7 +214,7 @@ class Timer extends EventEmitter {
   }
 }
 
-// Initialize dependencies and timer
+// Initialize and run Timer
 const messagePort = new MessagePortAdapter(parentPort);
 const timeProvider = new NodeTimeProvider();
 const errorHandler = new ErrorHandler(messagePort);
