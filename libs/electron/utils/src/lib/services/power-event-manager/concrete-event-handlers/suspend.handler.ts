@@ -1,4 +1,9 @@
-import { IEventType, ILoggable, ILogger, IPowerEventHandler } from '@ever-co/shared-utils';
+import {
+  IEventType,
+  ILoggable,
+  ILogger,
+  IPowerEventHandler,
+} from '@ever-co/shared-utils';
 import { ElectronLogger } from '../../logger/electron-logger';
 import { TimerScheduler } from '../../scheduler/timer-scheduler';
 
@@ -11,7 +16,7 @@ export class SuspendHandler implements IPowerEventHandler, ILoggable {
       this.logger.info(
         'SuspendHandler: Handling suspend event. Pausing tasks...'
       );
-      this.scheduler.start();
+      this.scheduler.stop();
     }
   }
 }
