@@ -1,4 +1,7 @@
-import { autoVideoGenerateEvent, removeAutoVideoGenerateEvent } from './auto-video-generate.event';
+import {
+  autoVideoGenerateEvent,
+  removeAutoVideoGenerateEvent,
+} from './auto-video-generate.event';
 import {
   captureScreenEvent,
   removeCaptureScreenEvent,
@@ -11,9 +14,13 @@ import {
   crudScreeshotEvents,
   removeCrudScreenshotEvent,
 } from './crud-screenshot.event';
-import { crudTimeLogEvents, removeCrudTimeLogEvent } from './crud-time-log.event';
+import {
+  crudTimeLogEvents,
+  removeCrudTimeLogEvent,
+} from './crud-time-log.event';
 import { crudVideoEvents, removeCrudVideoEvent } from './crud-video.event';
 import { MainEvents, removeMainEvents } from './main.event';
+import { powerManagerHandlerEvents } from './power-manager.event';
 import { removeRetentionEvents, retentionEvents } from './retention.event';
 import { removeUploadEvent, uploadEventListener } from './upload.event';
 
@@ -27,6 +34,7 @@ export function subscribeEvents() {
   retentionEvents();
   autoVideoGenerateEvent();
   MainEvents();
+  powerManagerHandlerEvents();
 }
 
 export function unsubscribeEvents() {

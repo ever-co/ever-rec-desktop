@@ -55,6 +55,9 @@ class Timer {
     }
 
     this.isRunning = true;
+
+    this.sendMessage('start');
+
     this.intervalId = setInterval(() => {
       try {
         this.secondsElapsed++;

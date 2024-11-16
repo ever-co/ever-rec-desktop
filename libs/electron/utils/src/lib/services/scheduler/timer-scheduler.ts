@@ -8,13 +8,14 @@ import { WorkerFactory } from '../worker-factory.service';
  * TimerScheduler is a singleton class that manages a timer, which emits a 'tick' event every second.
  * The timer is efficiently managed and only one instance exists at a time.
  */
-export class TimerScheduler extends EventEmitter implements ILoggable {
+export class TimerScheduler implements ILoggable {
   private static instance: TimerScheduler;
   private secondsElapsed = 0;
   private worker = WorkerFactory.createWorker(
     join(__dirname, 'assets', 'workers', 'timer.worker')
   );
   public logger: ILogger = new ElectronLogger('Timer Scheduler');
+  private emitter = new EventEmitter();
 
   /**
    * Initializes a new instance of the TimerScheduler class.
@@ -24,7 +25,6 @@ export class TimerScheduler extends EventEmitter implements ILoggable {
    * This constructor is private to ensure that the TimerScheduler class remains a singleton.
    */
   private constructor() {
-    super();
     this.worker.on('message', this.handleWorkerMessage.bind(this));
     this.worker.on('error', (error) => {
       this.logger.error('Worker error:', error);
@@ -58,7 +58,7 @@ export class TimerScheduler extends EventEmitter implements ILoggable {
          * @property {number} secondsElapsed - The number of seconds that have elapsed since the worker was started.
          */
         this.secondsElapsed = secondsElapsed;
-        this.emit('tick', this.secondsElapsed);
+        this.emitter.emit('tick', this.secondsElapsed);
         break;
       case 'error':
       case 'stop':
@@ -66,35 +66,23 @@ export class TimerScheduler extends EventEmitter implements ILoggable {
           this.logger.error('Worker error:', error);
         }
         /**
+         * Removes all listeners for the 'tick' event.
+         */
+        this.emitter.removeAllListeners('tick');
+        /**
          * Emits the 'stop' event with the number of seconds elapsed since the worker was started.
          * @event TimerScheduler#stop
          * @property {number} secondsElapsed - The number of seconds that have elapsed since the worker was started.
          */
-        this.emit('stop', this.secondsElapsed);
+        this.emitter.emit('stop', this.secondsElapsed);
         this.secondsElapsed = 0; // Reset
-        /**
-         * Removes all listeners for the 'tick' event.
-         */
-        this.removeAllListeners('tick');
-        /**
-         * Removes all listeners for the 'start' event.
-         */
-        this.removeAllListeners('start');
-        /**
-         * Removes all listeners for the 'stop' event.
-         */
-        this.removeAllListeners('stop');
         break;
       case 'start':
-        /**
-         * Removes all listeners for the 'start' event.
-         */
-        this.removeAllListeners('start');
         /**
          * Emits the 'start' event.
          * @event TimerScheduler#start
          */
-        this.emit('start');
+        this.emitter.emit('start');
         break;
       default:
         this.logger.warn('Unknown action:', action);
@@ -160,7 +148,7 @@ export class TimerScheduler extends EventEmitter implements ILoggable {
    * @param callback - Function that takes the total seconds elapsed as an argument.
    */
   public onTick(callback: (secondsElapsed: number) => void): void {
-    this.on('tick', callback);
+    this.emitter.on('tick', callback);
   }
 
   /**
@@ -170,8 +158,8 @@ export class TimerScheduler extends EventEmitter implements ILoggable {
    * @param callback - Function that will be executed when the timer is stopped.
    */
   public onStop(callback: (elapsedTime: number) => void): void {
-    this.on('stop', () => this.removeAllListeners('stop')); // Remove listeners for 'stop' event;
-    this.on('stop', callback);
+    this.emitter.on('stop', () => this.emitter.removeAllListeners('stop')); // Remove listeners for 'stop' event;
+    this.emitter.on('stop', callback);
   }
 
   /**
@@ -181,6 +169,7 @@ export class TimerScheduler extends EventEmitter implements ILoggable {
    * @param callback - Function that will be executed when the timer is started.
    */
   public onStart(callback: () => void): void {
-    this.on('start', callback);
+    this.emitter.on('start', () => this.emitter.removeAllListeners('start'));
+    this.emitter.on('start', callback);
   }
 }
