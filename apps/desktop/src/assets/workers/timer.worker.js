@@ -53,19 +53,19 @@ class TimerState {
   }
 
   start() {
-    throw new Error('Method not implemented');
+    this.timer.errorHandler.handle('Method not implemented');
   }
 
   stop() {
-    throw new Error('Method not implemented');
+    this.timer.errorHandler.handle('Method not implemented');
   }
 
   pause() {
-    throw new Error('Method not implemented');
+    this.timer.errorHandler.handle('Method not implemented');
   }
 
   resume() {
-    throw new Error('Method not implemented');
+    this.timer.errorHandler.handle('Method not implemented');
   }
 }
 
@@ -78,61 +78,63 @@ class StoppedState extends TimerState {
   }
 
   stop() {
-    throw new Error('Timer is not running');
+    this.timer.errorHandler.handle('Timer is not running');
   }
 
   pause() {
-    throw new Error('Timer is not running');
+    this.timer.errorHandler.handle('Timer is not running');
   }
 
   resume() {
-    throw new Error('Timer is not running');
+    this.timer.errorHandler.handle('Timer is not running');
   }
 }
 
 class RunningState extends TimerState {
   start() {
-    throw new Error('Timer is already running');
+    this.timer.errorHandler.handle('Timer is already running');
   }
 
   stop() {
     this.timer.cleanup();
-    this.timer.messagePort.send('stop', { secondsElapsed: this.timer.secondsElapsed });
+    this.timer.messagePort.send('stop', {
+      secondsElapsed: this.timer.secondsElapsed,
+    });
     this.timer.secondsElapsed = 0;
     return new StoppedState(this.timer);
   }
 
   pause() {
     this.timer.isPaused = true;
-    this.timer.messagePort.send('pause');
     this.timer.stopCounting();
     return new PausedState(this.timer);
   }
 
   resume() {
-    throw new Error('Timer is not paused');
+    this.timer.errorHandler.handle('Timer is not paused');
   }
 }
 
 class PausedState extends TimerState {
   start() {
-    throw new Error('Timer is already running');
+    this.timer.errorHandler.handle('Timer is already running');
   }
 
   stop() {
     this.timer.cleanup();
-    this.timer.messagePort.send('stop', { secondsElapsed: this.timer.secondsElapsed });
+    this.timer.messagePort.send('stop', {
+      secondsElapsed: this.timer.secondsElapsed,
+    });
     this.timer.secondsElapsed = 0;
     return new StoppedState(this.timer);
   }
 
   pause() {
-    throw new Error('Timer is already paused');
+    this.timer.errorHandler.handle('Timer is already paused');
   }
 
   resume() {
     this.timer.isPaused = false;
-    this.timer.messagePort.send('resume');
     this.timer.startCounting();
     return new RunningState(this.timer);
   }
@@ -209,7 +211,8 @@ class Timer extends EventEmitter {
         this.state = this.state.resume();
         break;
       default:
-        throw new Error(`Unknown action: ${action}`);
+        this.errorHandler.handle(`Unknown action: ${action}`);
+        break;
     }
   }
 
@@ -232,7 +235,9 @@ class Timer extends EventEmitter {
   }
 
   getElapsed() {
-    this.messagePort.send('getElapsed', { secondsElapsed: this.secondsElapsed });
+    this.messagePort.send('getElapsed', {
+      secondsElapsed: this.secondsElapsed,
+    });
   }
 
   cleanup() {
