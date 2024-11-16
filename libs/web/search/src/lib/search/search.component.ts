@@ -65,6 +65,10 @@ export class SearchComponent implements OnInit {
       .pipe(map((state) => state.search.filter));
   }
 
+  public onSearch(searchQuery: string) {
+    this.store.dispatch(screenshotActions.filterHistory({ searchQuery }));
+  }
+
   public onChange(value: string) {
     of(value)
       .pipe(

@@ -62,6 +62,7 @@ export const screenshotActions = createActionGroup({
 
     'Add To History': props<{ searchQuery: string }>(),
     'Remove From History': props<{ searchQuery: string }>(),
+    'Filter History': props<{ searchQuery: string }>(),
 
     'Get Screenshots Chart Line': emptyProps(),
     'Get Screenshots Chart Line Success': props<{

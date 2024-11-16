@@ -86,9 +86,9 @@ export const reducer = createReducer(
     capturing: false,
   })),
   on(screenshotActions.captureSuccess, (state, { screenshot }) => {
-    const size =  state.screenshots.length;
+    const size = state.screenshots.length;
     const limit = size > 10 ? size : 10;
-    
+
     return {
       ...state,
       count: state.count + 1,

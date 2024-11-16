@@ -12,6 +12,7 @@
     [value]="searchTerm$ | async"
     #search
     (keydown.enter)="onChange(search.value)"
+    (input)="onSearch(search.value)"
     matInput
     placeholder="Search for applications, tags, folders, and website"
   />

@@ -1,7 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { NotificationService } from '@ever-co/notification-data-access';
 import { LocalStorageService } from '@ever-co/shared-service';
-import { IPaginationOptions, IScreenshotMetadataStatistic } from '@ever-co/shared-utils';
+import {
+  IPaginationOptions,
+  IScreenshotMetadataStatistic,
+} from '@ever-co/shared-utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { from, of } from 'rxjs';
@@ -134,7 +137,9 @@ export class ScreenshotEffects {
       ),
       mergeMap((options) =>
         from(
-          this.electronService.getStatistics(options as IPaginationOptions<IScreenshotMetadataStatistic>)
+          this.electronService.getStatistics(
+            options as IPaginationOptions<IScreenshotMetadataStatistic>
+          )
         ).pipe(
           map(({ hasNext, count, data }) =>
             screenshotActions.getScreenshotsStatisticsSuccess({
@@ -236,6 +241,24 @@ export class ScreenshotEffects {
         this.getHistory().pipe(
           map((history) => screenshotActions.loadHistorySuccess({ history })),
           catchError((error) => of(this.handleError(error)))
+        )
+      )
+    )
+  );
+
+  filterHistory$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(screenshotActions.filterHistory),
+      mergeMap(({ searchQuery }) =>
+        this.getHistory().pipe(
+          map((history) => {
+            const filtered = history.filter((q) =>
+              q.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+            return screenshotActions.loadHistorySuccess({
+              history: filtered,
+            });
+          })
         )
       )
     )
