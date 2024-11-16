@@ -1,7 +1,11 @@
 <div class="flex flex-col h-full gap-4">
   <lib-timeline-video class="grow"></lib-timeline-video>
   <div class="grow-0 relative">
+    @if(generating$ | async) {
+    <lib-progress class="w-full"></lib-progress>
+    }@else {
     <lib-timeline-track></lib-timeline-track>
     <lib-timeline-cursor></lib-timeline-cursor>
+    }
   </div>
 </div>
