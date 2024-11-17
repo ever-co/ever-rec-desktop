@@ -1,5 +1,7 @@
 import { ActivityService, TimeLogService } from '@ever-co/electron-database';
 import { ActivityHandler, ElectronLogger } from '@ever-co/electron-utils';
+import { Channel, currentDay, IRange } from '@ever-co/shared-utils';
+import { ipcMain } from 'electron';
 
 export function activitiesEvents() {
   // Initialize dependencies
@@ -34,4 +36,43 @@ export function activitiesEvents() {
       logger.error('Error handling activity state change:', error);
     }
   });
+
+  ipcMain.handle(
+    Channel.REQUEST_ACTIVITIES_DISTRIBUTION,
+    async (event, range: IRange) => {
+      return activityService.getActivityStateDistribution(range);
+    }
+  );
+
+  ipcMain.handle(
+    Channel.REQUEST_ACTIVITIES_STATISTICS,
+    async (event, range: IRange) => {
+      return activityService.getDailyStatistics(range);
+    }
+  );
+
+  ipcMain.handle(
+    Channel.REQUEST_ACTIVITIES_HOURLY_DISTRIBUTION,
+    async (event, date: Date) => {
+      return activityService.getHourlyActivityDistribution(date);
+    }
+  );
+
+  ipcMain.handle(
+    Channel.REQUEST_ACTIVITIES_TRENDS,
+    async (
+      event,
+      options: { range: IRange; interval: 'daily' | 'weekly' | 'monthly' }
+    ) => {
+      const { range = currentDay(), interval = 'daily' } = options || {};
+      return activityService.getProductivityTrends(range, interval);
+    }
+  );
+
+  ipcMain.handle(
+    Channel.REQUEST_ACTIVITIES_WORK_PATTERN,
+    async (event, range: IRange) => {
+      return activityService.getWorkPatternAnalysis(range);
+    }
+  );
 }

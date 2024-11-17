@@ -9,6 +9,7 @@ import {
   withHashLocation,
   withViewTransitions,
 } from '@angular/router';
+import { provideActivityDataAccess } from '@ever-co/activity-data-access';
 import { provideBreadcrumbDataAccess } from '@ever-co/breadcrumb-data-access';
 import { provideConvertVideoDataAccess } from '@ever-co/convert-video-data-access';
 import { provideFactoriesDataAccess } from '@ever-co/factory';
@@ -44,5 +45,6 @@ export const appConfig: ApplicationConfig = {
     provideNotificationDataAccess(),
     provideUploadDataAccess(),
     provideTimelineDataAccess(),
+    provideActivityDataAccess()
   ],
 };

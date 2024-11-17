@@ -4,6 +4,10 @@
     "rootDir": ".",
     "baseUrl": ".",
     "paths": {
+      "@ever-co/activity-data-access": [
+        "libs/web/activity/data-access/src/index.ts"
+      ],
+      "@ever-co/activity-feature": ["libs/web/activity/features/src/index.ts"],
       "@ever-co/breadcrumb-data-access": [
         "libs/web/breadcrumb/data-access/src/index.ts"
       ],

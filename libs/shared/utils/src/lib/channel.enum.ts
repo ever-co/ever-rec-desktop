@@ -40,4 +40,10 @@ export enum Channel {
   'CHART_LINE_DATA' = 'chart::line::data',
   'GET_CONTEXT' = 'get::context',
   'TICK' = 'tick::update',
+  'REQUEST_ACTIVITIES' = 'request::activities',
+  'REQUEST_ACTIVITIES_DISTRIBUTION' = 'request::activities::distribution',
+  'REQUEST_ACTIVITIES_STATISTICS' = 'request::activities::statistics',
+  'REQUEST_ACTIVITIES_HOURLY_DISTRIBUTION' = 'request::activities::hourly::distribution',
+  'REQUEST_ACTIVITIES_TRENDS' = 'request::activities::trends',
+  'REQUEST_ACTIVITIES_WORK_PATTERN' = 'request::activities::work::pattern',
 }
