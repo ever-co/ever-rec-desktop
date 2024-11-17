@@ -1,15 +1,36 @@
+import { ILoggable, ILogger } from '@ever-co/shared-utils';
 import { powerMonitor } from 'electron';
 import { EventEmitter } from 'events';
+import { ElectronLogger } from '../logger/electron-logger';
 import { TimerScheduler } from '../scheduler/timer-scheduler';
 
 /** Possible system idle states */
-export type IdleState = 'active' | 'idle' | 'locked' | 'unknown';
+export const IdleStates = {
+  ACTIVE: 'active',
+  IDLE: 'idle',
+  LOCKED: 'locked',
+  UNKNOWN: 'unknown',
+} as const;
+
+export type IdleState = (typeof IdleStates)[keyof typeof IdleStates];
 
 /** Event data structure for idle state changes */
 export interface IdleStateChange {
-  idleTime: number;
-  idleState: IdleState;
-  duration: number;
+  readonly idleTime: number;
+  readonly idleState: IdleState;
+  readonly duration: number;
+  readonly timestamp: number;
+}
+
+/**
+ * Custom error class for ActivityHandler-specific errors
+ */
+export class ActivityHandlerError extends Error {
+  constructor(message: string, public readonly reason?: Error) {
+    super(message);
+    this.cause = reason;
+    this.name = 'ActivityHandlerError';
+  }
 }
 
 /**
@@ -17,105 +38,150 @@ export interface IdleStateChange {
  *
  * @example
  * ```typescript
- * const activityHandler = new ActivityHandler();
- * activityHandler.onChange(({ idleState, idleTime }) => {
- *   console.log(`System is ${idleState} for ${idleTime} seconds`);
+ * const activityHandler = new ActivityHandler({ pollingInterval: 1000 });
+ *
+ * activityHandler.onChange(({ idleState, idleTime, timestamp }) => {
+ *   console.log(`System is ${idleState} for ${idleTime} seconds at ${new Date(timestamp)}`);
  * });
+ *
+ * // Start monitoring
  * activityHandler.startMonitoring();
+ *
+ * // Clean up when done
+ * activityHandler.dispose();
  * ```
  */
-export class ActivityHandler {
-  private previousIdleState: IdleState;
+export class ActivityHandler implements ILoggable {
   private readonly emitter: EventEmitter;
   private readonly scheduler: TimerScheduler;
-  private previousTime = 0;
+  public readonly logger: ILogger;
+
+  private previousIdleState: IdleState;
+  private previousTime: number;
+  private isDisposed: boolean;
 
   constructor() {
     this.emitter = new EventEmitter();
     this.scheduler = TimerScheduler.getInstance();
-    this.previousIdleState = this.getIdleStateSafely();
+    this.previousTime = 0;
+    this.isDisposed = false;
+    this.logger = new ElectronLogger('Activity Handler');
 
+    // Initialize state
+    this.previousIdleState = this.getIdleStateSafely();
     this.initializeScheduler();
   }
 
   /**
    * Gets the system idle time in seconds.
-   * @returns {number} Idle time in seconds.
+   * @throws {ActivityHandlerError} If there's an error retrieving the idle time
    */
   public get idleTime(): number {
+    this.throwIfDisposed();
     try {
       return powerMonitor.getSystemIdleTime();
     } catch (error) {
-      console.error('Error retrieving system idle time:', error);
-      return 0;
+      throw new ActivityHandlerError(
+        'Failed to retrieve system idle time',
+        error as Error
+      );
     }
   }
 
   /**
    * Gets the current system idle state.
-   * @returns {IdleState} Current idle state.
+   * @throws {ActivityHandlerError} If there's an error retrieving the idle state
    */
   public get idleState(): IdleState {
+    this.throwIfDisposed();
     return this.getIdleStateSafely();
   }
 
   /**
-   * Safely retrieves the current idle state with error handling.
-   * @returns {IdleState} Current idle state or 'unknown' if retrieval fails.
+   * Starts monitoring system activity.
+   * @throws {ActivityHandlerError} If monitoring is already started or instance is disposed
    */
+  public startMonitoring(): void {
+    this.throwIfDisposed();
+    try {
+      this.scheduler.start();
+      this.logger.info('Activity monitoring started');
+    } catch (error) {
+      throw new ActivityHandlerError(
+        'Failed to start monitoring',
+        error as Error
+      );
+    }
+  }
+
+  /**
+   * Stops monitoring system activity.
+   */
+  public stopMonitoring(): void {
+    if (!this.isDisposed) {
+      this.scheduler.stop();
+      this.logger.info('Activity monitoring stopped');
+    }
+  }
+
+  /**
+   * Registers a callback to listen for idle state changes.
+   * @param callback Function to be invoked on idle state changes
+   * @returns A cleanup function to remove the listener
+   */
+  public onChange(callback: (data: IdleStateChange) => void): () => void {
+    this.throwIfDisposed();
+    this.emitter.on('change', callback);
+    return () => this.emitter.off('change', callback);
+  }
+
+  /**
+   * Disposes of the ActivityHandler instance and cleans up resources.
+   */
+  public dispose(): void {
+    if (!this.isDisposed) {
+      this.stopMonitoring();
+      this.emitter.removeAllListeners();
+      this.isDisposed = true;
+      this.logger.info('ActivityHandler disposed');
+    }
+  }
+
   private getIdleStateSafely(): IdleState {
     try {
-      return powerMonitor.getSystemIdleState(1) as IdleState;
+      const state = powerMonitor.getSystemIdleState(1);
+      return Object.values(IdleStates).includes(state as IdleState)
+        ? (state as IdleState)
+        : IdleStates.UNKNOWN;
     } catch (error) {
-      console.error('Error retrieving system idle state:', error);
-      return 'unknown';
+      this.logger.info('Error retrieving system idle state:', error);
+      return IdleStates.UNKNOWN;
     }
   }
 
-  /**
-   * Initializes the timer scheduler with appropriate callbacks.
-   */
   private initializeScheduler(): void {
-    this.scheduler.onStart(this.currentState.bind(this));
+    this.scheduler.onStart(this.handleStateChange.bind(this));
     this.scheduler.onTick(this.monitoring.bind(this));
-    this.scheduler.onStop(this.currentState.bind(this));
+    this.scheduler.onStop(this.handleStateChange.bind(this));
   }
 
-  /**
-   * Starts monitoring system activity and emits events on state changes.
-   */
   private monitoring(seconds = 0): void {
     const currentState = this.getIdleStateSafely();
-    const currentTime = this.idleTime;
-
     if (currentState !== this.previousIdleState) {
-      const changeData: IdleStateChange = {
-        idleTime: currentTime,
-        idleState: currentState,
-        duration: seconds > this.previousTime ? seconds - this.previousTime : 0,
-      };
-
-      this.emitter.emit('change', changeData);
-      this.previousIdleState = currentState;
-      this.previousTime = Math.max(0, seconds);
+      this.handleStateChange(seconds);
     }
   }
 
-  /**
-   * Gets the current system idle state, calculates the duration since the previous idle state,
-   * and emits a 'change' event with the new idle state and duration.
-   *
-   * @param {number} [seconds=0] The number of seconds to use as the current time.
-   * @returns {void}
-   */
-  private currentState(seconds = 0): void {
+  private handleStateChange(seconds = 0): void {
     const currentState = this.getIdleStateSafely();
     const currentTime = this.idleTime;
+    const duration = Math.max(0, seconds - this.previousTime);
 
     const changeData: IdleStateChange = {
       idleTime: currentTime,
       idleState: currentState,
-      duration: seconds > this.previousTime ? seconds - this.previousTime : 0,
+      duration,
+      timestamp: Date.now(),
     };
 
     this.emitter.emit('change', changeData);
@@ -123,11 +189,9 @@ export class ActivityHandler {
     this.previousTime = Math.max(0, seconds);
   }
 
-  /**
-   * Registers a callback to listen for idle state changes.
-   * @param callback Function to be invoked on idle state changes.
-   */
-  public onChange(callback: (data: IdleStateChange) => void): void {
-    this.emitter.on('change', callback);
+  private throwIfDisposed(): void {
+    if (this.isDisposed) {
+      throw new ActivityHandlerError('ActivityHandler has been disposed');
+    }
   }
 }
