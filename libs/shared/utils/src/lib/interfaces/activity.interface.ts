@@ -66,6 +66,6 @@ export type IActivityStateDistribution = {
 export interface IWorkPatternAnalysis {
   averageDailyHours: number;
   mostProductiveDay: string | null;
-  mostProductiveHours: number[];
+  mostProductiveHours: string[];
   consistencyScore: number;
 }

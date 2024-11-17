@@ -78,7 +78,7 @@ export class ActivityService {
         };
       }
 
-      acc[date].totalDuration += log.duration;
+      acc[date].totalDuration += Number(log.duration);
       acc[date].activeDuration += this.calculateActiveDuration(log.activities);
       acc[date].idleDuration += this.calculateIdleDuration(log.activities);
       acc[date].productivity =
@@ -115,6 +115,7 @@ export class ActivityService {
         active: 0,
         idle: 0,
         locked: 0,
+        unknown: 0,
       }));
 
     activities.forEach((activity) => {
@@ -128,6 +129,9 @@ export class ActivityService {
           break;
         case IdleState.LOCKED:
           hourlyDistribution[hour].locked += activity.duration;
+          break;
+        case IdleState.UNKNOWN:
+          hourlyDistribution[hour].unknown += activity.duration;
           break;
       }
     });
@@ -245,7 +249,7 @@ export class ActivityService {
         };
       }
 
-      aggregated[key].totalDuration += log.duration;
+      aggregated[key].totalDuration += Number(log.duration);
       aggregated[key].activeDuration += this.calculateActiveDuration(
         log.activities
       );
@@ -267,7 +271,7 @@ export class ActivityService {
       if (!dailyDurations[date]) {
         dailyDurations[date] = 0;
       }
-      dailyDurations[date] += log.duration;
+      dailyDurations[date] += Number(log.duration);
     });
 
     const totalDays = Object.keys(dailyDurations).length;
@@ -293,7 +297,7 @@ export class ActivityService {
         };
       }
 
-      dailyProductivity[date].totalDuration += log.duration;
+      dailyProductivity[date].totalDuration += Number(log.duration);
       dailyProductivity[date].activeDuration += this.calculateActiveDuration(
         log.activities
       );
@@ -313,7 +317,7 @@ export class ActivityService {
     return mostProductiveDay;
   }
 
-  private findMostProductiveHours(timeLogs: ITimeLog[]): number[] {
+  private findMostProductiveHours(timeLogs: ITimeLog[]): string[] {
     const hourlyProductivity = Array(24)
       .fill(0)
       .map(() => ({
@@ -322,8 +326,8 @@ export class ActivityService {
       }));
 
     timeLogs.forEach((log) => {
-      const hour = new Date(log.start).getHours();
-      hourlyProductivity[hour].totalDuration += log.duration;
+      const hour = moment(log.start).hour();
+      hourlyProductivity[hour].totalDuration += Number(log.duration);
       hourlyProductivity[hour].activeDuration += this.calculateActiveDuration(
         log.activities
       );
@@ -340,7 +344,7 @@ export class ActivityService {
     return productivityScores
       .sort((a, b) => b.productivity - a.productivity)
       .slice(0, 3)
-      .map((score) => score.hour);
+      .map((score) => moment.duration(score.hour, 'hours').format('HH[h]'));
   }
 
   private calculateConsistencyScore(timeLogs: ITimeLog[]): number {
@@ -354,7 +358,7 @@ export class ActivityService {
       if (!dailyDurations[date]) {
         dailyDurations[date] = 0;
       }
-      dailyDurations[date] += log.duration;
+      dailyDurations[date] += Number(log.duration);
     });
 
     const durations = Object.values(dailyDurations);
