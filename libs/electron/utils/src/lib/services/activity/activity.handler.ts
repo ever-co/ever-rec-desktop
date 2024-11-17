@@ -1,26 +1,13 @@
-import { ILoggable, ILogger } from '@ever-co/shared-utils';
+import {
+  IdleState,
+  IdleStateChange,
+  ILoggable,
+  ILogger,
+} from '@ever-co/shared-utils';
 import { powerMonitor } from 'electron';
 import { EventEmitter } from 'events';
 import { ElectronLogger } from '../logger/electron-logger';
 import { TimerScheduler } from '../scheduler/timer-scheduler';
-
-/** Possible system idle states */
-export const IdleStates = {
-  ACTIVE: 'active',
-  IDLE: 'idle',
-  LOCKED: 'locked',
-  UNKNOWN: 'unknown',
-} as const;
-
-export type IdleState = (typeof IdleStates)[keyof typeof IdleStates];
-
-/** Event data structure for idle state changes */
-export interface IdleStateChange {
-  readonly idleTime: number;
-  readonly idleState: IdleState;
-  readonly duration: number;
-  readonly timestamp: number;
-}
 
 /**
  * Custom error class for ActivityHandler-specific errors
@@ -33,24 +20,6 @@ export class ActivityHandlerError extends Error {
   }
 }
 
-/**
- * ActivityHandler monitors system idle state and time, emitting events when changes occur.
- *
- * @example
- * ```typescript
- * const activityHandler = new ActivityHandler({ pollingInterval: 1000 });
- *
- * activityHandler.onChange(({ idleState, idleTime, timestamp }) => {
- *   console.log(`System is ${idleState} for ${idleTime} seconds at ${new Date(timestamp)}`);
- * });
- *
- * // Start monitoring
- * activityHandler.startMonitoring();
- *
- * // Clean up when done
- * activityHandler.dispose();
- * ```
- */
 export class ActivityHandler implements ILoggable {
   private readonly emitter: EventEmitter;
   private readonly scheduler: TimerScheduler;
@@ -150,12 +119,12 @@ export class ActivityHandler implements ILoggable {
   private getIdleStateSafely(): IdleState {
     try {
       const state = powerMonitor.getSystemIdleState(1);
-      return Object.values(IdleStates).includes(state as IdleState)
+      return Object.values(IdleState).includes(state as IdleState)
         ? (state as IdleState)
-        : IdleStates.UNKNOWN;
+        : IdleState.UNKNOWN;
     } catch (error) {
       this.logger.info('Error retrieving system idle state:', error);
-      return IdleStates.UNKNOWN;
+      return IdleState.UNKNOWN;
     }
   }
 

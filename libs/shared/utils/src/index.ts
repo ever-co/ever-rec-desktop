@@ -2,6 +2,7 @@ export * from './lib/channel.enum';
 export * from './lib/constant';
 export * from './lib/generate.util';
 export * from './lib/interfaces/action-button.interface';
+export * from './lib/interfaces/activity.interface';
 export * from './lib/interfaces/base.interface';
 export * from './lib/interfaces/dialog.interface';
 export * from './lib/interfaces/loggable.interface';

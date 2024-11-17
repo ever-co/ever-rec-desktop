@@ -1,6 +1,7 @@
 import { FileManager } from '@ever-co/electron-utils';
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
+import { Activity } from './entities/activity.entity';
 import { ScreenshotMetadata } from './entities/screenshot-metadata.entity';
 import { Screenshot } from './entities/screenshot.entity';
 import { TimeLog } from './entities/time-log.entity';
@@ -23,6 +24,7 @@ export const appDataSource = new DataSource({
     VideoMetadata,
     TimeLog,
     Timeline,
+    Activity,
   ],
   synchronize: true,
   logging: true,

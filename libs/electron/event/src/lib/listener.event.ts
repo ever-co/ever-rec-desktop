@@ -1,3 +1,4 @@
+import { activitiesEvents } from './activities.event';
 import {
   autoVideoGenerateEvent,
   removeAutoVideoGenerateEvent,
@@ -35,6 +36,7 @@ export function subscribeEvents() {
   autoVideoGenerateEvent();
   MainEvents();
   powerManagerHandlerEvents();
+  activitiesEvents();
 }
 
 export function unsubscribeEvents() {

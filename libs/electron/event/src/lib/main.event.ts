@@ -1,14 +1,8 @@
-import { ActivityHandler, KeytarService } from '@ever-co/electron-utils';
+import { KeytarService } from '@ever-co/electron-utils';
 import { Channel } from '@ever-co/shared-utils';
 import { app, ipcMain } from 'electron';
 
 export function MainEvents() {
-  const activityHandler = new ActivityHandler();
-
-  activityHandler.onChange((state) => {
-    console.log('state', state);
-  });
-
   ipcMain.on(Channel.UPDATE_ICON_BADGE, (_, count: number) => {
     app.setBadgeCount(Math.max(count, 0));
   });
