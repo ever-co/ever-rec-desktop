@@ -1,0 +1,28 @@
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-10%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.mat-card {
+  animation: slideInFromLeft 0.5s ease-out forwards;
+}
+
+.w-fit {
+  width: fit-content;
+  white-space: nowrap;
+}
+
+@keyframes progressFill {
+  from { width: 0; }
+  to { width: var(--progress-width); }
+}
+
+.progress-bar-animate {
+  animation: progressFill 1s ease-out forwards;
+}

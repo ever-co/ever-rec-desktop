@@ -1,1 +1,113 @@
-<p>analysis works!</p>
+@if(analysis$ | async; as data){
+<div class="w-full max-w-4xl mt-6 space-y-6">
+  <!-- Main Stats Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <!-- Daily Hours Card -->
+    <mat-card
+      class="w-full transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+      appearance="outlined"
+      @fadeSlideInOut
+    >
+      <mat-card-content class="p-6">
+        <div class="flex items-center justify-between">
+          <div class="space-y-1">
+            <p class="text-sm font-medium text-gray-600">Average Daily Hours</p>
+            <h6 class="text-2xl font-bold">
+              {{ data.averageDailyHours | humanize : 'hour' }}
+            </h6>
+          </div>
+          <mat-icon
+            class="h-6 w-6 text-gray-600 transition-all cursor-pointer duration-300 hover:text-blue-500 hover:scale-110"
+            >schedule</mat-icon
+          >
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Most Productive Day Card -->
+    <mat-card
+      class="w-full transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+      appearance="outlined"
+      @fadeSlideInOut
+    >
+      <mat-card-content class="p-6">
+        <div class="flex items-center justify-between">
+          <div class="space-y-1">
+            <p class="text-sm font-medium text-gray-600">Most Productive Day</p>
+            <h6 class="text-2xl font-bold">
+              {{ data.mostProductiveDay | date }}
+            </h6>
+          </div>
+          <mat-icon
+            class="h-6 w-6 text-gray-600 transition-all cursor-pointer duration-300 hover:text-blue-500 hover:scale-110"
+            >calendar_today</mat-icon
+          >
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Productive Hours Card -->
+    <mat-card
+      class="w-full transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+      appearance="outlined"
+      @fadeSlideInOut
+    >
+      <mat-card-content class="p-6">
+        <div class="flex items-center justify-between">
+          <div class="space-y-1">
+            <p class="text-sm font-medium text-gray-600">
+              Peak Productivity Hours
+            </p>
+            <h6 class="flex gap-2 text-2xl font-bold">
+              @for (hour of data.mostProductiveHours; track hour; let i =
+              $index) {
+              <div
+                @tagAnimation
+                [style.animation-delay]="i * 100 + 'ms'"
+                class="px-2 rounded-lg bg-blue-100 text-blue-800 font-medium"
+              >
+                {{ hour }}
+              </div>
+              }
+            </h6>
+          </div>
+          <mat-icon
+            matTooltip="Times when you're most efficient"
+            class="h-6 w-6 text-gray-600 transition-all cursor-pointer duration-300 hover:text-blue-500 hover:scale-110"
+            >bolt</mat-icon
+          >
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Consistency Score Card -->
+    <mat-card
+      class="w-full transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+      appearance="outlined"
+      @fadeSlideInOut
+    >
+      <mat-card-content class="p-6">
+        <div class="flex items-center justify-between">
+          <div class="space-y-1 relative w-full">
+            <p class="text-sm font-medium text-gray-600">Consistency Score</p>
+            <h6 class="text-2xl font-bold">{{ data.consistencyScore }}%</h6>
+            <div
+              [class]="
+                'w-fit whitespace-nowrap right-0 absolute w-full px-2 py-1 ml-auto rounded-lg text-white text-sm ' +
+                getConsistencyColor(data.consistencyScore)
+              "
+            >
+              {{ getConsistencyLabel(data.consistencyScore) }}
+            </div>
+          </div>
+          <mat-icon
+            matTooltip="How regular your work patterns are"
+            class="h-6 w-6 text-gray-600 transition-all cursor-pointer duration-300 hover:text-blue-500 hover:scale-110"
+            >bar_chart</mat-icon
+          >
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+}

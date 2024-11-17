@@ -5,6 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
+import { AnalysisComponent } from '@ever-co/activity-feature';
 import { VideoGalleryComponent } from '@ever-co/convert-video-feature';
 import {
   ScreenshotGalleryComponent,
@@ -33,7 +34,8 @@ import { VideoComponent } from '../video/video.component';
     MatIconModule,
     MatTooltipModule,
     MatButtonModule,
-    GreetingPipe
+    GreetingPipe,
+    AnalysisComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
