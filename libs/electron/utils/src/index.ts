@@ -1,5 +1,6 @@
 export * from './lib/batch-splitter';
 export * from './lib/interfaces/splitter-strategy.interface';
+export * from './lib/services/activity/activity.handler';
 export * from './lib/services/aws/s3.service';
 export * from './lib/services/conversion/conversion.factory';
 export * from './lib/services/conversion/strategies/helpers/timeline-screenshot.search';
