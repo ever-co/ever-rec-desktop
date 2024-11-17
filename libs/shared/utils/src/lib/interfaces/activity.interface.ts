@@ -33,3 +33,39 @@ export interface IActivityCreateInput {
 export interface IActivityUpdateInput {
   duration: number;
 }
+
+export interface IDailyStatistics {
+  totalDuration: number;
+  activeDuration: number;
+  idleDuration: number;
+  productivity: number;
+}
+
+export interface IHourlyActivity {
+  active: number;
+  idle: number;
+  locked: number;
+}
+
+export type IHourlyDistribution = Array<IHourlyActivity>;
+
+export interface IProductivityInterval {
+  totalDuration: number;
+  activeDuration: number;
+  productivity: number;
+}
+
+export interface IAggregatedProductivity {
+  [key: string]: IProductivityInterval;
+}
+
+export type IActivityStateDistribution = {
+  [state in IdleState]: number;
+};
+
+export interface IWorkPatternAnalysis {
+  averageDailyHours: number;
+  mostProductiveDay: string | null;
+  mostProductiveHours: number[];
+  consistencyScore: number;
+}

@@ -1,10 +1,15 @@
 import {
   IActivity,
   IActivityCreateInput,
+  IActivityStateDistribution,
   IActivityUpdateInput,
+  IAggregatedProductivity,
+  IDailyStatistics,
   IdleState,
+  IHourlyDistribution,
   IRange,
   ITimeLog,
+  IWorkPatternAnalysis,
   moment,
 } from '@ever-co/shared-utils';
 import { Between, FindOneOptions } from 'typeorm';
@@ -53,7 +58,7 @@ export class ActivityService {
   /**
    * Get daily statistics for a specific date range
    */
-  public async getDailyStatistics(range: IRange) {
+  public async getDailyStatistics(range: IRange): Promise<IDailyStatistics> {
     const timeLogs = await this.timeLogService.findAll({
       where: {
         start: Between(range.start, range.end),
@@ -63,6 +68,7 @@ export class ActivityService {
 
     return timeLogs.reduce((acc, log) => {
       const date = moment(log.start).format('YYYY-MM-DD');
+
       if (!acc[date]) {
         acc[date] = {
           totalDuration: 0,
@@ -79,13 +85,15 @@ export class ActivityService {
         (acc[date].activeDuration / acc[date].totalDuration) * 100;
 
       return acc;
-    }, {});
+    }, {} as IDailyStatistics);
   }
 
   /**
    * Get hourly activity distribution
    */
-  public async getHourlyActivityDistribution(date: Date) {
+  public async getHourlyActivityDistribution(
+    date: Date
+  ): Promise<IHourlyDistribution> {
     const startOfDay = new Date(date);
     startOfDay.setHours(0, 0, 0, 0);
 
@@ -110,7 +118,7 @@ export class ActivityService {
       }));
 
     activities.forEach((activity) => {
-      const hour = new Date(activity.timeLog.start).getHours();
+      const hour = moment(activity.timeLog.start).hour();
       switch (activity.state) {
         case IdleState.ACTIVE:
           hourlyDistribution[hour].active += activity.duration;
@@ -133,7 +141,7 @@ export class ActivityService {
   public async getProductivityTrends(
     range: IRange,
     interval: 'daily' | 'weekly' | 'monthly' = 'daily'
-  ) {
+  ): Promise<IAggregatedProductivity> {
     const timeLogs = await this.timeLogService.findAll({
       where: {
         start: Between(range.start, range.end),
@@ -150,7 +158,9 @@ export class ActivityService {
   /**
    * Get activity state distribution
    */
-  public async getActivityStateDistribution(range: IRange) {
+  public async getActivityStateDistribution(
+    range: IRange
+  ): Promise<IActivityStateDistribution> {
     const activities = await this.activityRepository.find({
       where: {
         timeLog: {
@@ -165,13 +175,15 @@ export class ActivityService {
       }
       acc[activity.state] += activity.duration;
       return acc;
-    }, {} as Record<IdleState, number>);
+    }, {} as IActivityStateDistribution);
   }
 
   /**
    * Get work patterns analysis
    */
-  public async getWorkPatternAnalysis(range: IRange) {
+  public async getWorkPatternAnalysis(
+    range: IRange
+  ): Promise<IWorkPatternAnalysis> {
     const timeLogs = await this.timeLogService.findAll({
       where: {
         start: Between(range.start, range.end),
@@ -206,12 +218,12 @@ export class ActivityService {
   private aggregateProductivityByInterval(
     timeLogs: ITimeLog[],
     interval: 'daily' | 'weekly' | 'monthly'
-  ) {
-    const aggregated = {};
+  ): IAggregatedProductivity {
+    const aggregated = {} as IAggregatedProductivity;
 
     timeLogs.forEach((log) => {
       let key: string;
-      const date = new Date(log.start);
+      const date = log.start;
 
       switch (interval) {
         case 'daily':
