@@ -94,10 +94,10 @@
             <div
               [class]="
                 'w-fit whitespace-nowrap right-0 absolute w-full px-2 py-1 ml-auto rounded-lg text-white text-sm ' +
-                getConsistencyColor(data.consistencyScore)
+                getConsistencyColor(data.consistencyScore * 100)
               "
             >
-              {{ getConsistencyLabel(data.consistencyScore) }}
+              {{ getConsistencyLabel(data.consistencyScore * 100) }}
             </div>
           </div>
           <mat-icon
