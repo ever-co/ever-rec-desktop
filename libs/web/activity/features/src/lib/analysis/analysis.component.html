@@ -13,7 +13,11 @@
           <div class="space-y-1">
             <p class="text-sm font-medium text-gray-600">Average Daily Hours</p>
             <h6 class="text-2xl font-bold">
-              {{ data.averageDailyHours ? (data.averageDailyHours | humanize : 'hour') : 'Not Work' }}
+              {{
+                data.averageDailyHours
+                  ? (data.averageDailyHours | humanize : 'hour')
+                  : 'Not Work'
+              }}
             </h6>
           </div>
           <mat-icon
@@ -35,7 +39,11 @@
           <div class="space-y-1">
             <p class="text-sm font-medium text-gray-600">Most Productive Day</p>
             <h6 class="text-2xl font-bold">
-              {{ data.mostProductiveDay ? (data.mostProductiveDay | date) : 'Not found 🙂‍↔️' }}
+              {{
+                data.mostProductiveDay
+                  ? (data.mostProductiveDay | date)
+                  : 'Not found 🙂‍↔️'
+              }}
             </h6>
           </div>
           <mat-icon
@@ -59,8 +67,8 @@
               Peak Productivity Hours
             </p>
             <h6 class="flex gap-2 text-2xl font-bold">
-              @for (hour of data.mostProductiveHours; track hour; let i =
-              $index) {
+              @if(data.mostProductiveHours.length) { @for (hour of
+              data.mostProductiveHours; track hour; let i = $index) {
               <div
                 @tagAnimation
                 [style.animation-delay]="i * 100 + 'ms'"
@@ -68,7 +76,7 @@
               >
                 {{ hour }}
               </div>
-              }
+              } }@else { No Work }
             </h6>
           </div>
           <mat-icon
@@ -90,7 +98,9 @@
         <div class="w-full flex items-center justify-between">
           <div class="space-y-1 relative w-full">
             <p class="text-sm font-medium text-gray-600">Consistency Score</p>
-            <h6 class="text-2xl font-bold">{{ (data.consistencyScore || 0) | percent: '1.2-2' }}</h6>
+            <h6 class="text-2xl font-bold">
+              {{ data.consistencyScore || 0 | percent : '1.2-2' }}
+            </h6>
             <div
               [class]="
                 'w-fit whitespace-nowrap right-0 absolute w-full px-2 py-1 ml-auto rounded-lg text-white text-sm ' +

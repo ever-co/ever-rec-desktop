@@ -9,6 +9,7 @@ import {
   activityActions,
   selectActivityState,
 } from '@ever-co/activity-data-access';
+import { NoDataComponent } from '@ever-co/shared-components';
 import { selectDatePickerState } from '@ever-co/shared-service';
 import {
   IActivityStateDistribution,
@@ -34,6 +35,7 @@ interface ChartData {
     MatProgressBarModule,
     MatIconModule,
     NgxChartsModule,
+    NoDataComponent
   ],
   templateUrl: './distribution.component.html',
   styleUrl: './distribution.component.scss',
