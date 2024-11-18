@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
+import { DatePickerService } from '@ever-co/shared-service';
+import { timeLogActions } from '@ever-co/timesheet-data-access';
 import { of } from 'rxjs';
-import { catchError, concatMap } from 'rxjs/operators';
+import { catchError, concatMap, map } from 'rxjs/operators';
 import { ActivityService } from '../services/activity.service';
 import { activityActions } from './activity.actions';
 
@@ -10,7 +12,12 @@ import { activityActions } from './activity.actions';
 export class ActivityEffects {
   loadSateDistribution$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(activityActions.loadStateDistribution),
+      ofType(activityActions.loadStateDistribution, timeLogActions.tick),
+      map((action) =>
+        action.type === timeLogActions.tick.type
+          ? { ...action, range: this.datePickerService.range() }
+          : action
+      ),
       concatMap(({ range }) =>
         this.activityService.getActivityStateDistribution(range).pipe(
           concatMap((distribution) => [
@@ -26,8 +33,13 @@ export class ActivityEffects {
 
   loadWorkPatternAnalysis$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(activityActions.loadWorkPatternAnalysis),
-      concatMap(({ range }) =>
+      ofType(activityActions.loadWorkPatternAnalysis, timeLogActions.tick),
+      map((action) =>
+        action.type === timeLogActions.tick.type
+          ? { ...action, range: this.datePickerService.range() }
+          : action
+      ),
+      concatMap(({ range = this.datePickerService.range() }) =>
         this.activityService.getWorkPatternAnalysis(range).pipe(
           concatMap((analysis) => [
             activityActions.loadWorkPatternAnalysisSuccess({ analysis }),
@@ -92,6 +104,7 @@ export class ActivityEffects {
 
   constructor(
     private actions$: Actions,
-    private readonly activityService: ActivityService
+    private readonly activityService: ActivityService,
+    private readonly datePickerService: DatePickerService
   ) {}
 }
