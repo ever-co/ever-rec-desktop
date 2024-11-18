@@ -76,3 +76,14 @@ export function activitiesEvents() {
     }
   );
 }
+
+export function removeActivitiesEvents() {
+  const channels = [
+    Channel.REQUEST_ACTIVITIES_WORK_PATTERN,
+    Channel.REQUEST_ACTIVITIES_TRENDS,
+    Channel.REQUEST_ACTIVITIES_HOURLY_DISTRIBUTION,
+    Channel.REQUEST_ACTIVITIES_STATISTICS,
+    Channel.REQUEST_ACTIVITIES_DISTRIBUTION,
+  ];
+  channels.forEach((channel) => ipcMain.removeHandler(channel));
+}

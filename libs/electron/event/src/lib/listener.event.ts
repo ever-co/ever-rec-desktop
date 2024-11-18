@@ -1,4 +1,4 @@
-import { activitiesEvents } from './activities.event';
+import { activitiesEvents, removeActivitiesEvents } from './activities.event';
 import {
   autoVideoGenerateEvent,
   removeAutoVideoGenerateEvent,
@@ -49,4 +49,5 @@ export function unsubscribeEvents() {
   removeRetentionEvents();
   removeAutoVideoGenerateEvent();
   removeMainEvents();
+  removeActivitiesEvents();
 }
