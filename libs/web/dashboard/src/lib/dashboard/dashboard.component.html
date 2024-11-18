@@ -23,14 +23,16 @@
     <mat-card class="w-full" appearance="outlined">
       <mat-card-content class="p-6 h-full">
         <div class="flex items-center justify-between mb-4">
-          <div class="text-sm font-medium text-gray-600">Recent Screenshots</div>
+          <div class="text-sm font-medium text-gray-600">
+            Recent Screenshots
+          </div>
           <button
             mat-stroked-button
             [routerLink]="['/', 'library', 'screenshots']"
             matTooltip="See more screenshots"
             class="text-gray-600 cursor-pointer transition-all duration-300 scale-[0.95] hover:text-blue-500 hover:scale-[1.00]"
           >
-          <span> View All </span>
+            <span> View All </span>
           </button>
         </div>
         <div class="h-full">
@@ -50,7 +52,7 @@
             matTooltip="See more videos"
             class="text-gray-600 cursor-pointer transition-all duration-300 scale-[0.95] hover:text-blue-500 hover:scale-[1.00]"
           >
-          <span> View All </span>
+            <span> View All </span>
           </button>
         </div>
         <div class="h-full">
@@ -60,23 +62,27 @@
     </mat-card>
   </div>
 
-  <lib-analysis></lib-analysis>
-
-  <!-- Content Cards - Stack on mobile, 2 columns on larger screens -->
-  <div class="grid grid-cols-1">
-    <!-- Statistics Overview -->
-    <mat-card class="w-full" appearance="outlined">
-      <mat-card-content class="p-6 h-full">
-        <p class="text-sm font-medium text-gray-600 mb-4">
-          Statistics Overview
-        </p>
-        <div class="h-full">
-          <lib-screenshot-statistic
-            class="dashboard"
-          ></lib-screenshot-statistic>
-        </div>
-      </mat-card-content>
-    </mat-card>
+  <div class="flex gap-4 flex-col sm:flex-row">
+    <lib-distribution></lib-distribution>
+    <div class="flex flex-col gap-4 w-full">
+      <lib-analysis></lib-analysis>
+      <!-- Content Cards - Stack on mobile, 2 columns on larger screens -->
+      <div class="grid grid-cols-1">
+        <!-- Statistics Overview -->
+        <mat-card class="w-full" appearance="outlined">
+          <mat-card-content class="p-6 h-full">
+            <p class="text-sm font-medium text-gray-600 mb-4">
+              Statistics Overview
+            </p>
+            <div class="h-full">
+              <lib-screenshot-statistic
+                class="dashboard"
+              ></lib-screenshot-statistic>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
   </div>
 </div>
 
