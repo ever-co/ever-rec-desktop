@@ -17,7 +17,7 @@ import {
 } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { Color, NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
-import { map, Observable, Subject, takeUntil, withLatestFrom } from 'rxjs';
+import { distinctUntilChanged, map, Observable, Subject, takeUntil, withLatestFrom } from 'rxjs';
 
 interface ChartData {
   name: string;
@@ -86,6 +86,7 @@ export class DistributionComponent implements OnDestroy, OnInit {
   private get distribution$(): Observable<IActivityStateDistribution> {
     return this.store.select(selectActivityState).pipe(
       map((state) => state.distribution),
+      distinctUntilChanged(),
       takeUntil(this.destroy$)
     );
   }

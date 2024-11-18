@@ -21,7 +21,7 @@ import {
 import { HumanizePipe, selectDatePickerState } from '@ever-co/shared-service';
 import { IRange, IWorkPatternAnalysis } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
-import { map, Observable, Subject, takeUntil } from 'rxjs';
+import { distinctUntilChanged, map, Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'lib-analysis',
@@ -77,6 +77,7 @@ export class AnalysisComponent implements OnInit, OnDestroy {
   public get analysis$(): Observable<IWorkPatternAnalysis> {
     return this.store.select(selectActivityState).pipe(
       map((state) => state.analysis),
+      distinctUntilChanged(),
       takeUntil(this.destroy$)
     );
   }
