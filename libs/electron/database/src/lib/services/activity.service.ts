@@ -94,11 +94,9 @@ export class ActivityService {
   public async getHourlyActivityDistribution(
     date: Date
   ): Promise<IHourlyDistribution> {
-    const startOfDay = new Date(date);
-    startOfDay.setHours(0, 0, 0, 0);
+    const startOfDay = moment(date).startOf('day').toISOString();
 
-    const endOfDay = new Date(date);
-    endOfDay.setHours(23, 59, 59, 999);
+    const endOfDay = moment(date).endOf('day').toISOString();
 
     const activities = await this.activityRepository.find({
       where: {
@@ -120,18 +118,20 @@ export class ActivityService {
 
     activities.forEach((activity) => {
       const hour = moment(activity.timeLog.start).hour();
+      const duration = Number(activity.duration);
+
       switch (activity.state) {
         case IdleState.ACTIVE:
-          hourlyDistribution[hour].active += activity.duration;
+          hourlyDistribution[hour].active += duration;
           break;
         case IdleState.IDLE:
-          hourlyDistribution[hour].idle += activity.duration;
+          hourlyDistribution[hour].idle += duration;
           break;
         case IdleState.LOCKED:
-          hourlyDistribution[hour].locked += activity.duration;
+          hourlyDistribution[hour].locked += duration;
           break;
         case IdleState.UNKNOWN:
-          hourlyDistribution[hour].unknown += activity.duration;
+          hourlyDistribution[hour].unknown += duration;
           break;
       }
     });
@@ -177,7 +177,7 @@ export class ActivityService {
       if (!acc[activity.state]) {
         acc[activity.state] = 0;
       }
-      acc[activity.state] += activity.duration;
+      acc[activity.state] += Number(activity.duration);
       return acc;
     }, {} as IActivityStateDistribution);
   }
@@ -206,7 +206,7 @@ export class ActivityService {
   private calculateActiveDuration(activities: IActivity[]): number {
     return activities
       .filter((activity) => activity.state === IdleState.ACTIVE)
-      .reduce((sum, activity) => sum + activity.duration, 0);
+      .reduce((sum, activity) => sum + Number(activity.duration), 0);
   }
 
   private calculateIdleDuration(activities: IActivity[]): number {
@@ -216,7 +216,7 @@ export class ActivityService {
           activity.state === IdleState.IDLE ||
           activity.state === IdleState.LOCKED
       )
-      .reduce((sum, activity) => sum + activity.duration, 0);
+      .reduce((sum, activity) => sum + Number(activity.duration), 0);
   }
 
   private aggregateProductivityByInterval(
