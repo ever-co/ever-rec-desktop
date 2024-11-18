@@ -90,7 +90,7 @@
         <div class="w-full flex items-center justify-between">
           <div class="space-y-1 relative w-full">
             <p class="text-sm font-medium text-gray-600">Consistency Score</p>
-            <h6 class="text-2xl font-bold">{{ data.consistencyScore || 0 }}%</h6>
+            <h6 class="text-2xl font-bold">{{ (data.consistencyScore || 0) | percent: '1.2-2' }}</h6>
             <div
               [class]="
                 'w-fit whitespace-nowrap right-0 absolute w-full px-2 py-1 ml-auto rounded-lg text-white text-sm ' +

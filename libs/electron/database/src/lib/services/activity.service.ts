@@ -261,10 +261,7 @@ export class ActivityService {
   }
 
   private calculateAverageDailyHours(timeLogs: ITimeLog[]): number {
-    const dailyDurations = {
-      sum: 0,
-      duration: 0,
-    };
+    const dailyDurations = {} as Record<string, number>;
 
     timeLogs.forEach((log) => {
       const date = moment(log.start).format('YYYY-MM-DD');
@@ -342,16 +339,14 @@ export class ActivityService {
     }));
 
     return productivityScores
+      .filter((score) => score.productivity > 0)
       .sort((a, b) => b.productivity - a.productivity)
       .slice(0, 3)
       .map((score) => moment.duration(score.hour, 'hours').format('HH[h]'));
   }
 
   private calculateConsistencyScore(timeLogs: ITimeLog[]): number {
-    const dailyDurations = {
-      duration: 0,
-      val: 0,
-    };
+    const dailyDurations = {} as Record<string, number>;
 
     timeLogs.forEach((log) => {
       const date = moment(log.start).format('YYYY-MM-DD');
@@ -361,23 +356,28 @@ export class ActivityService {
       dailyDurations[date] += Number(log.duration);
     });
 
-    const durations = Object.values(dailyDurations);
-    if (durations.length < 2) return 100;
+    let durations = Object.values(dailyDurations);
+
+    if (durations.length < 2) {
+      durations = timeLogs.map((log) => Number(log.duration));
+    }
 
     const average =
       durations.reduce((sum: number, val: number) => sum + val, 0) /
       durations.length;
+
     const variance =
       durations.reduce(
         (sum: number, val: number) => sum + Math.pow(val - average, 2),
         0
       ) / durations.length;
+
     const standardDeviation = Math.sqrt(variance);
 
     // Calculate coefficient of variation (CV)
-    const cv = (standardDeviation / average) * 100;
+    const cv = standardDeviation / average;
 
     // Convert CV to a consistency score (lower CV means higher consistency)
-    return Math.max(0, 100 - cv);
+    return Math.max(0, 1 - cv);
   }
 }
