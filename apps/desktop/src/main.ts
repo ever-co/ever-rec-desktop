@@ -7,10 +7,12 @@ import ElectronEvents from './app/events/electron.events';
 import SquirrelEvents from './app/events/squirrel.events';
 import UpdateEvents from './app/events/update.events';
 
-Object.assign(console, log.functions);
-
 export default class Main {
   static initialize() {
+    if (App.isDevelopmentMode()) {
+      Object.assign(console, log.functions);
+    }
+
     if (SquirrelEvents.handleEvents()) {
       // squirrel event handled (except first run event) and app will exit in 1000ms, so don't do anything else
       app.quit();
