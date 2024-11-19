@@ -114,5 +114,8 @@
     "typescript": "5.5.4"
   },
   "snyk": true,
-  "homepage": "https://github.com/ever-co/ever-capture#readme"
+  "homepage": "https://github.com/ever-co/ever-capture#readme",
+  "publishConfig": {
+    "registry": "http://localhost:4873"
+  }
 }
