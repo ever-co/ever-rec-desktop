@@ -1,0 +1,26 @@
+# Changelog
+
+This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
+
+# 0.1.0 (2024-11-20)
+
+### Dependency Updates
+
+* `utils` updated to version `0.1.0`
+* `notification-data-access` updated to version `0.0.1`
+* `shared-service` updated to version `0.1.0`
+* `data-access-electron` updated to version `0.1.0`
+* `screenshot-data-access` updated to version `0.1.0`
+
+### Bug Fixes
+
+* timeline guard to include additional state checks and actions ([b6ef27a](https://github.com/ever-co/ever-capture/commit/b6ef27ade7508e3cbca58d7092201d59d20b528c))
+
+
+### Features
+
+*  migrate to nx 19.8.3 ([a5b23fd](https://github.com/ever-co/ever-capture/commit/a5b23fd62e6e3c707e51b0b58d33d91592aafe4d))
+* add timeline guard ([208a247](https://github.com/ever-co/ever-capture/commit/208a2475ed3ca6df996e0d80e42a28ad751ad762))
+* dispatch load action in timelineGuard ([e8a04c8](https://github.com/ever-co/ever-capture/commit/e8a04c8e3ed34334e502cf62b302f5de7ce93c20))
+* modularize ever capture ([0549ee2](https://github.com/ever-co/ever-capture/commit/0549ee29138fe36f7e3c80a7351d28235f9b9055))
+* updated video conversion service, added effects and reducer for generate video actions, and modified components for video and screenshot timeline ([bce655a](https://github.com/ever-co/ever-capture/commit/bce655a3f653149da08bd41b98b369a68f3d60f0))
