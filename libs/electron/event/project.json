@@ -21,6 +21,26 @@
       "options": {
         "jestConfig": "libs/electron/event/jest.config.ts"
       }
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+       "syncVersions": false,
+        "push": true,
+        "pushTags": true,
+        "trackDeps": true
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": false,
+        "commands": [
+          "nx version event --releaseType=patch --pushTags",
+          "nx build event",
+          "cd dist/libs/electron/event && npm publish --access public"
+        ]
+      }
     }
   }
 }

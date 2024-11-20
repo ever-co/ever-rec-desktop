@@ -31,6 +31,26 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint"
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+       "syncVersions": false,
+        "push": true,
+        "pushTags": true,
+        "trackDeps": true
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": false,
+        "commands": [
+          "nx version timesheet-feature --releaseType=patch --pushTags",
+          "nx build timesheet-feature",
+          "cd dist/libs/web/timesheet/feature && npm publish --access public"
+        ]
+      }
     }
   }
 }

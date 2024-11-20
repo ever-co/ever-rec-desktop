@@ -21,6 +21,26 @@
       "options": {
         "jestConfig": "libs/shared/utils/jest.config.ts"
       }
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+       "syncVersions": false,
+        "push": true,
+        "pushTags": true,
+        "trackDeps": true
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": false,
+        "commands": [
+          "nx version utils --releaseType=patch --pushTags",
+          "nx build utils",
+          "cd dist/libs/shared/utils && npm publish --access public"
+        ]
+      }
     }
   }
 }

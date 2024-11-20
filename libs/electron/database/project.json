@@ -21,6 +21,26 @@
       "options": {
         "jestConfig": "libs/electron/database/jest.config.ts"
       }
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+       "syncVersions": false,
+        "push": true,
+        "pushTags": true,
+        "trackDeps": true
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": false,
+        "commands": [
+          "nx version database-electron --releaseType=patch --pushTags",
+          "nx build database-electron",
+          "cd dist/libs/electron/database && npm publish --access public"
+        ]
+      }
     }
   }
 }

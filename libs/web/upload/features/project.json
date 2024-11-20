@@ -8,7 +8,9 @@
   "targets": {
     "build": {
       "executor": "@nx/angular:package",
-      "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/dist/{projectRoot}"
+      ],
       "options": {
         "project": "libs/web/upload/features/ng-package.json"
       },
@@ -24,13 +26,35 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {
         "jestConfig": "libs/web/upload/features/jest.config.ts"
       }
     },
     "lint": {
       "executor": "@nx/eslint:lint"
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+        "syncVersions": false,
+        "push": true,
+        "pushTags": true,
+        "trackDeps": true
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": false,
+        "commands": [
+          "nx version upload-feature --releaseType=patch --pushTags",
+          "nx build upload-feature",
+          "cd dist/libs/web/upload/features && npm publish --access public"
+        ]
+      }
     }
   }
 }

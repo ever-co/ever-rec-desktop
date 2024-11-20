@@ -31,6 +31,26 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint"
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+       "syncVersions": false,
+        "push": true,
+        "pushTags": true,
+        "trackDeps": true
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": false,
+        "commands": [
+          "nx version library --releaseType=patch --pushTags",
+          "nx build library",
+          "cd dist/libs/web/library && npm publish --access public"
+        ]
+      }
     }
   }
 }

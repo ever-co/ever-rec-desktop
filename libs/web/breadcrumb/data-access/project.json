@@ -35,6 +35,26 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint"
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+       "syncVersions": false,
+        "push": true,
+        "pushTags": true,
+        "trackDeps": true
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": false,
+        "commands": [
+          "nx version breadcrumb-data-access --releaseType=patch --pushTags",
+          "nx build breadcrumb-data-access",
+          "cd dist/libs/web/breadcrumb/data-access && npm publish --access public"
+        ]
+      }
     }
   }
 }

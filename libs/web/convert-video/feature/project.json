@@ -35,6 +35,26 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint"
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+       "syncVersions": false,
+        "push": true,
+        "pushTags": true,
+        "trackDeps": true
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": false,
+        "commands": [
+          "nx version convert-video-feature --releaseType=patch --pushTags",
+          "nx build convert-video-feature",
+          "cd dist/libs/web/convert-video/feature && npm publish --access public"
+        ]
+      }
     }
   }
 }
