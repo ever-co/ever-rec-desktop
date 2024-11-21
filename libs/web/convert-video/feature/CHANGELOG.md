@@ -1,0 +1,31 @@
+# Changelog
+
+This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
+
+## [0.1.1](https://github.com/ever-co/ever-capture/compare/convert-video-feature-0.1.0...convert-video-feature-0.1.1) (2024-11-21)
+
+### Dependency Updates
+
+* `upload-data-access` updated to version `0.0.2`
+* `web-setting-data-access` updated to version `0.0.2`
+
+
+# 0.1.0 (2024-11-20)
+
+### Dependency Updates
+
+* `convert-video-data-access` updated to version `0.1.0`
+* `notification-data-access` updated to version `0.0.1`
+* `shared-service` updated to version `0.1.0`
+* `utils` updated to version `0.1.0`
+* `screenshot-data-access` updated to version `0.1.0`
+* `shared-components` updated to version `0.1.0`
+* `upload-data-access` updated to version `0.0.1`
+* `web-setting-data-access` updated to version `0.0.1`
+
+### Features
+
+* create reusable component ([d1bce63](https://github.com/ever-co/ever-capture/commit/d1bce6369b54fd614114e84c3ebf755148f4e79d))
+* improve code ([dbe8570](https://github.com/ever-co/ever-capture/commit/dbe857012a1f536779871cc1eff7aeb1feedf94a))
+* modularize ever capture ([0549ee2](https://github.com/ever-co/ever-capture/commit/0549ee29138fe36f7e3c80a7351d28235f9b9055))
+* updated video conversion service, added effects and reducer for generate video actions, and modified components for video and screenshot timeline ([bce655a](https://github.com/ever-co/ever-capture/commit/bce655a3f653149da08bd41b98b369a68f3d60f0))
