@@ -36,9 +36,8 @@ export function captureScreen(
   event: IpcMainEvent,
   config: IScreenCaptureConfig
 ) {
-  const delay = moment
-    .duration(config.period || SCREENSHOT_INTERVAL_DELAY, 'seconds')
-    .asSeconds();
+  const { period = SCREENSHOT_INTERVAL_DELAY } = config || {};
+  const delay = moment.duration(period, 'seconds').asSeconds();
   timeLogService.start();
 
   timerScheduler.onTick(async (seconds) => {
