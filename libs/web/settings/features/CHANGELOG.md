@@ -6,6 +6,15 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 
 ### Dependency Updates
 
+* `convert-video-feature` updated to version `0.1.5`
+* `screenshot-feature` updated to version `0.1.3`
+* `shared-components` updated to version `0.1.0`
+
+
+## [0.0.5](https://github.com/ever-co/ever-capture/compare/web-setting-feature-0.0.4...web-setting-feature-0.0.5) (2024-11-21)
+
+### Dependency Updates
+
 * `convert-video-feature` updated to version `0.1.4`
 * `screenshot-feature` updated to version `0.1.3`
 * `shared-components` updated to version `0.1.0`
