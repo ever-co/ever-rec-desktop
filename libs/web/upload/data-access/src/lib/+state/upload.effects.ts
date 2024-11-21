@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { generateVideoActions } from '@ever-co/convert-video-data-access';
 import { NotificationService } from '@ever-co/notification-data-access';
 import { IUpload, UploadType } from '@ever-co/shared-utils';
@@ -10,6 +10,8 @@ import { uploadActions } from './upload.actions';
 
 @Injectable()
 export class UploadEffects {
+  private readonly actions$ = inject(Actions);
+
   upload$ = createEffect(() =>
     this.actions$.pipe(
       ofType(generateVideoActions.finish, uploadActions.uploadVideo),
@@ -89,7 +91,6 @@ export class UploadEffects {
   );
 
   constructor(
-    private actions$: Actions,
     private readonly videoUploadService: VideoUploadService,
     private readonly notificationService: NotificationService
   ) {}

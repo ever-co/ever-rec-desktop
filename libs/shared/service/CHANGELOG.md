@@ -2,6 +2,10 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.1.1](https://github.com/ever-co/ever-capture/compare/shared-service-0.1.0...shared-service-0.1.1) (2024-11-21)
+
+
+
 # 0.1.0 (2024-11-20)
 
 ### Dependency Updates

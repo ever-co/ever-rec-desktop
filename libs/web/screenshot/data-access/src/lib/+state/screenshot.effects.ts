@@ -15,11 +15,11 @@ import { screenshotActions } from './screenshot.actions';
 @Injectable()
 export class ScreenshotEffects {
   private electronService = inject(ScreenshotElectronService);
+  private readonly actions$ = inject(Actions);
   private readonly KEY = '_history';
   private readonly MAX_HISTORY_ITEMS = 25;
 
   constructor(
-    private actions$: Actions,
     private readonly notificationService: NotificationService,
     private readonly localStorageService: LocalStorageService
   ) {}

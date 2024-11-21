@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { NotificationService } from '@ever-co/notification-data-access';
@@ -13,6 +13,8 @@ import { generateVideoActions } from './generate-video.actions';
 @Injectable()
 export class GenerateVideoEffects {
   private readonly KEY = '_last_generated_video';
+  private readonly actions$ = inject(Actions);
+
   startGenerateVideos$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(generateVideoActions.start),
@@ -169,7 +171,6 @@ export class GenerateVideoEffects {
   );
 
   constructor(
-    private actions$: Actions,
     private readonly convertVideoElectronService: ConvertVideoElectronService,
     private readonly storageService: LocalStorageService,
     private readonly notifcationService: NotificationService

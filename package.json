@@ -14,7 +14,8 @@
     "postinstall": "electron-builder install-app-deps",
     "build": "nx run-many --target=build",
     "serve": "nx run-many --target=serve --projects=ui,desktop",
-    "make": "nx run desktop:make"
+    "make": "nx run desktop:make",
+    "publish:libs": "nx run-many --target=publish --parallel=1"
   },
   "author": "Ever Co. LTD <ever@ever.co> (https://ever.co)",
   "keywords": [],

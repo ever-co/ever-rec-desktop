@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { DatePickerService } from '@ever-co/shared-service';
@@ -10,6 +10,8 @@ import { activityActions } from './activity.actions';
 
 @Injectable()
 export class ActivityEffects {
+  private readonly actions$ = inject(Actions);
+
   loadSateDistribution$ = createEffect(() =>
     this.actions$.pipe(
       ofType(activityActions.loadStateDistribution, timeLogActions.tick),
@@ -103,7 +105,6 @@ export class ActivityEffects {
   );
 
   constructor(
-    private actions$: Actions,
     private readonly activityService: ActivityService,
     private readonly datePickerService: DatePickerService
   ) {}

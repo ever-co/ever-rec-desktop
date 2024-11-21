@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { EMPTY, Observable } from 'rxjs';
@@ -8,6 +8,8 @@ import { datePickerActions } from './date-picker.actions';
 
 @Injectable()
 export class DatePickerEffects {
+  private readonly actions$ = inject(Actions);
+
   loadDatePickers$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(datePickerActions.selectRange),
@@ -22,7 +24,6 @@ export class DatePickerEffects {
   });
 
   constructor(
-    private actions$: Actions,
     private datePickerService: DatePickerService
   ) {}
 }

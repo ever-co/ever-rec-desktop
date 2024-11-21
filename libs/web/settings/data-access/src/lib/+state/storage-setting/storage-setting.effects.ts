@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   generateVideoActions,
   videoActions,
@@ -15,6 +15,7 @@ import { IStorageState } from './storage-setting.reducer';
 @Injectable()
 export class SettingStorageEffects {
   private key = '_storage';
+  private readonly actions$ = inject(Actions);
 
   loadSettings$ = createEffect(() => {
     return this.actions$.pipe(
@@ -62,7 +63,6 @@ export class SettingStorageEffects {
   );
 
   constructor(
-    private actions$: Actions,
     private readonly localStorageService: SecureLocalStorageService,
     private readonly storageElectronService: StorageElectronService
   ) {}

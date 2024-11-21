@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { NotificationService } from '@ever-co/notification-data-access';
 import { screenshotActions } from '@ever-co/screenshot-data-access';
 import { DatePickerService } from '@ever-co/shared-service';
@@ -11,6 +11,8 @@ import { timeLogActions } from './time-log.actions';
 
 @Injectable()
 export class TimeLogEffects {
+  private readonly actions$ = inject(Actions);
+
   loadTimeLog$ = createEffect(() =>
     this.actions$.pipe(
       ofType(timeLogActions.loadTimeLog),
@@ -140,7 +142,6 @@ export class TimeLogEffects {
   );
 
   constructor(
-    private actions$: Actions,
     private readonly timeLogElectronService: TimeLogElectronService,
     private readonly datePickerService: DatePickerService,
     private readonly notificationService: NotificationService

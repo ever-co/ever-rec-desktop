@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { LocalStorageService } from '@ever-co/shared-service';
@@ -10,6 +10,7 @@ import { notificationActions } from './notification.actions';
 @Injectable()
 export class NotificationEffects {
   private readonly KEY = '_notifications';
+  private readonly actions$ = inject(Actions);
 
   public loadNotifications$ = createEffect(() => {
     return this.actions$.pipe(
@@ -120,7 +121,6 @@ export class NotificationEffects {
     { dispatch: false }
   );
   constructor(
-    private actions$: Actions,
     private readonly localStorageService: LocalStorageService,
     private readonly notificationService: NotificationElectronService
   ) {}
