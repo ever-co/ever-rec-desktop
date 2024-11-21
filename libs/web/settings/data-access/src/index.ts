@@ -1,3 +1,4 @@
+export * from './lib/+state/services/storage-electron.service';
 export * from './lib/+state/storage-setting/storage-setting.actions';
 export * from './lib/+state/storage-setting/storage-setting.effects';
 export * from './lib/+state/storage-setting/storage-setting.reducer';

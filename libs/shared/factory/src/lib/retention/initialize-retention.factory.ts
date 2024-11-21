@@ -1,8 +1,11 @@
+import { APP_INITIALIZER } from '@angular/core';
+import {
+  selectSettingStorageState,
+  settingStorageActions,
+  StorageElectronService,
+} from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
 import { distinctUntilChanged, filter, map, tap } from 'rxjs';
-import { StorageElectronService } from '../+state/services/storage-electron.service';
-import { settingStorageActions } from '../+state/storage-setting/storage-setting.actions';
-import { selectSettingStorageState } from '../+state/storage-setting/storage-setting.selectors';
 
 /**
  * Initializes the data retention period from the storage state.
@@ -30,3 +33,17 @@ export function initializeRetentionFactory(
       .subscribe();
   };
 }
+
+/**
+ * Provider for initializing the data retention period from the storage state.
+ * When the retention period changes, it cleans up the data older than the new retention period.
+ */
+export const rententionProvider = {
+  provide: APP_INITIALIZER,
+  useFactory: initializeRetentionFactory,
+  deps: [Store, StorageElectronService],
+  /**
+   * This is a multi provider, so it can be used in combination with other {@link APP_INITIALIZER}s.
+   */
+  multi: true,
+};
