@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { generateVideoActions } from '@ever-co/convert-video-data-access';
 import { ScreenshotElectronService } from '@ever-co/screenshot-data-access';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -8,6 +8,8 @@ import { timelineActions } from './timeline.actions';
 
 @Injectable()
 export class TimelineEffects {
+  private readonly actions$ = inject(Actions);
+
   loadFrames$ = createEffect(() =>
     this.actions$.pipe(
       ofType(timelineActions.loadFrames),
@@ -55,7 +57,6 @@ export class TimelineEffects {
   );
 
   constructor(
-    private actions$: Actions,
     private readonly frameService: ScreenshotElectronService
   ) {}
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { LocalStorageService } from '@ever-co/shared-service';
@@ -10,6 +10,7 @@ import { settingScreenCaptureActions } from './setting.actions';
 @Injectable()
 export class SettingScreenCaptureEffects {
   private key = '_screen_capture_config';
+  private readonly actions$ = inject(Actions);
 
   loadSettings$ = createEffect(() => {
     return this.actions$.pipe(
@@ -44,7 +45,6 @@ export class SettingScreenCaptureEffects {
   });
 
   constructor(
-    private actions$: Actions,
     private readonly localStorageService: LocalStorageService
   ) {}
 }

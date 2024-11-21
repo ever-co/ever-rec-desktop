@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { NotificationService } from '@ever-co/notification-data-access';
 import { IPaginationOptions, IVideo } from '@ever-co/shared-utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -10,6 +10,7 @@ import { videoActions } from './video.actions';
 
 @Injectable()
 export class VideoEffects {
+  private readonly actions$ = inject(Actions);
   onLoadVideo$ = createEffect(() =>
     this.actions$.pipe(
       ofType(videoActions.loadVideo),
@@ -83,7 +84,6 @@ export class VideoEffects {
   );
 
   constructor(
-    private actions$: Actions,
     private readonly videoElectronService: VideoElectronService,
     private readonly notificationService: NotificationService
   ) {}

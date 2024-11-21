@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { LocalStorageService } from '@ever-co/shared-service';
 import { IVideoConfig } from '@ever-co/shared-utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -9,6 +9,7 @@ import { settingActions } from './setting.actions';
 @Injectable()
 export class SettingEffects {
   private key = '_video_config';
+  private readonly actions$ = inject(Actions);
 
   loadSettings$ = createEffect(() => {
     return this.actions$.pipe(
@@ -37,7 +38,6 @@ export class SettingEffects {
   });
 
   constructor(
-    private actions$: Actions,
     private readonly localStorageService: LocalStorageService
   ) {}
 }
