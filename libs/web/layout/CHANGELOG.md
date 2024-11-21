@@ -2,6 +2,28 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.1.3](https://github.com/ever-co/ever-capture/compare/layout-0.1.2...layout-0.1.3) (2024-11-21)
+
+### Dependency Updates
+
+* `breadcrumb-feature` updated to version `0.1.1`
+* `notification-feature` updated to version `0.0.3`
+* `shared-components` updated to version `0.1.0`
+* `sidebar-feature` updated to version `0.1.2`
+* `search` updated to version `0.0.3`
+* `dashboard` updated to version `0.0.4`
+* `library` updated to version `0.0.4`
+* `web-setting-feature` updated to version `0.0.4`
+* `timesheet-feature` updated to version `0.0.4`
+* `screenshot-feature` updated to version `0.1.2`
+* `timeline-feature` updated to version `0.1.3`
+
+### Bug Fixes
+
+* tailwind config js ([9761084](https://github.com/ever-co/ever-capture/commit/97610843fa16e2fbcea5261b70ed53cca5e669f0))
+
+
+
 ## [0.1.2](https://github.com/ever-co/ever-capture/compare/layout-0.1.1...layout-0.1.2) (2024-11-21)
 
 ### Dependency Updates
