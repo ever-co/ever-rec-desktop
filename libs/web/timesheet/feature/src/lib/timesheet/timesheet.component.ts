@@ -1,6 +1,6 @@
 import { Clipboard } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -93,6 +93,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   private range!: IRange;
   private selectedRow: ITimeLog | null = null;
+  private readonly store = inject(Store);
   public actionButtons: IActionButton[] = [
     {
       icon: 'content_copy',
@@ -139,7 +140,6 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
-    private readonly store: Store,
     private readonly layoutService: LayoutService,
     private readonly confirmationDialogService: ConfirmationDialogService,
     private readonly clipboard: Clipboard,
