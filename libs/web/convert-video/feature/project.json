@@ -12,7 +12,8 @@
         "{workspaceRoot}/dist/{projectRoot}"
       ],
       "options": {
-        "project": "libs/web/convert-video/feature/ng-package.json"
+        "project": "libs/web/convert-video/feature/ng-package.json",
+        "tailwindConfig": "libs/web/convert-video/feature/tailwind.config.js"
       },
       "configurations": {
         "production": {

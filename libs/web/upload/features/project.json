@@ -12,7 +12,8 @@
         "{workspaceRoot}/dist/{projectRoot}"
       ],
       "options": {
-        "project": "libs/web/upload/features/ng-package.json"
+        "project": "libs/web/upload/features/ng-package.json",
+        "tailwindConfig": "libs/web/upload/features/tailwind.config.js"
       },
       "configurations": {
         "production": {

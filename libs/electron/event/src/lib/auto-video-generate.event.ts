@@ -9,12 +9,12 @@ export function autoVideoGenerateEvent() {
 
   ipcMain.on(
     Channel.AUTO_VIDEO_GENERATE,
-    (event, { autoGenerate, period }: Partial<IVideoConfig>) => {
+    (event, { autoGenerate = true, period = 10 }: Partial<IVideoConfig>) => {
       logger.info(
         'AUTO_VIDEO_GENERATE event received with autoGenerate:',
         autoGenerate,
         'and period:',
-        period,
+        period || 10,
         'minutes'
       );
 
@@ -25,7 +25,7 @@ export function autoVideoGenerateEvent() {
 
       logger.info('Setting up new interval for auto video generation');
 
-      const delay = moment.duration(period, 'minutes').asSeconds();
+      const delay = moment.duration(period || 10, 'minutes').asSeconds();
 
       timerScheduler.onTick((seconds) => {
         if (seconds % delay === 0) {
