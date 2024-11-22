@@ -2,6 +2,10 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.0.7](https://github.com/ever-co/ever-capture/compare/timesheet-feature-0.0.6...timesheet-feature-0.0.7) (2024-11-22)
+
+
+
 ## [0.0.6](https://github.com/ever-co/ever-capture/compare/timesheet-feature-0.0.5...timesheet-feature-0.0.6) (2024-11-21)
 
 ### Dependency Updates
