@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.1.2](https://github.com/ever-co/ever-capture/compare/sidebar-0.1.1...sidebar-0.1.2) (2024-11-23)
+
+
+### Bug Fixes
+
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+
+
+
 ## [0.1.1](https://github.com/ever-co/ever-capture/compare/sidebar-0.1.0...sidebar-0.1.1) (2024-11-22)
 
 
