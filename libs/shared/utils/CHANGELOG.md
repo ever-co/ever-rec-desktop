@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.2.0](https://github.com/ever-co/ever-capture/compare/utils-0.1.2...utils-0.2.0) (2024-11-23)
+
+
+### Features
+
+* improve auto sync adding auto sync service ([46e247f](https://github.com/ever-co/ever-capture/commit/46e247f4d592c2be2b757e5954d33c7e27099d36))
+
+
+
 ## [0.1.2](https://github.com/ever-co/ever-capture/compare/utils-0.1.1...utils-0.1.2) (2024-11-23)
 
 
