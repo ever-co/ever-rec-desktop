@@ -39,7 +39,7 @@
     "version": {
       "executor": "@jscutlery/semver:version",
       "options": {
-       "syncVersions": false,
+        "syncVersions": false,
         "push": true,
         "pushTags": true,
         "trackDeps": true
@@ -50,11 +50,13 @@
       "options": {
         "parallel": false,
         "commands": [
-          "nx version breadcrumb-data-access --releaseType=patch --pushTags",
-          "nx build breadcrumb-data-access",
           "cd dist/libs/web/breadcrumb/data-access && npm publish --access public"
         ]
-      }
+      },
+      "dependsOn": [
+        "version",
+        "build"
+      ]
     }
   }
 }

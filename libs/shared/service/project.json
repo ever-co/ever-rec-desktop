@@ -39,7 +39,7 @@
     "version": {
       "executor": "@jscutlery/semver:version",
       "options": {
-       "syncVersions": false,
+        "syncVersions": false,
         "push": true,
         "pushTags": true,
         "trackDeps": true
@@ -50,11 +50,13 @@
       "options": {
         "parallel": false,
         "commands": [
-          "nx version shared-service --releaseType=patch --pushTags",
-          "nx build shared-service",
           "cd dist/libs/shared/service && npm publish --access public"
         ]
-      }
+      },
+      "dependsOn": [
+        "version",
+        "build"
+      ]
     }
   }
 }

@@ -8,7 +8,9 @@
   "targets": {
     "build": {
       "executor": "@nx/angular:package",
-      "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/dist/{projectRoot}"
+      ],
       "options": {
         "project": "libs/web/sidebar/features/ng-package.json",
         "tailwindConfig": "libs/web/sidebar/features/tailwind.config.js"
@@ -25,7 +27,9 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {
         "jestConfig": "libs/web/sidebar/features/jest.config.ts"
       }
@@ -36,7 +40,7 @@
     "version": {
       "executor": "@jscutlery/semver:version",
       "options": {
-       "syncVersions": false,
+        "syncVersions": false,
         "push": true,
         "pushTags": true,
         "trackDeps": true
@@ -47,11 +51,13 @@
       "options": {
         "parallel": false,
         "commands": [
-          "nx version sidebar-feature --releaseType=patch --pushTags",
-          "nx build sidebar-feature",
           "cd dist/libs/web/sidebar/features && npm publish --access public"
         ]
-      }
+      },
+      "dependsOn": [
+        "version",
+        "build"
+      ]
     }
   }
 }

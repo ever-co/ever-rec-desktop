@@ -8,7 +8,9 @@
   "targets": {
     "build": {
       "executor": "@nx/angular:package",
-      "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/dist/{projectRoot}"
+      ],
       "options": {
         "project": "libs/web/search/ng-package.json"
       },
@@ -24,7 +26,9 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {
         "jestConfig": "libs/web/search/jest.config.ts"
       }
@@ -35,7 +39,7 @@
     "version": {
       "executor": "@jscutlery/semver:version",
       "options": {
-       "syncVersions": false,
+        "syncVersions": false,
         "push": true,
         "pushTags": true,
         "trackDeps": true
@@ -46,11 +50,13 @@
       "options": {
         "parallel": false,
         "commands": [
-          "nx version search --releaseType=patch --pushTags",
-          "nx build search",
           "cd dist/libs/web/search && npm publish --access public"
         ]
-      }
+      },
+      "dependsOn": [
+        "version",
+        "build"
+      ]
     }
   }
 }

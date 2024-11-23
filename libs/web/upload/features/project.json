@@ -51,11 +51,13 @@
       "options": {
         "parallel": false,
         "commands": [
-          "nx version upload-feature --releaseType=patch --pushTags",
-          "nx build upload-feature",
           "cd dist/libs/web/upload/features && npm publish --access public"
         ]
-      }
+      },
+      "dependsOn": [
+        "version",
+        "build"
+      ]
     }
   }
 }

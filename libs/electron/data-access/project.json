@@ -39,7 +39,7 @@
     "version": {
       "executor": "@jscutlery/semver:version",
       "options": {
-       "syncVersions": false,
+        "syncVersions": false,
         "push": true,
         "pushTags": true,
         "trackDeps": true
@@ -50,11 +50,13 @@
       "options": {
         "parallel": false,
         "commands": [
-          "nx version data-access-electron --releaseType=patch --pushTags",
-          "nx build data-access-electron",
           "cd dist/libs/electron/data-access && npm publish --access public"
         ]
-      }
+      },
+      "dependsOn": [
+        "version",
+        "build"
+      ]
     }
   }
 }

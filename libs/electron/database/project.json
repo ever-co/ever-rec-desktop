@@ -7,17 +7,23 @@
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/libs/electron/database",
         "main": "libs/electron/database/src/index.ts",
         "tsConfig": "libs/electron/database/tsconfig.lib.json",
-        "assets": ["libs/electron/database/*.md"]
+        "assets": [
+          "libs/electron/database/*.md"
+        ]
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {
         "jestConfig": "libs/electron/database/jest.config.ts"
       }
@@ -25,7 +31,7 @@
     "version": {
       "executor": "@jscutlery/semver:version",
       "options": {
-       "syncVersions": false,
+        "syncVersions": false,
         "push": true,
         "pushTags": true,
         "trackDeps": true
@@ -36,11 +42,13 @@
       "options": {
         "parallel": false,
         "commands": [
-          "nx version database-electron --releaseType=patch --pushTags",
-          "nx build database-electron",
           "cd dist/libs/electron/database && npm publish --access public"
         ]
-      }
+      },
+      "dependsOn": [
+        "version",
+        "build"
+      ]
     }
   }
 }
