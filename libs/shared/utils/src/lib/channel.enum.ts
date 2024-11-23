@@ -46,4 +46,6 @@ export enum Channel {
   'REQUEST_ACTIVITIES_HOURLY_DISTRIBUTION' = 'request::activities::hourly::distribution',
   'REQUEST_ACTIVITIES_TRENDS' = 'request::activities::trends',
   'REQUEST_ACTIVITIES_WORK_PATTERN' = 'request::activities::work::pattern',
+  'AUTO_START_SYNC' = 'auto::start::sync',
+  'AUTO_STOP_SYNC' = 'auto::stop::sync',
 }

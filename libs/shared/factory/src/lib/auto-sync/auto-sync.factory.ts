@@ -7,16 +7,52 @@ import {
   screenshotActions,
   ScreenshotElectronService,
   selectScreenshotState,
+  selectSettingScreenCaptureState,
 } from '@ever-co/screenshot-data-access';
 import { Store } from '@ngrx/store';
-import { combineLatest, take, tap } from 'rxjs';
+import { combineLatest, filter, take, tap, withLatestFrom } from 'rxjs';
+import { AutoSyncService } from '../services/auto-sync.service';
 
 export function autoSyncFactory(
   store: Store,
-  service: ScreenshotElectronService
+  service: ScreenshotElectronService,
+  serviceAutoSync: AutoSyncService
 ): () => Promise<void> {
-  return () =>
-    new Promise<void>((resolve) => {
+  return async () => {
+    serviceAutoSync
+      .onAutoStartSync()
+      .pipe(
+        withLatestFrom(
+          store.select(selectScreenshotState),
+          store.select(selectSettingState),
+          store.select(selectSettingScreenCaptureState)
+        ),
+        filter(([, state]) => !state.capturing),
+        tap(([, , videoSettingState, screenCaptureState]) => {
+          store.dispatch(
+            screenshotActions.startCapture(
+              screenCaptureState.screenCaptureConfig
+            )
+          );
+          store.dispatch(
+            generateVideoActions.autoGenerate({
+              config: videoSettingState.videoConfig,
+            })
+          );
+        })
+      )
+      .subscribe();
+
+    serviceAutoSync
+      .onAutoStopSync()
+      .pipe(
+        withLatestFrom(store.select(selectScreenshotState)),
+        filter(([, state]) => state.capturing),
+        tap(() => store.dispatch(screenshotActions.stopCapture()))
+      )
+      .subscribe();
+
+    await new Promise<void>((resolve) => {
       service.onScreenshotCaptured((screenshot) => {
         combineLatest([
           store.select(selectScreenshotState),
@@ -44,11 +80,12 @@ export function autoSyncFactory(
       });
       resolve();
     });
+  };
 }
 
 export const autoSyncProvider = {
   provide: APP_INITIALIZER,
   useFactory: autoSyncFactory,
-  deps: [Store, ScreenshotElectronService],
+  deps: [Store, ScreenshotElectronService, AutoSyncService],
   multi: true,
 };
