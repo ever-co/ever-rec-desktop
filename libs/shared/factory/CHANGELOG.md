@@ -2,6 +2,22 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.2.0](https://github.com/ever-co/ever-capture/compare/factory-0.1.5...factory-0.2.0) (2024-11-23)
+
+### Dependency Updates
+
+* `convert-video-data-access` updated to version `0.1.5`
+* `screenshot-data-access` updated to version `0.1.5`
+* `web-setting-data-access` updated to version `0.0.7`
+* `data-access-electron` updated to version `0.1.3`
+* `utils` updated to version `0.2.0`
+
+### Features
+
+* improve auto sync adding auto sync service ([46e247f](https://github.com/ever-co/ever-capture/commit/46e247f4d592c2be2b757e5954d33c7e27099d36))
+
+
+
 ## [0.1.5](https://github.com/ever-co/ever-capture/compare/factory-0.1.4...factory-0.1.5) (2024-11-23)
 
 ### Dependency Updates
