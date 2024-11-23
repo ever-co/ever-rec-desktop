@@ -48,7 +48,8 @@
       "dependsOn": [
         "version",
         "build"
-      ]
+      ],
+      "parallelism": false
     }
   }
 }
