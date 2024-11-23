@@ -2,6 +2,37 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.1.7](https://github.com/ever-co/ever-capture/compare/layout-0.1.6...layout-0.1.7) (2024-11-23)
+
+### Dependency Updates
+
+* `breadcrumb-data-access` updated to version `0.1.1`
+* `breadcrumb-feature` updated to version `0.1.3`
+* `notification-feature` updated to version `0.0.6`
+* `shared-components` updated to version `0.1.2`
+* `shared-service` updated to version `0.1.2`
+* `sidebar-feature` updated to version `0.1.5`
+* `search` updated to version `0.0.6`
+* `convert-video-data-access` updated to version `0.1.3`
+* `dashboard` updated to version `0.0.8`
+* `dashboard` updated to version `0.0.8`
+* `library` updated to version `0.0.8`
+* `library` updated to version `0.0.8`
+* `web-setting-feature` updated to version `0.0.7`
+* `web-setting-feature` updated to version `0.0.7`
+* `timesheet-feature` updated to version `0.0.9`
+* `timesheet-feature` updated to version `0.0.9`
+* `screenshot-feature` updated to version `0.1.5`
+* `screenshot-feature` updated to version `0.1.5`
+* `timeline-feature` updated to version `0.1.7`
+* `timeline-feature` updated to version `0.1.7`
+
+### Bug Fixes
+
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+
+
+
 ## [0.1.6](https://github.com/ever-co/ever-capture/compare/layout-0.1.5...layout-0.1.6) (2024-11-22)
 
 ### Dependency Updates
