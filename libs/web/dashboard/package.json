@@ -1,6 +1,6 @@
 {
   "name": "@ever-co/web-dashboard",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "peerDependencies": {
     "@angular/common": "^18.2.0",
     "@angular/core": "^18.2.0",
