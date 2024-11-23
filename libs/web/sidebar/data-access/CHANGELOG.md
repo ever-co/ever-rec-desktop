@@ -2,6 +2,10 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.1.3](https://github.com/ever-co/ever-capture/compare/sidebar-0.1.2...sidebar-0.1.3) (2024-11-23)
+
+
+
 ## [0.1.2](https://github.com/ever-co/ever-capture/compare/sidebar-0.1.1...sidebar-0.1.2) (2024-11-23)
 
 
