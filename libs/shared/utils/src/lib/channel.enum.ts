@@ -1,7 +1,7 @@
 export enum Channel {
-  'START_CAPTURE_SCREEN' = 'start-capture-screen',
+  'START_CAPTURE_SCREEN' = 'start-capture',
   'SCREENSHOT_CAPTURED' = 'screenshot-captured',
-  'STOP_CAPTURE_SCREEN' = 'stop-capture-screen',
+  'STOP_CAPTURE_SCREEN' = 'stop-capture',
   'START_CONVERT_TO_VIDEO' = 'start-convert-screenshot-to-video',
   'SCREESHOTS_CONVERTED' = 'screenshots-converted',
   'CANCEL_CONVERSION' = 'cancel-conversion',
