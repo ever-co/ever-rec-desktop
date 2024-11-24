@@ -1,6 +1,6 @@
 {
   "name": "@ever-co/electron-data-access",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "peerDependencies": {
     "@angular/common": "^17.3.0",
     "@angular/core": "^17.3.0"
