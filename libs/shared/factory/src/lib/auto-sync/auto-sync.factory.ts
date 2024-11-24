@@ -5,21 +5,19 @@ import {
 } from '@ever-co/convert-video-data-access';
 import {
   screenshotActions,
-  ScreenshotElectronService,
   selectScreenshotState,
   selectSettingScreenCaptureState,
 } from '@ever-co/screenshot-data-access';
 import { Store } from '@ngrx/store';
-import { combineLatest, filter, take, tap, withLatestFrom } from 'rxjs';
+import { filter, tap, withLatestFrom } from 'rxjs';
 import { AutoSyncService } from '../services/auto-sync.service';
 
 export function autoSyncFactory(
   store: Store,
-  service: ScreenshotElectronService,
-  serviceAutoSync: AutoSyncService
-): () => Promise<void> {
-  return async () => {
-    serviceAutoSync
+  service: AutoSyncService
+): () => void {
+  return () => {
+    service
       .onAutoStartSync()
       .pipe(
         withLatestFrom(
@@ -43,7 +41,7 @@ export function autoSyncFactory(
       )
       .subscribe();
 
-    serviceAutoSync
+    service
       .onAutoStopSync()
       .pipe(
         withLatestFrom(store.select(selectScreenshotState)),
@@ -52,40 +50,34 @@ export function autoSyncFactory(
       )
       .subscribe();
 
-    await new Promise<void>((resolve) => {
-      service.onScreenshotCaptured((screenshot) => {
-        combineLatest([
+    service
+      .onAutoSync()
+      .pipe(
+        withLatestFrom(
           store.select(selectScreenshotState),
-          store.select(selectSettingState),
-        ])
-          .pipe(
-            take(1),
-            tap(([screenshotState, videoSettingState]) => {
-              if (!screenshotState.capturing && screenshot) {
-                store.dispatch(screenshotActions.startCaptureSuccess());
-                store.dispatch(
-                  screenshotActions.captureSuccess({ screenshot })
-                );
-                if (videoSettingState.videoConfig.autoGenerate) {
-                  store.dispatch(
-                    generateVideoActions.autoGenerate({
-                      config: videoSettingState.videoConfig,
-                    })
-                  );
-                }
-              }
-            })
-          )
-          .subscribe();
-      });
-      resolve();
-    });
+          store.select(selectSettingState)
+        ),
+        tap(([screenshot, screenshotState, videoSettingState]) => {
+          if (!screenshotState.capturing && screenshot) {
+            store.dispatch(screenshotActions.startCaptureSuccess());
+            store.dispatch(screenshotActions.captureSuccess({ screenshot }));
+            if (videoSettingState.videoConfig.autoGenerate) {
+              store.dispatch(
+                generateVideoActions.autoGenerate({
+                  config: videoSettingState.videoConfig,
+                })
+              );
+            }
+          }
+        })
+      )
+      .subscribe();
   };
 }
 
 export const autoSyncProvider = {
   provide: APP_INITIALIZER,
   useFactory: autoSyncFactory,
-  deps: [Store, ScreenshotElectronService, AutoSyncService],
+  deps: [Store, AutoSyncService],
   multi: true,
 };
