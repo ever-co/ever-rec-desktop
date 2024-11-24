@@ -2,6 +2,16 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.0.10](https://github.com/ever-co/ever-capture/compare/web-setting-data-access-0.0.9...web-setting-data-access-0.0.10) (2024-11-24)
+
+### Dependency Updates
+
+* `data-access-electron` updated to version `0.1.5`
+* `convert-video-data-access` updated to version `0.1.8`
+* `screenshot-data-access` updated to version `0.1.8`
+* `shared-service` updated to version `0.1.7`
+
+
 ## [0.0.9](https://github.com/ever-co/ever-capture/compare/web-setting-data-access-0.0.8...web-setting-data-access-0.0.9) (2024-11-24)
 
 ### Dependency Updates
