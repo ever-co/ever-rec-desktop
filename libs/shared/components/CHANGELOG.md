@@ -2,6 +2,20 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.1.6](https://github.com/ever-co/ever-capture/compare/shared-components-0.1.5...shared-components-0.1.6) (2024-11-24)
+
+### Dependency Updates
+
+* `notification-data-access` updated to version `0.0.9`
+* `data-access-electron` updated to version `0.1.5`
+* `shared-service` updated to version `0.1.7`
+* `web-setting-data-access` updated to version `0.0.10`
+* `convert-video-data-access` updated to version `0.1.8`
+* `screenshot-data-access` updated to version `0.1.8`
+* `timesheet-data-access` updated to version `0.0.9`
+* `upload-data-access` updated to version `0.0.10`
+
+
 ## [0.1.5](https://github.com/ever-co/ever-capture/compare/shared-components-0.1.4...shared-components-0.1.5) (2024-11-24)
 
 ### Dependency Updates
