@@ -98,6 +98,8 @@ export function removeCrudVideoEvent(): void {
     Channel.REQUEST_ONE_VIDEO,
     Channel.GET_USED_SIZE,
     Channel.REQUEST_VIDEO_METADATA_UPDATE,
+    Channel.REQUEST_DELETE_ALL_VIDEO,
+    Channel.REQUEST_DELETE_ONE_VIDEO
   ];
   channels.forEach((channel) => ipcMain.removeHandler(channel));
 }
