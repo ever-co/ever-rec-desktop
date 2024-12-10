@@ -2,7 +2,10 @@
 
 ## Overview
 
-**Ever Rec** is a cutting-edge desktop application designed to seamlessly capture screens and transform continuous screenshots into a unified, high-quality video. Built with Electron and Angular, it empowers users to create tutorials, record gameplay, monitor workflows, and much more with efficiency and ease. The application operates unobtrusively, allowing users to focus on their tasks while it manages screen recording in the background.
+**Ever Rec Desktop** is a cutting-edge desktop application designed to seamlessly capture screens and transform continuous screenshots into a unified, high-quality video. Built with Electron and Angular, it empowers users to create tutorials, record gameplay, monitor workflows, and much more with efficiency and ease. The application operates unobtrusively, allowing users to focus on their tasks while it manages screen recording in the background.
+
+It's a part of **Ever® Rec™ - Open Screen Capture, Screen Recording, Images & Video Sharing Platform**.  
+Please check our official website <https://rec.so> and GitHub repository <https://github.com/ever-co/ever-rec> for more information.
 
 ## Features
 
@@ -97,8 +100,9 @@
 
 ## License
 
-This project is licensed under the MIT License. For more information, see the [LICENSE](LICENSE) file.
+This project is licensed under the GPLv3 License.  
+For more information, please see the [LICENSE](LICENSE).
 
 ---
 
-Enjoy effortless screen recording with Ever Rec! 🎥
+Enjoy effortless screen recording with Ever® Rec™! 🎥
