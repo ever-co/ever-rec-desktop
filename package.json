@@ -1,7 +1,7 @@
 {
-  "name": "@ever-co/ever-capture",
+  "name": "@ever-co/ever-rec",
   "version": "0.0.0",
-  "description": "Ever Capture",
+  "description": "Ever Rec",
   "license": "GPL-3.0",
   "repository": {
     "type": "git",

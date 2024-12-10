@@ -1,8 +1,8 @@
-# Ever Capture
+# Ever Rec
 
 ## Overview
 
-**Ever Capture** is a cutting-edge desktop application designed to seamlessly capture screens and transform continuous screenshots into a unified, high-quality video. Built with Electron and Angular, it empowers users to create tutorials, record gameplay, monitor workflows, and much more with efficiency and ease. The application operates unobtrusively, allowing users to focus on their tasks while it manages screen recording in the background.
+**Ever Rec** is a cutting-edge desktop application designed to seamlessly capture screens and transform continuous screenshots into a unified, high-quality video. Built with Electron and Angular, it empowers users to create tutorials, record gameplay, monitor workflows, and much more with efficiency and ease. The application operates unobtrusively, allowing users to focus on their tasks while it manages screen recording in the background.
 
 ## Features
 
@@ -101,4 +101,4 @@ This project is licensed under the MIT License. For more information, see the [L
 
 ---
 
-Enjoy effortless screen recording with Ever Capture! 🎥
+Enjoy effortless screen recording with Ever Rec! 🎥
