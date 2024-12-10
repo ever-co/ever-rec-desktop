@@ -5,7 +5,7 @@ import { format } from 'url';
 import { environment } from '../environments/environment';
 import { rendererAppName, rendererAppPort } from './constants';
 
-app.setName('Ever Capture');
+app.setName('Ever Rec Desktop');
 
 export default class App {
   // Keep a global reference of the window object, if you don't, the window will

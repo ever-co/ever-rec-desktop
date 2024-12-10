@@ -2,7 +2,7 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
-## [0.0.13](https://github.com/ever-co/ever-capture/compare/timesheet-feature-0.0.12...timesheet-feature-0.0.13) (2024-11-24)
+## [0.0.13](https://github.com/ever-co/ever-rec-desktop/compare/timesheet-feature-0.0.12...timesheet-feature-0.0.13) (2024-11-24)
 
 ### Dependency Updates
 
@@ -14,7 +14,7 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 * `timesheet-data-access` updated to version `0.0.9`
 
 
-## [0.0.12](https://github.com/ever-co/ever-capture/compare/timesheet-feature-0.0.11...timesheet-feature-0.0.12) (2024-11-24)
+## [0.0.12](https://github.com/ever-co/ever-rec-desktop/compare/timesheet-feature-0.0.11...timesheet-feature-0.0.12) (2024-11-24)
 
 ### Dependency Updates
 
@@ -27,7 +27,7 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 * `timesheet-data-access` updated to version `0.0.8`
 
 
-## [0.0.11](https://github.com/ever-co/ever-capture/compare/timesheet-feature-0.0.10...timesheet-feature-0.0.11) (2024-11-23)
+## [0.0.11](https://github.com/ever-co/ever-rec-desktop/compare/timesheet-feature-0.0.10...timesheet-feature-0.0.11) (2024-11-23)
 
 ### Dependency Updates
 
@@ -40,7 +40,7 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 * `timesheet-data-access` updated to version `0.0.6`
 
 
-## [0.0.10](https://github.com/ever-co/ever-capture/compare/timesheet-feature-0.0.9...timesheet-feature-0.0.10) (2024-11-23)
+## [0.0.10](https://github.com/ever-co/ever-rec-desktop/compare/timesheet-feature-0.0.9...timesheet-feature-0.0.10) (2024-11-23)
 
 ### Dependency Updates
 
@@ -53,7 +53,7 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 * `timesheet-data-access` updated to version `0.0.5`
 
 
-## [0.0.9](https://github.com/ever-co/ever-capture/compare/timesheet-feature-0.0.8...timesheet-feature-0.0.9) (2024-11-23)
+## [0.0.9](https://github.com/ever-co/ever-rec-desktop/compare/timesheet-feature-0.0.8...timesheet-feature-0.0.9) (2024-11-23)
 
 ### Dependency Updates
 
@@ -67,11 +67,11 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 
 ### Bug Fixes
 
-* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+* publish commands ([ec40beb](https://github.com/ever-co/ever-rec-desktop/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
 
 
 
-## [0.0.8](https://github.com/ever-co/ever-capture/compare/timesheet-feature-0.0.7...timesheet-feature-0.0.8) (2024-11-22)
+## [0.0.8](https://github.com/ever-co/ever-rec-desktop/compare/timesheet-feature-0.0.7...timesheet-feature-0.0.8) (2024-11-22)
 
 ### Dependency Updates
 
@@ -82,18 +82,18 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 * `timesheet-data-access` updated to version `0.0.3`
 
 
-## [0.0.7](https://github.com/ever-co/ever-capture/compare/timesheet-feature-0.0.6...timesheet-feature-0.0.7) (2024-11-22)
+## [0.0.7](https://github.com/ever-co/ever-rec-desktop/compare/timesheet-feature-0.0.6...timesheet-feature-0.0.7) (2024-11-22)
 
 
 
-## [0.0.6](https://github.com/ever-co/ever-capture/compare/timesheet-feature-0.0.5...timesheet-feature-0.0.6) (2024-11-21)
+## [0.0.6](https://github.com/ever-co/ever-rec-desktop/compare/timesheet-feature-0.0.5...timesheet-feature-0.0.6) (2024-11-21)
 
 ### Dependency Updates
 
 * `timeline-feature` updated to version `0.1.5`
 
 
-## [0.0.5](https://github.com/ever-co/ever-capture/compare/timesheet-feature-0.0.4...timesheet-feature-0.0.5) (2024-11-21)
+## [0.0.5](https://github.com/ever-co/ever-rec-desktop/compare/timesheet-feature-0.0.4...timesheet-feature-0.0.5) (2024-11-21)
 
 ### Dependency Updates
 
@@ -101,7 +101,7 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 * `shared-components` updated to version `0.1.0`
 
 
-## [0.0.4](https://github.com/ever-co/ever-capture/compare/timesheet-feature-0.0.3...timesheet-feature-0.0.4) (2024-11-21)
+## [0.0.4](https://github.com/ever-co/ever-rec-desktop/compare/timesheet-feature-0.0.3...timesheet-feature-0.0.4) (2024-11-21)
 
 ### Dependency Updates
 
@@ -110,11 +110,11 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 
 ### Bug Fixes
 
-* tailwind config js ([9761084](https://github.com/ever-co/ever-capture/commit/97610843fa16e2fbcea5261b70ed53cca5e669f0))
+* tailwind config js ([9761084](https://github.com/ever-co/ever-rec-desktop/commit/97610843fa16e2fbcea5261b70ed53cca5e669f0))
 
 
 
-## [0.0.3](https://github.com/ever-co/ever-capture/compare/timesheet-feature-0.0.2...timesheet-feature-0.0.3) (2024-11-21)
+## [0.0.3](https://github.com/ever-co/ever-rec-desktop/compare/timesheet-feature-0.0.2...timesheet-feature-0.0.3) (2024-11-21)
 
 ### Dependency Updates
 
@@ -125,7 +125,7 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 * `timesheet-data-access` updated to version `0.0.2`
 
 
-## [0.0.2](https://github.com/ever-co/ever-capture/compare/timesheet-feature-0.0.1...timesheet-feature-0.0.2) (2024-11-21)
+## [0.0.2](https://github.com/ever-co/ever-rec-desktop/compare/timesheet-feature-0.0.1...timesheet-feature-0.0.2) (2024-11-21)
 
 ### Dependency Updates
 

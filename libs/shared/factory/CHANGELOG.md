@@ -2,7 +2,7 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
-## [0.2.3](https://github.com/ever-co/ever-capture/compare/factory-0.2.2...factory-0.2.3) (2024-11-24)
+## [0.2.3](https://github.com/ever-co/ever-rec-desktop/compare/factory-0.2.2...factory-0.2.3) (2024-11-24)
 
 ### Dependency Updates
 
@@ -12,7 +12,7 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 * `data-access-electron` updated to version `0.1.5`
 
 
-## [0.2.2](https://github.com/ever-co/ever-capture/compare/factory-0.2.1...factory-0.2.2) (2024-11-24)
+## [0.2.2](https://github.com/ever-co/ever-rec-desktop/compare/factory-0.2.1...factory-0.2.2) (2024-11-24)
 
 ### Dependency Updates
 
@@ -23,11 +23,11 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 * `utils` updated to version `0.2.1`
 
 
-## [0.2.1](https://github.com/ever-co/ever-capture/compare/factory-0.2.0...factory-0.2.1) (2024-11-24)
+## [0.2.1](https://github.com/ever-co/ever-rec-desktop/compare/factory-0.2.0...factory-0.2.1) (2024-11-24)
 
 
 
-# [0.2.0](https://github.com/ever-co/ever-capture/compare/factory-0.1.5...factory-0.2.0) (2024-11-23)
+# [0.2.0](https://github.com/ever-co/ever-rec-desktop/compare/factory-0.1.5...factory-0.2.0) (2024-11-23)
 
 ### Dependency Updates
 
@@ -39,11 +39,11 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 
 ### Features
 
-* improve auto sync adding auto sync service ([46e247f](https://github.com/ever-co/ever-capture/commit/46e247f4d592c2be2b757e5954d33c7e27099d36))
+* improve auto sync adding auto sync service ([46e247f](https://github.com/ever-co/ever-rec-desktop/commit/46e247f4d592c2be2b757e5954d33c7e27099d36))
 
 
 
-## [0.1.5](https://github.com/ever-co/ever-capture/compare/factory-0.1.4...factory-0.1.5) (2024-11-23)
+## [0.1.5](https://github.com/ever-co/ever-rec-desktop/compare/factory-0.1.4...factory-0.1.5) (2024-11-23)
 
 ### Dependency Updates
 
@@ -52,7 +52,7 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 * `web-setting-data-access` updated to version `0.0.6`
 
 
-## [0.1.4](https://github.com/ever-co/ever-capture/compare/factory-0.1.3...factory-0.1.4) (2024-11-23)
+## [0.1.4](https://github.com/ever-co/ever-rec-desktop/compare/factory-0.1.3...factory-0.1.4) (2024-11-23)
 
 ### Dependency Updates
 
@@ -62,11 +62,11 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 
 ### Bug Fixes
 
-* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+* publish commands ([ec40beb](https://github.com/ever-co/ever-rec-desktop/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
 
 
 
-## [0.1.3](https://github.com/ever-co/ever-capture/compare/factory-0.1.2...factory-0.1.3) (2024-11-22)
+## [0.1.3](https://github.com/ever-co/ever-rec-desktop/compare/factory-0.1.2...factory-0.1.3) (2024-11-22)
 
 ### Dependency Updates
 
@@ -75,7 +75,7 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 * `web-setting-data-access` updated to version `0.0.4`
 
 
-## [0.1.2](https://github.com/ever-co/ever-capture/compare/factory-0.1.1...factory-0.1.2) (2024-11-21)
+## [0.1.2](https://github.com/ever-co/ever-rec-desktop/compare/factory-0.1.1...factory-0.1.2) (2024-11-21)
 
 ### Dependency Updates
 
@@ -84,7 +84,7 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 * `web-setting-data-access` updated to version `0.0.3`
 
 
-## [0.1.1](https://github.com/ever-co/ever-capture/compare/factory-0.1.0...factory-0.1.1) (2024-11-21)
+## [0.1.1](https://github.com/ever-co/ever-rec-desktop/compare/factory-0.1.0...factory-0.1.1) (2024-11-21)
 
 ### Dependency Updates
 
@@ -100,4 +100,4 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 
 ### Features
 
-* separete factories from libs ([130eae8](https://github.com/ever-co/ever-capture/commit/130eae837172f8ac359707db1df1ab75d15b47dd))
+* separete factories from libs ([130eae8](https://github.com/ever-co/ever-rec-desktop/commit/130eae837172f8ac359707db1df1ab75d15b47dd))
