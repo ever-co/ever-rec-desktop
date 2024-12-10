@@ -1,5 +1,5 @@
 {
-  "name": "@ever-co/ever-capture",
+  "name": "@ever-co/ever-rec-desktop",
   "$schema": "node_modules/nx/schemas/project-schema.json",
   "targets": {
     "local-registry": {
