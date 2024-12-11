@@ -1,22 +1,22 @@
 <!-- layout.component.html -->
-<mat-sidenav-container class="flex flex-col md:flex-row h-screen bg-gray-50">
+<mat-sidenav-container class="flex flex-col h-screen md:flex-row bg-gray-50">
   <mat-sidenav
     [mode]="isMobileView ? 'over' : 'side'"
     [(opened)]="isExpanded"
-    class="sidenav bg-white border-gray-200 md:flex md:flex-col"
+    class="bg-white border-gray-200 sidenav md:flex md:flex-col"
   >
     <!-- Header -->
     <div class="p-6 pr-2 border-b border-gray-200">
       <div class="flex items-center gap-2">
         <mat-icon
-          matTooltip="Ever Capture"
+          matTooltip="Ever Rec Desktop"
           [matTooltipDisabled]="!isTablet"
           class="text-gray-700"
         >
           terminal
         </mat-icon>
         @if (!isTablet) {
-        <span class="text-xl text-gray-700 font-semibold">Ever Capture</span>
+        <span class="text-xl font-semibold text-gray-700">Ever Rec Desktop</span>
         } @if (isMobileView) {
         <button mat-icon-button class="ml-auto" (click)="toggleSidenav()">
           <mat-icon>close</mat-icon>
@@ -37,12 +37,12 @@
 
     <!-- Command Section -->
     <div
-      class="border-t p-4 flex flex-col items-center w-full gap-4 mt-auto border-gray-200"
+      class="flex flex-col items-center w-full gap-4 p-4 mt-auto border-t border-gray-200"
     >
       <lib-start></lib-start>
     </div>
 
-    <!-- <div class="border-t p-4 flex flex-col items-center w-full gap-4 mt-auto border-gray-200">
+    <!-- <div class="flex flex-col items-center w-full gap-4 p-4 mt-auto border-t border-gray-200">
       <lib-copy-context matTooltip="Copy Context"></lib-copy-context>
     </div> -->
   </mat-sidenav>
@@ -51,7 +51,7 @@
   <mat-sidenav-content class="flex flex-col border-l">
     <!-- Search Header -->
     <header
-      class="p-4 gap-4 flex items-center justify-start border-b border-gray-200 bg-white"
+      class="flex items-center justify-start gap-4 p-4 bg-white border-b border-gray-200"
     >
       @if (!isExpanded) {
       <button mat-icon-button (click)="toggleSidenav()">

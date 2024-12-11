@@ -13,7 +13,7 @@ import { ScreenshotSubscriber } from './subscribers/screenshot.subscriber';
 import { VideoMetadataSubscriber } from './subscribers/video-metadata.subscriber';
 import { VideoSubscriber } from './subscribers/video.subscriber';
 
-const database = FileManager.createFilePathSync('db', 'ever.capture.sqlite');
+const database = FileManager.createFilePathSync('db', 'ever.rec.desktop.sqlite');
 
 export const appDataSource = new DataSource({
   type: 'better-sqlite3',

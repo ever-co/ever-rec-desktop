@@ -2,7 +2,7 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
-## [0.1.4](https://github.com/ever-co/ever-capture/compare/database-electron-0.1.3...database-electron-0.1.4) (2024-11-24)
+## [0.1.4](https://github.com/ever-co/ever-rec-desktop/compare/database-electron-0.1.3...database-electron-0.1.4) (2024-11-24)
 
 ### Dependency Updates
 
@@ -10,7 +10,7 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 * `utils` updated to version `0.2.1`
 
 
-## [0.1.3](https://github.com/ever-co/ever-capture/compare/database-electron-0.1.2...database-electron-0.1.3) (2024-11-23)
+## [0.1.3](https://github.com/ever-co/ever-rec-desktop/compare/database-electron-0.1.2...database-electron-0.1.3) (2024-11-23)
 
 ### Dependency Updates
 
@@ -18,7 +18,7 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 * `utils` updated to version `0.2.0`
 
 
-## [0.1.2](https://github.com/ever-co/ever-capture/compare/database-electron-0.1.1...database-electron-0.1.2) (2024-11-23)
+## [0.1.2](https://github.com/ever-co/ever-rec-desktop/compare/database-electron-0.1.1...database-electron-0.1.2) (2024-11-23)
 
 ### Dependency Updates
 
@@ -26,7 +26,7 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 * `utils` updated to version `0.1.2`
 
 
-## [0.1.1](https://github.com/ever-co/ever-capture/compare/database-electron-0.1.0...database-electron-0.1.1) (2024-11-23)
+## [0.1.1](https://github.com/ever-co/ever-rec-desktop/compare/database-electron-0.1.0...database-electron-0.1.1) (2024-11-23)
 
 ### Dependency Updates
 
@@ -35,7 +35,7 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 
 ### Bug Fixes
 
-* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+* publish commands ([ec40beb](https://github.com/ever-co/ever-rec-desktop/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
 
 
 
@@ -48,15 +48,15 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 
 ### Bug Fixes
 
-* npm package name ([6018f87](https://github.com/ever-co/ever-capture/commit/6018f87419f5149440d5a4dce4f184b736e3740c))
-* start and end of day ([0169069](https://github.com/ever-co/ever-capture/commit/0169069767c9af4d36f8d28e138c6cbeb89e74f0))
-* video conversion ([314c586](https://github.com/ever-co/ever-capture/commit/314c586480dedbe6099e5d080cdf633e63f080ab))
+* npm package name ([6018f87](https://github.com/ever-co/ever-rec-desktop/commit/6018f87419f5149440d5a4dce4f184b736e3740c))
+* start and end of day ([0169069](https://github.com/ever-co/ever-rec-desktop/commit/0169069767c9af4d36f8d28e138c6cbeb89e74f0))
+* video conversion ([314c586](https://github.com/ever-co/ever-rec-desktop/commit/314c586480dedbe6099e5d080cdf633e63f080ab))
 
 
 ### Features
 
-* added 'codec' and 'batch' properties to video metadata" ([35d5478](https://github.com/ever-co/ever-capture/commit/35d54787b9795f0327cfff06b7625bb84cca2ee4))
-* dded codec and batch fields to VideoMetadata entity and updated VideoConversionService to use them; updated VideoMetadataService to save codec and batch; added codec, batch, and resolution to video config and updated interfaces accordingly ([157ba9e](https://github.com/ever-co/ever-capture/commit/157ba9eb15fab7c11f0e3b925f0fe52cb69fe26f))
-* improve ([ca0c7da](https://github.com/ever-co/ever-capture/commit/ca0c7da98ae74a395ae7f9edf31971afaefd30df))
-* set 'private' to false in multiple package.json files ([b3506c9](https://github.com/ever-co/ever-capture/commit/b3506c95e079effddee1d6591afe213929ceeda4))
-* swap typeorm by knexjs ([f3a1f1e](https://github.com/ever-co/ever-capture/commit/f3a1f1eb21795100d282c6245e8227670517707d))
+* added 'codec' and 'batch' properties to video metadata" ([35d5478](https://github.com/ever-co/ever-rec-desktop/commit/35d54787b9795f0327cfff06b7625bb84cca2ee4))
+* dded codec and batch fields to VideoMetadata entity and updated VideoConversionService to use them; updated VideoMetadataService to save codec and batch; added codec, batch, and resolution to video config and updated interfaces accordingly ([157ba9e](https://github.com/ever-co/ever-rec-desktop/commit/157ba9eb15fab7c11f0e3b925f0fe52cb69fe26f))
+* improve ([ca0c7da](https://github.com/ever-co/ever-rec-desktop/commit/ca0c7da98ae74a395ae7f9edf31971afaefd30df))
+* set 'private' to false in multiple package.json files ([b3506c9](https://github.com/ever-co/ever-rec-desktop/commit/b3506c95e079effddee1d6591afe213929ceeda4))
+* swap typeorm by knexjs ([f3a1f1e](https://github.com/ever-co/ever-rec-desktop/commit/f3a1f1eb21795100d282c6245e8227670517707d))

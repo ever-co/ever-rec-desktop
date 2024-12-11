@@ -1,14 +1,14 @@
 {
-  "name": "@ever-co/ever-rec",
-  "version": "0.0.0",
-  "description": "Ever Rec",
+  "name": "@ever-co/ever-rec-desktop",
+  "version": "0.1.0",
+  "description": "Ever Rec Desktop",
   "license": "GPL-3.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ever-co/ever-capture.git"
+    "url": "git+https://github.com/ever-co/ever-rec-desktop.git"
   },
   "bugs": {
-    "url": "https://github.com/ever-co/ever-capture/issues"
+    "url": "https://github.com/ever-co/ever-rec-desktop/issues"
   },
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
@@ -118,7 +118,7 @@
     "verdaccio": "^5.0.4"
   },
   "snyk": true,
-  "homepage": "https://github.com/ever-co/ever-capture#readme",
+  "homepage": "https://github.com/ever-co/ever-rec-desktop#readme",
   "publishConfig": {
     "registry": "http://localhost:4873"
   },
