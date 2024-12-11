@@ -32,6 +32,7 @@ export function crudScreeshotEvents() {
         sortField = 'createdAt',
         sortOrder = 'DESC',
         ignoreRange = false,
+        deleted = false,
       } = options;
 
       const [data, count] = await screenshotService.findAndCount({
@@ -41,6 +42,7 @@ export function crudScreeshotEvents() {
           }),
           ...where,
         },
+        withDeleted: deleted,
         order: { [`${sortField}`]: sortOrder },
         relations: ['metadata', 'metadata.application'],
         skip: (page - 1) * limit,
