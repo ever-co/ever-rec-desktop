@@ -1,7 +1,7 @@
 import type {
   IScreenshotMetadata
 } from '@ever-co/shared-utils';
-import { IApplication } from 'libs/shared/utils/src/lib/interfaces/application.interface';
+import { IApplication } from '@ever-co/shared-utils';
 import {
   Column,
   Entity,

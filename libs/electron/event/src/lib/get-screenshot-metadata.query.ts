@@ -1,5 +1,5 @@
 import { FileManager } from '@ever-co/electron-utils';
-import { IScreenshotMetadata } from '@ever-co/shared-utils';
+import { IGetScreenshotQueryResult } from '@ever-co/shared-utils';
 import {
   type IconInfo,
   type WindowInfo,
@@ -7,7 +7,7 @@ import {
 } from '@miniben90/x-win';
 import { SCREENSHOT_DIR } from './capture-screen.event';
 export class GetScreenShotMetadataQuery {
-  async execute(): Promise<Omit<IScreenshotMetadata, 'id'> | null> {
+  async execute(): Promise<IGetScreenshotQueryResult | null> {
     const current: WindowInfo = await activeWindowAsync();
     const iconObj: IconInfo = await current.getIconAsync();
     const iconBuffer = this.convert(iconObj.data);

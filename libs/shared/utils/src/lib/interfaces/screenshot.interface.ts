@@ -32,6 +32,12 @@ export type IScreenshotInput =
 
 export type IScreenshotTimeLine = IScreenshot & { duration: number };
 
+export interface IGetScreenshotQueryResult {
+  name: string;
+  description: string;
+  icon: string;
+}
+
 export interface IScreenshotService {
   save(input: IScreenshotInput): Promise<IScreenshot>;
   findAll(options: FindManyOptions<IScreenshot>): Promise<IScreenshot[]>;
