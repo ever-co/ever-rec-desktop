@@ -1,4 +1,5 @@
 import { FindManyOptions, FindOneOptions } from 'typeorm';
+import type { IApplication } from './application.interface';
 import { IBase } from './base.interface';
 import { ITimeLog } from './time-log.interface';
 import type { IVideo } from './video.interface';
@@ -12,10 +13,9 @@ export interface IScreenshot extends IBase {
 }
 
 export interface IScreenshotMetadata extends IBase {
-  icon?: string;
-  name?: string;
   description?: string;
   size?: number;
+  application?: IApplication;
 }
 
 export interface IScreenshotChartLine {

@@ -5,14 +5,14 @@
       @if(screenshot) {
       <figure>
         <img class="screenshot" [src]="screenshot.pathname" alt="Screenshot" />
-        @if(screenshot.metadata?.name) {
+        @if(screenshot.metadata?.application?.name) {
         <figcaption>
           <small>{{ screenshot.createdAt | utcToLocalTime }}</small>
-          <div>{{ screenshot.metadata?.name }}</div>
+          <div>{{ screenshot.metadata?.application?.name }}</div>
         </figcaption>
         }
-        @if(screenshot.metadata?.icon) {
-        <img class="icon" [src]="screenshot.metadata?.icon" [alt]="screenshot.metadata?.name">
+        @if(screenshot.metadata?.application?.icon) {
+        <img class="icon" [src]="screenshot.metadata?.application?.icon" [alt]="screenshot.metadata?.application?.name">
         }
       </figure>
       }

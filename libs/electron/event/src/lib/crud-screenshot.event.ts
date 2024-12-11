@@ -42,7 +42,7 @@ export function crudScreeshotEvents() {
           ...where,
         },
         order: { [`${sortField}`]: sortOrder },
-        relations: ['metadata'],
+        relations: ['metadata', 'metadata.application'],
         skip: (page - 1) * limit,
         take: limit,
       });
@@ -77,7 +77,7 @@ export function crudScreeshotEvents() {
       const { page = 1, limit = 10, filter = '' } = options;
 
       const [data, count] = await screenshotService.findAndCount({
-        relations: ['metadata'],
+        relations: ['metadata', 'metadata.application'],
         ...(filter && {
           where: {
             metadata: {

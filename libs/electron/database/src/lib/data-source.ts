@@ -2,6 +2,7 @@ import { FileManager } from '@ever-co/electron-utils';
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import { Activity } from './entities/activity.entity';
+import { Application } from './entities/application.entity';
 import { ScreenshotMetadata } from './entities/screenshot-metadata.entity';
 import { Screenshot } from './entities/screenshot.entity';
 import { TimeLog } from './entities/time-log.entity';
@@ -25,6 +26,7 @@ export const appDataSource = new DataSource({
     TimeLog,
     Timeline,
     Activity,
+    Application
   ],
   synchronize: true,
   logging: true,
