@@ -53,11 +53,11 @@ export class ScreenshotService implements IScreenshotService {
   }
 
   public async delete(id: string): Promise<void> {
-    await this.repository.delete({ id });
+    await this.repository.softDelete({ id });
   }
 
   public async deleteAll(screenshotIds?: string[]): Promise<void> {
-    await this.repository.delete(
+    await this.repository.softDelete(
       screenshotIds ? { id: In(screenshotIds) } : {}
     );
   }

@@ -110,6 +110,9 @@ export function crudScreeshotEvents() {
     Channel.REQUEST_DELETE_ONE_SCREENSHOT,
     async (_, screenshot: IScreenshot) => {
       await screenshotService.delete(screenshot.id);
+      if (screenshot.metadata?.id) {
+        await ScreenshotMetadataService.delete(screenshot.metadata?.id);
+      }
       await FileManager.deleteFile(screenshot.pathname);
     }
   );
@@ -121,9 +124,15 @@ export function crudScreeshotEvents() {
         // Extract IDs and paths in a single step for clarity
         const ids = screenshots.map(({ id }) => id);
         const paths = screenshots.map(({ pathname }) => pathname);
+        const metadataIds = screenshots
+          .filter(({ metadata }) => metadata?.id)
+          .map(({ metadata }) => metadata!.id);
 
         // Delete screenshots from the database
         await screenshotService.deleteAll(ids);
+
+        // Delete metadata from the database
+        await ScreenshotMetadataService.deleteAll(metadataIds);
 
         // Delete files concurrently
         await Promise.all(

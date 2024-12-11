@@ -50,11 +50,11 @@ export class ScreenshotMetadataService {
   }
 
   public static async delete(id: string): Promise<void> {
-    await this.repository.delete({ id });
+    await this.repository.softDelete({ id });
   }
 
   public static async deleteAll(metadataIds?: string[]): Promise<void> {
-    await this.repository.delete(metadataIds ? { id: In(metadataIds) } : {});
+    await this.repository.softDelete(metadataIds ? { id: In(metadataIds) } : {});
   }
 
   public static async statistics(
