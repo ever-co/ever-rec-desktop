@@ -1,15 +1,17 @@
+import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { IS3Config, UploadType } from '@ever-co/shared-utils';
-import { S3 } from 'aws-sdk';
 
 export class S3Service {
-  private s3!: S3;
+  private s3!: S3Client;
   constructor(private readonly s3Config: IS3Config) {
-    this.s3 = new S3({
-      accessKeyId: s3Config.accessKeyId,
-      secretAccessKey: s3Config.accessKeySecret,
+    this.s3 = new S3Client({
+      credentials: {
+        accessKeyId: s3Config.accessKeyId,
+        secretAccessKey: s3Config.accessKeySecret,
+      },
       region: s3Config.region,
       endpoint: s3Config.s3Endpoint,
-      signatureVersion: 'v4',
     });
   }
   public async signedURL(uploadType: UploadType): Promise<string> {
@@ -23,7 +25,10 @@ export class S3Service {
     };
 
     try {
-      const signedUrl = await this.s3.getSignedUrlPromise('putObject', params);
+      const signedUrl = await getSignedUrl(
+        this.s3,
+        new GetObjectCommand(params)
+      );
       return signedUrl;
     } catch (error) {
       console.error('Error generating signed URL', error);
