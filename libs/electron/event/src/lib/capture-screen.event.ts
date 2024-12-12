@@ -1,4 +1,4 @@
-import { ScreenshotService, TimeLogService } from '@ever-co/electron-database';
+import { ApplicationService, ScreenshotService, TimeLogService } from '@ever-co/electron-database';
 import {
   ElectronLogger,
   FileManager,
@@ -65,7 +65,7 @@ async function takeScreenshot(
   try {
     const [sources, metadata] = await Promise.all([
       getSources(type),
-      metadataQuery.execute(),
+      metadataQuery.execute(new ApplicationService()),
     ]);
 
     if (!metadata) {

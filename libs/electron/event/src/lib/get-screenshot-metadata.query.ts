@@ -1,5 +1,8 @@
 import { FileManager } from '@ever-co/electron-utils';
-import { IGetScreenshotQueryResult } from '@ever-co/shared-utils';
+import {
+  IApplicationService,
+  IGetScreenshotQueryResult,
+} from '@ever-co/shared-utils';
 import {
   type IconInfo,
   type WindowInfo,
@@ -7,7 +10,9 @@ import {
 } from '@miniben90/x-win';
 import { SCREENSHOT_DIR } from './capture-screen.event';
 export class GetScreenShotMetadataQuery {
-  async execute(): Promise<IGetScreenshotQueryResult | null> {
+  async execute(
+    service: IApplicationService
+  ): Promise<IGetScreenshotQueryResult | null> {
     const current: WindowInfo = await activeWindowAsync();
     const iconObj: IconInfo = await current.getIconAsync();
     const iconBuffer = this.convert(iconObj.data);
@@ -27,12 +32,18 @@ export class GetScreenShotMetadataQuery {
       return null;
     }
 
-    const icon = await FileManager.write(
-      SCREENSHOT_DIR,
-      `icon-${fileName}`,
-      iconBuffer,
-      true
-    );
+    const exists = await service.findOne({ where: { name } });
+    let icon;
+
+    if (!exists) {
+      icon = await FileManager.write(
+        SCREENSHOT_DIR,
+        `icon-${fileName}`,
+        iconBuffer
+      );
+    } else {
+      icon = exists.icon;
+    }
 
     return { name, description, icon };
   }
