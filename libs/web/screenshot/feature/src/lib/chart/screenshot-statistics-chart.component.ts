@@ -18,7 +18,6 @@ import {
 } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import * as shape from 'd3-shape';
 import { Observable, Subject, map, takeUntil } from 'rxjs';
 
 interface BarChartData {
@@ -47,7 +46,6 @@ export class ScreenshotStatisticsChartComponent implements OnInit, OnDestroy {
   public readonly chartTypes: ChartType[] = ['bar', 'line'];
   public selectedChartType: ChartType = 'bar';
   public destroy$ = new Subject<void>();
-  public curveBasis = shape.curveBasis;
   private ticks: string[] = [];
 
   // Common chart configuration
