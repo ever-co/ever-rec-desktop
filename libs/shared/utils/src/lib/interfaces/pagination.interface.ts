@@ -8,6 +8,7 @@ export interface IPaginationOptions<T> extends Partial<IRange> {
   filter?: string;
   where?: IFindOptionsWhere<T>;
   ignoreRange?: boolean;
+  deleted?: boolean;
 }
 
 export interface IRange {

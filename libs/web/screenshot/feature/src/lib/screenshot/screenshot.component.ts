@@ -78,7 +78,7 @@ export class ScreenshotComponent implements OnInit {
             where: {
               id: params['id'],
             },
-            relations: ['metadata', 'video'],
+            relations: ['metadata', 'metadata.application', 'video'],
           });
         } else {
           await this.router.navigate(['/dashboard']);

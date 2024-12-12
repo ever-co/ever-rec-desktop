@@ -200,6 +200,7 @@ export class TimelineTrackComponent implements OnInit, AfterViewInit {
         limit: this.limit,
         sortField: 'createdAt',
         sortOrder: 'ASC',
+        deleted: true,
         where: {
           video: {
             id: this.videoId,

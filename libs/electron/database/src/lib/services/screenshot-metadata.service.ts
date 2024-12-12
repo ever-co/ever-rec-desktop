@@ -9,18 +9,19 @@ import {
 import { FindManyOptions, FindOneOptions, In } from 'typeorm';
 import { ScreenshotMetadata } from '../entities/screenshot-metadata.entity';
 import { ScreenshotMetadataRepository } from '../repositories/screenshot-metadata.repository';
+import { ApplicationService } from './application.service';
 
 export class ScreenshotMetadataService {
   private static readonly repository = ScreenshotMetadataRepository.instance;
+  private static readonly applicationService = new ApplicationService();
 
   public static async save(
     metadata: Partial<IScreenshotMetadata>
   ): Promise<IScreenshotMetadata> {
     const screenshotMetadata = new ScreenshotMetadata();
     screenshotMetadata.description = metadata.description;
-    screenshotMetadata.icon = metadata.icon;
-    screenshotMetadata.name = metadata.name;
     screenshotMetadata.size = metadata.size;
+    screenshotMetadata.application = await this.applicationService.save(metadata)
     return this.repository.save(screenshotMetadata);
   }
 
@@ -49,11 +50,11 @@ export class ScreenshotMetadataService {
   }
 
   public static async delete(id: string): Promise<void> {
-    await this.repository.delete({ id });
+    await this.repository.softDelete({ id });
   }
 
   public static async deleteAll(metadataIds?: string[]): Promise<void> {
-    await this.repository.delete(metadataIds ? { id: In(metadataIds) } : {});
+    await this.repository.softDelete(metadataIds ? { id: In(metadataIds) } : {});
   }
 
   public static async statistics(
@@ -80,14 +81,15 @@ export class ScreenshotMetadataService {
     ) => {
       return this.repository
         .createQueryBuilder('metadata')
-        .select(['metadata.name AS name', 'metadata.icon AS icon'])
-        .addSelect('COUNT(metadata.name)', 'count')
+        .leftJoinAndSelect('metadata.application', 'application')
+        .select(['application.name AS name', 'application.icon AS icon'])
+        .addSelect('COUNT(application.name)', 'count')
         .addSelect('SUM(COUNT(metadata.id)) OVER()', 'total')
         .where('metadata.createdAt BETWEEN :start AND :end', {
           start: startDate,
           end: endDate,
         })
-        .groupBy('metadata.name')
+        .groupBy('application.name')
         .orderBy('count', 'DESC')
         .skip((page - 1) * limit)
         .take(limit)

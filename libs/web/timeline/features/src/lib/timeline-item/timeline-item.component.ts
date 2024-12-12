@@ -39,7 +39,7 @@ export class TimelineItemComponent {
   ) {}
 
   public formatTooltipMessage(frame: ITimelineFrame): string {
-    return `${frame.metadata?.name || 'frame'} - ${moment(
+    return `${frame.metadata?.application?.name || 'frame'} - ${moment(
       frame.createdAt
     ).format('MMM D, YYYY — hh:mm a')}`;
   }
