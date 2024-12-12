@@ -1,4 +1,5 @@
 import {
+  ApplicationService,
   ScreenshotMetadataService,
   ScreenshotService,
   TimeLogService,
@@ -157,6 +158,9 @@ export async function purgeData() {
 
   const timeLogService = new TimeLogService();
   await timeLogService.deleteAll();
+
+  const applicationService = new ApplicationService();
+  await applicationService.deleteAll();
 
   await FileManager.removeAllFiles('screenshots');
   await FileManager.removeAllFiles('videos');

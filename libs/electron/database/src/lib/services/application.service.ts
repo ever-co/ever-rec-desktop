@@ -6,6 +6,7 @@ import {
   ILoggable,
   ILogger,
 } from '@ever-co/shared-utils';
+import { In } from 'typeorm';
 import { Application } from '../entities/application.entity';
 import { ApplicationRepository } from '../repositories/application.repository';
 
@@ -34,5 +35,11 @@ export class ApplicationService implements ILoggable, IApplicationService {
 
   public async findOne(options: IFindOneOptions): Promise<IApplication> {
     return this.repository.findOne(options);
+  }
+
+  public async deleteAll(screenshotIds?: string[]): Promise<void> {
+    await this.repository.delete(
+      screenshotIds ? { id: In(screenshotIds) } : {}
+    );
   }
 }
