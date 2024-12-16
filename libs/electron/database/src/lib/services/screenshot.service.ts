@@ -70,6 +70,7 @@ export class ScreenshotService implements IScreenshotService {
       .where("DATE(screenshot.createdAt) = DATE('now')")
       .groupBy('hour')
       .orderBy('hour', 'ASC')
+      .withDeleted()
       .getRawMany();
 
     const userTimezone = moment.tz.guess();
@@ -92,6 +93,7 @@ export class ScreenshotService implements IScreenshotService {
       .where("DATE(screenshot.createdAt) = DATE('now')")
       .groupBy('date_hour, minute_group')
       .orderBy('date_hour, minute_group', 'ASC')
+      .withDeleted()
       .getRawMany();
 
     const userTimezone = moment.tz.guess();
@@ -113,6 +115,7 @@ export class ScreenshotService implements IScreenshotService {
       .where("DATE(screenshot.createdAt) = DATE('now')")
       .groupBy('date_minute')
       .orderBy('date_minute', 'ASC')
+      .withDeleted()
       .getRawMany();
 
     const userTimezone = moment.tz.guess();
