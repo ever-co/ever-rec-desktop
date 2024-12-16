@@ -6,6 +6,7 @@ import {
   IScreenshotChartLine,
   IScreenshotMetadataStatistic,
   ISelected,
+  IVideo,
 } from '@ever-co/shared-utils';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
@@ -69,5 +70,6 @@ export const screenshotActions = createActionGroup({
       dataLine: IScreenshotChartLine[];
     }>(),
     'Get Screenshots Chart Line Failure': props<{ error: string }>(),
+    'Auto Deletion': props<{ video: IVideo }>(),
   },
 });

@@ -1,0 +1,21 @@
+<form class="form space-y-2 mt-1" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <p>Do you want to automatically delete screenshots after video creation?</p>
+  <!-- Auto sync -->
+  <div class="start flex justify-between items-center">
+    <span class="text-gray-700">Auto Screenshot Deletion</span>
+    <mat-slide-toggle formControlName="autoScreenshotDeletion">
+    </mat-slide-toggle>
+  </div>
+
+  <!-- Submit Button -->
+  <div class="flex space-x-4">
+    <button
+      mat-stroked-button
+      color="primary"
+      type="submit"
+      [disabled]="form.invalid"
+    >
+      Save
+    </button>
+  </div>
+</form>

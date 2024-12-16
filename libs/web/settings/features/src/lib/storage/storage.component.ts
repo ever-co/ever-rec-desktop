@@ -24,6 +24,7 @@ import {
 } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
 import { filter, map, Observable, Subject, take, takeUntil, tap } from 'rxjs';
+import { AutoScreenshotDeletionComponent } from '../auto-screenshot-deletion/auto-screenshot-deletion.component';
 import { AwsStorageComponent } from '../aws-storage/aws-storage.component';
 
 @Component({
@@ -42,6 +43,7 @@ import { AwsStorageComponent } from '../aws-storage/aws-storage.component';
     MatCardModule,
     AwsStorageComponent,
     MatStepperModule,
+    AutoScreenshotDeletionComponent
   ],
   templateUrl: './storage.component.html',
   styleUrl: './storage.component.scss',

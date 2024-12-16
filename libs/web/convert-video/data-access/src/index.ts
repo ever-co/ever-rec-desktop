@@ -13,6 +13,5 @@ export * from './lib/+state/video/video.effects';
 export * from './lib/+state/video/video.selectors';
 export * from './lib/convert-video-access-provider.module';
 export * from './lib/services/convert-video-electron.service';
-export * from './lib/services/timeline.guard';
 export * from './lib/services/video-electron.service';
 

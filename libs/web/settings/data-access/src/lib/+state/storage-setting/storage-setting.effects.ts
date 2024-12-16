@@ -7,7 +7,7 @@ import { screenshotActions } from '@ever-co/screenshot-data-access';
 import { SecureLocalStorageService } from '@ever-co/shared-service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { from, of } from 'rxjs';
-import { catchError, concatMap, map, mergeMap } from 'rxjs/operators';
+import { catchError, concatMap, filter, map, mergeMap } from 'rxjs/operators';
 import { StorageElectronService } from '../services/storage-electron.service';
 import { settingStorageActions } from './storage-setting.actions';
 import { IStorageState } from './storage-setting.reducer';
@@ -56,6 +56,19 @@ export class SettingStorageEffects {
       mergeMap(() =>
         from(this.storageElectronService.getUsedSize()).pipe(
           map((used) => settingStorageActions.update({ used })),
+          catchError((error) => of(settingStorageActions.failure({ error })))
+        )
+      )
+    )
+  );
+
+  autoDeletion$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(generateVideoActions.finish),
+      mergeMap(({ video }) =>
+        this.localStorageService.getItem<IStorageState>(this.key).pipe(
+          filter((state) => !!state?.autoScreenshotDeletion),
+          map(() => screenshotActions.autoDeletion({ video })),
           catchError((error) => of(settingStorageActions.failure({ error })))
         )
       )

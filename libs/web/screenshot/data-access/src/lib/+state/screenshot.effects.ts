@@ -8,7 +8,13 @@ import {
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { from, of } from 'rxjs';
-import { catchError, debounceTime, map, mergeMap } from 'rxjs/operators';
+import {
+  catchError,
+  concatMap,
+  debounceTime,
+  map,
+  mergeMap,
+} from 'rxjs/operators';
 import { ScreenshotElectronService } from '../services/screenshot-electron.service';
 import { screenshotActions } from './screenshot.actions';
 
@@ -156,7 +162,7 @@ export class ScreenshotEffects {
     )
   );
 
-  deleteSelectedVideos$ = createEffect(() =>
+  deleteSelectedScreenshots$ = createEffect(() =>
     this.actions$.pipe(
       ofType(screenshotActions.deleteSelectedScreenshots),
       mergeMap(({ screenshots }) =>
@@ -165,6 +171,41 @@ export class ScreenshotEffects {
             this.notificationService.show(
               'Selected screenshots deleted',
               'success'
+            );
+            return screenshotActions.deleteSelectedScreenshotsSuccess({
+              screenshots,
+            });
+          }),
+          catchError((error) =>
+            of(screenshotActions.deleteSelectedScreenshotsFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  autoScreenshotDeletion$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(screenshotActions.autoDeletion),
+      mergeMap(({ video }) =>
+        from(
+          this.electronService.getAllScreenshots({
+            where: {
+              video: {
+                id: video.id,
+              },
+            },
+            limit: -1,
+          })
+        ).pipe(
+          concatMap(async ({ data }) => {
+            await this.electronService.deleteSelectedScreenshots(data);
+            return data;
+          }),
+          map((screenshots) => {
+            this.notificationService.show(
+              'Screenshots deleted After Video Creation',
+              'info'
             );
             return screenshotActions.deleteSelectedScreenshotsSuccess({
               screenshots,

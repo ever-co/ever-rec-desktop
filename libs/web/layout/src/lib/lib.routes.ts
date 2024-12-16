@@ -1,5 +1,5 @@
 import { Route } from '@angular/router';
-import { timelineGuard } from '@ever-co/convert-video-data-access';
+import { timelineGuard } from '@ever-co/timeline-data-access';
 
 export const layoutRoutes: Route[] = [
   {
