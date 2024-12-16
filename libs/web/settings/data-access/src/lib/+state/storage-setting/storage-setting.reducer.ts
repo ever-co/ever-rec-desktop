@@ -6,6 +6,7 @@ export const settingStorageFeatureKey = 'settingStorageRetention';
 
 export interface IStorageState {
   retention: number;
+  autoScreenshotDeletion: boolean;
   used: IUsedSize;
   s3Config: IS3Config;
   error: string;
@@ -13,6 +14,7 @@ export interface IStorageState {
 
 const initialState: IStorageState = {
   retention: 7,
+  autoScreenshotDeletion: false,
   s3Config: {
     accessKeyId: '',
     accessKeySecret: '',
@@ -34,11 +36,12 @@ export const reducer = createReducer(
   on(settingStorageActions.load, (state) => ({ ...state, error: '' })),
   on(
     settingStorageActions.loadSuccess,
-    (state, { retention, used, s3Config }) => ({
+    (state, { retention, used, s3Config, autoScreenshotDeletion }) => ({
       ...state,
       s3Config: s3Config ?? state.s3Config,
       retention: retention ?? state.retention,
       used: used ?? state.used,
+      autoScreenshotDeletion: autoScreenshotDeletion ?? state.autoScreenshotDeletion,
     })
   ),
   on(settingStorageActions.failure, (state, { error }) => ({
