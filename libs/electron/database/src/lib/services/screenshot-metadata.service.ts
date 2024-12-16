@@ -4,7 +4,7 @@ import {
   IPaginationResponse,
   IScreenshotMetadata,
   IScreenshotMetadataStatistic,
-  moment
+  moment,
 } from '@ever-co/shared-utils';
 import { FindManyOptions, FindOneOptions, In } from 'typeorm';
 import { ScreenshotMetadata } from '../entities/screenshot-metadata.entity';
@@ -21,7 +21,9 @@ export class ScreenshotMetadataService {
     const screenshotMetadata = new ScreenshotMetadata();
     screenshotMetadata.description = metadata.description;
     screenshotMetadata.size = metadata.size;
-    screenshotMetadata.application = await this.applicationService.save(metadata)
+    screenshotMetadata.application = await this.applicationService.save(
+      metadata
+    );
     return this.repository.save(screenshotMetadata);
   }
 
@@ -54,7 +56,9 @@ export class ScreenshotMetadataService {
   }
 
   public static async deleteAll(metadataIds?: string[]): Promise<void> {
-    await this.repository.softDelete(metadataIds ? { id: In(metadataIds) } : {});
+    await this.repository.softDelete(
+      metadataIds ? { id: In(metadataIds) } : {}
+    );
   }
 
   public static async statistics(
@@ -65,6 +69,7 @@ export class ScreenshotMetadataService {
       limit = 10,
       start = currentDay().start,
       end = currentDay().end,
+      deleted = false,
     } = options;
 
     const duration = moment(end).diff(start, 'days');
@@ -79,8 +84,13 @@ export class ScreenshotMetadataService {
       startDate: string | Date,
       endDate: string | Date
     ) => {
-      return this.repository
-        .createQueryBuilder('metadata')
+      const query = this.repository.createQueryBuilder('metadata');
+
+      if (deleted) {
+        query.withDeleted();
+      }
+
+      return query
         .leftJoinAndSelect('metadata.application', 'application')
         .select(['application.name AS name', 'application.icon AS icon'])
         .addSelect('COUNT(application.name)', 'count')

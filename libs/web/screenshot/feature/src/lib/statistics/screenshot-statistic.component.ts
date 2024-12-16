@@ -100,6 +100,7 @@ export class ScreenshotStatisticComponent implements OnInit {
   public loadStats(): void {
     this.store.dispatch(
       screenshotActions.getScreenshotsStatistics({
+        deleted: true,
         page: this.currentPage,
         ...this.range,
       })
