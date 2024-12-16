@@ -45,6 +45,7 @@ export class VideoService implements IVideoService {
       if (input.screenshotIds) {
         const screenshots = await this.screenshotService.findAll({
           where: { id: In(input.screenshotIds) },
+          withDeleted: true
         });
         if (screenshots.length !== input.screenshotIds.length) {
           throw new Error('Some screenshots were not found');

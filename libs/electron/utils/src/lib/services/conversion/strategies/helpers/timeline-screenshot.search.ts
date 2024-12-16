@@ -50,6 +50,7 @@ export class TimelineScreenshotSearch {
     return this.screenshotService.findAll({
       where,
       order: { createdAt: 'ASC' },
+      withDeleted: true
     });
   }
 }

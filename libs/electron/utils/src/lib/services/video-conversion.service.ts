@@ -90,6 +90,7 @@ export class VideoConversionService implements ILoggable {
           batch: this.config.batch,
         },
       },
+      withDeleted: true,
       relations: ['screenshots', 'screenshots.metadata', 'chunks', 'metadata'],
       order: {
         screenshots: {
@@ -146,6 +147,7 @@ export class VideoConversionService implements ILoggable {
             batch: this.config.batch,
           },
         },
+        withDeleted: true,
         relations: [
           'screenshots',
           'screenshots.metadata',

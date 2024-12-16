@@ -31,6 +31,7 @@ export class TimelineVideoSearch {
         screenshots: { id: Not(IsNull()) },
         parent: { id: IsNull() },
       },
+      withDeleted: true
     });
 
     if (video) {
@@ -45,6 +46,7 @@ export class TimelineVideoSearch {
         timeLog: { id: this.timeLogId },
         parent: { id: IsNull() },
       },
+      withDeleted: true
     });
   }
 }

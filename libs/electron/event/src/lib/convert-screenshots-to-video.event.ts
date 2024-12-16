@@ -48,6 +48,7 @@ export function convertScreenshotsToVideoEvent() {
         screenshots = await screenshotService.findAll({
           where: { id: In(screenshotIds) },
           order: { createdAt: 'ASC' },
+          withDeleted: true
         });
       } else if (filter || timeLog) {
         screenshots = await screenshotService.findAll({
@@ -56,6 +57,7 @@ export function convertScreenshotsToVideoEvent() {
             ...(timeLog && { timeLog: { id: timeLog.id } }),
             ...(config.optimized && { video: { id: IsNull() } }),
           },
+          withDeleted: true,
           order: { createdAt: 'ASC' },
         });
       }
@@ -65,10 +67,12 @@ export function convertScreenshotsToVideoEvent() {
           relations: ['screenshots'],
           where: { id: In(videoIds) },
           order: { createdAt: 'ASC' },
+          withDeleted: true,
         });
       } else if (isTimeLine) {
         videos = await videoService.findAll({
           relations: ['screenshots'],
+          withDeleted: true,
           where: {
             timeLog: { id: timeLogId },
             parent: { id: IsNull() },
