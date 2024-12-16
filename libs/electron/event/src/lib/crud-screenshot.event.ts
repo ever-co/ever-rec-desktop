@@ -46,8 +46,10 @@ export function crudScreeshotEvents() {
         withDeleted: deleted,
         order: { [`${sortField}`]: sortOrder },
         relations: ['metadata', 'metadata.application'],
-        skip: (page - 1) * limit,
-        take: limit,
+        ...(limit !== -1 && {
+          skip: (page - 1) * limit,
+          take: limit,
+        }),
       });
       const hasNext = page * limit < count;
 

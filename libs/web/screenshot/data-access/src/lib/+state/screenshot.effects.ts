@@ -195,6 +195,7 @@ export class ScreenshotEffects {
                 id: video.id,
               },
             },
+            limit: -1,
           })
         ).pipe(
           concatMap(async ({ data }) => {
