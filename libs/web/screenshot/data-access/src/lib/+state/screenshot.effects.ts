@@ -1,5 +1,4 @@
 import { Injectable, inject } from '@angular/core';
-import { generateVideoActions } from '@ever-co/convert-video-data-access';
 import { NotificationService } from '@ever-co/notification-data-access';
 import { LocalStorageService } from '@ever-co/shared-service';
 import {
@@ -187,7 +186,7 @@ export class ScreenshotEffects {
 
   autoScreenshotDeletion$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(generateVideoActions.finish),
+      ofType(screenshotActions.autoDeletion),
       mergeMap(({ video }) =>
         from(
           this.electronService.getAllScreenshots({
