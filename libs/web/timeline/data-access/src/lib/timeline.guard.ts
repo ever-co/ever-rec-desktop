@@ -1,12 +1,9 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
+import { generateVideoActions, selectGenerateVideoState, selectSettingState, settingActions } from '@ever-co/convert-video-data-access';
 import { selectScreenshotState } from '@ever-co/screenshot-data-access';
 import { Store } from '@ngrx/store';
 import { catchError, map, of, switchMap, withLatestFrom } from 'rxjs';
-import { generateVideoActions } from '../+state/generate-video/generate-video.actions';
-import { selectGenerateVideoState } from '../+state/generate-video/generate-video.selectors';
-import { settingActions } from '../+state/settings/setting.actions';
-import { selectSettingState } from '../+state/settings/setting.selectors';
 
 /**
  * A guard function that checks if the user is on the timeline page.
