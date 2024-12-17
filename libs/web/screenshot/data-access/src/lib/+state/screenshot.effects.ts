@@ -196,6 +196,7 @@ export class ScreenshotEffects {
               },
             },
             limit: -1,
+            ignoreRange: true
           })
         ).pipe(
           concatMap(async ({ data }) => {
