@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.1.13](https://github.com/ever-co/ever-capture/compare/layout-0.1.12...layout-0.1.13) (2024-12-26)
+
+### Dependency Updates
+
+* `breadcrumb-feature` updated to version `0.1.5`
+
+
 ## [0.1.12](https://github.com/ever-co/ever-capture/compare/layout-0.1.11...layout-0.1.12) (2024-12-26)
 
 ### Dependency Updates
