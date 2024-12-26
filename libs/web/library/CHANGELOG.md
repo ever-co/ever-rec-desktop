@@ -2,6 +2,17 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.0.13](https://github.com/ever-co/ever-capture/compare/library-0.0.12...library-0.0.13) (2024-12-26)
+
+### Dependency Updates
+
+* `convert-video-feature` updated to version `0.1.12`
+* `convert-video-feature` updated to version `0.1.12`
+* `screenshot-feature` updated to version `0.2.0`
+* `screenshot-feature` updated to version `0.2.0`
+* `breadcrumb-data-access` updated to version `0.1.3`
+
+
 ## [0.0.12](https://github.com/ever-co/ever-rec-desktop/compare/library-0.0.11...library-0.0.12) (2024-11-24)
 
 ### Dependency Updates
