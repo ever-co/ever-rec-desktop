@@ -2,6 +2,26 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.2.0](https://github.com/ever-co/ever-capture/compare/event-0.1.6...event-0.2.0) (2024-12-26)
+
+### Dependency Updates
+
+* `database-electron` updated to version `0.2.0`
+* `electron-utils` updated to version `0.1.5`
+* `utils` updated to version `0.3.0`
+
+### Bug Fixes
+
+* duplicated icon in storage ([cacc9de](https://github.com/ever-co/ever-capture/commit/cacc9decbe0eb2f70b9ea0c6d797160eb27ecfda))
+
+
+### Features
+
+* delete applications on purge ([42ce42b](https://github.com/ever-co/ever-capture/commit/42ce42bbd7fcf8dedb0fa1b61dfca21c247368e8))
+* optimize storage ([c73da1b](https://github.com/ever-co/ever-capture/commit/c73da1b0d79e33ba6fd85e21848254be77eee80a))
+
+
+
 ## [0.1.6](https://github.com/ever-co/ever-rec-desktop/compare/event-0.1.5...event-0.1.6) (2024-11-25)
 
 
