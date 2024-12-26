@@ -2,6 +2,17 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.2.4](https://github.com/ever-co/ever-capture/compare/factory-0.2.3...factory-0.2.4) (2024-12-26)
+
+### Dependency Updates
+
+* `convert-video-data-access` updated to version `0.1.9`
+* `screenshot-data-access` updated to version `0.1.9`
+* `web-setting-data-access` updated to version `0.0.11`
+* `data-access-electron` updated to version `0.1.6`
+* `utils` updated to version `0.3.0`
+
+
 ## [0.2.3](https://github.com/ever-co/ever-rec-desktop/compare/factory-0.2.2...factory-0.2.3) (2024-11-24)
 
 ### Dependency Updates
