@@ -2,6 +2,16 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.3.0](https://github.com/ever-co/ever-capture/compare/utils-0.2.1...utils-0.3.0) (2024-12-26)
+
+
+### Features
+
+* delete applications on purge ([42ce42b](https://github.com/ever-co/ever-capture/commit/42ce42bbd7fcf8dedb0fa1b61dfca21c247368e8))
+* optimize storage ([c73da1b](https://github.com/ever-co/ever-capture/commit/c73da1b0d79e33ba6fd85e21848254be77eee80a))
+
+
+
 ## [0.2.1](https://github.com/ever-co/ever-rec-desktop/compare/utils-0.2.0...utils-0.2.1) (2024-11-24)
 
 
