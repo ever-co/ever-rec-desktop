@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.1.11](https://github.com/ever-co/ever-capture/compare/timeline-data-access-0.1.10...timeline-data-access-0.1.11) (2025-01-06)
+
+### Dependency Updates
+
+* `convert-video-data-access` updated to version `0.1.12`
+
+
 ## [0.1.10](https://github.com/ever-co/ever-capture/compare/timeline-data-access-0.1.9...timeline-data-access-0.1.10) (2025-01-06)
 
 ### Dependency Updates
