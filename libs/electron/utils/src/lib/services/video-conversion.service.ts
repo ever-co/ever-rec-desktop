@@ -345,7 +345,7 @@ export class VideoConversionService implements ILoggable {
             batch,
             chunkIds: chunks.map(({ id }) => id),
             screenshotIds: uniqueScreenshotIds,
-            ...(this.isTimeline && { name: `Timeline #${timeLogId}` }),
+            ...(this.isTimeline && { name: `Timeline ${timeLogId}` }),
           });
 
           const video = await this.videoService.findOne({
