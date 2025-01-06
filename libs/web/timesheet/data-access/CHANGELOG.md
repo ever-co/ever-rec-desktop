@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.0.13](https://github.com/ever-co/ever-capture/compare/timesheet-data-access-0.0.12...timesheet-data-access-0.0.13) (2025-01-06)
+
+### Dependency Updates
+
+* `data-access-electron` updated to version `0.1.8`
+
+
 ## [0.0.12](https://github.com/ever-co/ever-capture/compare/timesheet-data-access-0.0.11...timesheet-data-access-0.0.12) (2025-01-06)
 
 ### Dependency Updates
