@@ -2,6 +2,18 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.2.2](https://github.com/ever-co/ever-capture/compare/electron-utils-0.2.1...electron-utils-0.2.2) (2025-01-06)
+
+### Dependency Updates
+
+* `utils` updated to version `0.3.0`
+
+### Bug Fixes
+
+* removes unused IScreenshot import ([6746061](https://github.com/ever-co/ever-capture/commit/6746061cbd9bb214ef1f80af012ccb8e3dc93a9c))
+
+
+
 ## [0.2.1](https://github.com/ever-co/ever-capture/compare/electron-utils-0.2.0...electron-utils-0.2.1) (2025-01-06)
 
 ### Dependency Updates
