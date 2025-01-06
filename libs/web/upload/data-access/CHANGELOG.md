@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.0.12](https://github.com/ever-co/ever-capture/compare/upload-data-access-0.0.11...upload-data-access-0.0.12) (2025-01-06)
+
+
+### Bug Fixes
+
+* upload config key for videos ([2346b8e](https://github.com/ever-co/ever-capture/commit/2346b8e60adcac611be92bf3ab8359a869fa881c))
+
+
+
 ## [0.0.11](https://github.com/ever-co/ever-capture/compare/upload-data-access-0.0.10...upload-data-access-0.0.11) (2024-12-26)
 
 ### Dependency Updates
