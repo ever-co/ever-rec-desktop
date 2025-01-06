@@ -107,16 +107,19 @@ class UploadManager {
       readStream.on('end', () => {
         this.activeStreams.delete(readStream);
       });
-      // Append file to FormData
-      formData.append(key, readStream);
-      // Exclude 'pathname' and 'key'
-      const excludedKeys = ['pathname', 'key'];
-      // Iterate over file properties and exclude 'pathname' and 'key'
-      for (const [k, v] of Object.entries(file)) {
-        if (!excludedKeys.includes(k)) {
-          formData.append(k, v);
+      // Append file properties to FormData
+      if (this.config?.token) {
+        // Exclude 'pathname' and 'key'
+        const excludedKeys = ['pathname', 'key'];
+        // Iterate over file properties and exclude 'pathname' and 'key'
+        for (const [k, v] of Object.entries(file)) {
+          if (!excludedKeys.includes(k) && v !== undefined && v !== null) {
+            formData.append(k, String(v));
+          }
         }
       }
+      // Append file to FormData
+      formData.append(key, readStream);
     });
 
     return formData;
