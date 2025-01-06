@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.2.0](https://github.com/ever-co/ever-capture/compare/electron-utils-0.1.5...electron-utils-0.2.0) (2025-01-06)
+
+
+### Features
+
+* updates upload process to use POST method ([23d30ca](https://github.com/ever-co/ever-capture/commit/23d30ca4af91fe572c39864faf5047c48cb59f6c))
+
+
+
 ## [0.1.5](https://github.com/ever-co/ever-capture/compare/electron-utils-0.1.4...electron-utils-0.1.5) (2024-12-26)
 
 ### Dependency Updates
