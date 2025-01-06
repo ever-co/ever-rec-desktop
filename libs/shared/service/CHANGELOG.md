@@ -9,6 +9,13 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 * `data-access-electron` updated to version `0.1.8`
 
 
+## [0.1.11](https://github.com/ever-co/ever-capture/compare/shared-service-0.1.10...shared-service-0.1.11) (2025-01-06)
+
+### Dependency Updates
+
+* `data-access-electron` updated to version `0.1.8`
+
+
 ## [0.1.10](https://github.com/ever-co/ever-capture/compare/shared-service-0.1.9...shared-service-0.1.10) (2025-01-06)
 
 ### Dependency Updates
