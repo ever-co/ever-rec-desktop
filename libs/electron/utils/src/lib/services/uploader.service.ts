@@ -3,7 +3,6 @@ import {
   ILoggable,
   ILogger,
   IS3Config,
-  IScreenshot,
   IUpload,
   IUploadableService,
   IUploadFile,
