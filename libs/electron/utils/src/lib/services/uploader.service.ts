@@ -44,9 +44,18 @@ export class UploaderService implements ILoggable {
 
     const data = await service.findAll({
       where: { id: In(upload.ids) },
+      relations: ['metadata'],
     });
 
-    const files: IUploadFile[] = data.map((item: IScreenshot | IVideo) => ({
+    const files: IUploadFile[] = data.map((item: IVideo) => ({
+      title: item.metadata?.name,
+      description: item.metadata?.summary,
+      duration: item.metadata?.duration,
+      recordedAt: item.metadata?.createdAt,
+      size: item.metadata?.size,
+      resolution: item.metadata?.resolution,
+      codec: item.metadata?.codec,
+      frameRate: item.metadata?.frameRate,
       pathname: FileManager.decodePath(item.pathname),
       key: upload.key,
     }));

@@ -3,7 +3,7 @@ import { IBase } from './base.interface';
 import type { IScreenshot } from './screenshot.interface';
 import { ITimeLog } from './time-log.interface';
 import type { ITimeline } from './timeline.interface';
-import { IVideoConfig } from './video.config';
+import type { IVideoConfig } from './video.config';
 
 export interface IVideo extends IBase {
   pathname: string;

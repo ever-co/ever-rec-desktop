@@ -83,12 +83,14 @@ class UploadManager {
   createFormData() {
     const formData = new FormData();
 
-    this.files.forEach(({ pathname, key }) => {
+    this.files.forEach((file) => {
+      // Create read stream
+      const { pathname, key } = file;
       const readStream = createReadStream(pathname, {
         highWaterMark: CHUNK_SIZE,
       });
       this.activeStreams.add(readStream);
-
+      // Handle stream data
       readStream.on('data', (chunk) => {
         this.uploadedBytes += chunk.length;
         this.progressNotifier.notifyProgress(
@@ -96,17 +98,25 @@ class UploadManager {
           this.totalSize
         );
       });
-
+      // Handle stream errors
       readStream.on('error', (error) => {
         this.cleanup();
         throw new Error(`Stream error for ${pathname}: ${error.message}`);
       });
-
+      // Close stream when it ends
       readStream.on('end', () => {
         this.activeStreams.delete(readStream);
       });
-
+      // Append file to FormData
       formData.append(key, readStream);
+      // Exclude 'pathname' and 'key'
+      const excludedKeys = ['pathname', 'key'];
+      // Iterate over file properties and exclude 'pathname' and 'key'
+      for (const [k, v] of Object.entries(file)) {
+        if (!excludedKeys.includes(k)) {
+          formData.append(k, v);
+        }
+      }
     });
 
     return formData;
