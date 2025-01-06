@@ -2,6 +2,14 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.0.11](https://github.com/ever-co/ever-capture/compare/notification-data-access-0.0.10...notification-data-access-0.0.11) (2025-01-06)
+
+### Dependency Updates
+
+* `utils` updated to version `0.3.0`
+* `data-access-electron` updated to version `0.1.7`
+
+
 ## [0.0.10](https://github.com/ever-co/ever-capture/compare/notification-data-access-0.0.9...notification-data-access-0.0.10) (2024-12-26)
 
 ### Dependency Updates
