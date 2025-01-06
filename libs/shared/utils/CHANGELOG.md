@@ -6,6 +6,10 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 
 
 
+## [0.3.1](https://github.com/ever-co/ever-capture/compare/utils-0.3.0...utils-0.3.1) (2025-01-06)
+
+
+
 # [0.3.0](https://github.com/ever-co/ever-capture/compare/utils-0.2.1...utils-0.3.0) (2024-12-26)
 
 
