@@ -2,6 +2,22 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.1.12](https://github.com/ever-co/ever-capture/compare/screenshot-data-access-0.1.11...screenshot-data-access-0.1.12) (2025-01-06)
+
+### Dependency Updates
+
+* `notification-data-access` updated to version `0.0.13`
+* `shared-service` updated to version `0.1.10`
+* `data-access-electron` updated to version `0.1.8`
+
+
+## [0.1.12](https://github.com/ever-co/ever-capture/compare/screenshot-data-access-0.1.11...screenshot-data-access-0.1.12) (2025-01-06)
+
+### Dependency Updates
+
+* `data-access-electron` updated to version `0.1.8`
+
+
 ## [0.1.11](https://github.com/ever-co/ever-capture/compare/screenshot-data-access-0.1.10...screenshot-data-access-0.1.11) (2025-01-06)
 
 ### Dependency Updates
