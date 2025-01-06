@@ -65,9 +65,9 @@ class RetryStrategy {
 
 // Upload manager responsible for uploading files
 class UploadManager {
-  constructor(files, uploadUrl, progressNotifier, retryStrategy) {
+  constructor(files, config, progressNotifier, retryStrategy) {
     this.files = files;
-    this.uploadUrl = uploadUrl;
+    this.config = config;
     this.progressNotifier = progressNotifier;
     this.retryStrategy = retryStrategy;
     this.totalSize = 0;
@@ -121,12 +121,30 @@ class UploadManager {
     const formData = this.createFormData();
     const fetch = (await import('node-fetch')).default;
 
+    const headers = {}; // Ensure headers exist if they are not part of FormData by default
+
+    if (this.config?.organizationId) {
+      const { organizationId } = this.config;
+      formData.append('organizationId', organizationId);
+      headers['Organization-Id'] = organizationId;
+    }
+
+    if (this.config?.tenantId) {
+      const { tenantId } = this.config;
+      formData.append('tenantId', tenantId);
+      headers['Tenant-Id'] = tenantId;
+    }
+
+    if (this.config?.token) {
+      headers['Authorization'] = `Bearer ${this.config.token}`;
+    }
+
     return this.retryStrategy.executeWithRetry(async () => {
-      const response = await fetch(this.uploadUrl, {
-        method: 'PUT',
+      const response = await fetch(this.config.url, {
+        method: this.config?.token ? 'POST' : 'PUT',
         body: formData,
-        headers: formData.getHeaders(),
         timeout: 30000,
+        headers,
       });
 
       if (!response.ok) {
@@ -164,13 +182,13 @@ class ProgressNotifier {
 
 // Factory to create an UploadManager instance
 class UploadManagerFactory {
-  static create(files, uploadUrl) {
+  static create(files, config) {
     const progressNotifier = new ProgressNotifier(
       PROGRESS_THROTTLE,
       parentPort
     );
     const retryStrategy = new RetryStrategy(MAX_RETRIES, RETRY_DELAY);
-    return new UploadManager(files, uploadUrl, progressNotifier, retryStrategy);
+    return new UploadManager(files, config, progressNotifier, retryStrategy);
   }
 }
 
@@ -178,8 +196,8 @@ let uploadManager;
 
 // Worker message handler
 parentPort.on('message', async () => {
-  const { files, url } = workerData;
-  uploadManager = UploadManagerFactory.create(files, url);
+  const { files, config } = workerData;
+  uploadManager = UploadManagerFactory.create(files, config);
 
   try {
     await uploadManager.prepareUpload();

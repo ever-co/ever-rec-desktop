@@ -67,7 +67,8 @@
       ],
       "@ever-co/web-setting-feature": [
         "libs/web/settings/features/src/index.ts"
-      ]
+      ],
+      "@gauzy/desktop-core": ["node_modules/@gauzy/desktop-core/*"]
     },
     "sourceMap": true,
     "declaration": false,

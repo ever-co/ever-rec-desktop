@@ -7,7 +7,7 @@ import {
   IUpload,
   IUploadableService,
   IUploadFile,
-  IVideo
+  IVideo,
 } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
 import * as path from 'path';
@@ -16,6 +16,7 @@ import { S3Service } from './aws/s3.service';
 import { FileManager } from './files/file-manager';
 import { ElectronLogger } from './logger/electron-logger';
 import { WorkerFactory } from './worker-factory.service';
+import { UploadService } from './upload-service';
 
 export class UploaderService implements ILoggable {
   readonly logger: ILogger = new ElectronLogger('Uploader Service');
@@ -29,7 +30,11 @@ export class UploaderService implements ILoggable {
 
     const s3Service = new S3Service(s3Config);
 
-    const url = await s3Service.signedURL(upload.type);
+    const uploadService = new UploadService();
+
+    const uploadUrl = uploadService.getUploadUrl();
+
+    const url = uploadUrl ? uploadUrl : await s3Service.signedURL(upload.type);
 
     if (!url) {
       this.logger.error('Error getting signed URL');
@@ -48,9 +53,20 @@ export class UploaderService implements ILoggable {
 
     this.logger.info('Create upload worker...');
 
+    const auth = uploadService.getContext()?.auth;
+
+    const config = {
+      url,
+      ...(auth && {
+        token: auth.token,
+        organizationId: auth.organizationId,
+        tenantId: auth.tenantId
+      }),
+    };
+
     const worker = WorkerFactory.createWorker(
       path.join(__dirname, 'assets', 'workers', 'upload.worker.js'),
-      { files, url }
+      { files, config }
     );
 
     worker.on('message', (payload) => {
