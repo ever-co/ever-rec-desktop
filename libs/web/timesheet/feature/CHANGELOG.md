@@ -2,6 +2,18 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.0.19](https://github.com/ever-co/ever-capture/compare/timesheet-feature-0.0.18...timesheet-feature-0.0.19) (2025-01-06)
+
+### Dependency Updates
+
+* `timeline-feature` updated to version `0.2.5`
+* `convert-video-data-access` updated to version `0.1.15`
+* `notification-data-access` updated to version `0.0.14`
+* `shared-components` updated to version `0.2.6`
+* `shared-service` updated to version `0.1.11`
+* `timesheet-data-access` updated to version `0.0.16`
+
+
 ## [0.0.18](https://github.com/ever-co/ever-capture/compare/timesheet-feature-0.0.17...timesheet-feature-0.0.18) (2025-01-06)
 
 ### Dependency Updates
