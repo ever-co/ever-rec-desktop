@@ -24,7 +24,7 @@ export class UploadEffects {
       mergeMap(({ ids }) => {
         const config: IUpload = {
           type: UploadType.VIDEO,
-          key: 'video',
+          key: 'file',
           ids,
         };
         return this.videoUploadService.upload(config).pipe(
