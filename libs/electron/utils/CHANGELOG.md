@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.2.3](https://github.com/ever-co/ever-capture/compare/electron-utils-0.2.2...electron-utils-0.2.3) (2025-01-06)
+
+### Dependency Updates
+
+* `utils` updated to version `0.3.1`
+
+
 ## [0.2.2](https://github.com/ever-co/ever-capture/compare/electron-utils-0.2.1...electron-utils-0.2.2) (2025-01-06)
 
 ### Dependency Updates
