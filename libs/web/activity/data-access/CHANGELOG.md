@@ -2,6 +2,16 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.0.10](https://github.com/ever-co/ever-capture/compare/activity-data-access-0.0.9...activity-data-access-0.0.10) (2025-01-06)
+
+### Dependency Updates
+
+* `utils` updated to version `0.3.0`
+* `shared-service` updated to version `0.1.9`
+* `timesheet-data-access` updated to version `0.0.11`
+* `data-access-electron` updated to version `0.1.7`
+
+
 ## [0.0.9](https://github.com/ever-co/ever-capture/compare/activity-data-access-0.0.8...activity-data-access-0.0.9) (2024-12-26)
 
 ### Dependency Updates
