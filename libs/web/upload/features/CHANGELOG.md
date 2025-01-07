@@ -2,6 +2,18 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.1.0](https://github.com/ever-co/ever-capture/compare/upload-feature-0.0.7...upload-feature-0.1.0) (2025-01-07)
+
+### Dependency Updates
+
+* `upload-data-access` updated to version `0.0.19`
+
+### Features
+
+* **upload:** create upload feature to allow user to see uploading progress ([2d823d6](https://github.com/ever-co/ever-capture/commit/2d823d6aadb5c438f007807370ffbb8850b543a9))
+
+
+
 ## [0.0.7](https://github.com/ever-co/ever-capture/compare/upload-feature-0.0.6...upload-feature-0.0.7) (2024-12-26)
 
 
