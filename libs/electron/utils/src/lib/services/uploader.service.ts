@@ -68,7 +68,7 @@ export class UploaderService implements ILoggable {
       ...(auth && {
         token: auth.token,
         organizationId: auth.organizationId,
-        tenantId: auth.tenantId
+        tenantId: auth.tenantId,
       }),
     };
 
@@ -81,7 +81,10 @@ export class UploaderService implements ILoggable {
       switch (payload.status) {
         case 'done':
           this.logger.info('Done...');
-          event.reply(Channel.UPLOAD_DONE, payload.message);
+          upload.ids.forEach((id) => {
+            service.update(id, { synced: true });
+          });
+          event.reply(Channel.UPLOAD_DONE, 'Uploaded successfully');
           break;
         case 'progress':
           this.logger.info('In Progress::' + payload.message);
