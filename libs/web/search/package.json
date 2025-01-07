@@ -1,6 +1,6 @@
 {
   "name": "@ever-co/web-search",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "peerDependencies": {
     "@angular/common": "^18.2.0",
     "@angular/core": "^18.2.0",
