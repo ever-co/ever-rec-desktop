@@ -16,8 +16,8 @@ import { RouterOutlet } from '@angular/router';
 import { breadcrumbActions } from '@ever-co/breadcrumb-data-access';
 import { BreadcrumbComponent } from '@ever-co/breadcrumb-feature';
 import { NotificationBadgeComponent } from '@ever-co/notification-feature';
+import { UploadProgressComponent } from '@ever-co/upload-feature';
 import {
-  CopyContextButtonComponent,
   DatePickerComponent,
   StartComponent,
 } from '@ever-co/shared-components';
@@ -25,7 +25,18 @@ import { LayoutService } from '@ever-co/shared-service';
 import { SidebarComponent } from '@ever-co/sidebar-feature';
 import { SearchComponent } from '@ever-co/web-search';
 import { Store } from '@ngrx/store';
-import { Subject, takeUntil } from 'rxjs';
+import {
+  map,
+  Observable,
+  Subject,
+  takeUntil,
+  filter,
+  tap,
+  exhaustMap,
+  of,
+} from 'rxjs';
+import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
+import { selectUploadState } from '@ever-co/upload-data-access';
 
 @Component({
   selector: 'lib-layout',
@@ -49,17 +60,19 @@ import { Subject, takeUntil } from 'rxjs';
     DatePickerComponent,
     MatTooltipModule,
     NotificationBadgeComponent,
-    CopyContextButtonComponent
+    UploadProgressComponent,
   ],
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
 })
 export class LayoutComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
+  private snackbarRef: MatSnackBarRef<UploadProgressComponent> | null = null;
 
   constructor(
     private readonly store: Store,
     private readonly breakpointObserver: BreakpointObserver,
+    private snackbar: MatSnackBar,
     private readonly layoutService: LayoutService
   ) {}
 
@@ -87,6 +100,26 @@ export class LayoutComponent implements OnInit, OnDestroy {
           isExpanded: !isMobile || isTablet,
         });
       });
+
+    this.uploading$
+      .pipe(
+        tap((uploading) => {
+          if(uploading && !this.snackbarRef) {
+            this.snackbarRef = this.snackbar.openFromComponent(UploadProgressComponent);
+          }else if(this.snackbarRef) {
+            this.snackbarRef.dismiss();
+            this.snackbarRef = null;
+          }
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
+
+  public get uploading$(): Observable<boolean> {
+    return this.store
+      .select(selectUploadState)
+      .pipe(map((state) => state.uploading));
   }
 
   public get isExpanded(): boolean {

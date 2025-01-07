@@ -1,0 +1,22 @@
+div {
+  color: #ddd;
+  width: 100%;
+
+}
+
+progress {
+  width: 100%;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.sync {
+  animation: rotate 2s linear infinite;
+}

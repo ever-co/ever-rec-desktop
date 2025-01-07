@@ -1,1 +1,1 @@
-export * from './lib/upload-feature/upload-feature.component';
+export * from './lib/upload-progress/upload-progress.component';
