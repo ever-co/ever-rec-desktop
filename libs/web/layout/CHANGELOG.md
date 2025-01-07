@@ -2,6 +2,38 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.2.0](https://github.com/ever-co/ever-capture/compare/layout-0.1.18...layout-0.2.0) (2025-01-07)
+
+### Dependency Updates
+
+* `notification-feature` updated to version `0.0.17`
+* `shared-components` updated to version `0.2.7`
+* `shared-service` updated to version `0.1.12`
+* `sidebar-feature` updated to version `0.1.14`
+* `search` updated to version `0.0.16`
+* `convert-video-data-access` updated to version `0.1.16`
+* `dashboard` updated to version `0.0.19`
+* `dashboard` updated to version `0.0.19`
+* `library` updated to version `0.0.19`
+* `library` updated to version `0.0.19`
+* `web-setting-feature` updated to version `0.0.18`
+* `web-setting-feature` updated to version `0.0.18`
+* `timesheet-feature` updated to version `0.0.20`
+* `timesheet-feature` updated to version `0.0.20`
+* `screenshot-feature` updated to version `0.2.7`
+* `screenshot-feature` updated to version `0.2.7`
+* `timeline-feature` updated to version `0.2.6`
+* `timeline-feature` updated to version `0.2.6`
+* `upload-feature` updated to version `0.1.0`
+* `upload-data-access` updated to version `0.0.19`
+* `timeline-data-access` updated to version `0.1.14`
+
+### Features
+
+* **upload:** create upload feature to allow user to see uploading progress ([2d823d6](https://github.com/ever-co/ever-capture/commit/2d823d6aadb5c438f007807370ffbb8850b543a9))
+
+
+
 ## [0.1.18](https://github.com/ever-co/ever-capture/compare/layout-0.1.17...layout-0.1.18) (2025-01-06)
 
 ### Dependency Updates
