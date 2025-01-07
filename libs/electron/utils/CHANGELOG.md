@@ -2,6 +2,18 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.3.0](https://github.com/ever-co/ever-capture/compare/electron-utils-0.2.3...electron-utils-0.3.0) (2025-01-07)
+
+### Dependency Updates
+
+* `utils` updated to version `0.3.2`
+
+### Features
+
+* sync video after uploaded ([4ccb402](https://github.com/ever-co/ever-capture/commit/4ccb40296c9045a6c1eedea89ca1f159bea3b604))
+
+
+
 ## [0.2.3](https://github.com/ever-co/ever-capture/compare/electron-utils-0.2.2...electron-utils-0.2.3) (2025-01-06)
 
 ### Dependency Updates
