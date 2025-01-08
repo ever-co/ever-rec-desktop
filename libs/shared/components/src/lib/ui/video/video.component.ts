@@ -94,6 +94,7 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
       variant: 'success',
       action: this.upload.bind(this),
       loading: this.uploading$,
+      disable: this.uploading$,
       hide: this.isUploadHidden$,
     },
     {

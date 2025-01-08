@@ -11,8 +11,11 @@
         ></lib-video>
       </div>
       <div class="mt-6">
-        <div class="text-xl font-bold flex justify-between text-gray-600 mb-4">
-          <span>Video Summary</span>
+        <div class="text-2xl mb-2 font-bold text-gray-800 truncate">
+          {{ video.metadata?.name }}
+        </div>
+        <div class="text-xl font-bold flex justify-between text-gray-600 mb-2">
+          <span>Summary</span>
           @if(area.value) {
           <span [libCopyToClipboard]="area.value"></span>
           }
@@ -53,15 +56,31 @@
           <div class="space-y-3">
             <div class="flex justify-between items-center">
               <span class="text-sm text-gray-500">Name</span>
-              <span class="text-sm font-medium text-gray-800 truncate">{{
-                 video.metadata.name?.split('-')?.[0]
-              }}</span>
+              <span
+                class="text-sm text-right font-medium text-gray-800 w-3/4 truncate"
+                >{{ video.metadata?.name }}</span
+              >
             </div>
             <div class="flex justify-between items-center">
               <span class="text-sm text-gray-500">Created</span>
               <span class="text-sm font-medium text-gray-800">{{
                 video.metadata.createdAt | date : 'MMM d, y • h:mm a'
               }}</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-sm text-gray-500">Uploaded</span>
+              <div class="text-sm font-medium">
+                <mat-icon
+                  class="cursor-pointer"
+                  [matTooltip]="video.synced ? 'Synced' : 'Not Synced'"
+                  [ngClass]="{
+                    'text-red-500': !video.synced,
+                    'text-green-500': video.synced
+                  }"
+                >
+                  {{ video.synced ? 'cloud_done' : 'cloud_off' }}
+                </mat-icon>
+              </div>
             </div>
           </div>
         </div>

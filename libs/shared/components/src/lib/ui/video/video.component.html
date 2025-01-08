@@ -44,6 +44,18 @@
             <span class="text-white">{{
               video.metadata.duration | humanize : 's' : 'hh:mm:ss.SS'
             }}</span>
+            <span>
+              <mat-icon
+                class="cursor-pointer"
+                [matTooltip]="video.synced ? 'Synced' : 'Not Synced'"
+                [ngClass]="{
+                  'text-red-500': !video.synced,
+                  'text-green-500': video.synced
+                }"
+              >
+                {{ video.synced ? 'cloud_done' : 'cloud_off' }}
+              </mat-icon>
+            </span>
           </div>
           }
         </div>
@@ -79,7 +91,7 @@
       <div class="flex-1 mt-4 min-w-0">
         @if(video.metadata?.name) {
         <div class="text-lg font-medium text-gray-900 truncate">
-          {{ video.metadata?.name?.split('-')?.[0]}}
+          {{ video.metadata?.name }}
         </div>
         }
         <p class="text-sm text-gray-500 truncate">

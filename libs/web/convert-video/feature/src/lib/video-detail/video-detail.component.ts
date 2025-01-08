@@ -91,6 +91,7 @@ export class VideoDetailComponent implements OnInit, OnDestroy {
       hide: this.isUploadHidden$,
       action: this.upload.bind(this),
       loading: this.uploading$,
+      disable: this.uploading$,
     },
     {
       icon: 'delete',
