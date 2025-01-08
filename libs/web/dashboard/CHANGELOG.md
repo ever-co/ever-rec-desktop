@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.0.23](https://github.com/ever-co/ever-capture/compare/dashboard-0.0.22...dashboard-0.0.23) (2025-01-08)
+
+### Dependency Updates
+
+* `activity-feature` updated to version `0.0.20`
+
+
 ## [0.0.22](https://github.com/ever-co/ever-capture/compare/dashboard-0.0.21...dashboard-0.0.22) (2025-01-08)
 
 ### Dependency Updates
