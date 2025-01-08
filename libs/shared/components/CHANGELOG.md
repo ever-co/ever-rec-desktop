@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.3.0](https://github.com/ever-co/ever-capture/compare/shared-components-0.2.10...shared-components-0.3.0) (2025-01-08)
+
+
+### Features
+
+* displays video sync status and full name ([b164ccf](https://github.com/ever-co/ever-capture/commit/b164ccf9de583ad56f6ef6fe16b2bb0ae48c8d55))
+
+
+
 ## [0.2.10](https://github.com/ever-co/ever-capture/compare/shared-components-0.2.9...shared-components-0.2.10) (2025-01-08)
 
 ### Dependency Updates
