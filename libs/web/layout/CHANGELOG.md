@@ -2,6 +2,37 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.3.0](https://github.com/ever-co/ever-capture/compare/layout-0.2.2...layout-0.3.0) (2025-01-08)
+
+### Dependency Updates
+
+* `notification-feature` updated to version `0.0.19`
+* `shared-components` updated to version `0.2.9`
+* `search` updated to version `0.0.18`
+* `convert-video-data-access` updated to version `0.1.17`
+* `dashboard` updated to version `0.0.21`
+* `dashboard` updated to version `0.0.21`
+* `library` updated to version `0.0.21`
+* `library` updated to version `0.0.21`
+* `web-setting-feature` updated to version `0.0.20`
+* `web-setting-feature` updated to version `0.0.20`
+* `timesheet-feature` updated to version `0.0.22`
+* `timesheet-feature` updated to version `0.0.22`
+* `screenshot-feature` updated to version `0.2.9`
+* `screenshot-feature` updated to version `0.2.9`
+* `timeline-feature` updated to version `0.2.8`
+* `timeline-feature` updated to version `0.2.8`
+* `upload-feature` updated to version `0.1.2`
+* `upload-data-access` updated to version `0.0.20`
+* `notification-data-access` updated to version `0.1.0`
+* `timeline-data-access` updated to version `0.1.15`
+
+### Features
+
+* improves upload progress notification ([1299007](https://github.com/ever-co/ever-capture/commit/129900771fc07f6a91f1174c373bfd311d69c11d))
+
+
+
 ## [0.2.2](https://github.com/ever-co/ever-capture/compare/layout-0.2.1...layout-0.2.2) (2025-01-07)
 
 ### Dependency Updates
