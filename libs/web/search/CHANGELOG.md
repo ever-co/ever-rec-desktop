@@ -2,6 +2,14 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.0.21](https://github.com/ever-co/ever-capture/compare/search-0.0.20...search-0.0.21) (2025-01-08)
+
+### Dependency Updates
+
+* `screenshot-data-access` updated to version `0.1.17`
+* `shared-components` updated to version `0.4.0`
+
+
 ## [0.0.20](https://github.com/ever-co/ever-capture/compare/search-0.0.19...search-0.0.20) (2025-01-08)
 
 ### Dependency Updates
