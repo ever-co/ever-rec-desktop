@@ -6,6 +6,13 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 
 ### Dependency Updates
 
+* `utils` updated to version `0.4.0`
+
+
+## [0.1.10](https://github.com/ever-co/ever-capture/compare/data-access-electron-0.1.9...data-access-electron-0.1.10) (2025-01-08)
+
+### Dependency Updates
+
 * `utils` updated to version `0.3.2`
 
 
