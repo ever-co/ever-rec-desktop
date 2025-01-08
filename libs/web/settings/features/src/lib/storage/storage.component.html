@@ -27,7 +27,9 @@
           class="form space-y-4"
           (ngSubmit)="onSubmit()"
         >
-          <p>How long do you want to keep your data?</p>
+          <p class="text-gray-800 font-medium">
+            How long do you want to keep your data?
+          </p>
           <!-- Select Input -->
           <mat-form-field appearance="outline" class="w-full">
             <mat-label>Retention Period</mat-label>
@@ -70,6 +72,13 @@
       <ng-template matStepLabel>Storage Optimization</ng-template>
       <ng-template matStepContent>
         <lib-auto-screenshot-deletion></lib-auto-screenshot-deletion>
+      </ng-template>
+    </mat-step>
+    <!-- Upload Config -->
+    <mat-step>
+      <ng-template matStepLabel>Upload Configuration</ng-template>
+      <ng-template matStepContent>
+        <lib-upload-config></lib-upload-config>
       </ng-template>
     </mat-step>
     <!-- AWS Storage -->

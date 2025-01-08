@@ -26,6 +26,7 @@ import { Store } from '@ngrx/store';
 import { filter, map, Observable, Subject, take, takeUntil, tap } from 'rxjs';
 import { AutoScreenshotDeletionComponent } from '../auto-screenshot-deletion/auto-screenshot-deletion.component';
 import { AwsStorageComponent } from '../aws-storage/aws-storage.component';
+import { UploadConfigComponent } from '../upload-config/upload-config.component';
 
 @Component({
   selector: 'lib-storage',
@@ -43,7 +44,8 @@ import { AwsStorageComponent } from '../aws-storage/aws-storage.component';
     MatCardModule,
     AwsStorageComponent,
     MatStepperModule,
-    AutoScreenshotDeletionComponent
+    AutoScreenshotDeletionComponent,
+    UploadConfigComponent,
   ],
   templateUrl: './storage.component.html',
   styleUrl: './storage.component.scss',

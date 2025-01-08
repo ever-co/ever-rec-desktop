@@ -17,7 +17,7 @@ export class VideoUploadService {
   public upload(upload: IUpload): Observable<void> {
     return this.store.select(selectSettingStorageState).pipe(
       take(1),
-      filter(({ s3Config }) => s3Config.autoSync),
+      filter(({ uploadConfig }) => uploadConfig.autoSync),
       map(({ s3Config }) =>
         this.electronService.send(Channel.UPLOAD, { upload, s3Config })
       )

@@ -1,0 +1,38 @@
+<form (ngSubmit)="onSubmit()" class="form space-y-4 mt-2" [formGroup]="form">
+  <!-- Upload Video from Library -->
+  <p class="text-gray-800 font-medium">
+    Would you like to upload a video from your library?
+  </p>
+  <div class="flex justify-between items-center">
+    <label class="text-gray-600" for="manualSync">Upload from Library</label>
+    <mat-slide-toggle
+      id="manualSync"
+      formControlName="manualSync"
+    ></mat-slide-toggle>
+  </div>
+
+  <!-- Synchronize with Cloud -->
+  <p class="text-gray-800 font-medium">
+    Would you like to sync your videos with a cloud provider?
+  </p>
+  <div class="flex justify-between items-center">
+    <label class="text-gray-600" for="autoSync">Enable Cloud Sync</label>
+    <mat-slide-toggle
+      id="autoSync"
+      (change)="onCheck($event)"
+      formControlName="autoSync"
+    ></mat-slide-toggle>
+  </div>
+
+  <!-- Submit Button -->
+  <div class="flex space-x-4">
+    <button
+      mat-stroked-button
+      color="primary"
+      type="submit"
+      [disabled]="form.invalid"
+    >
+      Save
+    </button>
+  </div>
+</form>

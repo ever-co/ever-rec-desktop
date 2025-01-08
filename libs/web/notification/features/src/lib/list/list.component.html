@@ -44,20 +44,29 @@
     </div>
 
     <div class="px-4 py-3">
-      <p class="text-gray-700 text-sm">{{ notification.message }}</p>
+      <p class="text-gray-700 text-sm overflow-y-auto">
+        {{ notification.message }}
+      </p>
     </div>
-    @if(!notification.read) {
-    <div class="flex justify-end gap-2 px-4 pb-3">
-      <lib-action-button
-        [data]="notification.id"
-        [button]="markAsReadButton"
-      ></lib-action-button>
-      <lib-action-button
-        [data]="notification.id"
-        [button]="removeButton"
-      ></lib-action-button>
+    <div class="flex w-full justify-between gap-2 px-4 pb-3">
+      @if(notification.type === 'error') {
+      <div
+        class="self-center"
+        [libCopyToClipboard]="notification.message"
+      ></div>
+      } @if(!notification.read) {
+      <div class="flex justify-end w-full gap-2 px-4">
+        <lib-action-button
+          [data]="notification.id"
+          [button]="markAsReadButton"
+        ></lib-action-button>
+        <lib-action-button
+          [data]="notification.id"
+          [button]="removeButton"
+        ></lib-action-button>
+      </div>
+      }
     </div>
-    }
   </div>
   } } @else {
   <div

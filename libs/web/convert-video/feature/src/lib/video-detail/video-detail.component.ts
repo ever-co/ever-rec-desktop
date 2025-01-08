@@ -197,7 +197,7 @@ export class VideoDetailComponent implements OnInit, OnDestroy {
 
   private get isUploadHidden$(): Observable<boolean> {
     return this.store.select(selectSettingStorageState).pipe(
-      map(({ s3Config }) => !s3Config.autoSync),
+      map(({ uploadConfig }) => !uploadConfig.manualSync),
       takeUntil(this.destroy$)
     );
   }

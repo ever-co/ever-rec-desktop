@@ -1,18 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import {
+  MatSlideToggleChange,
+  MatSlideToggleModule,
+} from '@angular/material/slide-toggle';
 import { NotificationService } from '@ever-co/notification-data-access';
-import { urlValidator } from '@ever-co/shared-service';
-import { IS3ConfigForm } from '@ever-co/shared-utils';
+import { IUploadConfigForm } from '@ever-co/shared-utils';
 import {
   selectSettingStorageState,
   settingStorageActions,
@@ -21,7 +18,7 @@ import { Store } from '@ngrx/store';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
-  selector: 'lib-aws-storage',
+  selector: 'lib-upload-config',
   standalone: true,
   imports: [
     CommonModule,
@@ -31,10 +28,10 @@ import { Subject, takeUntil, tap } from 'rxjs';
     MatButtonModule,
     MatSlideToggleModule,
   ],
-  templateUrl: './aws-storage.component.html',
-  styleUrl: './aws-storage.component.scss',
+  templateUrl: './upload-config.component.html',
+  styleUrl: './upload-config.component.scss',
 })
-export class AwsStorageComponent implements OnInit, OnDestroy {
+export class UploadConfigComponent implements OnInit, OnDestroy {
   public form!: FormGroup;
   private destroy$ = new Subject<void>();
 
@@ -42,29 +39,37 @@ export class AwsStorageComponent implements OnInit, OnDestroy {
     private readonly store: Store,
     private readonly notificationService: NotificationService
   ) {
-    this.form = new FormGroup<IS3ConfigForm>({
-      accessKeyId: new FormControl('', [Validators.required]),
-      accessKeySecret: new FormControl('', [Validators.required]),
-      region: new FormControl('', [Validators.required]),
-      s3Endpoint: new FormControl('', [urlValidator()]),
-      s3Bucket: new FormControl('', [Validators.required]),
+    this.form = new FormGroup<IUploadConfigForm>({
+      autoSync: new FormControl(false),
+      manualSync: new FormControl(false),
     });
   }
   ngOnInit(): void {
     this.store
       .select(selectSettingStorageState)
       .pipe(
-        tap(({ s3Config }) => this.form.patchValue(s3Config)),
+        tap(({ uploadConfig }) => {
+          this.form.patchValue(uploadConfig);
+          this.onCheck({ checked: uploadConfig.autoSync });
+        }),
         takeUntil(this.destroy$)
       )
       .subscribe();
   }
 
+  public onCheck({ checked }: Partial<MatSlideToggleChange>) {
+    if (checked) {
+      this.form.controls['manualSync'].enable();
+    } else {
+      this.form.controls['manualSync'].disable();
+    }
+  }
+
   public onSubmit(): void {
     this.store.dispatch(
-      settingStorageActions.update({ s3Config: this.form.value })
+      settingStorageActions.update({ uploadConfig: this.form.value })
     );
-    this.notificationService.show('AWS S3 config storage updated', 'info');
+    this.notificationService.show('Upload configuration updated', 'info');
   }
 
   ngOnDestroy(): void {

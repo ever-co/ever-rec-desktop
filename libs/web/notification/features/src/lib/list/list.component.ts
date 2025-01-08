@@ -10,6 +10,7 @@ import {
   ActionButtonComponent,
   NoDataComponent,
 } from '@ever-co/shared-components';
+import { CopyToClipboardDirective } from '@ever-co/shared-service';
 import { IActionButton, INotification } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
@@ -23,6 +24,7 @@ import { map, Observable } from 'rxjs';
     MatIconModule,
     NoDataComponent,
     ActionButtonComponent,
+    CopyToClipboardDirective,
   ],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss',

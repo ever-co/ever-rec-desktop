@@ -34,6 +34,7 @@ import { Store } from '@ngrx/store';
 import {
   Observable,
   Subject,
+  combineLatest,
   filter,
   map,
   take,
@@ -90,7 +91,15 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
       variant: 'success',
       action: this.upload.bind(this),
       loading: this.uploading$,
-      hide: this.isUploadHidden$,
+      hide: combineLatest([
+        this.moreThanOneSelected$,
+        this.isUploadHidden$,
+      ]).pipe(
+        map(
+          ([moreThanOneSelected, isUploadHidden]) =>
+            moreThanOneSelected || isUploadHidden
+        )
+      ),
     },
     {
       icon: 'remove_done',
@@ -274,7 +283,7 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
 
   private get isUploadHidden$(): Observable<boolean> {
     return this.store.select(selectSettingStorageState).pipe(
-      map(({ s3Config }) => !s3Config.autoSync),
+      map(({ uploadConfig }) => !uploadConfig.manualSync),
       takeUntil(this.destroy$)
     );
   }

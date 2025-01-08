@@ -1,4 +1,4 @@
-import { IS3Config, IUsedSize } from '@ever-co/shared-utils';
+import { IS3Config, IUploadConfig, IUsedSize } from '@ever-co/shared-utils';
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { settingStorageActions } from './storage-setting.actions';
 
@@ -9,12 +9,17 @@ export interface IStorageState {
   autoScreenshotDeletion: boolean;
   used: IUsedSize;
   s3Config: IS3Config;
+  uploadConfig: IUploadConfig;
   error: string;
 }
 
 const initialState: IStorageState = {
   retention: 7,
   autoScreenshotDeletion: false,
+  uploadConfig: {
+    autoSync: false,
+    manualSync: false,
+  },
   s3Config: {
     accessKeyId: '',
     accessKeySecret: '',
@@ -36,12 +41,17 @@ export const reducer = createReducer(
   on(settingStorageActions.load, (state) => ({ ...state, error: '' })),
   on(
     settingStorageActions.loadSuccess,
-    (state, { retention, used, s3Config, autoScreenshotDeletion }) => ({
+    (
+      state,
+      { retention, used, s3Config, autoScreenshotDeletion, uploadConfig }
+    ) => ({
       ...state,
       s3Config: s3Config ?? state.s3Config,
       retention: retention ?? state.retention,
+      uploadConfig: uploadConfig ?? state.uploadConfig,
       used: used ?? state.used,
-      autoScreenshotDeletion: autoScreenshotDeletion ?? state.autoScreenshotDeletion,
+      autoScreenshotDeletion:
+        autoScreenshotDeletion ?? state.autoScreenshotDeletion,
     })
   ),
   on(settingStorageActions.failure, (state, { error }) => ({

@@ -15,5 +15,14 @@ export interface IS3ConfigForm {
   region: FormControl<string | null>;
   s3Bucket: FormControl<string | null>;
   s3Endpoint: FormControl<string | null>;
+}
+
+export interface IUploadConfig {
+  autoSync: boolean;
+  manualSync: boolean;
+}
+
+export interface IUploadConfigForm {
   autoSync: FormControl<boolean | null>;
+  manualSync: FormControl<boolean | null>;
 }
