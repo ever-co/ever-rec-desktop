@@ -2,6 +2,16 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.1.18](https://github.com/ever-co/ever-capture/compare/convert-video-data-access-0.1.17...convert-video-data-access-0.1.18) (2025-01-08)
+
+### Dependency Updates
+
+* `utils` updated to version `0.4.0`
+* `notification-data-access` updated to version `0.1.1`
+* `shared-service` updated to version `0.1.13`
+* `data-access-electron` updated to version `0.1.9`
+
+
 ## [0.1.17](https://github.com/ever-co/ever-capture/compare/convert-video-data-access-0.1.16...convert-video-data-access-0.1.17) (2025-01-08)
 
 ### Dependency Updates

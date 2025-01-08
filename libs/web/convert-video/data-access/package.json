@@ -1,6 +1,6 @@
 {
   "name": "@ever-co/convert-video-data-access",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "peerDependencies": {
     "@angular/common": "^17.3.0",
     "@angular/core": "^17.3.0"
