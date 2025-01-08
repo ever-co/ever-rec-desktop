@@ -34,9 +34,12 @@ import {
   tap,
   exhaustMap,
   of,
+  distinctUntilChanged,
+  debounceTime,
 } from 'rxjs';
 import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
 import { selectUploadState } from '@ever-co/upload-data-access';
+import { NotificationService } from '@ever-co/notification-data-access';
 
 @Component({
   selector: 'lib-layout',
@@ -72,7 +75,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   constructor(
     private readonly store: Store,
     private readonly breakpointObserver: BreakpointObserver,
-    private snackbar: MatSnackBar,
+    private readonly notificationService: NotificationService,
     private readonly layoutService: LayoutService
   ) {}
 
@@ -103,10 +106,21 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
     this.uploading$
       .pipe(
+        distinctUntilChanged(),
         tap((uploading) => {
-          if(uploading && !this.snackbarRef) {
-            this.snackbarRef = this.snackbar.openFromComponent(UploadProgressComponent);
-          }else if(this.snackbarRef) {
+          if (uploading && !this.snackbarRef) {
+            this.notificationService.show('Upload started', 'success', {
+              component: UploadProgressComponent,
+              afterOpened: (snackbarRef) => {
+                if (!snackbarRef) {
+                  return;
+                }
+                this.snackbarRef = snackbarRef;
+              },
+            });
+          }
+
+          if (this.snackbarRef && !uploading) {
             this.snackbarRef.dismiss();
             this.snackbarRef = null;
           }
@@ -117,9 +131,10 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   public get uploading$(): Observable<boolean> {
-    return this.store
-      .select(selectUploadState)
-      .pipe(map((state) => state.uploading));
+    return this.store.select(selectUploadState).pipe(
+      debounceTime(150),
+      map((state) => state.uploading)
+    );
   }
 
   public get isExpanded(): boolean {
