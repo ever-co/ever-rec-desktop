@@ -11,6 +11,15 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 * `web-setting-data-access` updated to version `0.0.18`
 
 
+## [0.0.21](https://github.com/ever-co/ever-capture/compare/upload-data-access-0.0.20...upload-data-access-0.0.21) (2025-01-08)
+
+### Dependency Updates
+
+* `convert-video-data-access` updated to version `0.1.17`
+* `notification-data-access` updated to version `0.1.0`
+* `web-setting-data-access` updated to version `0.0.18`
+
+
 ## [0.0.20](https://github.com/ever-co/ever-capture/compare/upload-data-access-0.0.19...upload-data-access-0.0.20) (2025-01-07)
 
 ### Dependency Updates
