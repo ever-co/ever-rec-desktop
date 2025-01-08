@@ -2,6 +2,17 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.0.19](https://github.com/ever-co/ever-capture/compare/timesheet-data-access-0.0.18...timesheet-data-access-0.0.19) (2025-01-08)
+
+### Dependency Updates
+
+* `utils` updated to version `0.4.0`
+* `notification-data-access` updated to version `0.1.1`
+* `screenshot-data-access` updated to version `0.1.17`
+* `shared-service` updated to version `0.1.13`
+* `data-access-electron` updated to version `0.1.9`
+
+
 ## [0.0.18](https://github.com/ever-co/ever-capture/compare/timesheet-data-access-0.0.17...timesheet-data-access-0.0.18) (2025-01-08)
 
 ### Dependency Updates
