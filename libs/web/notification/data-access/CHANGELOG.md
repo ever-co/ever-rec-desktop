@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.1.0](https://github.com/ever-co/ever-capture/compare/notification-data-access-0.0.15...notification-data-access-0.1.0) (2025-01-08)
+
+
+### Features
+
+* improves upload progress notification ([1299007](https://github.com/ever-co/ever-capture/commit/129900771fc07f6a91f1174c373bfd311d69c11d))
+
+
+
 ## [0.0.15](https://github.com/ever-co/ever-capture/compare/notification-data-access-0.0.14...notification-data-access-0.0.15) (2025-01-07)
 
 ### Dependency Updates
