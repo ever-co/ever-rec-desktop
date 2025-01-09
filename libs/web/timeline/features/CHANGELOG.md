@@ -2,6 +2,17 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.2.17](https://github.com/ever-co/ever-capture/compare/timeline-feature-0.2.16...timeline-feature-0.2.17) (2025-01-09)
+
+### Dependency Updates
+
+* `convert-video-data-access` updated to version `0.1.23`
+* `convert-video-feature` updated to version `0.3.6`
+* `timeline-data-access` updated to version `0.1.21`
+* `shared-service` updated to version `0.1.18`
+* `screenshot-feature` updated to version `0.2.18`
+
+
 ## [0.2.16](https://github.com/ever-co/ever-capture/compare/timeline-feature-0.2.15...timeline-feature-0.2.16) (2025-01-09)
 
 ### Dependency Updates
