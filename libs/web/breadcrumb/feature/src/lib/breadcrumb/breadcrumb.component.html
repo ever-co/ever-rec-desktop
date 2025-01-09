@@ -1,10 +1,23 @@
 <div class="container">
-  <nav class="c-navigation-breadcrumbs" aria-label="Breadcrumb" vocab="https://schema.org/" typeof="BreadcrumbList">
+  <nav
+    class="c-navigation-breadcrumbs"
+    aria-label="Breadcrumb"
+    vocab="https://schema.org/"
+    typeof="BreadcrumbList"
+  >
     <ol class="c-navigation-breadcrumbs__directory">
       @for (breadcrumb of breadcrumbs$ | async; track breadcrumb.label) {
-      <li class="c-navigation-breadcrumbs__item" property="itemListElement" typeof="ListItem">
-        <a class="c-navigation-breadcrumbs__link" href="https://example.com/articles/development" property="item"
-          typeof="WebPage" [routerLink]="[breadcrumb.url]">
+      <li
+        class="c-navigation-breadcrumbs__item"
+        property="itemListElement"
+        typeof="ListItem"
+      >
+        <a
+          class="c-navigation-breadcrumbs__link"
+          property="item"
+          typeof="WebPage"
+          [routerLink]="[breadcrumb.url]"
+        >
           <span property="name"> {{ breadcrumb.label | titlecase }}</span>
         </a>
       </li>
