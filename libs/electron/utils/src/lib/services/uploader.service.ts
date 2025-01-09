@@ -5,7 +5,6 @@ import {
   IS3Config,
   IUpload,
   IUploadableService,
-  IUploadFile,
   IVideo,
 } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
