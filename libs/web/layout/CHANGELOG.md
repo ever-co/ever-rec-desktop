@@ -2,6 +2,34 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.3.9](https://github.com/ever-co/ever-capture/compare/layout-0.3.8...layout-0.3.9) (2025-01-09)
+
+### Dependency Updates
+
+* `notification-feature` updated to version `0.1.5`
+* `shared-components` updated to version `0.4.4`
+* `shared-service` updated to version `0.1.17`
+* `sidebar-feature` updated to version `0.1.19`
+* `search` updated to version `0.0.25`
+* `convert-video-data-access` updated to version `0.1.22`
+* `dashboard` updated to version `0.0.29`
+* `dashboard` updated to version `0.0.29`
+* `library` updated to version `0.0.28`
+* `library` updated to version `0.0.28`
+* `web-setting-feature` updated to version `0.1.5`
+* `web-setting-feature` updated to version `0.1.5`
+* `timesheet-feature` updated to version `0.0.30`
+* `timesheet-feature` updated to version `0.0.30`
+* `screenshot-feature` updated to version `0.2.17`
+* `screenshot-feature` updated to version `0.2.17`
+* `timeline-feature` updated to version `0.2.16`
+* `timeline-feature` updated to version `0.2.16`
+* `upload-feature` updated to version `0.1.8`
+* `upload-data-access` updated to version `0.2.2`
+* `notification-data-access` updated to version `0.1.5`
+* `timeline-data-access` updated to version `0.1.20`
+
+
 ## [0.3.8](https://github.com/ever-co/ever-capture/compare/layout-0.3.7...layout-0.3.8) (2025-01-09)
 
 ### Dependency Updates
