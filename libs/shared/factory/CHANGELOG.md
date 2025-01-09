@@ -2,6 +2,14 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.2.17](https://github.com/ever-co/ever-capture/compare/factory-0.2.16...factory-0.2.17) (2025-01-09)
+
+### Dependency Updates
+
+* `screenshot-data-access` updated to version `0.1.22`
+* `web-setting-data-access` updated to version `0.1.7`
+
+
 ## [0.2.16](https://github.com/ever-co/ever-capture/compare/factory-0.2.15...factory-0.2.16) (2025-01-09)
 
 ### Dependency Updates
