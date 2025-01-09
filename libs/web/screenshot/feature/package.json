@@ -1,6 +1,6 @@
 {
   "name": "@ever-co/screenshot-feature",
-  "version": "0.2.17",
+  "version": "0.2.18",
   "peerDependencies": {
     "@angular/common": "^17.3.0",
     "@angular/core": "^17.3.0"
