@@ -3,6 +3,7 @@ import {
   ILoggable,
   ILogger,
   IS3Config,
+  isEmpty,
   IUpload,
   IUploadableService,
   IVideo,
@@ -32,15 +33,21 @@ export class UploaderService implements ILoggable {
 
     let config = this.context.strategy.config();
 
-    if (!config && s3Config) {
+    if (isEmpty(config) && s3Config) {
       this.context.strategy = new S3UploaderStrategy(s3Config, upload.type);
       config = await this.context.strategy.config();
 
-      if (!config) {
+      if (isEmpty(config)) {
         this.logger.error('Error getting signed URL');
         event.reply(Channel.UPLOAD_ERROR, 'Error getting signed URL');
         return;
       }
+    }
+
+    if (isEmpty(config)) {
+      this.logger.info('We cannot proceed with the upload');
+      event.reply(Channel.UPLOAD_ERROR, 'We cannot proceed with the upload');
+      return;
     }
 
     const files = await this.prepareFiles(service, upload);
