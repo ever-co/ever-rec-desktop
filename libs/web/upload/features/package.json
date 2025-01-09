@@ -1,6 +1,6 @@
 {
   "name": "@ever-co/upload-feature",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "peerDependencies": {
     "@angular/common": "^18.2.0",
     "@angular/core": "^18.2.0",
