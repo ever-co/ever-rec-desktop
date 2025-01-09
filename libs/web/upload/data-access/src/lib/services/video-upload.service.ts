@@ -46,7 +46,6 @@ export class VideoUploadService {
     return new Observable<void>((observer) => {
       this.electronService.removeAllListeners(Channel.UPLOAD_DONE);
       this.electronService.on(Channel.UPLOAD_DONE, (_, result) => {
-        console.log('result', result);
         observer.next(result);
         observer.complete();
       });
