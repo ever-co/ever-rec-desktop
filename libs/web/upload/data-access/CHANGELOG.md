@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.1.3](https://github.com/ever-co/ever-capture/compare/upload-data-access-0.1.2...upload-data-access-0.1.3) (2025-01-09)
+
+
+### Bug Fixes
+
+* updates upload done notification message ([d9f6bc3](https://github.com/ever-co/ever-capture/commit/d9f6bc30ebc45bc5707433d27956d225d7c9109f))
+
+
+
 ## [0.1.2](https://github.com/ever-co/ever-capture/compare/upload-data-access-0.1.1...upload-data-access-0.1.2) (2025-01-09)
 
 ### Dependency Updates
