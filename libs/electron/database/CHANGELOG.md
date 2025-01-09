@@ -2,6 +2,14 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.2.7](https://github.com/ever-co/ever-capture/compare/database-electron-0.2.6...database-electron-0.2.7) (2025-01-09)
+
+### Dependency Updates
+
+* `electron-utils` updated to version `0.4.3`
+* `utils` updated to version `0.4.2`
+
+
 ## [0.2.6](https://github.com/ever-co/ever-capture/compare/database-electron-0.2.5...database-electron-0.2.6) (2025-01-09)
 
 ### Dependency Updates
