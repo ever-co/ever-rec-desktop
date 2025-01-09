@@ -2,6 +2,23 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.2.1](https://github.com/ever-co/ever-capture/compare/upload-data-access-0.2.0...upload-data-access-0.2.1) (2025-01-09)
+
+### Dependency Updates
+
+* `utils` updated to version `0.4.1`
+* `convert-video-data-access` updated to version `0.1.21`
+* `notification-data-access` updated to version `0.1.4`
+* `data-access-electron` updated to version `0.1.12`
+* `web-setting-data-access` updated to version `0.1.3`
+
+### Bug Fixes
+
+* remove console.log(...) ([de5d503](https://github.com/ever-co/ever-capture/commit/de5d503b41b308357e70d7e9a1470ed9ce3dcaf1))
+* timeline generation for single videos ([508d8a2](https://github.com/ever-co/ever-capture/commit/508d8a22d270749b8bd150c24426335e33c01433))
+
+
+
 # [0.2.0](https://github.com/ever-co/ever-capture/compare/upload-data-access-0.1.3...upload-data-access-0.2.0) (2025-01-09)
 
 
