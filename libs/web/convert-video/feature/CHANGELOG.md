@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.3.8](https://github.com/ever-co/ever-capture/compare/convert-video-feature-0.3.7...convert-video-feature-0.3.8) (2025-01-09)
+
+### Dependency Updates
+
+* `screenshot-data-access` updated to version `0.1.22`
+* `shared-components` updated to version `0.4.7`
+* `web-setting-data-access` updated to version `0.1.7`
+
+
 ## [0.3.7](https://github.com/ever-co/ever-capture/compare/convert-video-feature-0.3.6...convert-video-feature-0.3.7) (2025-01-09)
 
 ### Dependency Updates
