@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.1.6](https://github.com/ever-co/ever-capture/compare/breadcrumb-feature-0.1.5...breadcrumb-feature-0.1.6) (2025-01-09)
+
+
+### Bug Fixes
+
+* remove unecessary href link ([2199500](https://github.com/ever-co/ever-capture/commit/21995009624abd8d4b1fbc30ead987ae9668b478))
+
+
+
 ## [0.1.5](https://github.com/ever-co/ever-capture/compare/breadcrumb-feature-0.1.4...breadcrumb-feature-0.1.5) (2024-12-26)
 
 ### Dependency Updates
