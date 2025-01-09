@@ -95,7 +95,7 @@ export class UploaderService implements ILoggable {
           upload.ids.forEach((id) => {
             service.update(id, { synced: true });
           });
-          event.reply(Channel.UPLOAD_DONE, 'Uploaded successfully');
+          event.reply(Channel.UPLOAD_DONE, payload.message);
           break;
         case 'progress':
           this.logger.info('In Progress::' + payload.message);

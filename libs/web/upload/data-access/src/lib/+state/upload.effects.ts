@@ -69,7 +69,9 @@ export class UploadEffects {
       ofType(uploadActions.inProgress),
       switchMap(() =>
         this.videoUploadService.onDone().pipe(
-          tap(() => this.notificationService.show('Done', 'success')),
+          tap(() =>
+            this.notificationService.show('Upload successfully', 'success')
+          ),
           map(() => uploadActions.uploadVideoSuccess()),
           catchError((error) => of(uploadActions.uploadVideoFailure({ error })))
         )
