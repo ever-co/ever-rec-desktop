@@ -1,6 +1,6 @@
 {
   "name": "@ever-co/timesheet-feature",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "peerDependencies": {
     "@angular/common": "^18.2.0",
     "@angular/core": "^18.2.0",
