@@ -4,7 +4,14 @@ import { NotificationService } from '@ever-co/notification-data-access';
 import { IUpload, UploadType } from '@ever-co/shared-utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import {
+  catchError,
+  filter,
+  map,
+  mergeMap,
+  switchMap,
+  tap,
+} from 'rxjs/operators';
 import { VideoUploadService } from '../services/video-upload.service';
 import { uploadActions } from './upload.actions';
 
@@ -14,13 +21,23 @@ export class UploadEffects {
 
   upload$ = createEffect(() =>
     this.actions$.pipe(
+      // Listen for specific actions
       ofType(generateVideoActions.finish, uploadActions.uploadVideo),
+      // Normalize action payloads to extract videos
       map((action) => {
-        return action.type === generateVideoActions.finish.type
-          ? [action.video]
-          : action.videos;
+        const videos =
+          action.type === generateVideoActions.finish.type
+            ? [action.video]
+            : action.videos;
+        return videos;
       }),
-      map((videos) => ({ ids: videos.map(({ id }) => id) })),
+      // Extract IDs for videos not in the timeline
+      map((videos) => ({
+        ids: videos.filter(({ isTimeline }) => !isTimeline).map(({ id }) => id),
+      })),
+      // Proceed only if there are IDs to upload
+      filter(({ ids }) => ids.length > 0),
+      // Handle upload logic
       mergeMap(({ ids }) => {
         const config: IUpload = {
           type: UploadType.VIDEO,
@@ -28,8 +45,9 @@ export class UploadEffects {
           ids,
         };
         return this.videoUploadService.upload(config).pipe(
-          tap(() => this.notificationService.show('Uploading...', 'info')),
+          // Dispatch in-progress action on success
           map(() => uploadActions.inProgress({ config })),
+          // Handle errors gracefully
           catchError((error) => {
             this.notificationService.show('Upload failed', 'error');
             return of(uploadActions.uploadVideoFailure({ error }));

@@ -3,7 +3,9 @@ import {
   IConversionStrategy,
   ILogger,
   IScreenshotService,
+  isEmpty,
   ITimelineService,
+  IVideo,
   IVideoConfig,
   IVideoService,
 } from '@ever-co/shared-utils';
@@ -89,6 +91,10 @@ export class TimelineVideoStrategy implements IConversionStrategy {
       // Execute the screenshot conversion strategy
       await screenshotStrategy.execute(event);
     } else {
+      // Handle the case where only one video is found
+      if (videos.length === 1) {
+        await this.handleOneVideo(videos[0]);
+      }
       // Create a merge strategy for the found videos
       const mergeStrategy = new VideoMergeStrategy(
         videos,
@@ -111,6 +117,27 @@ export class TimelineVideoStrategy implements IConversionStrategy {
 
       // Execute the merge strategy
       await mergeStrategy.execute(event);
+    }
+  }
+  /**
+   * Handles the case where only one video is found.
+   * It logs the occurrence and saves the timeline associated with the video.
+   *
+   * @param video The video to handle.
+   * @returns A promise that resolves when the operation is completed.
+   */
+  private async handleOneVideo(video: IVideo): Promise<void> {
+    if (isEmpty(video)) return;
+
+    const payload = {
+      timeLogId: this.timeLogId,
+      videoId: video.id,
+    };
+
+    const timeline = await this.timelineService.findOne({ where: payload });
+
+    if (isEmpty(timeline)) {
+      await this.timelineService.save(payload);
     }
   }
 }

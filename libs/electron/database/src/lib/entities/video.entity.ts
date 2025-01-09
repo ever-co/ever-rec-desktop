@@ -64,4 +64,7 @@ export class Video extends Base implements IVideo {
   })
   @JoinColumn()
   timeLog?: Relation<ITimeLog>;
+
+  // Computed property
+  isTimeline: boolean;
 }

@@ -14,6 +14,7 @@ export interface IVideo extends IBase {
   metadata?: IVideoMetadata;
   timeLog?: ITimeLog;
   timelines?: ITimeline[];
+  isTimeline?: boolean;
 }
 
 export interface IVideoMetadata extends IBase, Partial<IVideoConfig> {

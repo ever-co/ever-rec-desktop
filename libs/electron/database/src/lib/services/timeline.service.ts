@@ -12,8 +12,8 @@ import { TimeLogService } from './time-log.service';
 import { VideoService } from './video.service';
 
 export class TimelineService implements ILoggable, ITimelineService {
-  public readonly videoService = new VideoService();
-  public readonly timeLogService = new TimeLogService();
+  private readonly videoService = new VideoService();
+  private readonly timeLogService = new TimeLogService();
   private readonly repository = TimelineRepository.instance;
   public logger: ILogger = new ElectronLogger('App:TimelineService');
 

@@ -43,10 +43,7 @@ export class VideoMergeStrategy implements IConversionStrategy {
       this.logger.info(`Merging ${this.videos.length} videos`);
 
       // Perform the video merging operation
-      await this.videoConversionService.combineVideos(
-        batches,
-        this.videos
-      );
+      await this.videoConversionService.combineVideos(batches, this.videos);
     } else if (this.videos.length === 1) {
       // Reply with the single video if only one video exists
       event.reply(Channel.SCREESHOTS_CONVERTED, this.videos[0]);

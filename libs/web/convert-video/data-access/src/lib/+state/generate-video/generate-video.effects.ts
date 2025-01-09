@@ -20,7 +20,10 @@ export class GenerateVideoEffects {
       ofType(generateVideoActions.start),
       map((action) => {
         this.convertVideoElectronService.startGenerate(action);
-        this.notifcationService.show('Start generating video.', 'success');
+        this.notifcationService.show(
+          action.isTimeLine ? 'Generating timeline...' : 'Generating video...',
+          'info'
+        );
         return generateVideoActions.startSuccess();
       }),
       catchError((error) => of(generateVideoActions.failure({ error })))
@@ -135,7 +138,9 @@ export class GenerateVideoEffects {
         return this.storageService.setItem<IVideo>(this.KEY, video).pipe(
           tap(() =>
             this.notifcationService.show(
-              'Video generation complete.',
+              video.isTimeline
+                ? 'Timeline generation complete.'
+                : 'Video generation complete.',
               'success'
             )
           ),
