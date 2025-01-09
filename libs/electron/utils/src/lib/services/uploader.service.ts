@@ -11,14 +11,18 @@ import {
 import { ipcMain } from 'electron';
 import * as path from 'path';
 import { In } from 'typeorm';
-import { S3Service } from './aws/s3.service';
 import { FileManager } from './files/file-manager';
 import { ElectronLogger } from './logger/electron-logger';
 import { WorkerFactory } from './worker-factory.service';
-import { UploadService } from './upload-service';
+import { S3UploaderStrategy } from './uploader/strategies/s3.uploader';
+import { ContextUploader } from './uploader/context-uploader';
+import { GauzyUploaderStrategy } from './uploader/strategies/gauzy.uploader';
+import { Worker } from 'worker_threads';
 
 export class UploaderService implements ILoggable {
   readonly logger: ILogger = new ElectronLogger('Uploader Service');
+  private readonly context = new ContextUploader(new GauzyUploaderStrategy());
+
   public async execute(
     event: Electron.IpcMainEvent,
     upload: IUpload,
@@ -27,18 +31,17 @@ export class UploaderService implements ILoggable {
   ): Promise<void> {
     this.logger.info('Start uploading...');
 
-    const s3Service = new S3Service(s3Config);
+    let config = this.context.strategy.config();
 
-    const uploadService = new UploadService();
+    if (!config && s3Config) {
+      this.context.strategy = new S3UploaderStrategy(s3Config, upload.type);
+      config = await this.context.strategy.config();
 
-    const uploadUrl = uploadService.getUploadUrl();
-
-    const url = uploadUrl ? uploadUrl : await s3Service.signedURL(upload.type);
-
-    if (!url) {
-      this.logger.error('Error getting signed URL');
-      event.reply(Channel.UPLOAD_ERROR, 'Error getting signed URL');
-      return;
+      if (!config) {
+        this.logger.error('Error getting signed URL');
+        event.reply(Channel.UPLOAD_ERROR, 'Error getting signed URL');
+        return;
+      }
     }
 
     const data = await service.findAll({
@@ -61,22 +64,20 @@ export class UploaderService implements ILoggable {
 
     this.logger.info('Create upload worker...');
 
-    const auth = uploadService.getContext()?.auth;
-
-    const config = {
-      url,
-      ...(auth && {
-        token: auth.token,
-        organizationId: auth.organizationId,
-        tenantId: auth.tenantId,
-      }),
-    };
-
     const worker = WorkerFactory.createWorker(
       path.join(__dirname, 'assets', 'workers', 'upload.worker.js'),
       { files, config }
     );
 
+    this.workerHandler(worker, service, upload, event);
+  }
+
+  private workerHandler(
+    worker: Worker,
+    service: IUploadableService,
+    upload: IUpload,
+    event: Electron.IpcMainEvent
+  ) {
     worker.on('message', (payload) => {
       switch (payload.status) {
         case 'done':

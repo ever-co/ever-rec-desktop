@@ -1,8 +1,8 @@
 import { ILoggable, ILogger } from '@ever-co/shared-utils';
-import { ElectronLogger } from './logger/electron-logger';
+import { ElectronLogger } from '../logger/electron-logger';
 import { IApplicationConfig, localStore } from '@gauzy/desktop-core';
 
-export class UploadService implements ILoggable {
+export class GauzyService implements ILoggable {
   public logger: ILogger = new ElectronLogger('Upload Service');
   /**
    * Retrieves the video upload URL based on the application configuration.
@@ -30,7 +30,6 @@ export class UploadService implements ILoggable {
   public getContext(): IApplicationConfig | null {
     try {
       const context = localStore.find();
-      this.logger.debug('Configuration context:', context);
       if (!context) {
         this.logger.error('Configuration context is undefined.');
         return null;
