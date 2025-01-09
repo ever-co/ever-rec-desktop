@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.1.7](https://github.com/ever-co/ever-capture/compare/web-setting-data-access-0.1.6...web-setting-data-access-0.1.7) (2025-01-09)
+
+### Dependency Updates
+
+* `screenshot-data-access` updated to version `0.1.22`
+
+
 ## [0.1.6](https://github.com/ever-co/ever-capture/compare/web-setting-data-access-0.1.5...web-setting-data-access-0.1.6) (2025-01-09)
 
 ### Dependency Updates
