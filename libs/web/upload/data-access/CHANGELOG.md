@@ -2,6 +2,16 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.2.2](https://github.com/ever-co/ever-capture/compare/upload-data-access-0.2.1...upload-data-access-0.2.2) (2025-01-09)
+
+### Dependency Updates
+
+* `utils` updated to version `0.4.2`
+* `convert-video-data-access` updated to version `0.1.22`
+* `notification-data-access` updated to version `0.1.5`
+* `web-setting-data-access` updated to version `0.1.4`
+
+
 ## [0.2.1](https://github.com/ever-co/ever-capture/compare/upload-data-access-0.2.0...upload-data-access-0.2.1) (2025-01-09)
 
 ### Dependency Updates
