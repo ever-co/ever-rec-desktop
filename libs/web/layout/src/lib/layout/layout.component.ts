@@ -30,14 +30,11 @@ import {
   Observable,
   Subject,
   takeUntil,
-  filter,
   tap,
-  exhaustMap,
-  of,
   distinctUntilChanged,
   debounceTime,
 } from 'rxjs';
-import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
+import { MatSnackBarRef } from '@angular/material/snack-bar';
 import { selectUploadState } from '@ever-co/upload-data-access';
 import { NotificationService } from '@ever-co/notification-data-access';
 
