@@ -2,6 +2,19 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.2.6](https://github.com/ever-co/ever-capture/compare/database-electron-0.2.5...database-electron-0.2.6) (2025-01-09)
+
+### Dependency Updates
+
+* `electron-utils` updated to version `0.4.2`
+* `utils` updated to version `0.4.1`
+
+### Bug Fixes
+
+* timeline generation for single videos ([508d8a2](https://github.com/ever-co/ever-capture/commit/508d8a22d270749b8bd150c24426335e33c01433))
+
+
+
 ## [0.2.5](https://github.com/ever-co/ever-capture/compare/database-electron-0.2.4...database-electron-0.2.5) (2025-01-09)
 
 ### Dependency Updates
