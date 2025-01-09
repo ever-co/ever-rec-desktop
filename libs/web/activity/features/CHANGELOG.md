@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.0.31](https://github.com/ever-co/ever-capture/compare/activity-feature-0.0.30...activity-feature-0.0.31) (2025-01-09)
+
+### Dependency Updates
+
+* `shared-components` updated to version `0.4.8`
+
+
 ## [0.0.30](https://github.com/ever-co/ever-capture/compare/activity-feature-0.0.29...activity-feature-0.0.30) (2025-01-09)
 
 ### Dependency Updates
