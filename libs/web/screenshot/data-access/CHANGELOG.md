@@ -6,6 +6,15 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 
 ### Dependency Updates
 
+* `notification-data-access` updated to version `0.1.6`
+* `shared-service` updated to version `0.1.18`
+* `data-access-electron` updated to version `0.1.13`
+
+
+## [0.1.22](https://github.com/ever-co/ever-capture/compare/screenshot-data-access-0.1.21...screenshot-data-access-0.1.22) (2025-01-09)
+
+### Dependency Updates
+
 * `notification-data-access` updated to version `0.1.5`
 * `shared-service` updated to version `0.1.18`
 * `data-access-electron` updated to version `0.1.13`
