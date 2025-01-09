@@ -44,12 +44,25 @@ export class UploaderService implements ILoggable {
       }
     }
 
+    const files = await this.prepareFiles(service, upload);
+
+    this.logger.info('Create upload worker...');
+
+    const worker = WorkerFactory.createWorker(
+      path.join(__dirname, 'assets', 'workers', 'upload.worker.js'),
+      { files, config }
+    );
+
+    this.workerHandler(worker, service, upload, event);
+  }
+
+  private async prepareFiles(service: IUploadableService, upload: IUpload) {
     const data = await service.findAll({
       where: { id: In(upload.ids) },
       relations: ['metadata'],
     });
 
-    const files: IUploadFile[] = data.map((item: IVideo) => ({
+    return data.map((item: IVideo) => ({
       title: item.metadata?.name,
       description: item.metadata?.summary,
       duration: item.metadata?.duration,
@@ -61,15 +74,6 @@ export class UploaderService implements ILoggable {
       pathname: FileManager.decodePath(item.pathname),
       key: upload.key,
     }));
-
-    this.logger.info('Create upload worker...');
-
-    const worker = WorkerFactory.createWorker(
-      path.join(__dirname, 'assets', 'workers', 'upload.worker.js'),
-      { files, config }
-    );
-
-    this.workerHandler(worker, service, upload, event);
   }
 
   private workerHandler(
