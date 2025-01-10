@@ -45,11 +45,12 @@ export class VideoMergeStrategy implements IConversionStrategy {
       // Perform the video merging operation
       await this.videoConversionService.combineVideos(batches, this.videos);
     } else if (this.videos.length === 1) {
+      // Get the single video
+      const video = this.videos[0];
+      // Mark the video as a timeline
+      Object.assign(video, { isTimeline: video.synced });
       // Reply with the single video if only one video exists
-      event.reply(Channel.SCREESHOTS_CONVERTED, {
-        ...this.videos[0],
-        isTimeline: true,
-      });
+      event.reply(Channel.SCREESHOTS_CONVERTED, video);
     } else {
       // Log a message if there are no videos to merge
       this.logger.info('No videos to merge.');
