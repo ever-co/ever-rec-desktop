@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.4.4](https://github.com/ever-co/ever-capture/compare/electron-utils-0.4.3...electron-utils-0.4.4) (2025-01-10)
+
+
+### Bug Fixes
+
+* upload button visibility for single/timeline videos ([0f85986](https://github.com/ever-co/ever-capture/commit/0f8598684bd5f4b731145fc0234dc8c4e7f9a50c))
+
+
+
 ## [0.4.3](https://github.com/ever-co/ever-capture/compare/electron-utils-0.4.2...electron-utils-0.4.3) (2025-01-09)
 
 ### Dependency Updates
