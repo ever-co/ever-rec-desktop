@@ -2,6 +2,17 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.3.16](https://github.com/ever-co/ever-capture/compare/layout-0.3.15...layout-0.3.16) (2025-01-10)
+
+### Dependency Updates
+
+* `search` updated to version `0.0.29`
+* `dashboard` updated to version `0.0.35`
+* `dashboard` updated to version `0.0.35`
+* `timesheet-feature` updated to version `0.0.35`
+* `timesheet-feature` updated to version `0.0.35`
+
+
 ## [0.3.15](https://github.com/ever-co/ever-capture/compare/layout-0.3.14...layout-0.3.15) (2025-01-10)
 
 ### Dependency Updates
