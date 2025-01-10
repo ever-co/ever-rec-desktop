@@ -2,6 +2,54 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# 0.1.0 (2025-01-10)
+
+### Dependency Updates
+
+* `breadcrumb-data-access` updated to version `0.1.0`
+* `breadcrumb-feature` updated to version `0.1.0`
+* `notification-feature` updated to version `0.1.0`
+* `shared-components` updated to version `0.1.0`
+* `shared-service` updated to version `0.1.0`
+* `sidebar-feature` updated to version `0.1.0`
+* `search` updated to version `0.0.1`
+* `convert-video-data-access` updated to version `0.1.0`
+* `dashboard` updated to version `0.0.1`
+* `dashboard` updated to version `0.0.1`
+* `library` updated to version `0.0.1`
+* `library` updated to version `0.0.1`
+* `web-setting-feature` updated to version `0.1.0`
+* `web-setting-feature` updated to version `0.1.0`
+* `timesheet-feature` updated to version `0.0.1`
+* `timesheet-feature` updated to version `0.0.1`
+* `screenshot-feature` updated to version `0.1.0`
+* `screenshot-feature` updated to version `0.1.0`
+* `timeline-feature` updated to version `0.1.0`
+* `timeline-feature` updated to version `0.1.0`
+* `upload-feature` updated to version `0.1.0`
+* `upload-data-access` updated to version `0.1.0`
+* `notification-data-access` updated to version `0.1.0`
+* `timeline-data-access` updated to version `0.1.0`
+
+### Bug Fixes
+
+* layout ([e542186](https://github.com/ever-co/ever-capture/commit/e54218637103ee7690e405a07d863ae851b834ad))
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+* remove unecessary imports ([5332e43](https://github.com/ever-co/ever-capture/commit/5332e43f5405ee4c9936cb3bdf2bc5a4e9630083))
+* tailwind config js ([9761084](https://github.com/ever-co/ever-capture/commit/97610843fa16e2fbcea5261b70ed53cca5e669f0))
+
+
+### Features
+
+* implement sidebar ([0e5252d](https://github.com/ever-co/ever-capture/commit/0e5252d4a984b1111daf7d260994cf71fe68ae2c))
+* improves upload progress notification ([1299007](https://github.com/ever-co/ever-capture/commit/129900771fc07f6a91f1174c373bfd311d69c11d))
+* move command buttons ([08ef606](https://github.com/ever-co/ever-capture/commit/08ef60687fa0f50858d8a1c513277dcccbdc691b))
+* separate all timeline elements ([6c3920a](https://github.com/ever-co/ever-capture/commit/6c3920a264f61c3905b74caa474a584eb6809e79))
+* separate layout from screenshot ([4b859f2](https://github.com/ever-co/ever-capture/commit/4b859f2d4d5dbe5cec1fc8c189a6754e23554b68))
+* **upload:** create upload feature to allow user to see uploading progress ([2d823d6](https://github.com/ever-co/ever-capture/commit/2d823d6aadb5c438f007807370ffbb8850b543a9))
+
+
+
 ## [0.3.17](https://github.com/ever-co/ever-capture/compare/layout-0.3.16...layout-0.3.17) (2025-01-10)
 
 ### Dependency Updates
