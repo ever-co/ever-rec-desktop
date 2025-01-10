@@ -45,7 +45,7 @@ export class VideoService implements IVideoService {
       if (input.screenshotIds) {
         const screenshots = await this.screenshotService.findAll({
           where: { id: In(input.screenshotIds) },
-          withDeleted: true
+          withDeleted: true,
         });
         if (screenshots.length !== input.screenshotIds.length) {
           throw new Error('Some screenshots were not found');
@@ -93,6 +93,9 @@ export class VideoService implements IVideoService {
     if (!existingVideo) {
       throw new Error(`Video with ID ${id} not found`);
     }
+
+    // Remove dynamic property
+    delete existingVideo.isTimeline;
 
     // Update properties of the existing video entity
     Object.assign(existingVideo, input);
