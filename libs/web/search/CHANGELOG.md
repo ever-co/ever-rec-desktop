@@ -2,6 +2,34 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## 0.0.1 (2025-01-10)
+
+### Dependency Updates
+
+* `screenshot-data-access` updated to version `0.1.0`
+* `shared-components` updated to version `0.1.0`
+
+### Bug Fixes
+
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+* tailwind config js ([9761084](https://github.com/ever-co/ever-capture/commit/97610843fa16e2fbcea5261b70ed53cca5e669f0))
+
+
+
+## 0.0.1 (2025-01-10)
+
+### Dependency Updates
+
+* `screenshot-data-access` updated to version `0.1.0`
+* `shared-components` updated to version `0.1.0`
+
+### Bug Fixes
+
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+* tailwind config js ([9761084](https://github.com/ever-co/ever-capture/commit/97610843fa16e2fbcea5261b70ed53cca5e669f0))
+
+
+
 ## [0.0.30](https://github.com/ever-co/ever-capture/compare/search-0.0.29...search-0.0.30) (2025-01-10)
 
 ### Dependency Updates
