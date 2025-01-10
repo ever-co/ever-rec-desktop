@@ -2,6 +2,18 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.4.9](https://github.com/ever-co/ever-capture/compare/shared-components-0.4.8...shared-components-0.4.9) (2025-01-10)
+
+### Dependency Updates
+
+* `upload-data-access` updated to version `0.2.6`
+
+### Bug Fixes
+
+* upload button visibility for single/timeline videos ([0f85986](https://github.com/ever-co/ever-capture/commit/0f8598684bd5f4b731145fc0234dc8c4e7f9a50c))
+
+
+
 ## [0.4.8](https://github.com/ever-co/ever-capture/compare/shared-components-0.4.7...shared-components-0.4.8) (2025-01-09)
 
 ### Dependency Updates
