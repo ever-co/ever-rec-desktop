@@ -31,6 +31,7 @@ import { selectUploadState, uploadActions } from '@ever-co/upload-data-access';
 import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
 import {
+  combineLatest,
   concatMap,
   debounceTime,
   distinctUntilChanged,
@@ -71,7 +72,6 @@ import {
   styleUrl: './video-detail.component.scss',
 })
 export class VideoDetailComponent implements OnInit, OnDestroy {
-  public video$!: Observable<IVideo | null>;
   private destroy$ = new Subject<void>();
   public actionButtons: IActionButton[] = [
     {
@@ -128,7 +128,10 @@ export class VideoDetailComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe();
-    this.video$ = this.store.select(selectVideoState).pipe(
+  }
+
+  public get video$(): Observable<IVideo> {
+    return this.store.select(selectVideoState).pipe(
       map((state) => state.video),
       takeUntil(this.destroy$)
     );
@@ -196,8 +199,15 @@ export class VideoDetailComponent implements OnInit, OnDestroy {
   }
 
   private get isUploadHidden$(): Observable<boolean> {
-    return this.store.select(selectSettingStorageState).pipe(
-      map(({ uploadConfig }) => !uploadConfig.manualSync),
+    return combineLatest([
+      this.store.select(selectSettingStorageState),
+      this.uploading$,
+      this.video$,
+    ]).pipe(
+      map(
+        ([{ uploadConfig }, uploading, video]) =>
+          !uploadConfig.manualSync || uploading || !!video?.isTimeline
+      ),
       takeUntil(this.destroy$)
     );
   }

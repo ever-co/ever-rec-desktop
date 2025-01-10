@@ -62,7 +62,6 @@ import {
   styleUrl: './video-gallery.component.scss',
 })
 export class VideoGalleryComponent implements OnInit, OnDestroy {
-  public videos$ = new Observable<IVideo[]>();
   private destroy$ = new Subject<void>();
   public isAvailable$ = new Observable<boolean>();
   public store = inject(Store);
@@ -91,15 +90,7 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
       variant: 'success',
       action: this.upload.bind(this),
       loading: this.uploading$,
-      hide: combineLatest([
-        this.moreThanOneSelected$,
-        this.isUploadHidden$,
-      ]).pipe(
-        map(
-          ([moreThanOneSelected, isUploadHidden]) =>
-            moreThanOneSelected || isUploadHidden
-        )
-      ),
+      hide: this.isHidden$,
     },
     {
       icon: 'remove_done',
@@ -145,11 +136,6 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     );
 
-    this.videos$ = this.store.select(selectVideoState).pipe(
-      map((state) => state.videos),
-      takeUntil(this.destroy$)
-    );
-
     this.store
       .select(selectDatePickerState)
       .pipe(
@@ -171,6 +157,26 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe();
+  }
+
+  public get isHidden$(): Observable<boolean> {
+    return combineLatest([
+      this.moreThanOneSelected$,
+      this.isUploadHidden$,
+      this.selectedVideos$,
+    ]).pipe(
+      map(
+        ([moreThanOneSelected, isUploadHidden, videos]) =>
+          moreThanOneSelected || isUploadHidden || !!videos[0]?.data?.isTimeline
+      )
+    );
+  }
+
+  public get videos$(): Observable<IVideo[]> {
+    return this.store.select(selectVideoState).pipe(
+      map((state) => state.videos),
+      takeUntil(this.destroy$)
+    );
   }
 
   private get generating$(): Observable<boolean> {

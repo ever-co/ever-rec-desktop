@@ -50,7 +50,7 @@ export const reducer = createReducer(
     error,
   })),
 
-  on(uploadActions.cancelUpload, (state) => ({
+  on(uploadActions.cancelUploadSuccess, (state) => ({
     ...state,
     uploading: false,
   }))

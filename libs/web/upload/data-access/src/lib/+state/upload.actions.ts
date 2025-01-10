@@ -12,6 +12,7 @@ export const uploadActions = createActionGroup({
     'Upload Video Failure': props<{ error: string }>(),
 
     'Cancel Upload': emptyProps(),
+    'Silent Upload Cancellation': emptyProps(),
     'Cancel Upload Success': emptyProps(),
-  }
+  },
 });
