@@ -90,10 +90,10 @@ Please check our official website <https://rec.so> and GitHub repository <https:
 
 #### Step 3: Publish All Packages (Optional)
 
-1. Publish all packages:
+1. Publish all packages or affected libraries:
 
    ```bash
-   yarn run publish:lib
+   yarn run publish:all or yarn run publish:affected:libraries
    ```
 
 2. Verify all packages are listed in your private registry.
