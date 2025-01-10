@@ -2,6 +2,28 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# 0.1.0 (2025-01-10)
+
+### Dependency Updates
+
+* `convert-video-data-access` updated to version `0.1.0`
+* `screenshot-data-access` updated to version `0.1.0`
+* `web-setting-data-access` updated to version `0.1.0`
+* `data-access-electron` updated to version `0.1.0`
+* `utils` updated to version `0.1.0`
+
+### Bug Fixes
+
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+
+
+### Features
+
+* improve auto sync adding auto sync service ([46e247f](https://github.com/ever-co/ever-capture/commit/46e247f4d592c2be2b757e5954d33c7e27099d36))
+* separete factories from libs ([130eae8](https://github.com/ever-co/ever-capture/commit/130eae837172f8ac359707db1df1ab75d15b47dd))
+
+
+
 ## [0.2.17](https://github.com/ever-co/ever-capture/compare/factory-0.2.16...factory-0.2.17) (2025-01-09)
 
 ### Dependency Updates
