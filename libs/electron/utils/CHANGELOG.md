@@ -2,6 +2,38 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# 0.1.0 (2025-01-10)
+
+### Dependency Updates
+
+* `utils` updated to version `0.1.0`
+
+### Bug Fixes
+
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+* remove unecessary import ([9774b23](https://github.com/ever-co/ever-capture/commit/9774b23148378c27cfc2d2bcf4ff052cf6ee707b))
+* removes unused IScreenshot import ([6746061](https://github.com/ever-co/ever-capture/commit/6746061cbd9bb214ef1f80af012ccb8e3dc93a9c))
+* timeline generation for single videos ([508d8a2](https://github.com/ever-co/ever-capture/commit/508d8a22d270749b8bd150c24426335e33c01433))
+* updates upload done notification message ([d9f6bc3](https://github.com/ever-co/ever-capture/commit/d9f6bc30ebc45bc5707433d27956d225d7c9109f))
+* upload button visibility for single/timeline videos ([0f85986](https://github.com/ever-co/ever-capture/commit/0f8598684bd5f4b731145fc0234dc8c4e7f9a50c))
+* video conversion ([9bbbdf6](https://github.com/ever-co/ever-capture/commit/9bbbdf62b5adcc7532aa89dd4d78ae0384d07e8b))
+* video conversion ([314c586](https://github.com/ever-co/ever-capture/commit/314c586480dedbe6099e5d080cdf633e63f080ab))
+
+
+### Features
+
+* added ordering by createdAt in ASC order to findOne queries in VideoConversionService. ([5b8ac76](https://github.com/ever-co/ever-capture/commit/5b8ac7609e1d326d6c058ea20dc8edf68b658276))
+* dded codec and batch fields to VideoMetadata entity and updated VideoConversionService to use them; updated VideoMetadataService to save codec and batch; added codec, batch, and resolution to video config and updated interfaces accordingly ([157ba9e](https://github.com/ever-co/ever-capture/commit/157ba9eb15fab7c11f0e3b925f0fe52cb69fe26f))
+* handle timeline uploading if not synced ([57f717f](https://github.com/ever-co/ever-capture/commit/57f717fb606f76efa2241bade7f5c12089757046))
+* improve this code by separate responsability ([eea58cf](https://github.com/ever-co/ever-capture/commit/eea58cf1a3b915c1c40cc8ea9c55955acb15ab15))
+* set 'private' to false in multiple package.json files ([b3506c9](https://github.com/ever-co/ever-capture/commit/b3506c95e079effddee1d6591afe213929ceeda4))
+* sync video after uploaded ([4ccb402](https://github.com/ever-co/ever-capture/commit/4ccb40296c9045a6c1eedea89ca1f159bea3b604))
+* Update ElectronLogger methods to accept variable number of arguments ([5b32d14](https://github.com/ever-co/ever-capture/commit/5b32d1477beecad47ec061fc61a2517bba3e44bf))
+* updated video conversion service, added effects and reducer for generate video actions, and modified components for video and screenshot timeline ([bce655a](https://github.com/ever-co/ever-capture/commit/bce655a3f653149da08bd41b98b369a68f3d60f0))
+* updates upload process to use POST method ([23d30ca](https://github.com/ever-co/ever-capture/commit/23d30ca4af91fe572c39864faf5047c48cb59f6c))
+
+
+
 # [0.5.0](https://github.com/ever-co/ever-capture/compare/electron-utils-0.4.4...electron-utils-0.5.0) (2025-01-10)
 
 
