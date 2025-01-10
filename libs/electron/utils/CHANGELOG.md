@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.5.0](https://github.com/ever-co/ever-capture/compare/electron-utils-0.4.4...electron-utils-0.5.0) (2025-01-10)
+
+
+### Features
+
+* handle timeline uploading if not synced ([57f717f](https://github.com/ever-co/ever-capture/commit/57f717fb606f76efa2241bade7f5c12089757046))
+
+
+
 ## [0.4.4](https://github.com/ever-co/ever-capture/compare/electron-utils-0.4.3...electron-utils-0.4.4) (2025-01-10)
 
 
