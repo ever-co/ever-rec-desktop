@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.2.6](https://github.com/ever-co/ever-capture/compare/upload-data-access-0.2.5...upload-data-access-0.2.6) (2025-01-10)
+
+
+### Bug Fixes
+
+* upload button visibility for single/timeline videos ([0f85986](https://github.com/ever-co/ever-capture/commit/0f8598684bd5f4b731145fc0234dc8c4e7f9a50c))
+
+
+
 ## [0.2.5](https://github.com/ever-co/ever-capture/compare/upload-data-access-0.2.4...upload-data-access-0.2.5) (2025-01-09)
 
 ### Dependency Updates
