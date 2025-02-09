@@ -1,6 +1,6 @@
 import { ILoggable, ILogger } from '@ever-co/shared-utils';
 import { ElectronLogger } from '../logger/electron-logger';
-import { IApplicationConfig, localStore } from '@gauzy/desktop-core';
+import { IApplicationConfig, localStore } from '@ever-gauzy/desktop-core';
 
 export class GauzyService implements ILoggable {
   public logger: ILogger = new ElectronLogger('Upload Service');
