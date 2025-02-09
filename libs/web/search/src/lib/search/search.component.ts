@@ -24,6 +24,8 @@ import {
   map,
   Observable,
   of,
+  Subject,
+  takeUntil,
   tap,
 } from 'rxjs';
 import { SearchOverlayComponent } from '../search-overlay/search-overlay.component';
@@ -45,6 +47,7 @@ import { SearchOverlayComponent } from '../search-overlay/search-overlay.compone
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchComponent implements OnInit {
+  public readonly destroy$ = new Subject<void>();
   @ViewChild('overlayPosition', { static: false })
   public overlay!: CdkOverlayOrigin;
 
@@ -60,9 +63,10 @@ export class SearchComponent implements OnInit {
   }
 
   public get searchTerm$(): Observable<string> {
-    return this.store
-      .select(selectScreenshotState)
-      .pipe(map((state) => state.search.filter));
+    return this.store.select(selectScreenshotState).pipe(
+      map((state) => state.search.filter),
+      takeUntil(this.destroy$)
+    );
   }
 
   public onSearch(searchQuery: string) {
@@ -82,15 +86,17 @@ export class SearchComponent implements OnInit {
             screenshotActions.addToHistory({ searchQuery: filter })
           );
         }),
-        concatMap(() => this.router.navigate(['/', 'search']))
+        concatMap(() => this.router.navigate(['/', 'search'])),
+        takeUntil(this.destroy$)
       )
       .subscribe();
   }
 
   public get isLoading$(): Observable<boolean> {
-    return this.store
-      .select(selectScreenshotState)
-      .pipe(map((state) => state.search.loading));
+    return this.store.select(selectScreenshotState).pipe(
+      map((state) => state.search.loading),
+      takeUntil(this.destroy$)
+    );
   }
 
   public overlayOpen(isOpen: boolean) {
@@ -98,8 +104,9 @@ export class SearchComponent implements OnInit {
   }
 
   public get overlayOpen$(): Observable<boolean> {
-    return this.store
-      .select(selectScreenshotState)
-      .pipe(map((state) => state.search.overlayOpen));
+    return this.store.select(selectScreenshotState).pipe(
+      map((state) => state.search.overlayOpen),
+      takeUntil(this.destroy$)
+    );
   }
 }
