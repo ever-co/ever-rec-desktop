@@ -2,7 +2,9 @@ import { CdkOverlayOrigin, OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  NgZone,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -21,6 +23,7 @@ import {
   debounceTime,
   distinctUntilChanged,
   filter,
+  fromEvent,
   map,
   Observable,
   of,
@@ -50,12 +53,34 @@ export class SearchComponent implements OnInit {
   public readonly destroy$ = new Subject<void>();
   @ViewChild('overlayPosition', { static: false })
   public overlay!: CdkOverlayOrigin;
+  private previousWidth = 0;
 
-  constructor(private readonly store: Store, private readonly router: Router) {}
+  constructor(
+    private readonly store: Store,
+    private readonly router: Router,
+    private readonly cdr: ChangeDetectorRef,
+    private readonly ngZone: NgZone
+  ) {}
 
   ngOnInit(): void {
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent(window, 'resize')
+        .pipe(
+          map((ev) => Number((ev.currentTarget as Window).innerWidth)),
+          distinctUntilChanged(),
+          filter((width) => width !== this.previousWidth),
+          tap((width) => {
+            this.previousWidth = width;
+            this.ngZone.run(() => this.cdr.detectChanges());
+          }),
+          takeUntil(this.destroy$)
+        )
+        .subscribe();
+    });
+
     this.store.dispatch(screenshotActions.loadHistory());
   }
+
   public get offsetWidth() {
     if (this.overlay) {
       return this.overlay.elementRef.nativeElement.offsetWidth;
