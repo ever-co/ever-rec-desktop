@@ -53,7 +53,6 @@ export class SearchComponent implements OnInit {
   public readonly destroy$ = new Subject<void>();
   @ViewChild('overlayPosition', { static: false })
   public overlay!: CdkOverlayOrigin;
-  private previousWidth = 0;
 
   constructor(
     private readonly store: Store,
@@ -68,10 +67,7 @@ export class SearchComponent implements OnInit {
         .pipe(
           map((event) => (event.target as Window).innerWidth),
           distinctUntilChanged(),
-          tap((width) => {
-            this.previousWidth = width;
-            this.ngZone.run(() => this.cdr.detectChanges());
-          }),
+          tap(() => this.ngZone.run(() => this.cdr.detectChanges())),
           takeUntil(this.destroy$)
         )
         .subscribe();
