@@ -64,11 +64,10 @@ export class SearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.ngZone.runOutsideAngular(() => {
-      fromEvent(window, 'resize')
+      fromEvent<UIEvent>(window, 'resize')
         .pipe(
-          map((ev) => Number((ev.currentTarget as Window).innerWidth)),
+          map((event) => (event.target as Window).innerWidth),
           distinctUntilChanged(),
-          filter((width) => width !== this.previousWidth),
           tap((width) => {
             this.previousWidth = width;
             this.ngZone.run(() => this.cdr.detectChanges());
