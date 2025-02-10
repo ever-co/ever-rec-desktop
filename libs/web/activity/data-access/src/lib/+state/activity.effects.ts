@@ -7,6 +7,7 @@ import { of } from 'rxjs';
 import { catchError, concatMap, map } from 'rxjs/operators';
 import { ActivityService } from '../services/activity.service';
 import { activityActions } from './activity.actions';
+import { getDateRangeInterval } from '@ever-co/shared-utils';
 
 @Injectable()
 export class ActivityEffects {
@@ -73,15 +74,17 @@ export class ActivityEffects {
   loadProductivityTrends$ = createEffect(() =>
     this.actions$.pipe(
       ofType(activityActions.loadProductivityTrends),
-      concatMap(({ range, interval }) =>
-        this.activityService.getProductivityTrends(range, interval).pipe(
-          concatMap((trends) => [
-            activityActions.loadProductivityTrendsSuccess({ trends }),
-          ]),
-          catchError((error) =>
-            of(activityActions.loadProductivityTrendsFailure({ error }))
+      concatMap(({ range }) =>
+        this.activityService
+          .getProductivityTrends(range, getDateRangeInterval(range))
+          .pipe(
+            concatMap((trends) => [
+              activityActions.loadProductivityTrendsSuccess({ trends }),
+            ]),
+            catchError((error) =>
+              of(activityActions.loadProductivityTrendsFailure({ error }))
+            )
           )
-        )
       )
     )
   );

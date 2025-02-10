@@ -2,6 +2,25 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# 0.1.0 (2025-01-10)
+
+### Dependency Updates
+
+* `upload-data-access` updated to version `0.1.0`
+
+### Bug Fixes
+
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+* tailwind config js ([9761084](https://github.com/ever-co/ever-capture/commit/97610843fa16e2fbcea5261b70ed53cca5e669f0))
+* upload button visibility for single/timeline videos ([0f85986](https://github.com/ever-co/ever-capture/commit/0f8598684bd5f4b731145fc0234dc8c4e7f9a50c))
+
+
+### Features
+
+* **upload:** create upload feature to allow user to see uploading progress ([2d823d6](https://github.com/ever-co/ever-capture/commit/2d823d6aadb5c438f007807370ffbb8850b543a9))
+
+
+
 ## [0.1.12](https://github.com/ever-co/ever-capture/compare/upload-feature-0.1.11...upload-feature-0.1.12) (2025-01-10)
 
 ### Dependency Updates

@@ -2,6 +2,41 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# 0.1.0 (2025-01-10)
+
+### Dependency Updates
+
+* `notification-data-access` updated to version `0.1.0`
+* `data-access-electron` updated to version `0.1.0`
+* `shared-service` updated to version `0.1.0`
+* `utils` updated to version `0.1.0`
+* `web-setting-data-access` updated to version `0.1.0`
+* `convert-video-data-access` updated to version `0.1.0`
+* `screenshot-data-access` updated to version `0.1.0`
+* `timesheet-data-access` updated to version `0.0.1`
+* `upload-data-access` updated to version `0.1.0`
+
+### Bug Fixes
+
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+* tailwind config js ([9761084](https://github.com/ever-co/ever-capture/commit/97610843fa16e2fbcea5261b70ed53cca5e669f0))
+* updated gallery component HTML and SCSS: added createdAt timestamp to figcaption, wrapped figcaption content in div, and added display flex and margin styles to figure element. ([8545924](https://github.com/ever-co/ever-capture/commit/8545924649a24ce9464da6c2d61caa598e0e5d1f))
+* upload button visibility for single/timeline videos ([0f85986](https://github.com/ever-co/ever-capture/commit/0f8598684bd5f4b731145fc0234dc8c4e7f9a50c))
+
+
+### Features
+
+* create pipe, utc to local time pipe ([acc794d](https://github.com/ever-co/ever-capture/commit/acc794d6ebbdc5b9b6df75f83bc4d41fdc4bbb06))
+* create reusable component ([d1bce63](https://github.com/ever-co/ever-capture/commit/d1bce6369b54fd614114e84c3ebf755148f4e79d))
+* displays video sync status and full name ([b164ccf](https://github.com/ever-co/ever-capture/commit/b164ccf9de583ad56f6ef6fe16b2bb0ae48c8d55))
+* improve gallery button group ([1e093b5](https://github.com/ever-co/ever-capture/commit/1e093b53f05de6f474ca309aee0df4481d869899))
+* improve video upload setting ([4d71737](https://github.com/ever-co/ever-capture/commit/4d71737ef629795aabf9ef4bc08dce24e4a15808))
+* modularize ever capture ([0549ee2](https://github.com/ever-co/ever-capture/commit/0549ee29138fe36f7e3c80a7351d28235f9b9055))
+* move command buttons ([08ef606](https://github.com/ever-co/ever-capture/commit/08ef60687fa0f50858d8a1c513277dcccbdc691b))
+* optimize storage ([c73da1b](https://github.com/ever-co/ever-capture/commit/c73da1b0d79e33ba6fd85e21848254be77eee80a))
+
+
+
 ## [0.4.9](https://github.com/ever-co/ever-capture/compare/shared-components-0.4.8...shared-components-0.4.9) (2025-01-10)
 
 ### Dependency Updates

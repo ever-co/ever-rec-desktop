@@ -2,6 +2,42 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.1.1](https://github.com/ever-co/ever-capture/compare/web-setting-feature-0.1.0...web-setting-feature-0.1.1) (2025-01-10)
+
+### Dependency Updates
+
+* `convert-video-feature` updated to version `0.1.0`
+* `convert-video-feature` updated to version `0.1.0`
+
+
+# 0.1.0 (2025-01-10)
+
+### Dependency Updates
+
+* `notification-data-access` updated to version `0.1.0`
+* `shared-service` updated to version `0.1.0`
+* `utils` updated to version `0.1.0`
+* `web-setting-data-access` updated to version `0.1.0`
+* `convert-video-feature` updated to version `0.1.0`
+* `convert-video-feature` updated to version `0.1.0`
+* `screenshot-feature` updated to version `0.1.0`
+* `screenshot-feature` updated to version `0.1.0`
+* `breadcrumb-data-access` updated to version `0.1.0`
+* `screenshot-data-access` updated to version `0.1.0`
+* `shared-components` updated to version `0.1.0`
+
+### Bug Fixes
+
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+* tailwind config js ([9761084](https://github.com/ever-co/ever-capture/commit/97610843fa16e2fbcea5261b70ed53cca5e669f0))
+
+
+### Features
+
+* improve video upload setting ([4d71737](https://github.com/ever-co/ever-capture/commit/4d71737ef629795aabf9ef4bc08dce24e4a15808))
+
+
+
 ## [0.1.10](https://github.com/ever-co/ever-capture/compare/web-setting-feature-0.1.9...web-setting-feature-0.1.10) (2025-01-10)
 
 ### Dependency Updates

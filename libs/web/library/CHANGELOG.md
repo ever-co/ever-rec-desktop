@@ -2,6 +2,31 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.0.2](https://github.com/ever-co/ever-capture/compare/library-0.0.1...library-0.0.2) (2025-01-10)
+
+### Dependency Updates
+
+* `convert-video-feature` updated to version `0.1.0`
+* `convert-video-feature` updated to version `0.1.0`
+
+
+## 0.0.1 (2025-01-10)
+
+### Dependency Updates
+
+* `convert-video-feature` updated to version `0.1.0`
+* `convert-video-feature` updated to version `0.1.0`
+* `screenshot-feature` updated to version `0.1.0`
+* `screenshot-feature` updated to version `0.1.0`
+* `breadcrumb-data-access` updated to version `0.1.0`
+
+### Bug Fixes
+
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+* tailwind config js ([9761084](https://github.com/ever-co/ever-capture/commit/97610843fa16e2fbcea5261b70ed53cca5e669f0))
+
+
+
 ## [0.0.33](https://github.com/ever-co/ever-capture/compare/library-0.0.32...library-0.0.33) (2025-01-10)
 
 ### Dependency Updates

@@ -2,6 +2,70 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# 0.1.0 (2025-01-10)
+
+### Dependency Updates
+
+* `convert-video-data-access` updated to version `0.1.0`
+* `notification-data-access` updated to version `0.1.0`
+* `shared-service` updated to version `0.1.0`
+* `utils` updated to version `0.1.0`
+* `screenshot-data-access` updated to version `0.1.0`
+* `shared-components` updated to version `0.1.0`
+* `upload-data-access` updated to version `0.1.0`
+* `web-setting-data-access` updated to version `0.1.0`
+
+### Bug Fixes
+
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+* tailwind config js ([9761084](https://github.com/ever-co/ever-capture/commit/97610843fa16e2fbcea5261b70ed53cca5e669f0))
+* unnecessary coalescence sign ([0df9110](https://github.com/ever-co/ever-capture/commit/0df911041a54187f3abdd8fc860e2371d0677d7b))
+* upload button visibility for single/timeline videos ([0f85986](https://github.com/ever-co/ever-capture/commit/0f8598684bd5f4b731145fc0234dc8c4e7f9a50c))
+
+
+### Features
+
+* create reusable component ([d1bce63](https://github.com/ever-co/ever-capture/commit/d1bce6369b54fd614114e84c3ebf755148f4e79d))
+* displays video sync status and full name ([b164ccf](https://github.com/ever-co/ever-capture/commit/b164ccf9de583ad56f6ef6fe16b2bb0ae48c8d55))
+* improve code ([dbe8570](https://github.com/ever-co/ever-capture/commit/dbe857012a1f536779871cc1eff7aeb1feedf94a))
+* improve video upload setting ([4d71737](https://github.com/ever-co/ever-capture/commit/4d71737ef629795aabf9ef4bc08dce24e4a15808))
+* modularize ever capture ([0549ee2](https://github.com/ever-co/ever-capture/commit/0549ee29138fe36f7e3c80a7351d28235f9b9055))
+* updated video conversion service, added effects and reducer for generate video actions, and modified components for video and screenshot timeline ([bce655a](https://github.com/ever-co/ever-capture/commit/bce655a3f653149da08bd41b98b369a68f3d60f0))
+
+
+
+# 0.1.0 (2025-01-10)
+
+### Dependency Updates
+
+* `convert-video-data-access` updated to version `0.1.0`
+* `notification-data-access` updated to version `0.1.0`
+* `shared-service` updated to version `0.1.0`
+* `utils` updated to version `0.1.0`
+* `screenshot-data-access` updated to version `0.1.0`
+* `shared-components` updated to version `0.1.0`
+* `upload-data-access` updated to version `0.1.0`
+* `web-setting-data-access` updated to version `0.1.0`
+
+### Bug Fixes
+
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+* tailwind config js ([9761084](https://github.com/ever-co/ever-capture/commit/97610843fa16e2fbcea5261b70ed53cca5e669f0))
+* unnecessary coalescence sign ([0df9110](https://github.com/ever-co/ever-capture/commit/0df911041a54187f3abdd8fc860e2371d0677d7b))
+* upload button visibility for single/timeline videos ([0f85986](https://github.com/ever-co/ever-capture/commit/0f8598684bd5f4b731145fc0234dc8c4e7f9a50c))
+
+
+### Features
+
+* create reusable component ([d1bce63](https://github.com/ever-co/ever-capture/commit/d1bce6369b54fd614114e84c3ebf755148f4e79d))
+* displays video sync status and full name ([b164ccf](https://github.com/ever-co/ever-capture/commit/b164ccf9de583ad56f6ef6fe16b2bb0ae48c8d55))
+* improve code ([dbe8570](https://github.com/ever-co/ever-capture/commit/dbe857012a1f536779871cc1eff7aeb1feedf94a))
+* improve video upload setting ([4d71737](https://github.com/ever-co/ever-capture/commit/4d71737ef629795aabf9ef4bc08dce24e4a15808))
+* modularize ever capture ([0549ee2](https://github.com/ever-co/ever-capture/commit/0549ee29138fe36f7e3c80a7351d28235f9b9055))
+* updated video conversion service, added effects and reducer for generate video actions, and modified components for video and screenshot timeline ([bce655a](https://github.com/ever-co/ever-capture/commit/bce655a3f653149da08bd41b98b369a68f3d60f0))
+
+
+
 ## [0.3.10](https://github.com/ever-co/ever-capture/compare/convert-video-feature-0.3.9...convert-video-feature-0.3.10) (2025-01-10)
 
 ### Dependency Updates

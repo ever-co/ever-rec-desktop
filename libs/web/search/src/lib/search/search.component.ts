@@ -2,7 +2,9 @@ import { CdkOverlayOrigin, OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  NgZone,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -21,9 +23,12 @@ import {
   debounceTime,
   distinctUntilChanged,
   filter,
+  fromEvent,
   map,
   Observable,
   of,
+  Subject,
+  takeUntil,
   tap,
 } from 'rxjs';
 import { SearchOverlayComponent } from '../search-overlay/search-overlay.component';
@@ -45,14 +50,32 @@ import { SearchOverlayComponent } from '../search-overlay/search-overlay.compone
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchComponent implements OnInit {
+  public readonly destroy$ = new Subject<void>();
   @ViewChild('overlayPosition', { static: false })
   public overlay!: CdkOverlayOrigin;
 
-  constructor(private readonly store: Store, private readonly router: Router) {}
+  constructor(
+    private readonly store: Store,
+    private readonly router: Router,
+    private readonly cdr: ChangeDetectorRef,
+    private readonly ngZone: NgZone
+  ) {}
 
   ngOnInit(): void {
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent<UIEvent>(window, 'resize')
+        .pipe(
+          map((event) => (event.target as Window).innerWidth),
+          distinctUntilChanged(),
+          tap(() => this.ngZone.run(() => this.cdr.detectChanges())),
+          takeUntil(this.destroy$)
+        )
+        .subscribe();
+    });
+
     this.store.dispatch(screenshotActions.loadHistory());
   }
+
   public get offsetWidth() {
     if (this.overlay) {
       return this.overlay.elementRef.nativeElement.offsetWidth;
@@ -60,9 +83,10 @@ export class SearchComponent implements OnInit {
   }
 
   public get searchTerm$(): Observable<string> {
-    return this.store
-      .select(selectScreenshotState)
-      .pipe(map((state) => state.search.filter));
+    return this.store.select(selectScreenshotState).pipe(
+      map((state) => state.search.filter),
+      takeUntil(this.destroy$)
+    );
   }
 
   public onSearch(searchQuery: string) {
@@ -82,15 +106,17 @@ export class SearchComponent implements OnInit {
             screenshotActions.addToHistory({ searchQuery: filter })
           );
         }),
-        concatMap(() => this.router.navigate(['/', 'search']))
+        concatMap(() => this.router.navigate(['/', 'search'])),
+        takeUntil(this.destroy$)
       )
       .subscribe();
   }
 
   public get isLoading$(): Observable<boolean> {
-    return this.store
-      .select(selectScreenshotState)
-      .pipe(map((state) => state.search.loading));
+    return this.store.select(selectScreenshotState).pipe(
+      map((state) => state.search.loading),
+      takeUntil(this.destroy$)
+    );
   }
 
   public overlayOpen(isOpen: boolean) {
@@ -98,8 +124,9 @@ export class SearchComponent implements OnInit {
   }
 
   public get overlayOpen$(): Observable<boolean> {
-    return this.store
-      .select(selectScreenshotState)
-      .pipe(map((state) => state.search.overlayOpen));
+    return this.store.select(selectScreenshotState).pipe(
+      map((state) => state.search.overlayOpen),
+      takeUntil(this.destroy$)
+    );
   }
 }

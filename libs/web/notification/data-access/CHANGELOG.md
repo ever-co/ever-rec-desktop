@@ -2,6 +2,25 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# 0.1.0 (2025-01-10)
+
+### Dependency Updates
+
+* `utils` updated to version `0.1.0`
+* `shared-service` updated to version `0.1.0`
+* `data-access-electron` updated to version `0.1.0`
+
+### Bug Fixes
+
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+
+
+### Features
+
+* improves upload progress notification ([1299007](https://github.com/ever-co/ever-capture/commit/129900771fc07f6a91f1174c373bfd311d69c11d))
+
+
+
 ## [0.1.6](https://github.com/ever-co/ever-capture/compare/notification-data-access-0.1.5...notification-data-access-0.1.6) (2025-01-09)
 
 ### Dependency Updates

@@ -2,6 +2,33 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# 0.1.0 (2025-01-10)
+
+### Dependency Updates
+
+* `utils` updated to version `0.1.0`
+* `convert-video-data-access` updated to version `0.1.0`
+* `notification-data-access` updated to version `0.1.0`
+* `data-access-electron` updated to version `0.1.0`
+* `web-setting-data-access` updated to version `0.1.0`
+
+### Bug Fixes
+
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+* remove console.log(...) ([de5d503](https://github.com/ever-co/ever-capture/commit/de5d503b41b308357e70d7e9a1470ed9ce3dcaf1))
+* timeline generation for single videos ([508d8a2](https://github.com/ever-co/ever-capture/commit/508d8a22d270749b8bd150c24426335e33c01433))
+* updates upload done notification message ([d9f6bc3](https://github.com/ever-co/ever-capture/commit/d9f6bc30ebc45bc5707433d27956d225d7c9109f))
+* upload button visibility for single/timeline videos ([0f85986](https://github.com/ever-co/ever-capture/commit/0f8598684bd5f4b731145fc0234dc8c4e7f9a50c))
+* upload config key for videos ([2346b8e](https://github.com/ever-co/ever-capture/commit/2346b8e60adcac611be92bf3ab8359a869fa881c))
+
+
+### Features
+
+* improve video upload setting ([4d71737](https://github.com/ever-co/ever-capture/commit/4d71737ef629795aabf9ef4bc08dce24e4a15808))
+* logs the result of the upload process ([3df8820](https://github.com/ever-co/ever-capture/commit/3df8820ba4f8c4be3ee733349b62f5d02a7a1fd2))
+
+
+
 ## [0.2.6](https://github.com/ever-co/ever-capture/compare/upload-data-access-0.2.5...upload-data-access-0.2.6) (2025-01-10)
 
 
