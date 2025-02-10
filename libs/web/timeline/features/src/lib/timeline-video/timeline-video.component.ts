@@ -52,7 +52,6 @@ export class TimelineVideoComponent
   public generating$!: Observable<boolean>;
   public isFullscreen$ = new BehaviorSubject<boolean>(false);
   public currentTime$ = new BehaviorSubject<string>('00:00:00');
-  public duration$ = new BehaviorSubject<string>('00:00');
 
   constructor(private readonly store: Store) {}
 
@@ -188,6 +187,25 @@ export class TimelineVideoComponent
     return this.store.select(selectTimelineState).pipe(
       map(({ player }) => player),
       distinctUntilChanged(),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  public get duration$(): Observable<string> {
+    return this.player$.pipe(
+      map(({ duration }) => {
+        const time = moment.duration(duration, 'seconds');
+
+        if (time.seconds() === 0) {
+          return time.format('ss.SS', { trim: false });
+        }
+
+        if (time.minutes() === 0) {
+          return time.format('mm:ss', { trim: false });
+        }
+
+        return time.format('HH:mm', { trim: false });
+      }),
       takeUntil(this.destroy$)
     );
   }
