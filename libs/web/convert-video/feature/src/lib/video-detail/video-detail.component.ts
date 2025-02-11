@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
@@ -67,6 +68,7 @@ import {
     HumanizePipe,
     CopyToClipboardDirective,
     ResolutionPipe,
+    FormsModule,
   ],
   templateUrl: './video-detail.component.html',
   styleUrl: './video-detail.component.scss',
@@ -100,6 +102,7 @@ export class VideoDetailComponent implements OnInit, OnDestroy {
       action: this.deleteVideo.bind(this),
     },
   ];
+  public isEditing = false;
 
   constructor(
     private readonly router: Router,
@@ -151,7 +154,7 @@ export class VideoDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onInput(summary: string, video: IVideo) {
+  public onSummaryChange(summary: string, video: IVideo) {
     of(summary)
       .pipe(
         debounceTime(1000),
@@ -160,6 +163,28 @@ export class VideoDetailComponent implements OnInit, OnDestroy {
           const metadata = {
             ...video.metadata,
             summary,
+          } as IVideoMetadata;
+          this.store.dispatch(
+            videoActions.updateVideo({
+              ...video,
+              metadata,
+            })
+          );
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
+
+  public onTitleChange(title: string, video: IVideo) {
+    of(title)
+      .pipe(
+        debounceTime(1000),
+        distinctUntilChanged(),
+        tap((title) => {
+          const metadata = {
+            ...video.metadata,
+            name: title,
           } as IVideoMetadata;
           this.store.dispatch(
             videoActions.updateVideo({

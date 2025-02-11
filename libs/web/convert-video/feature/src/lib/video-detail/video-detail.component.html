@@ -11,8 +11,39 @@
         ></lib-video>
       </div>
       <div class="mt-6">
-        <div class="text-2xl mb-2 font-bold text-gray-800 truncate">
-          {{ video.metadata?.name }}
+        <div
+          class="text-2xl mb-2 font-bold text-gray-800 truncate relative group"
+        >
+          <!-- Display Mode -->
+          @if(!isEditing){
+          <div
+            class="cursor-pointer hover:text-primary-600"
+            (click)="isEditing = true"
+          >
+            {{ video.metadata?.name || 'Untitled Video' }}
+          </div>
+          }
+
+          <!-- Edit Mode -->
+          @if(isEditing){
+          <mat-form-field appearance="outline" class="w-full">
+            <input
+              matInput
+              #title
+              [value]="video.metadata?.name"
+              (blur)="isEditing = false"
+              (keydown.enter)="
+                isEditing = false; onTitleChange(title.value, video)
+              "
+              class="text-2xl font-bold"
+              autofocus
+            />
+            <!-- Suffix Icon for Confirm -->
+            <button mat-icon-button matPrefix tabindex="-1">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </mat-form-field>
+          }
         </div>
         <div class="text-xl font-bold flex justify-between text-gray-600 mb-2">
           <span>Summary</span>
@@ -24,7 +55,7 @@
           <textarea
             [value]="video.metadata?.summary"
             #area
-            (input)="onInput(area.value, video)"
+            (input)="onSummaryChange(area.value, video)"
             matInput
             rows="3"
           ></textarea>
