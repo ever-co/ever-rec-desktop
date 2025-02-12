@@ -2,6 +2,40 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.1.4](https://github.com/ever-co/ever-capture/compare/web-setting-feature-0.1.3...web-setting-feature-0.1.4) (2025-02-12)
+
+### Dependency Updates
+
+* `notification-data-access` updated to version `0.1.2`
+* `shared-service` updated to version `0.1.2`
+* `utils` updated to version `0.1.2`
+* `web-setting-data-access` updated to version `0.1.3`
+* `convert-video-feature` updated to version `0.2.2`
+* `convert-video-feature` updated to version `0.2.2`
+* `screenshot-feature` updated to version `0.1.4`
+* `screenshot-feature` updated to version `0.1.4`
+* `breadcrumb-data-access` updated to version `0.1.1`
+* `screenshot-data-access` updated to version `0.1.3`
+* `shared-components` updated to version `0.1.3`
+
+
+## [0.1.4](https://github.com/ever-co/ever-capture/compare/web-setting-feature-0.1.3...web-setting-feature-0.1.4) (2025-02-12)
+
+### Dependency Updates
+
+* `notification-data-access` updated to version `0.1.2`
+* `shared-service` updated to version `0.1.2`
+* `utils` updated to version `0.1.2`
+* `web-setting-data-access` updated to version `0.1.3`
+* `convert-video-feature` updated to version `0.2.2`
+* `convert-video-feature` updated to version `0.2.2`
+* `screenshot-feature` updated to version `0.1.4`
+* `screenshot-feature` updated to version `0.1.4`
+* `breadcrumb-data-access` updated to version `0.1.1`
+* `screenshot-data-access` updated to version `0.1.3`
+* `shared-components` updated to version `0.1.3`
+
+
 ## [0.1.3](https://github.com/ever-co/ever-capture/compare/web-setting-feature-0.1.2...web-setting-feature-0.1.3) (2025-02-12)
 
 ### Dependency Updates
