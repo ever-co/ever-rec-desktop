@@ -2,6 +2,25 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.1.0](https://github.com/ever-co/ever-capture/compare/search-0.0.1...search-0.1.0) (2025-02-12)
+
+### Dependency Updates
+
+* `screenshot-data-access` updated to version `0.1.0`
+* `shared-components` updated to version `0.1.1`
+
+### Bug Fixes
+
+* improves search overlay and component performance ([7b1b63c](https://github.com/ever-co/ever-capture/commit/7b1b63ccb7c5dc802b13a735933da1d234813ff8))
+* search bar misalignment on window resize ([d326fab](https://github.com/ever-co/ever-capture/commit/d326fab7ae6c28a77a940ef22c5378edd0bdc380))
+
+
+### Features
+
+* improves window resize handling ([d75498d](https://github.com/ever-co/ever-capture/commit/d75498d0b4d58d691155d29937dc49dd044a1c0c))
+
+
+
 ## 0.0.1 (2025-01-10)
 
 ### Dependency Updates
