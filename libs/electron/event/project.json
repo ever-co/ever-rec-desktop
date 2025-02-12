@@ -42,7 +42,7 @@
       "options": {
         "parallel": false,
         "commands": [
-          "cd dist/libs/electron/event && npm publish --access public"
+          "cd dist/libs/electron/event && npm publish"
         ]
       },
       "dependsOn": [

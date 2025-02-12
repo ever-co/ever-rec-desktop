@@ -50,7 +50,7 @@
       "options": {
         "parallel": false,
         "commands": [
-          "cd dist/libs/web/upload/data-access && npm publish --access public"
+          "cd dist/libs/web/upload/data-access && npm publish"
         ]
       },
       "dependsOn": [

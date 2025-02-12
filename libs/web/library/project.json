@@ -51,7 +51,7 @@
       "options": {
         "parallel": false,
         "commands": [
-          "cd dist/libs/web/library && npm publish --access public"
+          "cd dist/libs/web/library && npm publish"
         ]
       },
       "dependsOn": [

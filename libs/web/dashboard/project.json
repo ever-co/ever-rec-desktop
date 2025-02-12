@@ -51,7 +51,7 @@
       "options": {
         "parallel": false,
         "commands": [
-          "cd dist/libs/web/dashboard && npm publish --access public"
+          "cd dist/libs/web/dashboard && npm publish"
         ]
       },
       "dependsOn": [

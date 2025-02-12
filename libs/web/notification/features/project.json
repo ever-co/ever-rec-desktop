@@ -51,7 +51,7 @@
       "options": {
         "parallel": false,
         "commands": [
-          "cd dist/libs/web/notification/features && npm publish --access public"
+          "cd dist/libs/web/notification/features && npm publish"
         ]
       },
       "dependsOn": [

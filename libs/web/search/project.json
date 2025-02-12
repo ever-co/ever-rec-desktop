@@ -50,7 +50,7 @@
       "options": {
         "parallel": false,
         "commands": [
-          "cd dist/libs/web/search && npm publish --access public"
+          "cd dist/libs/web/search && npm publish"
         ]
       },
       "dependsOn": [

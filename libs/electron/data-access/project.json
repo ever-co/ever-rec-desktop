@@ -50,7 +50,7 @@
       "options": {
         "parallel": false,
         "commands": [
-          "cd dist/libs/electron/data-access && npm publish --access public"
+          "cd dist/libs/electron/data-access && npm publish"
         ]
       },
       "dependsOn": [
