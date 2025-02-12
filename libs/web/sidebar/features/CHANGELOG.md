@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.1.2](https://github.com/ever-co/ever-capture/compare/sidebar-feature-0.1.1...sidebar-feature-0.1.2) (2025-02-12)
+
+### Dependency Updates
+
+* `breadcrumb-data-access` updated to version `0.1.1`
+* `shared-service` updated to version `0.1.2`
+* `sidebar` updated to version `0.1.1`
+
+
 ## [0.1.1](https://github.com/ever-co/ever-capture/compare/sidebar-feature-0.1.0...sidebar-feature-0.1.1) (2025-02-12)
 
 ### Dependency Updates
