@@ -11,5 +11,7 @@
     "@ever-co/electron-data-access": "0.1.0",
     "@angular/material": "^18.2.11"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "license": "GPL-3.0",
+  "private": false
 }

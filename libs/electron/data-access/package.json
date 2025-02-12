@@ -16,5 +16,5 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ever Co. LTD <ever@ever.co> (https://ever.co)",
-  "license": "ISC"
+  "license": "GPL-3.0"
 }

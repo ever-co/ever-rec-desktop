@@ -13,5 +13,7 @@
     "@angular/cdk": "^18.2.11",
     "@nx/angular": "19.8.3"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "license": "GPL-3.0",
+  "private": false
 }

@@ -9,5 +9,7 @@
     "rxjs": "~7.8.0",
     "@ever-co/web-setting-data-access": "0.0.3"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "license": "GPL-3.0",
+  "private": false
 }

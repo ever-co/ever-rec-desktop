@@ -10,5 +10,7 @@
     "@ngrx/effects": "18.1.0",
     "rxjs": "~7.8.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "license": "GPL-3.0",
+  "private": false
 }
