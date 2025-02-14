@@ -44,9 +44,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build Electron app
-        run: |
-           npx nx reset
-           yarn build:prod
+        run: yarn build
 
       - name: Package Electron app
         run: yarn make
