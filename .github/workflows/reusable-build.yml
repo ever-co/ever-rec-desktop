@@ -29,19 +29,26 @@ jobs:
           node-version: ${{ inputs.node-version }}
           cache: 'yarn'
 
-      - name: Fix node-gyp and Python
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            .yarn-cache
+            node_modules/.cache
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Set up dependencies (Python & Build Tools)
         run: |
           python3 -m pip install --upgrade pip setuptools wheel packaging --break-system-packages
-          npm install -g node-gyp
-        shell: bash
-
-      - name: Fix Electron builder
-        run: |
-          npm install -g electron-builder
+          npm install --global --production windows-build-tools || true
         shell: bash
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+        env:
+          YARN_CACHE_FOLDER: .yarn-cache
 
       - name: Build Electron app
         run: yarn build:prod
@@ -52,14 +59,11 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build-${{ inputs.os }}${{ inputs.arch && format('-{0}', inputs.arch) || '' }}
-          path: |
-            dist/executables/*.AppImage
-            dist/executables/*.dmg
-            dist/executables/*.exe
+          name: electron-build-${{ inputs.os }}-${{ inputs.arch }}
+          path: dist/executables/
           if-no-files-found: error
 
-      - name: Upload Logs (for debugging)
+      - name: Upload Logs (if failure occurs)
         if: failure()
         uses: actions/upload-artifact@v4
         with:
