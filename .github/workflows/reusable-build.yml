@@ -29,10 +29,15 @@ jobs:
           node-version: ${{ inputs.node-version }}
           cache: 'yarn'
 
-      - name: Fix node-gyp and Python (Linux & macOS)
+      - name: Fix node-gyp and Python
         run: |
           python3 -m pip install --upgrade pip setuptools wheel packaging --break-system-packages
           npm install -g node-gyp
+        shell: bash
+
+      - name: Fix Electron builder
+        run: |
+          npm install -g electron-builder
         shell: bash
 
       - name: Install dependencies
