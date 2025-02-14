@@ -11,6 +11,10 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
+        arch: [x64, arm64]
+        include:
+          - os:  macos-12
+            arch: x64
 
     steps:
       - name: Checkout repository
@@ -19,7 +23,15 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4.0.2
         with:
-          node-version: latest
+          node-version: 20.11.1
+
+      - name: Fix node-gyp and Python
+        run: |
+              python3 -m pip install --upgrade pip setuptools wheel packaging --break-system-packages
+              npm install -g node-gyp
+        shell: bash
+        env:
+          NODE_ENV: production
 
       - name: Install dependencies
         run: yarn install
