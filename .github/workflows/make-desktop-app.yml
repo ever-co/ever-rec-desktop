@@ -6,59 +6,17 @@ on:
       - develop
 
 jobs:
-  make:
-    runs-on: ${{ matrix.os }}
+  build:
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [macos-latest, windows-latest, ubuntu-latest]
+        arch: [x64, arm64]
+        node-version: [20.11.1]
         include:
-          - os:  macos-latest
-            arch: arm64
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4.1.7
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4.0.2
-        with:
-          node-version: 20.11.1
-
-      - name: Fix node-gyp and Python
-        run: |
-              python3 -m pip install --upgrade pip setuptools wheel packaging --break-system-packages
-              npm install -g node-gyp
-        shell: bash
-        env:
-          NODE_ENV: production
-
-      - name: Install dependencies
-        run: yarn install
-
-      - name: Build Electron app
-        run: yarn build  # Adjust this command according to your build script
-
-      - name: Package Electron app
-        run: yarn make
-
-      - name: Upload a Linux Build Artifact
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-        uses: actions/upload-artifact@v4.3.4
-        with:
-          name: ${{ matrix.os }}
-          path: dist/executables/*.AppImage
-
-      - name: Upload a MacOS Build Artifact
-        if: ${{ matrix.os == 'macos-latest' }}
-        uses: actions/upload-artifact@v4.3.4
-        with:
-          name: ${{ matrix.os }} - ${{ matrix.arch }}
-          path: dist/executables/*.dmg
-
-
-      - name: Upload a Windows Build Artifact
-        if: ${{ matrix.os == 'windows-latest' }}
-        uses: actions/upload-artifact@v4.3.4
-        with:
-          name: ${{ matrix.os }}
-          path: dist/executables/*.exe
+          - os:  macos-12
+            arch: x64
+    uses: ./.github/workflows/reusable-build.yml
+    with:
+      os: ${{ matrix.os }}
+      arch: ${{ matrix.arch }}
+      node-version: ${{ matrix.node-version }}

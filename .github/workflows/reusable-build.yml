@@ -1,0 +1,81 @@
+name: Reusable Electron Build
+
+on:
+  workflow_call:
+    inputs:
+      os:
+        required: true
+        type: string
+      arch:
+        required: true
+        type: string
+      node-version:
+        required: true
+        type: string
+
+jobs:
+  setup:
+    runs-on: ${{ inputs.os }}
+    outputs:
+      cache-key: ${{ steps.cache-key.outputs.cache-key }}
+    steps:
+      - name: Generate Cache Key
+        id: cache-key
+        run: echo "cache-key=$(date +%Y-%m-%d)" >> $GITHUB_ENV
+
+  build:
+    needs: setup
+    runs-on: ${{ inputs.os }}
+    env:
+      NODE_ENV: production
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: 'yarn'
+
+      - name: Restore Cached Dependencies
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ needs.setup.outputs.cache-key }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Fix node-gyp and Python (Linux & macOS)
+        if: runner.os != 'Windows'
+        run: |
+          python3 -m pip install --upgrade pip setuptools wheel packaging --break-system-packages
+          npm install -g node-gyp
+        shell: bash
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build Electron app
+        run: yarn build
+
+      - name: Package Electron app
+        run: yarn make
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ inputs.os }}${{ inputs.arch && format('-{0}', inputs.arch) || '' }}
+          path: |
+            dist/executables/*.AppImage
+            dist/executables/*.dmg
+            dist/executables/*.exe
+          if-no-files-found: error
+
+      - name: Upload Logs (for debugging)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs-${{ inputs.os }}
+          path: logs/
