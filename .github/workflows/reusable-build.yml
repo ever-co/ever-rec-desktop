@@ -14,17 +14,7 @@ on:
         type: string
 
 jobs:
-  setup:
-    runs-on: ${{ inputs.os }}
-    outputs:
-      cache-key: ${{ steps.cache-key.outputs.cache-key }}
-    steps:
-      - name: Generate Cache Key
-        id: cache-key
-        run: echo "cache-key=$(date +%Y-%m-%d)" >> $GITHUB_ENV
-
   build:
-    needs: setup
     runs-on: ${{ inputs.os }}
     env:
       NODE_ENV: production
@@ -39,16 +29,7 @@ jobs:
           node-version: ${{ inputs.node-version }}
           cache: 'yarn'
 
-      - name: Restore Cached Dependencies
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-yarn-${{ needs.setup.outputs.cache-key }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
       - name: Fix node-gyp and Python (Linux & macOS)
-        if: runner.os != 'Windows'
         run: |
           python3 -m pip install --upgrade pip setuptools wheel packaging --break-system-packages
           npm install -g node-gyp
@@ -58,7 +39,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build Electron app
-        run: yarn build
+        run: yarn build:prod
 
       - name: Package Electron app
         run: yarn make

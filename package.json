@@ -13,6 +13,7 @@
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
     "build": "nx run-many --target=build",
+    "build:prod": "yarn nx run-many --target=build --configuration=production",
     "serve": "nx run-many --target=serve --projects=ui,desktop",
     "make": "nx run desktop:make",
     "build:lib": "nx run-many --target=build --exclude=ui,desktop --tailwindConfig=apps/ui/tailwind.config.js",
