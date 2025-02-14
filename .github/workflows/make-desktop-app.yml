@@ -11,10 +11,11 @@ jobs:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
         arch: [x64, arm64]
-        node-version: [20.11.1]
+        node-version: [latest]
         include:
           - os:  macos-12
             arch: x64
+            node-version: [20.11.1]
     uses: ./.github/workflows/reusable-build.yml
     with:
       os: ${{ matrix.os }}

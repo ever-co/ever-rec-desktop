@@ -44,7 +44,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build Electron app
-        run: yarn build
+        run: yarn build:prod
 
       - name: Package Electron app
         run: yarn make
