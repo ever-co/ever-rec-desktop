@@ -43,7 +43,6 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip setuptools wheel packaging --break-system-packages
           npm install --global --production windows-build-tools || true
-          npm install --global electron-builder
         shell: bash
 
       - name: Install dependencies
