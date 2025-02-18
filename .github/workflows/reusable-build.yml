@@ -29,27 +29,11 @@ jobs:
           node-version: ${{ inputs.node-version }}
           cache: 'yarn'
 
-      - name: Cache dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            .yarn-cache
-            node_modules/.cache
-          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
       - name: Set up dependencies (Python & Build Tools)
-        run: |
-          python3 -m pip install --upgrade pip setuptools wheel packaging --break-system-packages
-          npm install --global --production windows-build-tools || true
-          npm install --global electron-builder
-        shell: bash
+        run: python3 -m pip install --break-system-packages packaging setuptools
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
-        env:
-          YARN_CACHE_FOLDER: .yarn-cache
+        run: yarn install
 
       - name: Build Electron app
         run: yarn build:prod
