@@ -1,21 +1,28 @@
 import { ILogger } from '@ever-co/shared-utils';
-import * as log from 'electron-log';
+import { defer, lastValueFrom } from 'rxjs';
 
 export class ElectronLogger implements ILogger {
+  private log$ = defer(() => import('electron-log'));
+
   constructor(private readonly name = 'Ever Capture') {}
-  public info(...message: any[]): void {
-    log.info(`[${this.name}]`, ...message);
+
+  private getLogger() {
+    return lastValueFrom(this.log$);
   }
 
-  public error(...message: any[]): void {
-    log.error(`[${this.name}]`, ...message);
+  public async info(...message: any[]): Promise<void> {
+    (await this.getLogger()).info(`[${this.name}]`, ...message);
   }
 
-  public warn(...message: any[]): void {
-    log.warn(`[${this.name}]`, ...message);
+  public async error(...message: any[]): Promise<void> {
+    (await this.getLogger()).error(`[${this.name}]`, ...message);
   }
 
-  public debug(...message: any[]): void {
-    log.debug(`[${this.name}]`, ...message);
+  public async warn(...message: any[]): Promise<void> {
+    (await this.getLogger()).warn(`[${this.name}]`, ...message);
+  }
+
+  public async debug(...message: any[]): Promise<void> {
+    (await this.getLogger()).debug(`[${this.name}]`, ...message);
   }
 }
