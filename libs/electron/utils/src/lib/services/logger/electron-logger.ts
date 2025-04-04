@@ -16,7 +16,7 @@ export class ElectronLogger implements ILogger {
 
     try {
       const log = await lastValueFrom(this.log$);
-      this.logger = log || console;
+      this.logger = log.create({ logId: crypto.randomUUID() }) || console;
       return this.logger;
     } catch (e) {
       console.error('Failed to load electron-log', e);
