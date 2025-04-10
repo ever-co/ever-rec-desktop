@@ -10,7 +10,7 @@
       mat-card-image
       [src]="video.pathname"
       alt="Video"
-      class="w-full h-full object-cover rounded-t-lg"
+      class="w-full h-full object-cover rounded-t-df"
       [controls]="controls"
     >
       <source [src]="video.pathname" type="video/mp4" />
@@ -20,7 +20,7 @@
     @if(!controls){
     <div
       [ngClass]="{ 'bg-opacity-20': checked }"
-      class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 rounded-t-lg"
+      class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 rounded-t-df"
     >
       <div
         [ngClass]="{ 'opacity-100': checked }"

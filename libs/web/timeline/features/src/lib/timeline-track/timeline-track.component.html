@@ -5,7 +5,7 @@
   [threshold]="0.75"
   (scrolled)="moreFrames()"
   (scroll)="onScroll($event)"
-  class="flex overflow-auto no-scrollbar w-full shadow-inner bg-indigo-50 p-2 pl-0 pr-0 rounded-2xl"
+  class="flex overflow-auto no-scrollbar w-full shadow-inner bg-indigo-50 p-2 pl-0 pr-0 rounded-df"
   #trackContainer
 >
   @for (frame of frames$ | async; track frame.id) {

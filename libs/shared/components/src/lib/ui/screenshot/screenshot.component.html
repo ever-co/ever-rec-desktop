@@ -1,20 +1,20 @@
 @if (screenshot) {
 <mat-card
   appearance="outlined"
-  class="transform transition-transform h-full rounded-t-lg duration-300 scale-[0.99] hover:scale-[1.00]"
+  class="transform transition-transform h-full rounded-t-df duration-300 scale-[0.99] hover:scale-[1.00]"
 >
-  <div class="relative h-full rounded-t-lg group">
+  <div class="relative h-full rounded-t-df group">
     <img
       mat-card-image
       libImgFallback
       [src]="screenshot.pathname"
       alt="Screenshot"
-      class="w-full h-full object-cover rounded-t-lg"
+      class="w-full h-full object-cover rounded-t-df"
       loading="lazy"
     />
     <div
       [ngClass]="{ 'bg-opacity-20': checked }"
-      class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 rounded-t-lg"
+      class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 rounded-t-df"
     >
       <div
         [ngClass]="{ 'opacity-100': checked }"

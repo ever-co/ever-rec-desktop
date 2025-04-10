@@ -1,5 +1,5 @@
 @if(isShow$ | async) {
-<div class="flex main flex-col p-2 w-full rounded-xl bg-gray-50 shadow-md">
+<div class="flex main flex-col p-2 w-full rounded-df bg-gray-50 shadow-md">
   @for (button of buttons; track button.label) { @if((button.hide | async) ===
   false) {
   <lib-action-button

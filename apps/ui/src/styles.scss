@@ -93,3 +93,40 @@ html {
     )
   )
 );
+
+:root {
+  --border-radius: var(
+    --mdc-outlined-card-container-shape,
+    var(--mat-sys-corner-medium)
+  );
+}
+
+.rounded-df {
+  border-radius: var(--border-radius);
+}
+
+@layer utilities {
+  .rounded-bl-df {
+    border-bottom-left-radius: var(--border-radius);
+    border-top-left-radius: var(--border-radius);
+  }
+
+  .rounded-br-df {
+    border-bottom-right-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+  }
+
+  .rounded-t-df {
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+  }
+
+  .rounded-b-df {
+    border-bottom-left-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+  }
+
+  .rounded-df {
+    border-radius: var(--border-radius);
+  }
+}

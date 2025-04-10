@@ -138,8 +138,8 @@ export class ScreenshotStatisticsChartComponent implements OnInit, OnDestroy {
       px-4 py-2
       ${
         type === 'bar'
-          ? 'rounded-tl-lg rounded-bl-lg'
-          : 'rounded-tr-lg rounded-br-lg'
+          ? 'rounded-tl-lg rounded-bl-df'
+          : 'rounded-tr-lg rounded-br-df'
       }
       ${
         isSelected
