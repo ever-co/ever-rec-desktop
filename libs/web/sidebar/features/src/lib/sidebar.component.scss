@@ -1,5 +1,6 @@
 .bg-indigo-50 {
-  background-color: rgb(238 242 255 / var(--tw-bg-opacity));
+  background-color: var(--mat-snack-bar-button-color);
+  opacity: 0.4;
 }
 
 ::ng-deep a.tablet.mdc-list-item--with-leading-icon.mdc-list-item {

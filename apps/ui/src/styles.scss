@@ -101,10 +101,6 @@ html {
   );
 }
 
-.rounded-df {
-  border-radius: var(--border-radius);
-}
-
 @layer utilities {
   .rounded-bl-df {
     border-bottom-left-radius: var(--border-radius);
