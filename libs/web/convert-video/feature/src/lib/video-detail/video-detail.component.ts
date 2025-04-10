@@ -25,7 +25,6 @@ import {
   HumanizePipe,
   PopoverDirective,
   ResolutionPipe,
-  UtcToLocalTimePipe,
 } from '@ever-co/shared-service';
 import { IActionButton, IVideo, IVideoMetadata } from '@ever-co/shared-utils';
 import { selectUploadState, uploadActions } from '@ever-co/upload-data-access';
@@ -48,29 +47,28 @@ import {
 } from 'rxjs';
 
 @Component({
-    selector: 'lib-video-detail',
-    imports: [
-        CommonModule,
-        NoDataComponent,
-        VideoComponent,
-        MatChipsModule,
-        UtcToLocalTimePipe,
-        MatCardModule,
-        MatDividerModule,
-        MatTooltipModule,
-        MatIconModule,
-        HumanizeBytesPipe,
-        MatFormFieldModule,
-        MatInputModule,
-        PopoverDirective,
-        ActionButtonGroupComponent,
-        HumanizePipe,
-        CopyToClipboardDirective,
-        ResolutionPipe,
-        FormsModule,
-    ],
-    templateUrl: './video-detail.component.html',
-    styleUrl: './video-detail.component.scss'
+  selector: 'lib-video-detail',
+  imports: [
+    CommonModule,
+    NoDataComponent,
+    VideoComponent,
+    MatChipsModule,
+    MatCardModule,
+    MatDividerModule,
+    MatTooltipModule,
+    MatIconModule,
+    HumanizeBytesPipe,
+    MatFormFieldModule,
+    MatInputModule,
+    PopoverDirective,
+    ActionButtonGroupComponent,
+    HumanizePipe,
+    CopyToClipboardDirective,
+    ResolutionPipe,
+    FormsModule,
+  ],
+  templateUrl: './video-detail.component.html',
+  styleUrl: './video-detail.component.scss',
 })
 export class VideoDetailComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();

@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import {
   generateVideoActions,
   selectGenerateVideoState,
@@ -19,7 +19,6 @@ import {
 } from '@ever-co/shared-components';
 import {
   InfiniteScrollDirective,
-  UtcToLocalTimePipe,
   selectDatePickerState,
 } from '@ever-co/shared-service';
 import {
@@ -44,21 +43,19 @@ import {
 } from 'rxjs';
 
 @Component({
-    selector: 'lib-video-gallery',
-    imports: [
-        CommonModule,
-        InfiniteScrollDirective,
-        UtcToLocalTimePipe,
-        NoDataComponent,
-        MatCardModule,
-        MatProgressSpinnerModule,
-        RouterLink,
-        MatIconModule,
-        VideoComponent,
-        GalleryButtonsActionComponent,
-    ],
-    templateUrl: './video-gallery.component.html',
-    styleUrl: './video-gallery.component.scss'
+  selector: 'lib-video-gallery',
+  imports: [
+    CommonModule,
+    InfiniteScrollDirective,
+    NoDataComponent,
+    MatCardModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
+    VideoComponent,
+    GalleryButtonsActionComponent,
+  ],
+  templateUrl: './video-gallery.component.html',
+  styleUrl: './video-gallery.component.scss',
 })
 export class VideoGalleryComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();

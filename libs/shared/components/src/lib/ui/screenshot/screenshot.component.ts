@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -19,22 +25,21 @@ import { ActionButtonGroupComponent } from '../action-button-group/group/action-
 import { ConfirmationDialogService } from '../dialogs/services/confirmation-dialog.service';
 
 @Component({
-    selector: 'lib-screenshot',
-    imports: [
-        CommonModule,
-        MatCardModule,
-        RouterLink,
-        UtcToLocalTimePipe,
-        PopoverDirective,
-        MatIconModule,
-        MatButtonModule,
-        ActionButtonGroupComponent,
-        ImgFallbackDirective,
-        IconFallbackDirective,
-        MatCheckboxModule,
-    ],
-    templateUrl: './screenshot.component.html',
-    styleUrl: './screenshot.component.scss'
+  selector: 'lib-screenshot',
+  imports: [
+    CommonModule,
+    MatCardModule,
+    UtcToLocalTimePipe,
+    PopoverDirective,
+    MatIconModule,
+    MatButtonModule,
+    ActionButtonGroupComponent,
+    ImgFallbackDirective,
+    IconFallbackDirective,
+    MatCheckboxModule,
+  ],
+  templateUrl: './screenshot.component.html',
+  styleUrl: './screenshot.component.scss',
 })
 export class ScreenshotComponent implements OnDestroy, OnDestroy {
   @Input() screenshot!: IScreenshot;
@@ -90,7 +95,7 @@ export class ScreenshotComponent implements OnDestroy, OnDestroy {
       .open({
         title: 'Delete Screenshot',
         message: `Are you sure you want to delete this screenshot?`,
-        variant: 'danger'
+        variant: 'danger',
       })
       .pipe(
         take(1),

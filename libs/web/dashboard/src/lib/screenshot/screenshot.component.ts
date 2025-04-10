@@ -4,35 +4,23 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
-import { VideoGalleryComponent } from '@ever-co/convert-video-feature';
 import { selectScreenshotState } from '@ever-co/screenshot-data-access';
-import {
-  ScreenshotGalleryComponent,
-  ScreenshotStatisticComponent,
-} from '@ever-co/screenshot-feature';
-import { NoDataComponent } from '@ever-co/shared-components';
-import { HumanizeDateRangePipe, HumanizePipe, NumberSuffixPipe } from '@ever-co/shared-service';
+import { NumberSuffixPipe } from '@ever-co/shared-service';
 import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
-    selector: 'lib-screenshot',
-    imports: [
-        CommonModule,
-        MatCardModule,
-        NoDataComponent,
-        MatIconModule,
-        ScreenshotGalleryComponent,
-        VideoGalleryComponent,
-        ScreenshotStatisticComponent,
-        HumanizePipe,
-        HumanizeDateRangePipe,
-        RouterLink,
-        MatTooltipModule,
-        NumberSuffixPipe
-    ],
-    templateUrl: './screenshot.component.html',
-    styleUrl: './screenshot.component.scss'
+  selector: 'lib-screenshot',
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatIconModule,
+    RouterLink,
+    MatTooltipModule,
+    NumberSuffixPipe,
+  ],
+  templateUrl: './screenshot.component.html',
+  styleUrl: './screenshot.component.scss',
 })
 export class ScreenshotComponent implements OnDestroy {
   private destroy$ = new Subject<void>();

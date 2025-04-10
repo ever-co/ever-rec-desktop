@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import {
   generateVideoActions,
   selectGenerateVideoState,
@@ -20,7 +20,6 @@ import {
 } from '@ever-co/shared-components';
 import {
   InfiniteScrollDirective,
-  UtcToLocalTimePipe,
   selectDatePickerState,
 } from '@ever-co/shared-service';
 import {
@@ -42,20 +41,18 @@ import {
 } from 'rxjs';
 
 @Component({
-    selector: 'lib-screenshot-gallery',
-    imports: [
-        CommonModule,
-        InfiniteScrollDirective,
-        UtcToLocalTimePipe,
-        NoDataComponent,
-        MatCardModule,
-        MatProgressSpinnerModule,
-        RouterLink,
-        ScreenshotComponent,
-        GalleryButtonsActionComponent,
-    ],
-    templateUrl: './screenshot-gallery.component.html',
-    styleUrl: './screenshot-gallery.component.scss'
+  selector: 'lib-screenshot-gallery',
+  imports: [
+    CommonModule,
+    InfiniteScrollDirective,
+    NoDataComponent,
+    MatCardModule,
+    MatProgressSpinnerModule,
+    ScreenshotComponent,
+    GalleryButtonsActionComponent,
+  ],
+  templateUrl: './screenshot-gallery.component.html',
+  styleUrl: './screenshot-gallery.component.scss',
 })
 export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
   public screenshots$ = new Observable<IScreenshot[]>();
@@ -230,7 +227,7 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
       .open({
         title: 'Delete Screenshots?',
         message: `Are you sure you want to delete ${screenshots.length} screenshots?`,
-        variant: 'danger'
+        variant: 'danger',
       })
       .pipe(
         take(1),
