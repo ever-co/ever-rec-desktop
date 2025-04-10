@@ -72,28 +72,6 @@ mat-icon:active,
   font-family: 'Material Icons' !important;
 }
 
-html {
-  color-scheme: light;
-  @include mat.theme(
-    (
-      color: mat.$azure-palette,
-      typography: Roboto,
-      density: 0,
-    )
-  );
-}
-
-@include mat.typography-hierarchy(
-  mat.define-theme(
-    (
-      typography: (
-        use-system-variables: true,
-        system-variables-prefix: mat-sys,
-      ),
-    )
-  )
-);
-
 :root {
   --border-radius: var(
     --mdc-outlined-card-container-shape,
@@ -126,3 +104,25 @@ html {
     border-radius: var(--border-radius);
   }
 }
+
+html {
+  color-scheme: light;
+  @include mat.theme(
+    (
+      color: mat.$azure-palette,
+      typography: Roboto,
+      density: 0,
+    )
+  );
+}
+
+@include mat.typography-hierarchy(
+  mat.define-theme(
+    (
+      typography: (
+        use-system-variables: true,
+        system-variables-prefix: mat-sys,
+      ),
+    )
+  )
+);
