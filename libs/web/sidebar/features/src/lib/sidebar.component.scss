@@ -2,6 +2,10 @@
   background-color: rgb(238 242 255 / var(--tw-bg-opacity));
 }
 
-::ng-deep a.tablet.mdc-list-item--with-leading-icon.mdc-list-item{
+::ng-deep a.tablet.mdc-list-item--with-leading-icon.mdc-list-item {
   padding-right: 0;
+}
+
+::ng-deep .mdc-list-item.mdc-list-item--with-one-line .mdc-list-item__start {
+  height: auto;
 }
