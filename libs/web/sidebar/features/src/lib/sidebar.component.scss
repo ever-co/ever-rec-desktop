@@ -9,3 +9,12 @@
 ::ng-deep .mdc-list-item.mdc-list-item--with-one-line .mdc-list-item__start {
   height: auto;
 }
+
+:host ::ng-deep {
+  mat-icon:hover,
+  mat-icon:focus,
+  mat-icon:active,
+  .selected {
+    margin-left: 24px !important;
+  }
+}
