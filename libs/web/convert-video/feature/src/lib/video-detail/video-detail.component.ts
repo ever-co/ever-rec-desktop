@@ -25,7 +25,6 @@ import {
   HumanizePipe,
   PopoverDirective,
   ResolutionPipe,
-  UtcToLocalTimePipe,
 } from '@ever-co/shared-service';
 import { IActionButton, IVideo, IVideoMetadata } from '@ever-co/shared-utils';
 import { selectUploadState, uploadActions } from '@ever-co/upload-data-access';
@@ -49,13 +48,11 @@ import {
 
 @Component({
   selector: 'lib-video-detail',
-  standalone: true,
   imports: [
     CommonModule,
     NoDataComponent,
     VideoComponent,
     MatChipsModule,
-    UtcToLocalTimePipe,
     MatCardModule,
     MatDividerModule,
     MatTooltipModule,

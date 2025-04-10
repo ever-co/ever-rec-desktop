@@ -22,20 +22,19 @@ import { Store } from '@ngrx/store';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
-  selector: 'lib-screenshot-setting',
-  standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatSlideToggleModule,
-  ],
-  templateUrl: './setting.component.html',
-  styleUrl: './setting.component.scss',
+    selector: 'lib-screenshot-setting',
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatSlideToggleModule,
+    ],
+    templateUrl: './setting.component.html',
+    styleUrl: './setting.component.scss'
 })
 export class SettingComponent implements OnInit, OnDestroy {
   public formGroup!: FormGroup;

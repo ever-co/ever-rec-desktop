@@ -1,7 +1,9 @@
+$radius:  var(--mdc-outlined-card-container-shape, var(--mat-sys-corner-medium));
+
 mat-form-field {
   &.opened {
     background-color: white;
-    border-radius: 2rem 2rem 0 0;
+    border-radius: $radius $radius 0 0;
 
     ::ng-deep {
 

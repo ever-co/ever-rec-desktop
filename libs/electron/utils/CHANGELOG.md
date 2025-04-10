@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.2.0](https://github.com/ever-co/ever-capture/compare/electron-utils-0.1.4...electron-utils-0.2.0) (2025-04-04)
+
+
+### Features
+
+* **logger:** initialize electron logger with unique id ([4cac175](https://github.com/ever-co/ever-capture/commit/4cac1756a9c499aaf40e4278972c49de3e635dd1))
+
+
+
 ## [0.1.4](https://github.com/ever-co/ever-capture/compare/electron-utils-0.1.3...electron-utils-0.1.4) (2025-04-04)
 
 

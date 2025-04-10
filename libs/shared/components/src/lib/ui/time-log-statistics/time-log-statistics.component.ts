@@ -1,11 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import {
-  HumanizeDateRangePipe,
-  HumanizePipe,
-  selectDatePickerState,
-} from '@ever-co/shared-service';
+import { HumanizePipe, selectDatePickerState } from '@ever-co/shared-service';
 import { ITimeLogStatistics } from '@ever-co/shared-utils';
 import {
   selectTimeLogState,
@@ -17,8 +13,7 @@ import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'lib-timelog-statistics',
-  standalone: true,
-  imports: [CommonModule, MatIconModule, HumanizePipe, HumanizeDateRangePipe],
+  imports: [CommonModule, MatIconModule, HumanizePipe],
   templateUrl: './time-log-statistics.component.html',
   styleUrl: './time-log-statistics.component.scss',
 })

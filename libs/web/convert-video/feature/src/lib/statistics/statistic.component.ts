@@ -8,11 +8,10 @@ import { Store } from '@ngrx/store';
 import { Observable, map } from 'rxjs';
 
 @Component({
-  selector: 'lib-statistic',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './statistic.component.html',
-  styleUrl: './statistic.component.scss',
+    selector: 'lib-statistic',
+    imports: [CommonModule],
+    templateUrl: './statistic.component.html',
+    styleUrl: './statistic.component.scss'
 })
 export class StatisticComponent implements OnInit {
   private readonly store = inject(Store);

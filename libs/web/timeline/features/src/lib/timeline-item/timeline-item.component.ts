@@ -17,18 +17,17 @@ import { map, Observable, take } from 'rxjs';
 import { TimelinePreviewComponent } from '../timeline-preview/timeline-preview.component';
 
 @Component({
-  selector: 'lib-timeline-item',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatTooltipModule,
-    IconFallbackDirective,
-    ResizeDirective,
-    ClickHandlerDirective,
-  ],
-  templateUrl: './timeline-item.component.html',
-  styleUrl: './timeline-item.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'lib-timeline-item',
+    imports: [
+        CommonModule,
+        MatTooltipModule,
+        IconFallbackDirective,
+        ResizeDirective,
+        ClickHandlerDirective,
+    ],
+    templateUrl: './timeline-item.component.html',
+    styleUrl: './timeline-item.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TimelineItemComponent {
   @Input() frame!: ITimelineFrame;

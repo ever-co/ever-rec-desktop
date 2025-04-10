@@ -1,6 +1,6 @@
 .row {
   cursor: pointer;
   &.selected-row {
-    @apply bg-indigo-50;
+    background-color: rgba(103, 58, 183, 0.05);
   }
 }

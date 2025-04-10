@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -20,11 +26,9 @@ import { ConfirmationDialogService } from '../dialogs/services/confirmation-dial
 
 @Component({
   selector: 'lib-screenshot',
-  standalone: true,
   imports: [
     CommonModule,
     MatCardModule,
-    RouterLink,
     UtcToLocalTimePipe,
     PopoverDirective,
     MatIconModule,
@@ -91,7 +95,7 @@ export class ScreenshotComponent implements OnDestroy, OnDestroy {
       .open({
         title: 'Delete Screenshot',
         message: `Are you sure you want to delete this screenshot?`,
-        variant: 'danger'
+        variant: 'danger',
       })
       .pipe(
         take(1),

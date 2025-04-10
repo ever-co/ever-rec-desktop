@@ -18,27 +18,26 @@ import { TimeLogStaComponent } from '../timelog-stat/timelog-stat.component';
 import { VideoComponent } from '../video/video.component';
 
 @Component({
-  selector: 'lib-dashboard',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatCardModule,
-    ScreenshotGalleryComponent,
-    VideoGalleryComponent,
-    ScreenshotStatisticComponent,
-    ScreenshotComponent,
-    VideoComponent,
-    StateComponent,
-    TimeLogStaComponent,
-    RouterLink,
-    MatIconModule,
-    MatTooltipModule,
-    MatButtonModule,
-    GreetingPipe,
-    AnalysisComponent,
-    DistributionComponent
-  ],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss',
+    selector: 'lib-dashboard',
+    imports: [
+        CommonModule,
+        MatCardModule,
+        ScreenshotGalleryComponent,
+        VideoGalleryComponent,
+        ScreenshotStatisticComponent,
+        ScreenshotComponent,
+        VideoComponent,
+        StateComponent,
+        TimeLogStaComponent,
+        RouterLink,
+        MatIconModule,
+        MatTooltipModule,
+        MatButtonModule,
+        GreetingPipe,
+        AnalysisComponent,
+        DistributionComponent
+    ],
+    templateUrl: './dashboard.component.html',
+    styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {}

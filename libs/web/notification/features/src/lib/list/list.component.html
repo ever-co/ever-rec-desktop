@@ -1,8 +1,8 @@
-<div class="w-96 max-h-[600px] flex flex-col gap-3 overflow-y-auto rounded-xl">
+<div class="w-96 max-h-[600px] flex flex-col gap-3 overflow-y-auto rounded-df">
   @if(available$ | async) { @for(notification of notifications$ | async; track
   notification.id) {
   <div
-    class="notification-card transition-all rounded-xl duration-200 hover:shadow-md"
+    class="notification-card transition-all rounded-df duration-200 hover:shadow-md"
     [ngClass]="{
       'border-l-4 border-blue-500 bg-blue-50': notification.type === 'info',
       'border-l-4 border-green-500 bg-green-50':
@@ -70,7 +70,7 @@
   </div>
   } } @else {
   <div
-    class="flex flex-col items-center justify-center p-8 bg-gray-50 rounded-xl"
+    class="flex flex-col items-center justify-center p-8 bg-gray-50 rounded-df"
   >
     <mat-icon class="text-gray-600 mb-2">notifications_off</mat-icon>
     <p class="text-gray-600 text-sm">No notifications to display</p>

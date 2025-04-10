@@ -26,37 +26,33 @@ interface ChartData {
 }
 
 @Component({
-  selector: 'lib-distribution',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatCardModule,
-    MatTooltipModule,
-    MatProgressBarModule,
-    MatIconModule,
-    NgxChartsModule,
-    NoDataComponent
-  ],
-  templateUrl: './distribution.component.html',
-  styleUrl: './distribution.component.scss',
-  animations: [
-    trigger('fadeInUp', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'translateY(10px)' }),
-        animate(
-          '400ms ease-out',
-          style({ opacity: 1, transform: 'translateY(0)' })
-        ),
-      ]),
-    ]),
-    trigger('widthGrow', [
-      transition(':enter', [
-        style({ width: 0 }),
-        animate('600ms ease-out', style({ width: '*' })),
-      ]),
-    ]),
-  ],
-  providers: [TitleCasePipe],
+    selector: 'lib-distribution',
+    imports: [
+        CommonModule,
+        MatCardModule,
+        MatTooltipModule,
+        MatProgressBarModule,
+        MatIconModule,
+        NgxChartsModule,
+        NoDataComponent
+    ],
+    templateUrl: './distribution.component.html',
+    styleUrl: './distribution.component.scss',
+    animations: [
+        trigger('fadeInUp', [
+            transition(':enter', [
+                style({ opacity: 0, transform: 'translateY(10px)' }),
+                animate('400ms ease-out', style({ opacity: 1, transform: 'translateY(0)' })),
+            ]),
+        ]),
+        trigger('widthGrow', [
+            transition(':enter', [
+                style({ width: 0 }),
+                animate('600ms ease-out', style({ width: '*' })),
+            ]),
+        ]),
+    ],
+    providers: [TitleCasePipe]
 })
 export class DistributionComponent implements OnDestroy, OnInit {
   private readonly destroy$ = new Subject<void>();

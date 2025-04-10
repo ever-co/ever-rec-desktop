@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import {
   generateVideoActions,
   selectGenerateVideoState,
@@ -19,7 +19,6 @@ import {
 } from '@ever-co/shared-components';
 import {
   InfiniteScrollDirective,
-  UtcToLocalTimePipe,
   selectDatePickerState,
 } from '@ever-co/shared-service';
 import {
@@ -45,15 +44,12 @@ import {
 
 @Component({
   selector: 'lib-video-gallery',
-  standalone: true,
   imports: [
     CommonModule,
     InfiniteScrollDirective,
-    UtcToLocalTimePipe,
     NoDataComponent,
     MatCardModule,
     MatProgressSpinnerModule,
-    RouterLink,
     MatIconModule,
     VideoComponent,
     GalleryButtonsActionComponent,

@@ -17,12 +17,10 @@ import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'lib-list',
-  standalone: true,
   imports: [
     CommonModule,
     MatCardModule,
     MatIconModule,
-    NoDataComponent,
     ActionButtonComponent,
     CopyToClipboardDirective,
   ],

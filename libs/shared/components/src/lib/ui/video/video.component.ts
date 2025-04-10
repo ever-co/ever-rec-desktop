@@ -43,24 +43,23 @@ import { ActionButtonGroupComponent } from '../action-button-group/group/action-
 import { ConfirmationDialogService } from '../dialogs/services/confirmation-dialog.service';
 
 @Component({
-  selector: 'lib-video',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatCardModule,
-    MatButtonModule,
-    MatIconModule,
-    UtcToLocalTimePipe,
-    PopoverDirective,
-    ActionButtonGroupComponent,
-    MatRippleModule,
-    MatTooltipModule,
-    MatCheckboxModule,
-    ResolutionPipe,
-    HumanizePipe,
-  ],
-  templateUrl: './video.component.html',
-  styleUrl: './video.component.scss',
+    selector: 'lib-video',
+    imports: [
+        CommonModule,
+        MatCardModule,
+        MatButtonModule,
+        MatIconModule,
+        UtcToLocalTimePipe,
+        PopoverDirective,
+        ActionButtonGroupComponent,
+        MatRippleModule,
+        MatTooltipModule,
+        MatCheckboxModule,
+        ResolutionPipe,
+        HumanizePipe,
+    ],
+    templateUrl: './video.component.html',
+    styleUrl: './video.component.scss'
 })
 export class VideoComponent implements AfterViewInit, OnDestroy {
   @ViewChild('videoPlayer', { static: false })

@@ -33,12 +33,11 @@ import {
 } from 'rxjs';
 
 @Component({
-  selector: 'lib-timeline-video',
-  standalone: true,
-  imports: [CommonModule, MatTooltipModule, MatIconModule],
-  templateUrl: './timeline-video.component.html',
-  styleUrl: './timeline-video.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'lib-timeline-video',
+    imports: [CommonModule, MatTooltipModule, MatIconModule],
+    templateUrl: './timeline-video.component.html',
+    styleUrl: './timeline-video.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TimelineVideoComponent
   implements OnInit, OnDestroy, AfterViewInit

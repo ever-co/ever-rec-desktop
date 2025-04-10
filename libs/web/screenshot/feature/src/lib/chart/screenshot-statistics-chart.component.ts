@@ -35,12 +35,11 @@ type ChartData = BarChartData | LineChartData;
 type ChartType = 'bar' | 'line';
 
 @Component({
-  selector: 'lib-screenshot-statistics-chart',
-  standalone: true,
-  imports: [CommonModule, NgxChartsModule, NoDataComponent],
-  templateUrl: './screenshot-statistics-chart.component.html',
-  styleUrls: ['./screenshot-statistics-chart.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'lib-screenshot-statistics-chart',
+    imports: [CommonModule, NgxChartsModule, NoDataComponent],
+    templateUrl: './screenshot-statistics-chart.component.html',
+    styleUrls: ['./screenshot-statistics-chart.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ScreenshotStatisticsChartComponent implements OnInit, OnDestroy {
   public readonly chartTypes: ChartType[] = ['bar', 'line'];
@@ -139,8 +138,8 @@ export class ScreenshotStatisticsChartComponent implements OnInit, OnDestroy {
       px-4 py-2
       ${
         type === 'bar'
-          ? 'rounded-tl-lg rounded-bl-lg'
-          : 'rounded-tr-lg rounded-br-lg'
+          ? 'rounded-tl-lg rounded-bl-df'
+          : 'rounded-tr-lg rounded-br-df'
       }
       ${
         isSelected

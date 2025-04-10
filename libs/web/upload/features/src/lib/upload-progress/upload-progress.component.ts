@@ -7,11 +7,10 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'lib-upload-progress',
-  standalone: true,
-  imports: [CommonModule, MatProgressBarModule, MatIconModule],
-  templateUrl: './upload-progress.component.html',
-  styleUrl: './upload-progress.component.scss',
+    selector: 'lib-upload-progress',
+    imports: [CommonModule, MatProgressBarModule, MatIconModule],
+    templateUrl: './upload-progress.component.html',
+    styleUrl: './upload-progress.component.scss'
 })
 export class UploadProgressComponent implements OnDestroy {
   private readonly destroy$ = new Subject<void>();

@@ -9,16 +9,15 @@ import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'lib-state',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatCardModule,
-    MatIconModule,
-    MatProgressSpinnerModule,
-  ],
-  templateUrl: './state.component.html',
-  styleUrl: './state.component.scss',
+    selector: 'lib-state',
+    imports: [
+        CommonModule,
+        MatCardModule,
+        MatIconModule,
+        MatProgressSpinnerModule,
+    ],
+    templateUrl: './state.component.html',
+    styleUrl: './state.component.scss'
 })
 export class StateComponent implements OnDestroy {
   private destroy$ = new Subject<void>();

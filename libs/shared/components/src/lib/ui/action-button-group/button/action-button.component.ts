@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -7,7 +13,6 @@ import { IActionButton } from '@ever-co/shared-utils';
 
 @Component({
   selector: 'lib-action-button',
-  standalone: true,
   imports: [
     CommonModule,
     MatIconModule,
@@ -25,10 +30,10 @@ export class ActionButtonComponent {
 
   public getButtonClasses(): string {
     const baseClasses =
-      'group flex items-center rounded-lg p-2 transition-colors duration-200';
+      'group flex items-center rounded-df p-2 transition-colors duration-200';
     const variantClasses = {
       default: 'hover:bg-gray-200',
-      danger: 'hover:bg-red-50',
+      danger: 'hover:bg-red-100',
       warning: 'hover:bg-yellow-50',
       success: 'hover:bg-green-50',
     };
@@ -40,7 +45,7 @@ export class ActionButtonComponent {
     const baseClasses = 'transition-colors duration-200';
     const variantClasses = {
       default: 'group-hover:text-gray-600',
-      danger: 'group-hover:text-red-600',
+      danger: 'group-hover:text-red-600 text-red-400',
       warning: 'group-hover:text-yellow-600',
       success: 'group-hover:text-green-600',
     };
@@ -53,7 +58,7 @@ export class ActionButtonComponent {
   public getLabelClasses(): string {
     const variantClasses = {
       default: 'group-hover:text-gray-600',
-      danger: 'group-hover:text-red-600',
+      danger: 'group-hover:text-red-600 text-red-400',
       warning: 'group-hover:text-yellow-600',
       success: 'group-hover:text-green-600',
     };

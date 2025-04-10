@@ -10,18 +10,17 @@ import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'lib-video',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatCardModule,
-    MatIconModule,
-    RouterLink,
-    MatTooltipModule,
-    NumberSuffixPipe
-  ],
-  templateUrl: './video.component.html',
-  styleUrl: './video.component.scss',
+    selector: 'lib-video',
+    imports: [
+        CommonModule,
+        MatCardModule,
+        MatIconModule,
+        RouterLink,
+        MatTooltipModule,
+        NumberSuffixPipe
+    ],
+    templateUrl: './video.component.html',
+    styleUrl: './video.component.scss'
 })
 export class VideoComponent implements OnDestroy {
   private destroy$ = new Subject<void>();

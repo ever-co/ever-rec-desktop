@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { breadcrumbActions } from '@ever-co/breadcrumb-data-access';
 import {
   generateVideoActions,
@@ -19,10 +19,7 @@ import {
   NoDataComponent,
   ScreenshotComponent,
 } from '@ever-co/shared-components';
-import {
-  InfiniteScrollDirective,
-  UtcToLocalTimePipe,
-} from '@ever-co/shared-service';
+import { InfiniteScrollDirective } from '@ever-co/shared-service';
 import { IActionButton, IScreenshot, ISelected } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import {
@@ -38,15 +35,12 @@ import {
 
 @Component({
   selector: 'lib-screenshot-search',
-  standalone: true,
   imports: [
     CommonModule,
     InfiniteScrollDirective,
-    UtcToLocalTimePipe,
     NoDataComponent,
     MatCardModule,
     MatProgressSpinnerModule,
-    RouterLink,
     ScreenshotComponent,
     GalleryButtonsActionComponent,
   ],

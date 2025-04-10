@@ -14,18 +14,17 @@ import { Store } from '@ngrx/store';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
-  selector: 'lib-auto-screenshot-deletion',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatSlideToggleModule,
-  ],
-  templateUrl: './auto-screenshot-deletion.component.html',
-  styleUrl: './auto-screenshot-deletion.component.scss',
+    selector: 'lib-auto-screenshot-deletion',
+    imports: [
+        CommonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatSlideToggleModule,
+    ],
+    templateUrl: './auto-screenshot-deletion.component.html',
+    styleUrl: './auto-screenshot-deletion.component.scss'
 })
 export class AutoScreenshotDeletionComponent implements OnInit, OnDestroy {
   public form!: FormGroup;

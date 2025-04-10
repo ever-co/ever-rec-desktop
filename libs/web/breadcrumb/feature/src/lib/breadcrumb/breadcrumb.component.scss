@@ -1,3 +1,14 @@
+// TOOLS - FUNCTIONS
+
+/// Returns SVG-Image embedded in a Data-URI.
+/// @parameter {color} Hexadecimal value for stroke color
+/// @returns {string} Data-URI
+/// @example background: url(icon-svg-uri('arrow-left', #000000)) center / 16px no-repeat;
+/// @link https://feathericons.com/ Icon design by Cole Bemis
+@use 'sass:meta';
+@use 'sass:string';
+@use 'sass:map';
+
 // SETTINGS - VARIABLES
 
 $color-link: #666;
@@ -14,35 +25,27 @@ $space-separator: 8px;
   background-position: 0 calc(50% + 1ex);
 }
 
-// TOOLS - FUNCTIONS
-
-/// Returns SVG-Image embedded in a Data-URI.
-/// @parameter {color} Hexadecimal value for stroke color
-/// @returns {string} Data-URI
-/// @example background: url(icon-svg-uri('arrow-left', #000000)) center / 16px no-repeat;
-/// @link https://feathericons.com/ Icon design by Cole Bemis
 @function icon-svg-uri($icon-name, $color) {
-  @if (type_of($color)=='color') and (str-index(inspect($color), '#')==1) {
-    $encoded-color: '%23' + str-slice(inspect($color), 2);
+  @if (meta.type-of($color) == 'color') and
+    (string.index(meta.inspect($color), '#') ==1)
+  {
+    $encoded-color: '%23' + string.slice(meta.inspect($color), 2);
 
     // MS Edge is turning single quotes to double quotes. (`url('data:` -> `url("data:`)
     $icon-set: (
-      arrow-left: "%3Cline x1='19' y1='12' x2='5' y2='12'%3E%3C/line%3E%3Cpolyline points='12 19 5 12 12 5'%3E%3C/polyline%3E",
-      chevron-right: "%3Cpolyline points='9 18 15 12 9 6'%3E%3C/polyline%3E"
+      arrow-left:
+        "%3Cline x1='19' y1='12' x2='5' y2='12'%3E%3C/line%3E%3Cpolyline points='12 19 5 12 12 5'%3E%3C/polyline%3E",
+      chevron-right: "%3Cpolyline points='9 18 15 12 9 6'%3E%3C/polyline%3E",
     );
 
-  @if map-has-key($icon-set, $icon-name) {
-    @return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='#{$encoded-color}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round%5C'%3E#{map-get($icon-set, $icon-name)}%3C/svg%3E";
+    @if map.has-key($icon-set, $icon-name) {
+      @return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='#{$encoded-color}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round%5C'%3E#{map.get($icon-set, $icon-name)}%3C/svg%3E";
+    } @else {
+      @error 'Invalid icon name: `#{$icon-name}`';
+    }
+  } @else {
+    @error 'Invalid HEX value: `#{$color}`';
   }
-
-  @else {
-    @error 'Invalid icon name: `#{$icon-name}`'
-  }
-}
-
-@else {
-  @error 'Invalid HEX value: `#{$color}`'
-}
 }
 
 // GENERIC - RESET
@@ -50,7 +53,6 @@ $space-separator: 8px;
 a:link {
   text-decoration: none;
 }
-
 
 ol {
   list-style-type: none;
@@ -87,7 +89,7 @@ a:visited:not([rel='external']) {
 
   &--baseline {
     position: relative;
-    top: .125em;
+    top: 0.125em;
     width: 1em;
     height: 1em;
   }
@@ -122,7 +124,8 @@ a:visited:not([rel='external']) {
         // Invisible space character (sets auto-height for element)
         content: '\200b';
         // User goes "up one level" instead of "navigating back" to the last view or page.
-        background: url(icon-svg-uri('arrow-left', $color-link)) center / $size-icon $size-icon no-repeat;
+        background: url(icon-svg-uri('arrow-left', $color-link)) center /
+          $size-icon $size-icon no-repeat;
         width: $size-icon;
       }
     }
@@ -130,11 +133,12 @@ a:visited:not([rel='external']) {
 
   @media (min-width: 501px) {
     &__item {
-      &:nth-last-child(n+2):after {
+      &:nth-last-child(n + 2):after {
         display: inline-block;
         content: '\200b';
         // "Greater-than sign" indicates higher-level page.
-        background: url(icon-svg-uri('chevron-right', $color-separator)) center / $size-icon $size-icon no-repeat;
+        background: url(icon-svg-uri('chevron-right', $color-separator)) center /
+          $size-icon $size-icon no-repeat;
         width: $size-icon;
         margin: 0 $space-separator;
       }

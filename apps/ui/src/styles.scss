@@ -1,6 +1,8 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@use '@angular/material' as mat;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 .mdc-notched-outline__notch {
   border-right: none;
@@ -55,7 +57,7 @@ body {
 
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
 mat-icon {
@@ -70,5 +72,57 @@ mat-icon:active,
   font-family: 'Material Icons' !important;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html {
+  color-scheme: light;
+  @include mat.theme(
+    (
+      color: mat.$azure-palette,
+      typography: Roboto,
+      density: 0,
+    )
+  );
+}
+
+@include mat.typography-hierarchy(
+  mat.define-theme(
+    (
+      typography: (
+        use-system-variables: true,
+        system-variables-prefix: mat-sys,
+      ),
+    )
+  )
+);
+
+:root {
+  --border-radius: var(
+    --mdc-outlined-card-container-shape,
+    var(--mat-sys-corner-medium)
+  );
+}
+
+@layer utilities {
+  .rounded-bl-df {
+    border-bottom-left-radius: var(--border-radius);
+    border-top-left-radius: var(--border-radius);
+  }
+
+  .rounded-br-df {
+    border-bottom-right-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+  }
+
+  .rounded-t-df {
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+  }
+
+  .rounded-b-df {
+    border-bottom-left-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+  }
+
+  .rounded-df {
+    border-radius: var(--border-radius);
+  }
+}

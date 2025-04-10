@@ -7,10 +7,8 @@ export * from './lib/ui/action-button-group/gallery/gallery-buttons-action.compo
 export * from './lib/ui/action-button-group/group/action-button-group.component';
 export * from './lib/ui/dialogs/confirmation/confirmation.component';
 export * from './lib/ui/dialogs/services/confirmation-dialog.service';
-export * from './lib/ui/gallery/gallery.component';
 export * from './lib/ui/no-data/no-data.component';
 export * from './lib/ui/screenshot/screenshot.component';
 export * from './lib/ui/time-log-statistics/time-log-statistics.component';
 export * from './lib/ui/toggle/toggle.component';
 export * from './lib/ui/video/video.component';
-

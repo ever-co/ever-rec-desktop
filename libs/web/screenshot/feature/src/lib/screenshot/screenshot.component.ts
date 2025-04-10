@@ -27,25 +27,24 @@ import { Store } from '@ngrx/store';
 import { concatMap, filter, lastValueFrom, Observable } from 'rxjs';
 
 @Component({
-  selector: 'lib-screenshot',
-  standalone: true,
-  imports: [
-    CommonModule,
-    NoDataComponent,
-    UtcToLocalTimePipe,
-    MatCardModule,
-    MatIconModule,
-    MatChipsModule,
-    VideoComponent,
-    HumanizeBytesPipe,
-    PopoverDirective,
-    ActionButtonGroupComponent,
-    CopyToClipboardDirective,
-    ImgFallbackDirective,
-    IconFallbackDirective,
-  ],
-  templateUrl: './screenshot.component.html',
-  styleUrl: './screenshot.component.scss',
+    selector: 'lib-screenshot',
+    imports: [
+        CommonModule,
+        NoDataComponent,
+        UtcToLocalTimePipe,
+        MatCardModule,
+        MatIconModule,
+        MatChipsModule,
+        VideoComponent,
+        HumanizeBytesPipe,
+        PopoverDirective,
+        ActionButtonGroupComponent,
+        CopyToClipboardDirective,
+        ImgFallbackDirective,
+        IconFallbackDirective,
+    ],
+    templateUrl: './screenshot.component.html',
+    styleUrl: './screenshot.component.scss'
 })
 export class ScreenshotComponent implements OnInit {
   public screenshot$!: Observable<IScreenshot | null>;

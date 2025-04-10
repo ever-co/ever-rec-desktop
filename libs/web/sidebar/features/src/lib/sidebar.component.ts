@@ -23,11 +23,10 @@ import {
 } from 'rxjs';
 
 @Component({
-  selector: 'lib-sidebar',
-  standalone: true,
-  imports: [CommonModule, MatListModule, MatIconModule, MatTooltipModule],
-  templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.scss',
+    selector: 'lib-sidebar',
+    imports: [CommonModule, MatListModule, MatIconModule, MatTooltipModule],
+    templateUrl: './sidebar.component.html',
+    styleUrl: './sidebar.component.scss'
 })
 export class SidebarComponent implements OnDestroy {
   private readonly destroy$ = new Subject<void>();

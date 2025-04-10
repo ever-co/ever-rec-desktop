@@ -9,11 +9,10 @@ import { Store } from '@ngrx/store';
 import { Observable, map } from 'rxjs';
 
 @Component({
-  selector: 'lib-breadcrumb',
-  standalone: true,
-  imports: [CommonModule, RouterModule],
-  templateUrl: './breadcrumb.component.html',
-  styleUrl: './breadcrumb.component.scss',
+    selector: 'lib-breadcrumb',
+    imports: [CommonModule, RouterModule],
+    templateUrl: './breadcrumb.component.html',
+    styleUrl: './breadcrumb.component.scss'
 })
 export class BreadcrumbComponent implements OnInit {
   public breadcrumbs$!: Observable<IBreadcrumb[]>;

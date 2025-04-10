@@ -55,26 +55,25 @@ import {
 import { TimesheetViewComponent } from '../timesheet-view/timesheet-view.component';
 
 @Component({
-  selector: 'lib-timesheet-feature',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatIconModule,
-    MatButtonModule,
-    MatProgressSpinnerModule,
-    HumanizePipe,
-    NoDataComponent,
-    ActionButtonGroupComponent,
-    PopoverDirective,
-    HumanizeDateRangePipe,
-    PopoverDirective,
-    MatTooltipModule,
-  ],
-  templateUrl: './timesheet.component.html',
-  styleUrl: './timesheet.component.scss',
+    selector: 'lib-timesheet-feature',
+    imports: [
+        CommonModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatIconModule,
+        MatButtonModule,
+        MatProgressSpinnerModule,
+        HumanizePipe,
+        NoDataComponent,
+        ActionButtonGroupComponent,
+        PopoverDirective,
+        HumanizeDateRangePipe,
+        PopoverDirective,
+        MatTooltipModule,
+    ],
+    templateUrl: './timesheet.component.html',
+    styleUrl: './timesheet.component.scss'
 })
 export class TimesheetComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = [

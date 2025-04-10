@@ -13,12 +13,11 @@ import {
 } from 'rxjs';
 
 @Component({
-  selector: 'lib-timeline-cursor',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './timeline-cursor.component.html',
-  styleUrl: './timeline-cursor.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'lib-timeline-cursor',
+    imports: [CommonModule],
+    templateUrl: './timeline-cursor.component.html',
+    styleUrl: './timeline-cursor.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TimelineCursorComponent implements OnDestroy {
   private readonly destroy$ = new Subject<void>();

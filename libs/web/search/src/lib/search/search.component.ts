@@ -34,20 +34,19 @@ import {
 import { SearchOverlayComponent } from '../search-overlay/search-overlay.component';
 
 @Component({
-  selector: 'lib-search',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
-    OverlayModule,
-    SearchOverlayComponent,
-    MatProgressSpinner,
-  ],
-  templateUrl: './search.component.html',
-  styleUrl: './search.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'lib-search',
+    imports: [
+        CommonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatIconModule,
+        OverlayModule,
+        SearchOverlayComponent,
+        MatProgressSpinner,
+    ],
+    templateUrl: './search.component.html',
+    styleUrl: './search.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchComponent implements OnInit {
   public readonly destroy$ = new Subject<void>();

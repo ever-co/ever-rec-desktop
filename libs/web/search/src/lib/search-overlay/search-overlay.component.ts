@@ -19,19 +19,18 @@ import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
-  selector: 'lib-search-overlay',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatDividerModule,
-    MatListModule,
-    MatIconModule,
-    MatButtonModule,
-    NoDataComponent,
-  ],
-  templateUrl: './search-overlay.component.html',
-  styleUrl: './search-overlay.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'lib-search-overlay',
+    imports: [
+        CommonModule,
+        MatDividerModule,
+        MatListModule,
+        MatIconModule,
+        MatButtonModule,
+        NoDataComponent,
+    ],
+    templateUrl: './search-overlay.component.html',
+    styleUrl: './search-overlay.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchOverlayComponent implements OnInit, OnDestroy {
   public readonly destroy$ = new Subject<void>();
