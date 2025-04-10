@@ -9,12 +9,11 @@ import { IActionButton, IConfirmationDialog } from '@ever-co/shared-utils';
 import { ActionButtonComponent } from '../../action-button-group/button/action-button.component';
 
 @Component({
-  selector: 'lib-confirmation',
-  standalone: true,
-  imports: [CommonModule, MatDialogModule, ActionButtonComponent],
-  templateUrl: './confirmation.component.html',
-  styleUrl: './confirmation.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'lib-confirmation',
+    imports: [CommonModule, MatDialogModule, ActionButtonComponent],
+    templateUrl: './confirmation.component.html',
+    styleUrl: './confirmation.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ConfirmationComponent {
   public buttonConfirm: IActionButton = {

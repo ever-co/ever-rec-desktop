@@ -35,21 +35,20 @@ import {
 } from 'rxjs';
 
 @Component({
-  selector: 'lib-date-picker',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatFormFieldModule,
-    MatDatepickerModule,
-    MatButtonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HumanizeDateRangePipe,
-  ],
-  providers: [provideNativeDateAdapter()],
-  templateUrl: './date-picker.component.html',
-  styleUrl: './date-picker.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'lib-date-picker',
+    imports: [
+        CommonModule,
+        MatFormFieldModule,
+        MatDatepickerModule,
+        MatButtonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HumanizeDateRangePipe,
+    ],
+    providers: [provideNativeDateAdapter()],
+    templateUrl: './date-picker.component.html',
+    styleUrl: './date-picker.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatePickerComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();

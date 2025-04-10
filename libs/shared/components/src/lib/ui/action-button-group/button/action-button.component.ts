@@ -6,17 +6,16 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { IActionButton } from '@ever-co/shared-utils';
 
 @Component({
-  selector: 'lib-action-button',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatIconModule,
-    MatProgressSpinnerModule,
-    MatTooltipModule,
-  ],
-  templateUrl: './action-button.component.html',
-  styleUrl: './action-button.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'lib-action-button',
+    imports: [
+        CommonModule,
+        MatIconModule,
+        MatProgressSpinnerModule,
+        MatTooltipModule,
+    ],
+    templateUrl: './action-button.component.html',
+    styleUrl: './action-button.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ActionButtonComponent {
   @Input() data!: any;

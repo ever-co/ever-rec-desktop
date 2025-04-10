@@ -8,12 +8,9 @@
   "targets": {
     "build": {
       "executor": "@nx/angular:package",
-      "outputs": [
-        "{workspaceRoot}/dist/{projectRoot}"
-      ],
+      "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
       "options": {
-        "project": "libs/shared/components/ng-package.json",
-        "tailwindConfig": "libs/shared/components/tailwind.config.js"
+        "project": "libs/shared/components/ng-package.json"
       },
       "configurations": {
         "production": {
@@ -27,9 +24,7 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "jestConfig": "libs/shared/components/jest.config.ts"
       }
@@ -50,14 +45,9 @@
       "executor": "nx:run-commands",
       "options": {
         "parallel": false,
-        "commands": [
-          "cd dist/libs/shared/components && npm publish"
-        ]
+        "commands": ["cd dist/libs/shared/components && npm publish"]
       },
-      "dependsOn": [
-        "version",
-        "build"
-      ],
+      "dependsOn": ["version", "build"],
       "parallelism": false
     }
   }

@@ -35,12 +35,11 @@ type ChartData = BarChartData | LineChartData;
 type ChartType = 'bar' | 'line';
 
 @Component({
-  selector: 'lib-screenshot-statistics-chart',
-  standalone: true,
-  imports: [CommonModule, NgxChartsModule, NoDataComponent],
-  templateUrl: './screenshot-statistics-chart.component.html',
-  styleUrls: ['./screenshot-statistics-chart.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'lib-screenshot-statistics-chart',
+    imports: [CommonModule, NgxChartsModule, NoDataComponent],
+    templateUrl: './screenshot-statistics-chart.component.html',
+    styleUrls: ['./screenshot-statistics-chart.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ScreenshotStatisticsChartComponent implements OnInit, OnDestroy {
   public readonly chartTypes: ChartType[] = ['bar', 'line'];

@@ -44,22 +44,21 @@ import {
 } from 'rxjs';
 
 @Component({
-  selector: 'lib-video-gallery',
-  standalone: true,
-  imports: [
-    CommonModule,
-    InfiniteScrollDirective,
-    UtcToLocalTimePipe,
-    NoDataComponent,
-    MatCardModule,
-    MatProgressSpinnerModule,
-    RouterLink,
-    MatIconModule,
-    VideoComponent,
-    GalleryButtonsActionComponent,
-  ],
-  templateUrl: './video-gallery.component.html',
-  styleUrl: './video-gallery.component.scss',
+    selector: 'lib-video-gallery',
+    imports: [
+        CommonModule,
+        InfiniteScrollDirective,
+        UtcToLocalTimePipe,
+        NoDataComponent,
+        MatCardModule,
+        MatProgressSpinnerModule,
+        RouterLink,
+        MatIconModule,
+        VideoComponent,
+        GalleryButtonsActionComponent,
+    ],
+    templateUrl: './video-gallery.component.html',
+    styleUrl: './video-gallery.component.scss'
 })
 export class VideoGalleryComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();

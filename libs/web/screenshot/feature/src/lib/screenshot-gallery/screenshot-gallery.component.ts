@@ -42,21 +42,20 @@ import {
 } from 'rxjs';
 
 @Component({
-  selector: 'lib-screenshot-gallery',
-  standalone: true,
-  imports: [
-    CommonModule,
-    InfiniteScrollDirective,
-    UtcToLocalTimePipe,
-    NoDataComponent,
-    MatCardModule,
-    MatProgressSpinnerModule,
-    RouterLink,
-    ScreenshotComponent,
-    GalleryButtonsActionComponent,
-  ],
-  templateUrl: './screenshot-gallery.component.html',
-  styleUrl: './screenshot-gallery.component.scss',
+    selector: 'lib-screenshot-gallery',
+    imports: [
+        CommonModule,
+        InfiniteScrollDirective,
+        UtcToLocalTimePipe,
+        NoDataComponent,
+        MatCardModule,
+        MatProgressSpinnerModule,
+        RouterLink,
+        ScreenshotComponent,
+        GalleryButtonsActionComponent,
+    ],
+    templateUrl: './screenshot-gallery.component.html',
+    styleUrl: './screenshot-gallery.component.scss'
 })
 export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
   public screenshots$ = new Observable<IScreenshot[]>();

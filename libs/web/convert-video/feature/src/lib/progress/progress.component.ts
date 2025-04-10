@@ -6,11 +6,10 @@ import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'lib-progress',
-  standalone: true,
-  imports: [CommonModule, MatProgressBarModule],
-  templateUrl: './progress.component.html',
-  styleUrl: './progress.component.scss',
+    selector: 'lib-progress',
+    imports: [CommonModule, MatProgressBarModule],
+    templateUrl: './progress.component.html',
+    styleUrl: './progress.component.scss'
 })
 export class ProgressComponent {
   private store = inject(Store);

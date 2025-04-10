@@ -26,22 +26,21 @@ import { Store } from '@ngrx/store';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
-  selector: 'lib-convert-video-setting',
-  standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatSlideToggleModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatFormFieldModule,
-    HumanizePipe,
-    MatSelectModule,
-    ResolutionPipe
-  ],
-  templateUrl: './setting.component.html',
-  styleUrl: './setting.component.scss',
+    selector: 'lib-convert-video-setting',
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        MatSlideToggleModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatFormFieldModule,
+        HumanizePipe,
+        MatSelectModule,
+        ResolutionPipe
+    ],
+    templateUrl: './setting.component.html',
+    styleUrl: './setting.component.scss'
 })
 export class SettingComponent implements OnInit, OnDestroy {
   public formGroup!: FormGroup;

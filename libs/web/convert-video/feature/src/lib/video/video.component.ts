@@ -34,11 +34,10 @@ import {
 } from 'rxjs';
 
 @Component({
-  selector: 'lib-video',
-  standalone: true,
-  imports: [CommonModule, MatTooltipModule, MatIconModule],
-  templateUrl: './video.component.html',
-  styleUrls: ['./video.component.scss'], // Fixed typo
+    selector: 'lib-video',
+    imports: [CommonModule, MatTooltipModule, MatIconModule],
+    templateUrl: './video.component.html',
+    styleUrls: ['./video.component.scss']
 })
 export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
   private store = inject(Store);

@@ -15,19 +15,18 @@ import { map, Observable } from 'rxjs';
 import { ListComponent } from '../list/list.component';
 
 @Component({
-  selector: 'lib-notification-badge',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatCardModule,
-    PopoverDirective,
-    MatIconModule,
-    ListComponent,
-    MatButtonModule,
-    MatTooltipModule,
-  ],
-  templateUrl: './badge.component.html',
-  styleUrl: './badge.component.scss',
+    selector: 'lib-notification-badge',
+    imports: [
+        CommonModule,
+        MatCardModule,
+        PopoverDirective,
+        MatIconModule,
+        ListComponent,
+        MatButtonModule,
+        MatTooltipModule,
+    ],
+    templateUrl: './badge.component.html',
+    styleUrl: './badge.component.scss'
 })
 export class NotificationBadgeComponent implements OnInit {
   public unreadCount$!: Observable<number>;

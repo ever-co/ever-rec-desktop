@@ -5,11 +5,10 @@ import { Store } from '@ngrx/store';
 import { Observable, map } from 'rxjs';
 
 @Component({
-  selector: 'lib-error',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './error.component.html',
-  styleUrl: './error.component.scss',
+    selector: 'lib-error',
+    imports: [CommonModule],
+    templateUrl: './error.component.html',
+    styleUrl: './error.component.scss'
 })
 export class ErrorComponent implements OnInit {
   public error$!: Observable<string>;

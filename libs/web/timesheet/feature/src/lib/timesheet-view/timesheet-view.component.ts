@@ -6,17 +6,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { TimelineContainerComponent } from '@ever-co/timeline-feature';
 
 @Component({
-  selector: 'lib-timesheet-view',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatIconModule,
-    TimelineContainerComponent,
-  ],
-  templateUrl: './timesheet-view.component.html',
-  styleUrl: './timesheet-view.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'lib-timesheet-view',
+    imports: [
+        CommonModule,
+        MatButtonModule,
+        MatIconModule,
+        TimelineContainerComponent,
+    ],
+    templateUrl: './timesheet-view.component.html',
+    styleUrl: './timesheet-view.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TimesheetViewComponent {
   constructor(

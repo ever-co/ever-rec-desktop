@@ -16,18 +16,17 @@ import { Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
 
 @Component({
-  selector: 'lib-list',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatCardModule,
-    MatIconModule,
-    NoDataComponent,
-    ActionButtonComponent,
-    CopyToClipboardDirective,
-  ],
-  templateUrl: './list.component.html',
-  styleUrl: './list.component.scss',
+    selector: 'lib-list',
+    imports: [
+        CommonModule,
+        MatCardModule,
+        MatIconModule,
+        NoDataComponent,
+        ActionButtonComponent,
+        CopyToClipboardDirective,
+    ],
+    templateUrl: './list.component.html',
+    styleUrl: './list.component.scss'
 })
 export class ListComponent {
   notifications$: Observable<INotification[]>;

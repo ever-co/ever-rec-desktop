@@ -19,23 +19,22 @@ import { ActionButtonGroupComponent } from '../action-button-group/group/action-
 import { ConfirmationDialogService } from '../dialogs/services/confirmation-dialog.service';
 
 @Component({
-  selector: 'lib-screenshot',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatCardModule,
-    RouterLink,
-    UtcToLocalTimePipe,
-    PopoverDirective,
-    MatIconModule,
-    MatButtonModule,
-    ActionButtonGroupComponent,
-    ImgFallbackDirective,
-    IconFallbackDirective,
-    MatCheckboxModule,
-  ],
-  templateUrl: './screenshot.component.html',
-  styleUrl: './screenshot.component.scss',
+    selector: 'lib-screenshot',
+    imports: [
+        CommonModule,
+        MatCardModule,
+        RouterLink,
+        UtcToLocalTimePipe,
+        PopoverDirective,
+        MatIconModule,
+        MatButtonModule,
+        ActionButtonGroupComponent,
+        ImgFallbackDirective,
+        IconFallbackDirective,
+        MatCheckboxModule,
+    ],
+    templateUrl: './screenshot.component.html',
+    styleUrl: './screenshot.component.scss'
 })
 export class ScreenshotComponent implements OnDestroy, OnDestroy {
   @Input() screenshot!: IScreenshot;

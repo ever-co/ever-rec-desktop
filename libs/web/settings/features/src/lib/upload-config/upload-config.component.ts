@@ -18,18 +18,17 @@ import { Store } from '@ngrx/store';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
-  selector: 'lib-upload-config',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatSlideToggleModule,
-  ],
-  templateUrl: './upload-config.component.html',
-  styleUrl: './upload-config.component.scss',
+    selector: 'lib-upload-config',
+    imports: [
+        CommonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatSlideToggleModule,
+    ],
+    templateUrl: './upload-config.component.html',
+    styleUrl: './upload-config.component.scss'
 })
 export class UploadConfigComponent implements OnInit, OnDestroy {
   public form!: FormGroup;

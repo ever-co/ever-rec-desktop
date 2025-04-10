@@ -15,18 +15,17 @@ import { TimelineTrackComponent } from '../timeline-track/timeline-track.compone
 import { TimelineVideoComponent } from '../timeline-video/timeline-video.component';
 
 @Component({
-  selector: 'lib-timeline-container',
-  standalone: true,
-  imports: [
-    CommonModule,
-    TimelineTrackComponent,
-    TimelineVideoComponent,
-    TimelineCursorComponent,
-    ProgressComponent,
-  ],
-  templateUrl: './timeline-container.component.html',
-  styleUrl: './timeline-container.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'lib-timeline-container',
+    imports: [
+        CommonModule,
+        TimelineTrackComponent,
+        TimelineVideoComponent,
+        TimelineCursorComponent,
+        ProgressComponent,
+    ],
+    templateUrl: './timeline-container.component.html',
+    styleUrl: './timeline-container.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TimelineContainerComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();

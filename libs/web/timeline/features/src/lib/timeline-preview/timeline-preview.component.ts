@@ -10,12 +10,11 @@ import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'lib-timeline-preview',
-  standalone: true,
-  imports: [CommonModule, ScreenshotComponent, MatButtonModule, MatIconModule],
-  templateUrl: './timeline-preview.component.html',
-  styleUrl: './timeline-preview.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'lib-timeline-preview',
+    imports: [CommonModule, ScreenshotComponent, MatButtonModule, MatIconModule],
+    templateUrl: './timeline-preview.component.html',
+    styleUrl: './timeline-preview.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TimelinePreviewComponent implements OnDestroy {
   private readonly destroy$ = new Subject<void>();

@@ -20,11 +20,10 @@ import { Store } from '@ngrx/store';
 import { Observable, Subject, map, takeUntil, tap } from 'rxjs';
 
 @Component({
-  selector: 'lib-start',
-  standalone: true,
-  imports: [CommonModule, MatButtonModule, MatIconModule, MatTooltipModule],
-  templateUrl: './start.component.html',
-  styleUrl: './start.component.scss',
+    selector: 'lib-start',
+    imports: [CommonModule, MatButtonModule, MatIconModule, MatTooltipModule],
+    templateUrl: './start.component.html',
+    styleUrl: './start.component.scss'
 })
 export class StartComponent implements OnInit, OnDestroy {
   private readonly store = inject(Store);

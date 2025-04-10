@@ -21,18 +21,17 @@ import { Store } from '@ngrx/store';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
-  selector: 'lib-aws-storage',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatSlideToggleModule,
-  ],
-  templateUrl: './aws-storage.component.html',
-  styleUrl: './aws-storage.component.scss',
+    selector: 'lib-aws-storage',
+    imports: [
+        CommonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatSlideToggleModule,
+    ],
+    templateUrl: './aws-storage.component.html',
+    styleUrl: './aws-storage.component.scss'
 })
 export class AwsStorageComponent implements OnInit, OnDestroy {
   public form!: FormGroup;

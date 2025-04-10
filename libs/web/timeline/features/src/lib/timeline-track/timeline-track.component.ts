@@ -36,17 +36,16 @@ import {
 import { TimelineItemComponent } from '../timeline-item/timeline-item.component';
 
 @Component({
-  selector: 'lib-timeline-track',
-  standalone: true,
-  imports: [
-    CommonModule,
-    TimelineItemComponent,
-    ResizeDirective,
-    InfiniteScrollDirective,
-  ],
-  templateUrl: './timeline-track.component.html',
-  styleUrl: './timeline-track.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'lib-timeline-track',
+    imports: [
+        CommonModule,
+        TimelineItemComponent,
+        ResizeDirective,
+        InfiniteScrollDirective,
+    ],
+    templateUrl: './timeline-track.component.html',
+    styleUrl: './timeline-track.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TimelineTrackComponent implements OnInit, AfterViewInit {
   @ViewChild('trackContainer')

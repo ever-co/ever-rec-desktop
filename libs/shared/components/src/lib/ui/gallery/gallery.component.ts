@@ -14,11 +14,10 @@ import { Observable, Subject, map, takeUntil, tap } from 'rxjs';
 import { NoDataComponent } from '../no-data/no-data.component';
 
 @Component({
-  selector: 'lib-gallery',
-  standalone: true,
-  imports: [CommonModule, InfiniteScrollDirective, UtcToLocalTimePipe, NoDataComponent],
-  templateUrl: './gallery.component.html',
-  styleUrl: './gallery.component.scss',
+    selector: 'lib-gallery',
+    imports: [CommonModule, InfiniteScrollDirective, UtcToLocalTimePipe, NoDataComponent],
+    templateUrl: './gallery.component.html',
+    styleUrl: './gallery.component.scss'
 })
 export class GalleryComponent implements OnInit, OnDestroy {
   public screenshots$ = new Observable<IScreenshot[]>();

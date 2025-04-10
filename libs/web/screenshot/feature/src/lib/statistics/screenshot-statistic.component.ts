@@ -23,23 +23,22 @@ import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { ScreenshotStatisticsChartComponent } from '../chart/screenshot-statistics-chart.component';
 
 @Component({
-  selector: 'lib-screenshot-statistic',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatCardModule,
-    MatProgressBarModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    NoDataComponent,
-    InfiniteScrollDirective,
-    IconFallbackDirective,
-    ScreenshotStatisticsChartComponent,
-    NumberSuffixPipe,
-  ],
-  templateUrl: './screenshot-statistic.component.html',
-  styleUrl: './screenshot-statistic.component.scss',
+    selector: 'lib-screenshot-statistic',
+    imports: [
+        CommonModule,
+        MatCardModule,
+        MatProgressBarModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        NoDataComponent,
+        InfiniteScrollDirective,
+        IconFallbackDirective,
+        ScreenshotStatisticsChartComponent,
+        NumberSuffixPipe,
+    ],
+    templateUrl: './screenshot-statistic.component.html',
+    styleUrl: './screenshot-statistic.component.scss'
 })
 export class ScreenshotStatisticComponent implements OnInit {
   private destroy$ = new Subject<void>();

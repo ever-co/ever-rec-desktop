@@ -15,19 +15,18 @@ import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
-  selector: 'lib-timelog-stat',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatCardModule,
-    MatIconModule,
-    HumanizePipe,
-    HumanizeDateRangePipe,
-    MatTooltipModule,
-    PopoverDirective
-  ],
-  templateUrl: './timelog-stat.component.html',
-  styleUrl: './timelog-stat.component.scss',
+    selector: 'lib-timelog-stat',
+    imports: [
+        CommonModule,
+        MatCardModule,
+        MatIconModule,
+        HumanizePipe,
+        HumanizeDateRangePipe,
+        MatTooltipModule,
+        PopoverDirective
+    ],
+    templateUrl: './timelog-stat.component.html',
+    styleUrl: './timelog-stat.component.scss'
 })
 export class TimeLogStaComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();

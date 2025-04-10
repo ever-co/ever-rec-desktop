@@ -1,4 +1,4 @@
-import { APP_INITIALIZER } from '@angular/core';
+import { inject, provideAppInitializer } from '@angular/core';
 import {
   selectSettingStorageState,
   settingStorageActions,
@@ -38,12 +38,7 @@ export function initializeRetentionFactory(
  * Provider for initializing the data retention period from the storage state.
  * When the retention period changes, it cleans up the data older than the new retention period.
  */
-export const rententionProvider = {
-  provide: APP_INITIALIZER,
-  useFactory: initializeRetentionFactory,
-  deps: [Store, StorageElectronService],
-  /**
-   * This is a multi provider, so it can be used in combination with other {@link APP_INITIALIZER}s.
-   */
-  multi: true,
-};
+export const rententionProvider = provideAppInitializer(() => {
+        const initializerFn = (initializeRetentionFactory)(inject(Store), inject(StorageElectronService));
+        return initializerFn();
+      });

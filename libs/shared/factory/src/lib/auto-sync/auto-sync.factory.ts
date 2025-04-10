@@ -1,4 +1,4 @@
-import { APP_INITIALIZER } from '@angular/core';
+import { inject, provideAppInitializer } from '@angular/core';
 import {
   generateVideoActions,
   selectSettingState,
@@ -75,9 +75,7 @@ export function autoSyncFactory(
   };
 }
 
-export const autoSyncProvider = {
-  provide: APP_INITIALIZER,
-  useFactory: autoSyncFactory,
-  deps: [Store, AutoSyncService],
-  multi: true,
-};
+export const autoSyncProvider = provideAppInitializer(() => {
+        const initializerFn = (autoSyncFactory)(inject(Store), inject(AutoSyncService));
+        return initializerFn();
+      });

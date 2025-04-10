@@ -29,26 +29,25 @@ import { AwsStorageComponent } from '../aws-storage/aws-storage.component';
 import { UploadConfigComponent } from '../upload-config/upload-config.component';
 
 @Component({
-  selector: 'lib-storage',
-  standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    HumanizePipe,
-    HumanizeBytesPipe,
-    MatCardModule,
-    AwsStorageComponent,
-    MatStepperModule,
-    AutoScreenshotDeletionComponent,
-    UploadConfigComponent,
-  ],
-  templateUrl: './storage.component.html',
-  styleUrl: './storage.component.scss',
+    selector: 'lib-storage',
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        HumanizePipe,
+        HumanizeBytesPipe,
+        MatCardModule,
+        AwsStorageComponent,
+        MatStepperModule,
+        AutoScreenshotDeletionComponent,
+        UploadConfigComponent,
+    ],
+    templateUrl: './storage.component.html',
+    styleUrl: './storage.component.scss'
 })
 export class StorageComponent implements OnInit, OnDestroy {
   public formGroup!: FormGroup;

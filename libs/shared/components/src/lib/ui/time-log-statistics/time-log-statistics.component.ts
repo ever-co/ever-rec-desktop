@@ -16,11 +16,10 @@ import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
-  selector: 'lib-timelog-statistics',
-  standalone: true,
-  imports: [CommonModule, MatIconModule, HumanizePipe, HumanizeDateRangePipe],
-  templateUrl: './time-log-statistics.component.html',
-  styleUrl: './time-log-statistics.component.scss',
+    selector: 'lib-timelog-statistics',
+    imports: [CommonModule, MatIconModule, HumanizePipe, HumanizeDateRangePipe],
+    templateUrl: './time-log-statistics.component.html',
+    styleUrl: './time-log-statistics.component.scss'
 })
 export class TimeLogStatisticsComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();

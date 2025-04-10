@@ -16,24 +16,23 @@ import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'lib-screenshot',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatCardModule,
-    NoDataComponent,
-    MatIconModule,
-    ScreenshotGalleryComponent,
-    VideoGalleryComponent,
-    ScreenshotStatisticComponent,
-    HumanizePipe,
-    HumanizeDateRangePipe,
-    RouterLink,
-    MatTooltipModule,
-    NumberSuffixPipe
-  ],
-  templateUrl: './screenshot.component.html',
-  styleUrl: './screenshot.component.scss',
+    selector: 'lib-screenshot',
+    imports: [
+        CommonModule,
+        MatCardModule,
+        NoDataComponent,
+        MatIconModule,
+        ScreenshotGalleryComponent,
+        VideoGalleryComponent,
+        ScreenshotStatisticComponent,
+        HumanizePipe,
+        HumanizeDateRangePipe,
+        RouterLink,
+        MatTooltipModule,
+        NumberSuffixPipe
+    ],
+    templateUrl: './screenshot.component.html',
+    styleUrl: './screenshot.component.scss'
 })
 export class ScreenshotComponent implements OnDestroy {
   private destroy$ = new Subject<void>();

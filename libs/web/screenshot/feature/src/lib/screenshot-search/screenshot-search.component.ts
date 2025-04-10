@@ -37,21 +37,20 @@ import {
 } from 'rxjs';
 
 @Component({
-  selector: 'lib-screenshot-search',
-  standalone: true,
-  imports: [
-    CommonModule,
-    InfiniteScrollDirective,
-    UtcToLocalTimePipe,
-    NoDataComponent,
-    MatCardModule,
-    MatProgressSpinnerModule,
-    RouterLink,
-    ScreenshotComponent,
-    GalleryButtonsActionComponent,
-  ],
-  templateUrl: './screenshot-search.component.html',
-  styleUrl: './screenshot-search.component.scss',
+    selector: 'lib-screenshot-search',
+    imports: [
+        CommonModule,
+        InfiniteScrollDirective,
+        UtcToLocalTimePipe,
+        NoDataComponent,
+        MatCardModule,
+        MatProgressSpinnerModule,
+        RouterLink,
+        ScreenshotComponent,
+        GalleryButtonsActionComponent,
+    ],
+    templateUrl: './screenshot-search.component.html',
+    styleUrl: './screenshot-search.component.scss'
 })
 export class ScreenshotSearchComponent implements OnInit, OnDestroy {
   public screenshots$!: Observable<IScreenshot[]>;

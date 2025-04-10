@@ -48,30 +48,29 @@ import {
 } from 'rxjs';
 
 @Component({
-  selector: 'lib-video-detail',
-  standalone: true,
-  imports: [
-    CommonModule,
-    NoDataComponent,
-    VideoComponent,
-    MatChipsModule,
-    UtcToLocalTimePipe,
-    MatCardModule,
-    MatDividerModule,
-    MatTooltipModule,
-    MatIconModule,
-    HumanizeBytesPipe,
-    MatFormFieldModule,
-    MatInputModule,
-    PopoverDirective,
-    ActionButtonGroupComponent,
-    HumanizePipe,
-    CopyToClipboardDirective,
-    ResolutionPipe,
-    FormsModule,
-  ],
-  templateUrl: './video-detail.component.html',
-  styleUrl: './video-detail.component.scss',
+    selector: 'lib-video-detail',
+    imports: [
+        CommonModule,
+        NoDataComponent,
+        VideoComponent,
+        MatChipsModule,
+        UtcToLocalTimePipe,
+        MatCardModule,
+        MatDividerModule,
+        MatTooltipModule,
+        MatIconModule,
+        HumanizeBytesPipe,
+        MatFormFieldModule,
+        MatInputModule,
+        PopoverDirective,
+        ActionButtonGroupComponent,
+        HumanizePipe,
+        CopyToClipboardDirective,
+        ResolutionPipe,
+        FormsModule,
+    ],
+    templateUrl: './video-detail.component.html',
+    styleUrl: './video-detail.component.scss'
 })
 export class VideoDetailComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
