@@ -284,7 +284,7 @@
   resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-19.2.6.tgz#3a73762633c2843e72e2962bc1d776ee97c3dcf1"
   integrity sha512-8ilcY4g2E0jt/IYEmmzD7RYFSMvLKiuh1aSLkpOYyKUSM9w2pK2CGZ1tldLAUfK9wuWHGCR24LDMTxRpZzt+OQ==
 
-"@angular/material@19.2.9":
+"@angular/material@^19.2.9":
   version "19.2.9"
   resolved "https://registry.yarnpkg.com/@angular/material/-/material-19.2.9.tgz#b4332cbe0dc18c24793945b1e78ebfe1ceb6df51"
   integrity sha512-zkc49u6AIZ+aQe76MvOmoZ06c+/ZNpFeBS3dH65kCmnIpFhh8c+zLjxgwgBIlrvUmfjy6J1iJaG05hmkLzAggg==

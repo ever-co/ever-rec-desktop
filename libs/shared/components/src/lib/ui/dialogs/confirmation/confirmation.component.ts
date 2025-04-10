@@ -9,11 +9,11 @@ import { IActionButton, IConfirmationDialog } from '@ever-co/shared-utils';
 import { ActionButtonComponent } from '../../action-button-group/button/action-button.component';
 
 @Component({
-    selector: 'lib-confirmation',
-    imports: [CommonModule, MatDialogModule, ActionButtonComponent],
-    templateUrl: './confirmation.component.html',
-    styleUrl: './confirmation.component.scss',
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'lib-confirmation',
+  imports: [CommonModule, MatDialogModule, ActionButtonComponent],
+  templateUrl: './confirmation.component.html',
+  styleUrl: './confirmation.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmationComponent {
   public buttonConfirm: IActionButton = {
@@ -40,7 +40,8 @@ export class ConfirmationComponent {
       success: ' rgb(5 150 105)',
       danger: 'rgb(225 29 72)',
       warning: 'rgb(202 138 4)',
-      primary: 'var(--mat-outlined-button-state-layer-color)',
+      primary:
+        'var(--mat-outlined-button-state-layer-color, var(--mat-sys-primary))',
       default: 'darkgray',
       info: ' rgb(37 99 235)',
     };

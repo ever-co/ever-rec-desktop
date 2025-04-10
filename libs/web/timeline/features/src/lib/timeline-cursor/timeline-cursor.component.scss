@@ -1,7 +1,10 @@
 .cursor {
   position: absolute;
   top: 0;
-  background-color: var(--mat-outlined-button-state-layer-color);
+  background-color: var(
+    --mat-outlined-button-state-layer-color,
+    var(--mat-sys-primary)
+  );
   transform: translateX(-50%);
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
