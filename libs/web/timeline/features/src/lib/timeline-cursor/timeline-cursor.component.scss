@@ -1,3 +1,5 @@
+$radius:  var(--mdc-outlined-card-container-shape, var(--mat-sys-corner-medium));
+
 .cursor {
   position: absolute;
   top: 0;
@@ -6,6 +8,6 @@
     var(--mat-sys-primary)
   );
   transform: translateX(-50%);
-  border-radius: 10px;
+  border-radius: $radius;
   box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 }

@@ -1,6 +1,8 @@
+$radius:  var(--mdc-outlined-card-container-shape, var(--mat-sys-corner-medium));
+
 .overlay-container {
   background-color: white;
-  border-radius: 0 0 2rem 2rem;
+  border-radius: 0 0 $radius $radius;
   max-height: 420px;
   overflow: unset;
 }
