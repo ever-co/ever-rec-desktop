@@ -46,19 +46,20 @@ export class WebcamEffects {
     )
   );
 
-  authorized$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(WebcamActions.checkWebcamAuthorizationSuccess),
-        tap(() =>
-          this.localStorageService.setItem<ICameraPersistance>(
+  authorized$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(WebcamActions.checkWebcamAuthorizationSuccess),
+      take(1),
+      switchMap(() =>
+        this.localStorageService
+          .setItem<ICameraPersistance>(
             this.cameraKey,
             { isAuthorized: true },
             { merge: true }
           )
-        )
-      ),
-    { dispatch: false }
+          .pipe(map(() => WebcamActions.loadWebcams()))
+      )
+    )
   );
 
   selectWebcam$ = createEffect(() =>
