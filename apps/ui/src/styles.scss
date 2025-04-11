@@ -4,6 +4,39 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --border-radius: var(
+    --mdc-outlined-card-container-shape,
+    var(--mat-sys-corner-medium)
+  );
+}
+
+@layer utilities {
+  .rounded-bl-df {
+    border-bottom-left-radius: var(--border-radius);
+    border-top-left-radius: var(--border-radius);
+  }
+
+  .rounded-br-df {
+    border-bottom-right-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+  }
+
+  .rounded-t-df {
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+  }
+
+  .rounded-b-df {
+    border-bottom-left-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+  }
+
+  .rounded-df {
+    border-radius: var(--border-radius);
+  }
+}
+
 .mdc-notched-outline__notch {
   border-right: none;
 }
@@ -70,39 +103,6 @@ mat-icon:focus,
 mat-icon:active,
 .selected {
   font-family: 'Material Icons' !important;
-}
-
-:root {
-  --border-radius: var(
-    --mdc-outlined-card-container-shape,
-    var(--mat-sys-corner-medium)
-  );
-}
-
-@layer utilities {
-  .rounded-bl-df {
-    border-bottom-left-radius: var(--border-radius);
-    border-top-left-radius: var(--border-radius);
-  }
-
-  .rounded-br-df {
-    border-bottom-right-radius: var(--border-radius);
-    border-top-right-radius: var(--border-radius);
-  }
-
-  .rounded-t-df {
-    border-top-left-radius: var(--border-radius);
-    border-top-right-radius: var(--border-radius);
-  }
-
-  .rounded-b-df {
-    border-bottom-left-radius: var(--border-radius);
-    border-bottom-right-radius: var(--border-radius);
-  }
-
-  .rounded-df {
-    border-radius: var(--border-radius);
-  }
 }
 
 html {
