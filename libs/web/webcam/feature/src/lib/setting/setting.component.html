@@ -12,12 +12,10 @@
 
     <!-- Select Input -->
     <mat-form-field appearance="outline" class="w-full">
-      <mat-label>Available Cameras</mat-label>
+      <mat-label>Available Camera</mat-label>
       <mat-select formControlName="webcam" required>
         @for (camera of cameras; track camera.deviceId) {
-        <mat-option [value]="camera.deviceId">{{
-          camera.label | titlecase
-        }}</mat-option>
+        <mat-option [value]="camera.deviceId">{{ camera.label }}</mat-option>
         }
       </mat-select>
       @if (formGroup.controls['webcam'].hasError('required')) {
