@@ -20,27 +20,32 @@ import {
   settingActions,
 } from '@ever-co/convert-video-data-access';
 import { NotificationService } from '@ever-co/notification-data-access';
-import { HumanizePipe, ResolutionPipe } from '@ever-co/shared-service';
-import { resolutionMapper } from '@ever-co/shared-utils';
+import {
+  CodecPipe,
+  HumanizePipe,
+  ResolutionPipe,
+} from '@ever-co/shared-service';
+import { FfmpegVideoCodec, resolutionMapper } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
-    selector: 'lib-convert-video-setting',
-    imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        MatSlideToggleModule,
-        MatInputModule,
-        MatButtonModule,
-        MatIconModule,
-        MatFormFieldModule,
-        HumanizePipe,
-        MatSelectModule,
-        ResolutionPipe
-    ],
-    templateUrl: './setting.component.html',
-    styleUrl: './setting.component.scss'
+  selector: 'lib-convert-video-setting',
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatSlideToggleModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatFormFieldModule,
+    HumanizePipe,
+    MatSelectModule,
+    ResolutionPipe,
+    CodecPipe,
+  ],
+  templateUrl: './setting.component.html',
+  styleUrl: './setting.component.scss',
 })
 export class SettingComponent implements OnInit, OnDestroy {
   public formGroup!: FormGroup;
@@ -48,13 +53,14 @@ export class SettingComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   public periods = [5, 10, 15, 30];
   public resolutions = Object.keys(resolutionMapper);
+  public codecList = Object.values(FfmpegVideoCodec);
 
-  constructor(private readonly notificationService: NotificationService){}
+  constructor(private readonly notificationService: NotificationService) {}
 
   ngOnInit(): void {
     this.formGroup = new FormGroup({
       frameRate: new FormControl('', Validators.required),
-      codec: new FormControl('', Validators.required),
+      codec: new FormControl(FfmpegVideoCodec.H264, Validators.required),
       resolution: new FormControl('1920:1080', Validators.required),
       batch: new FormControl('', [Validators.required]),
       period: new FormControl('10', [Validators.required]),

@@ -23,13 +23,11 @@
     <!-- Codec Input -->
     <mat-form-field appearance="outline" class="w-full">
       <mat-label>Codec</mat-label>
-      <input
-        matInput
-        type="text"
-        id="codec"
-        formControlName="codec"
-        placeholder="Enter codec"
-      />
+      <mat-select formControlName="codec" required>
+        @for (codec of codecList; track codec) {
+        <mat-option [value]="codec">{{ codec | codecDescription }}</mat-option>
+        }
+      </mat-select>
       <mat-error
         *ngIf="
           formGroup.controls['codec'].invalid &&

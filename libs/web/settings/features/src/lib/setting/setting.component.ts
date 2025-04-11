@@ -23,10 +23,10 @@ interface ILink {
 }
 
 @Component({
-    selector: 'lib-setting',
-    imports: [CommonModule, RouterOutlet, RouterLink, MatTabsModule],
-    templateUrl: './setting.component.html',
-    styleUrl: './setting.component.scss'
+  selector: 'lib-setting',
+  imports: [CommonModule, RouterOutlet, RouterLink, MatTabsModule],
+  templateUrl: './setting.component.html',
+  styleUrl: './setting.component.scss',
 })
 export class SettingComponent implements OnDestroy {
   private readonly destroy$ = new Subject<void>();
@@ -38,6 +38,10 @@ export class SettingComponent implements OnDestroy {
     {
       title: 'Screen Capture',
       route: 'screen-capture-settings',
+    },
+    {
+      title: 'Camera',
+      route: 'webcam',
     },
     {
       title: 'Storage',

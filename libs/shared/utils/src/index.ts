@@ -27,3 +27,4 @@ export * from './lib/regex.util';
 export * from './lib/resolution.util';
 export * from './lib/time-log.type';
 export * from './lib/util';
+export * from './lib/codec.util';

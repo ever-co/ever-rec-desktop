@@ -1,1 +1,1 @@
-export * from './lib/webcam-feature/webcam-feature.component';
+export * from './lib/webcam.route';

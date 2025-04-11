@@ -26,4 +26,4 @@ export * from './lib/pipes/utc-to-local-time.pipe';
 export * from './lib/services/layout/layout.service';
 export * from './lib/validators/url.validator';
 export * from './test-setup';
-
+export * from './lib/pipes/codec.pipe';
