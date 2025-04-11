@@ -1,1 +1,40 @@
-<p>setting works!</p>
+@let cameras = cameras$ | async;
+
+<div class="setting max-w-xl space-y-6 w-full">
+  <form [formGroup]="formGroup" class="form space-y-4" (ngSubmit)="onSubmit()">
+    <!-- Toggle for capture all -->
+    <div class="start flex justify-between items-center">
+      <span class="text-gray-700"
+        >Take camera shot with screenshot while tracking</span
+      >
+      <mat-slide-toggle formControlName="tracking"> </mat-slide-toggle>
+    </div>
+
+    <!-- Select Input -->
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Available Cameras</mat-label>
+      <mat-select formControlName="webcam" required>
+        @for (camera of cameras; track camera.deviceId) {
+        <mat-option [value]="camera.deviceId">{{
+          camera.label | titlecase
+        }}</mat-option>
+        }
+      </mat-select>
+      @if (formGroup.controls['webcam'].hasError('required')) {
+      <mat-error>Please select a camera source</mat-error>
+      }
+    </mat-form-field>
+
+    <!-- Submit Buttons -->
+    <div class="flex space-x-4">
+      <button
+        mat-stroked-button
+        color="primary"
+        type="submit"
+        [disabled]="formGroup.invalid"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</div>

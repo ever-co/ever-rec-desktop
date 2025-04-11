@@ -38,7 +38,7 @@ mat-icon {
 }
 
 ::ng-deep .mat-menu-panel {
-  @apply rounded-df;
+  border-radius: var(--border-radius);
   @apply shadow-lg;
   @apply border border-gray-100;
   @apply min-w-[200px];
@@ -53,6 +53,8 @@ mat-icon {
   @apply leading-none;
 }
 
-::ng-deep .mdc-checkbox__native-control:not(:checked)~.mdc-checkbox__background {
+::ng-deep
+  .mdc-checkbox__native-control:not(:checked)
+  ~ .mdc-checkbox__background {
   border-color: rgb(240, 240, 240) !important;
 }

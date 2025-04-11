@@ -21,6 +21,7 @@ import { provideTimelineDataAccess } from '@ever-co/timeline-data-access';
 import { provideTimeLogDataAccess } from '@ever-co/timesheet-data-access';
 import { provideUploadDataAccess } from '@ever-co/upload-data-access';
 import { provideSettingsDataAccess } from '@ever-co/web-setting-data-access';
+import { provideWebcamDataAccess } from '@ever-co/webcam-data-access';
 import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
@@ -45,6 +46,7 @@ export const appConfig: ApplicationConfig = {
     provideNotificationDataAccess(),
     provideUploadDataAccess(),
     provideTimelineDataAccess(),
-    provideActivityDataAccess()
+    provideActivityDataAccess(),
+    provideWebcamDataAccess(),
   ],
 };
