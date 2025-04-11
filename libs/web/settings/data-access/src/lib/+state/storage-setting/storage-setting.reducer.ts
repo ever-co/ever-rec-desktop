@@ -14,7 +14,7 @@ export interface IStorageState {
 }
 
 const initialState: IStorageState = {
-  retention: 7,
+  retention: -1,
   autoScreenshotDeletion: false,
   uploadConfig: {
     autoSync: false,
