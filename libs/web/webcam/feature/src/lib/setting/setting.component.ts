@@ -17,6 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { RouterOutlet } from '@angular/router';
 import { NotificationService } from '@ever-co/notification-data-access';
 import {
   selectCameraPersistance,
@@ -43,6 +44,7 @@ import {
     MatFormFieldModule,
     MatSelectModule,
     MatSlideToggleModule,
+    RouterOutlet,
   ],
   templateUrl: './setting.component.html',
   styleUrl: './setting.component.scss',
@@ -61,6 +63,7 @@ export class SettingComponent implements OnInit, OnDestroy {
     this.formGroup = new FormGroup({
       webcam: new FormControl(null, [Validators.required]),
       tracking: new FormControl(false),
+      checkCamera: new FormControl(false),
     });
 
     this.store

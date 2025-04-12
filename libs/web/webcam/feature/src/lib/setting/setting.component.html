@@ -2,7 +2,7 @@
 
 <div class="setting max-w-xl space-y-6 w-full">
   <form [formGroup]="formGroup" class="form space-y-4" (ngSubmit)="onSubmit()">
-    <!-- Toggle for capture all -->
+    <!-- Toggle for tracking -->
     <div class="start flex justify-between items-center">
       <span class="text-gray-700"
         >Take camera shot with screenshot while tracking</span
@@ -22,6 +22,18 @@
       <mat-error>Please select a camera source</mat-error>
       }
     </mat-form-field>
+
+    <!-- Preview -->
+    <div class="flex flex-col gap-4">
+      <div class="start flex justify-between items-center">
+        <span class="text-gray-700">Check camera (Optional)</span>
+        <mat-slide-toggle formControlName="checkCamera"> </mat-slide-toggle>
+      </div>
+
+      @if (formGroup.controls['checkCamera'].value) {
+      <router-outlet></router-outlet>
+      }
+    </div>
 
     <!-- Submit Buttons -->
     <div class="flex space-x-4">
