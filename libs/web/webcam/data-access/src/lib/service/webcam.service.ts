@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export class MediaStreamService {
+export class WebcamService {
   private stream: MediaStream | null = null;
 
   public async start(
@@ -72,5 +72,27 @@ export class MediaStreamService {
       console.error('Error enumerating devices:', err);
       return [];
     }
+  }
+
+  /**
+   * Capture screenshot from current webcam stream
+   * @returns Observable with base64 image data
+   */
+  captureScreenshot(element: HTMLVideoElement): string {
+    if (!element || !this.stream) {
+      throw new Error('Webcam not initialized');
+    }
+
+    const canvas = document.createElement('canvas');
+    canvas.width = element.videoWidth;
+    canvas.height = element.videoHeight;
+    const ctx = canvas.getContext('2d');
+
+    if (!ctx) {
+      throw new Error('Failed to get canvas context');
+    }
+
+    ctx.drawImage(element, 0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL('image/png');
   }
 }

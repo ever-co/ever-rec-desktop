@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { NotificationService } from '@ever-co/notification-data-access';
 import {
-  MediaStreamService,
+  WebcamService,
   selectCameraPersistance,
 } from '@ever-co/webcam-data-access';
 import { Store } from '@ngrx/store';
@@ -40,7 +40,7 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
   private videoElement!: ElementRef<HTMLVideoElement>;
 
   private readonly destroy$ = new Subject<void>();
-  private readonly mediaStreamService = inject(MediaStreamService);
+  private readonly webcamService = inject(WebcamService);
   private readonly notificationService = inject(NotificationService);
   private readonly store = inject(Store);
 
@@ -69,7 +69,7 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
   }
 
   private startCameraStream(deviceId: string) {
-    return from(this.mediaStreamService.start(this.elementRef, deviceId)).pipe(
+    return from(this.webcamService.start(this.elementRef, deviceId)).pipe(
       tap({
         error: (err) => this.handleStreamError(err),
       })
@@ -89,7 +89,7 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
 
   private cleanup(): void {
     if (this.elementRef) {
-      this.mediaStreamService.stop(this.elementRef);
+      this.webcamService.stop(this.elementRef);
     }
     this.destroy$.next();
     this.destroy$.complete();
