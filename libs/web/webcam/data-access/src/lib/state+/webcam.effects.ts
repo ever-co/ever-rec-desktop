@@ -6,6 +6,7 @@ import { from, of } from 'rxjs';
 import { catchError, filter, map, switchMap, take } from 'rxjs/operators';
 import { WebcamActions } from './webcam.actions';
 import { selectCameraIsAuthorized } from './webcam.selectors';
+import { MediaStreamService } from '../service/media-stream.service';
 
 export interface ICameraPersistance {
   isAuthorized?: boolean;
@@ -24,10 +25,7 @@ export class WebcamEffects {
         this.store.select(selectCameraIsAuthorized).pipe(
           switchMap((isAuthorized) =>
             isAuthorized
-              ? from(navigator.mediaDevices.enumerateDevices()).pipe(
-                  map((devices) =>
-                    devices.filter((device) => device.kind === 'videoinput')
-                  ),
+              ? from(this.mediaStreamService.getAvailableDevices()).pipe(
                   map((webcams) =>
                     WebcamActions.loadWebcamsSuccess({ webcams })
                   ),
@@ -169,6 +167,7 @@ export class WebcamEffects {
   constructor(
     private actions$: Actions,
     private store: Store,
-    private readonly localStorageService: LocalStorageService
+    private readonly localStorageService: LocalStorageService,
+    private readonly mediaStreamService: MediaStreamService
   ) {}
 }

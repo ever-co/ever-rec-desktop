@@ -12,5 +12,8 @@ export const WebcamActions = createActionGroup({
     'Select Webcam': props<{ deviceId?: string; tracking?: boolean }>(),
     'Select Webcam Success': props<{ deviceId?: string; tracking?: boolean }>(),
     'Select Webcam Failure': props<{ error: string }>(),
+    'Take Photo': emptyProps(),
+    'Take Photo Success': props<{ blob: Blob }>(),
+    'Take Photo Failure': props<{ error: string }>(),
   },
 });
