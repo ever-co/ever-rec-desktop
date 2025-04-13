@@ -62,9 +62,7 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
       console.warn('Video element not available for capture');
       return;
     }
-    ``;
     const dataURL = this.cameraService.capture(this.videoElement.nativeElement);
-    console.log(dataURL);
     this.store.dispatch(cameraActions.takePhoto({ dataURL }));
   }
 
