@@ -4,25 +4,28 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  inject,
   OnDestroy,
   ViewChild,
+  inject,
 } from '@angular/core';
 import { NotificationService } from '@ever-co/notification-data-access';
 import {
+  cameraActions,
+  CameraService,
   selectCameraPersistance,
-  WebcamActions,
-  WebcamService,
+  selectCameraStreaming,
 } from '@ever-co/webcam-data-access';
 import { Store } from '@ngrx/store';
 import {
   catchError,
+  distinctUntilChanged,
   EMPTY,
   filter,
   from,
   map,
   Subject,
   switchMap,
+  take,
   takeUntil,
   tap,
 } from 'rxjs';
@@ -41,25 +44,38 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
   private videoElement!: ElementRef<HTMLVideoElement>;
 
   private readonly destroy$ = new Subject<void>();
-  private readonly webcamService = inject(WebcamService);
+  private readonly cameraService = inject(CameraService);
   private readonly notificationService = inject(NotificationService);
   private readonly store = inject(Store);
 
-  public ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
+    this.handleCameraStream();
     this.initCameraPreview();
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     this.cleanup();
+  }
+
+  onCapture(): void {
+    if (!this.videoElement?.nativeElement) {
+      console.warn('Video element not available for capture');
+      return;
+    }
+    ``;
+    const dataURL = this.cameraService.capture(this.videoElement.nativeElement);
+    console.log(dataURL);
+    this.store.dispatch(cameraActions.takePhoto({ dataURL }));
   }
 
   private initCameraPreview(): void {
     this.store
       .select(selectCameraPersistance)
       .pipe(
-        map((persistence) => persistence.selectedWebcam?.deviceId),
-        filter(Boolean), // Simplified type guard
-        switchMap((deviceId) => this.startCameraStream(deviceId)),
+        map((persistence) => persistence.camera?.deviceId),
+        distinctUntilChanged(),
+        filter((deviceId): deviceId is string => !!deviceId), // Type predicate for better typing
+        tap((deviceId) => this.startCamera(deviceId)),
         catchError((err) => {
           this.handleStreamError(err);
           return EMPTY;
@@ -69,35 +85,77 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
       .subscribe();
   }
 
-  private startCameraStream(deviceId: string) {
-    return from(this.webcamService.start(this.elementRef, deviceId)).pipe(
-      tap({
-        error: (err) => this.handleStreamError(err),
-      })
-    );
+  private handleCameraStream(): void {
+    if (!this.videoElement?.nativeElement) {
+      return;
+    }
+
+    const videoElement = this.videoElement.nativeElement;
+
+    this.store
+      .select(selectCameraStreaming)
+      .pipe(
+        takeUntil(this.destroy$),
+        switchMap(({ stream }) => {
+          if (!stream) {
+            videoElement.pause();
+            videoElement.srcObject = null;
+            return EMPTY;
+          }
+
+          videoElement.srcObject = stream;
+
+          return from(videoElement.play()).pipe(
+            catchError((error) => {
+              console.error('Error playing the stream:', error);
+              return EMPTY;
+            })
+          );
+        }),
+        catchError((err) => {
+          console.error('Error in camera stream subscription:', err);
+          return EMPTY;
+        })
+      )
+      .subscribe();
+  }
+
+  private startCamera(deviceId: string): void {
+    this.store
+      .select(selectCameraStreaming)
+      .pipe(
+        take(1),
+        tap(({ stream }) => {
+          this.store.dispatch(
+            cameraActions.createCameraStream({ deviceId, stream })
+          );
+        })
+      )
+      .subscribe();
+  }
+
+  private stopCamera(): void {
+    this.store
+      .select(selectCameraStreaming)
+      .pipe(
+        take(1),
+        tap(({ stream }) => {
+          this.store.dispatch(cameraActions.closeCameraStream({ stream }));
+        })
+      )
+      .subscribe();
   }
 
   private handleStreamError(err: unknown): void {
+    const errorMessage = err instanceof Error ? err.message : String(err);
     this.notificationService.show(
-      `Error starting media stream: ${err}`,
+      `Error starting media stream: ${errorMessage}`,
       'error'
     );
   }
 
-  private get elementRef(): HTMLVideoElement {
-    return this.videoElement?.nativeElement;
-  }
-
-  public onCapture(): void {
-    const previewUrl = this.webcamService.capture(this.elementRef);
-    console.log(previewUrl);
-    // this.store.dispatch(WebcamActions.savePhoto({ previewUrl }));
-  }
-
   private cleanup(): void {
-    if (this.elementRef) {
-      this.webcamService.stop(this.elementRef);
-    }
+    this.stopCamera();
     this.destroy$.next();
     this.destroy$.complete();
   }

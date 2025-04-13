@@ -20,9 +20,9 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { RouterOutlet } from '@angular/router';
 import { NotificationService } from '@ever-co/notification-data-access';
 import {
+  cameraActions,
   selectCameraPersistance,
   selectCameras,
-  WebcamActions,
 } from '@ever-co/webcam-data-access';
 import { Store } from '@ngrx/store';
 import {
@@ -72,7 +72,7 @@ export class SettingComponent implements OnInit, OnDestroy {
         distinctUntilChanged(),
         tap((state) =>
           this.formGroup.patchValue({
-            webcam: state.selectedWebcam?.deviceId,
+            webcam: state.camera?.deviceId,
             tracking: state.tracking,
           })
         ),
@@ -80,7 +80,7 @@ export class SettingComponent implements OnInit, OnDestroy {
       )
       .subscribe();
 
-    this.store.dispatch(WebcamActions.loadWebcams());
+    this.store.dispatch(cameraActions.loadCameras());
   }
 
   public onSubmit(): void {
@@ -88,7 +88,7 @@ export class SettingComponent implements OnInit, OnDestroy {
       return;
     }
     this.store.dispatch(
-      WebcamActions.selectWebcam({
+      cameraActions.selectCamera({
         deviceId: this.formGroup.value.webcam,
         tracking: this.formGroup.value.tracking,
       })
