@@ -15,7 +15,8 @@ import {
 export class ControlComponent {
   @Output() capture = new EventEmitter<void>();
 
-  public onCapture() {
+  public onCapture(event: Event) {
+    event.stopPropagation();
     this.capture.emit();
   }
 }

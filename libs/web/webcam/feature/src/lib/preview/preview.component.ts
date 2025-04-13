@@ -90,7 +90,8 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
 
   public onCapture(): void {
     const previewUrl = this.webcamService.capture(this.elementRef);
-    this.store.dispatch(WebcamActions.savePhoto({ previewUrl }));
+    console.log(previewUrl);
+    // this.store.dispatch(WebcamActions.savePhoto({ previewUrl }));
   }
 
   private cleanup(): void {
