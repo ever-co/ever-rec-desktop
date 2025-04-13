@@ -11,6 +11,7 @@ import {
   convertScreenshotsToVideoEvent,
   removeConvertScreenshotsToVideoEvent,
 } from './convert-screenshots-to-video.event';
+import { crudPhotoEvent, removeCrudPhotoEvent } from './crud-photo.event';
 import {
   crudScreeshotEvents,
   removeCrudScreenshotEvent,
@@ -37,6 +38,7 @@ export function subscribeEvents() {
   MainEvents();
   powerManagerHandlerEvents();
   activitiesEvents();
+  crudPhotoEvent();
 }
 
 export function unsubscribeEvents() {
@@ -50,4 +52,5 @@ export function unsubscribeEvents() {
   removeAutoVideoGenerateEvent();
   removeMainEvents();
   removeActivitiesEvents();
+  removeCrudPhotoEvent();
 }

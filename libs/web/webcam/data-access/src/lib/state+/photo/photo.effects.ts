@@ -3,13 +3,13 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { concatMap } from 'rxjs/operators';
 import { Observable, EMPTY } from 'rxjs';
-import { PhotoActions } from './photo.actions';
+import { photoActions } from './photo.actions';
 
 @Injectable()
 export class PhotoEffects {
   loadPhotos$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(PhotoActions.loadPhotos),
+      ofType(photoActions.loadPhotos),
       /** An EMPTY observable only emits completion. Replace with your own observable API request */
       concatMap(() => EMPTY as Observable<{ type: string }>)
     );
@@ -17,7 +17,7 @@ export class PhotoEffects {
 
   savePhoto$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(PhotoActions.savePhoto),
+      ofType(photoActions.savePhoto),
       /** An EMPTY observable only emits completion. Replace with your own observable API request */
       concatMap(() => EMPTY as Observable<{ type: string }>)
     );
