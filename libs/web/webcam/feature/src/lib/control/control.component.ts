@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Output,
+} from '@angular/core';
 
 @Component({
   selector: 'lib-control',
@@ -7,4 +12,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrl: './control.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ControlComponent {}
+export class ControlComponent {
+  @Output() capture = new EventEmitter<void>();
+
+  public onCapture() {
+    this.capture.emit();
+  }
+}

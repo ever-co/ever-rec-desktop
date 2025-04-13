@@ -4,14 +4,15 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  inject,
   OnDestroy,
   ViewChild,
-  inject,
 } from '@angular/core';
 import { NotificationService } from '@ever-co/notification-data-access';
 import {
-  WebcamService,
   selectCameraPersistance,
+  WebcamActions,
+  WebcamService,
 } from '@ever-co/webcam-data-access';
 import { Store } from '@ngrx/store';
 import {
@@ -85,6 +86,11 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
 
   private get elementRef(): HTMLVideoElement {
     return this.videoElement?.nativeElement;
+  }
+
+  public onCapture(): void {
+    const previewUrl = this.webcamService.capture(this.elementRef);
+    this.store.dispatch(WebcamActions.savePhoto({ previewUrl }));
   }
 
   private cleanup(): void {

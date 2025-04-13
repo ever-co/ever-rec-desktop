@@ -4,9 +4,9 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { from, of } from 'rxjs';
 import { catchError, filter, map, switchMap, take } from 'rxjs/operators';
+import { WebcamService } from '../service/webcam.service';
 import { WebcamActions } from './webcam.actions';
 import { selectCameraIsAuthorized } from './webcam.selectors';
-import { WebcamService } from '../service/webcam.service';
 
 export interface ICameraPersistance {
   isAuthorized?: boolean;

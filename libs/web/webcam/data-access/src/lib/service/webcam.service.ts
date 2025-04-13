@@ -78,14 +78,14 @@ export class WebcamService {
    * Capture screenshot from current webcam stream
    * @returns Observable with base64 image data
    */
-  captureScreenshot(element: HTMLVideoElement): string {
-    if (!element || !this.stream) {
+  public capture(element: HTMLVideoElement): string {
+    if (!element) {
       throw new Error('Webcam not initialized');
     }
 
     const canvas = document.createElement('canvas');
-    canvas.width = element.videoWidth;
-    canvas.height = element.videoHeight;
+    canvas.width = element.videoWidth || 640;
+    canvas.height = element.videoHeight || 480;
     const ctx = canvas.getContext('2d');
 
     if (!ctx) {

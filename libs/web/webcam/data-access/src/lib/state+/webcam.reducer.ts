@@ -6,6 +6,8 @@ export const webcamFeatureKey = 'webcam';
 export interface IWebcamState {
   webcams: MediaDeviceInfo[];
   selectedWebcam: MediaDeviceInfo | null;
+  capturing: boolean;
+  previewUrl: string | null;
   isAuthorized: boolean;
   tracking: boolean;
   loading: boolean;
@@ -17,6 +19,8 @@ export const initialWebcamState: IWebcamState = {
   selectedWebcam: null,
   loading: false,
   isAuthorized: false,
+  capturing: false,
+  previewUrl: null,
   tracking: false,
   error: null,
 };
@@ -58,6 +62,10 @@ export const reducer = createReducer(
   on(WebcamActions.selectWebcamFailure, (state, { error }) => ({
     ...state,
     error,
+  })),
+  on(WebcamActions.savePhoto, (state, { previewUrl }) => ({
+    ...state,
+    previewUrl,
   }))
 );
 

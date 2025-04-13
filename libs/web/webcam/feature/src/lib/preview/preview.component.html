@@ -4,5 +4,8 @@
       <p>Your browser does not support the HTML5 video element.</p>
     </video>
   </div>
-  <lib-control class="absolute bottom-4 right-4"></lib-control>
+  <lib-control
+    (capture)="onCapture()"
+    class="absolute bottom-4 right-4"
+  ></lib-control>
 </div>
