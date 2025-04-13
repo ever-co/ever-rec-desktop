@@ -23,6 +23,21 @@
       }
     </mat-form-field>
 
+    <!-- Select Input -->
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Resolution</mat-label>
+      <mat-select formControlName="resolution" required>
+        @for (resolution of resolutions; track resolution) {
+        <mat-option [value]="resolution">{{
+          resolution | titlecase
+        }}</mat-option>
+        }
+      </mat-select>
+      @if (formGroup.controls['resolution'].hasError('required')) {
+      <mat-error>Please select resolution</mat-error>
+      }
+    </mat-form-field>
+
     <!-- Preview -->
     <div class="flex flex-col gap-4">
       <div class="start flex justify-between items-center">

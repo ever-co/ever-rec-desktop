@@ -27,10 +27,11 @@ export const selectCameraIsAuthorized = createSelector(
 
 export const selectCameraPersistance = createSelector(
   selectCameraState,
-  ({ tracking, camera, isAuthorized }) => ({
+  ({ tracking, camera, resolution, isAuthorized }) => ({
     tracking,
     camera,
     isAuthorized,
+    resolution,
   })
 );
 

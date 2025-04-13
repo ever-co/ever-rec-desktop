@@ -61,16 +61,20 @@ export class CameraEffects {
   selectCamera$ = createEffect(() =>
     this.actions$.pipe(
       ofType(cameraActions.selectCamera),
-      switchMap(({ deviceId, tracking = false }) =>
+      switchMap(({ deviceId, tracking = false, resolution }) =>
         this.localStorageService
           .setItem<ICameraPersistance>(
             this.cameraKey,
-            { deviceId, tracking },
+            { deviceId, tracking, resolution },
             { merge: true }
           )
           .pipe(
             map(() =>
-              cameraActions.selectCameraSuccess({ deviceId, tracking })
+              cameraActions.selectCameraSuccess({
+                deviceId,
+                tracking,
+                resolution,
+              })
             ),
             catchError(() =>
               of(
@@ -92,9 +96,10 @@ export class CameraEffects {
           .getItem<ICameraPersistance>(this.cameraKey)
           .pipe(
             filter(Boolean),
-            map(({ deviceId, tracking }) =>
+            map(({ deviceId, tracking, resolution }) =>
               cameraActions.selectCameraSuccess({
                 deviceId: deviceId ?? cameras[0]?.deviceId ?? null,
+                resolution,
                 tracking,
               })
             ),
@@ -155,8 +160,14 @@ export class CameraEffects {
   createStream$ = createEffect(() =>
     this.actions$.pipe(
       ofType(cameraActions.createCameraStream),
-      switchMap(({ deviceId, stream }) =>
-        from(this.cameraStreamService.createStream(deviceId, stream)).pipe(
+      switchMap(({ deviceId, stream, resolution }) =>
+        from(
+          this.cameraStreamService.createStream({
+            deviceId,
+            stream,
+            resolution,
+          })
+        ).pipe(
           map((stream) => cameraActions.createCameraStreamSuccess({ stream })),
           catchError((error) =>
             of(

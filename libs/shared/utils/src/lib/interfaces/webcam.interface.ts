@@ -11,4 +11,17 @@ export interface ICameraPersistance {
   isAuthorized?: boolean;
   deviceId?: string;
   tracking?: boolean;
+  resolution?: Resolution;
+}
+
+export enum Resolution {
+  LOW = 'low',
+  MEDIUM = 'medium',
+  HIGH = 'high',
+}
+
+export interface IConstraintStream {
+  deviceId?: string;
+  stream?: MediaStream | null;
+  resolution?: Resolution;
 }

@@ -1,3 +1,4 @@
+import { IConstraintStream, ICameraPersistance } from '@ever-co/shared-utils';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 export const cameraActions = createActionGroup({
@@ -11,14 +12,11 @@ export const cameraActions = createActionGroup({
     'Check Camera Authorization Success': emptyProps(),
     'Check Camera Authorization Failure': props<{ error: string }>(),
 
-    'Select Camera': props<{ deviceId?: string; tracking?: boolean }>(),
-    'Select Camera Success': props<{ deviceId?: string; tracking?: boolean }>(),
+    'Select Camera': props<ICameraPersistance>(),
+    'Select Camera Success': props<ICameraPersistance>(),
     'Select Camera Failure': props<{ error: string }>(),
 
-    'Create Camera Stream': props<{
-      deviceId: string;
-      stream?: MediaStream | null;
-    }>(),
+    'Create Camera Stream': props<IConstraintStream>(),
     'Create Camera Stream Success': props<{ stream: MediaStream | null }>(),
     'Create Camera Stream Failure': props<{ error: string }>(),
 

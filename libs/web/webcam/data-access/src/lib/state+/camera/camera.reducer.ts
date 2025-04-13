@@ -1,11 +1,13 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { cameraActions } from './camera.actions';
+import { Resolution } from '@ever-co/shared-utils';
 
 export const cameraFeatureKey = 'webcamera';
 
 export interface ICameraState {
   cameras: MediaDeviceInfo[];
   camera: MediaDeviceInfo | null;
+  resolution: Resolution;
   isAuthorized: boolean;
   tracking: boolean;
   loading: boolean;
@@ -21,6 +23,7 @@ export interface ICameraState {
 export const initialCameraState: ICameraState = {
   cameras: [],
   camera: null,
+  resolution: Resolution.MEDIUM,
   loading: false,
   isAuthorized: false,
   tracking: false,
@@ -59,14 +62,18 @@ export const reducer = createReducer(
     isAuthorized: false,
     error,
   })),
-  on(cameraActions.selectCameraSuccess, (state, { deviceId, tracking }) => ({
-    ...state,
-    tracking: tracking ?? state.tracking ?? false,
-    camera:
-      (deviceId
-        ? state.cameras.find((camera) => camera.deviceId === deviceId)
-        : state.camera) ?? null,
-  })),
+  on(
+    cameraActions.selectCameraSuccess,
+    (state, { deviceId, tracking, resolution }) => ({
+      ...state,
+      resolution: resolution ?? state.resolution ?? Resolution.MEDIUM,
+      tracking: tracking ?? state.tracking ?? false,
+      camera:
+        (deviceId
+          ? state.cameras.find((camera) => camera.deviceId === deviceId)
+          : state.camera) ?? null,
+    })
+  ),
   on(cameraActions.selectCameraFailure, (state, { error }) => ({
     ...state,
     error,
