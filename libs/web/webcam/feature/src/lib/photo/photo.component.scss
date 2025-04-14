@@ -2,3 +2,7 @@
   padding: 0 !important;
   background: white;
 }
+
+.max-h-custom {
+  max-height: calc(100vh - 16rem);
+}

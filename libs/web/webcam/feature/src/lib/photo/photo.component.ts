@@ -49,11 +49,6 @@ export class PhotoComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   public actionButtons: IActionButton[] = [
     {
-      icon: 'copy',
-      label: 'Duplicate',
-      variant: 'default',
-    },
-    {
       icon: 'delete',
       label: 'Delete',
       variant: 'danger',
