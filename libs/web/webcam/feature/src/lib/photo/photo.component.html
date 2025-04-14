@@ -1,0 +1,77 @@
+@let photo = photo$ | async;
+<!-- Structure -->
+@if(isLoading$ | async) {
+<div class="flex h-full items-center p-4 justify-center">
+  <lib-no-data class="text-gray-700" message="Loading photo..."></lib-no-data>
+</div>
+} @else if (photo) {
+<div class="max-w-7xl mx-auto bg-white rounded-df overflow-hidden">
+  <div class="flex flex-col lg:flex-row">
+    <!-- Screenshot Display Section -->
+    <div class="w-full lg:w-2/3 p-4">
+      <div
+        class="rounded-df overflow-hidden bg-gray-800 relative w-full h-full flex items-center justify-center transform transition-transform duration-300 scale-[0.99] hover:scale-[1.00]"
+      >
+        <img
+          [src]="photo.pathname"
+          alt="Photo"
+          class="max-w-full max-h-full rounded-df shadow-lg"
+          libImgFallback
+        />
+        <div
+          class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-df opacity-0 hover:opacity-100 transition-opacity duration-300"
+        >
+          <div class="p-4 space-y-2">
+            <a
+              [href]="photo.pathname"
+              rel="noopener"
+              target="_blank"
+              class="text-white absolute top-2 right-2"
+            >
+              <button mat-icon-button color="primary" aria-label="open_in_new">
+                <mat-icon>open_in_new</mat-icon>
+              </button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Metadata Section -->
+    <div class="w-full flex flex-col gap-4 lg:w-1/3 bg-gray-100 p-4">
+      <div class="flex items-start gap-4">
+        <div class="flex-grow">
+          @if(photo.metadata?.name) {
+          <div class="text-xl font-bold text-gray-800 mb-1">
+            {{ photo.metadata?.name }}
+          </div>
+          }
+          <div class="text-sm text-gray-600 flex items-center flex-wrap">
+            <span class="mr-2">{{ photo.createdAt | utcToLocalTime }}</span>
+            <span class="text-gray-400 mr-2">•</span>
+            <span>{{ photo.metadata?.size | humanizeBytes }}</span>
+          </div>
+        </div>
+        <button
+          [libPopover]="menu"
+          mat-icon-button
+          class="text-gray-500 hover:text-gray-700 transition-colors"
+        >
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #menu>
+  <lib-action-button-group
+    [data]="photo"
+    [buttons]="actionButtons"
+  ></lib-action-button-group>
+</ng-template>
+} @else {
+<div class="flex h-full items-center p-4 justify-center">
+  <lib-no-data class="text-gray-700" message="No photo available"></lib-no-data>
+</div>
+}

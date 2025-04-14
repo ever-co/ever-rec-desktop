@@ -18,3 +18,18 @@ export const settingRoutes: Route[] = [
   },
   { path: '**', redirectTo: '' },
 ];
+
+export const libraryRoutes: Route[] = [
+  { path: '', redirectTo: '', pathMatch: 'full' },
+  {
+    path: '',
+    loadComponent: () =>
+      import('./gallery/gallery.component').then((m) => m.GalleryComponent),
+  },
+  {
+    path: ':id',
+    loadComponent: () =>
+      import('./photo/photo.component').then((m) => m.PhotoComponent),
+  },
+  { path: '**', redirectTo: '' },
+];

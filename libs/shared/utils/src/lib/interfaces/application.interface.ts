@@ -9,6 +9,6 @@ export interface IApplication extends IBase {
 
 export interface IApplicationService {
   save(input: Partial<IApplication>): Promise<IApplication>;
-  findOne(options: IFindOneOptions): Promise<IApplication>;
+  findOne<T>(options: IFindOneOptions<T>): Promise<IApplication>;
   deleteAll(screenshotIds?: string[]): Promise<void>;
 }

@@ -1,0 +1,60 @@
+.card {
+  cursor: pointer;
+}
+
+mat-icon {
+  overflow: unset;
+}
+
+.screenshot-container {
+  position: relative;
+
+  .overlay {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    top: 1rem;
+    left: 1rem;
+
+    mat-icon {
+      display: none;
+    }
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.5);
+      @apply rounded-md;
+
+      mat-icon {
+        display: block;
+        color: white;
+      }
+    }
+  }
+}
+
+::ng-deep .mat-mdc-menu-content {
+  padding: 0 !important;
+  background: white;
+}
+
+::ng-deep .mat-menu-panel {
+  border-radius: var(--border-radius);
+  @apply shadow-lg;
+  @apply border border-gray-100;
+  @apply min-w-[200px];
+}
+
+::ng-deep .mat-menu-content {
+  @apply py-2;
+}
+
+::ng-deep .mat-menu-item {
+  @apply h-auto;
+  @apply leading-none;
+}
+
+::ng-deep
+  .mdc-checkbox__native-control:not(:checked)
+  ~ .mdc-checkbox__background {
+  border-color: rgb(240, 240, 240) !important;
+}

@@ -25,10 +25,15 @@ export class PhotoService {
   }
 
   public getOnePhoto<T>(options: T): Promise<IPhoto> {
+    console.log(options);
     return this.electronService.invoke(Channel.GET_PHOT0, options);
   }
 
   public deletePhoto(photo: IPhoto): Promise<void> {
     return this.electronService.invoke(Channel.DELETE_PHOTO, photo);
+  }
+
+  public deleteAllPhoto(photos: IPhoto[]): Promise<void> {
+    return this.electronService.invoke(Channel.DELETE_ALL_PHOTOS, photos);
   }
 }

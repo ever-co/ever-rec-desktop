@@ -7,6 +7,7 @@ export interface IPhoto extends IBase {
   synced?: boolean;
   timeLog?: ITimeLog;
   timeLogId?: ITimeLog['id'];
+  metadata?: IPhotoMetadata;
 }
 
 export interface ICameraPersistance {

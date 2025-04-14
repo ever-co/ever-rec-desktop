@@ -11,14 +11,17 @@ export const libraryRoutes: Route[] = [
       {
         path: 'videos',
         loadChildren: () =>
-          import('@ever-co/convert-video-feature').then(
-            (m) => m.videoRoutes
-          ),
+          import('@ever-co/convert-video-feature').then((m) => m.videoRoutes),
       },
       {
         path: 'screenshots',
         loadChildren: () =>
           import('@ever-co/screenshot-feature').then((m) => m.screenshotRoutes),
+      },
+      {
+        path: 'photos',
+        loadChildren: () =>
+          import('@ever-co/webcam-feature').then((m) => m.libraryRoutes),
       },
       { path: '**', redirectTo: '' },
     ],

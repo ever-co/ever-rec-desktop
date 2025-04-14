@@ -8,7 +8,7 @@ export interface IBase {
   deletedAt?: string;
 }
 
-export type IFindOneOptions = FindOneOptions;
+export type IFindOneOptions<T> = FindOneOptions<T>;
 
 export type IFindOptionsWhere<T> = FindOptionsWhere<T>;
 

@@ -10,7 +10,7 @@ import { createActionGroup, emptyProps, props } from '@ngrx/store';
 export const videoActions = createActionGroup({
   source: 'Video',
   events: {
-    'Load Video': props<IFindOneOptions>(),
+    'Load Video': props<IFindOneOptions<IVideo>>(),
     'Load Video Success': props<{ video: IVideo }>(),
     'Load Video Failure': props<{ error: string }>(),
 
@@ -30,8 +30,8 @@ export const videoActions = createActionGroup({
     'Update Video Failure': props<{ error: string }>(),
 
     'Unselect All Videos': emptyProps(),
-    'Unselect Video':  props<{video: ISelected<IVideo>}>(),
-    'Select Video':  props<{video: ISelected<IVideo>}>(),
+    'Unselect Video': props<{ video: ISelected<IVideo> }>(),
+    'Select Video': props<{ video: ISelected<IVideo> }>(),
 
     'Reset Videos': emptyProps(),
   },
