@@ -15,6 +15,7 @@ import {
   CameraService,
   selectCameraPersistance,
   selectCameraStreaming,
+  selectPhotoSaving,
 } from '@ever-co/webcam-data-access';
 import { Store } from '@ngrx/store';
 import {
@@ -24,6 +25,7 @@ import {
   filter,
   from,
   map,
+  Observable,
   Subject,
   switchMap,
   take,
@@ -161,6 +163,10 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
       `Error starting media stream: ${errorMessage}`,
       'error'
     );
+  }
+
+  public get saving$(): Observable<boolean> {
+    return this.store.select(selectPhotoSaving).pipe(takeUntil(this.destroy$));
   }
 
   private cleanup(): void {

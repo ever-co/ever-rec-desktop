@@ -5,6 +5,7 @@
     </video>
   </div>
   <lib-control
+    [saving]="saving$ | async"
     (capture)="onCapture()"
     class="absolute bottom-4 right-4"
   ></lib-control>

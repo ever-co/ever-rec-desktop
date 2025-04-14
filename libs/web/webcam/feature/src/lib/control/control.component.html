@@ -3,7 +3,11 @@
     class="ios-camera-button"
     type="button"
     aria-label="Take Photo"
-    type="button"
+    [ngClass]="{ saving }"
     (click)="onCapture($event)"
-  ></button>
+  >
+    @if(saving) {
+    <span class="progress-ring"></span>
+    }
+  </button>
 </div>
