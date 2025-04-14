@@ -12,7 +12,6 @@ export class PhotoMetadataService implements IPhotoMetadataService {
   public save(input: IPhotoMetadataInput): Promise<IPhotoMetadata> {
     const metadata = new PhotoMetadata();
     metadata.name = input.name;
-    metadata.photoId = input.photoId;
     metadata.resolution = input.resolution;
     metadata.size = input.size;
     return this.repository.save(metadata);

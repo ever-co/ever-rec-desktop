@@ -20,6 +20,6 @@ export class PhotoMetadata extends Base implements IPhotoMetadata {
   @JoinColumn()
   photo?: Relation<IPhoto>;
 
-  @Column()
+  @Column({ nullable: true })
   photoId?: IPhoto['id'];
 }

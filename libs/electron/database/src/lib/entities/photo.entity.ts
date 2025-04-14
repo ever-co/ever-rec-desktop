@@ -32,6 +32,6 @@ export class Photo extends Base implements IPhoto {
   @JoinColumn()
   timeLog?: Relation<ITimeLog>;
 
-  @Column()
+  @Column({ nullable: true })
   timeLogId?: ITimeLog['id'];
 }

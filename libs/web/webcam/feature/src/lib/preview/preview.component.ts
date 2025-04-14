@@ -11,6 +11,7 @@ import {
 import { NotificationService } from '@ever-co/notification-data-access';
 import {
   cameraActions,
+  photoActions,
   CameraService,
   selectCameraPersistance,
   selectCameraStreaming,
@@ -62,8 +63,18 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
       console.warn('Video element not available for capture');
       return;
     }
+
     const dataURL = this.cameraService.capture(this.videoElement.nativeElement);
-    this.store.dispatch(cameraActions.takePhoto({ dataURL }));
+
+    this.store
+      .select(selectCameraPersistance)
+      .pipe(
+        take(1),
+        tap(({ resolution }) =>
+          this.store.dispatch(photoActions.savePhoto({ dataURL, resolution }))
+        )
+      )
+      .subscribe();
   }
 
   private initCameraPreview(): void {
@@ -123,11 +134,11 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
       .select(selectCameraStreaming)
       .pipe(
         take(1),
-        tap(({ stream }) => {
+        tap(({ stream }) =>
           this.store.dispatch(
             cameraActions.createCameraStream({ deviceId, stream })
-          );
-        })
+          )
+        )
       )
       .subscribe();
   }
@@ -137,9 +148,9 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
       .select(selectCameraStreaming)
       .pipe(
         take(1),
-        tap(({ stream }) => {
-          this.store.dispatch(cameraActions.closeCameraStream({ stream }));
-        })
+        tap(({ stream }) =>
+          this.store.dispatch(cameraActions.closeCameraStream({ stream }))
+        )
       )
       .subscribe();
   }

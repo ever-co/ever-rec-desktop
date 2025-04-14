@@ -3,10 +3,13 @@ import { provideEffects } from '@ngrx/effects';
 import { provideState } from '@ngrx/store';
 import { CameraEffects } from './state+/camera/camera.effects';
 import { cameraFeature } from './state+/camera/camera.reducer';
+import { PhotoEffects } from './state+/photo/photo.effects';
+import { photoFeature } from './state+/photo/photo.reducer';
 
 export function provideWebcamDataAccess(): EnvironmentProviders {
   return makeEnvironmentProviders([
-    provideEffects(CameraEffects),
+    provideEffects(CameraEffects, PhotoEffects),
     provideState(cameraFeature),
+    provideState(photoFeature),
   ]);
 }

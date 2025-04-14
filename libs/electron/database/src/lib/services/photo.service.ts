@@ -19,7 +19,8 @@ export class PhotoService implements IPhotoService {
     photo.timeLogId = input.timeLogId;
     const metadata = await this.photoMetadataService.save(input.metadata);
     photo.metadata = metadata;
-    return this.repository.save(photo);
+    const { id } = await this.repository.save(photo);
+    return this.findOne({ where: { id }, relations: ['metadata'] });
   }
 
   public async update(

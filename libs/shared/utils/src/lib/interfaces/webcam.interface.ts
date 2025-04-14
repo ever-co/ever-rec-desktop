@@ -36,6 +36,11 @@ export interface IPhotoMetadata extends IBase {
   photoId?: IPhoto['id'];
 }
 
+export interface IPhotoSave {
+  dataURL: string;
+  resolution: Resolution;
+}
+
 export type IPhotoInput = Omit<IPhoto, 'timeLog' | 'id'>;
 
 export type IPhotoMetadataInput = Omit<IPhotoMetadata, 'photo' | 'id'>;

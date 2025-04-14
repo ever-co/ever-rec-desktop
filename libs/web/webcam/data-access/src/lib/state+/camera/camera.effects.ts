@@ -8,7 +8,6 @@ import { CameraService } from '../../service/camera.service';
 
 import { ICameraPersistance } from '@ever-co/shared-utils';
 import { CameraStreamService } from '../../service/camera-stream.service';
-import { photoActions } from '../photo/photo.actions';
 import { cameraActions } from './camera.actions';
 import { selectCameraIsAuthorized } from './camera.selectors';
 
@@ -146,15 +145,6 @@ export class CameraEffects {
           )
       )
     )
-  );
-
-  takePhoto$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(cameraActions.takePhoto),
-        map(({ dataURL }) => photoActions.savePhoto({ dataURL }))
-      ),
-    { dispatch: false }
   );
 
   createStream$ = createEffect(() =>

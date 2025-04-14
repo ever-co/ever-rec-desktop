@@ -7,8 +7,8 @@ import {
   IPaginationOptions,
   IPhoto,
   IPhotoCreateInput,
+  IPhotoSave,
   PHOTO_DIR,
-  Resolution,
 } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
 import { Between } from 'typeorm';
@@ -73,10 +73,7 @@ export function crudPhotoEvent(): void {
   });
 }
 
-export async function savePhoto(data: {
-  dataURL: string;
-  resolution: Resolution;
-}) {
+export async function savePhoto(data: IPhotoSave) {
   const { dataURL, resolution } = data;
   const name = `photo-${Date.now()}.png`;
   const buffer = convertBase64ToBuffer(dataURL);

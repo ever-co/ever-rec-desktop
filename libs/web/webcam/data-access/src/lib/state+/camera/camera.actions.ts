@@ -23,7 +23,5 @@ export const cameraActions = createActionGroup({
     'Close Camera Stream': props<{ stream: MediaStream | null }>(),
     'Close Camera Stream Success': emptyProps(),
     'Close Camera Stream Failure': props<{ error: string }>(),
-
-    'Take Photo': props<{ dataURL: string }>(),
   },
 });
