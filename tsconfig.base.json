@@ -72,6 +72,7 @@
         "libs/web/webcam/data-access/src/index.ts"
       ],
       "@ever-co/webcam-feature": ["libs/web/webcam/feature/src/index.ts"],
+      "@ever-co/window": ["libs/electron/window/src/index.ts"],
       "@ever-gauzy/desktop-core": ["node_modules/@ever-gauzy/desktop-core/*"]
     },
     "sourceMap": true,

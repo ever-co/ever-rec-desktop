@@ -33,7 +33,9 @@ export class ApplicationService implements ILoggable, IApplicationService {
     return app;
   }
 
-  public async findOne(options: IFindOneOptions): Promise<IApplication> {
+  public async findOne(
+    options: IFindOneOptions<IApplication>
+  ): Promise<IApplication> {
     return this.repository.findOne(options);
   }
 

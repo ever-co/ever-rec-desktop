@@ -1,10 +1,14 @@
 import { Route } from '@angular/router';
 
 export const appRoutes: Route[] = [
-  { path: '', redirectTo: '', pathMatch: 'full' },
   {
     path: '',
+    pathMatch: 'full',
     loadChildren: () => import('@ever-co/layout').then((m) => m.layoutRoutes),
   },
-  { path: '**', redirectTo: '' },
+  {
+    path: 'webcam',
+    loadChildren: () =>
+      import('@ever-co/webcam-feature').then((m) => m.webcamRoutes),
+  },
 ];

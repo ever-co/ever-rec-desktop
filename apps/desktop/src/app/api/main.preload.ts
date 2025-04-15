@@ -1,5 +1,5 @@
-import { Channel } from '@ever-co/shared-utils';
-import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
+import { Channel, isHttpUrl } from '@ever-co/shared-utils';
+import { contextBridge, ipcRenderer, IpcRendererEvent, shell } from 'electron';
 
 type IpcCallback = (event: IpcRendererEvent, ...args: any[]) => void;
 
@@ -8,6 +8,13 @@ const validChannels = Object.values(Channel); // Replace with your actual channe
 ipcRenderer.setMaxListeners(0);
 
 contextBridge.exposeInMainWorld('electronAPI', {
+  openExternal: (url: string) => {
+    if (isHttpUrl(url)) {
+      shell.openExternal(url);
+    } else {
+      console.warn(`Blocked attempt to open unsafe URL: ${url}`);
+    }
+  },
   invoke: (channel: Channel, data?: any): Promise<any> => {
     if (validChannels.includes(channel)) {
       return ipcRenderer.invoke(channel, data);

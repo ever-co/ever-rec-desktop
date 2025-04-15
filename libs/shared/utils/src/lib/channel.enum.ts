@@ -53,4 +53,5 @@ export enum Channel {
   'GET_ALL_PHOTOS' = 'get::all::photo',
   'DELETE_PHOTO' = 'delete::photo',
   'DELETE_ALL_PHOTOS' = 'delete::all::photo',
+  'TAKE_PHOTO' = 'take::photo',
 }

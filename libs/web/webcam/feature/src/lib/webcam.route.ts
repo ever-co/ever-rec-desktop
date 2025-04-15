@@ -33,3 +33,13 @@ export const libraryRoutes: Route[] = [
   },
   { path: '**', redirectTo: '' },
 ];
+
+export const webcamRoutes: Route[] = [
+  { path: '', redirectTo: '', pathMatch: 'full' },
+  {
+    path: '',
+    loadComponent: () =>
+      import('./webcam/webcam.component').then((m) => m.WebcamComponent),
+  },
+  { path: '**', redirectTo: '' },
+];
