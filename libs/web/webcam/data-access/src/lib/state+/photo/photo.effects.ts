@@ -79,6 +79,18 @@ export class PhotoEffects {
     )
   );
 
+  stopTracking$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(photoActions.stopTracking),
+      mergeMap(() =>
+        this.photoService.stopCapture().pipe(
+          map(() => photoActions.stopTrackingSuccess()),
+          catchError((error) => of(photoActions.stopTrackingFailure({ error })))
+        )
+      )
+    )
+  );
+
   constructor(
     private readonly actions$: Actions,
     private readonly photoService: PhotoService,

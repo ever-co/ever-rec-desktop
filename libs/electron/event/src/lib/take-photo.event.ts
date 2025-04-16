@@ -6,16 +6,18 @@ import {
   StreamWindow,
   WindowManager,
 } from '@ever-co/window';
-import { screen } from 'electron';
+import { ipcMain, screen } from 'electron';
 
 export function takePhotoEvent(): void {
   const scheduler = TimerScheduler.getInstance();
   const manager = WindowManager.getInstance();
   const delay = moment.duration(5, 'minutes').asSeconds();
+
+  let main: IWindow | null = null;
   let stream: IWindow | null = null;
 
   scheduler.onStart(async () => {
-    const main = manager.getOne(AppWindowId.MAIN);
+    main = manager.getOne(AppWindowId.MAIN);
     stream = manager.getOne(AppWindowId.STREAMING);
 
     if (!main) return;
@@ -63,5 +65,10 @@ export function takePhotoEvent(): void {
   scheduler.onTick(async (seconds) => {
     if (!stream) return;
     if (seconds % delay === 0) stream.send(Channel.TAKE_PHOTO);
+  });
+
+  ipcMain.on(Channel.STOP_TRACKING, () => {
+    if (!main) return;
+    main.send(Channel.AUTO_STOP_SYNC);
   });
 }

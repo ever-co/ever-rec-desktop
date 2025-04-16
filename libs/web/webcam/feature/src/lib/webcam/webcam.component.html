@@ -1,5 +1,11 @@
-<lib-preview
-  id="preview"
-  class="webcam grabbable"
-  [control]="false"
-></lib-preview>
+<div class="flex flex-row justify-center relative align-center">
+  <lib-preview
+    id="preview"
+    class="webcam grabbable"
+    [control]="false"
+  ></lib-preview>
+  <lib-action-button
+    class="button absolute bottom-2 right-2"
+    [button]="stopButton"
+  ></lib-action-button>
+</div>

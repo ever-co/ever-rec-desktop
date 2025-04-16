@@ -3,6 +3,11 @@
   user-select: none;
 }
 
+.button {
+  app-region: no-drag;
+  cursor: pointer;
+}
+
 .grabbable {
   cursor: move; /* fallback if grab cursor is unsupported */
   cursor: grab;

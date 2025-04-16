@@ -54,4 +54,5 @@ export enum Channel {
   'DELETE_PHOTO' = 'delete::photo',
   'DELETE_ALL_PHOTOS' = 'delete::all::photo',
   'TAKE_PHOTO' = 'take::photo',
+  'STOP_TRACKING' = 'stop::photo::tracking',
 }

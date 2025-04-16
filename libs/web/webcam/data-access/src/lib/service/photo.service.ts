@@ -7,6 +7,7 @@ import {
   IPhoto,
   IPhotoSave,
 } from '@ever-co/shared-utils';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -35,5 +36,9 @@ export class PhotoService {
 
   public deleteAllPhoto(photos: IPhoto[]): Promise<void> {
     return this.electronService.invoke(Channel.DELETE_ALL_PHOTOS, photos);
+  }
+
+  public stopCapture(): Observable<void> {
+    return of(this.electronService.send(Channel.STOP_TRACKING));
   }
 }
