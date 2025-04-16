@@ -7,13 +7,13 @@ import {
   Input,
   OnDestroy,
   ViewChild,
-  inject,
 } from '@angular/core';
 import { NotificationService } from '@ever-co/notification-data-access';
 import {
   cameraActions,
-  photoActions,
   CameraService,
+  photoActions,
+  PhotoService,
   selectCameraPersistance,
   selectCameraStreaming,
   selectPhotoSaving,
@@ -49,11 +49,16 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
   @Input()
   public control = true;
   private readonly destroy$ = new Subject<void>();
-  private readonly cameraService = inject(CameraService);
-  private readonly notificationService = inject(NotificationService);
-  private readonly store = inject(Store);
+
+  constructor(
+    private readonly cameraService: CameraService,
+    private readonly notificationService: NotificationService,
+    private readonly photoService: PhotoService,
+    private readonly store: Store
+  ) {}
 
   ngAfterViewInit(): void {
+    this.handleAutoCapture();
     this.handleCameraStream();
     this.initCameraPreview();
   }
@@ -129,6 +134,16 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
           console.error('Error in camera stream subscription:', err);
           return EMPTY;
         })
+      )
+      .subscribe();
+  }
+
+  private handleAutoCapture(): void {
+    this.photoService
+      .onTakePhoto()
+      .pipe(
+        tap(() => this.onCapture()),
+        takeUntil(this.destroy$)
       )
       .subscribe();
   }

@@ -8,10 +8,14 @@ import {
 } from '@ever-co/window';
 import { ipcMain, screen } from 'electron';
 
-export function takePhotoEvent(): void {
+export function takePhotoEvent() {
+  ipcMain.on(Channel.START_CAPTURE_SCREEN, takePhoto);
+}
+
+function takePhoto(): void {
   const scheduler = TimerScheduler.getInstance();
   const manager = WindowManager.getInstance();
-  const delay = moment.duration(5, 'minutes').asSeconds();
+  const delay = moment.duration(10, 'seconds').asSeconds();
 
   let main: IWindow | null = null;
   let stream: IWindow | null = null;

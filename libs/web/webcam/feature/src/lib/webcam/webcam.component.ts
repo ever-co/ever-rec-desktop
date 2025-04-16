@@ -7,6 +7,7 @@ import { PreviewComponent } from '../preview/preview.component';
 
 @Component({
   selector: 'lib-webcam',
+  standalone: true,
   imports: [PreviewComponent, ActionButtonComponent],
   templateUrl: './webcam.component.html',
   styleUrl: './webcam.component.scss',

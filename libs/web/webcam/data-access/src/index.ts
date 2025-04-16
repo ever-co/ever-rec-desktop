@@ -6,3 +6,4 @@ export * from './lib/service/camera.service';
 export * from './lib/state+/photo/photo.actions';
 export * from './lib/state+/photo/photo.selectors';
 export * from './lib/webcam.module';
+export * from './lib/service/photo.service';
