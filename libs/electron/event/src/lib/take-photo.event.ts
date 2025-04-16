@@ -22,8 +22,8 @@ export function takePhotoEvent(): void {
 
     const { workArea } = screen.getPrimaryDisplay();
     const padding = 20;
-    const width = 360;
-    const height = 240;
+    const width = 480;
+    const height = 270;
 
     stream =
       stream ||
@@ -58,7 +58,7 @@ export function takePhotoEvent(): void {
   scheduler.onStop(() => {
     if (!stream) return;
     stream.send(Channel.TAKE_PHOTO);
-    stream.hide();
+    stream.close();
   });
 
   scheduler.onTick(async (seconds) => {

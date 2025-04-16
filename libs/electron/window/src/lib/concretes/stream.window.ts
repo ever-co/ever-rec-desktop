@@ -30,6 +30,8 @@ export class StreamWindow extends Window {
   protected async handleClose(event: Event): Promise<void> {
     if (this._isAppExiting) return;
     event.preventDefault();
-    await this.initiateGracefulExit();
+    this.manager.unregister(AppWindowId.STREAMING);
+    this.browserWindow.destroy();
+    this.browserWindow = null;
   }
 }

@@ -31,7 +31,7 @@ export class CameraStreamService {
     > = {
       low: { width: { ideal: 1280 }, height: { ideal: 720 } },
       medium: { width: { ideal: 1920 }, height: { ideal: 1080 } },
-      high: { width: { ideal: 4096 }, height: { ideal: 2160 } },
+      high: { width: { ideal: 3840 }, height: { ideal: 2160 } },
     };
 
     const selected = resolutionMap[resolution];
