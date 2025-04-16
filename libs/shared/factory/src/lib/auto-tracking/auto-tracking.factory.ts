@@ -17,7 +17,9 @@ export function autoTrackingFactory(
       .requestTracking()
       .pipe(
         withLatestFrom(store.select(selectCameraPersistance)),
-        filter(([, persistance]) => persistance.tracking),
+        filter(
+          ([, persistance]) => persistance.tracking && !!persistance.camera
+        ),
         map(() => store.dispatch(photoActions.startTracking()))
       )
       .subscribe();
