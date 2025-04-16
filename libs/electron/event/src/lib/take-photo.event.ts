@@ -21,7 +21,7 @@ export function takePhotoEvent(): void {
     if (!main) return;
 
     const { workArea } = screen.getPrimaryDisplay();
-    const padding = 10;
+    const padding = 20;
     const width = 256;
     const height = 144;
 
