@@ -33,25 +33,32 @@ export class PhotoCaptureEvent implements IPhotoCaptureEvent {
   }
 
   public start(): void {
-    this.scheduler.onStart(this.handleStart.bind(this));
-    this.scheduler.onStop(this.handleStop.bind(this));
+    this.handleStart();
     this.scheduler.onTick(this.handleTick.bind(this));
+    this.scheduler.onStop(this.handleStop.bind(this));
   }
 
   private registerEvents(): void {
-    ipcMain.on(Channel.START_CAPTURE_SCREEN, () => this.start());
+    ipcMain.on(Channel.START_TRACKING, () => this.start());
     ipcMain.on(Channel.STOP_TRACKING, () => {
       if (this.mainWindow) {
         this.mainWindow.send(Channel.AUTO_STOP_SYNC);
       }
     });
+    ipcMain.on(Channel.START_CAPTURE_SCREEN, () => {
+      this.mainWindow = this.windowManager.getOne(AppWindowId.MAIN);
+      if (this.mainWindow) {
+        this.mainWindow.send(Channel.START_TRACKING);
+      }
+    });
   }
 
   private async handleStart(): Promise<void> {
-    this.mainWindow = this.windowManager.getOne(AppWindowId.MAIN);
     this.streamWindow = this.windowManager.getOne(AppWindowId.STREAMING);
 
-    if (!this.mainWindow) return;
+    if (!this.mainWindow) {
+      return;
+    }
 
     if (!this.streamWindow) {
       const { workArea } = screen.getPrimaryDisplay();

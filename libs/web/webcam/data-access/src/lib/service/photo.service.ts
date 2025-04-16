@@ -42,10 +42,23 @@ export class PhotoService {
     return of(this.electronService.send(Channel.STOP_TRACKING));
   }
 
+  public startCapture(): Observable<void> {
+    return of(this.electronService.send(Channel.START_TRACKING));
+  }
+
   public onTakePhoto(): Observable<void> {
     return new Observable<void>((observer) => {
       this.electronService.on(Channel.TAKE_PHOTO, () => {
         console.log('Take photo...');
+        observer.next();
+      });
+    });
+  }
+
+  public onStartTracking(): Observable<void> {
+    return new Observable<void>((observer) => {
+      this.electronService.on(Channel.START_TRACKING, () => {
+        console.log('Start tracking...');
         observer.next();
       });
     });

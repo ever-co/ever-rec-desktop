@@ -79,6 +79,20 @@ export class PhotoEffects {
     )
   );
 
+  startTracking$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(photoActions.startTracking),
+      mergeMap(() =>
+        this.photoService.startCapture().pipe(
+          map(() => photoActions.startTrackingSuccess()),
+          catchError((error) =>
+            of(photoActions.startTrackingFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
   stopTracking$ = createEffect(() =>
     this.actions$.pipe(
       ofType(photoActions.stopTracking),

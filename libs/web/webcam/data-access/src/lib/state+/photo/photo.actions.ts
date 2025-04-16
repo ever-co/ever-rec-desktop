@@ -42,6 +42,10 @@ export const photoActions = createActionGroup({
     'Unselect Photo': props<{ photo: ISelected<IPhoto> }>(),
     'Select Photo': props<{ photo: ISelected<IPhoto> }>(),
 
+    'Start Tracking': emptyProps(),
+    'Start Tracking Success': emptyProps(),
+    'Start Tracking Failure': props<{ error: string }>(),
+
     'Stop Tracking': emptyProps(),
     'Stop Tracking Success': emptyProps(),
     'Stop Tracking Failure': props<{ error: string }>(),

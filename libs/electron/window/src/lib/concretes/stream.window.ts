@@ -12,7 +12,6 @@ export class StreamWindow extends Window {
   constructor(config: IWindowConfig) {
     super(config);
     this.initializeStreamWindow();
-    this.browserWindow?.webContents.toggleDevTools();
   }
 
   private initializeStreamWindow(): void {
