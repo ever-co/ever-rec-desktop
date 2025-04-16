@@ -4,6 +4,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  Input,
   OnDestroy,
   ViewChild,
   inject,
@@ -45,7 +46,8 @@ import { ControlComponent } from '../control/control.component';
 export class PreviewComponent implements AfterViewInit, OnDestroy {
   @ViewChild('video', { static: false })
   private videoElement!: ElementRef<HTMLVideoElement>;
-
+  @Input()
+  public control = true;
   private readonly destroy$ = new Subject<void>();
   private readonly cameraService = inject(CameraService);
   private readonly notificationService = inject(NotificationService);
