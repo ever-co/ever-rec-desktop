@@ -24,7 +24,7 @@ import { crudVideoEvents, removeCrudVideoEvent } from './crud-video.event';
 import { MainEvents, removeMainEvents } from './main.event';
 import { powerManagerHandlerEvents } from './power-manager.event';
 import { removeRetentionEvents, retentionEvents } from './retention.event';
-import { takePhotoEvent } from './take-photo.event';
+import { PhotoCaptureEvent } from './photo-capture.event';
 import { removeUploadEvent, uploadEventListener } from './upload.event';
 
 export function subscribeEvents() {
@@ -40,7 +40,7 @@ export function subscribeEvents() {
   powerManagerHandlerEvents();
   activitiesEvents();
   crudPhotoEvent();
-  takePhotoEvent();
+  new PhotoCaptureEvent();
 }
 
 export function unsubscribeEvents() {

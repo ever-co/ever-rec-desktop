@@ -4,3 +4,4 @@ export * from './lib/concretes/stream.window';
 export * from './lib/concretes/window.manager';
 export * from './lib/shared/enums/app-window-id.enum';
 export * from './lib/shared/interfaces/window.interface';
+export * from './lib/shared/interfaces/window-manager.interface';
