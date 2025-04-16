@@ -1,10 +1,10 @@
 import { TimerScheduler } from '@ever-co/electron-utils';
-import { Channel, isEmpty, moment } from '@ever-co/shared-utils';
+import { Channel, moment } from '@ever-co/shared-utils';
 import {
   AppWindowId,
+  IWindow,
   StreamWindow,
   WindowManager,
-  IWindow,
 } from '@ever-co/window';
 import { screen } from 'electron';
 
@@ -21,9 +21,9 @@ export function takePhotoEvent(): void {
     if (!main) return;
 
     const { workArea } = screen.getPrimaryDisplay();
-    const padding = 20;
-    const width = 480;
-    const height = 270;
+    const padding = 10;
+    const width = 256;
+    const height = 144;
 
     stream =
       stream ||
@@ -39,7 +39,6 @@ export function takePhotoEvent(): void {
           height,
           frame: false,
           resizable: false,
-          parent: main?.browserWindow,
           x: padding,
           y: workArea.height - height - padding,
           webPreferences: {

@@ -10,8 +10,8 @@ export class WindowOptionsBuilder implements IWindowOptionsBuilder {
     const defaultWidth = 1280;
     const defaultHeight = 720;
 
-    const width = Math.min(380, customOptions.width ?? defaultWidth);
-    const height = Math.min(240, customOptions.height ?? defaultHeight);
+    const width = Math.min(100, customOptions.width ?? defaultWidth);
+    const height = Math.min(100, customOptions.height ?? defaultHeight);
 
     return {
       width,

@@ -35,8 +35,6 @@ class Main {
   }
 
   private static bootstrapApp(): void {
-    App.main(app);
-
     if (!app.requestSingleInstanceLock()) {
       app.quit();
       return;
@@ -49,6 +47,8 @@ class Main {
         App.window.focus();
       }
     });
+
+    App.main(app);
   }
 
   private static bootstrapAppEvents(): void {

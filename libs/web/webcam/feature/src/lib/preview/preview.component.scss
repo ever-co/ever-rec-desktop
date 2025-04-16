@@ -4,3 +4,14 @@
   background: rgb(0 0 139 / 15%);
   border-radius: var(--border-radius);
 }
+
+:host(.webcam) {
+  .preview {
+    height: 144px;
+    background: unset;
+
+    video {
+      transform: scaleX(-1);
+    }
+  }
+}
