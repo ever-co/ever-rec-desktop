@@ -26,7 +26,6 @@ export class PhotoService {
   }
 
   public getOnePhoto<T>(options: T): Promise<IPhoto> {
-    console.log(options);
     return this.electronService.invoke(Channel.GET_PHOT0, options);
   }
 
@@ -47,18 +46,10 @@ export class PhotoService {
   }
 
   public onTakePhoto(): Observable<void> {
-    return new Observable<void>((observer) => {
-      this.electronService.on(Channel.TAKE_PHOTO, () => {
-        observer.next();
-      });
-    });
+    return this.electronService.fromEvent(Channel.TAKE_PHOTO);
   }
 
   public requestTracking(): Observable<void> {
-    return new Observable<void>((observer) => {
-      this.electronService.on(Channel.REQUEST_TRACKING, () => {
-        observer.next();
-      });
-    });
+    return this.electronService.fromEvent(Channel.REQUEST_TRACKING);
   }
 }
