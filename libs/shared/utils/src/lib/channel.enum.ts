@@ -56,4 +56,5 @@ export enum Channel {
   'TAKE_PHOTO' = 'take::photo',
   'STOP_TRACKING' = 'stop::photo::tracking',
   'START_TRACKING' = 'start::photo::tracking',
+  'REQUEST_TRACKING' = 'request::photo::tracking',
 }

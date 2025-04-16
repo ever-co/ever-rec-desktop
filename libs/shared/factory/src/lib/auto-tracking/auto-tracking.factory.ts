@@ -14,7 +14,7 @@ export function autoTrackingFactory(
 ): () => void {
   return () => {
     service
-      .onStartTracking()
+      .requestTracking()
       .pipe(
         withLatestFrom(store.select(selectCameraPersistance)),
         filter(([, persistance]) => persistance.tracking),

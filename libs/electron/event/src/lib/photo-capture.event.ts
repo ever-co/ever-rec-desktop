@@ -9,11 +9,7 @@ import {
 } from '@ever-co/window';
 import { ipcMain, screen } from 'electron';
 
-interface IPhotoCaptureEvent {
-  start(): void;
-}
-
-export class PhotoCaptureEvent implements IPhotoCaptureEvent {
+export class PhotoCaptureEvent {
   private readonly scheduler: TimerScheduler;
   private readonly windowManager: IWindowManager;
   private readonly delayInSeconds: number;
@@ -30,30 +26,25 @@ export class PhotoCaptureEvent implements IPhotoCaptureEvent {
     this.delayInSeconds = moment.duration(10, 'seconds').asSeconds();
 
     this.registerEvents();
+    this.registerSchedulerEvents();
   }
 
-  public start(): void {
-    this.handleStart();
+  public registerSchedulerEvents(): void {
+    this.scheduler.onStart(this.handleStart.bind(this));
     this.scheduler.onTick(this.handleTick.bind(this));
     this.scheduler.onStop(this.handleStop.bind(this));
   }
 
   private registerEvents(): void {
-    ipcMain.on(Channel.START_TRACKING, () => this.start());
+    ipcMain.on(Channel.START_TRACKING, () => this.createStreamingWindow());
     ipcMain.on(Channel.STOP_TRACKING, () => {
       if (this.mainWindow) {
         this.mainWindow.send(Channel.AUTO_STOP_SYNC);
       }
     });
-    ipcMain.on(Channel.START_CAPTURE_SCREEN, () => {
-      this.mainWindow = this.windowManager.getOne(AppWindowId.MAIN);
-      if (this.mainWindow) {
-        this.mainWindow.send(Channel.START_TRACKING);
-      }
-    });
   }
 
-  private async handleStart(): Promise<void> {
+  private async createStreamingWindow(): Promise<void> {
     this.streamWindow = this.windowManager.getOne(AppWindowId.STREAMING);
 
     if (!this.mainWindow) {
@@ -91,6 +82,13 @@ export class PhotoCaptureEvent implements IPhotoCaptureEvent {
 
     this.streamWindow.show();
     this.streamWindow.send(Channel.TAKE_PHOTO);
+  }
+
+  private handleStart(): void {
+    this.mainWindow = this.windowManager.getOne(AppWindowId.MAIN);
+    if (this.mainWindow) {
+      this.mainWindow.send(Channel.REQUEST_TRACKING);
+    }
   }
 
   private handleStop(): void {
