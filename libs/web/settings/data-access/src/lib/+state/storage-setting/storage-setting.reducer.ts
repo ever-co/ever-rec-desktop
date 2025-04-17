@@ -32,6 +32,7 @@ const initialState: IStorageState = {
     screenshot: 0,
     video: 0,
     total: 0,
+    photo: 0,
   },
   error: '',
 };
