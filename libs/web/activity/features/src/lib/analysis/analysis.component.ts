@@ -21,44 +21,53 @@ import {
 import { HumanizePipe, selectDatePickerState } from '@ever-co/shared-service';
 import { IRange, IWorkPatternAnalysis } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
-import { distinctUntilChanged, map, Observable, Subject, takeUntil } from 'rxjs';
+import {
+  distinctUntilChanged,
+  map,
+  Observable,
+  Subject,
+  takeUntil,
+} from 'rxjs';
 
 @Component({
-    selector: 'lib-analysis',
-    imports: [
-        CommonModule,
-        MatCardModule,
-        MatIconModule,
-        MatProgressBarModule,
-        MatButtonModule,
-        MatChipsModule,
-        MatSlideToggleModule,
-        HumanizePipe,
-        MatTooltipModule
-    ],
-    templateUrl: './analysis.component.html',
-    styleUrl: './analysis.component.scss',
-    animations: [
-        trigger('fadeSlideInOut', [
-            transition(':enter', [
-                style({ opacity: 0, transform: 'translateY(20px)' }),
-                animate('500ms ease-out', style({ opacity: 1, transform: 'translateY(0)' })),
-            ]),
-        ]),
-        trigger('progressBar', [
-            state('void', style({ width: '0%' })),
-            state('*', style({ width: '{{ percentage }}%' }), {
-                params: { percentage: 0 },
-            }),
-            transition('void => *', animate('1000ms ease-out')),
-        ]),
-        trigger('tagAnimation', [
-            transition(':enter', [
-                style({ opacity: 0, transform: 'scale(0.95)' }),
-                animate('300ms ease-out', style({ opacity: 1, transform: 'scale(1)' })),
-            ]),
-        ]),
-    ]
+  selector: 'lib-analysis',
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatIconModule,
+    MatProgressBarModule,
+    MatButtonModule,
+    MatChipsModule,
+    MatSlideToggleModule,
+    HumanizePipe,
+    MatTooltipModule,
+  ],
+  templateUrl: './analysis.component.html',
+  styleUrl: './analysis.component.scss',
+  animations: [
+    trigger('fadeSlideInOut', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(20px)' }),
+        animate(
+          '500ms ease-out',
+          style({ opacity: 1, transform: 'translateY(0)' })
+        ),
+      ]),
+    ]),
+    trigger('progressBar', [
+      state('void', style({ width: '0%' })),
+      state('*', style({ width: '{{ percentage }}%' }), {
+        params: { percentage: 0 },
+      }),
+      transition('void => *', animate('1000ms ease-out')),
+    ]),
+    trigger('tagAnimation', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'scale(0.95)' }),
+        animate('300ms ease-out', style({ opacity: 1, transform: 'scale(1)' })),
+      ]),
+    ]),
+  ],
 })
 export class AnalysisComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
