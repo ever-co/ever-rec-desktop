@@ -98,24 +98,28 @@
     >
       <mat-card-content class="p-4">
         <div class="w-full flex items-center justify-between">
-          <div class="space-y-2">
+          <div class="space-y-2 w-full">
             <div class="flex items-center gap-2">
               <mat-icon class="text-purple-500">bolt</mat-icon>
               <p class="text-sm font-medium text-gray-600">
                 Peak Productivity Hours
               </p>
             </div>
-            <div class="flex flex-wrap gap-2 items-center">
+            <div
+              class="flex flex-nowrap gap-3 overflow-x-auto pb-3 -mx-1 px-1 scroll-smooth"
+            >
               @if(data.mostProductiveHours.length) { @for (hour of
               data.mostProductiveHours; track hour; let i = $index) {
               <div
                 @tagAnimation
+                [matTooltip]="'Your productivity peaks at ' + hour"
+                matTooltipPosition="above"
                 [style.animation-delay]="i * 100 + 'ms'"
-                class="px-3 py-1 rounded-full bg-purple-100 text-purple-800 font-medium text-sm flex items-center"
+                class="px-2 py-1 rounded-full bg-purple-50 text-purple-700 font-medium text-sm flex items-center shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 hover:bg-purple-100 border border-purple-100 min-w-[120px] justify-center flex-shrink-0 cursor-pointer active:scale-95"
               >
-                {{ hour }}
+                <span class="truncate">{{ hour }}</span>
                 <mat-icon
-                  class="ml-1 text-purple-500"
+                  class="ml-1 text-purple-400 hover:text-purple-600 transition-colors duration-200"
                   style="font-size: 16px; height: 16px; width: 16px"
                   >schedule</mat-icon
                 >
