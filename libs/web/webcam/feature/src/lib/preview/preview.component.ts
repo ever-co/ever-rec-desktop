@@ -67,7 +67,7 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
     this.cleanup();
   }
 
-  onCapture(): void {
+  public capture(): void {
     if (!this.videoElement?.nativeElement) {
       console.warn('Video element not available for capture');
       return;
@@ -140,9 +140,9 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
 
   private handleAutoCapture(): void {
     this.photoService
-      .onTakePhoto()
+      .requestCapture()
       .pipe(
-        tap(() => this.onCapture()),
+        tap(() => this.capture()),
         takeUntil(this.destroy$)
       )
       .subscribe();

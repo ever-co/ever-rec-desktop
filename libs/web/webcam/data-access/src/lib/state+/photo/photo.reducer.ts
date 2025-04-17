@@ -11,6 +11,7 @@ export interface IPhotoState {
   saving: boolean;
   loading: boolean;
   deleting: boolean;
+  capturing: boolean;
   hasNext: boolean;
   count: number;
   error: string | null;
@@ -25,6 +26,7 @@ export const initialPhotoState: IPhotoState = {
   saving: false,
   loading: false,
   deleting: false,
+  capturing: false,
   error: null,
 };
 
@@ -169,7 +171,24 @@ export const reducer = createReducer(
     ...state,
     loading: false,
     error,
-  }))
+  })),
+  on(photoActions.startTrackingSuccess, (state) => ({
+    ...state,
+    capturing: true,
+  })),
+  on(photoActions.stopTrackingSuccess, (state) => ({
+    ...state,
+    capturing: false,
+  })),
+  on(
+    photoActions.stopTrackingFailure,
+    photoActions.startTrackingFailure,
+    (state, { error }) => ({
+      ...state,
+      capturing: false,
+      error,
+    })
+  )
 );
 
 export const photoFeature = createFeature({

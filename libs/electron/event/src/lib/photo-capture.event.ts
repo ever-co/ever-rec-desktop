@@ -17,12 +17,9 @@ export class PhotoCaptureEvent {
   private mainWindow: IWindow | null = null;
   private streamWindow: IWindow | null = null;
 
-  constructor(
-    scheduler = TimerScheduler.getInstance(),
-    windowManager = WindowManager.getInstance()
-  ) {
-    this.scheduler = scheduler;
-    this.windowManager = windowManager;
+  constructor() {
+    this.scheduler = TimerScheduler.getInstance();
+    this.windowManager = WindowManager.getInstance();
     this.delayInSeconds = moment.duration(10, 'seconds').asSeconds();
 
     this.registerEvents();
@@ -31,12 +28,14 @@ export class PhotoCaptureEvent {
 
   public registerSchedulerEvents(): void {
     this.scheduler.onStart(this.handleStart.bind(this));
-    this.scheduler.onTick(this.handleTick.bind(this));
     this.scheduler.onStop(this.handleStop.bind(this));
   }
 
   private registerEvents(): void {
-    ipcMain.on(Channel.START_TRACKING, () => this.createStreamingWindow());
+    ipcMain.on(Channel.START_TRACKING, () => {
+      this.createStreamingWindow();
+      this.scheduler.onTick(this.handleTick.bind(this));
+    });
     ipcMain.on(Channel.STOP_TRACKING, () => {
       if (this.mainWindow) {
         this.mainWindow.send(Channel.AUTO_STOP_SYNC);
@@ -100,7 +99,9 @@ export class PhotoCaptureEvent {
   }
 
   private handleTick(seconds: number): void {
+    console.log('STREAMING', this.streamWindow);
     if (this.streamWindow && seconds % this.delayInSeconds === 0) {
+      console.log('take photo...');
       this.streamWindow.send(Channel.TAKE_PHOTO);
     }
   }

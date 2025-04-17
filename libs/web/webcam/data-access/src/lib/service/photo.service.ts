@@ -45,7 +45,7 @@ export class PhotoService {
     return of(this.electronService.send(Channel.START_TRACKING));
   }
 
-  public onTakePhoto(): Observable<void> {
+  public requestCapture(): Observable<void> {
     return this.electronService.fromEvent(Channel.TAKE_PHOTO);
   }
 
