@@ -224,7 +224,7 @@ export class ScreenshotMetadataService {
         previousCount > 0
           ? this.calculateInformationTrend(currentCount, previousCount)
           : currentCount > 0
-          ? Infinity
+          ? 100
           : 0;
 
       return {
@@ -247,7 +247,7 @@ export class ScreenshotMetadataService {
 
   private static normalizeTrendValue(trend: number) {
     // Fisher z-transform for stable variance
-    const clamped = Math.max(-100, Math.min(100, trend));
+    const clamped = Math.max(-10000, Math.min(10000, trend));
     return Math.round(clamped * 100) / 100;
   }
 
