@@ -294,13 +294,9 @@ export class ActivityService {
     // Phase 2: Special Case Handling for Single Day
     if (dayCount === 1) {
       const singleDayData = Object.values(dailyTotals)[0];
-      // Return simple average with Bayesian shrinkage toward 8 hours
+      // Return simple average
       const empiricalEstimate = singleDayData.raw / 3600;
-      const priorMean = 8; // Standard workday assumption
-      const shrinkageFactor = 1 / (1 + singleDayData.raw / (8 * 3600)); // More shrinkage for small totals
-      return (
-        shrinkageFactor * priorMean + (1 - shrinkageFactor) * empiricalEstimate
-      );
+      return empiricalEstimate;
     }
 
     // Phase 3: Robust Estimation (Tukey's Biweight Approach)
