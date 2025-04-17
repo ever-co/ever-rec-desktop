@@ -1,4 +1,4 @@
-import { currentWeek, currentWeekTillNow, IRange } from '@ever-co/shared-utils';
+import { currentWeekTillNow, IRange } from '@ever-co/shared-utils';
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { datePickerActions } from './date-picker.actions';
 
