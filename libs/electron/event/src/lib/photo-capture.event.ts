@@ -99,9 +99,7 @@ export class PhotoCaptureEvent {
   }
 
   private handleTick(seconds: number): void {
-    console.log('STREAMING', this.streamWindow);
     if (this.streamWindow && seconds % this.delayInSeconds === 0) {
-      console.log('take photo...');
       this.streamWindow.send(Channel.TAKE_PHOTO);
     }
   }
