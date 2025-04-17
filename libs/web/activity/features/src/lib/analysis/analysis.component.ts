@@ -18,7 +18,11 @@ import {
   activityActions,
   selectActivityState,
 } from '@ever-co/activity-data-access';
-import { HumanizePipe, selectDatePickerState } from '@ever-co/shared-service';
+import {
+  HumanizeDateRangePipe,
+  HumanizePipe,
+  selectDatePickerState,
+} from '@ever-co/shared-service';
 import { IRange, IWorkPatternAnalysis } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import {
@@ -39,6 +43,7 @@ import {
     MatButtonModule,
     MatChipsModule,
     MatSlideToggleModule,
+    HumanizeDateRangePipe,
     HumanizePipe,
     MatTooltipModule,
   ],

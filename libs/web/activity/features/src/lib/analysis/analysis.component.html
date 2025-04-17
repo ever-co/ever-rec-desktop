@@ -19,7 +19,7 @@
       <mat-card-content class="p-4">
         <div class="w-full flex items-center justify-between">
           <div class="space-y-2">
-            <div class="flex items-center gap-2">
+            <div class="flex items-center mb-2 gap-2">
               <mat-icon class="text-blue-500">schedule</mat-icon>
               <p class="text-sm font-medium text-gray-600">
                 Average Daily Hours
@@ -32,7 +32,9 @@
                   : 'No data'
               }}
             </h6>
-            <p class="text-xs text-gray-500">Based on last 30 days</p>
+            <p class="text-xs capitalize text-gray-500">
+              Based on {{ dateRanges$() | async | humanizeDateRange }}
+            </p>
           </div>
           <div
             class="h-16 w-16 bg-blue-50 rounded-full flex items-center justify-center"
@@ -58,7 +60,7 @@
       <mat-card-content class="p-4">
         <div class="w-full flex items-center justify-between">
           <div class="space-y-2">
-            <div class="flex items-center gap-2">
+            <div class="flex items-center mb-2 gap-2">
               <mat-icon class="text-green-500">calendar_today</mat-icon>
               <p class="text-sm font-medium text-gray-600">
                 Most Productive Day
@@ -168,7 +170,7 @@
               <div
                 class="h-2 rounded-full"
                 [class]="getConsistencyColor(data.consistencyScore * 100)"
-                [style.width]="(data.consistencyScore || 0) * 100 + '%'"
+                [style.width]="data.consistencyScore || 0 | percent : '1.2-2'"
               ></div>
             </div>
             <p class="text-xs text-gray-500">Measure of your work regularity</p>
