@@ -51,7 +51,7 @@ export class SettingStorageEffects {
         screenshotActions.captureSuccess,
         generateVideoActions.progress,
         generateVideoActions.finishSuccess,
-        videoActions.deleteVideoSuccess,
+        videoActions.deleteVideosSuccess,
         screenshotActions.deleteScreenshotsSuccess,
         screenshotActions.deleteSelectedScreenshotsSuccess,
         photoActions.deletePhotosSuccess,

@@ -18,6 +18,7 @@ export interface IScreenshotMetadata extends IBase {
   description?: string;
   size?: number;
   application?: IApplication;
+  screenshot?: IScreenshot;
 }
 
 export interface IScreenshotChartLine {
