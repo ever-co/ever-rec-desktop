@@ -6,7 +6,7 @@
     "../../../../../node_modules/ffmpeg-static/package.json"
   ],
   "productName": "Ever Rec Desktop",
-  "appId": "com.ever.rec.desktop",
+  "appId": "co.ever.rec.desktop",
   "artifactName": "ever-rec-desktop-${version}.${ext}",
   "copyright": "Copyright © 2024-Present. Ever Co. LTD",
   "directories": {
@@ -14,11 +14,12 @@
   },
   "mac": {
     "icon": "mac/icon.icns",
+    "darkModeSupport": true,
+    "gatekeeperAssess": true,
+    "hardenedRuntime": true,
     "extendInfo": {
-      "NSMicrophoneUsageDescription": "Please give us access to your microphone",
-      "NSCameraUsageDescription": "Please give us access to your camera",
-      "com.apple.security.device.audio-input": true,
-      "com.apple.security.device.camera": true
+      "NSMicrophoneUsageDescription": ">- This app requires camera access when using the video sensing blocks.",
+      "NSCameraUsageDescription": ">- This app requires microphone access when recording sounds or detecting loudness."
     }
   },
   "win": {
