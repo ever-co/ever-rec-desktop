@@ -1,143 +1,72 @@
-import { bootstrapDatabase } from '@ever-co/electron-database';
-import { app, BrowserWindow, screen, shell } from 'electron';
+import { AppWindow } from '@ever-co/window';
+import { screen } from 'electron';
 import { join } from 'path';
-import { format } from 'url';
 import { environment } from '../environments/environment';
 import { rendererAppName, rendererAppPort } from './constants';
 
-app.setName('Ever Rec Desktop');
-
 export default class App {
-  // Keep a global reference of the window object, if you don't, the window will
-  // be closed automatically when the JavaScript object is garbage collected.
-  static mainWindow: Electron.BrowserWindow;
+  static window: AppWindow;
   static application: Electron.App;
-  static BrowserWindow;
 
-  public static isDevelopmentMode() {
-    const isEnvironmentSet: boolean = 'ELECTRON_IS_DEV' in process.env;
-    const getFromEnvironment: boolean =
-      parseInt(process.env.ELECTRON_IS_DEV, 10) === 1;
+  static main(app: Electron.App): void {
+    App.application = app;
+    App.application.setName('Ever Rec Desktop');
 
-    return isEnvironmentSet ? getFromEnvironment : !environment.production;
+    App.application.on('ready', App.handleAppReady);
+    App.application.on('activate', App.handleAppActivate);
+    App.application.on('window-all-closed', App.handleAllWindowsClosed);
   }
 
-  private static onWindowAllClosed() {
+  static isDevelopmentMode(): boolean {
+    const envFlag = process.env.ELECTRON_IS_DEV;
+    return envFlag !== undefined
+      ? parseInt(envFlag, 10) === 1
+      : !environment.production;
+  }
+
+  private static handleAllWindowsClosed(): void {
     if (process.platform !== 'darwin') {
       App.application.quit();
     }
   }
 
-  private static onClose() {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    App.mainWindow = null;
+  private static async handleAppReady(): Promise<void> {
+    if (!rendererAppName) return;
+
+    const isDev = App.isDevelopmentMode();
+    App.window = App.createMainWindow(isDev);
+    await App.window.onAppReady();
   }
 
-  private static onRedirect(event: any, url: string) {
-    if (url !== App.mainWindow.webContents.getURL()) {
-      // this is a normal external redirect, open it in a new browser window
-      event.preventDefault();
-      shell.openExternal(url);
+  private static async handleAppActivate(): Promise<void> {
+    // Re-create window only if it was closed
+    if (!App.window) {
+      await App.handleAppReady();
     }
   }
 
-  private static async onReady(): Promise<void> {
-    // This method will be called when Electron has finished
-    // initialization and is ready to create browser windows.
-    // Some APIs can only be used after this event occurs.
-    if (rendererAppName) {
-      await bootstrapDatabase();
-      App.initMainWindow();
-      App.loadMainWindow();
-    }
-  }
+  private static createMainWindow(isDev: boolean): AppWindow {
+    const { width: screenW = 1280, height: screenH = 720 } =
+      screen.getPrimaryDisplay()?.workAreaSize ?? {};
 
-  private static async onActivate(): Promise<void> {
-    // On macOS it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
-    if (App.mainWindow === null) {
-      await App.onReady();
-    }
-  }
+    const width = Math.min(1280, screenW);
+    const height = Math.min(720, screenH);
 
-  private static initMainWindow() {
-    const workAreaSize = screen.getPrimaryDisplay().workAreaSize;
-    const width = Math.min(1280, workAreaSize.width || 1280);
-    const height = Math.min(720, workAreaSize.height || 720);
-
-    // Create the browser window.
-    App.mainWindow = new BrowserWindow({
-      width: width,
-      height: height,
-      show: false,
-      vibrancy: 'fullscreen-ui',
-      backgroundMaterial: 'acrylic',
-      webPreferences: {
-        contextIsolation: true,
-        backgroundThrottling: false,
-        preload: join(__dirname, 'main.preload.js'),
-        webSecurity: !App.isDevelopmentMode(),
-        sandbox: !App.isDevelopmentMode(),
-        nodeIntegration: true,
+    return new AppWindow({
+      isDevelopmentMode: isDev,
+      options: {
+        width,
+        height,
+        webPreferences: {
+          preload: join(__dirname, 'main.preload.js'),
+        },
+      },
+      loader: {
+        hash: '/',
+        port: rendererAppPort,
+        path: join(__dirname, '..', rendererAppName, 'browser', 'index.html'),
+        route: '/',
       },
     });
-    App.mainWindow.setMenu(null);
-    App.mainWindow.center();
-
-    // if main window is ready to show, close the splash window and show the main window
-    App.mainWindow.once('ready-to-show', () => {
-      App.mainWindow.show();
-    });
-
-    // handle all external redirects in a new browser window
-    // App.mainWindow.webContents.on('will-navigate', App.onRedirect);
-    // App.mainWindow.webContents.on('new-window', (event, url, frameName, disposition, options) => {
-    //     App.onRedirect(event, url);
-    // });
-
-    // Emitted when the window is closed.
-    App.mainWindow.on('closed', () => {
-      // Dereference the window object, usually you would store windows
-      // in an array if your app supports multi windows, this is the time
-      // when you should delete the corresponding element.
-      App.mainWindow = null;
-    });
-  }
-
-  private static loadMainWindow() {
-    // load the index.html of the app.
-    if (!App.application.isPackaged) {
-      App.mainWindow.loadURL(`http://localhost:${rendererAppPort}`);
-    } else {
-      App.mainWindow.loadURL(
-        format({
-          pathname: join(
-            __dirname,
-            '..',
-            rendererAppName,
-            'browser',
-            'index.html'
-          ),
-          protocol: 'file:',
-          slashes: true,
-        })
-      );
-    }
-  }
-
-  static main(app: Electron.App, browserWindow: typeof BrowserWindow) {
-    // we pass the Electron.App object and the
-    // Electron.BrowserWindow into this function
-    // so this class has no dependencies. This
-    // makes the code easier to write tests for
-
-    App.BrowserWindow = browserWindow;
-    App.application = app;
-
-    App.application.on('window-all-closed', App.onWindowAllClosed); // Quit when all windows are closed.
-    App.application.on('ready', App.onReady); // App is ready to load data
-    App.application.on('activate', App.onActivate); // App is activated
   }
 }

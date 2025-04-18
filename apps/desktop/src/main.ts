@@ -1,56 +1,76 @@
 import { ElectronLogger } from '@ever-co/electron-utils';
 import { ILogger } from '@ever-co/shared-utils';
-import { app, BrowserWindow } from 'electron';
+import { app } from 'electron';
 import log from 'electron-log/main';
+
 import App from './app/app';
 import ElectronEvents from './app/events/electron.events';
 import SquirrelEvents from './app/events/squirrel.events';
 import UpdateEvents from './app/events/update.events';
 
-export default class Main {
-  static initialize() {
+class Main {
+  private static readonly logger: ILogger = new ElectronLogger();
+
+  public static run(): void {
+    this.setupGlobalErrorHandlers();
+    this.handleSquirrelStartup();
+
+    this.patchConsoleInDevMode();
+
+    this.bootstrapApp();
+    this.bootstrapAppEvents();
+  }
+
+  private static patchConsoleInDevMode(): void {
     if (App.isDevelopmentMode()) {
       Object.assign(console, log.functions);
     }
+  }
 
+  private static handleSquirrelStartup(): void {
     if (SquirrelEvents.handleEvents()) {
-      // squirrel event handled (except first run event) and app will exit in 1000ms, so don't do anything else
+      // Squirrel event handled; exit early
       app.quit();
     }
   }
 
-  static bootstrapApp() {
-    App.main(app, BrowserWindow);
+  private static bootstrapApp(): void {
+    if (!app.requestSingleInstanceLock()) {
+      app.quit();
+      return;
+    }
+
+    app.on('second-instance', () => {
+      if (App.window) {
+        App.window.show();
+        App.window.restore();
+        App.window.focus();
+      }
+    });
+
+    App.main(app);
   }
 
-  static bootstrapAppEvents() {
+  private static bootstrapAppEvents(): void {
     ElectronEvents.bootstrapElectronEvents();
 
-    // initialize auto updater service
     if (!App.isDevelopmentMode()) {
       UpdateEvents.initAutoUpdateService();
     }
   }
 
-  static handleErrors() {
-    const logger: ILogger = new ElectronLogger();
-
+  private static setupGlobalErrorHandlers(): void {
     process.on('uncaughtException', (error) => {
-      logger.error('Uncaught Exception:' + error.stack);
+      this.logger.error(`Uncaught Exception: ${error.stack ?? error}`);
     });
 
     process.on('unhandledRejection', (reason, promise) => {
-      logger.error('Unhandled Rejection at:' + promise + 'reason:' + reason);
+      this.logger.error(
+        `Unhandled Rejection at: ${JSON.stringify(promise)}\nReason: ${reason}`
+      );
     });
   }
 }
 
-// initialize logger
-Main.handleErrors();
-
-// handle setup events as quickly as possible
-Main.initialize();
-
-// bootstrap app
-Main.bootstrapApp();
-Main.bootstrapAppEvents();
+// Bootstrap application
+Main.run();

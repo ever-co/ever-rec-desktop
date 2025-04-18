@@ -1,4 +1,4 @@
-import { currentDay, IRange } from '@ever-co/shared-utils';
+import { currentWeekTillNow, IRange } from '@ever-co/shared-utils';
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { datePickerActions } from './date-picker.actions';
 
@@ -9,7 +9,7 @@ export interface State {
 }
 
 export const initialState: State = {
-  selectedRange: currentDay(),
+  selectedRange: currentWeekTillNow(),
 };
 
 export const reducer = createReducer(
@@ -18,8 +18,8 @@ export const reducer = createReducer(
     ...state,
     selectedRange: {
       ...state.selectedRange,
-      ...range
-    }
+      ...range,
+    },
   }))
 );
 

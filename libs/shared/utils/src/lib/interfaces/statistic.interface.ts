@@ -4,4 +4,5 @@ export interface IScreenshotMetadataStatistic {
   count: number;
   total: number;
   trend?: number;
+  confidence?: number;
 }

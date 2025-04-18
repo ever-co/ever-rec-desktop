@@ -1,10 +1,17 @@
-import { Route } from '@angular/router';
+import { Routes } from '@angular/router';
 
-export const appRoutes: Route[] = [
+export const appRoutes: Routes = [
   { path: '', redirectTo: '', pathMatch: 'full' },
   {
-    path: '',
-    loadChildren: () => import('@ever-co/layout').then((m) => m.layoutRoutes),
+    path: 'webcam',
+    loadChildren: () =>
+      import('@ever-co/webcam-feature').then(
+        ({ webcamRoutes }) => webcamRoutes
+      ),
   },
-  { path: '**', redirectTo: '' },
+  {
+    path: '',
+    loadChildren: () =>
+      import('@ever-co/layout').then(({ layoutRoutes }) => layoutRoutes),
+  },
 ];

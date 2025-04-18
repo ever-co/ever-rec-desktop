@@ -19,10 +19,10 @@ interface ILink {
 }
 
 @Component({
-    selector: 'lib-library',
-    imports: [CommonModule, RouterModule, MatTabsModule],
-    templateUrl: './library.component.html',
-    styleUrl: './library.component.scss'
+  selector: 'lib-library',
+  imports: [CommonModule, RouterModule, MatTabsModule],
+  templateUrl: './library.component.html',
+  styleUrl: './library.component.scss',
 })
 export class LibraryComponent implements OnDestroy {
   private readonly destroy$ = new Subject<void>();
@@ -34,6 +34,10 @@ export class LibraryComponent implements OnDestroy {
     {
       title: 'Screenshots',
       route: 'screenshots',
+    },
+    {
+      title: 'Photos',
+      route: 'photos',
     },
   ];
 

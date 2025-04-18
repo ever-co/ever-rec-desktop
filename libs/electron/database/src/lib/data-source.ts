@@ -12,8 +12,14 @@ import { Video } from './entities/video.entity';
 import { ScreenshotSubscriber } from './subscribers/screenshot.subscriber';
 import { VideoMetadataSubscriber } from './subscribers/video-metadata.subscriber';
 import { VideoSubscriber } from './subscribers/video.subscriber';
+import { PhotoSubscriber } from './subscribers/photo.subscriber';
+import { Photo } from './entities/photo.entity';
+import { PhotoMetadata } from './entities/metadata.entity';
 
-const database = FileManager.createFilePathSync('db', 'ever.rec.desktop.sqlite');
+const database = FileManager.createFilePathSync(
+  'db',
+  'ever.rec.desktop.sqlite'
+);
 
 export const appDataSource = new DataSource({
   type: 'better-sqlite3',
@@ -26,11 +32,18 @@ export const appDataSource = new DataSource({
     TimeLog,
     Timeline,
     Activity,
-    Application
+    Application,
+    Photo,
+    PhotoMetadata,
   ],
   synchronize: true,
   logging: true,
-  subscribers: [ScreenshotSubscriber, VideoSubscriber, VideoMetadataSubscriber],
+  subscribers: [
+    ScreenshotSubscriber,
+    VideoSubscriber,
+    VideoMetadataSubscriber,
+    PhotoSubscriber,
+  ],
   enableWAL: true,
   prepareDatabase: (db) => {
     db.pragma('cipher = "sqlcipher"');

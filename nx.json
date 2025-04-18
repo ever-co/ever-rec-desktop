@@ -85,6 +85,5 @@
     "version": {
       "preVersionCommand": "npx nx run-many -t build"
     }
-  },
-  "useLegacyCache": true
+  }
 }

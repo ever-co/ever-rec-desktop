@@ -2,6 +2,7 @@ import { Route } from '@angular/router';
 import { timelineGuard } from '@ever-co/timeline-data-access';
 
 export const layoutRoutes: Route[] = [
+  { path: '', redirectTo: '', pathMatch: 'full' },
   {
     path: '',
     title: 'Continues Recording',

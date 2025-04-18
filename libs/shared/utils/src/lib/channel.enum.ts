@@ -48,4 +48,13 @@ export enum Channel {
   'REQUEST_ACTIVITIES_WORK_PATTERN' = 'request::activities::work::pattern',
   'AUTO_START_SYNC' = 'auto::start::sync',
   'AUTO_STOP_SYNC' = 'auto::stop::sync',
+  'SAVE_PHOTO' = 'save::photo',
+  'GET_PHOT0' = 'get::photo',
+  'GET_ALL_PHOTOS' = 'get::all::photo',
+  'DELETE_PHOTO' = 'delete::photo',
+  'DELETE_ALL_PHOTOS' = 'delete::all::photo',
+  'TAKE_PHOTO' = 'take::photo',
+  'STOP_TRACKING' = 'stop::photo::tracking',
+  'START_TRACKING' = 'start::photo::tracking',
+  'REQUEST_TRACKING' = 'request::photo::tracking',
 }

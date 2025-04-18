@@ -1,0 +1,13 @@
+<div class="flex items-center justify-center space-x-4">
+  <button
+    class="ios-camera-button"
+    type="button"
+    aria-label="Take Photo"
+    [ngClass]="{ saving }"
+    (click)="onCapture($event)"
+  >
+    @if(saving) {
+    <span class="progress-ring"></span>
+    }
+  </button>
+</div>

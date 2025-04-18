@@ -11,6 +11,12 @@
         </div>
       </li>
       <li class="flex items-center py-3">
+        <mat-icon class="text-cyan-500 mr-3">camera</mat-icon>
+        <div class="text-sm text-gray-900">
+          Photo {{ (size$ | async)?.photo | humanizeBytes }}
+        </div>
+      </li>
+      <li class="flex items-center py-3">
         <mat-icon class="text-red-500 mr-3">movie</mat-icon>
         <div class="text-sm text-gray-900">
           Video {{ (size$ | async)?.video | humanizeBytes }}

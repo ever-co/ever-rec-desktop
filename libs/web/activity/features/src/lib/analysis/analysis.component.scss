@@ -9,6 +9,11 @@
   }
 }
 
+p,
+h6 {
+  margin: 0 !important;
+}
+
 .mat-card {
   animation: slideInFromLeft 0.5s ease-out forwards;
 }
@@ -19,8 +24,12 @@
 }
 
 @keyframes progressFill {
-  from { width: 0; }
-  to { width: var(--progress-width); }
+  from {
+    width: 0;
+  }
+  to {
+    width: var(--progress-width);
+  }
 }
 
 .progress-bar-animate {

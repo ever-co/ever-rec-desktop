@@ -1,120 +1,180 @@
 @if(analysis$ | async; as data){
-<div class="w-full space-y-6">
+<div class="w-full space-y-4">
+  <!-- Header Section -->
+  <div class="mb-4">
+    <h4 class="text-xl font-semibold text-gray-700">Productivity Insights</h4>
+    <p class="text-gray-500 mt-1">
+      Key metrics about your work patterns and efficiency
+    </p>
+  </div>
+
   <!-- Main Stats Grid -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
     <!-- Daily Hours Card -->
     <mat-card
-      class="w-full transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+      class="w-full transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border-l-4 border-blue-500"
       appearance="outlined"
       @fadeSlideInOut
     >
-      <mat-card-content class="p-6">
+      <mat-card-content class="p-4">
         <div class="w-full flex items-center justify-between">
-          <div class="space-y-1">
-            <p class="text-sm font-medium text-gray-600">Average Daily Hours</p>
-            <h6 class="text-2xl font-bold">
+          <div class="space-y-2">
+            <div class="flex items-center mb-2 gap-2">
+              <mat-icon class="text-blue-500">schedule</mat-icon>
+              <p class="text-sm font-medium text-gray-600">
+                Average Daily Hours
+              </p>
+            </div>
+            <h6 class="text-3xl font-bold text-gray-800">
               {{
                 data.averageDailyHours
                   ? (data.averageDailyHours | humanize : 'hour')
-                  : 'Not Work'
+                  : 'No data'
               }}
             </h6>
+            <p class="text-xs capitalize text-gray-500">
+              Based on {{ dateRanges$() | async | humanizeDateRange }}
+            </p>
           </div>
-          <mat-icon
-            class="h-6 w-6 text-gray-600 transition-all cursor-pointer duration-300 hover:text-blue-500 hover:scale-110"
-            >schedule</mat-icon
+          <div
+            class="h-16 w-16 bg-blue-50 rounded-full flex items-center justify-center"
           >
+            <span class="text-blue-500 text-xl font-medium">
+              {{
+                data.averageDailyHours
+                  ? (data.averageDailyHours | number : '1.1-1')
+                  : '0'
+              }}
+            </span>
+          </div>
         </div>
       </mat-card-content>
     </mat-card>
 
     <!-- Most Productive Day Card -->
     <mat-card
-      class="w-full transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+      class="w-full transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border-l-4 border-green-500"
       appearance="outlined"
       @fadeSlideInOut
     >
-      <mat-card-content class="p-6">
+      <mat-card-content class="p-4">
         <div class="w-full flex items-center justify-between">
-          <div class="space-y-1">
-            <p class="text-sm font-medium text-gray-600">Most Productive Day</p>
-            <h6 class="text-2xl font-bold">
+          <div class="space-y-2">
+            <div class="flex items-center mb-2 gap-2">
+              <mat-icon class="text-green-500">calendar_today</mat-icon>
+              <p class="text-sm font-medium text-gray-600">
+                Most Productive Day
+              </p>
+            </div>
+            <h6 class="text-3xl font-bold text-gray-800">
               {{
                 data.mostProductiveDay
-                  ? (data.mostProductiveDay | date)
-                  : 'Not found 🙂‍↔️'
+                  ? (data.mostProductiveDay | date : 'EEEE')
+                  : 'No data'
               }}
             </h6>
+            <p class="text-xs text-gray-500">
+              {{
+                data.mostProductiveDay
+                  ? (data.mostProductiveDay | date : 'MMM d, y')
+                  : ''
+              }}
+            </p>
           </div>
-          <mat-icon
-            class="h-6 w-6 text-gray-600 transition-all cursor-pointer duration-300 hover:text-blue-500 hover:scale-110"
-            >calendar_today</mat-icon
+          <div
+            class="h-16 w-16 bg-green-50 rounded-full flex items-center justify-center"
           >
+            <span class="text-green-500 text-xl font-medium">
+              {{ data.mostProductiveDay ? 'Peak' : '-' }}
+            </span>
+          </div>
         </div>
       </mat-card-content>
     </mat-card>
 
     <!-- Productive Hours Card -->
     <mat-card
-      class="w-full transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+      class="w-full transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border-l-4 border-purple-500"
       appearance="outlined"
       @fadeSlideInOut
     >
-      <mat-card-content class="p-6">
+      <mat-card-content class="p-4">
         <div class="w-full flex items-center justify-between">
-          <div class="space-y-1">
-            <p class="text-sm font-medium text-gray-600">
-              Peak Productivity Hours
-            </p>
-            <h6 class="flex gap-2 text-2xl font-bold">
+          <div class="space-y-2 w-full">
+            <div class="flex items-center gap-2">
+              <mat-icon class="text-purple-500">bolt</mat-icon>
+              <p class="text-sm font-medium text-gray-600">
+                Peak Productivity Hours
+              </p>
+            </div>
+            <div
+              class="flex flex-nowrap gap-3 overflow-x-auto pb-3 -mx-1 px-1 scroll-smooth"
+            >
               @if(data.mostProductiveHours.length) { @for (hour of
               data.mostProductiveHours; track hour; let i = $index) {
               <div
                 @tagAnimation
+                [matTooltip]="'Your productivity peaks at ' + hour"
+                matTooltipPosition="above"
                 [style.animation-delay]="i * 100 + 'ms'"
-                class="px-2 rounded-df bg-blue-100 text-blue-800 font-medium"
+                class="px-2 py-1 rounded-full bg-purple-50 text-purple-700 font-medium text-sm flex items-center shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 hover:bg-purple-100 border border-purple-100 min-w-[120px] justify-center flex-shrink-0 cursor-pointer active:scale-95"
               >
-                {{ hour }}
+                <span class="truncate">{{ hour }}</span>
+                <mat-icon
+                  class="ml-1 text-purple-400 hover:text-purple-600 transition-colors duration-200"
+                  style="font-size: 16px; height: 16px; width: 16px"
+                  >schedule</mat-icon
+                >
               </div>
-              } }@else { No Work }
-            </h6>
+              } }@else {
+              <span class="text-gray-400">No data available</span>
+              }
+            </div>
+            <p class="text-xs text-gray-500">
+              Your most efficient time windows
+            </p>
           </div>
-          <mat-icon
-            matTooltip="Times when you're most efficient"
-            class="h-6 w-6 text-gray-600 transition-all cursor-pointer duration-300 hover:text-blue-500 hover:scale-110"
-            >bolt</mat-icon
-          >
         </div>
       </mat-card-content>
     </mat-card>
 
     <!-- Consistency Score Card -->
     <mat-card
-      class="w-full transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+      class="w-full transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border-l-4 border-amber-500"
       appearance="outlined"
       @fadeSlideInOut
     >
-      <mat-card-content class="p-6">
+      <mat-card-content class="p-4">
         <div class="w-full flex items-center justify-between">
-          <div class="space-y-1 relative w-full">
-            <p class="text-sm font-medium text-gray-600">Consistency Score</p>
-            <h6 class="text-2xl font-bold">
-              {{ data.consistencyScore || 0 | percent : '1.2-2' }}
-            </h6>
-            <div
-              [class]="
-                'w-fit whitespace-nowrap right-0 absolute w-full px-2 py-1 ml-auto rounded-df text-white text-sm ' +
-                getConsistencyColor(data.consistencyScore * 100)
-              "
-            >
-              {{ getConsistencyLabel(data.consistencyScore * 100) }}
+          <div class="space-y-2">
+            <div class="flex items-center gap-2">
+              <mat-icon class="text-amber-500">bar_chart</mat-icon>
+              <p class="text-sm font-medium text-gray-600">Consistency Score</p>
             </div>
+            <div class="flex items-end gap-2">
+              <h6 class="text-3xl font-bold text-gray-800">
+                {{ data.consistencyScore || 0 | percent : '1.0-0' }}
+              </h6>
+              <div class="mb-1">
+                <div
+                  [class]="
+                    'px-2 py-1 rounded-full text-xs font-medium ' +
+                    getConsistencyColor(data.consistencyScore * 100)
+                  "
+                >
+                  {{ getConsistencyLabel(data.consistencyScore * 100) }}
+                </div>
+              </div>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2">
+              <div
+                class="h-2 rounded-full"
+                [class]="getConsistencyColor(data.consistencyScore * 100)"
+                [style.width]="data.consistencyScore || 0 | percent : '1.2-2'"
+              ></div>
+            </div>
+            <p class="text-xs text-gray-500">Measure of your work regularity</p>
           </div>
-          <mat-icon
-            matTooltip="How regular your work patterns are"
-            class="h-6 w-6 text-gray-600 transition-all cursor-pointer duration-300 hover:text-blue-500 hover:scale-110"
-            >bar_chart</mat-icon
-          >
         </div>
       </mat-card-content>
     </mat-card>

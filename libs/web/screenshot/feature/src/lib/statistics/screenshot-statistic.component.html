@@ -44,7 +44,9 @@
             <mat-icon class="text-sm absolute -top-3">
               {{ statistic.trend >= 0 ? 'trending_up' : 'trending_down' }}
             </mat-icon>
-            <span class="text-sm ml-1">{{ statistic.trend }}%</span>
+            <span class="text-sm ml-1">{{
+              statistic.confidence | percent : '1.2-2'
+            }}</span>
           </div>
           }
         </div>

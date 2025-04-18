@@ -22,6 +22,13 @@ export function currentWeek(): IRange {
   };
 }
 
+export function currentWeekTillNow(): IRange {
+  return {
+    start: moment().startOf('week').toISOString(),
+    end: moment().endOf('day').toISOString(),
+  };
+}
+
 export function currentMonth(): IRange {
   return {
     start: moment().startOf('month').toISOString(),

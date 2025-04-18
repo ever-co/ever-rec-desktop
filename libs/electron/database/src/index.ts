@@ -28,4 +28,5 @@ export * from './lib/services/video.service';
 export * from './lib/subscribers/screenshot.subscriber';
 export * from './lib/subscribers/video-metadata.subscriber';
 export * from './lib/subscribers/video.subscriber';
-
+export * from './lib/services/photo.service';
+export * from './lib/services/photo-metadata.service';

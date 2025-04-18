@@ -11,6 +11,7 @@ import {
   convertScreenshotsToVideoEvent,
   removeConvertScreenshotsToVideoEvent,
 } from './convert-screenshots-to-video.event';
+import { crudPhotoEvent, removeCrudPhotoEvent } from './crud-photo.event';
 import {
   crudScreeshotEvents,
   removeCrudScreenshotEvent,
@@ -23,6 +24,7 @@ import { crudVideoEvents, removeCrudVideoEvent } from './crud-video.event';
 import { MainEvents, removeMainEvents } from './main.event';
 import { powerManagerHandlerEvents } from './power-manager.event';
 import { removeRetentionEvents, retentionEvents } from './retention.event';
+import { PhotoCaptureEvent } from './photo-capture.event';
 import { removeUploadEvent, uploadEventListener } from './upload.event';
 
 export function subscribeEvents() {
@@ -37,6 +39,8 @@ export function subscribeEvents() {
   MainEvents();
   powerManagerHandlerEvents();
   activitiesEvents();
+  crudPhotoEvent();
+  new PhotoCaptureEvent();
 }
 
 export function unsubscribeEvents() {
@@ -50,4 +54,5 @@ export function unsubscribeEvents() {
   removeAutoVideoGenerateEvent();
   removeMainEvents();
   removeActivitiesEvents();
+  removeCrudPhotoEvent();
 }

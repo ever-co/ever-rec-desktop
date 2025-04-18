@@ -6,6 +6,13 @@ type IpcCallback = (event: IpcRendererEvent, ...args: any[]) => void;
 
 interface ElectronAPI {
   /**
+   * Opens an external URL in the default browser.
+   * @param url The URL to open.
+   * @returns void
+   */
+  openExternal: (url: string) => void;
+
+  /**
    * Invokes a channel with the specified data and returns a promise.
    * @param channel The channel to invoke.
    * @param data The data to send with the invocation.
@@ -48,7 +55,7 @@ interface ElectronAPI {
   removeListener(channel: string, callback: IpcCallback): void;
 }
 
-export { };
+export {};
 
 // Declare the interface for the global context
 declare global {

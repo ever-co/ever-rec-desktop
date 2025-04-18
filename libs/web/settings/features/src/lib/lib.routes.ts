@@ -25,6 +25,11 @@ export const settingRoutes: Route[] = [
         loadComponent: () =>
           import('./storage/storage.component').then((m) => m.StorageComponent),
       },
+      {
+        path: 'webcam',
+        loadChildren: () =>
+          import('@ever-co/webcam-feature').then((m) => m.settingRoutes),
+      },
       { path: '**', redirectTo: '' },
     ],
   },
