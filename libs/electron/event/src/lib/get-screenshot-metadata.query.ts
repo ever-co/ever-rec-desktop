@@ -2,13 +2,14 @@ import { FileManager } from '@ever-co/electron-utils';
 import {
   IApplicationService,
   IGetScreenshotQueryResult,
+  SCREENSHOT_DIR,
 } from '@ever-co/shared-utils';
 import {
   type IconInfo,
   type WindowInfo,
   activeWindowAsync,
 } from '@miniben90/x-win';
-import { SCREENSHOT_DIR } from './capture-screen.event';
+
 export class GetScreenShotMetadataQuery {
   async execute(
     service: IApplicationService

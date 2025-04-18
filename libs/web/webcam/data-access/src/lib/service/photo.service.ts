@@ -33,7 +33,7 @@ export class PhotoService {
     return this.electronService.invoke(Channel.DELETE_PHOTO, photo);
   }
 
-  public deleteAllPhoto(photos: IPhoto[]): Promise<void> {
+  public deleteAllPhoto(photos?: IPhoto[]): Promise<void> {
     return this.electronService.invoke(Channel.DELETE_ALL_PHOTOS, photos);
   }
 

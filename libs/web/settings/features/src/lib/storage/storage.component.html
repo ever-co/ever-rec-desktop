@@ -9,18 +9,30 @@
         <div class="text-sm text-gray-900">
           Screenshot {{ (size$ | async)?.screenshot | humanizeBytes }}
         </div>
+        <lib-action-button
+          class="ml-auto"
+          [button]="deleteScreenshotsButton"
+        ></lib-action-button>
       </li>
       <li class="flex items-center py-3">
         <mat-icon class="text-cyan-500 mr-3">camera</mat-icon>
         <div class="text-sm text-gray-900">
           Photo {{ (size$ | async)?.photo | humanizeBytes }}
         </div>
+        <lib-action-button
+          class="ml-auto"
+          [button]="deletePhotosButton"
+        ></lib-action-button>
       </li>
       <li class="flex items-center py-3">
         <mat-icon class="text-red-500 mr-3">movie</mat-icon>
         <div class="text-sm text-gray-900">
           Video {{ (size$ | async)?.video | humanizeBytes }}
         </div>
+        <lib-action-button
+          class="ml-auto"
+          [button]="deleteVideosButton"
+        ></lib-action-button>
       </li>
     </ul>
   </mat-card>
@@ -52,23 +64,11 @@
           </mat-form-field>
 
           <!-- Submit and Cancel Buttons -->
-          <div class="flex space-x-4">
-            <button
-              mat-stroked-button
-              color="primary"
-              type="submit"
-              [disabled]="formGroup.invalid"
-            >
-              Save
-            </button>
-            <button
-              mat-stroked-button
-              color="warn"
-              (click)="purge()"
-              type="button"
-            >
-              Delete All Data...
-            </button>
+          <div class="flex">
+            <lib-action-button-group
+              class="inline no-bg"
+              [buttons]="retentionButtons"
+            ></lib-action-button-group>
           </div>
         </form>
       </ng-template>

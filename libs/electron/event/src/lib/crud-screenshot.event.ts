@@ -13,7 +13,10 @@ import {
   IPaginationOptions,
   IScreenshot,
   IScreenshotMetadataStatistic,
+  PHOTO_DIR,
+  SCREENSHOT_DIR,
   TimeSlot,
+  VIDEO_DIR,
 } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
 import { Between, ILike } from 'typeorm';
@@ -126,6 +129,13 @@ export function crudScreeshotEvents() {
     Channel.REQUEST_DELETE_SELECTED_SCREENSHOTS,
     async (_, screenshots: IScreenshot[]) => {
       try {
+        if (!screenshots || screenshots.length === 0) {
+          await Promise.all([
+            screenshotService.deleteAll(),
+            FileManager.removeAllFiles(SCREENSHOT_DIR),
+          ]);
+          return;
+        }
         // Extract IDs and paths in a single step for clarity
         const ids = screenshots.map(({ id }) => id);
         const paths = screenshots.map(({ pathname }) => pathname);
@@ -164,8 +174,9 @@ export async function purgeData() {
   const applicationService = new ApplicationService();
   await applicationService.deleteAll();
 
-  await FileManager.removeAllFiles('screenshots');
-  await FileManager.removeAllFiles('videos');
+  await FileManager.removeAllFiles(SCREENSHOT_DIR);
+  await FileManager.removeAllFiles(PHOTO_DIR);
+  await FileManager.removeAllFiles(VIDEO_DIR);
 }
 
 // Removes any handler for channels, if present.

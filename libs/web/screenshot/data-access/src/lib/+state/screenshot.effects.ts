@@ -139,7 +139,8 @@ export class ScreenshotEffects {
         screenshotActions.loadScreenshots,
         screenshotActions.captureSuccess,
         screenshotActions.deleteScreenshotsSuccess,
-        screenshotActions.deleteScreenshotSuccess
+        screenshotActions.deleteScreenshotSuccess,
+        screenshotActions.purgeSuccess
       ),
       mergeMap((options) =>
         from(
@@ -165,7 +166,7 @@ export class ScreenshotEffects {
   deleteSelectedScreenshots$ = createEffect(() =>
     this.actions$.pipe(
       ofType(screenshotActions.deleteSelectedScreenshots),
-      mergeMap(({ screenshots }) =>
+      mergeMap(({ screenshots = [] }) =>
         from(this.electronService.deleteSelectedScreenshots(screenshots)).pipe(
           map(() => {
             this.notificationService.show(
@@ -196,7 +197,7 @@ export class ScreenshotEffects {
               },
             },
             limit: -1,
-            ignoreRange: true
+            ignoreRange: true,
           })
         ).pipe(
           concatMap(async ({ data }) => {
@@ -215,6 +216,18 @@ export class ScreenshotEffects {
           catchError((error) =>
             of(screenshotActions.deleteSelectedScreenshotsFailure({ error }))
           )
+        )
+      )
+    )
+  );
+
+  purge$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(screenshotActions.purge),
+      mergeMap(() =>
+        from(this.electronService.deleteAllData()).pipe(
+          map(() => screenshotActions.purgeSuccess()),
+          catchError((error) => of(screenshotActions.purgeFailure({ error })))
         )
       )
     )
@@ -312,6 +325,7 @@ export class ScreenshotEffects {
         screenshotActions.captureSuccess,
         screenshotActions.getScreenshotsChartLine,
         screenshotActions.deleteScreenshotsSuccess,
+        screenshotActions.purgeSuccess,
         screenshotActions.deleteScreenshotsSuccess
       ),
       mergeMap(() =>

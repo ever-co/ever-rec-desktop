@@ -188,7 +188,19 @@ export const reducer = createReducer(
       capturing: false,
       error,
     })
-  )
+  ),
+  on(photoActions.deletePhotos, (state) => ({
+    ...state,
+    deleting: true,
+  })),
+  on(photoActions.deletePhotosSuccess, (state) => ({
+    ...initialPhotoState,
+  })),
+  on(photoActions.deletePhotosFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  }))
 );
 
 export const photoFeature = createFeature({

@@ -17,6 +17,7 @@ export interface IScreenshotState {
   loading: boolean;
   filter: string;
   deleting: boolean;
+  purging: boolean;
   selectedScreenshots: ISelected<IScreenshot>[];
   statistic: {
     currents: IScreenshotMetadataStatistic[];
@@ -50,6 +51,7 @@ export const initialState: IScreenshotState = {
   count: 0,
   error: '',
   deleting: false,
+  purging: false,
   statistic: {
     currents: [],
     hasNext: false,
@@ -338,6 +340,21 @@ export const reducer = createReducer(
       loading: false,
       error,
     },
+  })),
+
+  on(screenshotActions.purge, (state) => ({
+    ...state,
+    purging: true,
+  })),
+
+  on(screenshotActions.purgeSuccess, (state) => ({
+    ...initialState,
+  })),
+
+  on(screenshotActions.purgeFailure, (state, { error }) => ({
+    ...state,
+    purging: false,
+    error,
   }))
 );
 
