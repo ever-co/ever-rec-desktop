@@ -65,7 +65,7 @@ export interface IPhotoMetadataService {
   ): Promise<IPhotoMetadata>;
 }
 
-export type IPhotoCreateInput = IPhotoInput & {
+export type IPhotoCreateInput = Omit<IPhotoInput, 'metadata'> & {
   metadata: Omit<IPhotoMetadataInput, 'id'>;
 };
 

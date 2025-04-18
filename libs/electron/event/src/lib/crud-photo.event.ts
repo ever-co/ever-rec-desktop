@@ -93,7 +93,8 @@ export async function savePhoto(data: IPhotoSave) {
       name,
       resolution,
     },
-  } as any;
+  };
+
   return photoService.save(input);
 }
 
