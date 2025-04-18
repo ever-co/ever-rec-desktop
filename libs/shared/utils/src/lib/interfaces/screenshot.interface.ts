@@ -4,6 +4,8 @@ import { IBase } from './base.interface';
 import { ITimeLog } from './time-log.interface';
 import type { IVideo } from './video.interface';
 
+export const SCREENSHOT_DIR = 'screenshots';
+
 export interface IScreenshot extends IBase {
   pathname: string;
   synced?: boolean;
@@ -16,6 +18,7 @@ export interface IScreenshotMetadata extends IBase {
   description?: string;
   size?: number;
   application?: IApplication;
+  screenshot?: IScreenshot;
 }
 
 export interface IScreenshotChartLine {

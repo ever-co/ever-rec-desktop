@@ -29,7 +29,7 @@ export const screenshotActions = createActionGroup({
     'Delete Screenshot Success': props<{ id: string }>(),
     'Delete Screenshot Failure': props<{ error: string }>(),
 
-    'Delete Selected Screenshots': props<{ screenshots: IScreenshot[] }>(),
+    'Delete Selected Screenshots': props<{ screenshots?: IScreenshot[] }>(),
     'Delete Selected Screenshots Success': props<{
       screenshots: IScreenshot[];
     }>(),
@@ -71,5 +71,9 @@ export const screenshotActions = createActionGroup({
     }>(),
     'Get Screenshots Chart Line Failure': props<{ error: string }>(),
     'Auto Deletion': props<{ video: IVideo }>(),
+
+    Purge: emptyProps(),
+    'Purge Success': emptyProps(),
+    'Purge Failure': props<{ error: string }>(),
   },
 });

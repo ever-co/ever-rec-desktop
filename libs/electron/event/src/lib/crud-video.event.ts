@@ -8,7 +8,8 @@ import {
   Channel,
   currentDay,
   IPaginationOptions,
-  IVideo
+  IVideo,
+  VIDEO_DIR,
 } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
 import { Between, IsNull, Not } from 'typeorm';
@@ -57,21 +58,34 @@ export function crudVideoEvents() {
   });
 
   // Delete Many Videos
-  ipcMain.handle(Channel.REQUEST_DELETE_ALL_VIDEO, async (_, videos: IVideo[]) => {
-    // Extract IDs
-    const ids = videos.map(({ id }) => id);
+  ipcMain.handle(
+    Channel.REQUEST_DELETE_ALL_VIDEO,
+    async (_, videos: IVideo[]) => {
+      if (!videos || videos.length === 0) {
+        await Promise.all([
+          videoService.deleteAll(),
+          FileManager.removeAllFiles(VIDEO_DIR),
+        ]);
+        return;
+      }
 
-    // Extract Pathnames
-    const pathnames = videos.map(({ pathname }) => pathname);
+      // Extract IDs
+      const ids = videos.map(({ id }) => id);
 
-    // Delete videos in the database
-    await videoService.deleteAll(ids);
+      // Extract Pathnames
+      const pathnames = videos.map(({ pathname }) => pathname);
 
-    // Delete files concurrently
-    await Promise.all(
-      pathnames.map(async (pathname) => await FileManager.deleteFile(pathname))
-    );
-  });
+      // Delete videos in the database
+      await videoService.deleteAll(ids);
+
+      // Delete files concurrently
+      await Promise.all(
+        pathnames.map(
+          async (pathname) => await FileManager.deleteFile(pathname)
+        )
+      );
+    }
+  );
 
   // Get one video
   ipcMain.handle(Channel.GET_USED_SIZE, () => {
@@ -99,7 +113,7 @@ export function removeCrudVideoEvent(): void {
     Channel.GET_USED_SIZE,
     Channel.REQUEST_VIDEO_METADATA_UPDATE,
     Channel.REQUEST_DELETE_ALL_VIDEO,
-    Channel.REQUEST_DELETE_ONE_VIDEO
+    Channel.REQUEST_DELETE_ONE_VIDEO,
   ];
   channels.forEach((channel) => ipcMain.removeHandler(channel));
 }

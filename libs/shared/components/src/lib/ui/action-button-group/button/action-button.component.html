@@ -1,13 +1,19 @@
+@let loading = button.loading | async;
+
+<!-- button structure -->
+
 <button
   class="w-full flex items-center gap-1"
   [matTooltip]="
     (button.disable | async) ? 'Action is unavalaible' : button.tooltip
   "
+  [type]="button.type || 'button'"
+  type="button"
   [ngClass]="getButtonClasses()"
   [disabled]="button.disable | async"
   (click)="onAction()"
 >
-  @if(button.loading | async) {
+  @if(loading) {
   <mat-spinner
     diameter="16"
     [ngStyle]="{ stroke: getSpinnerColor() }"
@@ -19,7 +25,11 @@
   <mat-icon class="text-[22px]" [ngClass]="getIconClasses()">{{
     button.icon
   }}</mat-icon>
-  } @if (button.label) {
+  } @if(button.loadingLabel && loading) {
+  <div class="text-md font-medium text-gray-700" [ngClass]="getLabelClasses()">
+    {{ button.loadingLabel }}
+  </div>
+  } @else if (button.label) {
   <div class="text-md font-medium text-gray-700" [ngClass]="getLabelClasses()">
     {{ button.label }}
   </div>

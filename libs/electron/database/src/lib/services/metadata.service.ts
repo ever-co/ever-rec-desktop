@@ -2,6 +2,7 @@ import { IUsedSize } from '@ever-co/shared-utils';
 import { ScreenshotMetadataRepository } from '../repositories/screenshot-metadata.repository';
 import { VideoMetadataRepository } from '../repositories/video-metadata.repository';
 import { PhotoMetadataRepository } from '../repositories/photo-metadata.repository';
+import { IsNull, Not } from 'typeorm';
 
 export class MetadataService {
   private readonly screenshotMetadataRepository =
@@ -13,7 +14,11 @@ export class MetadataService {
     // Execute both sum queries concurrently for performance
     const [screenshotTotalSize, videoTotalSize, photoTotalSize] =
       await Promise.all([
-        this.screenshotMetadataRepository.sum('size', options),
+        this.screenshotMetadataRepository.sum('size', {
+          screenshot: {
+            id: Not(IsNull()),
+          },
+        }),
         this.videoMetadataRepository.sum('size', options),
         this.photoMetadataRepository.sum('size', options),
       ]);

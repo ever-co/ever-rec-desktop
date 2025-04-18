@@ -17,6 +17,7 @@ export interface IScreenshotState {
   loading: boolean;
   filter: string;
   deleting: boolean;
+  purging: boolean;
   selectedScreenshots: ISelected<IScreenshot>[];
   statistic: {
     currents: IScreenshotMetadataStatistic[];
@@ -50,6 +51,7 @@ export const initialState: IScreenshotState = {
   count: 0,
   error: '',
   deleting: false,
+  purging: false,
   statistic: {
     currents: [],
     hasNext: false,
@@ -128,7 +130,7 @@ export const reducer = createReducer(
   })),
   on(screenshotActions.deleteScreenshots, (state) => ({
     ...state,
-    loading: true,
+    deleting: true,
     error: '',
   })),
   on(screenshotActions.deleteScreenshotsSuccess, () => ({
@@ -136,7 +138,7 @@ export const reducer = createReducer(
   })),
   on(screenshotActions.deleteScreenshotsFailure, (state, { error }) => ({
     ...state,
-    loading: false,
+    deleting: false,
     error,
   })),
 
@@ -147,13 +149,13 @@ export const reducer = createReducer(
   })),
   on(screenshotActions.deleteScreenshotSuccess, (state, { id }) => ({
     ...state,
-    loading: false,
+    deleting: false,
     count: state.count - 1,
     screenshots: state.screenshots.filter((screenshot) => screenshot.id !== id),
   })),
   on(screenshotActions.deleteScreenshotFailure, (state, { error }) => ({
     ...state,
-    loading: false,
+    deleting: false,
     error,
   })),
 
@@ -338,6 +340,21 @@ export const reducer = createReducer(
       loading: false,
       error,
     },
+  })),
+
+  on(screenshotActions.purge, (state) => ({
+    ...state,
+    purging: true,
+  })),
+
+  on(screenshotActions.purgeSuccess, (state) => ({
+    ...initialState,
+  })),
+
+  on(screenshotActions.purgeFailure, (state, { error }) => ({
+    ...state,
+    purging: false,
+    error,
   }))
 );
 

@@ -5,6 +5,8 @@ import { ITimeLog } from './time-log.interface';
 import type { ITimeline } from './timeline.interface';
 import type { IVideoConfig } from './video.config';
 
+export const VIDEO_DIR = 'videos';
+
 export interface IVideo extends IBase {
   pathname: string;
   synced?: boolean;

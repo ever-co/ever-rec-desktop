@@ -32,7 +32,9 @@ export class VideoEffects {
       ),
       mergeMap((options) =>
         from(
-          this.videoElectronService.getAllVideos(options as IPaginationOptions<IVideo>)
+          this.videoElectronService.getAllVideos(
+            options as IPaginationOptions<IVideo>
+          )
         ).pipe(
           map((response) => videoActions.loadVideosSuccess(response)),
           catchError((error) => of(videoActions.loadVideosFailure({ error })))
@@ -59,7 +61,7 @@ export class VideoEffects {
   deleteVideos$ = createEffect(() =>
     this.actions$.pipe(
       ofType(videoActions.deleteVideos),
-      mergeMap(({ videos }) =>
+      mergeMap(({ videos = [] }) =>
         from(this.videoElectronService.deleteVideos(videos)).pipe(
           map(() => {
             this.notificationService.show('Videos deleted', 'success');

@@ -79,6 +79,18 @@ export class PhotoEffects {
     )
   );
 
+  deletePhotos$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(photoActions.deletePhotos),
+      mergeMap(() =>
+        from(this.photoService.deleteAllPhoto()).pipe(
+          map(() => photoActions.deletePhotosSuccess()),
+          catchError((error) => of(photoActions.deletePhotosFailure({ error })))
+        )
+      )
+    )
+  );
+
   startTracking$ = createEffect(() =>
     this.actions$.pipe(
       ofType(photoActions.startTracking),

@@ -1,4 +1,8 @@
-import { ApplicationService, ScreenshotService, TimeLogService } from '@ever-co/electron-database';
+import {
+  ApplicationService,
+  ScreenshotService,
+  TimeLogService,
+} from '@ever-co/electron-database';
 import {
   ElectronLogger,
   FileManager,
@@ -12,6 +16,7 @@ import {
   IScreenshotInput,
   IScreenshotMetadata,
   moment,
+  SCREENSHOT_DIR,
   SCREENSHOT_INTERVAL_DELAY,
   Source,
 } from '@ever-co/shared-utils';
@@ -19,8 +24,6 @@ import { desktopCapturer, ipcMain, IpcMainEvent } from 'electron';
 import { EventManager } from './event.manager';
 import { GetScreenShotMetadataQuery } from './get-screenshot-metadata.query';
 
-// Constants
-export const SCREENSHOT_DIR = 'screenshots';
 const logger = new ElectronLogger();
 const metadataQuery = new GetScreenShotMetadataQuery();
 const eventManager = EventManager.getInstance();

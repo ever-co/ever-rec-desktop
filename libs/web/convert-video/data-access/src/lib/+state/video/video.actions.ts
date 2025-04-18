@@ -18,7 +18,7 @@ export const videoActions = createActionGroup({
     'Load Videos Success': props<IPaginationResponse<IVideo>>(),
     'Load Videos Failure': props<{ error: string }>(),
 
-    'Delete Videos': props<{ videos: IVideo[] }>(),
+    'Delete Videos': props<{ videos?: IVideo[] }>(),
     'Delete Videos Success': props<{ videos: IVideo[] }>(),
 
     'Delete Video': props<IVideo>(),

@@ -16,3 +16,10 @@
     @apply backdrop-blur-sm bg-black/10;
   }
 }
+
+:host(.inline.no-bg) {
+  .main {
+    background-color: unset !important;
+    box-shadow: unset !important;
+  }
+}

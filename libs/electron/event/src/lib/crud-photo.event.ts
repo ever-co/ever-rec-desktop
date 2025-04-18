@@ -60,6 +60,13 @@ export function crudPhotoEvent(): void {
 
   // Delete Many Videos
   ipcMain.handle(Channel.DELETE_ALL_PHOTOS, async (_, photos: IPhoto[]) => {
+    if (!photos || photos.length === 0) {
+      await Promise.all([
+        photoService.deleteAll(),
+        FileManager.removeAllFiles(PHOTO_DIR),
+      ]);
+      return;
+    }
     // Extract IDs
     const ids = photos.map(({ id }) => id);
     // Extract Pathnames

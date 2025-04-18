@@ -8,6 +8,7 @@ import {
   IVideo,
   IVideoConfig,
   IVideoService,
+  VIDEO_DIR,
 } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
 import { join } from 'path';
@@ -292,7 +293,7 @@ export class VideoConversionService implements ILoggable {
     chunks: IVideo[]
   ): Promise<void> {
     const finalOutputPath = this.fileManager.createFilePathSync(
-      'videos',
+      VIDEO_DIR,
       `output-${Date.now()}.mp4`
     );
     const batchVideoPaths = batchVideo
@@ -389,7 +390,7 @@ export class VideoConversionService implements ILoggable {
    */
   private getBatchOutputPath(batchIndex: number): string {
     return this.fileManager.createFilePathSync(
-      'videos',
+      VIDEO_DIR,
       `batch-${batchIndex}-${Date.now()}.mp4`
     );
   }
