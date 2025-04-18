@@ -10,3 +10,9 @@
     }
   }
 }
+
+:host(.inline.bg-blurred) {
+  .main {
+    @apply backdrop-blur-sm bg-black/10;
+  }
+}
