@@ -56,7 +56,7 @@ export const reducer = createReducer(
   })),
   on(photoActions.deletePhotos, (state) => ({
     ...state,
-    loading: true,
+    deleting: true,
     error: '',
   })),
   on(photoActions.deletePhotosSuccess, () => ({
@@ -64,24 +64,24 @@ export const reducer = createReducer(
   })),
   on(photoActions.deletePhotosFailure, (state, { error }) => ({
     ...state,
-    loading: false,
+    deleting: false,
     error,
   })),
 
   on(photoActions.deletePhoto, (state) => ({
     ...state,
-    loading: true,
+    deleting: true,
     error: '',
   })),
   on(photoActions.deletePhotoSuccess, (state, { id }) => ({
     ...state,
-    loading: false,
+    deleting: false,
     count: state.count - 1,
     photos: state.photos.filter((photo) => photo.id !== id),
   })),
   on(photoActions.deletePhotoFailure, (state, { error }) => ({
     ...state,
-    loading: false,
+    deleting: false,
     error,
   })),
 
@@ -198,7 +198,7 @@ export const reducer = createReducer(
   })),
   on(photoActions.deletePhotosFailure, (state, { error }) => ({
     ...state,
-    loading: false,
+    deleting: false,
     error,
   }))
 );
