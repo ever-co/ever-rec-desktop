@@ -36,7 +36,7 @@ export default class App {
     const isDev = App.isDevelopmentMode();
     App.window = App.createMainWindow(isDev);
     await App.window.onAppReady();
-    this.handlePermission();
+    App.handlePermission();
   }
 
   private static handlePermission(): void {

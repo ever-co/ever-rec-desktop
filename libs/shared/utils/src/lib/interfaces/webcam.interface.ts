@@ -66,7 +66,7 @@ export interface IPhotoMetadataService {
 }
 
 export type IPhotoCreateInput = Omit<IPhotoInput, 'metadata'> & {
-  metadata: Omit<IPhotoMetadataInput, 'id'>;
+  metadata?: Omit<IPhotoMetadataInput, 'id'>;
 };
 
 export const PHOTO_DIR = 'photos';
