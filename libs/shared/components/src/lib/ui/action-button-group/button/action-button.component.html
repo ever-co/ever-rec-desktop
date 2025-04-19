@@ -3,7 +3,7 @@
 <!-- button structure -->
 
 <button
-  class="w-full flex items-center gap-1"
+  class="w-full flex items-center text-gray-600 gap-1"
   [matTooltip]="
     (button.disable | async) ? 'Action is unavalaible' : button.tooltip
   "
@@ -26,11 +26,11 @@
     button.icon
   }}</mat-icon>
   } @if(button.loadingLabel && loading) {
-  <div class="text-md font-medium text-gray-700" [ngClass]="getLabelClasses()">
+  <div class="text-md font-medium text-gray-600" [ngClass]="getLabelClasses()">
     {{ button.loadingLabel }}
   </div>
   } @else if (button.label) {
-  <div class="text-md font-medium text-gray-700" [ngClass]="getLabelClasses()">
+  <div class="text-md font-medium text-gray-600" [ngClass]="getLabelClasses()">
     {{ button.label }}
   </div>
   }
