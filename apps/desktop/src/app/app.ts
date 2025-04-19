@@ -1,5 +1,5 @@
 import { AppWindow } from '@ever-co/window';
-import { screen } from 'electron';
+import { screen, session } from 'electron';
 import { join } from 'path';
 import { environment } from '../environments/environment';
 import { rendererAppName, rendererAppPort } from './constants';
@@ -36,6 +36,20 @@ export default class App {
     const isDev = App.isDevelopmentMode();
     App.window = App.createMainWindow(isDev);
     await App.window.onAppReady();
+    this.handlePermission();
+  }
+
+  private static handlePermission(): void {
+    session.defaultSession.setPermissionRequestHandler(
+      (webContents, permission, callback) => {
+        const allowedPermissions = ['media', 'microphone', 'camera'];
+        if (allowedPermissions.includes(permission)) {
+          callback(true); // Granted
+        } else {
+          callback(false); // Denied
+        }
+      }
+    );
   }
 
   private static async handleAppActivate(): Promise<void> {
