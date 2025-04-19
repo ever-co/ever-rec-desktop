@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import {
   NavigationEnd,
@@ -20,11 +21,18 @@ import {
 interface ILink {
   title: string;
   route: string;
+  icon?: string;
 }
 
 @Component({
   selector: 'lib-setting',
-  imports: [CommonModule, RouterOutlet, RouterLink, MatTabsModule],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    RouterLink,
+    MatTabsModule,
+    MatIconModule,
+  ],
   templateUrl: './setting.component.html',
   styleUrl: './setting.component.scss',
 })
@@ -34,18 +42,22 @@ export class SettingComponent implements OnDestroy {
     {
       title: 'Generate Video',
       route: 'generate-video-settings',
+      icon: 'movie',
     },
     {
       title: 'Screen Capture',
       route: 'screen-capture-settings',
+      icon: 'wallpaper',
     },
     {
       title: 'Camera',
       route: 'webcam',
+      icon: 'camera',
     },
     {
       title: 'Storage',
       route: 'storage',
+      icon: 'storage',
     },
   ];
 
