@@ -94,6 +94,7 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
       .select(selectCameraPersistance)
       .pipe(
         take(1),
+        filter(({ canUseCamera }) => canUseCamera),
         tap(({ resolution }) =>
           this.store.dispatch(photoActions.savePhoto({ dataURL, resolution }))
         )
@@ -120,7 +121,7 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
       .pipe(
         tap(({ deviceId, microphoneId }) => {
           try {
-            this.startCamera(deviceId, microphoneId);
+            this.startStreaming(deviceId, microphoneId);
           } catch (err) {
             this.handleStreamError(err);
           }
@@ -179,7 +180,7 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
       .subscribe();
   }
 
-  private startCamera(deviceId?: string, microphoneId?: string): void {
+  private startStreaming(deviceId?: string, microphoneId?: string): void {
     this.store
       .select(selectCameraStreaming)
       .pipe(
@@ -200,7 +201,7 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
       .subscribe();
   }
 
-  private stopCamera(): void {
+  private stopStreaming(): void {
     this.store
       .select(selectCameraStreaming)
       .pipe(
@@ -243,7 +244,7 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
   }
 
   private cleanup(): void {
-    this.stopCamera();
+    this.stopStreaming();
     this.destroy$.next();
     this.destroy$.complete();
   }
