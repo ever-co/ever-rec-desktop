@@ -42,7 +42,7 @@ export class SettingComponent implements OnDestroy {
     {
       title: 'Generate Video',
       route: 'generate-video-settings',
-      icon: 'movie',
+      icon: 'video_settings',
     },
     {
       title: 'Screen Capture',
@@ -52,7 +52,7 @@ export class SettingComponent implements OnDestroy {
     {
       title: 'Camera',
       route: 'webcam',
-      icon: 'camera',
+      icon: 'hdr_weak',
     },
     {
       title: 'Storage',

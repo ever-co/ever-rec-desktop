@@ -13,7 +13,7 @@
     (click)="activeLink = link"
     [routerLink]="link.route"
     [active]="activeLink.title === link.title"
-    ><mat-icon>{{ link.icon }}</mat-icon> {{ link.title }}
+    ><mat-icon class="mr-1">{{ link.icon }}</mat-icon> {{ link.title }}
   </a>
   }
 </nav>
