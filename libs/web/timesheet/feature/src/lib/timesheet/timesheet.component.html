@@ -8,7 +8,7 @@
       </button>
     </div>
     } }@else {
-    <div class="flex w-full z-50 absolute top-0 justify-end">
+    <div class="flex w-full absolute top-0 justify-end">
       <ng-container *ngTemplateOutlet="actions"></ng-container>
     </div>
     }
@@ -228,6 +228,7 @@
 
 <ng-template #actions>
   <lib-action-button-group
+    class="z-50"
     [ngClass]="{ inline: isMobileView() === false }"
     [buttons]="actionButtons"
     [data]="selectedRow$ | async"
