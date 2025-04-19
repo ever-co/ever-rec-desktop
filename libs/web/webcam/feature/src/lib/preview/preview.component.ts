@@ -17,9 +17,11 @@ import {
   selectCameraPersistance,
   selectCameraStreaming,
   selectPhotoSaving,
+  selectPhotoState,
 } from '@ever-co/webcam-data-access';
 import { Store } from '@ngrx/store';
 import {
+  BehaviorSubject,
   catchError,
   distinctUntilChanged,
   EMPTY,
@@ -34,11 +36,13 @@ import {
   tap,
 } from 'rxjs';
 import { ControlComponent } from '../control/control.component';
+import { MatIconModule } from '@angular/material/icon';
+import { IPhoto } from '@ever-co/shared-utils';
 
 @Component({
   selector: 'lib-preview',
   standalone: true,
-  imports: [CommonModule, ControlComponent],
+  imports: [CommonModule, ControlComponent, MatIconModule],
   templateUrl: './preview.component.html',
   styleUrls: ['./preview.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -46,9 +50,12 @@ import { ControlComponent } from '../control/control.component';
 export class PreviewComponent implements AfterViewInit, OnDestroy {
   @ViewChild('video', { static: false })
   private videoElement!: ElementRef<HTMLVideoElement>;
+  @ViewChild('anchor', { static: false })
+  private anchorElement!: ElementRef<HTMLAnchorElement>;
   @Input()
   public control = true;
   private readonly destroy$ = new Subject<void>();
+  public done$ = new BehaviorSubject<boolean>(false);
 
   constructor(
     private readonly cameraService: CameraService,
@@ -65,6 +72,11 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.cleanup();
+  }
+
+  public onCapture() {
+    this.capture();
+    this.done$.next(true);
   }
 
   public capture(): void {
@@ -184,6 +196,24 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
 
   public get saving$(): Observable<boolean> {
     return this.store.select(selectPhotoSaving).pipe(takeUntil(this.destroy$));
+  }
+
+  public get photo$(): Observable<IPhoto | null> {
+    return this.store.select(selectPhotoState).pipe(
+      map((state) => state.photo),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  public redirect(event: Event, pathname: string): void {
+    event.stopPropagation();
+    const anchor = this.anchorElement?.nativeElement;
+    if (!anchor) {
+      return;
+    }
+    anchor.href = pathname;
+    anchor.click();
+    this.done$.next(false);
   }
 
   private cleanup(): void {
