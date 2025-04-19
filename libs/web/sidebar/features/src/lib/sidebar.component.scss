@@ -1,5 +1,9 @@
 .bg-indigo-50 {
-  background-color: rgba(103, 58, 183, 0.1);
+  //background-color: rgba(103, 58, 183, 0.1);
+}
+
+::ng-deep .mdc-list-item__primary-text {
+  @apply text-gray-600;
 }
 
 ::ng-deep a.tablet.mdc-list-item--with-leading-icon.mdc-list-item {
@@ -8,13 +12,23 @@
 
 ::ng-deep .mdc-list-item.mdc-list-item--with-one-line .mdc-list-item__start {
   height: auto;
+  @apply text-gray-600;
+}
+
+.selected ::ng-deep {
+  color: var(--mat-tab-header-active-label-text-color) !important;
 }
 
 :host ::ng-deep {
+  mat-icon {
+    margin: 0 !important;
+    margin-left: 20px !important;
+  }
+
   mat-icon:hover,
   mat-icon:focus,
   mat-icon:active,
   .selected {
-    margin-left: 24px !important;
+    margin-left: 15px !important;
   }
 }
