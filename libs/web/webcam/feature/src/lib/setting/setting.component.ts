@@ -16,7 +16,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import {
+  MatSlideToggleChange,
+  MatSlideToggleModule,
+} from '@angular/material/slide-toggle';
 import { RouterOutlet } from '@angular/router';
 import { NotificationService } from '@ever-co/notification-data-access';
 import { Resolution } from '@ever-co/shared-utils';
@@ -76,12 +79,25 @@ export class SettingComponent implements OnInit, OnDestroy {
       .select(selectCameraPersistance)
       .pipe(
         distinctUntilChanged(),
-        tap((state) => this.formGroup.patchValue(state)),
+        tap((state) => {
+          this.formGroup.patchValue(state);
+          this.onCheck({ checked: state.canUseCamera });
+        }),
         takeUntil(this.destroy$)
       )
       .subscribe();
 
     this.store.dispatch(cameraActions.loadCameras());
+  }
+
+  public onCheck({ checked }: Partial<MatSlideToggleChange>) {
+    if (checked) {
+      this.formGroup.controls['resolution'].enable();
+      this.formGroup.controls['checkCamera'].enable();
+    } else {
+      this.formGroup.controls['resolution'].disable();
+      this.formGroup.controls['checkCamera'].disable();
+    }
   }
 
   public onSubmit(): void {

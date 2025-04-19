@@ -25,7 +25,11 @@
       <span class="text-gray-700"
         >Take camera shot with screenshot while tracking</span
       >
-      <mat-slide-toggle formControlName="canUseCamera"> </mat-slide-toggle>
+      <mat-slide-toggle
+        (change)="onCheck($event)"
+        formControlName="canUseCamera"
+      >
+      </mat-slide-toggle>
     </div>
 
     <!-- Select Input -->
