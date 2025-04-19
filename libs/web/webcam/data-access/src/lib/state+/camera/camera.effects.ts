@@ -76,30 +76,44 @@ export class CameraEffects {
   public selectCamera$ = createEffect(() =>
     this.actions$.pipe(
       ofType(cameraActions.selectCamera),
-      switchMap(({ deviceId, tracking = false, resolution, microphoneId }) =>
-        this.localStorageService
-          .setItem<ICameraPersistance>(
-            this.cameraKey,
-            { deviceId, tracking, resolution, microphoneId },
-            { merge: true }
-          )
-          .pipe(
-            map(() =>
-              cameraActions.selectCameraSuccess({
+      switchMap(
+        ({
+          deviceId,
+          canUseCamera = false,
+          canUseMicrophone = false,
+          resolution,
+          microphoneId,
+        }) =>
+          this.localStorageService
+            .setItem<ICameraPersistance>(
+              this.cameraKey,
+              {
                 deviceId,
-                tracking,
+                canUseCamera,
+                canUseMicrophone,
                 resolution,
                 microphoneId,
-              })
-            ),
-            catchError(() =>
-              of(
-                cameraActions.selectCameraFailure({
-                  error: 'Failed to select camera',
+              },
+              { merge: true }
+            )
+            .pipe(
+              map(() =>
+                cameraActions.selectCameraSuccess({
+                  deviceId,
+                  canUseCamera,
+                  canUseMicrophone,
+                  resolution,
+                  microphoneId,
                 })
+              ),
+              catchError(() =>
+                of(
+                  cameraActions.selectCameraFailure({
+                    error: 'Failed to select camera',
+                  })
+                )
               )
             )
-          )
       )
     )
   );
@@ -112,13 +126,22 @@ export class CameraEffects {
           .getItem<ICameraPersistance>(this.cameraKey)
           .pipe(
             filter(Boolean),
-            map(({ deviceId, tracking, resolution, microphoneId }) =>
-              cameraActions.selectCameraSuccess({
-                deviceId: deviceId ?? cameras[0]?.deviceId ?? null,
-                microphoneId: microphoneId ?? microphones[0]?.deviceId ?? null,
+            map(
+              ({
+                deviceId,
+                canUseCamera,
+                canUseMicrophone,
                 resolution,
-                tracking,
-              })
+                microphoneId,
+              }) =>
+                cameraActions.selectCameraSuccess({
+                  deviceId: deviceId ?? cameras[0]?.deviceId ?? null,
+                  microphoneId:
+                    microphoneId ?? microphones[0]?.deviceId ?? null,
+                  canUseCamera,
+                  canUseMicrophone,
+                  resolution,
+                })
             ),
             catchError(() =>
               of(

@@ -102,7 +102,7 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
     this.store
       .select(selectCameraPersistance)
       .pipe(
-        map((persistence) => persistence.camera?.deviceId),
+        map((persistence) => persistence.deviceId),
         distinctUntilChanged(),
         filter((deviceId): deviceId is string => !!deviceId), // Type predicate for better typing
         tap((deviceId) => this.startCamera(deviceId)),

@@ -13,9 +13,10 @@ export interface IPhoto extends IBase {
 export interface ICameraPersistance {
   isAuthorized?: boolean;
   deviceId?: string;
-  tracking?: boolean;
   microphoneId?: string;
   resolution?: Resolution;
+  canUseCamera?: boolean;
+  canUseMicrophone?: boolean;
 }
 
 export enum Resolution {

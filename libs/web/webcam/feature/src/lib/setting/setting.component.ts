@@ -64,26 +64,19 @@ export class SettingComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.formGroup = new FormGroup({
-      webcam: new FormControl(null, [Validators.required]),
+      deviceId: new FormControl(null, [Validators.required]),
       resolution: new FormControl(Resolution.MEDIUM, [Validators.required]),
-      tracking: new FormControl(false),
-      audioRecord: new FormControl(false),
+      canUseCamera: new FormControl(false),
+      canUseMicrophone: new FormControl(false),
       checkCamera: new FormControl(false),
-      microphone: new FormControl(null),
+      microphoneId: new FormControl(null),
     });
 
     this.store
       .select(selectCameraPersistance)
       .pipe(
         distinctUntilChanged(),
-        tap((state) =>
-          this.formGroup.patchValue({
-            webcam: state.camera?.deviceId,
-            tracking: state.tracking,
-            resolution: state.resolution,
-            microphone: state.microphone?.deviceId,
-          })
-        ),
+        tap((state) => this.formGroup.patchValue(state)),
         takeUntil(this.destroy$)
       )
       .subscribe();
@@ -95,14 +88,7 @@ export class SettingComponent implements OnInit, OnDestroy {
     if (this.formGroup.invalid) {
       return;
     }
-    this.store.dispatch(
-      cameraActions.selectCamera({
-        deviceId: this.formGroup.value.webcam,
-        tracking: this.formGroup.value.tracking,
-        resolution: this.formGroup.value.resolution,
-        microphoneId: this.formGroup.value.microphone,
-      })
-    );
+    this.store.dispatch(cameraActions.selectCamera(this.formGroup.value));
     this.notificationService.show('Camera settings updated.', 'info');
   }
 

@@ -11,9 +11,14 @@ export interface ICameraState {
   microphone: MediaDeviceInfo | null;
   resolution: Resolution;
   isAuthorized: boolean;
-  tracking: boolean;
   loading: boolean;
   error: string | null;
+  authorization: {
+    canUseCamera: boolean;
+    canUseMicrophone: boolean;
+    loading: boolean;
+    error: string | null;
+  };
   streaming: {
     stream: MediaStream | null;
     creating: boolean;
@@ -30,8 +35,13 @@ export const initialCameraState: ICameraState = {
   resolution: Resolution.MEDIUM,
   loading: false,
   isAuthorized: false,
-  tracking: false,
   error: null,
+  authorization: {
+    canUseCamera: false,
+    canUseMicrophone: false,
+    loading: false,
+    error: null,
+  },
   streaming: {
     stream: null,
     creating: false,
@@ -69,10 +79,18 @@ export const reducer = createReducer(
   })),
   on(
     cameraActions.selectCameraSuccess,
-    (state, { deviceId, tracking, resolution, microphoneId }) => ({
+    (
+      state,
+      { deviceId, canUseCamera, canUseMicrophone, resolution, microphoneId }
+    ) => ({
       ...state,
       resolution: resolution ?? state.resolution ?? Resolution.MEDIUM,
-      tracking: tracking ?? state.tracking ?? false,
+      authorization: {
+        ...state.authorization,
+        canUseCamera: canUseCamera ?? state.authorization.canUseCamera ?? false,
+        canUseMicrophone:
+          canUseMicrophone ?? state.authorization.canUseMicrophone ?? false,
+      },
       microphone:
         (microphoneId
           ? state.microphones.find(

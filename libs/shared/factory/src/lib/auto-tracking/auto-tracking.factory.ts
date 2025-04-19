@@ -3,7 +3,7 @@ import {
   cameraActions,
   photoActions,
   PhotoService,
-  selectCameraPersistance,
+  selectCameraAuthorizations,
 } from '@ever-co/webcam-data-access';
 import { Store } from '@ngrx/store';
 import { filter, map, withLatestFrom } from 'rxjs';
@@ -16,10 +16,8 @@ export function autoTrackingFactory(
     service
       .requestTracking()
       .pipe(
-        withLatestFrom(store.select(selectCameraPersistance)),
-        filter(
-          ([, persistance]) => persistance.tracking && !!persistance.camera
-        ),
+        withLatestFrom(store.select(selectCameraAuthorizations)),
+        filter(([, auth]) => auth.isAuthorized && auth.canUseCamera),
         map(() => store.dispatch(photoActions.startTracking()))
       )
       .subscribe();
