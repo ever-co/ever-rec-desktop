@@ -7,6 +7,8 @@ export const cameraFeatureKey = 'webcamera';
 export interface ICameraState {
   cameras: MediaDeviceInfo[];
   camera: MediaDeviceInfo | null;
+  microphones: MediaDeviceInfo[];
+  microphone: MediaDeviceInfo | null;
   resolution: Resolution;
   isAuthorized: boolean;
   tracking: boolean;
@@ -21,6 +23,8 @@ export interface ICameraState {
 }
 
 export const initialCameraState: ICameraState = {
+  microphones: [],
+  microphone: null,
   cameras: [],
   camera: null,
   resolution: Resolution.MEDIUM,
@@ -43,9 +47,10 @@ export const reducer = createReducer(
     loading: true,
     error: null,
   })),
-  on(cameraActions.loadCamerasSuccess, (state, { cameras }) => ({
+  on(cameraActions.loadCamerasSuccess, (state, { cameras, microphones }) => ({
     ...state,
     cameras,
+    microphones,
     loading: false,
   })),
   on(cameraActions.loadCamerasFailure, (state, { error }) => ({
@@ -64,10 +69,16 @@ export const reducer = createReducer(
   })),
   on(
     cameraActions.selectCameraSuccess,
-    (state, { deviceId, tracking, resolution }) => ({
+    (state, { deviceId, tracking, resolution, microphoneId }) => ({
       ...state,
       resolution: resolution ?? state.resolution ?? Resolution.MEDIUM,
       tracking: tracking ?? state.tracking ?? false,
+      microphone:
+        (microphoneId
+          ? state.microphones.find(
+              (microphone) => microphone.deviceId === microphoneId
+            )
+          : state.microphone) ?? null,
       camera:
         (deviceId
           ? state.cameras.find((camera) => camera.deviceId === deviceId)

@@ -10,6 +10,11 @@ export const selectCameras = createSelector(
   (state) => state.cameras
 );
 
+export const selectCameraMicrophones = createSelector(
+  selectCameraState,
+  (state) => state.microphones
+);
+
 export const selectCamera = createSelector(
   selectCameraState,
   (state) => state.camera
@@ -27,11 +32,12 @@ export const selectCameraIsAuthorized = createSelector(
 
 export const selectCameraPersistance = createSelector(
   selectCameraState,
-  ({ tracking, camera, resolution, isAuthorized }) => ({
+  ({ tracking, camera, resolution, isAuthorized, microphone }) => ({
     tracking,
     camera,
     isAuthorized,
     resolution,
+    microphone,
   })
 );
 

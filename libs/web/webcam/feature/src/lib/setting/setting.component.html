@@ -1,7 +1,25 @@
-@let cameras = cameras$ | async;
+@let cameras = cameras$ | async; @let microphones = microphones$ | async;
 
 <div class="setting max-w-xl space-y-6 w-full">
   <form [formGroup]="formGroup" class="form space-y-4" (ngSubmit)="onSubmit()">
+    <!-- Toggle for tracking -->
+    <div class="start flex justify-between items-center">
+      <span class="text-gray-700">Record audio while tracking</span>
+      <mat-slide-toggle formControlName="audioRecord"> </mat-slide-toggle>
+    </div>
+
+    <!-- Select Input -->
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Available Microphones</mat-label>
+      <mat-select formControlName="microphone" required>
+        @for (micro of microphones; track micro.deviceId) {
+        <mat-option [value]="micro.deviceId">{{ micro.label }}</mat-option>
+        }
+      </mat-select>
+      @if (formGroup.controls['microphone'].hasError('required')) {
+      <mat-error>Please select a microphone source</mat-error>
+      }
+    </mat-form-field>
     <!-- Toggle for tracking -->
     <div class="start flex justify-between items-center">
       <span class="text-gray-700"

@@ -22,6 +22,7 @@ import { NotificationService } from '@ever-co/notification-data-access';
 import { Resolution } from '@ever-co/shared-utils';
 import {
   cameraActions,
+  selectCameraMicrophones,
   selectCameraPersistance,
   selectCameras,
 } from '@ever-co/webcam-data-access';
@@ -66,7 +67,9 @@ export class SettingComponent implements OnInit, OnDestroy {
       webcam: new FormControl(null, [Validators.required]),
       resolution: new FormControl(Resolution.MEDIUM, [Validators.required]),
       tracking: new FormControl(false),
+      audioRecord: new FormControl(false),
       checkCamera: new FormControl(false),
+      microphone: new FormControl(null),
     });
 
     this.store
@@ -78,6 +81,7 @@ export class SettingComponent implements OnInit, OnDestroy {
             webcam: state.camera?.deviceId,
             tracking: state.tracking,
             resolution: state.resolution,
+            microphone: state.microphone?.deviceId,
           })
         ),
         takeUntil(this.destroy$)
@@ -96,6 +100,7 @@ export class SettingComponent implements OnInit, OnDestroy {
         deviceId: this.formGroup.value.webcam,
         tracking: this.formGroup.value.tracking,
         resolution: this.formGroup.value.resolution,
+        microphoneId: this.formGroup.value.microphone,
       })
     );
     this.notificationService.show('Camera settings updated.', 'info');
@@ -103,6 +108,12 @@ export class SettingComponent implements OnInit, OnDestroy {
 
   public get cameras$(): Observable<MediaDeviceInfo[]> {
     return this.store.select(selectCameras).pipe(takeUntil(this.destroy$));
+  }
+
+  public get microphones$(): Observable<MediaDeviceInfo[]> {
+    return this.store
+      .select(selectCameraMicrophones)
+      .pipe(takeUntil(this.destroy$));
   }
 
   ngOnDestroy(): void {

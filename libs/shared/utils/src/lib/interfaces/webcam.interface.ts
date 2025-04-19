@@ -14,6 +14,7 @@ export interface ICameraPersistance {
   isAuthorized?: boolean;
   deviceId?: string;
   tracking?: boolean;
+  microphoneId?: string;
   resolution?: Resolution;
 }
 
