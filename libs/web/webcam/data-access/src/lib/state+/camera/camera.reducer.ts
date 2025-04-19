@@ -68,14 +68,29 @@ export const reducer = createReducer(
     error,
     loading: false,
   })),
+  on(cameraActions.checkCameraAuthorization, (state) => ({
+    ...state,
+    authorization: {
+      ...state.authorization,
+      loading: true,
+    },
+  })),
   on(cameraActions.checkCameraAuthorizationSuccess, (state) => ({
     ...state,
     isAuthorized: true,
+    authorization: {
+      ...state.authorization,
+      loading: false,
+    },
   })),
   on(cameraActions.checkCameraAuthorizationFailure, (state, { error }) => ({
     ...state,
     isAuthorized: false,
-    error,
+    authorization: {
+      ...state.authorization,
+      loading: false,
+      error,
+    },
   })),
   on(
     cameraActions.selectCameraSuccess,
