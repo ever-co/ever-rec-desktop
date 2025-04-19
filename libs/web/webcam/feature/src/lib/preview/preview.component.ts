@@ -14,6 +14,7 @@ import {
   CameraService,
   photoActions,
   PhotoService,
+  selectCameraAuthorizations,
   selectCameraPersistance,
   selectCameraStreaming,
   selectPhotoSaving,
@@ -29,11 +30,13 @@ import {
   from,
   map,
   Observable,
+  shareReplay,
   Subject,
   switchMap,
   take,
   takeUntil,
   tap,
+  withLatestFrom,
 } from 'rxjs';
 import { ControlComponent } from '../control/control.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -99,13 +102,29 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
   }
 
   private initCameraPreview(): void {
-    this.store
-      .select(selectCameraPersistance)
+    const cameraConfig$ = this.store.select(selectCameraPersistance).pipe(
+      map((persistence) => ({
+        deviceId: persistence.deviceId,
+        microphoneId: persistence.microphoneId,
+      })),
+      distinctUntilChanged(
+        (prev, curr) =>
+          prev.deviceId === curr.deviceId &&
+          prev.microphoneId === curr.microphoneId
+      ),
+      filter(({ deviceId, microphoneId }) => !!deviceId || !!microphoneId),
+      shareReplay(1) // Avoid duplicate side effects if there are multiple subscribers
+    );
+
+    cameraConfig$
       .pipe(
-        map((persistence) => persistence.deviceId),
-        distinctUntilChanged(),
-        filter((deviceId): deviceId is string => !!deviceId), // Type predicate for better typing
-        tap((deviceId) => this.startCamera(deviceId)),
+        tap(({ deviceId, microphoneId }) => {
+          try {
+            this.startCamera(deviceId, microphoneId);
+          } catch (err) {
+            this.handleStreamError(err);
+          }
+        }),
         catchError((err) => {
           this.handleStreamError(err);
           return EMPTY;
@@ -160,14 +179,21 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
       .subscribe();
   }
 
-  private startCamera(deviceId: string): void {
+  private startCamera(deviceId?: string, microphoneId?: string): void {
     this.store
       .select(selectCameraStreaming)
       .pipe(
         take(1),
-        tap(({ stream }) =>
+        withLatestFrom(this.store.select(selectCameraAuthorizations)),
+        tap(([{ stream }, { canUseCamera, canUseMicrophone }]) =>
           this.store.dispatch(
-            cameraActions.createCameraStream({ deviceId, stream })
+            cameraActions.createCameraStream({
+              deviceId,
+              microphoneId,
+              stream,
+              canUseCamera,
+              canUseMicrophone,
+            })
           )
         )
       )

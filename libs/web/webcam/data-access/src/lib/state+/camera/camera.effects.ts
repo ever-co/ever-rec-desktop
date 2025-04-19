@@ -191,23 +191,28 @@ export class CameraEffects {
   public createStream$ = createEffect(() =>
     this.actions$.pipe(
       ofType(cameraActions.createCameraStream),
-      switchMap(({ deviceId, stream, resolution }) =>
-        from(
-          this.cameraStreamService.createStream({
-            deviceId,
-            stream,
-            resolution,
-          })
-        ).pipe(
-          map((stream) => cameraActions.createCameraStreamSuccess({ stream })),
-          catchError((error) =>
-            of(
-              cameraActions.createCameraStreamFailure({
-                error: this.getErrorMessage(error),
-              })
+      switchMap(
+        ({ deviceId, stream, resolution, canUseCamera, canUseMicrophone }) =>
+          from(
+            this.cameraStreamService.createStream({
+              deviceId,
+              stream,
+              resolution,
+              canUseCamera,
+              canUseMicrophone,
+            })
+          ).pipe(
+            map((stream) =>
+              cameraActions.createCameraStreamSuccess({ stream })
+            ),
+            catchError((error) =>
+              of(
+                cameraActions.createCameraStreamFailure({
+                  error: this.getErrorMessage(error),
+                })
+              )
             )
           )
-        )
       )
     )
   );

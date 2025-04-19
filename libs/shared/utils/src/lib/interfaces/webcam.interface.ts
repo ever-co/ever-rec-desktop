@@ -25,10 +25,8 @@ export enum Resolution {
   HIGH = 'high',
 }
 
-export interface IConstraintStream {
-  deviceId?: string;
+export interface IConstraintStream extends ICameraPersistance {
   stream?: MediaStream | null;
-  resolution?: Resolution;
 }
 
 export interface IPhotoMetadata extends IBase {
