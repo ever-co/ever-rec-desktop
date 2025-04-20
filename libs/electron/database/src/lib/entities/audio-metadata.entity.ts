@@ -14,6 +14,12 @@ export class AudioMetadata extends Base implements IAudioMetadata {
   @Column({ type: 'bigint', default: 0 })
   size: number;
 
+  @Column({ default: 0, type: 'integer' })
+  rate?: number;
+
+  @Column({ default: 0, type: 'integer' })
+  channels?: number;
+
   @OneToOne(() => Audio, (audio) => audio.metadata, {
     onDelete: 'CASCADE',
   })

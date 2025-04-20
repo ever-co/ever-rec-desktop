@@ -52,3 +52,24 @@ export function isHttpUrl(url: string): boolean {
     return false;
   }
 }
+
+/**
+ * Converts a Blob object to a Buffer.
+ *
+ * @param blob - The Blob object to convert.
+ * @returns A Promise that resolves to a Buffer containing the contents of the Blob.
+ */
+export async function blobToBuffer(blob: Blob): Promise<Buffer> {
+  const arrayBuffer = await this.blobToBufferArray(blob);
+  return Buffer.from(arrayBuffer);
+}
+
+/**
+ * Converts a Blob object to an ArrayBuffer.
+ *
+ * @param blob - The Blob object to convert.
+ * @returns A Promise that resolves to an ArrayBuffer containing the contents of the Blob.
+ */
+export async function blobToBufferArray(blob: Blob): Promise<ArrayBuffer> {
+  return blob.arrayBuffer();
+}

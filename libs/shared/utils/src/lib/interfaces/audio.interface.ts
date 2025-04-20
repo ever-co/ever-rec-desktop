@@ -5,6 +5,8 @@ export interface IAudioMetadata extends IBase {
   size?: number;
   name?: string;
   duration?: number;
+  rate?: number;
+  channels?: number;
   audio?: IAudio;
   audioId?: IAudio['id'];
 }
@@ -20,6 +22,10 @@ export interface IAudio extends IBase {
 export type IAudioInput = Omit<IAudio, 'timeLog' | 'id'>;
 
 export type IAudioMetadataInput = Omit<IAudioMetadata, 'photo' | 'id'>;
+
+export interface IAudioSave {
+  blob: Blob;
+}
 
 export interface IAudioService {
   save(input: IAudioInput): Promise<IAudio>;
