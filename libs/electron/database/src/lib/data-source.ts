@@ -14,7 +14,7 @@ import { VideoMetadataSubscriber } from './subscribers/video-metadata.subscriber
 import { VideoSubscriber } from './subscribers/video.subscriber';
 import { PhotoSubscriber } from './subscribers/photo.subscriber';
 import { Photo } from './entities/photo.entity';
-import { PhotoMetadata } from './entities/metadata.entity';
+import { PhotoMetadata } from './entities/photo-metadata.entity';
 
 const database = FileManager.createFilePathSync(
   'db',
