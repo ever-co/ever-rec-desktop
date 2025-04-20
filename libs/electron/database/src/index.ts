@@ -30,3 +30,5 @@ export * from './lib/subscribers/video-metadata.subscriber';
 export * from './lib/subscribers/video.subscriber';
 export * from './lib/services/photo.service';
 export * from './lib/services/photo-metadata.service';
+export * from './lib/services/audio.service';
+export * from './lib/services/audio-metadata.service';

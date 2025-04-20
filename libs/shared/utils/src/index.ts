@@ -29,3 +29,4 @@ export * from './lib/time-log.type';
 export * from './lib/util';
 export * from './lib/codec.util';
 export * from './lib/interfaces/webcam.interface';
+export * from './lib/interfaces/audio.interface';
