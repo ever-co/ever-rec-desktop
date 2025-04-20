@@ -73,6 +73,7 @@ export default class App {
         height,
         webPreferences: {
           preload: join(__dirname, 'main.preload.js'),
+          enableBlinkFeatures: 'EnumerateDevices, MediaDevices',
         },
       },
       loader: {

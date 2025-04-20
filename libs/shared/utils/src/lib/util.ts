@@ -60,7 +60,7 @@ export function isHttpUrl(url: string): boolean {
  * @returns A Promise that resolves to a Buffer containing the contents of the Blob.
  */
 export async function blobToBuffer(blob: Blob): Promise<Buffer> {
-  const arrayBuffer = await this.blobToBufferArray(blob);
+  const arrayBuffer = await blobToBufferArray(blob);
   return Buffer.from(arrayBuffer);
 }
 
