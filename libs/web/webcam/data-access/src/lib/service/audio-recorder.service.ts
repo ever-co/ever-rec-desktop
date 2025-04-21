@@ -54,7 +54,7 @@ export class AudioRecorderService {
           };
 
           // Start recording with timeslice for regular data updates
-          this.mediaRecorder.start(); // 100 milliseconds timeslice
+          this.mediaRecorder.start(100); // 100 milliseconds timeslice
         } catch (error) {
           observer.error(new Error(`Failed to start recording: ${error}`));
           this.cleanup();

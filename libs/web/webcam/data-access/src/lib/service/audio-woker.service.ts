@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IAudioSave } from '@ever-co/shared-utils';
 import { Observable, Subject } from 'rxjs';
+import { MessageType } from './workers/interfaces/audio-worker.interface';
 
 @Injectable({ providedIn: 'root' })
 export class AudioWorkerService {
@@ -24,14 +25,14 @@ export class AudioWorkerService {
 
   public saveChunk(chunk: BlobPart): void {
     this.worker.postMessage({
-      type: 'SAVE_CHUNK',
+      type: MessageType.SAVE_CHUNK,
       chunk,
     });
   }
 
   public cleanChunks(): void {
     this.worker.postMessage({
-      type: 'CLEAR_CHUNKS',
+      type: MessageType.CLEAR_CHUNKS,
     });
   }
 
@@ -39,7 +40,7 @@ export class AudioWorkerService {
     const workerSubject = new Subject<IAudioSave>();
 
     this.worker.onmessage = async ({ data }) => {
-      if (data.type === 'AUDIO_PROCESSED') {
+      if (data.type === MessageType.AUDIO_PROCESSED) {
         const arrayBuffer = data.result;
         const audioContext = new AudioContext();
         const audioBuffer = await audioContext.decodeAudioData(
@@ -54,12 +55,12 @@ export class AudioWorkerService {
 
         workerSubject.next({ arrayBuffer, duration, channels, rate });
         workerSubject.complete();
-      } else if (data.type === 'AUDIO_ERROR') {
+      } else if (data.type === MessageType.AUDIO_ERROR) {
         workerSubject.error(data.error);
       }
     };
 
-    this.worker.postMessage({ type: 'PROCESS_AUDIO' });
+    this.worker.postMessage({ type: MessageType.PROCESS_AUDIO });
 
     return workerSubject.asObservable();
   }
