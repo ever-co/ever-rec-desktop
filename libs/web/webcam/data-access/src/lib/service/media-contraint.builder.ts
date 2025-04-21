@@ -40,7 +40,7 @@ const DEFAULT_VIDEO_CONSTRAINTS: MediaTrackConstraints = {
 const DEFAULT_AUDIO_CONSTRAINTS: MediaTrackConstraints = {
   echoCancellation: { ideal: true },
   noiseSuppression: { ideal: true },
-  autoGainControl: { ideal: false },
+  autoGainControl: { ideal: true },
 };
 
 export class MediaConstraintsBuilder {
