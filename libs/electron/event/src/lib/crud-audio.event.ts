@@ -81,8 +81,8 @@ export function crudAudioEvent(): void {
 
 export async function saveAudio(data: IAudioSave) {
   const { arrayBuffer, duration, channels, rate } = data;
-  console.log(data);
   const name = `audio-${Date.now()}.webm`;
+
   const pathname = await FileManager.write(
     AUDIO_DIR,
     name,

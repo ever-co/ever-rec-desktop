@@ -38,12 +38,9 @@ const DEFAULT_VIDEO_CONSTRAINTS: MediaTrackConstraints = {
  * Default audio constraints for high quality audio
  */
 const DEFAULT_AUDIO_CONSTRAINTS: MediaTrackConstraints = {
-  echoCancellation: true,
-  noiseSuppression: true,
-  autoGainControl: false,
-  channelCount: { ideal: 2 },
-  sampleRate: { ideal: 48000 },
-  sampleSize: { ideal: 24 },
+  echoCancellation: { ideal: true },
+  noiseSuppression: { ideal: true },
+  autoGainControl: { ideal: false },
 };
 
 export class MediaConstraintsBuilder {

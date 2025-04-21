@@ -22,7 +22,20 @@ export class AudioWorkerService {
     }
   }
 
-  public processAudio(chunks: BlobPart[]): Observable<IAudioSave> {
+  public saveChunk(chunk: BlobPart): void {
+    this.worker.postMessage({
+      type: 'SAVE_CHUNK',
+      chunk,
+    });
+  }
+
+  public cleanChunks(): void {
+    this.worker.postMessage({
+      type: 'CLEAR_CHUNKS',
+    });
+  }
+
+  public processAudio(): Observable<IAudioSave> {
     const workerSubject = new Subject<IAudioSave>();
 
     this.worker.onmessage = async ({ data }) => {
@@ -46,10 +59,7 @@ export class AudioWorkerService {
       }
     };
 
-    this.worker.postMessage({
-      type: 'PROCESS_AUDIO',
-      chunks,
-    });
+    this.worker.postMessage({ type: 'PROCESS_AUDIO' });
 
     return workerSubject.asObservable();
   }

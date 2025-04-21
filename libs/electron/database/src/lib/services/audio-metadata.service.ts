@@ -14,6 +14,9 @@ export class AudioMetadataService implements IAudioMetadataService {
     metadata.name = input.name;
     metadata.size = input.size;
     metadata.duration = input.duration;
+    metadata.channels = input.channels;
+    metadata.rate = input.rate;
+
     return this.repository.save(metadata);
   }
 

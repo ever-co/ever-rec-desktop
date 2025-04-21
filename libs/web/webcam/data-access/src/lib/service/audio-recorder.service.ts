@@ -6,7 +6,6 @@ import { AudioWorkerService } from './audio-woker.service';
 @Injectable({ providedIn: 'root' })
 export class AudioRecorderService {
   private mediaRecorder: MediaRecorder | null = null;
-  private chunks: Blob[] = [];
 
   constructor(private readonly audioWorkerService: AudioWorkerService) {}
 
@@ -26,18 +25,18 @@ export class AudioRecorderService {
             new MediaStream(stream.getAudioTracks())
           );
 
-          this.chunks = [];
+          this.audioWorkerService.cleanChunks();
 
           this.mediaRecorder.ondataavailable = (e: BlobEvent) => {
             if (e.data.size > 0) {
-              this.chunks.push(e.data);
+              this.audioWorkerService.saveChunk(e.data);
             }
           };
 
           this.mediaRecorder.onstop = async () => {
             try {
               const audioProcessed = await lastValueFrom(
-                this.audioWorkerService.processAudio(this.chunks)
+                this.audioWorkerService.processAudio()
               );
               observer.next(audioProcessed);
               observer.complete();
@@ -55,7 +54,7 @@ export class AudioRecorderService {
           };
 
           // Start recording with timeslice for regular data updates
-          this.mediaRecorder.start(3000); // 3 seconds timeslice
+          this.mediaRecorder.start(); // 100 milliseconds timeslice
         } catch (error) {
           observer.error(new Error(`Failed to start recording: ${error}`));
           this.cleanup();
@@ -85,7 +84,7 @@ export class AudioRecorderService {
       this.mediaRecorder.onstop = null;
       this.mediaRecorder.onerror = null;
     }
-    this.chunks = [];
+    this.audioWorkerService.cleanChunks();
     this.mediaRecorder = null;
   }
 }

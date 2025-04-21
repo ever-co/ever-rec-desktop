@@ -153,6 +153,7 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
             return EMPTY;
           }
 
+          videoElement.muted = true;
           videoElement.srcObject = stream;
 
           return from(videoElement.play()).pipe(
