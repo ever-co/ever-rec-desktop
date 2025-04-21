@@ -1,5 +1,5 @@
 import { AppWindow } from '@ever-co/window';
-import { screen, session } from 'electron';
+import { desktopCapturer, screen, session } from 'electron';
 import { join } from 'path';
 import { environment } from '../environments/environment';
 import { rendererAppName, rendererAppPort } from './constants';
@@ -35,8 +35,9 @@ export default class App {
 
     const isDev = App.isDevelopmentMode();
     App.window = App.createMainWindow(isDev);
-    await App.window.onAppReady();
     App.handlePermission();
+    App.handleMediaRequest();
+    await App.window.onAppReady();
   }
 
   private static handlePermission(): void {
@@ -49,6 +50,20 @@ export default class App {
           callback(false); // Denied
         }
       }
+    );
+  }
+
+  private static handleMediaRequest(): void {
+    session.defaultSession.setDisplayMediaRequestHandler(
+      (request, callback) => {
+        desktopCapturer
+          .getSources({ types: ['screen', 'window'] })
+          .then((sources) => {
+            // Grant access to the first screen found.
+            callback({ video: sources[0], audio: 'loopback' });
+          });
+      },
+      { useSystemPicker: true }
     );
   }
 
