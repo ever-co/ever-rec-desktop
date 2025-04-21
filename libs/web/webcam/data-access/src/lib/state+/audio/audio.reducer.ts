@@ -51,9 +51,28 @@ export const reducer = createReducer(
     error,
   })),
 
-  on(cameraActions.createCameraStreamSuccess, (state) => ({
+  on(
+    cameraActions.createCameraStreamSuccess,
+    audioActions.startRecording,
+    (state) => ({
+      ...state,
+      recording: true,
+    })
+  ),
+
+  on(
+    cameraActions.closeCameraStreamSuccess,
+    audioActions.stopRecordingSuccess,
+    (state) => ({
+      ...state,
+      recording: false,
+    })
+  ),
+
+  on(audioActions.stopRecordingFailure, (state, { error }) => ({
     ...state,
-    recording: true,
+    recording: false,
+    error,
   }))
 );
 

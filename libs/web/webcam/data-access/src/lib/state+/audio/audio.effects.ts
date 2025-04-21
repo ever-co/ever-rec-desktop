@@ -24,11 +24,39 @@ export class AudioEffects {
 
   startRecording$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(cameraActions.createCameraStreamSuccess),
+      ofType(
+        audioActions.startRecording,
+        cameraActions.createCameraStreamSuccess
+      ),
+      map(({ stream }) => audioActions.startRecordingSuccess({ stream })),
+      catchError((error) => of(audioActions.startRecordingFailure({ error })))
+    )
+  );
+
+  recording$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(audioActions.startRecordingSuccess),
       mergeMap(({ stream }) =>
         this.audioRecorderService.start(stream).pipe(
           map((audio) => audioActions.saveAudio(audio)),
           catchError((error) => of(audioActions.saveAudioFailure({ error })))
+        )
+      )
+    )
+  );
+
+  stopRecording$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(
+        cameraActions.closeCameraStreamSuccess,
+        audioActions.stopRecording
+      ),
+      mergeMap(() =>
+        of(this.audioRecorderService.stop()).pipe(
+          map(() => audioActions.stopRecordingSuccess()),
+          catchError((error) =>
+            of(audioActions.stopRecordingFailure({ error }))
+          )
         )
       )
     )

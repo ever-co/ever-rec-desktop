@@ -38,5 +38,13 @@ export const audioActions = createActionGroup({
     'Reset Audios': emptyProps(),
     'Unselect All Audios': emptyProps(),
     'Unselect Audio': props<{ audio: ISelected<IAudio> }>(),
+
+    'Start Recording': props<{ stream: MediaStream | null }>(),
+    'Start Recording Success': props<{ stream: MediaStream | null }>(),
+    'Start Recording Failure': props<{ error: string }>(),
+
+    'Stop Recording': emptyProps(),
+    'Stop Recording Success': emptyProps(),
+    'Stop Recording Failure': props<{ error: string }>(),
   },
 });

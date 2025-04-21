@@ -69,11 +69,7 @@ export class AudioRecorderService {
 
   public stop(): void {
     if (this.mediaRecorder && this.mediaRecorder.state === 'recording') {
-      try {
-        this.mediaRecorder.stop();
-      } catch (error) {
-        console.error('Error stopping media recorder:', error);
-      }
+      this.mediaRecorder.stop();
     }
   }
 
