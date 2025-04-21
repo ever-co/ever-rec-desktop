@@ -81,13 +81,9 @@ export function crudAudioEvent(): void {
 }
 
 export async function saveAudio(data: IAudioSave) {
-  const { arrayBuffer } = data;
+  const { arrayBuffer, duration, channels, rate } = data;
   console.log(data);
   const name = `audio-${Date.now()}.webm`;
-  // const audioContext = new AudioContext();
-  // const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-  // audioContext.close();
-
   const pathname = await FileManager.write(
     AUDIO_DIR,
     name,
@@ -95,18 +91,15 @@ export async function saveAudio(data: IAudioSave) {
   );
 
   const size = await FileManager.fileSize(pathname);
-  // const duration = audioBuffer.duration;
-  // const channels = audioBuffer.numberOfChannels;
-  // const rate = audioBuffer.sampleRate;
 
   const input: IAudioCreateInput = {
     pathname,
     metadata: {
       size,
       name,
-      duration: 0,
-      channels: 0,
-      rate: 0,
+      duration,
+      channels,
+      rate,
     },
   };
 

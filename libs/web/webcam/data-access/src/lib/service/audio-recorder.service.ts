@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { IAudioSave } from '@ever-co/shared-utils';
 import { Observable, defer } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
@@ -6,12 +7,12 @@ export class AudioRecorderService {
   private mediaRecorder: MediaRecorder | null = null;
   private chunks: Blob[] = [];
 
-  public start(stream: MediaStream | null): Observable<ArrayBuffer> {
+  public start(stream: MediaStream | null): Observable<IAudioSave> {
     return defer(() => {
       // Clear previous state
       this.cleanup();
 
-      return new Observable<ArrayBuffer>((observer) => {
+      return new Observable<IAudioSave>((observer) => {
         if (!stream) {
           observer.error(new Error('No stream provided'));
           return;
@@ -30,14 +31,25 @@ export class AudioRecorderService {
           this.mediaRecorder.onstop = async () => {
             try {
               const blob = new Blob(this.chunks, {
-                type: 'audio/ogg; codecs=opus',
+                type: 'audio/webm; codecs=opus',
               });
-
               const arrayBuffer = await blob.arrayBuffer();
-              console.log(arrayBuffer);
-              observer.next(arrayBuffer);
+
+              const audioContext = new AudioContext();
+              const audioBuffer = await audioContext.decodeAudioData(
+                arrayBuffer.slice(0)
+              );
+
+              audioContext.close();
+
+              const duration = audioBuffer.duration;
+              const channels = audioBuffer.numberOfChannels;
+              const rate = audioBuffer.sampleRate;
+
+              observer.next({ arrayBuffer, duration, channels, rate });
               observer.complete();
             } catch (error) {
+              console.error(error);
               observer.error(error);
             } finally {
               this.cleanup();
@@ -84,3 +96,16 @@ export class AudioRecorderService {
     this.mediaRecorder = null;
   }
 }
+
+if (typeof Worker !== 'undefined') {
+  // Create a new
+  const worker = new Worker(new URL('./audio.worker', import.meta.url));
+  worker.onmessage = ({ data }) => {
+    console.log(`page got message: ${data}`);
+  };
+  worker.postMessage('hello');
+} else {
+  // Web Workers are not supported in this environment.
+  // You should add a fallback so that your program still executes correctly.
+}
+

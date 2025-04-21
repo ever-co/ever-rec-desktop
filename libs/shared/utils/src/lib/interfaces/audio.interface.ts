@@ -23,7 +23,8 @@ export type IAudioInput = Omit<IAudio, 'timeLog' | 'id'>;
 
 export type IAudioMetadataInput = Omit<IAudioMetadata, 'photo' | 'id'>;
 
-export interface IAudioSave {
+export interface IAudioSave
+  extends Pick<IAudioMetadata, 'rate' | 'channels' | 'duration'> {
   arrayBuffer: ArrayBuffer;
 }
 

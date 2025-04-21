@@ -3,10 +3,10 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
-import { AudioService } from '../../service/audio.service';
-import { audioActions } from './audio.actions';
-import { cameraActions } from '../camera/camera.actions';
 import { AudioRecorderService } from '../../service/audio-recorder.service';
+import { AudioService } from '../../service/audio.service';
+import { cameraActions } from '../camera/camera.actions';
+import { audioActions } from './audio.actions';
 
 @Injectable()
 export class AudioEffects {
@@ -27,7 +27,7 @@ export class AudioEffects {
       ofType(cameraActions.createCameraStreamSuccess),
       mergeMap(({ stream }) =>
         this.audioRecorderService.start(stream).pipe(
-          map((arrayBuffer) => audioActions.saveAudio({ arrayBuffer })),
+          map((audio) => audioActions.saveAudio(audio)),
           catchError((error) => of(audioActions.saveAudioFailure({ error })))
         )
       )
