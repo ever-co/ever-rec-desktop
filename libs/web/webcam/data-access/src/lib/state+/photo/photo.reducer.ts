@@ -1,6 +1,6 @@
+import { IPhoto, ISelected } from '@ever-co/shared-utils';
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { photoActions } from './photo.actions';
-import { IPhoto, ISelected } from '@ever-co/shared-utils';
 
 export const photoFeatureKey = 'photo';
 
@@ -193,7 +193,7 @@ export const reducer = createReducer(
     ...state,
     deleting: true,
   })),
-  on(photoActions.deletePhotosSuccess, (state) => ({
+  on(photoActions.deletePhotosSuccess, () => ({
     ...initialPhotoState,
   })),
   on(photoActions.deletePhotosFailure, (state, { error }) => ({
