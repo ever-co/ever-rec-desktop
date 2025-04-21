@@ -1,7 +1,6 @@
+import { IAudio, ISelected } from '@ever-co/shared-utils';
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { audioActions } from './audio.actions';
-import { IAudio, ISelected } from '@ever-co/shared-utils';
-import { cameraActions } from '../camera/camera.actions';
 
 export const audioFeatureKey = 'audio';
 
@@ -11,6 +10,7 @@ export interface IAudioState {
   selectedPhotos: ISelected<IAudio>[];
   stream: MediaStream | null;
   saving: boolean;
+  delayed: boolean;
   loading: boolean;
   deleting: boolean;
   recording: boolean;
@@ -26,6 +26,7 @@ export const initialAudioState: IAudioState = {
   selectedPhotos: [],
   count: 0,
   saving: false,
+  delayed: false,
   loading: false,
   deleting: false,
   recording: false,
@@ -50,7 +51,13 @@ export const reducer = createReducer(
     ...state,
     saving: false,
     recording: false,
+    delayed: false,
     error,
+  })),
+
+  on(audioActions.stopRecording, (state, { delayed = false }) => ({
+    ...state,
+    delayed,
   })),
 
   on(audioActions.startRecordingSuccess, (state, { stream }) => ({
@@ -58,15 +65,6 @@ export const reducer = createReducer(
     recording: true,
     stream,
   })),
-
-  on(
-    cameraActions.closeCameraStreamSuccess,
-    audioActions.stopRecordingSuccess,
-    (state) => ({
-      ...state,
-      recording: false,
-    })
-  ),
 
   on(
     audioActions.stopRecordingFailure,

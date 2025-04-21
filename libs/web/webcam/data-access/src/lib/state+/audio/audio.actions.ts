@@ -43,7 +43,7 @@ export const audioActions = createActionGroup({
     'Start Recording Success': props<{ stream: MediaStream | null }>(),
     'Start Recording Failure': props<{ error: string }>(),
 
-    'Stop Recording': emptyProps(),
+    'Stop Recording': props<{ delayed?: boolean }>(),
     'Stop Recording Success': emptyProps(),
     'Stop Recording Failure': props<{ error: string }>(),
   },

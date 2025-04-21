@@ -9,3 +9,8 @@ export const selectRecordingState = createSelector(
   selectAudioState,
   (state) => state.recording
 );
+
+export const selectAudioKillSwitch = createSelector(
+  selectAudioState,
+  (state) => state.delayed && !state.recording && !state.saving
+);

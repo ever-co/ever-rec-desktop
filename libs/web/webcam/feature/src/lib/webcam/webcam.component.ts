@@ -10,6 +10,7 @@ import {
   audioActions,
   cameraActions,
   photoActions,
+  selectAudioKillSwitch,
   selectCameraAuthorizations,
   selectCameraStreaming,
   selectRecordingState,
@@ -60,11 +61,30 @@ export class WebcamComponent implements OnInit, OnDestroy {
   constructor(private readonly store: Store) {}
 
   ngOnInit(): void {
+    this.store
+      .select(selectAudioKillSwitch)
+      .pipe(
+        filter(Boolean),
+        tap(() => this.stopTracking()),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
     this.store.dispatch(cameraActions.loadCameras());
   }
 
   private stopTracking(): void {
-    this.store.dispatch(photoActions.stopTracking());
+    this.micOn$
+      .pipe(
+        take(1),
+        tap((micIsOn) => {
+          if (micIsOn) {
+            this.stopRecording(true);
+          } else {
+            this.store.dispatch(photoActions.stopTracking());
+          }
+        })
+      )
+      .subscribe();
   }
 
   private get micOn$(): Observable<boolean> {
@@ -102,8 +122,8 @@ export class WebcamComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  private stopRecording(): void {
-    this.store.dispatch(audioActions.stopRecording());
+  private stopRecording(delayed?: boolean): void {
+    this.store.dispatch(audioActions.stopRecording({ delayed }));
   }
 
   ngOnDestroy(): void {
