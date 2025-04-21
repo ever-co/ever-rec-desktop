@@ -17,7 +17,6 @@ export class AudioService {
   constructor(private readonly electronService: ElectronService) {}
 
   public save(options: IAudioSave): Observable<IAudio> {
-    console.log(options);
     return this.electronService.invoke$(Channel.SAVE_AUDIO, options);
   }
 

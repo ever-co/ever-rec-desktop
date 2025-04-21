@@ -39,7 +39,6 @@ export class AudioRecorderService {
               const audioProcessed = await lastValueFrom(
                 this.audioWorkerService.processAudio(this.chunks)
               );
-
               observer.next(audioProcessed);
               observer.complete();
             } catch (error) {

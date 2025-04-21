@@ -15,7 +15,7 @@ export class CameraStreamService {
       deviceId,
       microphoneId,
       resolution = Resolution.MEDIUM,
-      canUseCamera = true,
+      canUseCamera = false,
       canUseMicrophone = false,
       stream,
     } = constraint || {};
