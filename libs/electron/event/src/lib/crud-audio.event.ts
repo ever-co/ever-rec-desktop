@@ -2,7 +2,6 @@ import { AudioService } from '@ever-co/electron-database';
 import { FileManager } from '@ever-co/electron-utils';
 import {
   AUDIO_DIR,
-  blobToBufferArray,
   Channel,
   currentDay,
   IAudio,

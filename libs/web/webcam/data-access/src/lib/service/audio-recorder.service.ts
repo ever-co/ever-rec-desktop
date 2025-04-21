@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { IAudioSave } from '@ever-co/shared-utils';
-import { Observable, defer } from 'rxjs';
+import { Observable, defer, lastValueFrom } from 'rxjs';
+import { AudioWorkerService } from './audio-woker.service';
 
 @Injectable({ providedIn: 'root' })
 export class AudioRecorderService {
   private mediaRecorder: MediaRecorder | null = null;
   private chunks: Blob[] = [];
+
+  constructor(private readonly audioWorkerService: AudioWorkerService) {}
 
   public start(stream: MediaStream | null): Observable<IAudioSave> {
     return defer(() => {
@@ -19,7 +22,10 @@ export class AudioRecorderService {
         }
 
         try {
-          this.mediaRecorder = new MediaRecorder(stream);
+          this.mediaRecorder = new MediaRecorder(
+            new MediaStream(stream.getAudioTracks())
+          );
+
           this.chunks = [];
 
           this.mediaRecorder.ondataavailable = (e: BlobEvent) => {
@@ -30,23 +36,11 @@ export class AudioRecorderService {
 
           this.mediaRecorder.onstop = async () => {
             try {
-              const blob = new Blob(this.chunks, {
-                type: 'audio/webm; codecs=opus',
-              });
-              const arrayBuffer = await blob.arrayBuffer();
-
-              const audioContext = new AudioContext();
-              const audioBuffer = await audioContext.decodeAudioData(
-                arrayBuffer.slice(0)
+              const audioProcessed = await lastValueFrom(
+                this.audioWorkerService.processAudio(this.chunks)
               );
 
-              audioContext.close();
-
-              const duration = audioBuffer.duration;
-              const channels = audioBuffer.numberOfChannels;
-              const rate = audioBuffer.sampleRate;
-
-              observer.next({ arrayBuffer, duration, channels, rate });
+              observer.next(audioProcessed);
               observer.complete();
             } catch (error) {
               console.error(error);
