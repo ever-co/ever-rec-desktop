@@ -9,6 +9,7 @@ export interface IAudioState {
   audios: IAudio[];
   audio: IAudio | null;
   selectedPhotos: ISelected<IAudio>[];
+  stream: MediaStream | null;
   saving: boolean;
   loading: boolean;
   deleting: boolean;
@@ -28,6 +29,7 @@ export const initialAudioState: IAudioState = {
   loading: false,
   deleting: false,
   recording: false,
+  stream: null,
   error: null,
 };
 
@@ -51,14 +53,11 @@ export const reducer = createReducer(
     error,
   })),
 
-  on(
-    cameraActions.createCameraStreamSuccess,
-    audioActions.startRecording,
-    (state) => ({
-      ...state,
-      recording: true,
-    })
-  ),
+  on(audioActions.startRecordingSuccess, (state, { stream }) => ({
+    ...state,
+    recording: true,
+    stream,
+  })),
 
   on(
     cameraActions.closeCameraStreamSuccess,
@@ -69,11 +68,15 @@ export const reducer = createReducer(
     })
   ),
 
-  on(audioActions.stopRecordingFailure, (state, { error }) => ({
-    ...state,
-    recording: false,
-    error,
-  }))
+  on(
+    audioActions.stopRecordingFailure,
+    audioActions.startRecordingFailure,
+    (state, { error }) => ({
+      ...state,
+      recording: false,
+      error,
+    })
+  )
 );
 
 export const audioFeature = createFeature({

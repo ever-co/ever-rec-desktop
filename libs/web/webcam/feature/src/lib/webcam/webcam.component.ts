@@ -7,13 +7,26 @@ import {
 import { ActionButtonGroupComponent } from '@ever-co/shared-components';
 import { IActionButton } from '@ever-co/shared-utils';
 import {
+  audioActions,
   cameraActions,
   photoActions,
   selectCameraAuthorizations,
+  selectCameraStreaming,
+  selectRecordingState,
 } from '@ever-co/webcam-data-access';
 import { Store } from '@ngrx/store';
 import { PreviewComponent } from '../preview/preview.component';
-import { map, Observable, Subject, takeUntil } from 'rxjs';
+import {
+  distinctUntilChanged,
+  filter,
+  map,
+  Observable,
+  Subject,
+  take,
+  takeUntil,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 
 @Component({
   selector: 'lib-webcam',
@@ -35,13 +48,13 @@ export class WebcamComponent implements OnInit, OnDestroy {
       icon: 'mic',
       variant: 'warning',
       hide: this.micOff$,
-      action: this.stopTracking.bind(this),
+      action: this.stopRecording.bind(this),
     },
     {
       icon: 'mic_off',
       variant: 'danger',
       hide: this.micOn$,
-      action: this.stopTracking.bind(this),
+      action: this.startRecording.bind(this),
     },
   ];
   constructor(private readonly store: Store) {}
@@ -55,21 +68,47 @@ export class WebcamComponent implements OnInit, OnDestroy {
   }
 
   private get micOn$(): Observable<boolean> {
-    return this.store.select(selectCameraAuthorizations).pipe(
-      map(({ canUseMicrophone }) => canUseMicrophone),
+    return this.store.select(selectRecordingState).pipe(
+      distinctUntilChanged(),
+      withLatestFrom(this.store.select(selectCameraAuthorizations)),
+      map(
+        ([isRecording, { canUseMicrophone }]) => canUseMicrophone && isRecording
+      ),
       takeUntil(this.destroy$)
     );
   }
 
   private get micOff$(): Observable<boolean> {
-    return this.store.select(selectCameraAuthorizations).pipe(
-      map(({ canUseMicrophone }) => !canUseMicrophone),
-      takeUntil(this.destroy$)
+    return this.micOn$.pipe(
+      distinctUntilChanged(),
+      map((value) => !value)
     );
+  }
+
+  private startRecording(): void {
+    this.store
+      .select(selectCameraStreaming)
+      .pipe(
+        filter(({ stream }) => Boolean(stream)),
+        take(1),
+        withLatestFrom(this.store.select(selectCameraAuthorizations)),
+        tap(([{ stream }, { canUseMicrophone }]) => {
+          if (!canUseMicrophone) {
+            return console.log('No permission to use microphone');
+          }
+          this.store.dispatch(audioActions.startRecording({ stream }));
+        })
+      )
+      .subscribe();
+  }
+
+  private stopRecording(): void {
+    this.store.dispatch(audioActions.stopRecording());
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    this.stopRecording();
   }
 }
