@@ -74,7 +74,25 @@ export const reducer = createReducer(
       recording: false,
       error,
     })
-  )
+  ),
+
+  on(audioActions.deleteAudios, (state) => ({
+    ...state,
+    deleting: true,
+  })),
+
+  on(audioActions.deleteAudiosSuccess, (state) => ({
+    ...state,
+    deleting: false,
+    audios: [],
+    audio: null,
+  })),
+
+  on(audioActions.deleteAudiosFailure, (state, { error }) => ({
+    ...state,
+    deleting: false,
+    error,
+  }))
 );
 
 export const audioFeature = createFeature({

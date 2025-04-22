@@ -11,7 +11,7 @@ import { catchError, concatMap, filter, map, mergeMap } from 'rxjs/operators';
 import { StorageElectronService } from '../services/storage-electron.service';
 import { settingStorageActions } from './storage-setting.actions';
 import { IStorageState } from './storage-setting.reducer';
-import { photoActions } from '@ever-co/webcam-data-access';
+import { audioActions, photoActions } from '@ever-co/webcam-data-access';
 
 @Injectable()
 export class SettingStorageEffects {
@@ -55,7 +55,10 @@ export class SettingStorageEffects {
         screenshotActions.deleteScreenshotsSuccess,
         screenshotActions.deleteSelectedScreenshotsSuccess,
         photoActions.deletePhotosSuccess,
-        screenshotActions.purgeSuccess
+        photoActions.savePhotoSuccess,
+        screenshotActions.purgeSuccess,
+        audioActions.deleteAudiosSuccess,
+        audioActions.saveAudioSuccess
       ),
       mergeMap(() =>
         from(this.storageElectronService.getUsedSize()).pipe(

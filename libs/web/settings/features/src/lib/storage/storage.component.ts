@@ -34,7 +34,12 @@ import { filter, map, Observable, Subject, take, takeUntil, tap } from 'rxjs';
 import { AutoScreenshotDeletionComponent } from '../auto-screenshot-deletion/auto-screenshot-deletion.component';
 import { AwsStorageComponent } from '../aws-storage/aws-storage.component';
 import { UploadConfigComponent } from '../upload-config/upload-config.component';
-import { photoActions, selectPhotoState } from '@ever-co/webcam-data-access';
+import {
+  audioActions,
+  photoActions,
+  selectAudioState,
+  selectPhotoState,
+} from '@ever-co/webcam-data-access';
 import {
   selectVideoState,
   videoActions,
@@ -93,6 +98,15 @@ export class StorageComponent implements OnInit, OnDestroy {
     loading: this.deletingVideos$,
     loadingLabel: 'Deleting...',
     action: this.purgeVideos.bind(this),
+  };
+
+  public deleteAudiosButton: IActionButton = {
+    variant: 'danger',
+    icon: 'delete',
+    tooltip: 'Delete all audios',
+    loading: this.deletingAudios$,
+    loadingLabel: 'Deleting...',
+    action: this.purgeAudios.bind(this),
   };
 
   public retentionButtons: IActionButton[] = [
@@ -181,6 +195,22 @@ export class StorageComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
+  public purgeAudios(): void {
+    this.confirmationDialogService
+      .open({
+        title: 'Delete All Stored Audios',
+        message: `This action will permanently delete all stored audios and cannot be undone. Are you sure you wish to proceed?`,
+        variant: 'danger',
+      })
+      .pipe(
+        take(1),
+        filter(Boolean),
+        tap(() => this.store.dispatch(audioActions.deleteAudios())),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
+
   public purgeVideos(): void {
     this.confirmationDialogService
       .open({
@@ -230,6 +260,12 @@ export class StorageComponent implements OnInit, OnDestroy {
   public get deletingScreenshots$(): Observable<boolean> {
     return this.store
       .select(selectScreenshotState)
+      .pipe(map((state) => state.deleting));
+  }
+
+  public get deletingAudios$(): Observable<boolean> {
+    return this.store
+      .select(selectAudioState)
       .pipe(map((state) => state.deleting));
   }
 

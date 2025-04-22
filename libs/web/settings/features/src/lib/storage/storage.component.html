@@ -34,6 +34,16 @@
           [button]="deleteVideosButton"
         ></lib-action-button>
       </li>
+      <li class="flex items-center py-3">
+        <mat-icon class="text-purple-500 mr-1">graphic_eq</mat-icon>
+        <div class="text-sm text-gray-900">
+          Audio {{ (size$ | async)?.audio | humanizeBytes }}
+        </div>
+        <lib-action-button
+          class="ml-auto"
+          [button]="deleteAudiosButton"
+        ></lib-action-button>
+      </li>
     </ul>
   </mat-card>
   <mat-vertical-stepper animationDuration="1000" [linear]="false" #stepper>
