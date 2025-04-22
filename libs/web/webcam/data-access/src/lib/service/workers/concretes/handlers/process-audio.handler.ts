@@ -24,6 +24,9 @@ export class ProcessAudioHandler
   public async handle(): Promise<void> {
     try {
       const chunks = this.chunkManager.getChunks();
+      if (!chunks.length) {
+        throw new Error('No audio chunks found');
+      }
       const result = await this.audioProcessor.process(chunks);
       postMessage({ type: MessageType.AUDIO_PROCESSED, result });
     } catch (error) {
@@ -31,8 +34,6 @@ export class ProcessAudioHandler
         type: MessageType.AUDIO_ERROR,
         error: error instanceof Error ? error.message : 'Unknown error',
       });
-    } finally {
-      this.chunkManager.clearChunks();
     }
   }
 }

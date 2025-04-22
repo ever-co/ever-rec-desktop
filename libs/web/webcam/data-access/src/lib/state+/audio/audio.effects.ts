@@ -7,9 +7,23 @@ import { AudioRecorderService } from '../../service/audio-recorder.service';
 import { AudioService } from '../../service/audio.service';
 import { cameraActions } from '../camera/camera.actions';
 import { audioActions } from './audio.actions';
+import { generateVideoActions } from '@ever-co/convert-video-data-access';
+import { AudioWorkerService } from '../../service/audio-woker.service';
 
 @Injectable()
 export class AudioEffects {
+  processAudio$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(generateVideoActions.finish),
+      mergeMap(() =>
+        this.audioWorkerService.processAudio().pipe(
+          map((audio) => audioActions.saveAudio(audio)),
+          catchError((error) => of(audioActions.saveAudioFailure({ error })))
+        )
+      )
+    )
+  );
+
   saveAudio$ = createEffect(() =>
     this.actions$.pipe(
       ofType(audioActions.saveAudio),
@@ -77,6 +91,7 @@ export class AudioEffects {
   constructor(
     private actions$: Actions,
     private readonly audioService: AudioService,
-    private readonly audioRecorderService: AudioRecorderService
+    private readonly audioRecorderService: AudioRecorderService,
+    private readonly audioWorkerService: AudioWorkerService
   ) {}
 }
