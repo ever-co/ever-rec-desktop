@@ -1,8 +1,8 @@
 import { app, Event } from 'electron';
 import { Window } from '../shared/models/window.model';
 import { IWindowConfig } from '../shared/interfaces/window-config.interface';
-import { AppWindowId } from '../shared/enums/app-window-id.enum';
 import { WindowManager } from './window.manager';
+import { AppWindowId } from '@ever-co/shared-utils';
 
 export class StreamWindow extends Window {
   private readonly manager = WindowManager.getInstance();

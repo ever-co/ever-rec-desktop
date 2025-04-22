@@ -62,4 +62,6 @@ export enum Channel {
   'GET_ALL_AUDIO' = 'get::all::audio',
   'DELETE_AUDIO' = 'delete::audio',
   'DELETE_ALL_AUDIO' = 'delete::all::audio',
+  'MEDIATOR_INCOMING_MESSAGE' = 'mediator::incomming::message',
+  'MEDIATOR_OUTGOING_MESSAGE' = 'mediator::outgoing::message',
 }

@@ -3,7 +3,7 @@ import { Event, shell } from 'electron';
 import { IWindowConfig } from '../shared/interfaces/window-config.interface';
 import { Window } from '../shared/models/window.model';
 import { WindowManager } from './window.manager';
-import { AppWindowId } from '../shared/enums/app-window-id.enum';
+import { AppWindowId } from '@ever-co/shared-utils';
 
 export class AppWindow extends Window {
   private readonly manager = WindowManager.getInstance();

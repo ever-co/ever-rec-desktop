@@ -1,7 +1,6 @@
 import { TimerScheduler } from '@ever-co/electron-utils';
-import { Channel, moment } from '@ever-co/shared-utils';
+import { Channel, moment, AppWindowId } from '@ever-co/shared-utils';
 import {
-  AppWindowId,
   IWindow,
   IWindowManager,
   StreamWindow,

@@ -1,13 +1,14 @@
 import { ElectronLogger } from '@ever-co/electron-utils';
-import { ILoggable } from '@ever-co/shared-utils';
-import { AppWindowId } from '../shared/enums/app-window-id.enum';
+import { AppWindowId, ILoggable } from '@ever-co/shared-utils';
 import { IWindowManager } from '../shared/interfaces/window-manager.interface';
 import { IWindow } from '../shared/interfaces/window.interface';
+import { IWindowObserver } from '../shared/interfaces/window-observer.interface';
 
 export class WindowManager implements IWindowManager, ILoggable {
   readonly logger = new ElectronLogger('WindowManager');
   private static instance: WindowManager | null = null;
   private windows: Map<AppWindowId, IWindow> = new Map();
+  private observers: IWindowObserver[] = [];
 
   // Private constructor to enforce singleton pattern
   private constructor() {}
@@ -24,6 +25,40 @@ export class WindowManager implements IWindowManager, ILoggable {
   }
 
   /**
+   * Registers an observer for window events.
+   * @param observer - The observer to register.
+   * @returns void
+   * @throws Error if the observer is already registered.
+   */
+  public registerObserver(observer: IWindowObserver): void {
+    if (this.observers.includes(observer)) {
+      this.logger.warn(`Observer "${observer}" is already registered.`);
+      return;
+    }
+
+    this.observers.push(observer);
+  }
+
+  /**
+   * Notifies all registered observers about a window event.
+   * @param event - The event type ('registered' or 'closed').
+   * @param windowId - The id of the window that triggered the event.
+   * @returns void
+   */
+  private notifyObservers(
+    event: 'registered' | 'closed',
+    windowId: string
+  ): void {
+    this.observers.forEach((observer) => {
+      if (event === 'registered') {
+        observer.onRegistered(windowId);
+      } else {
+        observer.onClosed(windowId);
+      }
+    });
+  }
+
+  /**
    * Registers a new window with the given id.
    * @param id - The unique id for the window.
    * @param window - The window instance to register.
@@ -35,6 +70,7 @@ export class WindowManager implements IWindowManager, ILoggable {
     }
     this.windows.set(id, window);
     this.logger.info(`Window with id "${id}" registered successfully.`);
+    this.notifyObservers('registered', id);
   }
 
   /**
@@ -46,6 +82,7 @@ export class WindowManager implements IWindowManager, ILoggable {
     const removed = this.windows.delete(id);
     if (removed) {
       this.logger.info(`Window with id "${id}" unregistered successfully.`);
+      this.notifyObservers('closed', id);
     } else {
       this.logger.warn(`Window with id "${id}" does not exist.`);
     }
@@ -94,5 +131,14 @@ export class WindowManager implements IWindowManager, ILoggable {
       return null;
     }
     return window;
+  }
+
+  public getAll(): Map<AppWindowId, IWindow> {
+    if (this.windows.size === 0) {
+      this.logger.warn('No windows found.');
+      return new Map([]);
+    }
+    this.logger.info('Getting all windows.');
+    return this.windows;
   }
 }

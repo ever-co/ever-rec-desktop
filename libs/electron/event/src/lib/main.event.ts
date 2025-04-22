@@ -1,5 +1,12 @@
 import { KeytarService } from '@ever-co/electron-utils';
-import { Channel } from '@ever-co/shared-utils';
+import { Channel, MediatorIncomingMessage } from '@ever-co/shared-utils';
+import {
+  WindowStateMediator,
+  DefaultMessageBrokerFactory,
+  NotificationMessageBrokerFactory,
+  ErrorMessageBrokerFactory,
+  StateSyncMessageBrokerFactory,
+} from '@ever-co/window';
 import { app, ipcMain } from 'electron';
 
 export function MainEvents() {
@@ -19,6 +26,22 @@ export function MainEvents() {
     Channel.SET_PASSWORD,
     (_, { account, password }: { account: string; password: string }) => {
       return KeytarService.setPassword(account, password);
+    }
+  );
+
+  app.on('ready', () => {
+    const mediator = WindowStateMediator.getInstance();
+    mediator.registerMessageBroker(new DefaultMessageBrokerFactory());
+    mediator.registerMessageBroker(new NotificationMessageBrokerFactory());
+    mediator.registerMessageBroker(new ErrorMessageBrokerFactory());
+    mediator.registerMessageBroker(new StateSyncMessageBrokerFactory());
+  });
+
+  ipcMain.on(
+    Channel.MEDIATOR_INCOMING_MESSAGE,
+    (_, { sourceId, message }: MediatorIncomingMessage) => {
+      const mediator = WindowStateMediator.getInstance();
+      mediator.handleIncomingMessage(sourceId, message);
     }
   );
 }
