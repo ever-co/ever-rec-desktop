@@ -5,3 +5,5 @@ export interface MediatorIncomingMessage {
   message: IMessage;
   sourceId: AppWindowId;
 }
+
+export type MediatorOutgoingMessage = IMessage;
