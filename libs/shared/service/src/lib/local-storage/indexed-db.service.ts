@@ -40,6 +40,28 @@ export abstract class IndexedDBService<T extends IEntity>
     this.autoIncrement = options.autoIncrement ?? true;
   }
 
+  /**
+   * Serialize data before storing in IndexedDB
+   * Override this method for custom serialization logic
+   */
+  protected serialize(item: Omit<T, 'id'> | T): any {
+    // Default implementation does a deep clone
+    return JSON.parse(JSON.stringify(item));
+  }
+
+  /**
+   * Deserialize data after retrieving from IndexedDB
+   * Override this method for custom deserialization logic
+   */
+  protected deserialize(data: any): T {
+    // Default implementation parses JSON if it's a string
+    if (typeof data === 'string') {
+      return JSON.parse(data);
+    }
+    // Otherwise return as-is (or you could do a deep clone here)
+    return data;
+  }
+
   private async openDB(): Promise<IDBDatabase> {
     return new Promise((resolve, reject) => {
       const request = indexedDB.open(this.dbName, this.version);
@@ -69,12 +91,10 @@ export abstract class IndexedDBService<T extends IEntity>
           new Promise<R>((resolve, reject) => {
             const transaction = db.transaction(this.storeName, mode);
             const store = transaction.objectStore(this.storeName);
-
             const request = operation(store);
 
             request.onsuccess = () => resolve(request.result);
             request.onerror = () => reject(request.error);
-
             transaction.oncomplete = () => db.close();
             transaction.onerror = () => {
               reject(transaction.error);
@@ -91,24 +111,25 @@ export abstract class IndexedDBService<T extends IEntity>
   }
 
   public add(item: Omit<T, 'id'>): Observable<T> {
-    return this.withTransaction<number>(
+    const serializedItem = this.serialize(item);
+    return this.withTransaction(
       'readwrite',
-      (store) => store.add(item) as IDBRequest<number>
+      (store) => store.add(serializedItem) as IDBRequest<number>
     ).pipe(switchMap((id) => this.getById(id) as Observable<T>));
   }
 
   public getAll(): Observable<T[]> {
-    return this.withTransaction(
+    return this.withTransaction<T[]>(
       'readonly',
       (store) => store.getAll() as IDBRequest<T[]>
-    );
+    ).pipe(map((items) => items.map((item) => this.deserialize(item))));
   }
 
   public getById(id: number): Observable<T | undefined> {
-    return this.withTransaction(
+    return this.withTransaction<T | undefined>(
       'readonly',
       (store) => store.get(id) as IDBRequest<T | undefined>
-    );
+    ).pipe(map((item) => (item ? this.deserialize(item) : undefined)));
   }
 
   public update(item: T): Observable<void> {
@@ -116,16 +137,17 @@ export abstract class IndexedDBService<T extends IEntity>
     if (id === undefined || id === null) {
       return throwError(() => new Error('Cannot update item without valid id'));
     }
-    return this.withTransaction<any>('readwrite', (store) => store.put(item));
+
+    const serializedItem = this.serialize(item);
+    return this.withTransaction<any>('readwrite', (store) =>
+      store.put(serializedItem)
+    );
   }
 
   public delete(id: number): Observable<void> {
-    return this.withTransaction('readwrite', (store) => store.delete(id));
+    return this.withTransaction<any>('readwrite', (store) => store.delete(id));
   }
 
-  /**
-   * Query items based on a predicate function
-   */
   public query(predicate: (item: T) => boolean): Observable<T[]> {
     return this.getAll().pipe(map((items) => items.filter(predicate)));
   }
