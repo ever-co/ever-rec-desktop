@@ -2,12 +2,12 @@ import {
   AppWindowId,
   IMessage,
   IMessageBroker,
-  IMessageBrokerFactory,
   MessageType,
 } from '@ever-co/shared-utils';
+import { MessageBrokerFactory } from '../../abstracts/message-broker-factory';
 import { ErrorMessageBroker } from '../brokers/error.broker';
 
-export class ErrorMessageBrokerFactory implements IMessageBrokerFactory {
+export class ErrorMessageBrokerFactory extends MessageBrokerFactory {
   public canHandle(message: IMessage): boolean {
     return message.type === MessageType.ERROR;
   }
@@ -15,7 +15,10 @@ export class ErrorMessageBrokerFactory implements IMessageBrokerFactory {
   public createMessageBroker(
     message: IMessage,
     sourceId: AppWindowId
-  ): IMessageBroker {
+  ): IMessageBroker | undefined {
+    if (!this.canHandle(message)) {
+      return this.getNext()?.createMessageBroker(message, sourceId);
+    }
     return new ErrorMessageBroker(message, sourceId);
   }
 }

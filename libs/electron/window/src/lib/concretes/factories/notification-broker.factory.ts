@@ -2,12 +2,12 @@ import {
   AppWindowId,
   IMessage,
   IMessageBroker,
-  IMessageBrokerFactory,
   MessageType,
 } from '@ever-co/shared-utils';
+import { MessageBrokerFactory } from '../../abstracts/message-broker-factory';
 import { NotificationMessageBroker } from '../brokers/notification.broker';
 
-export class NotificationMessageBrokerFactory implements IMessageBrokerFactory {
+export class NotificationMessageBrokerFactory extends MessageBrokerFactory {
   public canHandle(message: IMessage): boolean {
     return message.type === MessageType.NOTIFICATION;
   }
@@ -15,7 +15,10 @@ export class NotificationMessageBrokerFactory implements IMessageBrokerFactory {
   public createMessageBroker(
     message: IMessage,
     sourceId: AppWindowId
-  ): IMessageBroker {
+  ): IMessageBroker | undefined {
+    if (!this.canHandle(message)) {
+      return this.getNext()?.createMessageBroker(message, sourceId);
+    }
     return new NotificationMessageBroker(message, sourceId);
   }
 }

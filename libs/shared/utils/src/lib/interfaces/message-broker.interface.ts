@@ -16,6 +16,9 @@ export interface IMessageBroker {
 }
 
 export interface IMessageBrokerFactory {
-  canHandle(message: IMessage): boolean;
-  createMessageBroker(message: IMessage, sourceId: AppWindowId): IMessageBroker;
+  setNext(factory: IMessageBrokerFactory): IMessageBrokerFactory;
+  createMessageBroker(
+    message: IMessage,
+    sourceId: AppWindowId
+  ): IMessageBroker | undefined;
 }

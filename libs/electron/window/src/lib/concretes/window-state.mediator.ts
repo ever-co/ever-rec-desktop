@@ -11,12 +11,11 @@ import { IWindow } from '../shared/interfaces/window.interface';
 
 export class WindowStateMediator {
   private static instance: WindowStateMediator;
-  private readonly factories: IMessageBrokerFactory[] = [];
   private readonly manager: IWindowManager = WindowManager.getInstance();
   private readonly dispatcher: MessageBrokerDispatcher;
 
   private constructor() {
-    this.dispatcher = new MessageBrokerDispatcher(this.factories);
+    this.dispatcher = new MessageBrokerDispatcher();
   }
 
   public static getInstance(): WindowStateMediator {
@@ -27,7 +26,7 @@ export class WindowStateMediator {
   }
 
   public registerMessageBroker(factory: IMessageBrokerFactory): void {
-    this.factories.push(factory);
+    this.dispatcher.register(factory);
   }
 
   public handleIncomingMessage(sourceId: AppWindowId, message: IMessage): void {
