@@ -16,7 +16,6 @@ import {
   selectRecordingState,
 } from '@ever-co/webcam-data-access';
 import { Store } from '@ngrx/store';
-import { PreviewComponent } from '../preview/preview.component';
 import {
   distinctUntilChanged,
   filter,
@@ -28,6 +27,7 @@ import {
   tap,
   withLatestFrom,
 } from 'rxjs';
+import { PreviewComponent } from '../preview/preview.component';
 
 @Component({
   selector: 'lib-webcam',

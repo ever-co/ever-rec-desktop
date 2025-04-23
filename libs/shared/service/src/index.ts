@@ -27,3 +27,5 @@ export * from './lib/services/layout/layout.service';
 export * from './lib/validators/url.validator';
 export * from './test-setup';
 export * from './lib/pipes/codec.pipe';
+export * from './lib/hydration/hydration-data-access-provider.module';
+export * from './lib/hydration/state+/hydration.actions';

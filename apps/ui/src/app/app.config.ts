@@ -15,7 +15,10 @@ import { provideConvertVideoDataAccess } from '@ever-co/convert-video-data-acces
 import { provideFactoriesDataAccess } from '@ever-co/factory';
 import { provideNotificationDataAccess } from '@ever-co/notification-data-access';
 import { provideScreenshotDataAccess } from '@ever-co/screenshot-data-access';
-import { provideDatePickerDataAccess } from '@ever-co/shared-service';
+import {
+  provideDatePickerDataAccess,
+  provideHydrationDataAccess,
+} from '@ever-co/shared-service';
 import { provideSidebarDataAccess } from '@ever-co/sidebar-data-access';
 import { provideTimelineDataAccess } from '@ever-co/timeline-data-access';
 import { provideTimeLogDataAccess } from '@ever-co/timesheet-data-access';
@@ -48,5 +51,6 @@ export const appConfig: ApplicationConfig = {
     provideTimelineDataAccess(),
     provideActivityDataAccess(),
     provideWebcamDataAccess(),
+    provideHydrationDataAccess(),
   ],
 };
