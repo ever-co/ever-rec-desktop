@@ -29,3 +29,4 @@ export * from './test-setup';
 export * from './lib/pipes/codec.pipe';
 export * from './lib/hydration/hydration-data-access-provider.module';
 export * from './lib/hydration/state+/hydration.actions';
+export * from './lib/local-storage/indexed-db.service';

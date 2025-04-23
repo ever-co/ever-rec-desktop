@@ -13,6 +13,7 @@ export interface IRepository<T extends IEntity> {
   query(predicate: (item: T) => boolean): Observable<T[]>;
   update(item: T): Observable<void>;
   delete(id: number): Observable<void>;
+  deleteAll(): Observable<void>;
 }
 
 export abstract class IndexedDBService<T extends IEntity>
@@ -23,6 +24,7 @@ export abstract class IndexedDBService<T extends IEntity>
   private readonly version: number;
   private readonly keyPath: string;
   private readonly autoIncrement: boolean;
+  private readonly isSerialize: boolean;
 
   protected constructor(
     storeName: string,
@@ -31,6 +33,7 @@ export abstract class IndexedDBService<T extends IEntity>
       dbName?: string;
       version?: number;
       autoIncrement?: boolean;
+      serialize?: boolean;
     } = {}
   ) {
     this.dbName = options.dbName ?? 'ever.rec.db';
@@ -38,6 +41,7 @@ export abstract class IndexedDBService<T extends IEntity>
     this.version = options.version ?? 1;
     this.keyPath = options.keyPath ?? 'id';
     this.autoIncrement = options.autoIncrement ?? true;
+    this.isSerialize = options.serialize ?? true;
   }
 
   /**
@@ -46,7 +50,7 @@ export abstract class IndexedDBService<T extends IEntity>
    */
   protected serialize(item: Omit<T, 'id'> | T): any {
     // Default implementation does a deep clone
-    return JSON.parse(JSON.stringify(item));
+    return this.isSerialize ? JSON.parse(JSON.stringify(item)) : item;
   }
 
   /**
@@ -55,7 +59,7 @@ export abstract class IndexedDBService<T extends IEntity>
    */
   protected deserialize(data: any): T {
     // Default implementation parses JSON if it's a string
-    if (typeof data === 'string') {
+    if (typeof data === 'string' && this.isSerialize) {
       return JSON.parse(data);
     }
     // Otherwise return as-is (or you could do a deep clone here)
@@ -150,5 +154,9 @@ export abstract class IndexedDBService<T extends IEntity>
 
   public query(predicate: (item: T) => boolean): Observable<T[]> {
     return this.getAll().pipe(map((items) => items.filter(predicate)));
+  }
+
+  public deleteAll(): Observable<void> {
+    return this.withTransaction<any>('readwrite', (store) => store.clear());
   }
 }
