@@ -3,7 +3,7 @@ import { generateVideoActions } from '@ever-co/convert-video-data-access';
 import { screenshotActions } from '@ever-co/screenshot-data-access';
 import {
   AppWindowId,
-  deepCompare,
+  isDeepEqual,
   IMessage,
   MessageType,
 } from '@ever-co/shared-utils';
@@ -22,7 +22,7 @@ export class MediatorEffects {
         // Filter for actions that should be synced
         ofType(generateVideoActions.finish),
         // Filter for actions that should be synced
-        distinctUntilChanged(deepCompare.bind(this)),
+        distinctUntilChanged(isDeepEqual.bind(this)),
         // Send the action to the electron mediator
         tap((action) => {
           this.mediatorService.send({
@@ -53,7 +53,7 @@ export class MediatorEffects {
           audioActions.saveAudioSuccess
         ),
         // Filter for actions that should be synced
-        distinctUntilChanged(deepCompare.bind(this)),
+        distinctUntilChanged(isDeepEqual.bind(this)),
         // Send the action to the electron mediator
         tap((action) => {
           this.mediatorService.send({
@@ -80,7 +80,7 @@ export class MediatorEffects {
         // Filter for actions that should be synced
         filter(Boolean),
         // Distinct the remote action to the local store
-        distinctUntilChanged(deepCompare.bind(this)),
+        distinctUntilChanged(isDeepEqual.bind(this)),
         // Dispatch the remote action to the local store
         tap((message) => {
           console.log(message);

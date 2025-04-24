@@ -143,6 +143,6 @@ export async function blobToBufferArray(blob: Blob): Promise<ArrayBuffer> {
  * @param b - The second object to compare.
  * @returns `true` if the objects are equal, `false` otherwise.
  */
-export function deepCompare<T>(a: T, b: T): boolean {
+export function isDeepEqual<T>(a: T, b: T): boolean {
   return JSON.stringify(a) === JSON.stringify(b);
 }

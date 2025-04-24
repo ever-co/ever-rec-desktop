@@ -1,7 +1,14 @@
-import { AppWindowId, IMessage, IMessageBroker } from '@ever-co/shared-utils';
+import {
+  AppWindowId,
+  isDeepEqual,
+  IMessage,
+  IMessageBroker,
+} from '@ever-co/shared-utils';
 import { WindowStateMediator } from '../window-state.mediator';
 
 export class StateSyncMessageBroker implements IMessageBroker {
+  private static lastPayload: any = null;
+
   constructor(
     private readonly message: IMessage,
     private readonly sourceId: AppWindowId,
@@ -9,6 +16,14 @@ export class StateSyncMessageBroker implements IMessageBroker {
   ) {}
 
   public handle(): void {
+    const currentPayload = this.message.payload;
+
+    if (isDeepEqual(currentPayload, StateSyncMessageBroker.lastPayload)) {
+      return;
+    }
+
+    StateSyncMessageBroker.lastPayload = currentPayload;
+
     this.mediator.broadcast(
       {
         type: this.message.type,
