@@ -10,6 +10,7 @@ import {
   audioActions,
   cameraActions,
   photoActions,
+  PhotoService,
   selectAudioKillSwitch,
   selectCameraAuthorizations,
   selectCameraStreaming,
@@ -28,6 +29,7 @@ import {
   withLatestFrom,
 } from 'rxjs';
 import { PreviewComponent } from '../preview/preview.component';
+import { selectScreenshotState } from '@ever-co/screenshot-data-access';
 
 @Component({
   selector: 'lib-webcam',
@@ -69,6 +71,16 @@ export class WebcamComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe();
+
+    this.store
+      .select(selectScreenshotState)
+      .pipe(
+        filter(({ capturing }) => !capturing),
+        take(1),
+        tap(() => this.stopTracking())
+      )
+      .subscribe();
+
     this.store.dispatch(cameraActions.loadCameras());
   }
 

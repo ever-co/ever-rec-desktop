@@ -12,6 +12,8 @@ import { Store } from '@ngrx/store';
 import { distinctUntilChanged, filter, map, tap } from 'rxjs/operators';
 import { MediatorService } from '../mediator.service';
 
+import { screenshotActions } from '@ever-co/screenshot-data-access';
+
 @Injectable()
 export class MediatorEffects {
   // Sync specific actions to other windows
@@ -19,7 +21,10 @@ export class MediatorEffects {
     () =>
       this.actions$.pipe(
         // Filter for actions that should be synced
-        ofType(generateVideoActions.finish),
+        ofType(
+          generateVideoActions.finish,
+          screenshotActions.stopCaptureSuccess
+        ),
         // Filter for actions that should be synced
         distinctUntilChanged(isDeepEqual.bind(this)),
         // Send the action to the electron mediator

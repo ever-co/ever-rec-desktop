@@ -7,7 +7,7 @@ import { IWindow } from '../interfaces/window.interface';
 import { Channel } from '@ever-co/shared-utils';
 
 export abstract class Window extends EventEmitter implements IWindow {
-  private _browserWindow: BrowserWindow | null;
+  protected _browserWindow: BrowserWindow | null;
   protected _loaderContext: WindowLoaderContext;
   protected _shouldHideOnClose = true;
   protected _isWindowHidden = false;

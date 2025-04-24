@@ -21,12 +21,10 @@ import {
   Source,
 } from '@ever-co/shared-utils';
 import { desktopCapturer, ipcMain, IpcMainEvent } from 'electron';
-import { EventManager } from './event.manager';
 import { GetScreenShotMetadataQuery } from './get-screenshot-metadata.query';
 
 const logger = new ElectronLogger();
 const metadataQuery = new GetScreenShotMetadataQuery();
-const eventManager = EventManager.getInstance();
 const timeLogService = new TimeLogService();
 const screenshotService = new ScreenshotService();
 const timerScheduler = TimerScheduler.getInstance();
@@ -47,7 +45,7 @@ export function captureScreen(
     if (seconds % delay === 0) {
       const screenshot = await takeScreenshot(config);
       if (screenshot) {
-        eventManager.reply(Channel.SCREENSHOT_CAPTURED, screenshot);
+        event.reply(Channel.SCREENSHOT_CAPTURED, screenshot);
       }
     }
 

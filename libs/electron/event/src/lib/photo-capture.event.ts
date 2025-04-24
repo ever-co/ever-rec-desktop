@@ -110,8 +110,6 @@ export class PhotoCaptureEvent {
   private handleStop(): void {
     if (this.streamWindow) {
       this.streamWindow.send(Channel.TAKE_PHOTO);
-      this.streamWindow.close();
-      this.streamWindow = null;
     }
   }
 
