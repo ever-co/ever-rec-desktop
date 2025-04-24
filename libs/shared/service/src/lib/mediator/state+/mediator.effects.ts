@@ -7,7 +7,7 @@ import {
   IMessage,
   MessageType,
 } from '@ever-co/shared-utils';
-import { audioActions } from '@ever-co/webcam-data-access';
+import { audioActions, photoActions } from '@ever-co/webcam-data-access';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { distinctUntilChanged, filter, map, tap } from 'rxjs/operators';
@@ -20,10 +20,7 @@ export class MediatorEffects {
     () =>
       this.actions$.pipe(
         // Filter for actions that should be synced
-        ofType(
-          generateVideoActions.finish,
-          screenshotActions.stopCaptureSuccess
-        ),
+        ofType(generateVideoActions.finish),
         // Filter for actions that should be synced
         distinctUntilChanged(deepCompare.bind(this)),
         // Send the action to the electron mediator
@@ -49,7 +46,12 @@ export class MediatorEffects {
     () =>
       this.actions$.pipe(
         // Filter for actions that should be synced
-        ofType(audioActions.saveAudioSuccess),
+        ofType(
+          audioActions.startRecordingSuccess,
+          audioActions.stopRecordingSuccess,
+          photoActions.startTrackingSuccess,
+          audioActions.saveAudioSuccess
+        ),
         // Filter for actions that should be synced
         distinctUntilChanged(deepCompare.bind(this)),
         // Send the action to the electron mediator
@@ -81,6 +83,7 @@ export class MediatorEffects {
         distinctUntilChanged(deepCompare.bind(this)),
         // Dispatch the remote action to the local store
         tap((message) => {
+          console.log(message);
           this.store.dispatch({ ...message.payload });
         })
       ),

@@ -39,7 +39,6 @@ export const reducer = createReducer(
   on(audioActions.saveAudio, (state) => ({
     ...state,
     saving: true,
-    recording: false,
   })),
   on(audioActions.saveAudioSuccess, (state, { audio }) => ({
     ...state,
@@ -50,7 +49,6 @@ export const reducer = createReducer(
   on(audioActions.saveAudioFailure, (state, { error }) => ({
     ...state,
     saving: false,
-    recording: false,
     delayed: false,
     error,
   })),
@@ -58,6 +56,11 @@ export const reducer = createReducer(
   on(audioActions.stopRecording, (state, { delayed = false }) => ({
     ...state,
     delayed,
+  })),
+
+  on(audioActions.stopRecordingSuccess, (state) => ({
+    ...state,
+    recording: false,
   })),
 
   on(audioActions.startRecordingSuccess, (state, { stream }) => ({
