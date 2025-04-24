@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { generateVideoActions } from '@ever-co/convert-video-data-access';
-import { screenshotActions } from '@ever-co/screenshot-data-access';
 import {
   AppWindowId,
-  isDeepEqual,
   IMessage,
+  isDeepEqual,
   MessageType,
 } from '@ever-co/shared-utils';
 import { audioActions, photoActions } from '@ever-co/webcam-data-access';

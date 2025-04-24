@@ -60,6 +60,7 @@ export const reducer = createReducer(
 
   on(audioActions.stopRecordingSuccess, (state) => ({
     ...state,
+    saving: true,
     recording: false,
   })),
 
