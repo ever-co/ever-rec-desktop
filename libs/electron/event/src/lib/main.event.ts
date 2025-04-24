@@ -1,5 +1,9 @@
 import { KeytarService } from '@ever-co/electron-utils';
-import { Channel, MediatorIncomingMessage } from '@ever-co/shared-utils';
+import {
+  Channel,
+  isEmpty,
+  MediatorIncomingMessage,
+} from '@ever-co/shared-utils';
 import {
   WindowStateMediator,
   DefaultMessageBrokerFactory,
@@ -39,7 +43,11 @@ export function MainEvents() {
 
   ipcMain.on(
     Channel.MEDIATOR_INCOMING_MESSAGE,
-    (_, { sourceId, message }: MediatorIncomingMessage) => {
+    (_, incomingMessage: MediatorIncomingMessage) => {
+      if (isEmpty(incomingMessage)) {
+        return;
+      }
+      const { sourceId, message } = incomingMessage;
       const mediator = WindowStateMediator.getInstance();
       mediator.handleIncomingMessage(sourceId, message);
     }

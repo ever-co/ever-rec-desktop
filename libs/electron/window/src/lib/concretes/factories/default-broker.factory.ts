@@ -2,6 +2,7 @@ import {
   AppWindowId,
   IMessage,
   IMessageBroker,
+  isEmpty,
   MessageType,
 } from '@ever-co/shared-utils';
 import { MessageBrokerFactory } from '../../abstracts/message-broker-factory';
@@ -9,6 +10,7 @@ import { DefaultMessageBroker } from '../brokers/default.broker';
 
 export class DefaultMessageBrokerFactory extends MessageBrokerFactory {
   public canHandle(message: IMessage): boolean {
+    if (isEmpty(message)) return false;
     return message.type === MessageType.DEFAULT;
   }
 

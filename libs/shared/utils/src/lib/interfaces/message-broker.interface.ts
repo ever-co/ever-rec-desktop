@@ -16,6 +16,7 @@ export interface IMessageBroker {
 }
 
 export interface IMessageBrokerFactory {
+  canHandle(message: IMessage): boolean;
   setNext(factory: IMessageBrokerFactory): IMessageBrokerFactory;
   createMessageBroker(
     message: IMessage,

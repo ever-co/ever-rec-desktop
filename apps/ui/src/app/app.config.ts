@@ -18,6 +18,7 @@ import { provideScreenshotDataAccess } from '@ever-co/screenshot-data-access';
 import {
   provideDatePickerDataAccess,
   provideHydrationDataAccess,
+  provideMediatorDataAccess,
 } from '@ever-co/shared-service';
 import { provideSidebarDataAccess } from '@ever-co/sidebar-data-access';
 import { provideTimelineDataAccess } from '@ever-co/timeline-data-access';
@@ -52,5 +53,6 @@ export const appConfig: ApplicationConfig = {
     provideActivityDataAccess(),
     provideWebcamDataAccess(),
     provideHydrationDataAccess(),
+    provideMediatorDataAccess(),
   ],
 };
