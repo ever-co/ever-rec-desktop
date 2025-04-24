@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { filter, switchMap } from 'rxjs';
 import { IEntity, IndexedDBService } from '../local-storage/indexed-db.service';
 
-export interface AppStateSchema extends IEntity {
+export interface AppStateSchema<T = any> extends IEntity {
   type: string;
-  state: any;
+  state: T;
 }
 
 @Injectable({
@@ -15,8 +15,8 @@ export class StateHydrationService extends IndexedDBService<AppStateSchema> {
     super('_app_state', { keyPath: 'type' });
   }
 
-  public hydrate(state: AppStateSchema) {
-    const persistance: AppStateSchema = {
+  public hydrate<T>(state: T) {
+    const persistance: AppStateSchema<T> = {
       state,
       type: 'persistance',
     };
