@@ -5,7 +5,7 @@ export const hydrationActions = createActionGroup({
   source: 'Hydration',
   events: {
     'Hydrate State': emptyProps(),
-    'Hydrate State Success': props<{ schemas: AppStateSchema[] }>(),
+    'Hydrate State Success': props<{ schema: AppStateSchema }>(),
     'Hydrate State Failure': emptyProps(),
   },
 });

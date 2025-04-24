@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { switchMap } from 'rxjs';
+import { filter, switchMap } from 'rxjs';
 import { IEntity, IndexedDBService } from '../local-storage/indexed-db.service';
 
 export interface AppStateSchema extends IEntity {
   type: string;
+  state: any;
 }
 
 @Injectable({
@@ -15,17 +16,21 @@ export class StateHydrationService extends IndexedDBService<AppStateSchema> {
   }
 
   public hydrate(state: AppStateSchema) {
-    return this.query((schema) => schema.type === state.type).pipe(
+    const persistance: AppStateSchema = {
+      state,
+      type: 'persistance',
+    };
+    return this.query((schema) => schema.type === persistance.type).pipe(
       switchMap((schemas) => {
         if (schemas.length) {
-          return this.update(state);
+          return this.update(persistance);
         }
-        return this.add(state);
+        return this.add(persistance);
       })
     );
   }
 
   public reHydrate() {
-    return this.getAll();
+    return this.getById('persistance').pipe(filter(Boolean));
   }
 }

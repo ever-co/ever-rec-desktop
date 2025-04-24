@@ -129,10 +129,10 @@ export abstract class IndexedDBService<T extends IEntity>
     ).pipe(map((items) => items.map((item) => this.deserialize(item))));
   }
 
-  public getById(id: number): Observable<T | undefined> {
+  public getById(query: number | string): Observable<T | undefined> {
     return this.withTransaction<T | undefined>(
       'readonly',
-      (store) => store.get(id) as IDBRequest<T | undefined>
+      (store) => store.get(query) as IDBRequest<T | undefined>
     ).pipe(map((item) => (item ? this.deserialize(item) : undefined)));
   }
 

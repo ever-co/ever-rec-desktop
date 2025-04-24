@@ -2,9 +2,18 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { EMPTY } from 'rxjs';
-import { concatMap, filter, map, switchMap, tap } from 'rxjs/operators';
+import {
+  concatMap,
+  distinctUntilChanged,
+  filter,
+  map,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 import { StateHydrationService } from '../state-hydration.service';
 import { hydrationActions } from './hydration.actions';
+import { selectHydrationAppState } from './hydration.selectors';
 
 @Injectable()
 export class HydrationEffects {
@@ -18,8 +27,10 @@ export class HydrationEffects {
             hydrationActions.hydrateState.type !== action.type &&
             hydrationActions.hydrateStateSuccess.type !== action.type
         ),
-        // Save specific slices of state
-        concatMap((action) => this.stateHydrationService.hydrate(action)),
+        withLatestFrom(this.store.select(selectHydrationAppState)),
+        map(([_, state]) => state),
+        distinctUntilChanged(),
+        concatMap((state) => this.stateHydrationService.hydrate(state)),
         map(() => EMPTY)
       ),
     { dispatch: false }
@@ -32,9 +43,9 @@ export class HydrationEffects {
         ofType(hydrationActions.hydrateState),
         switchMap(() =>
           this.stateHydrationService.reHydrate().pipe(
-            tap((schemas) =>
+            tap((schema) =>
               this.store.dispatch(
-                hydrationActions.hydrateStateSuccess({ schemas })
+                hydrationActions.hydrateStateSuccess({ schema })
               )
             ),
             map(() => EMPTY)

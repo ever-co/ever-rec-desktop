@@ -1,31 +1,5 @@
-import {
-  Action,
-  ActionReducer,
-  createFeature,
-  createReducer,
-  on,
-} from '@ngrx/store';
-import { AppStateSchema } from '../state-hydration.service';
+import { Action, ActionReducer } from '@ngrx/store';
 import { hydrationActions } from './hydration.actions';
-import { mergeWithPriorityForEmpty } from '@ever-co/shared-utils';
-
-export const hydrationFeatureKey = 'hydration';
-
-export interface IHydationState {
-  schemas: AppStateSchema[];
-}
-
-export const initialHydrationState: IHydationState = {
-  schemas: [],
-};
-
-export const reducer = createReducer(
-  initialHydrationState,
-  on(hydrationActions.hydrateStateSuccess, (state, { schemas }) => ({
-    ...state,
-    schemas,
-  }))
-);
 
 function isHydrateSuccess(
   action: Action
@@ -38,14 +12,12 @@ export const hydrationMetaReducer = (
 ): ActionReducer<any> => {
   return (state, action) => {
     if (isHydrateSuccess(action)) {
-      return Object.assign({}, action.schemas, state);
+      return {
+        ...state,
+        ...action.schema.state,
+      };
     } else {
       return reducer(state, action);
     }
   };
 };
-
-export const hydrationFeature = createFeature({
-  name: hydrationFeatureKey,
-  reducer,
-});
