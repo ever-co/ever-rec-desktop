@@ -36,10 +36,28 @@ export class PhotoCaptureEvent {
       this.scheduler.onTick(this.handleTick.bind(this));
     });
     ipcMain.on(Channel.STOP_TRACKING, () => {
-      if (this.mainWindow) {
-        this.mainWindow.send(Channel.AUTO_STOP_SYNC);
-      }
+      this.handleStopTracking();
     });
+  }
+
+  private handleStopTracking(): void {
+    if (!this.streamWindow) return;
+
+    const { browserWindow } = this.streamWindow;
+    if (browserWindow) {
+      const onClosed = () => {
+        browserWindow.removeListener('closed', onClosed); // prevent memory leaks
+        this.notifyAutoStopSync();
+      };
+
+      browserWindow.on('closed', onClosed);
+    }
+
+    this.streamWindow.close();
+  }
+
+  private notifyAutoStopSync(): void {
+    this.mainWindow?.send(Channel.AUTO_STOP_SYNC);
   }
 
   private async createStreamingWindow(): Promise<void> {
