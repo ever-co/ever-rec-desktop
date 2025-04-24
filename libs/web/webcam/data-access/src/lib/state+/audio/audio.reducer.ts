@@ -7,7 +7,7 @@ export const audioFeatureKey = 'audio';
 export interface IAudioState {
   audios: IAudio[];
   audio: IAudio | null;
-  selectedPhotos: ISelected<IAudio>[];
+  selectedAudios: ISelected<IAudio>[];
   stream: MediaStream | null;
   saving: boolean;
   delayed: boolean;
@@ -23,7 +23,7 @@ export const initialAudioState: IAudioState = {
   audios: [],
   audio: null,
   hasNext: false,
-  selectedPhotos: [],
+  selectedAudios: [],
   count: 0,
   saving: false,
   delayed: false,
