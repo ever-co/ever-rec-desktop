@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { generateVideoActions } from '@ever-co/convert-video-data-access';
+import { screenshotActions } from '@ever-co/screenshot-data-access';
 import {
   AppWindowId,
   deepCompare,
@@ -19,9 +20,12 @@ export class MediatorEffects {
     () =>
       this.actions$.pipe(
         // Filter for actions that should be synced
-        ofType(generateVideoActions.finish),
+        ofType(
+          generateVideoActions.finish,
+          screenshotActions.stopCaptureSuccess
+        ),
         // Filter for actions that should be synced
-        distinctUntilChanged((prev, curr) => deepCompare(prev, curr)),
+        distinctUntilChanged(deepCompare.bind(this)),
         // Send the action to the electron mediator
         tap((action) => {
           this.mediatorService.send({
@@ -47,7 +51,7 @@ export class MediatorEffects {
         // Filter for actions that should be synced
         ofType(audioActions.saveAudioSuccess),
         // Filter for actions that should be synced
-        distinctUntilChanged((prev, curr) => deepCompare(prev, curr)),
+        distinctUntilChanged(deepCompare.bind(this)),
         // Send the action to the electron mediator
         tap((action) => {
           this.mediatorService.send({
@@ -74,7 +78,7 @@ export class MediatorEffects {
         // Filter for actions that should be synced
         filter(Boolean),
         // Distinct the remote action to the local store
-        distinctUntilChanged((prev, curr) => deepCompare(prev, curr)),
+        distinctUntilChanged(deepCompare.bind(this)),
         // Dispatch the remote action to the local store
         tap((message) => {
           this.store.dispatch({ ...message.payload });
