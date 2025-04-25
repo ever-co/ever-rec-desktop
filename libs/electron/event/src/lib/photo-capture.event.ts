@@ -14,7 +14,7 @@ export class PhotoCaptureEvent {
   private readonly delayInSeconds: number;
 
   private mainWindow: IWindow | null = null;
-  private streamWindow: IWindow | null = null;
+  private streamWindow: StreamWindow | null = null;
 
   constructor() {
     this.scheduler = TimerScheduler.getInstance();
@@ -43,15 +43,10 @@ export class PhotoCaptureEvent {
   private handleStopTracking(): void {
     if (!this.streamWindow) return;
 
-    const { browserWindow } = this.streamWindow;
-    if (browserWindow) {
-      const onClosed = () => {
-        browserWindow.removeListener('closed', onClosed); // prevent memory leaks
-        this.notifyAutoStopSync();
-      };
-
-      browserWindow.on('closed', onClosed);
-    }
+    this.streamWindow.on('window::closed', () => {
+      this.notifyAutoStopSync();
+      this.streamWindow = null;
+    });
 
     this.streamWindow.close();
   }
@@ -61,7 +56,9 @@ export class PhotoCaptureEvent {
   }
 
   private async createStreamingWindow(): Promise<void> {
-    this.streamWindow = this.windowManager.getOne(AppWindowId.STREAMING);
+    this.streamWindow = this.windowManager.getOne(
+      AppWindowId.STREAMING
+    ) as StreamWindow;
 
     if (!this.mainWindow) {
       return;
@@ -108,14 +105,27 @@ export class PhotoCaptureEvent {
   }
 
   private handleStop(): void {
-    if (this.streamWindow) {
-      this.streamWindow.send(Channel.TAKE_PHOTO);
+    if (this.validateStreamWindow()) {
+      this.streamWindow?.send(Channel.TAKE_PHOTO);
     }
   }
 
+  private validateStreamWindow(): boolean {
+    if (!this.streamWindow) {
+      return false;
+    }
+
+    if (this.streamWindow && this.streamWindow.isDestroyed()) {
+      this.streamWindow = null;
+      return false;
+    }
+
+    return true;
+  }
+
   private handleTick(seconds: number): void {
-    if (this.streamWindow && seconds % this.delayInSeconds === 0) {
-      this.streamWindow.send(Channel.TAKE_PHOTO);
+    if (this.validateStreamWindow() && seconds % this.delayInSeconds === 0) {
+      this.streamWindow?.send(Channel.TAKE_PHOTO);
     }
   }
 }

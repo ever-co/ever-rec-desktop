@@ -75,6 +75,10 @@ export class StreamWindow extends Window {
     event.preventDefault();
     this.disableAlwaysOnTop();
     this.unregisterFromManager();
-    this._browserWindow = null;
+    if (!this.isDestroyed()) {
+      this._browserWindow?.destroy();
+      this._browserWindow = null;
+    }
+    this.emit('window::closed');
   }
 }

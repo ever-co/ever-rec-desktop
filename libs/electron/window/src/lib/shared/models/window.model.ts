@@ -153,4 +153,9 @@ export abstract class Window extends EventEmitter implements IWindow {
     const window = this.browserWindow;
     if (window) window.webContents.send(channel, ...args);
   }
+
+  public isDestroyed(): boolean {
+    const window = this.browserWindow;
+    return window ? window.isDestroyed() : true;
+  }
 }
