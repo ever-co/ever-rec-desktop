@@ -87,7 +87,6 @@ export class MediatorEffects {
         distinctUntilChanged(isDeepEqual.bind(this)),
         // Dispatch the remote action to the local store
         tap((message) => {
-          console.log(message);
           this.store.dispatch({ ...message.payload });
         })
       ),
