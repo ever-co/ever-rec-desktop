@@ -34,7 +34,8 @@ export class AudioSubscriber
   public async afterInsert(event: InsertEvent<Audio>): Promise<void> {
     if (isEmpty(event.entity)) return;
     this.logger.info('Prepare audio...');
-    const timeLog = await this.timeLog.running();
+    const timeLog = await this.timeLog.findLatest();
+    this.logger.debug('Time log', timeLog);
 
     if (!isEmpty(timeLog) && isEmpty(event.entity.videoId)) {
       const chunks = await event.manager.find(Audio, {
@@ -48,6 +49,10 @@ export class AudioSubscriber
       } else {
         for (const chunk of chunks) {
           chunk.parent = event.entity;
+        }
+        if (!timeLog.running) {
+          event.entity.timeLogId = timeLog.id;
+          await event.manager.save(event.entity);
         }
         await event.manager.save(chunks);
       }
