@@ -1,5 +1,6 @@
 import { IBase, IFindOneOptions, IFindManyOptions } from './base.interface';
 import { ITimeLog } from './time-log.interface';
+import { IVideo } from './video.interface';
 
 export interface IAudioMetadata extends IBase {
   size?: number;
@@ -14,9 +15,13 @@ export interface IAudioMetadata extends IBase {
 export interface IAudio extends IBase {
   pathname: string;
   synced?: boolean;
+  parent?: IAudio;
+  chunks?: IAudio[];
   timeLog?: ITimeLog;
   timeLogId?: ITimeLog['id'];
   metadata?: IAudioMetadata;
+  video?: IVideo;
+  videoId?: IVideo['id'];
 }
 
 export type IAudioInput = Omit<IAudio, 'timeLog' | 'id'>;

@@ -3,6 +3,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   Relation,
 } from 'typeorm';
@@ -18,6 +19,18 @@ export class Audio extends Base implements IAudio {
 
   @Column({ default: false, type: 'boolean' })
   synced?: boolean;
+
+  @ManyToOne(() => Audio, (audio) => audio.chunks, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  parent?: Relation<IAudio>;
+
+  @OneToMany(() => Audio, (audio) => audio.parent, {
+    onDelete: 'CASCADE',
+    nullable: true,
+  })
+  chunks?: Relation<IAudio[]>;
 
   @OneToOne(() => AudioMetadata, (metadata) => metadata.audio, {
     nullable: true,
