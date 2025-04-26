@@ -52,6 +52,9 @@ export class Audio extends Base implements IAudio {
   @JoinColumn()
   video: Relation<IVideo>;
 
+  @Column({ nullable: true })
+  videoId?: IVideo['id'];
+
   @ManyToOne(() => TimeLog, {
     nullable: true,
     onDelete: 'CASCADE',

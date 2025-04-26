@@ -1,12 +1,14 @@
 import { ElectronLogger } from '@ever-co/electron-utils';
-import { ILoggable, ILogger } from '@ever-co/shared-utils';
+import { ILoggable, ILogger, isEmpty } from '@ever-co/shared-utils';
 import {
   EntitySubscriberInterface,
   EventSubscriber,
   InsertEvent,
+  IsNull,
 } from 'typeorm';
-import { TimeLogService } from '../services/time-log.service';
 import { Audio } from '../entities/audio.entity';
+import { AudioService } from '../services/audio.service';
+import { TimeLogService } from '../services/time-log.service';
 
 @EventSubscriber()
 export class AudioSubscriber
@@ -20,12 +22,35 @@ export class AudioSubscriber
   }
 
   public async beforeInsert(event: InsertEvent<Audio>): Promise<void> {
+    if (isEmpty(event.entity)) return;
     this.logger.info('Prepare audio...');
     const timeLog = await this.timeLog.running();
 
     if (timeLog) {
-      this.logger.info('Add time log to audio');
       event.entity.timeLog = timeLog;
+    }
+  }
+
+  public async afterInsert(event: InsertEvent<Audio>): Promise<void> {
+    if (isEmpty(event.entity)) return;
+    this.logger.info('Prepare audio...');
+    const timeLog = await this.timeLog.running();
+
+    if (!isEmpty(timeLog) && isEmpty(event.entity.videoId)) {
+      const chunks = await event.manager.find(Audio, {
+        where: {
+          timeLogId: timeLog.id,
+          parent: IsNull(),
+        },
+      });
+      if (isEmpty(chunks)) {
+        this.logger.debug('No chunks found');
+      } else {
+        for (const chunk of chunks) {
+          chunk.parent = event.entity;
+        }
+        await event.manager.save(chunks);
+      }
     }
   }
 }

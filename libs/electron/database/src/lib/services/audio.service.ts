@@ -19,6 +19,9 @@ export class AudioService implements IAudioService {
     const audio = new Audio();
     audio.pathname = input.pathname;
     audio.timeLogId = input.timeLogId;
+    if (input.videoId) {
+      audio.videoId = input.videoId;
+    }
     const metadata = await this.audioMetadataService.save(input.metadata);
     audio.metadata = metadata;
     const { id } = await this.repository.save(audio);

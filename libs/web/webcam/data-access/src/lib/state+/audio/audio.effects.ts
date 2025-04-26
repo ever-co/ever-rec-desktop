@@ -15,9 +15,14 @@ export class AudioEffects {
   processAudio$ = createEffect(() =>
     this.actions$.pipe(
       ofType(generateVideoActions.finish),
-      mergeMap(() =>
+      mergeMap(({ video }) =>
         this.audioWorkerService.processAudio().pipe(
-          map((audio) => audioActions.saveAudio(audio)),
+          map((audio) =>
+            audioActions.saveAudio({
+              ...audio,
+              videoId: video.id,
+            })
+          ),
           catchError((error) => of(audioActions.saveAudioFailure({ error })))
         )
       )

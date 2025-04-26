@@ -26,11 +26,15 @@ export interface IAudio extends IBase {
 
 export type IAudioInput = Omit<IAudio, 'timeLog' | 'id'>;
 
-export type IAudioMetadataInput = Omit<IAudioMetadata, 'audio' | 'id'>;
+export type IAudioMetadataInput = Omit<
+  IAudioMetadata,
+  'audio' | 'video' | 'id'
+>;
 
 export interface IAudioSave
   extends Pick<IAudioMetadata, 'rate' | 'channels' | 'duration'> {
   arrayBuffer: ArrayBuffer;
+  videoId?: IVideo['id'];
 }
 
 export interface IAudioService {
