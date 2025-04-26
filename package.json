@@ -48,7 +48,7 @@
     "@ngrx/store": "19.1.0",
     "@nx/angular": "20.7.2",
     "@swimlane/ngx-charts": "^20.5.0",
-    "better-sqlite3": "^11.5.0",
+    "better-sqlite3": "^11.9.1",
     "electron-log": "5.2.0",
     "electron-store": "^8.1.0",
     "ffmpeg-static": "^5.2.0",

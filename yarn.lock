@@ -7316,10 +7316,10 @@ beasties@0.3.2:
     postcss "^8.4.49"
     postcss-media-query-parser "^0.2.3"
 
-better-sqlite3@^11.5.0:
-  version "11.8.1"
-  resolved "https://registry.yarnpkg.com/better-sqlite3/-/better-sqlite3-11.8.1.tgz#bcb1c494984065a7ed76a5df5ecbcb0f068d47fa"
-  integrity sha512-9BxNaBkblMjhJW8sMRZxnxVTRgbRmssZW0Oxc1MPBTfiR+WW21e2Mk4qu8CzrcZb1LwPCnFsfDEzq+SNcBU8eg==
+better-sqlite3@^11.9.1:
+  version "11.9.1"
+  resolved "https://registry.yarnpkg.com/better-sqlite3/-/better-sqlite3-11.9.1.tgz#0540da2f2ce24cbd766bb35db412f4be2c75b8bb"
+  integrity sha512-Ba0KR+Fzxh2jDRhdg6TSH0SJGzb8C0aBY4hR8w8madIdIzzC6Y1+kx5qR6eS1Z+Gy20h6ZU28aeyg0z1VIrShQ==
   dependencies:
     bindings "^1.5.0"
     prebuild-install "^7.1.1"
