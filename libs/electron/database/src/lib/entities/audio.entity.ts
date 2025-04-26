@@ -8,9 +8,15 @@ import {
   Relation,
 } from 'typeorm';
 import { Base } from './base.entity';
-import { IAudio, IAudioMetadata, ITimeLog } from '@ever-co/shared-utils';
+import {
+  IAudio,
+  IAudioMetadata,
+  ITimeLog,
+  IVideo,
+} from '@ever-co/shared-utils';
 import { TimeLog } from './time-log.entity';
 import { AudioMetadata } from './audio-metadata.entity';
+import { Video } from './video.entity';
 
 @Entity('audio')
 export class Audio extends Base implements IAudio {
@@ -24,6 +30,7 @@ export class Audio extends Base implements IAudio {
     nullable: true,
     onDelete: 'CASCADE',
   })
+  @JoinColumn()
   parent?: Relation<IAudio>;
 
   @OneToMany(() => Audio, (audio) => audio.parent, {
@@ -37,6 +44,13 @@ export class Audio extends Base implements IAudio {
     onDelete: 'CASCADE',
   })
   metadata: Relation<IAudioMetadata>;
+
+  @OneToOne(() => Video, (video) => video.audio, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn()
+  video: Relation<IVideo>;
 
   @ManyToOne(() => TimeLog, {
     nullable: true,

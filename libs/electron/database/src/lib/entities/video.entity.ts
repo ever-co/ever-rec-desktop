@@ -1,4 +1,5 @@
 import type {
+  IAudio,
   IScreenshot,
   ITimeline,
   ITimeLog,
@@ -19,6 +20,7 @@ import { Screenshot } from './screenshot.entity';
 import { TimeLog } from './time-log.entity';
 import { Timeline } from './timeline.entity';
 import { VideoMetadata } from './video-metadata.entity';
+import { Audio } from './audio.entity';
 
 @Entity('video')
 export class Video extends Base implements IVideo {
@@ -32,6 +34,7 @@ export class Video extends Base implements IVideo {
     nullable: true,
     onDelete: 'CASCADE',
   })
+  @JoinColumn()
   parent?: Relation<IVideo>;
 
   @OneToMany(() => Video, (video) => video.parent, {
@@ -67,4 +70,10 @@ export class Video extends Base implements IVideo {
 
   // Computed property
   isTimeline: boolean;
+
+  @OneToOne(() => Audio, (audio) => audio.video, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  audio: Relation<IAudio>;
 }
