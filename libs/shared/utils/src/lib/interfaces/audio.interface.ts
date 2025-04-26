@@ -21,7 +21,7 @@ export interface IAudio extends IBase {
 
 export type IAudioInput = Omit<IAudio, 'timeLog' | 'id'>;
 
-export type IAudioMetadataInput = Omit<IAudioMetadata, 'photo' | 'id'>;
+export type IAudioMetadataInput = Omit<IAudioMetadata, 'audio' | 'id'>;
 
 export interface IAudioSave
   extends Pick<IAudioMetadata, 'rate' | 'channels' | 'duration'> {
