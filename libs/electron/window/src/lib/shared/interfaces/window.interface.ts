@@ -17,6 +17,7 @@ export interface IWindow {
   requestClose(): void;
   requestMinimize(): void;
   initiateGracefulExit(): Promise<void>;
+  isDestroyed(): boolean;
   readonly isAppExiting: boolean;
   readonly config: IWindowConfig;
   get browserWindow(): BrowserWindow | undefined;
