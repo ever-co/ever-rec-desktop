@@ -5,9 +5,9 @@ import {
   EventSubscriber,
   InsertEvent,
   IsNull,
+  Not,
 } from 'typeorm';
 import { Audio } from '../entities/audio.entity';
-import { AudioService } from '../services/audio.service';
 import { TimeLogService } from '../services/time-log.service';
 
 @EventSubscriber()
@@ -40,6 +40,7 @@ export class AudioSubscriber
     if (!isEmpty(timeLog) && isEmpty(event.entity.videoId)) {
       const chunks = await event.manager.find(Audio, {
         where: {
+          id: Not(event.entity.id),
           timeLogId: timeLog.id,
           parent: IsNull(),
         },

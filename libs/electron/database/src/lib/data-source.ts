@@ -18,6 +18,7 @@ import { PhotoMetadata } from './entities/photo-metadata.entity';
 import { Audio } from './entities/audio.entity';
 import { AudioMetadata } from './entities/audio-metadata.entity';
 import { AudioSubscriber } from './subscribers/audio.subscriber';
+import { TimelineSubscriber } from './subscribers/timeline.subscriber';
 
 const database = FileManager.createFilePathSync(
   'db',
@@ -49,6 +50,7 @@ export const appDataSource = new DataSource({
     VideoMetadataSubscriber,
     PhotoSubscriber,
     AudioSubscriber,
+    TimelineSubscriber,
   ],
   enableWAL: true,
   prepareDatabase: (db) => {
