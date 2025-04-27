@@ -1,0 +1,282 @@
+<!-- volume -->
+@let volume = volume$ | async;
+
+<!-- playing -->
+@let isPlaying = isPlaying$ | async;
+
+<!-- progress -->
+@let progress = progressPercentage$ | async;
+
+<!-- current time -->
+@let currentTime = currentTimeFormatted$ | async;
+
+<!-- duration -->
+@let duration = durationFormatted$ | async;
+
+<!-- remaing time -->
+@let remainingTime = remainingTimeFormatted$ | async;
+
+<!-- Muted -->
+@let isMuted = isMuted$ | async;
+
+<!-- audio.component.html -->
+<ng-container *ngIf="audio">
+  <!-- HOST MODE: Minimal display integrated with host element -->
+  <ng-container *ngIf="mode === 'host'">
+    <div class="flex items-center w-full">
+      <button
+        mat-icon-button
+        (click)="togglePlayPause()"
+        class="text-gray-200"
+        aria-label="Play or pause"
+      >
+        <mat-icon>{{ isPlaying ? 'pause' : 'play_arrow' }}</mat-icon>
+      </button>
+
+      <div class="flex-1 mx-2">
+        <div
+          class="h-1 bg-gray-700 rounded-full cursor-pointer"
+          (click)="seekAudio($event)"
+        >
+          <div
+            class="h-full bg-green-500 rounded-full"
+            [style.width]="progress + '%'"
+          ></div>
+        </div>
+      </div>
+
+      <span class="text-xs text-gray-400">{{ currentTime }}</span>
+    </div>
+  </ng-container>
+
+  <!-- INLINE MODE: Horizontal layout with minimal controls -->
+  <ng-container *ngIf="mode === 'inline'">
+    <div class="flex items-center w-full bg-gray-800 rounded-md p-2">
+      <button
+        mat-icon-button
+        (click)="togglePlayPause()"
+        class="text-white"
+        aria-label="Play or pause"
+      >
+        <mat-icon>{{ isPlaying ? 'pause' : 'play_arrow' }}</mat-icon>
+      </button>
+
+      <div class="flex-1 mx-3">
+        <p class="text-sm text-white truncate mb-1">
+          {{ audio.metadata?.name || 'Unknown Track' }}
+        </p>
+
+        <div class="flex items-center">
+          <div
+            class="flex-1 h-1 bg-gray-700 rounded-full cursor-pointer mr-2"
+            (click)="seekAudio($event)"
+          >
+            <div
+              class="h-full bg-green-500 rounded-full"
+              [style.width]="progress + '%'"
+            ></div>
+          </div>
+
+          <span class="text-xs text-gray-400 whitespace-nowrap">
+            {{ currentTime }} /
+            {{ duration }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- CARD MODE: Card layout with cover art and comprehensive controls -->
+  <ng-container *ngIf="mode === 'card'">
+    <div class="bg-gray-900 rounded-lg p-4 shadow-lg">
+      <div class="flex items-center gap-4">
+        <!-- Album/Track Artwork -->
+        <div
+          class="w-16 h-16 bg-gray-800 rounded-lg overflow-hidden flex-shrink-0 shadow-md"
+        >
+          <img
+            [src]="'https://picsum.photos/64'"
+            [alt]="audio.metadata?.name || 'Track artwork'"
+            class="w-full h-full object-cover"
+          />
+        </div>
+
+        <!-- Track Info -->
+        <div class="flex-1 min-w-0">
+          <div class="text-white font-medium truncate">
+            {{ audio.metadata?.name || 'Unknown Track' }}
+          </div>
+          <p class="text-gray-400 text-sm truncate">
+            {{ 'Unknown Artist' }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Progress Bar (clickable) -->
+      <div class="mt-4 mb-2">
+        <div
+          class="relative h-2 bg-gray-700 rounded-full overflow-hidden cursor-pointer hover:bg-gray-600 transition-colors"
+          (click)="seekAudio($event)"
+        >
+          <div
+            class="absolute top-0 left-0 h-full bg-green-500 rounded-full"
+            [style.width]="progress + '%'"
+          ></div>
+        </div>
+
+        <!-- Time indicators -->
+        <div class="flex justify-between text-xs text-gray-400 mt-1">
+          <span>{{ currentTime }}</span>
+          <span>{{ duration }}</span>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="flex justify-center items-center gap-2">
+        <button
+          mat-icon-button
+          (click)="skipBack()"
+          class="text-gray-400"
+          aria-label="Skip backward 10 seconds"
+        >
+          <mat-icon>replay_10</mat-icon>
+        </button>
+
+        <button
+          mat-mini-fab
+          color="primary"
+          (click)="togglePlayPause()"
+          class="bg-green-500"
+          [attr.aria-label]="isPlaying ? 'Pause' : 'Play'"
+        >
+          <mat-icon>{{ isPlaying ? 'pause' : 'play_arrow' }}</mat-icon>
+        </button>
+
+        <button
+          mat-icon-button
+          (click)="skipForward()"
+          class="text-gray-400"
+          aria-label="Skip forward 10 seconds"
+        >
+          <mat-icon>forward_10</mat-icon>
+        </button>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- PLAYER MODE: Full-featured player with extended controls -->
+  <ng-container *ngIf="mode === 'player'">
+    <div class="bg-gray-900 rounded-lg p-5 shadow-xl">
+      <!-- Top section with artwork and main info -->
+      <div class="flex flex-col items-center mb-4">
+        <!-- Album/Track Artwork -->
+        <div
+          class="w-48 h-48 bg-gray-800 rounded-lg overflow-hidden shadow-lg mb-4"
+        >
+          <img
+            [src]="'https://picsum.photos/256'"
+            [alt]="audio.metadata?.name || 'Track artwork'"
+            class="w-full h-full object-cover"
+          />
+        </div>
+
+        <!-- Track Info -->
+        <div class="text-center">
+          <h3 class="text-white text-xl font-semibold mb-1">
+            {{ audio.metadata?.name || 'Unknown Track' }}
+          </h3>
+          <p class="text-gray-400">
+            {{ 'Unknown Artist' }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Progress Bar (clickable) -->
+      <div class="mb-4">
+        <div
+          class="relative h-2 bg-gray-700 rounded-full overflow-hidden cursor-pointer hover:bg-gray-600 transition-colors"
+          (click)="seekAudio($event)"
+        >
+          <div
+            class="absolute top-0 left-0 h-full bg-green-500 rounded-full"
+            [style.width]="progress + '%'"
+          ></div>
+          <div
+            class="absolute top-0 right-0 h-full w-2 rounded-full bg-white transform translate-x-1/2"
+            *ngIf="progress"
+            [style.left]="progress + '%'"
+            [style.display]="isPlaying ? 'block' : 'none'"
+          ></div>
+        </div>
+
+        <!-- Time indicators -->
+        <div class="flex justify-between text-sm text-gray-400 mt-2">
+          <span>{{ currentTime }}</span>
+          <span>-{{ remainingTime }}</span>
+        </div>
+      </div>
+
+      <!-- Main Controls -->
+      <div class="flex justify-center items-center gap-4 mb-4">
+        <button
+          mat-icon-button
+          (click)="skipBack()"
+          class="text-gray-300"
+          aria-label="Skip backward 10 seconds"
+        >
+          <mat-icon>replay_10</mat-icon>
+        </button>
+
+        <button
+          mat-fab
+          color="primary"
+          (click)="togglePlayPause()"
+          class="bg-green-500"
+          [attr.aria-label]="isPlaying ? 'Pause' : 'Play'"
+        >
+          <mat-icon>{{ isPlaying ? 'pause' : 'play_arrow' }}</mat-icon>
+        </button>
+
+        <button
+          mat-icon-button
+          (click)="skipForward()"
+          class="text-gray-300"
+          aria-label="Skip forward 10 seconds"
+        >
+          <mat-icon>forward_10</mat-icon>
+        </button>
+      </div>
+
+      <!-- Volume Control -->
+      <div class="flex items-center gap-2">
+        <button
+          mat-icon-button
+          (click)="toggleMute()"
+          class="text-gray-400"
+          aria-label="Toggle mute"
+        >
+          <mat-icon *ngIf="!isMuted && volume && volume > 0.5"
+            >volume_up</mat-icon
+          >
+          <mat-icon *ngIf="!isMuted && volume && volume <= 0.5"
+            >volume_down</mat-icon
+          >
+          <mat-icon *ngIf="isMuted || volume === 0">volume_off</mat-icon>
+        </button>
+
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          [value]="volume"
+          (input)="setVolume($any($event.target).value)"
+          class="flex-1 accent-green-500 h-1 bg-gray-700 rounded-full appearance-none cursor-pointer"
+        />
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- Audio element -->
+  <audio #player [src]="audio.pathname" preload="metadata" hidden></audio>
+</ng-container>

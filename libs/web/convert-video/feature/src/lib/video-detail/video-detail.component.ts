@@ -15,6 +15,7 @@ import {
 } from '@ever-co/convert-video-data-access';
 import {
   ActionButtonGroupComponent,
+  AudioComponent,
   ConfirmationDialogService,
   NoDataComponent,
   VideoComponent,
@@ -66,6 +67,7 @@ import {
     CopyToClipboardDirective,
     ResolutionPipe,
     FormsModule,
+    AudioComponent,
   ],
   templateUrl: './video-detail.component.html',
   styleUrl: './video-detail.component.scss',
@@ -118,7 +120,7 @@ export class VideoDetailComponent implements OnInit, OnDestroy {
                 where: {
                   id: params['id'],
                 },
-                relations: ['metadata'],
+                relations: ['metadata', 'audio', 'audio.metadata'],
               })
             );
           } else {

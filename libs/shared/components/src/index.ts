@@ -13,3 +13,4 @@ export * from './lib/ui/time-log-statistics/time-log-statistics.component';
 export * from './lib/ui/toggle/toggle.component';
 export * from './lib/ui/video/video.component';
 export * from './lib/ui/photo/photo.component';
+export * from './lib/ui/audio/audio.component';

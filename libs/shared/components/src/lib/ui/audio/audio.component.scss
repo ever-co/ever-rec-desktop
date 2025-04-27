@@ -1,0 +1,130 @@
+/* audio.component.scss */
+
+// Base host styling
+:host {
+  display: block;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+
+  // Volume slider styling (works across browsers)
+  input[type='range'] {
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 12px;
+      width: 12px;
+      border-radius: 50%;
+      background: #4ade80;
+      cursor: pointer;
+      margin-top: -5px;
+    }
+
+    &::-moz-range-thumb {
+      height: 12px;
+      width: 12px;
+      border-radius: 50%;
+      background: #4ade80;
+      cursor: pointer;
+      border: none;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+// Host mode styling
+:host(.audio-player-host) {
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+
+  ::ng-deep {
+    .mat-icon {
+      font-size: 20px;
+      height: 20px;
+      width: 20px;
+      line-height: 20px;
+    }
+  }
+}
+
+// Inline mode styling
+:host(.audio-player-inline) {
+  max-width: 100%;
+
+  ::ng-deep {
+    .mat-icon-button {
+      width: 32px;
+      height: 32px;
+      line-height: 32px;
+    }
+  }
+}
+
+// Card mode styling
+:host(.audio-player-card) {
+  max-width: 400px;
+  width: 100%;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  }
+
+  ::ng-deep {
+    .mat-mini-fab {
+      transform: scale(1);
+      transition: transform 0.2s ease;
+
+      &:active {
+        transform: scale(0.9);
+      }
+    }
+  }
+}
+
+// Player mode styling
+:host(.audio-player-player) {
+  max-width: 450px;
+  width: 100%;
+
+  ::ng-deep {
+    .mat-fab {
+      transform: scale(1);
+      transition: transform 0.2s ease;
+
+      &:active {
+        transform: scale(0.95);
+      }
+    }
+  }
+}
+
+// Material button overrides for all modes
+::ng-deep {
+  .mat-icon-button,
+  .mat-mini-fab,
+  .mat-fab {
+    &:focus {
+      outline: 2px solid rgba(74, 222, 128, 0.5);
+      outline-offset: 2px;
+    }
+  }
+
+  // Ensure proper Material icon sizing
+  .mat-icon {
+    font-size: 24px;
+    height: 24px;
+    width: 24px;
+  }
+}
+
+// Media query for smaller screens
+@media (max-width: 640px) {
+  :host(.audio-player-player) {
+    .mat-fab {
+      transform: scale(0.9);
+    }
+  }
+}
