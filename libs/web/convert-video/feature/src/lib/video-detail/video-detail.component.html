@@ -76,7 +76,11 @@
         </button>
       </div>
 
-      @if(video.metadata) {
+      @if(video.audio) {
+      <div class="mb-4">
+        <lib-audio [audio]="video.audio"></lib-audio>
+      </div>
+      } @if(video.metadata) {
       <div class="space-y-4">
         <!-- File Info -->
         <div class="bg-white rounded-df p-4">
@@ -180,8 +184,6 @@
           </div>
         </div>
       </div>
-      } @if(video.audio) {
-      <lib-audio [audio]="video.audio" mode="host"></lib-audio>
       }
     </div>
   </div>
