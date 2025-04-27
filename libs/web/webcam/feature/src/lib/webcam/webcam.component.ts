@@ -4,13 +4,13 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
+import { selectScreenshotState } from '@ever-co/screenshot-data-access';
 import { ActionButtonGroupComponent } from '@ever-co/shared-components';
 import { IActionButton } from '@ever-co/shared-utils';
 import {
   audioActions,
   cameraActions,
   photoActions,
-  PhotoService,
   selectAudioKillSwitch,
   selectCameraAuthorizations,
   selectCameraStreaming,
@@ -29,7 +29,6 @@ import {
   withLatestFrom,
 } from 'rxjs';
 import { PreviewComponent } from '../preview/preview.component';
-import { selectScreenshotState } from '@ever-co/screenshot-data-access';
 
 @Component({
   selector: 'lib-webcam',
@@ -41,10 +40,12 @@ import { selectScreenshotState } from '@ever-co/screenshot-data-access';
 })
 export class WebcamComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
+  private readonly closing$ = new Subject<boolean>();
   readonly buttons: IActionButton[] = [
     {
       icon: 'pause',
       variant: 'danger',
+      loading: this.closing$.asObservable(),
       action: this.stopTracking.bind(this),
     },
     {
@@ -89,6 +90,7 @@ export class WebcamComponent implements OnInit, OnDestroy {
       .pipe(
         take(1),
         tap((micIsOn) => {
+          this.closing$.next(true);
           if (micIsOn) {
             this.stopRecording(true);
           } else {
@@ -141,6 +143,8 @@ export class WebcamComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    this.closing$.next(false);
+    this.closing$.complete();
     this.stopRecording();
   }
 }
