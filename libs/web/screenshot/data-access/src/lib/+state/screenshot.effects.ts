@@ -233,6 +233,22 @@ export class ScreenshotEffects {
     )
   );
 
+  loadScreenshot = createEffect(() =>
+    this.actions$.pipe(
+      ofType(screenshotActions.loadScreenshot),
+      mergeMap(({ options }) =>
+        from(this.electronService.getOneScreenshot(options)).pipe(
+          map((screenshot) =>
+            screenshotActions.loadScreenshotSuccess({ screenshot })
+          ),
+          catchError((error) =>
+            of(screenshotActions.loadScreenshotsFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
   // Helper method to handle common error scenarios
   private handleError(error: string) {
     console.error('Screenshot history operation failed:', error);

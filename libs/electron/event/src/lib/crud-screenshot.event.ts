@@ -19,7 +19,7 @@ import {
   VIDEO_DIR,
 } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
-import { Between, ILike } from 'typeorm';
+import { Between, ILike, IsNull } from 'typeorm';
 
 export function crudScreeshotEvents() {
   const screenshotService = new ScreenshotService();
@@ -41,6 +41,7 @@ export function crudScreeshotEvents() {
 
       const [data, count] = await screenshotService.findAndCount({
         where: {
+          parent: IsNull(),
           ...(!ignoreRange && {
             createdAt: Between(start, end),
           }),
@@ -48,7 +49,13 @@ export function crudScreeshotEvents() {
         },
         withDeleted: deleted,
         order: { [`${sortField}`]: sortOrder },
-        relations: ['metadata', 'metadata.application'],
+        relations: [
+          'metadata',
+          'metadata.application',
+          'chunks',
+          'chunks.metadata',
+          'chunks.metadata.application',
+        ],
         ...(limit !== -1 && {
           skip: (page - 1) * limit,
           take: limit,

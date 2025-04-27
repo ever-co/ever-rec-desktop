@@ -27,6 +27,34 @@
               </button>
             </a>
           </div>
+          <div class="p-4 space-y-2">
+            <button
+              class="text-white absolute top-2 left-2"
+              mat-icon-button
+              color="primary"
+              aria-label="arrow_back"
+              (click)="goBack()"
+            >
+              <mat-icon>arrow_back</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="mt-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          @for(chunk of screenshot.chunks; track chunk.id) {
+          <div
+            (click)="load(chunk.id)"
+            class="overflow-hidden cursor-pointer rounded-df shadow-md hover:shadow-lg transition-shadow duration-300"
+          >
+            <img
+              [src]="chunk.pathname"
+              alt="Screenshot chunk"
+              class="w-full h-auto hover:scale-105 object-cover"
+              libImgFallback
+            />
+          </div>
+          }
         </div>
       </div>
     </div>

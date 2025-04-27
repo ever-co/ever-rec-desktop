@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {
   screenshotActions,
   ScreenshotElectronService,
+  selectScreenshotState,
 } from '@ever-co/screenshot-data-access';
 import {
   ActionButtonGroupComponent,
@@ -24,30 +25,37 @@ import {
 } from '@ever-co/shared-service';
 import { IActionButton, IScreenshot } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
-import { concatMap, filter, lastValueFrom, Observable } from 'rxjs';
+import {
+  concatMap,
+  filter,
+  lastValueFrom,
+  map,
+  Observable,
+  Subject,
+  takeUntil,
+} from 'rxjs';
 
 @Component({
-    selector: 'lib-screenshot',
-    imports: [
-        CommonModule,
-        NoDataComponent,
-        UtcToLocalTimePipe,
-        MatCardModule,
-        MatIconModule,
-        MatChipsModule,
-        VideoComponent,
-        HumanizeBytesPipe,
-        PopoverDirective,
-        ActionButtonGroupComponent,
-        CopyToClipboardDirective,
-        ImgFallbackDirective,
-        IconFallbackDirective,
-    ],
-    templateUrl: './screenshot.component.html',
-    styleUrl: './screenshot.component.scss'
+  selector: 'lib-screenshot',
+  imports: [
+    CommonModule,
+    NoDataComponent,
+    UtcToLocalTimePipe,
+    MatCardModule,
+    MatIconModule,
+    MatChipsModule,
+    VideoComponent,
+    HumanizeBytesPipe,
+    PopoverDirective,
+    ActionButtonGroupComponent,
+    CopyToClipboardDirective,
+    ImgFallbackDirective,
+    IconFallbackDirective,
+  ],
+  templateUrl: './screenshot.component.html',
+  styleUrl: './screenshot.component.scss',
 })
-export class ScreenshotComponent implements OnInit {
-  public screenshot$!: Observable<IScreenshot | null>;
+export class ScreenshotComponent implements OnInit, OnDestroy {
   public actionButtons: IActionButton[] = [
     {
       icon: 'copy',
@@ -61,33 +69,53 @@ export class ScreenshotComponent implements OnInit {
       action: this.delete.bind(this),
     },
   ];
+  private destroy$ = new Subject<void>();
+
   constructor(
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
-    private readonly screenshotService: ScreenshotElectronService,
     private readonly store: Store,
-    private readonly confirationDialogService: ConfirmationDialogService
+    private readonly confirationDialogService: ConfirmationDialogService,
+    private readonly location: Location
   ) {}
   ngOnInit(): void {
-    this.screenshot$ = this.activatedRoute.params.pipe(
-      filter(Boolean),
-      concatMap(async (params) => {
-        if (params['id']) {
-          return this.screenshotService.getOneScreenshot({
-            where: {
-              id: params['id'],
-            },
-            relations: ['metadata', 'metadata.application', 'video'],
-          });
-        } else {
-          await this.router.navigate(['/dashboard']);
-          return null;
-        }
+    this.activatedRoute.params
+      .pipe(
+        filter(Boolean),
+        concatMap(async (params) => {
+          if (params['id']) {
+            this.load(params['id']);
+          } else {
+            await this.router.navigate(['/dashboard']);
+          }
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
+
+  public load(id: string) {
+    this.store.dispatch(
+      screenshotActions.loadScreenshot({
+        options: {
+          where: {
+            id,
+          },
+          relations: ['metadata', 'metadata.application', 'video', 'chunks'],
+        },
       })
     );
-    if (this.data) {
-      this.screenshot$ = new Observable((observer) => observer.next(this.data));
-    }
+  }
+
+  public get screenshot$(): Observable<IScreenshot | null> {
+    return this.store.select(selectScreenshotState).pipe(
+      map((state) => state.screenshot),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  public goBack(): void {
+    this.location.back();
   }
 
   private _data!: IScreenshot | null;
@@ -113,5 +141,10 @@ export class ScreenshotComponent implements OnInit {
       this.store.dispatch(screenshotActions.deleteScreenshot(screenshot));
       await this.router.navigate(['/', 'library', 'screenshots']);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
