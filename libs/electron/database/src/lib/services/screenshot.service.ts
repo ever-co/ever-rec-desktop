@@ -56,6 +56,10 @@ export class ScreenshotService implements IScreenshotService {
     await this.repository.softDelete({ id });
   }
 
+  public async saveChunks(chunks: IScreenshot[]): Promise<IScreenshot[]> {
+    return this.repository.save(chunks);
+  }
+
   public async deleteAll(screenshotIds?: string[]): Promise<void> {
     await this.repository.softDelete(
       screenshotIds ? { id: In(screenshotIds) } : {}
