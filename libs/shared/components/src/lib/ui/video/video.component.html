@@ -26,9 +26,7 @@
         [ngClass]="{ 'opacity-100': checked }"
         class="absolute p-1 bg-gradient-to-t from-black/80 to-transparent h-full w-full justify-between items-start flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
       >
-        <div
-          class="flex items-start flex flex-col justify-between h-full group"
-        >
+        <div class="flex items-start flex-col justify-between h-full group">
           <mat-checkbox
             [checked]="checked"
             (change)="onSelected($event.checked)"

@@ -1,4 +1,5 @@
 // audio.component.ts
+import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -11,9 +12,7 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { UtcToLocalTimePipe } from '@ever-co/shared-service';
 import { IAudio } from '@ever-co/shared-utils';
-import { CommonModule } from '@angular/common';
 import { BehaviorSubject, fromEvent, merge, Observable, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 
@@ -22,7 +21,7 @@ export type AudioPlayerMode = 'host' | 'inline' | 'card' | 'player';
 @Component({
   selector: 'lib-audio',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatButtonModule, UtcToLocalTimePipe],
+  imports: [CommonModule, MatIconModule, MatButtonModule],
   templateUrl: './audio.component.html',
   styleUrls: ['./audio.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
