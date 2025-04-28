@@ -38,60 +38,92 @@ mat-card {
   max-height: calc(100vh - 16rem);
 }
 
+// Base styling for stack container
 .stack-cards {
   position: relative;
-  width: fit-content; // or set a specific width
-  margin: 1rem 0;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px 0;
+  transition: all 0.3s ease;
 
+  // The items within the stack
   &__item {
-    position: relative;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    background-color: #fff;
 
-    // Base styling for all cards
-    &:not(:first-child) {
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-
-    // Stacking effect
+    // Generate compact stacking effect
     @for $i from 1 through 10 {
       &:nth-child(#{$i}) {
-        z-index: #{10 - $i};
-        transform: translateY(#{$i * 5px}) rotate(#{$i * -0.5}deg);
+        z-index: 11 - $i;
+        transform: translateY(#{($i - 1) * 5}px) scale(#{1 - ($i - 1) * 0.04});
+        transform-origin: center top;
+        width: calc(100% - #{($i - 1) * 8}px);
+        margin-left: calc(#{($i - 1) * 4}px);
       }
     }
 
-    // Hover effect to bring card to front
-    &:hover {
-      transform: translateY(-10px) rotate(0deg) !important;
-      z-index: 20;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    // Selected state styling
-    &[checked='true'] {
-      outline: 3px solid #4a90e2;
-      outline-offset: 2px;
-      z-index: 15;
+    // First card (in front) styling
+    &:first-child {
+      position: relative;
+      z-index: 10;
     }
   }
 
-  // Adjust spacing between cards when stacked
-  &:hover &__item:not(:hover) {
-    @for $i from 1 through 10 {
-      &:nth-child(#{$i}) {
-        transform: translateY(#{$i * 3px}) rotate(#{$i * -0.5}deg);
+  // When mouse is over the entire stack
+  &:hover {
+    // Expand the stack slightly
+    .stack-cards__item {
+      @for $i from 1 through 10 {
+        &:nth-child(#{$i}) {
+          transform: translateY(#{($i - 1) * 10}px)
+            scale(#{1 - ($i - 1) * 0.04});
+        }
+      }
+    }
+  }
+
+  // Individual card hover effect
+  .stack-cards__item {
+    // When hovering an individual card
+    &:hover {
+      cursor: pointer;
+      z-index: 11;
+      width: 100%;
+      margin: 0;
+      transform: scale(1) !important;
+
+      &:has(+ .stack-cards__item) {
+        transform: scale(0.98) !important;
+      }
+
+      // Reveal the card behind by pushing it down more
+      & + .stack-cards__item {
+        transform: translateY(-2px) scale(0.98) !important;
+        z-index: 9;
       }
     }
   }
 }
 
-// Optional: Add some styling for the container
+// Additional styling for the card component
 .card {
-  padding: 10px;
-  background: #f5f5f5;
   border-radius: 8px;
-  display: inline-block;
+  overflow: hidden;
+  min-height: 200px;
+}
+
+// Optional: Add some basic styling for the screenshot component
+lib-screenshot {
+  display: block;
+  transition: all 0.3s ease;
+
+  &[checked='true'] {
+    outline: 2px solid #4a90e2;
+  }
 }
