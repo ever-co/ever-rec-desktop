@@ -24,6 +24,10 @@ mat-card {
     }
   }
 
+  .stack-cards {
+    padding-top: 0;
+  }
+
   .action-button-group {
     display: none;
   }
@@ -44,7 +48,7 @@ mat-card {
   width: 100%;
   max-width: 500px;
   margin: 0 auto;
-  padding: 20px 0;
+  padding-top: 20px;
   transition: all 0.3s ease;
 
   // The items within the stack
