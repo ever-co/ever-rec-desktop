@@ -5,12 +5,22 @@
   class="grid grid-cols-1 static md:grid-cols-2 lg:grid-cols-3 gap-4 pr-4 overflow-auto max-h-custom main"
 >
   @for (screenshot of screenshots$ | async; track screenshot.id) {
-  <lib-screenshot
-    (selected)="selectScreenshot($event)"
-    [checked]="isSelected(screenshot) | async"
-    class="card"
-    [screenshot]="screenshot"
-  ></lib-screenshot>
+  <div class="stack-cards card">
+    <lib-screenshot
+      class="stack-cards__item"
+      (selected)="selectScreenshot($event)"
+      [checked]="isSelected(screenshot) | async"
+      [screenshot]="screenshot"
+    ></lib-screenshot>
+    @for (chunk of screenshot.chunks; track chunk.id) {
+    <lib-screenshot
+      class="stack-cards__item"
+      (selected)="selectScreenshot($event)"
+      [checked]="isSelected(chunk) | async"
+      [screenshot]="chunk"
+    ></lib-screenshot>
+    }
+  </div>
   } @if(capturing$ | async) {
   <mat-card
     appearance="outlined"

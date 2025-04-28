@@ -31,8 +31,67 @@ mat-card {
 
 .action-button-group {
   top: calc(100vh - 4rem);
+  z-index: 1000;
 }
 
 .max-h-custom {
   max-height: calc(100vh - 16rem);
+}
+
+.stack-cards {
+  position: relative;
+  width: fit-content; // or set a specific width
+  margin: 1rem 0;
+
+  &__item {
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+
+    // Base styling for all cards
+    &:not(:first-child) {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    // Stacking effect
+    @for $i from 1 through 10 {
+      &:nth-child(#{$i}) {
+        z-index: #{10 - $i};
+        transform: translateY(#{$i * 5px}) rotate(#{$i * -0.5}deg);
+      }
+    }
+
+    // Hover effect to bring card to front
+    &:hover {
+      transform: translateY(-10px) rotate(0deg) !important;
+      z-index: 20;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    // Selected state styling
+    &[checked='true'] {
+      outline: 3px solid #4a90e2;
+      outline-offset: 2px;
+      z-index: 15;
+    }
+  }
+
+  // Adjust spacing between cards when stacked
+  &:hover &__item:not(:hover) {
+    @for $i from 1 through 10 {
+      &:nth-child(#{$i}) {
+        transform: translateY(#{$i * 3px}) rotate(#{$i * -0.5}deg);
+      }
+    }
+  }
+}
+
+// Optional: Add some styling for the container
+.card {
+  padding: 10px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  display: inline-block;
 }
