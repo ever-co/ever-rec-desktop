@@ -72,7 +72,13 @@ export class PhotoComponent implements OnDestroy, OnDestroy {
   ) {}
 
   public async view(): Promise<void> {
-    await this.router.navigate(['/', 'library', 'photos', this.photo.id]);
+    await this.router.navigate([
+      '/',
+      'library',
+      'webcams',
+      'photos',
+      this.photo.id,
+    ]);
   }
 
   public onSelected(checked: boolean): void {

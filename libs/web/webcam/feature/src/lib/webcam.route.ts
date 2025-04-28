@@ -6,15 +6,7 @@ export const settingRoutes: Route[] = [
     path: '',
     loadComponent: () =>
       import('./setting/setting.component').then((m) => m.SettingComponent),
-    children: [
-      { path: '', redirectTo: 'preview', pathMatch: 'full' },
-      {
-        path: 'preview',
-        loadComponent: () =>
-          import('./preview/preview.component').then((m) => m.PreviewComponent),
-      },
-      { path: '**', redirectTo: '' },
-    ],
+    loadChildren: () => import('./camera/camera.route').then((m) => m.routes),
   },
   { path: '**', redirectTo: '' },
 ];
@@ -22,15 +14,16 @@ export const settingRoutes: Route[] = [
 export const libraryRoutes: Route[] = [
   { path: '', redirectTo: '', pathMatch: 'full' },
   {
-    path: '',
-    loadComponent: () =>
-      import('./gallery/gallery.component').then((m) => m.GalleryComponent),
+    path: 'photos',
+    loadChildren: () =>
+      import('./photo/photo.route').then((m) => m.photoRoutes),
   },
   {
-    path: ':id',
-    loadComponent: () =>
-      import('./photo/photo.component').then((m) => m.PhotoComponent),
+    path: 'audios',
+    loadChildren: () =>
+      import('./audio/audio.route').then((m) => m.audioRoutes),
   },
+
   { path: '**', redirectTo: '' },
 ];
 

@@ -1,0 +1,42 @@
+@let audios = audios$ | async;
+<!-- Is Available -->
+@let audio = audios?.[0];
+<!-- Available -->
+
+@if (isAvailable$ | async) {
+<div class="flex gap-4 pr-4">
+  <div
+    libInfiniteScroll
+    (scrolled)="moreAudios()"
+    class="grid grid-cols-1 w-full static gap-4 pr-6 overflow-auto max-h-custom main"
+  >
+    @for (audio of audios; track audio.id) {
+    <lib-audio
+      (selected)="selectAudio($event)"
+      [checked]="isSelected(audio) | async"
+      class="card"
+      [audio]="audio"
+    ></lib-audio>
+    }
+  </div>
+  <div>
+    @if(audio) {
+    <lib-audio mode="card" class="card" [audio]="audio"></lib-audio>
+    }
+  </div>
+</div>
+
+@if((size$ | async)) {
+<div class="absolute inset-x-0 action-button-group">
+  <lib-gallery-buttons-action
+    [buttons]="actionButtons"
+    [size]="size$ | async"
+    [data]="selectedAudios$ | async"
+  ></lib-gallery-buttons-action>
+</div>
+} } @else {
+<div class="flex h-full items-center p-4 justify-center">
+  <lib-no-data message="No audios available" class="text-center text-gray-500">
+  </lib-no-data>
+</div>
+}

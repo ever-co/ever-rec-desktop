@@ -5,14 +5,16 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  EventEmitter,
   HostBinding,
   Input,
   OnDestroy,
+  Output,
   ViewChild,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { IAudio } from '@ever-co/shared-utils';
+import { IAudio, ISelected } from '@ever-co/shared-utils';
 import { BehaviorSubject, fromEvent, merge, Observable, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 
@@ -35,6 +37,12 @@ export class AudioComponent implements AfterViewInit, OnDestroy {
 
   @Input()
   public mode: AudioPlayerMode = 'inline';
+
+  @Input()
+  public checked: boolean | null = false;
+
+  @Output()
+  public selected = new EventEmitter<ISelected<IAudio>>();
 
   @HostBinding('class')
   get hostClasses(): string {

@@ -96,6 +96,105 @@ export const reducer = createReducer(
     ...state,
     deleting: false,
     error,
+  })),
+
+  // Delete selected audios
+  on(audioActions.deleteSelectedAudios, (state) => ({
+    ...state,
+    deleting: true,
+    error: '',
+  })),
+  on(audioActions.deleteSelectedAudiosSuccess, (state, { audios }) => {
+    const audioIdsDeleted = audios.map((audio) => audio.id);
+
+    // Filter out deleted audios
+    const updatedAudios = state.audios.filter(
+      (audio) => !audioIdsDeleted.includes(audio.id)
+    );
+
+    return {
+      ...state,
+      audios: updatedAudios,
+      deleting: false,
+    };
+  }),
+
+  on(audioActions.deleteSelectedAudiosFailure, (state, { error }) => ({
+    ...state,
+    deleting: false,
+    error,
+  })),
+
+  // Select Audio
+  on(audioActions.selectAudio, (state, { audio }) => ({
+    ...state,
+    selectedAudios: [
+      ...new Map(
+        [...state.selectedAudios, audio].map((item) => [item, item])
+      ).values(),
+    ].filter((audio) => audio.selected),
+  })),
+
+  // Unselect Audio
+  on(audioActions.unselectAudio, (state, { audio }) => ({
+    ...state,
+    selectedAudios: state.selectedAudios.filter(
+      ({ data }) => audio.data.id !== data.id
+    ),
+  })),
+
+  // Unselect All Audios
+  on(audioActions.unselectAllAudios, (state) => ({
+    ...state,
+    deleting: false,
+    selectedAudios: [],
+  })),
+
+  // Reset Audios
+  on(audioActions.resetAudios, (state) => ({
+    ...state,
+    audios: initialAudioState.audios,
+  })),
+
+  on(audioActions.loadAudio, (state) => ({
+    ...state,
+    loading: true,
+  })),
+
+  on(audioActions.loadAudioSuccess, (state, { audio }) => ({
+    ...state,
+    loading: false,
+    audio,
+  })),
+
+  on(audioActions.loadAudioFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  })),
+
+  on(audioActions.loadAudios, (state) => ({
+    ...state,
+    loading: true,
+  })),
+
+  on(audioActions.loadAudiosSuccess, (state, { data, hasNext, count }) => ({
+    ...state,
+    count,
+    hasNext,
+    audios: [
+      ...new Map(
+        [...state.audios, ...data].map((item) => [item.id, item])
+      ).values(),
+    ],
+    loading: false,
+    error: '',
+  })),
+
+  on(audioActions.loadAudiosFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
   }))
 );
 

@@ -46,5 +46,7 @@ export const audioActions = createActionGroup({
     'Stop Recording': props<{ delayed?: boolean }>(),
     'Stop Recording Success': emptyProps(),
     'Stop Recording Failure': props<{ error: string }>(),
+
+    'Select Audio': props<{ audio: ISelected<IAudio> }>(),
   },
 });

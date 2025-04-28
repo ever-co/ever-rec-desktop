@@ -28,7 +28,7 @@ import {
   tap,
   withLatestFrom,
 } from 'rxjs';
-import { PreviewComponent } from '../preview/preview.component';
+import { PreviewComponent } from '../camera/preview/preview.component';
 
 @Component({
   selector: 'lib-webcam',

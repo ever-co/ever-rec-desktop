@@ -5,10 +5,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 
 import {
+  AudioComponent,
   ConfirmationDialogService,
   GalleryButtonsActionComponent,
   NoDataComponent,
-  PhotoComponent,
 } from '@ever-co/shared-components';
 import {
   InfiniteScrollDirective,
@@ -16,33 +16,30 @@ import {
 } from '@ever-co/shared-service';
 import {
   IActionButton,
-  IPhoto,
+  IAudio,
   IRange,
   ISelected,
 } from '@ever-co/shared-utils';
-import { photoActions, selectPhotoState } from '@ever-co/webcam-data-access';
+import { audioActions, selectAudioState } from '@ever-co/webcam-data-access';
 import { Store } from '@ngrx/store';
 import { Observable, Subject, filter, map, take, takeUntil, tap } from 'rxjs';
 
 @Component({
-  selector: 'lib-screenshot-gallery',
+  selector: 'lib-audio-gallery',
   imports: [
     CommonModule,
     InfiniteScrollDirective,
     NoDataComponent,
     MatCardModule,
     MatProgressSpinnerModule,
-    PhotoComponent,
+    AudioComponent,
     GalleryButtonsActionComponent,
   ],
   templateUrl: './gallery.component.html',
   styleUrl: './gallery.component.scss',
 })
 export class GalleryComponent implements OnInit, OnDestroy {
-  public photos$ = new Observable<IPhoto[]>();
-  public capturing$ = new Observable<boolean>();
   private destroy$ = new Subject<void>();
-  public isAvailable$ = new Observable<boolean>();
   public store = inject(Store);
   private currentPage = 1;
   private hasNext = false;
@@ -74,7 +71,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
       label: 'Delete',
       variant: 'danger',
       loading: this.deleting$,
-      action: this.deletePhotos.bind(this),
+      action: this.deleteAudios.bind(this),
     },
   ];
 
@@ -85,7 +82,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.store
-      .select(selectPhotoState)
+      .select(selectAudioState)
       .pipe(
         tap((state) => {
           this.hasNext = state.hasNext;
@@ -93,20 +90,6 @@ export class GalleryComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe();
-    this.isAvailable$ = this.store.select(selectPhotoState).pipe(
-      map((state) => state.count > 0),
-      takeUntil(this.destroy$)
-    );
-
-    this.capturing$ = this.store.select(selectPhotoState).pipe(
-      map((state) => state.loading),
-      takeUntil(this.destroy$)
-    );
-
-    this.photos$ = this.store.select(selectPhotoState).pipe(
-      map((state) => state.photos),
-      takeUntil(this.destroy$)
-    );
 
     this.store
       .select(selectDatePickerState)
@@ -114,14 +97,15 @@ export class GalleryComponent implements OnInit, OnDestroy {
         tap((state) => {
           this.range = state.selectedRange;
           this.currentPage = 1;
-          this.store.dispatch(photoActions.resetPhotos());
-          this.loadPhotos();
+          this.store.dispatch(audioActions.resetAudios());
+          this.loadAudios();
         }),
         takeUntil(this.destroy$)
       )
       .subscribe();
+
     this.store
-      .select(selectPhotoState)
+      .select(selectAudioState)
       .pipe(
         filter(({ deleting }) => deleting),
         tap(() => this.unselectAll()),
@@ -130,81 +114,102 @@ export class GalleryComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  public morePhotos(): void {
+  public get isAvailable$() {
+    return this.store.select(selectAudioState).pipe(
+      map((state) => state.count > 0),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  public get capturing$() {
+    return this.store.select(selectAudioState).pipe(
+      map((state) => state.loading),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  public get audios$() {
+    return this.store.select(selectAudioState).pipe(
+      map((state) => state.audios),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  public moreAudios(): void {
     if (this.hasNext) {
       this.currentPage++;
-      this.loadPhotos();
+      this.loadAudios();
     }
   }
 
-  public loadPhotos(): void {
+  public loadAudios(): void {
     this.store.dispatch(
-      photoActions.loadPhotos({
+      audioActions.loadAudios({
         page: this.currentPage,
         ...this.range,
       })
     );
   }
 
-  public selectPhoto(photo: ISelected<IPhoto>): void {
+  public selectAudio(audio: ISelected<IAudio>): void {
     this.store.dispatch(
-      photo.selected
-        ? photoActions.selectPhoto({ photo })
-        : photoActions.unselectPhoto({ photo })
+      audio.selected
+        ? audioActions.selectAudio({ audio })
+        : audioActions.unselectAudio({ audio })
     );
   }
 
-  public get selectedPhotos$(): Observable<ISelected<IPhoto>[]> {
-    return this.store.select(selectPhotoState).pipe(
-      map((state) => state.selectedPhotos),
+  public get selectedAudios$(): Observable<ISelected<IAudio>[]> {
+    return this.store.select(selectAudioState).pipe(
+      map((state) => state.selectedAudios),
       takeUntil(this.destroy$)
     );
   }
 
   public get moreThanOneSelected$(): Observable<boolean> {
-    return this.selectedPhotos$.pipe(
-      map((photos) => photos.length > 1),
+    return this.selectedAudios$.pipe(
+      map((audios) => audios.length > 1),
       takeUntil(this.destroy$)
     );
   }
 
   public get lessThanOneSelected$(): Observable<boolean> {
-    return this.selectedPhotos$.pipe(
-      map((photos) => photos.length <= 1),
+    return this.selectedAudios$.pipe(
+      map((audios) => audios.length <= 1),
       takeUntil(this.destroy$)
     );
   }
 
   public get size$(): Observable<number> {
-    return this.selectedPhotos$.pipe(
-      map((photos) => photos.length),
+    return this.selectedAudios$.pipe(
+      map((audios) => audios.length),
       takeUntil(this.destroy$)
     );
   }
 
-  private async view(selectedPhotos: ISelected<IPhoto>[]): Promise<void> {
-    const photoId = selectedPhotos[0].data.id;
-    await this.router.navigate(['/', 'library', 'photos', photoId]);
+  private async view(selectedAudios: ISelected<IAudio>[]): Promise<void> {
+    const audioId = selectedAudios[0].data.id;
+    await this.router.navigate(['/', 'library', 'webcams', 'audios', audioId]);
     this.store.dispatch(
-      photoActions.unselectPhoto({
-        photo: selectedPhotos[0],
+      audioActions.unselectAudio({
+        audio: selectedAudios[0],
       })
     );
   }
 
-  private deletePhotos(selectedPhotos: ISelected<IPhoto>[]): void {
-    const photos = selectedPhotos.map((photo) => photo.data);
+  private deleteAudios(selectedAudios: ISelected<IAudio>[]): void {
+    const audios = selectedAudios.map((audio) => audio.data);
     this.confirmationDialogService
       .open({
-        title: 'Delete Photos?',
-        message: `Are you sure you want to delete ${photos.length} photos?`,
+        title: 'Delete Audios?',
+        message: `Are you sure you want to delete ${audios.length} audios?`,
         variant: 'danger',
       })
       .pipe(
         take(1),
         filter(Boolean),
         tap(() =>
-          this.store.dispatch(photoActions.deleteSelectedPhotos({ photos }))
+          this.store.dispatch(audioActions.deleteSelectedAudios({ audios }))
         ),
         takeUntil(this.destroy$)
       )
@@ -212,23 +217,23 @@ export class GalleryComponent implements OnInit, OnDestroy {
   }
 
   public get deleting$(): Observable<boolean> {
-    return this.store.select(selectPhotoState).pipe(
-      map((screenshot) => screenshot.deleting),
+    return this.store.select(selectAudioState).pipe(
+      map((state) => state.deleting),
       takeUntil(this.destroy$)
     );
   }
 
-  public isSelected(photo: IPhoto): Observable<boolean> {
-    return this.selectedPhotos$.pipe(
-      map((selectedPhotos) =>
-        selectedPhotos.some((v) => v.data.id === photo.id)
+  public isSelected(audio: IAudio): Observable<boolean> {
+    return this.selectedAudios$.pipe(
+      map((selectedAudios) =>
+        selectedAudios.some((v) => v.data.id === audio.id)
       ),
       takeUntil(this.destroy$)
     );
   }
 
   public unselectAll(): void {
-    this.store.dispatch(photoActions.unselectAllPhotos());
+    this.store.dispatch(audioActions.unselectAllAudios());
   }
 
   ngOnDestroy(): void {

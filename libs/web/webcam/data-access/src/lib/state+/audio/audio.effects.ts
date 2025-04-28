@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
+import { generateVideoActions } from '@ever-co/convert-video-data-access';
+import { NotificationService } from '@ever-co/notification-data-access';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { AudioRecorderService } from '../../service/audio-recorder.service';
+import { AudioWorkerService } from '../../service/audio-woker.service';
 import { AudioService } from '../../service/audio.service';
 import { cameraActions } from '../camera/camera.actions';
 import { audioActions } from './audio.actions';
-import { generateVideoActions } from '@ever-co/convert-video-data-access';
-import { AudioWorkerService } from '../../service/audio-woker.service';
 
 @Injectable()
 export class AudioEffects {
@@ -85,9 +86,52 @@ export class AudioEffects {
     this.actions$.pipe(
       ofType(audioActions.deleteAudios),
       mergeMap(() =>
-        this.audioService.deleteAllPhoto().pipe(
+        this.audioService.deleteAll().pipe(
           map(() => audioActions.deleteAudiosSuccess()),
           catchError((error) => of(audioActions.deleteAudioFailure({ error })))
+        )
+      )
+    )
+  );
+
+  deleteSelectedAudios$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(audioActions.deleteSelectedAudios),
+      mergeMap(({ audios }) =>
+        this.audioService.deleteAll(audios).pipe(
+          map(() => {
+            this.notificationService.show('Selected audios deleted', 'success');
+            return audioActions.deleteSelectedAudiosSuccess({
+              audios,
+            });
+          }),
+          catchError((error) =>
+            of(audioActions.deleteSelectedAudiosFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  loadAudios$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(audioActions.loadAudios),
+      mergeMap((options) =>
+        this.audioService.getAll(options).pipe(
+          map((response) => audioActions.loadAudiosSuccess(response)),
+          catchError((error) => of(audioActions.loadAudiosFailure({ error })))
+        )
+      )
+    )
+  );
+
+  loadAudio$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(audioActions.loadAudio),
+      mergeMap((options) =>
+        this.audioService.getOne(options).pipe(
+          map((audio) => audioActions.loadAudioSuccess({ audio })),
+          catchError((error) => of(audioActions.loadAudioFailure({ error })))
         )
       )
     )
@@ -97,6 +141,7 @@ export class AudioEffects {
     private actions$: Actions,
     private readonly audioService: AudioService,
     private readonly audioRecorderService: AudioRecorderService,
-    private readonly audioWorkerService: AudioWorkerService
+    private readonly audioWorkerService: AudioWorkerService,
+    private readonly notificationService: NotificationService
   ) {}
 }

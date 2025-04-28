@@ -42,10 +42,10 @@ import {
     ActionButtonGroupComponent,
     ImgFallbackDirective,
   ],
-  templateUrl: './photo.component.html',
-  styleUrl: './photo.component.scss',
+  templateUrl: './detail.component.html',
+  styleUrl: './detail.component.scss',
 })
-export class PhotoComponent implements OnInit, OnDestroy {
+export class DetailComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   public actionButtons: IActionButton[] = [
     {

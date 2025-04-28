@@ -19,7 +19,7 @@ export const libraryRoutes: Route[] = [
           import('@ever-co/screenshot-feature').then((m) => m.screenshotRoutes),
       },
       {
-        path: 'photos',
+        path: 'webcams',
         loadChildren: () =>
           import('@ever-co/webcam-feature').then((m) => m.libraryRoutes),
       },
