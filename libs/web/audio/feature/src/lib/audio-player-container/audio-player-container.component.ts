@@ -31,16 +31,20 @@ import {
   InlineComponent,
   PlayerComponent,
 } from '@ever-co/audio-ui';
-import { IAudio, ISelected } from '@ever-co/shared-utils';
+import { IAudio, isDeepEqual, ISelected } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import {
   catchError,
+  concatMap,
+  defer,
+  delay,
+  distinctUntilChanged,
   EMPTY,
   filter,
-  from,
   fromEvent,
   map,
   Observable,
+  of,
   Subject,
   switchMap,
   take,
@@ -157,10 +161,12 @@ export class AudioPlayerContainerComponent implements OnInit, OnDestroy {
           this.store.dispatch(audioPlayerActions.toggleMute());
         }
       });
+
     this.synchronizeService.onSynchronize
       .pipe(
         withLatestFrom(this.currentAudio$, this.isPlaying$),
-        switchMap(([audio, current]) => {
+        distinctUntilChanged(isDeepEqual.bind(this)),
+        concatMap(([audio, current]) => {
           if (!current) {
             return EMPTY;
           }
@@ -175,16 +181,23 @@ export class AudioPlayerContainerComponent implements OnInit, OnDestroy {
             this.player.load();
           }
 
-          return from(this.togglePlayPause()).pipe(
-            tap(() =>
-              this.store.dispatch(audioPlayerActions.synchronizeAudioSuccess())
-            ),
-            catchError((error) => {
-              this.store.dispatch(
-                audioPlayerActions.synchronizeAudioFailure({ error })
-              );
-              return EMPTY;
-            })
+          return of(true).pipe(
+            delay(150),
+            switchMap(() =>
+              this.togglePlayPause$.pipe(
+                tap(() =>
+                  this.store.dispatch(
+                    audioPlayerActions.synchronizeAudioSuccess()
+                  )
+                ),
+                catchError((error) => {
+                  this.store.dispatch(
+                    audioPlayerActions.synchronizeAudioFailure({ error })
+                  );
+                  return EMPTY;
+                })
+              )
+            )
           );
         }),
         takeUntil(this.destroy$)
@@ -229,18 +242,20 @@ export class AudioPlayerContainerComponent implements OnInit, OnDestroy {
     return this.store.select(selectIsMuted);
   }
 
-  public async togglePlayPause(): Promise<void> {
-    if (!this.player) return;
+  public get togglePlayPause$(): Observable<void> {
+    return defer(async () => {
+      if (!this.player) return;
 
-    try {
       if (this.player.paused) {
         await this.player.play();
       } else {
         this.player.pause();
       }
-    } catch (error) {
-      console.error('Playback error:', error);
-    }
+    });
+  }
+
+  public togglePlayPause(): void {
+    this.togglePlayPause$.pipe(take(1)).subscribe();
   }
 
   public toggleMute(): void {
@@ -285,6 +300,15 @@ export class AudioPlayerContainerComponent implements OnInit, OnDestroy {
   private pauseIfPlaying(): void {
     if (this.player && !this.player.paused) {
       this.player.pause();
+      this.store.dispatch(
+        audioPlayerActions.updateAudioState({
+          currentTime: 0,
+          duration: 0,
+          isPlaying: false,
+          volume: this.player.volume,
+          isMuted: this.player.muted,
+        })
+      );
     }
   }
 
