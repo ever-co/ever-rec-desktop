@@ -1,0 +1,79 @@
+<!-- playing -->
+@let isPlaying = isPlaying$ | async;
+
+<!-- progress -->
+@let progress = progressPercentage$ | async;
+
+<!-- current time -->
+@let currentTime = currentTimeFormatted$ | async;
+
+<!-- duration -->
+@let duration = durationFormatted$ | async;
+
+<!-- Select mode -->
+
+@switch(mode) {
+<!-- card -->
+@case('card') {
+<lib-audio-card
+  [audio]="audio"
+  [isPlaying]="isPlaying"
+  [progress]="progress"
+  [currentTime]="currentTime"
+  [duration]="duration"
+  (playPause)="togglePlayPause()"
+  (seek)="handleSeek($event)"
+  (skipForward)="skipForward()"
+  (skipBack)="skipBack()"
+></lib-audio-card>
+}
+<!-- inline -->
+@case('inline') {
+<lib-audio-inline
+  [audio]="audio"
+  [isPlaying]="isPlaying"
+  [progress]="progress"
+  [currentTime]="currentTime"
+  [duration]="duration"
+  (playPause)="togglePlayPause()"
+  (seek)="handleSeek($event)"
+></lib-audio-inline>
+}
+<!-- player -->
+@case('player') {
+<!-- Muted -->
+@let isMuted = isMuted$ | async;
+<!-- volume -->
+@let volume = volume$ | async;
+<!-- remaing time -->
+@let remainingTime = remainingTimeFormatted$ | async;
+<!-- complete player -->
+<lib-audio-player
+  [audio]="audio"
+  [isPlaying]="isPlaying"
+  [progress]="progress"
+  [currentTime]="currentTime"
+  [remainingTime]="remainingTime"
+  [volume]="volume"
+  [isMuted]="isMuted"
+  (playPause)="togglePlayPause()"
+  (seek)="handleSeek($event)"
+  (skipForward)="skipForward()"
+  (skipBack)="skipBack()"
+  (volumeChange)="setVolume($event)"
+  (muteToggle)="toggleMute()"
+></lib-audio-player>
+}
+<!-- host -->
+@default {
+<lib-audio-host
+  [audio]="audio"
+  [isPlaying]="isPlaying"
+  [progress]="progress"
+  [currentTime]="currentTime"
+  (playPause)="togglePlayPause()"
+  (seek)="handleSeek($event)"
+></lib-audio-host>
+} }
+
+<audio #player [src]="audio.pathname" preload="metadata" hidden></audio>

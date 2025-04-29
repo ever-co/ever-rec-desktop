@@ -24,6 +24,8 @@ import { audioActions, selectAudioState } from '@ever-co/webcam-data-access';
 import { Store } from '@ngrx/store';
 import { Observable, Subject, filter, map, take, takeUntil, tap } from 'rxjs';
 
+import { AudioPlayerContainerComponent } from '@ever-co/audio-feature';
+
 @Component({
   selector: 'lib-audio-gallery',
   imports: [
@@ -34,6 +36,7 @@ import { Observable, Subject, filter, map, take, takeUntil, tap } from 'rxjs';
     MatProgressSpinnerModule,
     AudioComponent,
     GalleryButtonsActionComponent,
+    AudioPlayerContainerComponent,
   ],
   templateUrl: './gallery.component.html',
   styleUrl: './gallery.component.scss',

@@ -1,0 +1,26 @@
+<div class="flex items-center gap-2">
+  <button
+    mat-icon-button
+    (click)="muteToggle.emit()"
+    class="text-gray-400"
+    aria-label="Toggle mute"
+  >
+    @if(isMuted || volume === 0) {
+    <mat-icon>volume_off</mat-icon>
+    }@else { @if(volume > 0.5) {
+    <mat-icon>volume_up</mat-icon>
+    }@else {
+    <mat-icon>volume_down</mat-icon>
+    } }
+  </button>
+
+  <input
+    type="range"
+    min="0"
+    max="1"
+    step="0.01"
+    [value]="volume"
+    (input)="volumeChange.emit($any($event.target).value)"
+    class="flex-1 accent-green-500 h-1 bg-gray-700 rounded-full appearance-none cursor-pointer"
+  />
+</div>

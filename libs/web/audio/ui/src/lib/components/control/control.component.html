@@ -1,0 +1,29 @@
+<div class="flex justify-center items-center gap-4">
+  <button
+    mat-icon-button
+    (click)="skipBack.emit()"
+    class="text-gray-300"
+    aria-label="Skip backward 10 seconds"
+  >
+    <mat-icon>replay_10</mat-icon>
+  </button>
+
+  <button
+    mat-fab
+    color="primary"
+    (click)="playPause.emit()"
+    class="bg-green-500"
+    [attr.aria-label]="isPlaying ? 'Pause' : 'Play'"
+  >
+    <mat-icon>{{ isPlaying ? 'pause' : 'play_arrow' }}</mat-icon>
+  </button>
+
+  <button
+    mat-icon-button
+    (click)="skipForward.emit()"
+    class="text-gray-300"
+    aria-label="Skip forward 10 seconds"
+  >
+    <mat-icon>forward_10</mat-icon>
+  </button>
+</div>

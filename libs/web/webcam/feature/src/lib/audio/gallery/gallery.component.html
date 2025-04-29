@@ -21,7 +21,11 @@
   </div>
   <div>
     @if(audio) {
-    <lib-audio mode="card" class="card" [audio]="audio"></lib-audio>
+    <lib-audio-player-container
+      mode="player"
+      class="card"
+      [audio]="audio"
+    ></lib-audio-player-container>
     }
   </div>
 </div>
