@@ -10,8 +10,9 @@
 <!-- duration -->
 @let duration = durationFormatted$ | async;
 
+<!-- Check if audio is available -->
+@if(audio) {
 <!-- Select mode -->
-
 @switch(mode) {
 <!-- card -->
 @case('card') {
@@ -78,3 +79,4 @@
 } }
 
 <audio #player [src]="audio.pathname" preload="metadata" hidden></audio>
+}

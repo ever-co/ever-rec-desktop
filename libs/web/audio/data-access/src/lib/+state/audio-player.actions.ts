@@ -12,6 +12,7 @@ export const audioPlayerActions = createActionGroup({
     'Toggle Mute': emptyProps(),
     'Skip Forward': emptyProps(),
     'Skip Backward': emptyProps(),
+    'Select Audio': props<{ audio: IAudio }>(),
     'Update Audio State': props<{
       currentTime: number;
       duration: number;

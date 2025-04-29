@@ -1,6 +1,20 @@
 @let audios = audios$ | async;
+
 <!-- Is Available -->
-@let audio = audios?.[0];
+@let currentAudio = currentAudio$ | async;
+
+<!-- playing -->
+@let isPlaying = isPlaying$ | async;
+
+<!-- progress -->
+@let progress = progressPercentage$ | async;
+
+<!-- current time -->
+@let currentTime = currentTimeFormatted$ | async;
+
+<!-- duration -->
+@let duration = durationFormatted$ | async;
+
 <!-- Available -->
 
 @if (isAvailable$ | async) {
@@ -11,20 +25,29 @@
     class="grid grid-cols-1 w-full static gap-4 pr-6 overflow-auto max-h-custom main"
   >
     @for (audio of audios; track audio.id) {
-    <lib-audio
-      (selected)="selectAudio($event)"
-      [checked]="isSelected(audio) | async"
+    <!-- Check if the audio is selected -->
+    @let isSelected = audio.id === currentAudio?.id;
+    <!-- Get duration -->
+    @let audioDuration = audio?.metadata?.duration| humanize : 's' : 'mm:ss' : {
+    trim: false };
+    <!-- Check if the audio is playing -->
+    <lib-audio-inline
       class="card"
       [audio]="audio"
-    ></lib-audio>
+      [isPlaying]="isPlaying && isSelected"
+      [progress]="isSelected ? progress : 0"
+      [currentTime]="isSelected ? currentTime : '00:00'"
+      [duration]="isSelected ? duration : audioDuration"
+      (playPause)="togglePlayPause(audio)"
+    ></lib-audio-inline>
     }
   </div>
   <div>
-    @if(audio) {
+    @if(currentAudio) {
     <lib-audio-player-container
-      mode="host"
+      [audio]="currentAudio"
+      mode="player"
       class="card"
-      [audio]="audio"
     ></lib-audio-player-container>
     }
   </div>

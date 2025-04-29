@@ -7,11 +7,13 @@ import {
   HostBinding,
   Input,
   OnDestroy,
+  OnInit,
   Output,
   ViewChild,
 } from '@angular/core';
 import {
   audioPlayerActions,
+  selectCurrentAudio,
   selectCurrentTimeFormatted,
   selectDuration,
   selectDurationFormatted,
@@ -30,7 +32,16 @@ import {
 } from '@ever-co/audio-ui';
 import { IAudio, ISelected } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
-import { fromEvent, Subject, take, takeUntil, tap } from 'rxjs';
+import {
+  filter,
+  fromEvent,
+  map,
+  Subject,
+  take,
+  takeUntil,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 
 @Component({
   selector: 'lib-audio-player-container',
@@ -45,12 +56,13 @@ import { fromEvent, Subject, take, takeUntil, tap } from 'rxjs';
   styleUrl: './audio-player-container.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AudioPlayerContainerComponent implements OnDestroy {
+export class AudioPlayerContainerComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   @ViewChild('player', { static: false })
   playerRef!: ElementRef<HTMLAudioElement>;
-  @Input({ required: true }) audio!: IAudio;
+
+  @Input() audio!: IAudio;
   @Input() mode: AudioPlayerMode = 'inline';
   @Input() checked: boolean | null = false;
   @Output() selected = new EventEmitter<ISelected<IAudio>>();
@@ -62,6 +74,14 @@ export class AudioPlayerContainerComponent implements OnDestroy {
 
   constructor(private readonly store: Store) {}
 
+  ngOnInit(): void {
+    if (this.audio) {
+      this.store.dispatch(
+        audioPlayerActions.selectAudio({ audio: this.audio })
+      );
+    }
+  }
+
   ngAfterViewInit(): void {
     if (!this.playerRef) return;
 
@@ -69,12 +89,17 @@ export class AudioPlayerContainerComponent implements OnDestroy {
 
     // Set up event listeners
     fromEvent(player, 'loadedmetadata')
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
+      .pipe(
+        withLatestFrom(this.store.select(selectCurrentAudio)),
+        map(([_, audio]) => audio),
+        filter(Boolean),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((audio) => {
         this.store.dispatch(
           audioPlayerActions.updateAudioState({
             currentTime: player.currentTime,
-            duration: this.audio.metadata?.duration || player.duration || 0,
+            duration: audio.metadata?.duration || player.duration || 0,
             isPlaying: !player.paused,
             volume: player.volume,
             isMuted: player.muted,
@@ -91,11 +116,14 @@ export class AudioPlayerContainerComponent implements OnDestroy {
       });
 
     fromEvent(player, 'play')
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.store.dispatch(
-          audioPlayerActions.playAudio({ audio: this.audio })
-        );
+      .pipe(
+        withLatestFrom(this.store.select(selectCurrentAudio)),
+        map(([_, audio]) => audio),
+        filter(Boolean),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((audio) => {
+        this.store.dispatch(audioPlayerActions.playAudio({ audio }));
       });
 
     fromEvent(player, 'pause')

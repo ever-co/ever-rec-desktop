@@ -24,6 +24,11 @@ export const initialAudioPlayerState: IAudioPlayerState = {
 
 export const reducer = createReducer(
   initialAudioPlayerState,
+  on(audioPlayerActions.selectAudio, (state, { audio }) => ({
+    ...state,
+    currentAudio: audio,
+  })),
+
   on(audioPlayerActions.playAudio, (state, { audio }) => ({
     ...state,
     currentAudio: audio,

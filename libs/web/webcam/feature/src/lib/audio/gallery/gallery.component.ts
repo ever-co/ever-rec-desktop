@@ -11,6 +11,7 @@ import {
   NoDataComponent,
 } from '@ever-co/shared-components';
 import {
+  HumanizePipe,
   InfiniteScrollDirective,
   selectDatePickerState,
 } from '@ever-co/shared-service';
@@ -24,7 +25,16 @@ import { audioActions, selectAudioState } from '@ever-co/webcam-data-access';
 import { Store } from '@ngrx/store';
 import { Observable, Subject, filter, map, take, takeUntil, tap } from 'rxjs';
 
+import {
+  audioPlayerActions,
+  selectCurrentAudio,
+  selectCurrentTimeFormatted,
+  selectDurationFormatted,
+  selectIsPlaying,
+  selectProgressPercentage,
+} from '@ever-co/audio-data-access';
 import { AudioPlayerContainerComponent } from '@ever-co/audio-feature';
+import { InlineComponent } from '@ever-co/audio-ui';
 
 @Component({
   selector: 'lib-audio-gallery',
@@ -37,6 +47,8 @@ import { AudioPlayerContainerComponent } from '@ever-co/audio-feature';
     AudioComponent,
     GalleryButtonsActionComponent,
     AudioPlayerContainerComponent,
+    InlineComponent,
+    HumanizePipe,
   ],
   templateUrl: './gallery.component.html',
   styleUrl: './gallery.component.scss',
@@ -235,8 +247,43 @@ export class GalleryComponent implements OnInit, OnDestroy {
     );
   }
 
+  public togglePlayPause(audio: IAudio): void {
+    this.isPlaying$
+      .pipe(
+        take(1),
+        tap((isPlaying) => {
+          this.store.dispatch(
+            isPlaying
+              ? audioPlayerActions.pauseAudio()
+              : audioPlayerActions.playAudio({ audio })
+          );
+        })
+      )
+      .subscribe();
+  }
+
   public unselectAll(): void {
     this.store.dispatch(audioActions.unselectAllAudios());
+  }
+
+  public get currentAudio$(): Observable<IAudio | null> {
+    return this.store.select(selectCurrentAudio);
+  }
+
+  public get isPlaying$() {
+    return this.store.select(selectIsPlaying);
+  }
+
+  public get progressPercentage$() {
+    return this.store.select(selectProgressPercentage);
+  }
+
+  public get currentTimeFormatted$() {
+    return this.store.select(selectCurrentTimeFormatted);
+  }
+
+  public get durationFormatted$() {
+    return this.store.select(selectDurationFormatted);
   }
 
   ngOnDestroy(): void {
