@@ -13,6 +13,7 @@ import {
 import {
   audioPlayerActions,
   selectCurrentTimeFormatted,
+  selectDuration,
   selectDurationFormatted,
   selectIsMuted,
   selectIsPlaying,
@@ -29,7 +30,7 @@ import {
 } from '@ever-co/audio-ui';
 import { IAudio, ISelected } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
-import { fromEvent, Subject, takeUntil } from 'rxjs';
+import { fromEvent, Subject, take, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'lib-audio-player-container',
@@ -61,29 +62,6 @@ export class AudioPlayerContainerComponent implements OnDestroy {
 
   constructor(private readonly store: Store) {}
 
-  // Selectors
-  public get isPlaying$() {
-    return this.store.select(selectIsPlaying);
-  }
-  public get progressPercentage$() {
-    return this.store.select(selectProgressPercentage);
-  }
-  public get currentTimeFormatted$() {
-    return this.store.select(selectCurrentTimeFormatted);
-  }
-  public get durationFormatted$() {
-    return this.store.select(selectDurationFormatted);
-  }
-  public get remainingTimeFormatted$() {
-    return this.store.select(selectRemainingTimeFormatted);
-  }
-  public get volume$() {
-    return this.store.select(selectVolume);
-  }
-  public get isMuted$() {
-    return this.store.select(selectIsMuted);
-  }
-
   ngAfterViewInit(): void {
     if (!this.playerRef) return;
 
@@ -93,7 +71,6 @@ export class AudioPlayerContainerComponent implements OnDestroy {
     fromEvent(player, 'loadedmetadata')
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
-        console.log(this.player);
         this.store.dispatch(
           audioPlayerActions.updateAudioState({
             currentTime: player.currentTime,
@@ -143,38 +120,45 @@ export class AudioPlayerContainerComponent implements OnDestroy {
           this.store.dispatch(audioPlayerActions.toggleMute());
         }
       });
-
-    // Initialize if metadata is already available
-    if (this.audio.metadata?.duration) {
-      this.store.dispatch(
-        audioPlayerActions.updateAudioState({
-          currentTime: 0,
-          duration: this.audio.metadata.duration,
-          isPlaying: false,
-          volume: player.volume,
-          isMuted: player.muted,
-        })
-      );
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-    this.pauseIfPlaying();
   }
 
   public get player(): HTMLAudioElement | undefined {
     return this.playerRef?.nativeElement;
   }
 
+  // Selectors
+  public get isPlaying$() {
+    return this.store.select(selectIsPlaying);
+  }
+
+  public get progressPercentage$() {
+    return this.store.select(selectProgressPercentage);
+  }
+
+  public get currentTimeFormatted$() {
+    return this.store.select(selectCurrentTimeFormatted);
+  }
+
+  public get durationFormatted$() {
+    return this.store.select(selectDurationFormatted);
+  }
+
+  public get remainingTimeFormatted$() {
+    return this.store.select(selectRemainingTimeFormatted);
+  }
+
+  public get volume$() {
+    return this.store.select(selectVolume);
+  }
+
+  public get isMuted$() {
+    return this.store.select(selectIsMuted);
+  }
+
   public async togglePlayPause(): Promise<void> {
     if (!this.player) return;
 
     try {
-      this.store.dispatch(
-        audioPlayerActions.togglePlayPause({ audio: this.audio })
-      );
       if (this.player.paused) {
         await this.player.play();
       } else {
@@ -194,7 +178,6 @@ export class AudioPlayerContainerComponent implements OnDestroy {
   public setVolume(value: number): void {
     if (!this.player) return;
     const volume = Math.max(0, Math.min(1, value));
-    this.store.dispatch(audioPlayerActions.updateVolume({ volume }));
     this.player.volume = volume;
     this.player.muted = volume === 0;
   }
@@ -202,27 +185,38 @@ export class AudioPlayerContainerComponent implements OnDestroy {
   public skipBack(): void {
     if (!this.player) return;
     const time = Math.max(0, this.player.currentTime - 10);
-    this.store.dispatch(audioPlayerActions.seekAudio({ time }));
     this.player.currentTime = time;
   }
 
   public skipForward(): void {
     if (!this.player) return;
     const time = Math.min(this.player.duration, this.player.currentTime + 10);
-    this.store.dispatch(audioPlayerActions.seekAudio({ time }));
     this.player.currentTime = time;
   }
 
   public handleSeek(ratio: number): void {
-    if (!this.player) return;
-    const time = this.player.duration * ratio;
-    this.store.dispatch(audioPlayerActions.seekAudio({ time }));
-    this.player.currentTime = time;
+    this.store
+      .select(selectDuration)
+      .pipe(
+        take(1),
+        tap((duration) => {
+          if (!this.player) return;
+          const time = duration * ratio;
+          this.player.currentTime = time;
+        })
+      )
+      .subscribe();
   }
 
   private pauseIfPlaying(): void {
     if (this.player && !this.player.paused) {
       this.player.pause();
     }
+  }
+
+  public ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.pauseIfPlaying();
   }
 }
