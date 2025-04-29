@@ -15,7 +15,6 @@ import {
 } from '@ever-co/convert-video-data-access';
 import {
   ActionButtonGroupComponent,
-  AudioComponent,
   ConfirmationDialogService,
   NoDataComponent,
   VideoComponent,
@@ -47,6 +46,8 @@ import {
   tap,
 } from 'rxjs';
 
+import { AudioPlayerContainerComponent } from '@ever-co/audio-feature';
+
 @Component({
   selector: 'lib-video-detail',
   imports: [
@@ -67,7 +68,7 @@ import {
     CopyToClipboardDirective,
     ResolutionPipe,
     FormsModule,
-    AudioComponent,
+    AudioPlayerContainerComponent,
   ],
   templateUrl: './video-detail.component.html',
   styleUrl: './video-detail.component.scss',

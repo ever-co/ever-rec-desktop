@@ -78,7 +78,10 @@
 
       @if(video.audio) {
       <div class="mb-4">
-        <lib-audio [audio]="video.audio"></lib-audio>
+        <lib-audio-player-container
+          mode="inline"
+          [audio]="video.audio"
+        ></lib-audio-player-container>
       </div>
       } @if(video.metadata) {
       <div class="space-y-4">

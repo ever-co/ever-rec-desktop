@@ -5,7 +5,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 
 import {
-  AudioComponent,
   ConfirmationDialogService,
   GalleryButtonsActionComponent,
   NoDataComponent,
@@ -44,7 +43,6 @@ import { InlineComponent } from '@ever-co/audio-ui';
     NoDataComponent,
     MatCardModule,
     MatProgressSpinnerModule,
-    AudioComponent,
     GalleryButtonsActionComponent,
     AudioPlayerContainerComponent,
     InlineComponent,
