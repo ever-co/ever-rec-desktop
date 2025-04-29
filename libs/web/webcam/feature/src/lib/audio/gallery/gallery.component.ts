@@ -247,19 +247,8 @@ export class GalleryComponent implements OnInit, OnDestroy {
     );
   }
 
-  public togglePlayPause(audio: IAudio): void {
-    this.isPlaying$
-      .pipe(
-        take(1),
-        tap((isPlaying) => {
-          this.store.dispatch(
-            isPlaying
-              ? audioPlayerActions.pauseAudio()
-              : audioPlayerActions.playAudio({ audio })
-          );
-        })
-      )
-      .subscribe();
+  public synchronize(audio: IAudio): void {
+    this.store.dispatch(audioPlayerActions.synchronizeAudio({ audio }));
   }
 
   public unselectAll(): void {

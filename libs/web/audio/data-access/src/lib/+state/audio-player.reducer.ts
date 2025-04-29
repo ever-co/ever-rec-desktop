@@ -9,6 +9,7 @@ export interface IAudioPlayerState {
   currentTime: number;
   duration: number;
   isPlaying: boolean;
+  syncing: boolean;
   volume: number;
   isMuted: boolean;
 }
@@ -20,6 +21,7 @@ export const initialAudioPlayerState: IAudioPlayerState = {
   isPlaying: false,
   volume: 1,
   isMuted: false,
+  syncing: false,
 };
 
 export const reducer = createReducer(
@@ -59,6 +61,18 @@ export const reducer = createReducer(
   on(audioPlayerActions.updateAudioState, (state, payload) => ({
     ...state,
     ...payload,
+  })),
+  on(audioPlayerActions.synchronizeAudio, (state, { audio }) => ({
+    ...state,
+    syncing: true,
+  })),
+  on(audioPlayerActions.synchronizeAudioSuccess, (state) => ({
+    ...state,
+    syncing: false,
+  })),
+  on(audioPlayerActions.synchronizeAudioFailure, (state) => ({
+    ...state,
+    syncing: false,
   }))
 );
 

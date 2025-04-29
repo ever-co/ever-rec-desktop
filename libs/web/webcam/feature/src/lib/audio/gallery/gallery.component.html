@@ -38,7 +38,7 @@
       [progress]="isSelected ? progress : 0"
       [currentTime]="isSelected ? currentTime : '00:00'"
       [duration]="isSelected ? duration : audioDuration"
-      (playPause)="togglePlayPause(audio)"
+      (playPause)="synchronize(audio)"
     ></lib-audio-inline>
     }
   </div>

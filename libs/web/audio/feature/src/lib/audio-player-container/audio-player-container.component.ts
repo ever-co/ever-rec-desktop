@@ -13,6 +13,7 @@ import {
 } from '@angular/core';
 import {
   audioPlayerActions,
+  AudioPlayerSyncService,
   selectCurrentAudio,
   selectCurrentTimeFormatted,
   selectDuration,
@@ -33,10 +34,15 @@ import {
 import { IAudio, ISelected } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import {
+  catchError,
+  EMPTY,
   filter,
+  from,
   fromEvent,
   map,
+  Observable,
   Subject,
+  switchMap,
   take,
   takeUntil,
   tap,
@@ -72,7 +78,10 @@ export class AudioPlayerContainerComponent implements OnInit, OnDestroy {
     return `audio-player-${this.mode}`;
   }
 
-  constructor(private readonly store: Store) {}
+  constructor(
+    private readonly store: Store,
+    private readonly synchronizeService: AudioPlayerSyncService
+  ) {}
 
   ngOnInit(): void {
     if (this.audio) {
@@ -90,7 +99,7 @@ export class AudioPlayerContainerComponent implements OnInit, OnDestroy {
     // Set up event listeners
     fromEvent(player, 'loadedmetadata')
       .pipe(
-        withLatestFrom(this.store.select(selectCurrentAudio)),
+        withLatestFrom(this.currentAudio$),
         map(([_, audio]) => audio),
         filter(Boolean),
         takeUntil(this.destroy$)
@@ -117,7 +126,7 @@ export class AudioPlayerContainerComponent implements OnInit, OnDestroy {
 
     fromEvent(player, 'play')
       .pipe(
-        withLatestFrom(this.store.select(selectCurrentAudio)),
+        withLatestFrom(this.currentAudio$),
         map(([_, audio]) => audio),
         filter(Boolean),
         takeUntil(this.destroy$)
@@ -148,6 +157,43 @@ export class AudioPlayerContainerComponent implements OnInit, OnDestroy {
           this.store.dispatch(audioPlayerActions.toggleMute());
         }
       });
+    this.synchronizeService.onSynchronize
+      .pipe(
+        withLatestFrom(this.currentAudio$, this.isPlaying$),
+        switchMap(([audio, current]) => {
+          if (!current) {
+            return EMPTY;
+          }
+
+          const isSame = audio.id === current.id;
+
+          if (!isSame && audio && this.player) {
+            this.pauseIfPlaying();
+            this.store.dispatch(audioPlayerActions.selectAudio({ audio }));
+            this.player.currentTime = 0;
+            this.player.src = audio.pathname;
+            this.player.load();
+          }
+
+          return from(this.togglePlayPause()).pipe(
+            tap(() =>
+              this.store.dispatch(audioPlayerActions.synchronizeAudioSuccess())
+            ),
+            catchError((error) => {
+              this.store.dispatch(
+                audioPlayerActions.synchronizeAudioFailure({ error })
+              );
+              return EMPTY;
+            })
+          );
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
+
+  public get currentAudio$(): Observable<IAudio | null> {
+    return this.store.select(selectCurrentAudio);
   }
 
   public get player(): HTMLAudioElement | undefined {
