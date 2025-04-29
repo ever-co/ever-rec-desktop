@@ -54,9 +54,9 @@ export const reducer = createReducer(
     volume,
     isMuted: volume === 0 ? true : state.isMuted,
   })),
-  on(audioPlayerActions.toggleMute, (state) => ({
+  on(audioPlayerActions.toggleMute, (state, { isMuted }) => ({
     ...state,
-    isMuted: !state.isMuted,
+    isMuted,
   })),
   on(audioPlayerActions.updateAudioState, (state, payload) => ({
     ...state,

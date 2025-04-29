@@ -157,9 +157,10 @@ export class AudioPlayerContainerComponent implements OnInit, OnDestroy {
         this.store.dispatch(
           audioPlayerActions.updateVolume({ volume: player.volume })
         );
-        if (player.muted) {
-          this.store.dispatch(audioPlayerActions.toggleMute());
-        }
+
+        this.store.dispatch(
+          audioPlayerActions.toggleMute({ isMuted: player.muted })
+        );
       });
 
     this.synchronizeService.onSynchronize
@@ -260,8 +261,10 @@ export class AudioPlayerContainerComponent implements OnInit, OnDestroy {
 
   public toggleMute(): void {
     if (!this.player) return;
-    this.store.dispatch(audioPlayerActions.toggleMute());
     this.player.muted = !this.player.muted;
+    this.store.dispatch(
+      audioPlayerActions.toggleMute({ isMuted: this.player.muted })
+    );
   }
 
   public setVolume(value: number): void {
