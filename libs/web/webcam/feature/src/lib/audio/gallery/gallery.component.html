@@ -21,16 +21,19 @@
 <div
   class="flex"
   [ngClass]="{
-    'flex-col-reverse': layoutService.isMobileView(),
+    'flex-col-reverse sm:flex-row': layoutService.isMobileView(),
     'gap-2': !layoutService.isMobileView(),
-    'gap-4': layoutService.isMobileView()
+    'gap-4 sm:gap-2': layoutService.isMobileView()
   }"
 >
   <div
     libInfiniteScroll
     (scrolled)="moreAudios()"
     class="grid grid-cols-1 static gap-4 overflow-auto max-h-custom main"
-    [ngClass]="{ 'pr-4': !layoutService.isMobileView() }"
+    [ngClass]="{
+      'pr-4': !layoutService.isMobileView(),
+      'sm:pr-4': layoutService.isMobileView()
+    }"
   >
     @for (audio of audios; track audio.id) {
     <!-- Check if the audio is selected -->
