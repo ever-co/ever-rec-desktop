@@ -1,28 +1,10 @@
-@let audios = audios$ | async;
-
-<!-- Is Available -->
-@let currentAudio = currentAudio$ | async;
-
-<!-- playing -->
-@let isPlaying = isPlaying$ | async;
-
-<!-- progress -->
-@let progress = progressPercentage$ | async;
-
-<!-- current time -->
-@let currentTime = currentTimeFormatted$ | async;
-
-<!-- duration -->
-@let duration = durationFormatted$ | async;
-
-<!-- Is Mobile View -->
-@let isMobileView = layoutService.isMobileView();
-
-<!-- Available -->
-
+@let audios = audios$ | async; @let currentAudio = currentAudio$ | async; @let
+isPlaying = isPlaying$ | async; @let progress = progressPercentage$ | async;
+@let currentTime = currentTimeFormatted$ | async; @let duration =
+durationFormatted$ | async; @let isMobileView = layoutService.isMobileView();
 @if (isAvailable$ | async) {
 <div
-  class="flex"
+  class="flex transition-all duration-300 ease-in-out"
   [ngClass]="{
     'flex-col-reverse sm:flex-row': isMobileView,
     'gap-2': !isMobileView,
@@ -32,7 +14,7 @@
   <div
     libInfiniteScroll
     (scrolled)="moreAudios()"
-    class="grid grid-cols-1 static gap-4 overflow-auto max-h-custom main"
+    class="grid grid-cols-1 static gap-4 overflow-auto max-h-custom main transition-all duration-300"
     [ngClass]="{
       'pr-4': !isMobileView,
       'sm:pr-4': isMobileView,
@@ -50,10 +32,11 @@
     <!-- Check if the audio is playing -->
     <div
       [ngClass]="{
-        'pt-12': checked,
-        'bg-gray-800': checked
+        'pt-12 scale-100': checked,
+        'bg-gray-800/90': checked,
+        'scale-95': isSelected && isPlaying
       }"
-      class="relative backdrop-blur-md rounded-lg hover:bg-gray-600 hover:pt-12 group"
+      class="relative backdrop-blur-md rounded-lg transform transition-all duration-300 ease-in-out hover:bg-gray-600 hover:pt-12 hover:shadow-lg group"
     >
       <lib-audio-inline
         class="card"
@@ -65,9 +48,9 @@
         (playPause)="synchronize(audio)"
       ></lib-audio-inline>
       <div
-        class="flex w-full text-gray-900 z-[-1] absolute items-center top-0 pr-4 pl-4 group-hover:z-10 justify-between"
+        class="flex w-full text-gray-900 z-[-1] absolute items-center top-0 pr-4 pl-4 opacity-0 group-hover:opacity-100 group-hover:z-10 justify-between transition-opacity duration-300"
         [ngClass]="{
-          'z-10': checked
+          'z-10 opacity-100': checked
         }"
       >
         <mat-checkbox
@@ -77,22 +60,30 @@
           class="text-white transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-white rounded group-hover:text-indigo-600"
         >
         </mat-checkbox>
-        <button [libPopover]="group" mat-icon-button>
+        <button
+          [libPopover]="group"
+          mat-icon-button
+          class="hover:rotate-12 transition-transform duration-300"
+        >
           <mat-icon class="text-white">more_horiz</mat-icon>
         </button>
       </div>
     </div>
 
     <ng-template #group>
-      <div class="flex bg-white rounded-df shadow-lg flex-col p-2">
+      <div
+        class="flex bg-white rounded-df shadow-lg flex-col p-2 transform origin-top-right transition-all duration-300 animate-fadeIn"
+      >
         <lib-action-button
           [button]="infoButton"
           [libPopover]="metadata"
           [popoverContext]="{ audio, showDetails: true }"
+          class="hover:bg-gray-100 transition-colors duration-200"
         ></lib-action-button>
         <lib-action-button
           [button]="deleteButton"
           [data]="audio"
+          class="hover:bg-red-50 transition-colors duration-200"
         ></lib-action-button>
       </div>
     </ng-template>
@@ -101,16 +92,16 @@
 
   @if(currentAudio) {
   <div
-    class="flex gap-6"
+    class="flex gap-6 transition-all duration-500 ease-out animate-slideInRight"
     [ngClass]="{
     'flex-col': isMobileView,
      }"
   >
-    <div class="relative">
+    <div class="relative group">
       <lib-audio-player-container
         [audio]="currentAudio"
         [mode]="mode"
-        class="card"
+        class="card transition-shadow duration-300 hover:shadow-xl"
       ></lib-audio-player-container>
 
       <div
@@ -121,13 +112,14 @@
           [popoverContext]="{ audio: currentAudio, showDetails: true }"
           [color]
           mat-icon-button
+          class="hover:bg-gray-700/50 transition-colors duration-300 rounded-full"
         >
           <mat-icon>more_vert</mat-icon>
         </button>
       </div>
     </div>
 
-    <div class="hidden sm:block">
+    <div class="hidden sm:block animate-fadeIn transition-opacity duration-500">
       <ng-container
         *ngTemplateOutlet="
           metadata;
@@ -140,7 +132,9 @@
 </div>
 
 @if((size$ | async)) {
-<div class="absolute inset-x-0 action-button-group">
+<div
+  class="absolute inset-x-0 action-button-group animate-slideInUp transition-all duration-300"
+>
   <lib-gallery-buttons-action
     [buttons]="actionButtons"
     [size]="size$ | async"
@@ -148,7 +142,7 @@
   ></lib-gallery-buttons-action>
 </div>
 } } @else {
-<div class="flex h-full items-center p-4 justify-center">
+<div class="flex h-full items-center p-4 justify-center animate-pulse">
   <lib-no-data message="No audios available" class="text-center text-gray-500">
   </lib-no-data>
 </div>
@@ -157,6 +151,7 @@
 <ng-template #metadata let-audio="audio" let-showDetails="showDetails">
   @if(currentAudio || audio) {
   <div
+    class="transition-all duration-300 animate-fadeIn"
     [ngClass]="{
       'max-w-96': isMobileView,
       'max-w-80': !isMobileView,
@@ -167,6 +162,5 @@
       [showDetailedInfo]="showDetails || false"
     ></lib-audio-metadata>
   </div>
-
   }
 </ng-template>
