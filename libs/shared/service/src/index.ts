@@ -31,3 +31,4 @@ export * from './lib/hydration/hydration-data-access-provider.module';
 export * from './lib/hydration/state+/hydration.actions';
 export * from './lib/local-storage/indexed-db.service';
 export * from './lib/mediator/mediator-data-access-provider.module';
+export * from './lib/pipes/sample-rate.pipe';

@@ -34,7 +34,11 @@ import {
   selectProgressPercentage,
 } from '@ever-co/audio-data-access';
 import { AudioPlayerContainerComponent } from '@ever-co/audio-feature';
-import { AudioPlayerMode, InlineComponent } from '@ever-co/audio-ui';
+import {
+  AudioPlayerMode,
+  InlineComponent,
+  MetadataComponent,
+} from '@ever-co/audio-ui';
 
 @Component({
   selector: 'lib-audio-gallery',
@@ -48,6 +52,7 @@ import { AudioPlayerMode, InlineComponent } from '@ever-co/audio-ui';
     AudioPlayerContainerComponent,
     InlineComponent,
     HumanizePipe,
+    MetadataComponent,
   ],
   templateUrl: './gallery.component.html',
   styleUrl: './gallery.component.scss',

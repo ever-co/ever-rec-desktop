@@ -53,15 +53,34 @@
     ></lib-audio-inline>
     }
   </div>
-  <div>
-    @if(currentAudio) {
+
+  @if(currentAudio) {
+  <div
+    class="flex gap-6"
+    [ngClass]="{
+    'flex-col': layoutService.isMobileView(),
+     }"
+  >
     <lib-audio-player-container
       [audio]="currentAudio"
       [mode]="mode"
       class="card"
     ></lib-audio-player-container>
-    }
+
+    <div
+      class="hidden sm:block"
+      [ngClass]="{
+      'max-w-96': layoutService.isMobileView(),
+      'max-w-80': !layoutService.isMobileView(),
+     }"
+    >
+      <lib-audio-metadata
+        [audio]="currentAudio"
+        [showDetailedInfo]="!layoutService.isMobileView()"
+      ></lib-audio-metadata>
+    </div>
   </div>
+  }
 </div>
 
 @if((size$ | async)) {
