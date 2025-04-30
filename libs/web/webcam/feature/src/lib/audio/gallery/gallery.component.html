@@ -61,23 +61,29 @@
     'flex-col': layoutService.isMobileView(),
      }"
   >
-    <lib-audio-player-container
-      [audio]="currentAudio"
-      [mode]="mode"
-      class="card"
-    ></lib-audio-player-container>
-
-    <div
-      class="hidden sm:block"
-      [ngClass]="{
-      'max-w-96': layoutService.isMobileView(),
-      'max-w-80': !layoutService.isMobileView(),
-     }"
-    >
-      <lib-audio-metadata
+    <div class="relative">
+      <lib-audio-player-container
         [audio]="currentAudio"
-        [showDetailedInfo]="!layoutService.isMobileView()"
-      ></lib-audio-metadata>
+        [mode]="mode"
+        class="card"
+      ></lib-audio-player-container>
+
+      <div
+        class="flex block sm:hidden w-full absolute top-3 right-3 justify-end"
+      >
+        <button [libPopover]="metadata" mat-icon-button>
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="hidden sm:block">
+      <ng-container
+        *ngTemplateOutlet="
+          metadata;
+          context: { showDetails: !layoutService.isMobileView() }
+        "
+      ></ng-container>
     </div>
   </div>
   }
@@ -97,3 +103,20 @@
   </lib-no-data>
 </div>
 }
+
+<ng-template #metadata let-showDetails="showDetails">
+  @if(currentAudio) {
+  <div
+    [ngClass]="{
+      'max-w-96': layoutService.isMobileView(),
+      'max-w-80': !layoutService.isMobileView(),
+     }"
+  >
+    <lib-audio-metadata
+      [audio]="currentAudio"
+      [showDetailedInfo]="showDetails || true"
+    ></lib-audio-metadata>
+  </div>
+
+  }
+</ng-template>

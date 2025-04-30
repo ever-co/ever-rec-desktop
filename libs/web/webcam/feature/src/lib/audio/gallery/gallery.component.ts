@@ -13,6 +13,7 @@ import {
   HumanizePipe,
   InfiniteScrollDirective,
   LayoutService,
+  PopoverDirective,
   selectDatePickerState,
 } from '@ever-co/shared-service';
 import {
@@ -39,6 +40,7 @@ import {
   InlineComponent,
   MetadataComponent,
 } from '@ever-co/audio-ui';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'lib-audio-gallery',
@@ -53,6 +55,8 @@ import {
     InlineComponent,
     HumanizePipe,
     MetadataComponent,
+    PopoverDirective,
+    MatIconModule,
   ],
   templateUrl: './gallery.component.html',
   styleUrl: './gallery.component.scss',
