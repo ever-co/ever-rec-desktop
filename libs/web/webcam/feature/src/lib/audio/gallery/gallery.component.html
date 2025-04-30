@@ -15,15 +15,18 @@
 <!-- duration -->
 @let duration = durationFormatted$ | async;
 
+<!-- Is Mobile View -->
+@let isMobileView = layoutService.isMobileView();
+
 <!-- Available -->
 
 @if (isAvailable$ | async) {
 <div
   class="flex"
   [ngClass]="{
-    'flex-col-reverse sm:flex-row': layoutService.isMobileView(),
-    'gap-2': !layoutService.isMobileView(),
-    'gap-4 sm:gap-2': layoutService.isMobileView()
+    'flex-col-reverse sm:flex-row': isMobileView,
+    'gap-2': !isMobileView,
+    'gap-4 sm:gap-2': isMobileView
   }"
 >
   <div
@@ -31,9 +34,9 @@
     (scrolled)="moreAudios()"
     class="grid grid-cols-1 static gap-4 overflow-auto max-h-custom main"
     [ngClass]="{
-      'pr-4': !layoutService.isMobileView(),
-      'sm:pr-4': layoutService.isMobileView(),
-      'sm:grid-cols-2': !layoutService.isMobileView() && !currentAudio
+      'pr-4': !isMobileView,
+      'sm:pr-4': isMobileView,
+      'sm:grid-cols-2': !isMobileView && !currentAudio
     }"
   >
     @for (audio of audios; track audio.id) {
@@ -42,16 +45,44 @@
     <!-- Get duration -->
     @let audioDuration = audio?.metadata?.duration| humanize : 's' : 'mm:ss' : {
     trim: false };
+    <!-- Is checked -->
+    @let checked = isChecked(audio) | async;
     <!-- Check if the audio is playing -->
-    <lib-audio-inline
-      class="card"
-      [audio]="audio"
-      [isPlaying]="isPlaying && isSelected"
-      [progress]="isSelected ? progress : 0"
-      [currentTime]="isSelected ? currentTime : '00:00'"
-      [duration]="isSelected ? duration : audioDuration"
-      (playPause)="synchronize(audio)"
-    ></lib-audio-inline>
+    <div
+      [ngClass]="{
+        'pt-10': checked,
+        'bg-gray-200': checked
+      }"
+      class="relative rounded-lg hover:bg-gray-200 hover:pt-10 group"
+    >
+      <lib-audio-inline
+        class="card"
+        [audio]="audio"
+        [isPlaying]="isPlaying && isSelected"
+        [progress]="isSelected ? progress : 0"
+        [currentTime]="isSelected ? currentTime : '00:00'"
+        [duration]="isSelected ? duration : audioDuration"
+        (playPause)="synchronize(audio)"
+      ></lib-audio-inline>
+      <div
+        class="flex w-full text-gray-900 z-[-1] absolute top-0 pr-4 pl-4 group-hover:z-10 justify-between"
+        [ngClass]="{
+          'z-10': checked
+        }"
+      >
+        <mat-checkbox
+          [checked]="checked"
+          (change)="selectAudio($event.checked, audio)"
+          [color]="'primary'"
+          class="text-white transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-white rounded group-hover:text-indigo-600"
+        >
+        </mat-checkbox>
+        <button [libPopover]="metadata" mat-icon-button>
+          <mat-icon>more_horiz</mat-icon>
+        </button>
+      </div>
+    </div>
+
     }
   </div>
 
@@ -59,7 +90,7 @@
   <div
     class="flex gap-6"
     [ngClass]="{
-    'flex-col': layoutService.isMobileView(),
+    'flex-col': isMobileView,
      }"
   >
     <div class="relative">
@@ -80,10 +111,7 @@
 
     <div class="hidden sm:block">
       <ng-container
-        *ngTemplateOutlet="
-          metadata;
-          context: { showDetails: !layoutService.isMobileView() }
-        "
+        *ngTemplateOutlet="metadata; context: { showDetails: !isMobileView }"
       ></ng-container>
     </div>
   </div>
@@ -109,8 +137,8 @@
   @if(currentAudio) {
   <div
     [ngClass]="{
-      'max-w-96': layoutService.isMobileView(),
-      'max-w-80': !layoutService.isMobileView(),
+      'max-w-96': isMobileView,
+      'max-w-80': !isMobileView,
      }"
   >
     <lib-audio-metadata

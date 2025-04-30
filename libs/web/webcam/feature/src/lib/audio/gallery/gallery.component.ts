@@ -41,6 +41,7 @@ import {
   MetadataComponent,
 } from '@ever-co/audio-ui';
 import { MatIconModule } from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'lib-audio-gallery',
@@ -57,6 +58,7 @@ import { MatIconModule } from '@angular/material/icon';
     MetadataComponent,
     PopoverDirective,
     MatIconModule,
+    MatCheckboxModule,
   ],
   templateUrl: './gallery.component.html',
   styleUrl: './gallery.component.scss',
@@ -175,7 +177,11 @@ export class GalleryComponent implements OnInit, OnDestroy {
     );
   }
 
-  public selectAudio(audio: ISelected<IAudio>): void {
+  public selectAudio(checked: boolean, data: IAudio): void {
+    const audio: ISelected<IAudio> = {
+      data,
+      selected: checked,
+    };
     this.store.dispatch(
       audio.selected
         ? audioActions.selectAudio({ audio })
@@ -247,7 +253,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
     );
   }
 
-  public isSelected(audio: IAudio): Observable<boolean> {
+  public isChecked(audio: IAudio): Observable<boolean> {
     return this.selectedAudios$.pipe(
       map((selectedAudios) =>
         selectedAudios.some((v) => v.data.id === audio.id)
