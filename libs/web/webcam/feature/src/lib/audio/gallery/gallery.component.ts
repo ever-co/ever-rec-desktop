@@ -5,6 +5,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 
 import {
+  ActionButtonComponent,
+  ActionButtonGroupComponent,
   ConfirmationDialogService,
   GalleryButtonsActionComponent,
   NoDataComponent,
@@ -42,6 +44,7 @@ import {
 } from '@ever-co/audio-ui';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'lib-audio-gallery',
@@ -59,6 +62,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     PopoverDirective,
     MatIconModule,
     MatCheckboxModule,
+    ActionButtonComponent,
+    MatButtonModule,
   ],
   templateUrl: './gallery.component.html',
   styleUrl: './gallery.component.scss',
@@ -70,13 +75,6 @@ export class GalleryComponent implements OnInit, OnDestroy {
   private hasNext = false;
   private range!: IRange;
   public actionButtons: IActionButton[] = [
-    {
-      icon: 'visibility',
-      label: 'View',
-      variant: 'default',
-      hide: this.moreThanOneSelected$,
-      action: this.view.bind(this),
-    },
     {
       icon: 'remove_done',
       label: 'Unselect All',
@@ -99,6 +97,17 @@ export class GalleryComponent implements OnInit, OnDestroy {
       action: this.deleteAudios.bind(this),
     },
   ];
+  public deleteButton: IActionButton = {
+    icon: 'delete',
+    label: 'Delete',
+    variant: 'danger',
+    action: this.deleteAudios.bind(this),
+  };
+  public infoButton: IActionButton = {
+    icon: 'info',
+    label: 'Get Info',
+    variant: 'default',
+  };
 
   constructor(
     private readonly router: Router,

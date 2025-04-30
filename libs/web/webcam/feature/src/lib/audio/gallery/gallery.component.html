@@ -50,10 +50,10 @@
     <!-- Check if the audio is playing -->
     <div
       [ngClass]="{
-        'pt-10': checked,
+        'pt-12': checked,
         'bg-gray-200': checked
       }"
-      class="relative rounded-lg hover:bg-gray-200 hover:pt-10 group"
+      class="relative backdrop-blur-md rounded-lg hover:bg-gray-200 hover:pt-12 group"
     >
       <lib-audio-inline
         class="card"
@@ -65,7 +65,7 @@
         (playPause)="synchronize(audio)"
       ></lib-audio-inline>
       <div
-        class="flex w-full text-gray-900 z-[-1] absolute top-0 pr-4 pl-4 group-hover:z-10 justify-between"
+        class="flex w-full text-gray-900 z-[-1] absolute items-center top-0 pr-4 pl-4 group-hover:z-10 justify-between"
         [ngClass]="{
           'z-10': checked
         }"
@@ -77,12 +77,25 @@
           class="text-white transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-white rounded group-hover:text-indigo-600"
         >
         </mat-checkbox>
-        <button [libPopover]="metadata" mat-icon-button>
+        <button [libPopover]="group" mat-icon-button>
           <mat-icon>more_horiz</mat-icon>
         </button>
       </div>
     </div>
 
+    <ng-template #group>
+      <div class="flex bg-white rounded-df shadow-lg flex-col p-2">
+        <lib-action-button
+          [button]="infoButton"
+          [libPopover]="metadata"
+          [popoverContext]="{ audio }"
+        ></lib-action-button>
+        <lib-action-button
+          [button]="deleteButton"
+          [data]="audio"
+        ></lib-action-button>
+      </div>
+    </ng-template>
     }
   </div>
 
@@ -133,8 +146,8 @@
 </div>
 }
 
-<ng-template #metadata let-showDetails="showDetails">
-  @if(currentAudio) {
+<ng-template #metadata let-audio="audio" let-showDetails="showDetails">
+  @if(currentAudio || audio) {
   <div
     [ngClass]="{
       'max-w-96': isMobileView,
@@ -142,7 +155,7 @@
      }"
   >
     <lib-audio-metadata
-      [audio]="currentAudio"
+      [audio]="audio || currentAudio"
       [showDetailedInfo]="showDetails || true"
     ></lib-audio-metadata>
   </div>
