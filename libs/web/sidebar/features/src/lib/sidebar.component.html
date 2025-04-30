@@ -25,7 +25,7 @@
       <mat-icon
         class="nav-icon transition-transform duration-200"
         [ngClass]="{
-          'text-indigo-700': selectedItem?.title === item.title,
+          'text-indigo-700 selected': selectedItem?.title === item.title,
           'text-gray-600': selectedItem?.title !== item.title,
           'scale-110': selectedItem?.title === item.title
         }"
@@ -35,7 +35,7 @@
       <span
         class="nav-text ml-1"
         [ngClass]="{
-          'text-indigo-700': selectedItem?.title === item.title,
+          'text-indigo-700 font-bold': selectedItem?.title === item.title,
           'text-gray-700': selectedItem?.title !== item.title
         }"
       >
