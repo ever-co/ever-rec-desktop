@@ -64,6 +64,7 @@ export const reducer = createReducer(
   })),
   on(audioPlayerActions.synchronizeAudio, (state, { audio }) => ({
     ...state,
+    currentAudio: state.currentAudio ?? audio,
     syncing: true,
   })),
   on(audioPlayerActions.synchronizeAudioSuccess, (state) => ({

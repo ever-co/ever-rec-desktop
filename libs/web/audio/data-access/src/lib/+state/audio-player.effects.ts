@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { tap } from 'rxjs/operators';
+import { delay, tap } from 'rxjs/operators';
 import { AudioPlayerSyncService } from '../services/audio-player-sync.service';
 import { audioPlayerActions } from './audio-player.actions';
 
@@ -10,6 +10,7 @@ export class AudioPlayerEffects {
     () =>
       this.actions$.pipe(
         ofType(audioPlayerActions.synchronizeAudio),
+        delay(100),
         tap(({ audio }) => this.synchronizeService.synchronize(audio))
       ),
     { dispatch: false }
