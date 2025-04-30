@@ -160,6 +160,8 @@ durationFormatted$ | async; @let isMobileView = layoutService.isMobileView();
     <lib-audio-metadata
       [audio]="audio || currentAudio"
       [showDetailedInfo]="showDetails || false"
+      (viewVideo)="viewVideo($event)"
+      (viewTimeLog)="viewTimeLog($event)"
     ></lib-audio-metadata>
   </div>
   }

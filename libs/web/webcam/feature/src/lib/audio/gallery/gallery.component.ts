@@ -21,6 +21,8 @@ import {
   IAudio,
   IRange,
   ISelected,
+  ITimeLog,
+  IVideo,
 } from '@ever-co/shared-utils';
 import { audioActions, selectAudioState } from '@ever-co/webcam-data-access';
 import { Store } from '@ngrx/store';
@@ -43,6 +45,7 @@ import {
   InlineComponent,
   MetadataComponent,
 } from '@ever-co/audio-ui';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'lib-audio-gallery',
@@ -109,7 +112,8 @@ export class GalleryComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly confirmationDialogService: ConfirmationDialogService,
-    public readonly layoutService: LayoutService
+    public readonly layoutService: LayoutService,
+    private readonly router: Router
   ) {}
 
   ngOnInit(): void {
@@ -272,6 +276,16 @@ export class GalleryComponent implements OnInit, OnDestroy {
       ),
       takeUntil(this.destroy$)
     );
+  }
+
+  public async viewTimeLog(timeLogId: ITimeLog['id']): Promise<void> {
+    await this.router.navigate(['/', 'timesheet'], {
+      queryParams: { timeLogId },
+    });
+  }
+
+  public async viewVideo(videoId: IVideo['id']): Promise<void> {
+    await this.router.navigate(['/', 'library', 'videos', videoId]);
   }
 
   public synchronize(audio: IAudio): void {

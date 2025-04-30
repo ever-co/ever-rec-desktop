@@ -42,6 +42,7 @@ import {
 import { Store } from '@ngrx/store';
 import {
   concatMap,
+  debounceTime,
   exhaustMap,
   filter,
   map,
@@ -53,27 +54,28 @@ import {
   withLatestFrom,
 } from 'rxjs';
 import { TimesheetViewComponent } from '../timesheet-view/timesheet-view.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
-    selector: 'lib-timesheet-feature',
-    imports: [
-        CommonModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatIconModule,
-        MatButtonModule,
-        MatProgressSpinnerModule,
-        HumanizePipe,
-        NoDataComponent,
-        ActionButtonGroupComponent,
-        PopoverDirective,
-        HumanizeDateRangePipe,
-        PopoverDirective,
-        MatTooltipModule,
-    ],
-    templateUrl: './timesheet.component.html',
-    styleUrl: './timesheet.component.scss'
+  selector: 'lib-timesheet-feature',
+  imports: [
+    CommonModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatIconModule,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+    HumanizePipe,
+    NoDataComponent,
+    ActionButtonGroupComponent,
+    PopoverDirective,
+    HumanizeDateRangePipe,
+    PopoverDirective,
+    MatTooltipModule,
+  ],
+  templateUrl: './timesheet.component.html',
+  styleUrl: './timesheet.component.scss',
 })
 export class TimesheetComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = [
@@ -143,7 +145,8 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     private readonly confirmationDialogService: ConfirmationDialogService,
     private readonly clipboard: Clipboard,
     private readonly matDialog: MatDialog,
-    private readonly notificationService: NotificationService
+    private readonly notificationService: NotificationService,
+    private readonly route: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -211,6 +214,17 @@ export class TimesheetComponent implements OnInit, OnDestroy {
           );
           this.loadTimeLogs(0, this.pageSize);
         }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+
+    this.route.queryParams
+      .pipe(
+        map(({ timeLogId }) => timeLogId),
+        filter(Boolean),
+        tap((timeLogId) => this.select({ id: timeLogId } as ITimeLog)),
+        debounceTime(300),
+        tap(() => this.generateVideo()),
         takeUntil(this.destroy$)
       )
       .subscribe();

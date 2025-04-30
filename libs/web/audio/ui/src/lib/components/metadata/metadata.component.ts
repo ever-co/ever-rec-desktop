@@ -43,6 +43,6 @@ export class MetadataComponent {
   @Input() audio!: IAudio | null;
   @Input() showDetailedInfo = false;
 
-  @Output() viewVideo = new EventEmitter<void>();
-  @Output() viewTimeLog = new EventEmitter<void>();
+  @Output() viewVideo = new EventEmitter<string>();
+  @Output() viewTimeLog = new EventEmitter<string>();
 }

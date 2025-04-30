@@ -90,7 +90,7 @@
   <div class="flex justify-center gap-4 p-4 pt-0">
     @if(audio?.videoId) {
     <button
-      (click)="viewVideo.emit()"
+      (click)="viewVideo.emit(audio?.videoId)"
       mat-stroked-button
       color="primary"
       class="flex items-center"
@@ -100,7 +100,7 @@
     </button>
     } @if(audio?.timeLogId) {
     <button
-      (click)="viewTimeLog.emit()"
+      (click)="viewTimeLog.emit(audio?.timeLogId)"
       mat-stroked-button
       color="primary"
       class="flex items-center"
