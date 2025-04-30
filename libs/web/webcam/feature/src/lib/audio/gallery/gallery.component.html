@@ -18,11 +18,19 @@
 <!-- Available -->
 
 @if (isAvailable$ | async) {
-<div class="flex gap-4 pr-4">
+<div
+  class="flex"
+  [ngClass]="{
+    'flex-col-reverse': layoutService.isMobileView(),
+    'gap-2': !layoutService.isMobileView(),
+    'gap-4': layoutService.isMobileView()
+  }"
+>
   <div
     libInfiniteScroll
     (scrolled)="moreAudios()"
-    class="grid grid-cols-1 w-full static gap-4 pr-6 overflow-auto max-h-custom main"
+    class="grid grid-cols-1 static gap-4 overflow-auto max-h-custom main"
+    [ngClass]="{ 'pr-4': !layoutService.isMobileView() }"
   >
     @for (audio of audios; track audio.id) {
     <!-- Check if the audio is selected -->
@@ -46,7 +54,7 @@
     @if(currentAudio) {
     <lib-audio-player-container
       [audio]="currentAudio"
-      mode="player"
+      [mode]="mode"
       class="card"
     ></lib-audio-player-container>
     }

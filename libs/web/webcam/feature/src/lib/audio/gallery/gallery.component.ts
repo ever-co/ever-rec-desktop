@@ -12,6 +12,7 @@ import {
 import {
   HumanizePipe,
   InfiniteScrollDirective,
+  LayoutService,
   selectDatePickerState,
 } from '@ever-co/shared-service';
 import {
@@ -33,7 +34,7 @@ import {
   selectProgressPercentage,
 } from '@ever-co/audio-data-access';
 import { AudioPlayerContainerComponent } from '@ever-co/audio-feature';
-import { InlineComponent } from '@ever-co/audio-ui';
+import { AudioPlayerMode, InlineComponent } from '@ever-co/audio-ui';
 
 @Component({
   selector: 'lib-audio-gallery',
@@ -90,7 +91,8 @@ export class GalleryComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly router: Router,
-    private readonly confirmationDialogService: ConfirmationDialogService
+    private readonly confirmationDialogService: ConfirmationDialogService,
+    public readonly layoutService: LayoutService
   ) {}
 
   ngOnInit(): void {
@@ -271,6 +273,10 @@ export class GalleryComponent implements OnInit, OnDestroy {
 
   public get durationFormatted$() {
     return this.store.select(selectDurationFormatted);
+  }
+
+  public get mode(): AudioPlayerMode {
+    return this.layoutService.isMobileView() ? 'card' : 'player';
   }
 
   ngOnDestroy(): void {
