@@ -51,9 +51,9 @@
     <div
       [ngClass]="{
         'pt-12': checked,
-        'bg-gray-200': checked
+        'bg-gray-800': checked
       }"
-      class="relative backdrop-blur-md rounded-lg hover:bg-gray-200 hover:pt-12 group"
+      class="relative backdrop-blur-md rounded-lg hover:bg-gray-600 hover:pt-12 group"
     >
       <lib-audio-inline
         class="card"
@@ -78,7 +78,7 @@
         >
         </mat-checkbox>
         <button [libPopover]="group" mat-icon-button>
-          <mat-icon>more_horiz</mat-icon>
+          <mat-icon class="text-white">more_horiz</mat-icon>
         </button>
       </div>
     </div>
