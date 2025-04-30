@@ -32,7 +32,8 @@
     class="grid grid-cols-1 static gap-4 overflow-auto max-h-custom main"
     [ngClass]="{
       'pr-4': !layoutService.isMobileView(),
-      'sm:pr-4': layoutService.isMobileView()
+      'sm:pr-4': layoutService.isMobileView(),
+      'sm:grid-cols-2': !layoutService.isMobileView() && !currentAudio
     }"
   >
     @for (audio of audios; track audio.id) {
