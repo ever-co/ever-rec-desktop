@@ -88,7 +88,7 @@
         <lib-action-button
           [button]="infoButton"
           [libPopover]="metadata"
-          [popoverContext]="{ audio }"
+          [popoverContext]="{ audio, showDetails: true }"
         ></lib-action-button>
         <lib-action-button
           [button]="deleteButton"
@@ -114,9 +114,14 @@
       ></lib-audio-player-container>
 
       <div
-        class="flex block sm:hidden w-full absolute top-3 right-3 justify-end"
+        class="flex block sm:hidden w-full absolute top-1 right-1 justify-end"
       >
-        <button [libPopover]="metadata" mat-icon-button>
+        <button
+          [libPopover]="metadata"
+          [popoverContext]="{ audio: currentAudio, showDetails: true }"
+          [color]
+          mat-icon-button
+        >
           <mat-icon>more_vert</mat-icon>
         </button>
       </div>
@@ -159,7 +164,7 @@
   >
     <lib-audio-metadata
       [audio]="audio || currentAudio"
-      [showDetailedInfo]="showDetails || true"
+      [showDetailedInfo]="showDetails || false"
     ></lib-audio-metadata>
   </div>
 
