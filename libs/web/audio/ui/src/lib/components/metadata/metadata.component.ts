@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { IAudio } from '@ever-co/shared-utils';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
@@ -36,4 +42,7 @@ import {
 export class MetadataComponent {
   @Input() audio!: IAudio | null;
   @Input() showDetailedInfo = false;
+
+  @Output() viewVideo = new EventEmitter<void>();
+  @Output() viewTimeLog = new EventEmitter<void>();
 }

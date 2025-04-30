@@ -1,109 +1,116 @@
 @if(audio?.metadata; as metadata) {
 <div class="w-full bg-white max-w-md rounded-lg shadow-md">
-  <div class="pb-2">
-    <div class="flex items-center p-4">
-      <div class="text-lg font-medium w-full truncate text-gray-800">
-        {{ metadata?.name || 'Audio File' }}
-      </div>
-      <div class="flex-grow">
-        @if(audio?.synced !== undefined) {
-        <div class="text-sm font-medium">
-          <mat-icon
-            class="cursor-pointer"
-            [matTooltip]="audio?.synced ? 'Synced' : 'Not Synced'"
-            [ngClass]="{
-              'text-red-500': !audio?.synced,
-              'text-green-500': audio?.synced
-            }"
-          >
-            {{ audio?.synced ? 'cloud_done' : 'cloud_off' }}
-          </mat-icon>
-        </div>
-        }
-      </div>
+  <div class="flex items-center p-4">
+    <div class="text-lg font-medium w-full truncate text-gray-800">
+      {{ metadata?.name || 'Audio File' }}
     </div>
-    <div class="px-4">
-      <div class="flex items-center justify-between py-2">
-        <div class="flex items-center">
-          <mat-icon class="text-gray-600 mr-2">access_time</mat-icon>
-          <span class="text-gray-700">{{
-            metadata?.duration | humanize : 's'
-          }}</span>
-        </div>
-        <div class="flex items-center">
-          <mat-icon class="text-gray-600 mr-2">sd_storage</mat-icon>
-          <span class="text-gray-700">{{
-            metadata?.size | humanizeBytes
-          }}</span>
-        </div>
+    <div class="flex-grow">
+      @if(audio?.synced !== undefined) {
+      <div class="text-sm font-medium">
+        <mat-icon
+          class="cursor-pointer"
+          [matTooltip]="audio?.synced ? 'Synced' : 'Not Synced'"
+          [ngClass]="{
+            'text-red-500': !audio?.synced,
+            'text-green-500': audio?.synced
+          }"
+        >
+          {{ audio?.synced ? 'cloud_done' : 'cloud_off' }}
+        </mat-icon>
       </div>
-      <mat-divider></mat-divider>
-      <div class="grid grid-cols-2 gap-4 mt-4">
-        <div *ngIf="metadata?.channels" class="flex items-center">
-          <mat-icon class="text-gray-600 mr-2">speaker_group</mat-icon>
-          <div>
-            <div class="text-sm text-gray-500">Channels</div>
-            <div class="text-gray-700">
-              {{ metadata?.channels }}
-              {{ metadata?.channels === 1 ? '(Mono)' : '(Stereo)' }}
-            </div>
-          </div>
-        </div>
-        <div *ngIf="metadata.rate" class="flex items-center justify-end">
-          <mat-icon class="text-gray-600 mr-2">graphic_eq</mat-icon>
-          <div>
-            <div class="text-sm text-gray-500">Sample Rate</div>
-            <div class="text-gray-700">{{ metadata?.rate | sampleRate }}</div>
-          </div>
-        </div>
-      </div>
-      @if(showDetailedInfo && audio){
-      <mat-divider class="my-4"></mat-divider>
-      <div *ngIf="audio.pathname" class="mb-2">
-        <div class="text-sm text-gray-500">
-          <span class="mr-1" [libCopyToClipboard]="audio.pathname"></span
-          ><span>Path</span>
-        </div>
-        <div class="text-gray-700 truncate" [matTooltip]="audio.pathname">
-          {{ audio.pathname }}
-        </div>
-      </div>
-      @if(audio.id) {
-      <div class="mb-2">
-        <div class="text-sm text-gray-500">
-          <span class="mr-1" [libCopyToClipboard]="audio.id"></span
-          ><span>ID</span>
-        </div>
-        <div class="text-gray-700 font-mono text-xs break-all">
-          {{ audio.id }}
-        </div>
-      </div>
-      } @if(audio.chunks?.length) {
-      <div class="flex items-center mt-2">
-        <mat-icon class="text-gray-600 mr-2">segments</mat-icon>
-        <div>
-          <div class="text-sm text-gray-500">Chunks</div>
-          <div class="text-gray-700">{{ audio.chunks?.length }}</div>
-        </div>
-      </div>
-      } }
-    </div>
-    @if(showDetailedInfo) {
-    <div class="flex justify-end gap-4 p-4 pt-0">
-      @if(audio?.videoId) {
-      <button mat-stroked-button color="primary" class="flex items-center">
-        <mat-icon class="mr-1">videocam</mat-icon>
-        View Video
-      </button>
-      } @if(audio?.timeLogId) {
-      <button mat-stroked-button color="primary" class="flex items-center">
-        <mat-icon class="mr-1">schedule</mat-icon>
-        View Log
-      </button>
       }
     </div>
+  </div>
+  <div class="px-4">
+    <div class="flex items-center justify-between py-2">
+      <div class="flex items-center">
+        <mat-icon class="text-gray-600 mr-2">access_time</mat-icon>
+        <span class="text-gray-700">{{
+          metadata?.duration | humanize : 's'
+        }}</span>
+      </div>
+      <div class="flex items-center">
+        <mat-icon class="text-gray-600 mr-2">sd_storage</mat-icon>
+        <span class="text-gray-700">{{ metadata?.size | humanizeBytes }}</span>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="grid grid-cols-2 gap-4 mt-4 mb-2">
+      <div *ngIf="metadata?.channels" class="flex items-center">
+        <mat-icon class="text-gray-600 mr-2">speaker_group</mat-icon>
+        <div>
+          <div class="text-sm text-gray-500">Channels</div>
+          <div class="text-gray-700">
+            {{ metadata?.channels }}
+            {{ metadata?.channels === 1 ? '(Mono)' : '(Stereo)' }}
+          </div>
+        </div>
+      </div>
+      <div *ngIf="metadata.rate" class="flex items-center justify-end">
+        <mat-icon class="text-gray-600 mr-2">graphic_eq</mat-icon>
+        <div>
+          <div class="text-sm text-gray-500">Sample Rate</div>
+          <div class="text-gray-700">{{ metadata?.rate | sampleRate }}</div>
+        </div>
+      </div>
+    </div>
+    @if(showDetailedInfo && audio){
+    <mat-divider class="my-4 mb-2"></mat-divider>
+    @if(audio.pathname){
+    <div class="mb-2">
+      <div class="text-sm text-gray-500">
+        <span class="mr-2" [libCopyToClipboard]="audio.pathname"></span
+        ><span>Path</span>
+      </div>
+      <div class="text-gray-700 truncate" [matTooltip]="audio.pathname">
+        {{ audio.pathname }}
+      </div>
+    </div>
+    } @if(audio.id) {
+    <div class="mb-4">
+      <div class="text-sm text-gray-500">
+        <span class="mr-2" [libCopyToClipboard]="audio.id"></span
+        ><span>ID</span>
+      </div>
+      <div class="text-gray-700 font-mono text-xs break-all">
+        {{ audio.id }}
+      </div>
+    </div>
+    } @if(audio.chunks?.length) {
+    <div class="flex items-center mb-4">
+      <mat-icon class="text-gray-600 mr-2">segments</mat-icon>
+      <div>
+        <div class="text-sm text-gray-500">Chunks</div>
+        <div class="text-gray-700">{{ audio.chunks?.length }}</div>
+      </div>
+    </div>
+    } }
+  </div>
+  @if(showDetailedInfo) {
+  <div class="flex justify-center gap-4 p-4 pt-0">
+    @if(audio?.videoId) {
+    <button
+      (click)="viewVideo.emit()"
+      mat-stroked-button
+      color="primary"
+      class="flex items-center"
+    >
+      <mat-icon class="mr-1">videocam</mat-icon>
+      View Video
+    </button>
+    } @if(audio?.timeLogId) {
+    <button
+      (click)="viewTimeLog.emit()"
+      mat-stroked-button
+      color="primary"
+      class="flex items-center"
+    >
+      <mat-icon class="mr-1">schedule</mat-icon>
+      View Log
+    </button>
     }
   </div>
+  }
 </div>
 }@else {
 <div

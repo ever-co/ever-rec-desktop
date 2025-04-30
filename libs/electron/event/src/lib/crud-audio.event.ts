@@ -30,7 +30,7 @@ export function crudAudioEvent(): void {
         where: {
           createdAt: Between(start, end),
         },
-        relations: ['metadata'],
+        relations: ['metadata', 'chunks'],
         order: { createdAt: 'DESC' },
         skip: (page - 1) * limit,
         take: limit,
