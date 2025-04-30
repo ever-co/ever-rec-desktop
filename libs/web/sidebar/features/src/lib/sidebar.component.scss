@@ -1,34 +1,60 @@
-.border-color {
-  border-color: #673ab7;
+.navigation-container {
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.nav-item {
+  position: relative;
+  border-radius: 8px;
+}
+
+.active-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 70%;
+  width: 3px;
+  background-color: #673ab7;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Subtle scroll bar styling */
+.navigation-container::-webkit-scrollbar {
+  width: 4px;
+}
+
+.navigation-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.navigation-container::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+/* Fix for Angular Material styles */
+::ng-deep .mat-mdc-list-item-unscoped-content {
+  width: 100%;
 }
 
 ::ng-deep .mdc-list-item__primary-text {
-  @apply text-gray-600;
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 
-::ng-deep a.tablet.mdc-list-item--with-leading-icon.mdc-list-item {
-  padding-right: 0;
-}
-
-::ng-deep .mdc-list-item.mdc-list-item--with-one-line .mdc-list-item__start {
-  height: auto;
-  @apply text-gray-600;
-}
-
-.selected ::ng-deep {
-  color: var(--mat-tab-header-active-label-text-color) !important;
-}
-
-:host ::ng-deep {
-  mat-icon {
-    margin: 0 !important;
-    margin-left: 20px !important;
+@media (max-width: 768px) {
+  .nav-item {
+    padding: 12px 8px;
   }
 
-  mat-icon:hover,
-  mat-icon:focus,
-  mat-icon:active,
-  .selected {
-    margin-left: 15px !important;
+  .active-item::before {
+    left: 0;
+    top: 0;
+    height: 3px;
+    width: 70%;
+    transform: none;
   }
 }

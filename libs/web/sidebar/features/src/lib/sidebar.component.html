@@ -1,4 +1,8 @@
-<nav class="p-2" role="navigation" aria-label="Main Navigation">
+<nav
+  class="p-2 navigation-container"
+  role="navigation"
+  aria-label="Main Navigation"
+>
   <mat-nav-list>
     @let selectedItem = selectedItem$ | async; @for (item of navigationItems$ |
     async; track item.title) {
@@ -9,22 +13,34 @@
       matTooltipPosition="right"
       [matTooltipShowDelay]="300"
       (click)="onSelect(item)"
-      class="flex items-center gap-2 p-2 transition-colors duration-200"
+      class="nav-item flex items-center gap-3 p-3 my-1 rounded-lg transition-all duration-200 ease-in-out"
       [ngClass]="{
-        'bg-indigo-50 font-semibold border-l-4 border-color':
+        'active-item font-weigth-bold bg-indigo-100 text-indigo-700 font-medium':
           selectedItem?.title === item.title,
-        'hover:bg-indigo-100': true,
-        tablet: isTabletView
+        'text-gray-700 hover:bg-indigo-50': selectedItem?.title !== item.title,
+        'justify-center': isTabletView
       }"
+      [attr.aria-current]="selectedItem?.title === item.title ? 'page' : null"
     >
       <mat-icon
-        [fontSet]="selectedItem?.title === item.title ? 'selected' : ''"
-        matListItemIcon
-        class="text-gray-600"
+        class="nav-icon transition-transform duration-200"
+        [ngClass]="{
+          'text-indigo-700': selectedItem?.title === item.title,
+          'text-gray-600': selectedItem?.title !== item.title,
+          'scale-110': selectedItem?.title === item.title
+        }"
         >{{ item.icon }}</mat-icon
       >
       @if (!isTabletView) {
-      <span class="text-gray-600" matListItemTitle>{{ item.title }}</span>
+      <span
+        class="nav-text ml-1"
+        [ngClass]="{
+          'text-indigo-700': selectedItem?.title === item.title,
+          'text-gray-700': selectedItem?.title !== item.title
+        }"
+      >
+        {{ item.title }}
+      </span>
       }
     </a>
     }
