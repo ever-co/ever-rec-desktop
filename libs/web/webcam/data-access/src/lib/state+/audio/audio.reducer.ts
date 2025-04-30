@@ -195,6 +195,23 @@ export const reducer = createReducer(
     ...state,
     loading: false,
     error,
+  })),
+
+  on(audioActions.deleteAudio, (state) => ({
+    ...state,
+    deleting: true,
+    error: '',
+  })),
+  on(audioActions.deleteAudioSuccess, (state, { id }) => ({
+    ...state,
+    deleting: false,
+    count: state.count - 1,
+    audios: state.audios.filter((audio) => audio.id !== id),
+  })),
+  on(audioActions.deleteAudioFailure, (state, { error }) => ({
+    ...state,
+    deleting: false,
+    error,
   }))
 );
 

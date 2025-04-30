@@ -137,6 +137,21 @@ export class AudioEffects {
     )
   );
 
+  deleteAudio$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(audioActions.deleteAudio),
+      mergeMap((audio) =>
+        this.audioService.delete(audio).pipe(
+          map(() => {
+            this.notificationService.show('Audio deleted', 'success');
+            return audioActions.deleteAudioSuccess(audio);
+          }),
+          catchError((error) => of(audioActions.deleteAudioFailure({ error })))
+        )
+      )
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private readonly audioService: AudioService,

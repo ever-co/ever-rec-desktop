@@ -2,11 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Router } from '@angular/router';
 
 import {
   ActionButtonComponent,
-  ActionButtonGroupComponent,
   ConfirmationDialogService,
   GalleryButtonsActionComponent,
   NoDataComponent,
@@ -28,6 +26,9 @@ import { audioActions, selectAudioState } from '@ever-co/webcam-data-access';
 import { Store } from '@ngrx/store';
 import { Observable, Subject, filter, map, take, takeUntil, tap } from 'rxjs';
 
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatIconModule } from '@angular/material/icon';
 import {
   audioPlayerActions,
   selectCurrentAudio,
@@ -42,9 +43,6 @@ import {
   InlineComponent,
   MetadataComponent,
 } from '@ever-co/audio-ui';
-import { MatIconModule } from '@angular/material/icon';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'lib-audio-gallery',
@@ -101,7 +99,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
     icon: 'delete',
     label: 'Delete',
     variant: 'danger',
-    action: this.deleteAudios.bind(this),
+    action: this.deleteAudio.bind(this),
   };
   public infoButton: IActionButton = {
     icon: 'info',
@@ -110,7 +108,6 @@ export class GalleryComponent implements OnInit, OnDestroy {
   };
 
   constructor(
-    private readonly router: Router,
     private readonly confirmationDialogService: ConfirmationDialogService,
     public readonly layoutService: LayoutService
   ) {}
@@ -226,16 +223,6 @@ export class GalleryComponent implements OnInit, OnDestroy {
     );
   }
 
-  private async view(selectedAudios: ISelected<IAudio>[]): Promise<void> {
-    const audioId = selectedAudios[0].data.id;
-    await this.router.navigate(['/', 'library', 'webcams', 'audios', audioId]);
-    this.store.dispatch(
-      audioActions.unselectAudio({
-        audio: selectedAudios[0],
-      })
-    );
-  }
-
   private deleteAudios(selectedAudios: ISelected<IAudio>[]): void {
     const audios = selectedAudios.map((audio) => audio.data);
     this.confirmationDialogService
@@ -250,6 +237,22 @@ export class GalleryComponent implements OnInit, OnDestroy {
         tap(() =>
           this.store.dispatch(audioActions.deleteSelectedAudios({ audios }))
         ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
+
+  private deleteAudio(audio: IAudio): void {
+    this.confirmationDialogService
+      .open({
+        title: 'Delete Audio',
+        message: `Are you sure you want to delete this audio?`,
+        variant: 'danger',
+      })
+      .pipe(
+        take(1),
+        filter(Boolean),
+        tap(() => this.store.dispatch(audioActions.deleteAudio(audio))),
         takeUntil(this.destroy$)
       )
       .subscribe();

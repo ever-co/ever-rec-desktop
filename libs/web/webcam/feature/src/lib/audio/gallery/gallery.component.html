@@ -124,7 +124,10 @@
 
     <div class="hidden sm:block">
       <ng-container
-        *ngTemplateOutlet="metadata; context: { showDetails: !isMobileView }"
+        *ngTemplateOutlet="
+          metadata;
+          context: { showDetails: !isMobileView, audio: currentAudio }
+        "
       ></ng-container>
     </div>
   </div>
