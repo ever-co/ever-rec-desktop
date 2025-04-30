@@ -31,6 +31,7 @@ import { Observable, Subject, filter, map, take, takeUntil, tap } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
 import {
   audioPlayerActions,
   selectCurrentAudio,
@@ -45,7 +46,6 @@ import {
   InlineComponent,
   MetadataComponent,
 } from '@ever-co/audio-ui';
-import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'lib-audio-gallery',
