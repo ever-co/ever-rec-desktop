@@ -77,18 +77,18 @@ export const reducer = createReducer(
     syncing: false,
   })),
 
-  on(audioActions.deleteAudio, (state, audio) => ({
+  on(audioActions.deleteAudioSuccess, (state, audio) => ({
     ...state,
     currentAudio:
       state?.currentAudio?.id === audio.id ? null : state.currentAudio,
   })),
 
-  on(audioActions.deleteAudios, (state) => ({
+  on(audioActions.deleteAudiosSuccess, (state) => ({
     ...state,
     currentAudio: null,
   })),
 
-  on(audioActions.deleteSelectedAudios, (state, { audios }) => {
+  on(audioActions.deleteSelectedAudiosSuccess, (state, { audios }) => {
     const find = audios.find((audio) => audio.id === state?.currentAudio?.id);
     const currentAudio = find ? null : state.currentAudio;
     return { ...state, currentAudio };
