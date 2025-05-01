@@ -7,10 +7,6 @@ export const audioRoutes: Route[] = [
     loadComponent: () =>
       import('./gallery/gallery.component').then((m) => m.GalleryComponent),
   },
-  {
-    path: ':id',
-    loadComponent: () =>
-      import('./detail/detail.component').then((m) => m.DetailComponent),
-  },
+
   { path: '**', redirectTo: '' },
 ];
