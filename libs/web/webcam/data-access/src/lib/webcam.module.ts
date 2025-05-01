@@ -5,14 +5,14 @@ import { CameraEffects } from './state+/camera/camera.effects';
 import { cameraFeature } from './state+/camera/camera.reducer';
 import { PhotoEffects } from './state+/photo/photo.effects';
 import { photoFeature } from './state+/photo/photo.reducer';
-import { AudioEffects } from './state+/audio/audio.effects';
-import { audioFeature } from './state+/audio/audio.reducer';
+import { AudioRecordingEffects } from './state+/audio-recording/audio-recording.effects';
+import { audioRecordingFeature } from './state+/audio-recording/audio-recording.reducer';
 
 export function provideWebcamDataAccess(): EnvironmentProviders {
   return makeEnvironmentProviders([
-    provideEffects(CameraEffects, PhotoEffects, AudioEffects),
+    provideEffects(CameraEffects, PhotoEffects, AudioRecordingEffects),
     provideState(cameraFeature),
     provideState(photoFeature),
-    provideState(audioFeature),
+    provideState(audioRecordingFeature),
   ]);
 }

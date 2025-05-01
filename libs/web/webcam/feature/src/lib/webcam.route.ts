@@ -18,12 +18,6 @@ export const libraryRoutes: Route[] = [
     loadChildren: () =>
       import('./photo/photo.route').then((m) => m.photoRoutes),
   },
-  {
-    path: 'audios',
-    loadChildren: () =>
-      import('./audio/audio.route').then((m) => m.audioRoutes),
-  },
-
   { path: '**', redirectTo: '' },
 ];
 

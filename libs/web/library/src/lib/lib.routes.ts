@@ -23,6 +23,11 @@ export const libraryRoutes: Route[] = [
         loadChildren: () =>
           import('@ever-co/webcam-feature').then((m) => m.libraryRoutes),
       },
+      {
+        path: 'audios',
+        loadChildren: () =>
+          import('@ever-co/audio-feature').then((m) => m.audioRoutes),
+      },
       { path: '**', redirectTo: '' },
     ],
   },

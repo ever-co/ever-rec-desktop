@@ -62,11 +62,11 @@ import {
     PlayerComponent,
     InlineComponent,
   ],
-  templateUrl: './audio-player-container.component.html',
-  styleUrl: './audio-player-container.component.scss',
+  templateUrl: './player-container.component.html',
+  styleUrl: './player-container.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AudioPlayerContainerComponent implements OnInit, OnDestroy {
+export class PlayerContainerComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   @ViewChild('player', { static: false })

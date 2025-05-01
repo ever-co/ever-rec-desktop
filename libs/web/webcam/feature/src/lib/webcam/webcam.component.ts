@@ -8,7 +8,7 @@ import { selectScreenshotState } from '@ever-co/screenshot-data-access';
 import { ActionButtonGroupComponent } from '@ever-co/shared-components';
 import { IActionButton } from '@ever-co/shared-utils';
 import {
-  audioActions,
+  audioRecordingActions,
   cameraActions,
   photoActions,
   selectAudioKillSwitch,
@@ -130,14 +130,14 @@ export class WebcamComponent implements OnInit, OnDestroy {
           if (!canUseMicrophone) {
             return console.log('No permission to use microphone');
           }
-          this.store.dispatch(audioActions.startRecording({ stream }));
+          this.store.dispatch(audioRecordingActions.startRecording({ stream }));
         })
       )
       .subscribe();
   }
 
   private stopRecording(delayed?: boolean): void {
-    this.store.dispatch(audioActions.stopRecording({ delayed }));
+    this.store.dispatch(audioRecordingActions.stopRecording({ delayed }));
   }
 
   ngOnDestroy(): void {

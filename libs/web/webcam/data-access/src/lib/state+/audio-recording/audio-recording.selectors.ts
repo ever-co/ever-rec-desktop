@@ -1,8 +1,8 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import * as fromAudio from './audio.reducer';
+import * as fromAudioRecording from './audio-recording.reducer';
 
-export const selectAudioState = createFeatureSelector<fromAudio.IAudioState>(
-  fromAudio.audioFeatureKey
+export const selectAudioState = createFeatureSelector<fromAudioRecording.IAudioRecordingState>(
+  fromAudioRecording.audioRecordingFeatureKey
 );
 
 export const selectRecordingState = createSelector(

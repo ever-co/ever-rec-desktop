@@ -7,5 +7,5 @@ export * from './lib/state+/photo/photo.actions';
 export * from './lib/state+/photo/photo.selectors';
 export * from './lib/webcam.module';
 export * from './lib/service/photo.service';
-export * from './lib/state+/audio/audio.selectors';
-export * from './lib/state+/audio/audio.actions';
+export * from './lib/state+/audio-recording/audio-recording.selectors';
+export * from './lib/state+/audio-recording/audio-recording.actions';

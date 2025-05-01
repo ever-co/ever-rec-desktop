@@ -24,7 +24,7 @@ import {
   ITimeLog,
   IVideo,
 } from '@ever-co/shared-utils';
-import { audioActions, selectAudioState } from '@ever-co/webcam-data-access';
+import { audioActions, selectAudioState } from '@ever-co/audio-data-access';
 import { Store } from '@ngrx/store';
 import { Observable, Subject, filter, map, take, takeUntil, tap } from 'rxjs';
 
@@ -40,12 +40,12 @@ import {
   selectIsPlaying,
   selectProgressPercentage,
 } from '@ever-co/audio-data-access';
-import { AudioPlayerContainerComponent } from '@ever-co/audio-feature';
 import {
   AudioPlayerMode,
   InlineComponent,
   MetadataComponent,
 } from '@ever-co/audio-ui';
+import { PlayerContainerComponent } from '../player-container/player-container.component';
 
 @Component({
   selector: 'lib-audio-gallery',
@@ -56,7 +56,7 @@ import {
     MatCardModule,
     MatProgressSpinnerModule,
     GalleryButtonsActionComponent,
-    AudioPlayerContainerComponent,
+    PlayerContainerComponent,
     InlineComponent,
     HumanizePipe,
     MetadataComponent,

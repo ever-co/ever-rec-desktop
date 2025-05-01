@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
+import { IEntity, IndexedDBService } from '@ever-co/shared-service';
 import { filter, switchMap } from 'rxjs';
-import { IEntity, IndexedDBService } from '../local-storage/indexed-db.service';
+
 
 export interface AppStateSchema<T = any> extends IEntity {
   type: string;

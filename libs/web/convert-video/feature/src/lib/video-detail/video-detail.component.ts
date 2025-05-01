@@ -46,7 +46,7 @@ import {
   tap,
 } from 'rxjs';
 
-import { AudioPlayerContainerComponent } from '@ever-co/audio-feature';
+import { PlayerContainerComponent } from '@ever-co/audio-feature';
 
 @Component({
   selector: 'lib-video-detail',
@@ -68,7 +68,7 @@ import { AudioPlayerContainerComponent } from '@ever-co/audio-feature';
     CopyToClipboardDirective,
     ResolutionPipe,
     FormsModule,
-    AudioPlayerContainerComponent,
+    PlayerContainerComponent,
   ],
   templateUrl: './video-detail.component.html',
   styleUrl: './video-detail.component.scss',

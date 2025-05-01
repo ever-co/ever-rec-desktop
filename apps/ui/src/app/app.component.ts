@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { hydrationActions } from '@ever-co/shared-service';
+import { hydrationActions } from '@ever-co/factory';
 import { Store } from '@ngrx/store';
 
 @Component({

@@ -46,7 +46,7 @@ export class LibraryComponent implements OnDestroy {
     },
     {
       title: 'Audios',
-      route: 'webcams/audios',
+      route: 'audios',
       icon: 'graphic_eq',
     },
   ];

@@ -19,8 +19,8 @@
       "executor": "@nx/angular:package",
       "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
       "options": {
-        "project": "libs/web/webcam/data-access/ng-package.json",
-        "webWorkerTsConfig": "libs/web/webcam/data-access/tsconfig.worker.json"
+        "project": "libs/web/webcam/data-access/ng-package.json"
+
       },
       "configurations": {
         "production": {

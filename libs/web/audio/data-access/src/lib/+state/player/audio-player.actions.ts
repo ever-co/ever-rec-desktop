@@ -15,7 +15,7 @@ export const audioPlayerActions = createActionGroup({
     'Select Audio': props<{ audio: IAudio }>(),
     'Synchronize Audio': props<{ audio: IAudio }>(),
     'Synchronize Audio Success': emptyProps(),
-    'Synchronize Audio Failure': props<{ error: any }>(),
+    'Synchronize Audio Failure': props<{ error: string }>(),
     'Update Audio State': props<{
       currentTime: number;
       duration: number;

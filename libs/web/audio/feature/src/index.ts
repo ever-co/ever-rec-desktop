@@ -1,1 +1,2 @@
-export * from './lib/audio-player-container/audio-player-container.component';
+export * from './lib/player-container/player-container.component';
+export * from './lib/audio.route';

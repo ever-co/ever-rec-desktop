@@ -1,7 +1,7 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { audioPlayerActions } from './audio-player.actions';
 import { IAudio } from '@ever-co/shared-utils';
-import { audioActions } from '@ever-co/webcam-data-access';
+import { audioActions } from '../crud/audio.actions';
 
 export const audioPlayerFeatureKey = 'audioPlayer';
 
@@ -13,6 +13,7 @@ export interface IAudioPlayerState {
   syncing: boolean;
   volume: number;
   isMuted: boolean;
+  error: string | null;
 }
 
 export const initialAudioPlayerState: IAudioPlayerState = {
@@ -23,6 +24,7 @@ export const initialAudioPlayerState: IAudioPlayerState = {
   volume: 1,
   isMuted: false,
   syncing: false,
+  error: null
 };
 
 export const reducer = createReducer(
@@ -72,9 +74,10 @@ export const reducer = createReducer(
     ...state,
     syncing: false,
   })),
-  on(audioPlayerActions.synchronizeAudioFailure, (state) => ({
+  on(audioPlayerActions.synchronizeAudioFailure, (state, {error}) => ({
     ...state,
     syncing: false,
+    error
   })),
 
   on(audioActions.deleteAudioSuccess, (state, audio) => ({

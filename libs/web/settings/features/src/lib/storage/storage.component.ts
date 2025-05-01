@@ -35,15 +35,14 @@ import { AutoScreenshotDeletionComponent } from '../auto-screenshot-deletion/aut
 import { AwsStorageComponent } from '../aws-storage/aws-storage.component';
 import { UploadConfigComponent } from '../upload-config/upload-config.component';
 import {
-  audioActions,
   photoActions,
-  selectAudioState,
   selectPhotoState,
 } from '@ever-co/webcam-data-access';
 import {
   selectVideoState,
   videoActions,
 } from '@ever-co/convert-video-data-access';
+import { audioActions, selectAudioState } from '@ever-co/audio-data-access';
 
 @Component({
   selector: 'lib-storage',
