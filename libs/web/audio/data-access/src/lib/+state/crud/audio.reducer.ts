@@ -1,6 +1,7 @@
 import { IAudio, ISelected } from '@ever-co/shared-utils';
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { audioActions } from './audio.actions';
+import { audioRecordingActions } from '@ever-co/webcam-data-access';
 
 export const audioFeatureKey = 'audio CRUD';
 
@@ -161,6 +162,10 @@ export const reducer = createReducer(
     ...state,
     deleting: false,
     error,
+  })),
+  on(audioRecordingActions.saveAudioSuccess, (state, { audio }) => ({
+    ...state,
+    audios: [audio, ...state.audios],
   }))
 );
 
