@@ -106,6 +106,7 @@ export const reducer = createReducer(
       ...state,
       video: updatedVideo,
       videos: updatedVideos,
+      count: state.count - videos.length,
       deleting: false,
     };
   }),

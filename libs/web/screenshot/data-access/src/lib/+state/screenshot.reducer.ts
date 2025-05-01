@@ -264,6 +264,7 @@ export const reducer = createReducer(
 
       return {
         ...state,
+        count: state.count - screenshots.length,
         screenshots: updatedScreenshots,
         deleting: false,
       };
@@ -349,7 +350,7 @@ export const reducer = createReducer(
     purging: true,
   })),
 
-  on(screenshotActions.purgeSuccess, (state) => ({
+  on(screenshotActions.purgeSuccess, () => ({
     ...initialState,
   })),
 

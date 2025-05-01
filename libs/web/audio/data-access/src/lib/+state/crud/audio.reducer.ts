@@ -64,6 +64,7 @@ export const reducer = createReducer(
 
     return {
       ...state,
+      count: state.count - audios.length,
       audios: updatedAudios,
       deleting: false,
     };
@@ -166,6 +167,7 @@ export const reducer = createReducer(
   on(audioRecordingActions.saveAudioSuccess, (state, { audio }) => ({
     ...state,
     audios: [audio, ...state.audios],
+    count: state.count + 1,
   }))
 );
 

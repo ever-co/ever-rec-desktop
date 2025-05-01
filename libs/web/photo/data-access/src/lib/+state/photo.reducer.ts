@@ -92,7 +92,8 @@ export const reducer = createReducer(
 
   on(photoCaptureActions.savePhotoSuccess, (state, { photo }) => ({
     ...state,
-    photos: [...state.photos, photo],
+    photos: [photo, ...state.photos],
+    count: state.count + 1,
     photo,
   })),
 
@@ -113,6 +114,7 @@ export const reducer = createReducer(
 
     return {
       ...state,
+      count: state.count - photos.length,
       photos: updatedPhotos,
       deleting: false,
     };
