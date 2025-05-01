@@ -4,11 +4,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 
+import { PhotoComponent } from '@ever-co/photo-ui';
+
+import { photoActions, selectPhotoState } from '@ever-co/photo-data-access';
 import {
   ConfirmationDialogService,
   GalleryButtonsActionComponent,
   NoDataComponent,
-  PhotoComponent,
 } from '@ever-co/shared-components';
 import {
   InfiniteScrollDirective,
@@ -20,7 +22,6 @@ import {
   IRange,
   ISelected,
 } from '@ever-co/shared-utils';
-import { photoActions, selectPhotoState } from '@ever-co/webcam-data-access';
 import { Store } from '@ngrx/store';
 import { Observable, Subject, filter, map, take, takeUntil, tap } from 'rxjs';
 
@@ -183,13 +184,8 @@ export class GalleryComponent implements OnInit, OnDestroy {
   }
 
   private async view(selectedPhotos: ISelected<IPhoto>[]): Promise<void> {
-    const photoId = selectedPhotos[0].data.id;
-    await this.router.navigate(['/', 'library', 'photos', photoId]);
-    this.store.dispatch(
-      photoActions.unselectPhoto({
-        photo: selectedPhotos[0],
-      })
-    );
+    const photo = selectedPhotos[0].data;
+    this.onView(photo);
   }
 
   private deletePhotos(selectedPhotos: ISelected<IPhoto>[]): void {
@@ -228,6 +224,27 @@ export class GalleryComponent implements OnInit, OnDestroy {
   }
 
   public unselectAll(): void {
+    this.store.dispatch(photoActions.unselectAllPhotos());
+  }
+
+  public onDelete(photo: IPhoto): void {
+    this.confirmationDialogService
+      .open({
+        title: 'Delete Photo',
+        message: `Are you sure you want to delete this photo?`,
+        variant: 'danger',
+      })
+      .pipe(
+        take(1),
+        filter(Boolean),
+        tap(() => this.store.dispatch(photoActions.deletePhoto(photo))),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
+
+  public async onView(photo: IPhoto): Promise<void> {
+    await this.router.navigate(['/', 'library', 'photos', photo.id]);
     this.store.dispatch(photoActions.unselectAllPhotos());
   }
 

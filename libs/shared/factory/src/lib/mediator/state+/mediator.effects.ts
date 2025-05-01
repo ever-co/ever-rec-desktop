@@ -6,7 +6,7 @@ import {
   isDeepEqual,
   MessageType,
 } from '@ever-co/shared-utils';
-import { audioRecordingActions, photoActions } from '@ever-co/webcam-data-access';
+import { audioRecordingActions, photoCaptureActions } from '@ever-co/webcam-data-access';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { distinctUntilChanged, filter, map, tap } from 'rxjs/operators';
@@ -53,7 +53,7 @@ export class MediatorEffects {
         ofType(
           audioRecordingActions.startRecordingSuccess,
           audioRecordingActions.stopRecordingSuccess,
-          photoActions.startTrackingSuccess,
+          photoCaptureActions.startTrackingSuccess,
           audioRecordingActions.saveAudioSuccess
         ),
         // Filter for actions that should be synced

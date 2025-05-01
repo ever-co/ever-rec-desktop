@@ -41,7 +41,7 @@ export class LibraryComponent implements OnDestroy {
     },
     {
       title: 'Photos',
-      route: 'webcams/photos',
+      route: 'photos',
       icon: 'photo_library',
     },
     {

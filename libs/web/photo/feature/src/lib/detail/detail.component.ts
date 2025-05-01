@@ -4,6 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
+import { photoActions, selectPhotoState } from '@ever-co/photo-data-access';
 import {
   ActionButtonGroupComponent,
   ConfirmationDialogService,
@@ -16,7 +17,6 @@ import {
   UtcToLocalTimePipe,
 } from '@ever-co/shared-service';
 import { IActionButton, IPhoto } from '@ever-co/shared-utils';
-import { photoActions, selectPhotoState } from '@ever-co/webcam-data-access';
 import { Store } from '@ngrx/store';
 import {
   filter,

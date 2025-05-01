@@ -13,7 +13,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
+import { audioActions, selectAudioState } from '@ever-co/audio-data-access';
+import {
+  selectVideoState,
+  videoActions,
+} from '@ever-co/convert-video-data-access';
 import { NotificationService } from '@ever-co/notification-data-access';
+import { photoActions, selectPhotoState } from '@ever-co/photo-data-access';
 import {
   screenshotActions,
   selectScreenshotState,
@@ -34,15 +40,6 @@ import { filter, map, Observable, Subject, take, takeUntil, tap } from 'rxjs';
 import { AutoScreenshotDeletionComponent } from '../auto-screenshot-deletion/auto-screenshot-deletion.component';
 import { AwsStorageComponent } from '../aws-storage/aws-storage.component';
 import { UploadConfigComponent } from '../upload-config/upload-config.component';
-import {
-  photoActions,
-  selectPhotoState,
-} from '@ever-co/webcam-data-access';
-import {
-  selectVideoState,
-  videoActions,
-} from '@ever-co/convert-video-data-access';
-import { audioActions, selectAudioState } from '@ever-co/audio-data-access';
 
 @Component({
   selector: 'lib-storage',

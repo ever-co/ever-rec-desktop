@@ -4,20 +4,14 @@ import {
   Channel,
   IPaginationOptions,
   IPaginationResponse,
-  IPhoto,
-  IPhotoSave,
+  IPhoto
 } from '@ever-co/shared-utils';
-import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PhotoService {
   constructor(private readonly electronService: ElectronService) {}
-
-  public save(options: IPhotoSave): Promise<IPhoto> {
-    return this.electronService.invoke(Channel.SAVE_PHOTO, options);
-  }
 
   public getAllPhotos(
     options: IPaginationOptions<IPhoto>
@@ -35,21 +29,5 @@ export class PhotoService {
 
   public deleteAllPhoto(photos?: IPhoto[]): Promise<void> {
     return this.electronService.invoke(Channel.DELETE_ALL_PHOTOS, photos);
-  }
-
-  public stopCapture(): Observable<void> {
-    return of(this.electronService.send(Channel.STOP_TRACKING));
-  }
-
-  public startCapture(): Observable<void> {
-    return of(this.electronService.send(Channel.START_TRACKING));
-  }
-
-  public requestCapture(): Observable<void> {
-    return this.electronService.fromEvent(Channel.TAKE_PHOTO);
-  }
-
-  public requestTracking(): Observable<void> {
-    return this.electronService.fromEvent(Channel.REQUEST_TRACKING);
   }
 }

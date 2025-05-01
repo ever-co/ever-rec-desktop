@@ -8,6 +8,8 @@
   <lib-photo
     (selected)="selectPhoto($event)"
     [checked]="isSelected(photo) | async"
+    (viewed)="onView(photo)"
+    (deleted)="onDelete(photo)"
     class="card"
     [photo]="photo"
   ></lib-photo>

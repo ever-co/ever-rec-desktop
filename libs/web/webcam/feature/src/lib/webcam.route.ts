@@ -11,16 +11,6 @@ export const settingRoutes: Route[] = [
   { path: '**', redirectTo: '' },
 ];
 
-export const libraryRoutes: Route[] = [
-  { path: '', redirectTo: '', pathMatch: 'full' },
-  {
-    path: 'photos',
-    loadChildren: () =>
-      import('./photo/photo.route').then((m) => m.photoRoutes),
-  },
-  { path: '**', redirectTo: '' },
-];
-
 export const webcamRoutes: Route[] = [
   { path: '', redirectTo: '', pathMatch: 'full' },
   {

@@ -2,14 +2,13 @@ import {
   IPaginationOptions,
   IPaginationResponse,
   IPhoto,
-  IPhotoSave,
   ISelected,
   IFindOneOptions,
 } from '@ever-co/shared-utils';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 export const photoActions = createActionGroup({
-  source: 'Photo',
+  source: 'PhotoCrud',
   events: {
     'Load Photos': props<IPaginationOptions<IPhoto>>(),
     'Load Photos Success': props<IPaginationResponse<IPhoto>>(),
@@ -18,10 +17,6 @@ export const photoActions = createActionGroup({
     'Load Photo': props<IFindOneOptions<IPhoto>>(),
     'Load Photo Success': props<{ photo: IPhoto }>(),
     'Load Photo Failure': props<{ error: string }>(),
-
-    'Save Photo': props<IPhotoSave>(),
-    'Save Photo Success': props<{ photo: IPhoto }>(),
-    'Save Photo Failure': props<{ error: string }>(),
 
     'Delete Photo': props<IPhoto>(),
     'Delete Photo Success': props<{ id: string }>(),
@@ -41,13 +36,5 @@ export const photoActions = createActionGroup({
     'Unselect All Photos': emptyProps(),
     'Unselect Photo': props<{ photo: ISelected<IPhoto> }>(),
     'Select Photo': props<{ photo: ISelected<IPhoto> }>(),
-
-    'Start Tracking': emptyProps(),
-    'Start Tracking Success': emptyProps(),
-    'Start Tracking Failure': props<{ error: string }>(),
-
-    'Stop Tracking': emptyProps(),
-    'Stop Tracking Success': emptyProps(),
-    'Stop Tracking Failure': props<{ error: string }>(),
   },
 });

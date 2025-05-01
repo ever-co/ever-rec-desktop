@@ -8,12 +8,14 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { NotificationService } from '@ever-co/notification-data-access';
+import { IPhoto } from '@ever-co/shared-utils';
 import {
   cameraActions,
   CameraService,
-  photoActions,
-  PhotoService,
+  photoCaptureActions,
+  PhotoCaptureService,
   selectCameraAuthorizations,
   selectCameraPersistance,
   selectCameraStreaming,
@@ -39,8 +41,6 @@ import {
   withLatestFrom,
 } from 'rxjs';
 import { ControlComponent } from '../control/control.component';
-import { MatIconModule } from '@angular/material/icon';
-import { IPhoto } from '@ever-co/shared-utils';
 
 @Component({
   selector: 'lib-preview',
@@ -63,7 +63,7 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
   constructor(
     private readonly cameraService: CameraService,
     private readonly notificationService: NotificationService,
-    private readonly photoService: PhotoService,
+    private readonly photoService: PhotoCaptureService,
     private readonly store: Store
   ) {}
 
@@ -96,7 +96,9 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
         take(1),
         filter(({ canUseCamera }) => canUseCamera),
         tap(({ resolution }) =>
-          this.store.dispatch(photoActions.savePhoto({ dataURL, resolution }))
+          this.store.dispatch(
+            photoCaptureActions.savePhoto({ dataURL, resolution })
+          )
         )
       )
       .subscribe();

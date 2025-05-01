@@ -19,9 +19,9 @@ export const libraryRoutes: Route[] = [
           import('@ever-co/screenshot-feature').then((m) => m.screenshotRoutes),
       },
       {
-        path: 'webcams',
+        path: 'photos',
         loadChildren: () =>
-          import('@ever-co/webcam-feature').then((m) => m.libraryRoutes),
+          import('@ever-co/photo-feature').then((m) => m.photoRoutes),
       },
       {
         path: 'audios',

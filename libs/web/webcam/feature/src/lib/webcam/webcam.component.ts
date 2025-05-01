@@ -10,7 +10,7 @@ import { IActionButton } from '@ever-co/shared-utils';
 import {
   audioRecordingActions,
   cameraActions,
-  photoActions,
+  photoCaptureActions,
   selectAudioKillSwitch,
   selectCameraAuthorizations,
   selectCameraStreaming,
@@ -94,7 +94,7 @@ export class WebcamComponent implements OnInit, OnDestroy {
           if (micIsOn) {
             this.stopRecording(true);
           } else {
-            this.store.dispatch(photoActions.stopTracking());
+            this.store.dispatch(photoCaptureActions.stopTracking());
           }
         })
       )

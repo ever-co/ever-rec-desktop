@@ -3,9 +3,10 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { NotificationService } from '@ever-co/notification-data-access';
 import { from, of } from 'rxjs';
-import { catchError, concatMap, map, mergeMap } from 'rxjs/operators';
-import { PhotoService } from '../../service/photo.service';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 import { photoActions } from './photo.actions';
+import { PhotoService } from '../services/photo.service';
+
 
 @Injectable()
 export class PhotoEffects {
@@ -48,18 +49,6 @@ export class PhotoEffects {
     )
   );
 
-  savePhoto$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(photoActions.savePhoto),
-      concatMap(({ dataURL, resolution }) =>
-        from(this.photoService.save({ dataURL, resolution })).pipe(
-          map((photo) => photoActions.savePhotoSuccess({ photo })),
-          catchError((error) => of(photoActions.savePhotoFailure({ error })))
-        )
-      )
-    );
-  });
-
   deleteSelectedScreenshots$ = createEffect(() =>
     this.actions$.pipe(
       ofType(photoActions.deleteSelectedPhotos),
@@ -86,32 +75,6 @@ export class PhotoEffects {
         from(this.photoService.deleteAllPhoto()).pipe(
           map(() => photoActions.deletePhotosSuccess()),
           catchError((error) => of(photoActions.deletePhotosFailure({ error })))
-        )
-      )
-    )
-  );
-
-  startTracking$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(photoActions.startTracking),
-      mergeMap(() =>
-        this.photoService.startCapture().pipe(
-          map(() => photoActions.startTrackingSuccess()),
-          catchError((error) =>
-            of(photoActions.startTrackingFailure({ error }))
-          )
-        )
-      )
-    )
-  );
-
-  stopTracking$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(photoActions.stopTracking),
-      mergeMap(() =>
-        this.photoService.stopCapture().pipe(
-          map(() => photoActions.stopTrackingSuccess()),
-          catchError((error) => of(photoActions.stopTrackingFailure({ error })))
         )
       )
     )
