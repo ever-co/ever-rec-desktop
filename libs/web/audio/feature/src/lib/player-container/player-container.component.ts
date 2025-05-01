@@ -170,7 +170,7 @@ export class PlayerContainerComponent implements OnInit, OnDestroy {
             this.player.load();
           }
 
-          return of(true).pipe(
+          return of(isSame).pipe(
             delay(150),
             switchMap(() =>
               this.togglePlayPause$.pipe(
