@@ -36,17 +36,18 @@ durationFormatted$ | async; @let isMobileView = layoutService.isMobileView();
         'bg-gray-800/90': checked,
         'scale-95': isSelected && isPlaying
       }"
-      class="relative backdrop-blur-md rounded-lg transform transition-all duration-300 ease-in-out hover:bg-gray-600 hover:pt-12 hover:shadow-lg group"
+      class="relative h-fit backdrop-blur-md rounded-lg transform transition-all duration-300 ease-in-out hover:bg-gray-600 hover:pt-12 hover:shadow-lg group"
     >
-      <lib-audio-inline
+      <lib-player-container
         class="card"
+        mode="inline"
         [audio]="audio"
         [isPlaying]="isPlaying && isSelected"
         [progress]="isSelected ? progress : 0"
         [currentTime]="isSelected ? currentTime : '00:00'"
         [duration]="isSelected ? duration : audioDuration"
         (playPause)="synchronize(audio)"
-      ></lib-audio-inline>
+      ></lib-player-container>
       <div
         class="flex w-full text-gray-900 z-[-1] absolute items-center top-0 pr-4 pl-4 opacity-0 group-hover:opacity-100 group-hover:z-10 justify-between transition-opacity duration-300"
         [ngClass]="{
@@ -104,9 +105,7 @@ durationFormatted$ | async; @let isMobileView = layoutService.isMobileView();
         class="card transition-shadow duration-300 hover:shadow-xl"
       ></lib-audio-player-container>
 
-      <div
-        class="flex block sm:hidden w-full absolute top-1 right-1 justify-end"
-      >
+      <div class="flex sm:hidden w-full absolute top-1 right-1 justify-end">
         <button
           [libPopover]="metadata"
           [popoverContext]="{ audio: currentAudio, showDetails: true }"

@@ -1,0 +1,59 @@
+<!-- Select mode -->
+@switch(mode) {
+<!-- card -->
+@case('card') {
+<lib-audio-card
+  [audio]="audio"
+  [isPlaying]="isPlaying"
+  [progress]="progress"
+  [currentTime]="currentTime"
+  [duration]="duration"
+  (playPause)="playPause.emit()"
+  (seek)="seek.emit($event)"
+  (skipForward)="skipForward.emit()"
+  (skipBack)="skipBack.emit()"
+></lib-audio-card>
+}
+<!-- inline -->
+@case('inline') {
+<lib-audio-inline
+  [audio]="audio"
+  [isPlaying]="isPlaying"
+  [progress]="progress"
+  [currentTime]="currentTime"
+  [duration]="duration"
+  (playPause)="playPause.emit()"
+  (seek)="seek.emit($event)"
+></lib-audio-inline>
+}
+<!-- player -->
+@case('player') {
+<!-- complete player -->
+<lib-audio-player
+  [audio]="audio"
+  [isPlaying]="isPlaying"
+  [progress]="progress"
+  [currentTime]="currentTime"
+  [remainingTime]="remainingTime"
+  [duration]="duration"
+  [volume]="volume"
+  [isMuted]="isMuted"
+  (playPause)="playPause.emit()"
+  (seek)="seek.emit($event)"
+  (skipForward)="skipForward.emit()"
+  (skipBack)="skipBack.emit()"
+  (volumeChange)="volumeChange.emit($event)"
+  (muteToggle)="muteToggle.emit()"
+></lib-audio-player>
+}
+<!-- host -->
+@default {
+<lib-audio-host
+  [audio]="audio"
+  [isPlaying]="isPlaying"
+  [progress]="progress"
+  [currentTime]="currentTime"
+  (playPause)="playPause.emit()"
+  (seek)="seek.emit($event)"
+></lib-audio-host>
+} }

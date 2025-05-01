@@ -24,13 +24,7 @@ import {
   selectRemainingTimeFormatted,
   selectVolume,
 } from '@ever-co/audio-data-access';
-import {
-  AudioPlayerMode,
-  CardComponent,
-  HostComponent,
-  InlineComponent,
-  PlayerComponent,
-} from '@ever-co/audio-ui';
+import { AudioPlayerMode, ContainerComponent } from '@ever-co/audio-ui';
 import { IAudio, isDeepEqual, ISelected } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import {
@@ -55,13 +49,7 @@ import {
 
 @Component({
   selector: 'lib-audio-player-container',
-  imports: [
-    CommonModule,
-    HostComponent,
-    CardComponent,
-    PlayerComponent,
-    InlineComponent,
-  ],
+  imports: [CommonModule, ContainerComponent],
   templateUrl: './player-container.component.html',
   styleUrl: './player-container.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

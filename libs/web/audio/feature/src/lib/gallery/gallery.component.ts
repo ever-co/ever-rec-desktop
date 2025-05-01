@@ -42,7 +42,7 @@ import {
 } from '@ever-co/audio-data-access';
 import {
   AudioPlayerMode,
-  InlineComponent,
+  ContainerComponent,
   MetadataComponent,
 } from '@ever-co/audio-ui';
 import { PlayerContainerComponent } from '../player-container/player-container.component';
@@ -57,7 +57,6 @@ import { PlayerContainerComponent } from '../player-container/player-container.c
     MatProgressSpinnerModule,
     GalleryButtonsActionComponent,
     PlayerContainerComponent,
-    InlineComponent,
     HumanizePipe,
     MetadataComponent,
     PopoverDirective,
@@ -65,6 +64,7 @@ import { PlayerContainerComponent } from '../player-container/player-container.c
     MatCheckboxModule,
     ActionButtonComponent,
     MatButtonModule,
+    ContainerComponent,
   ],
   templateUrl: './gallery.component.html',
   styleUrl: './gallery.component.scss',
