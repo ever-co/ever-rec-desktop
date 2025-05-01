@@ -1,6 +1,7 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { audioPlayerActions } from './audio-player.actions';
 import { IAudio } from '@ever-co/shared-utils';
+import { audioActions } from '@ever-co/webcam-data-access';
 
 export const audioPlayerFeatureKey = 'audioPlayer';
 
@@ -74,7 +75,24 @@ export const reducer = createReducer(
   on(audioPlayerActions.synchronizeAudioFailure, (state) => ({
     ...state,
     syncing: false,
-  }))
+  })),
+
+  on(audioActions.deleteAudio, (state, audio) => ({
+    ...state,
+    currentAudio:
+      state?.currentAudio?.id === audio.id ? null : state.currentAudio,
+  })),
+
+  on(audioActions.deleteAudios, (state) => ({
+    ...state,
+    currentAudio: null,
+  })),
+
+  on(audioActions.deleteSelectedAudios, (state, { audios }) => {
+    const find = audios.find((audio) => audio.id === state?.currentAudio?.id);
+    const currentAudio = find ? null : state.currentAudio;
+    return { ...state, currentAudio };
+  })
 );
 
 export const audioPlayerFeature = createFeature({
