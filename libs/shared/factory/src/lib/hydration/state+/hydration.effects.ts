@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { EMPTY } from 'rxjs';
@@ -17,6 +17,8 @@ import { selectHydrationAppState } from './hydration.selectors';
 
 @Injectable()
 export class HydrationEffects {
+  private store = inject(Store);
+  private actions$ = inject(Actions);
   // Save state changes to IndexedDB
   saveState$ = createEffect(
     () =>
@@ -55,9 +57,5 @@ export class HydrationEffects {
     { dispatch: false }
   );
 
-  constructor(
-    private store: Store,
-    private actions$: Actions,
-    private stateHydrationService: StateHydrationService
-  ) {}
+  constructor(private stateHydrationService: StateHydrationService) {}
 }

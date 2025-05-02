@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { generateVideoActions } from '@ever-co/convert-video-data-access';
 import {
   AppWindowId,
@@ -6,7 +6,10 @@ import {
   isDeepEqual,
   MessageType,
 } from '@ever-co/shared-utils';
-import { audioRecordingActions, photoCaptureActions } from '@ever-co/webcam-data-access';
+import {
+  audioRecordingActions,
+  photoCaptureActions,
+} from '@ever-co/webcam-data-access';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { distinctUntilChanged, filter, map, tap } from 'rxjs/operators';
@@ -16,6 +19,8 @@ import { screenshotActions } from '@ever-co/screenshot-data-access';
 
 @Injectable()
 export class MediatorEffects {
+  private store = inject(Store);
+  private actions$ = inject(Actions);
   // Sync specific actions to other windows
   mainWindowSync$ = createEffect(
     () =>
@@ -93,9 +98,5 @@ export class MediatorEffects {
     { dispatch: false }
   );
 
-  constructor(
-    private actions$: Actions,
-    private store: Store,
-    private mediatorService: MediatorService
-  ) {}
+  constructor(private mediatorService: MediatorService) {}
 }
