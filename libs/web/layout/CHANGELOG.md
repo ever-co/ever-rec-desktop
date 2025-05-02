@@ -2,6 +2,46 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.2.0](https://github.com/ever-co/ever-capture/compare/layout-0.1.6...layout-0.2.0) (2025-05-02)
+
+### Dependency Updates
+
+* `breadcrumb-data-access` updated to version `0.1.2`
+* `breadcrumb-feature` updated to version `0.1.2`
+* `notification-feature` updated to version `0.1.4`
+* `shared-components` updated to version `0.2.0`
+* `shared-service` updated to version `0.1.2`
+* `sidebar-feature` updated to version `0.2.0`
+* `search` updated to version `0.1.3`
+* `convert-video-data-access` updated to version `0.1.2`
+* `dashboard` updated to version `0.0.6`
+* `dashboard` updated to version `0.0.6`
+* `library` updated to version `0.1.0`
+* `library` updated to version `0.1.0`
+* `web-setting-feature` updated to version `0.1.4`
+* `web-setting-feature` updated to version `0.1.4`
+* `timesheet-feature` updated to version `0.1.0`
+* `timesheet-feature` updated to version `0.1.0`
+* `screenshot-feature` updated to version `0.2.0`
+* `screenshot-feature` updated to version `0.2.0`
+* `timeline-feature` updated to version `0.1.5`
+* `timeline-feature` updated to version `0.1.5`
+* `notification-data-access` updated to version `0.1.4`
+* `upload-data-access` updated to version `0.1.3`
+* `upload-feature` updated to version `0.1.4`
+* `timeline-data-access` updated to version `0.1.4`
+
+### Bug Fixes
+
+* **layout:** truncate header title ([03ffb41](https://github.com/ever-co/ever-capture/commit/03ffb411e2e6367367ef7acc5359fbeadb3a7cbb))
+
+
+### Features
+
+* **desktop:** implement periodic webcam photo capture ([fa2dbdb](https://github.com/ever-co/ever-capture/commit/fa2dbdb4139b326683260dca1c2fcac16596ab0f))
+
+
+
 ## [0.1.6](https://github.com/ever-co/ever-capture/compare/layout-0.1.5...layout-0.1.6) (2025-02-12)
 
 ### Dependency Updates
