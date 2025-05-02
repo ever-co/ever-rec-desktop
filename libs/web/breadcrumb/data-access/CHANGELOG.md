@@ -2,6 +2,10 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.1.2](https://github.com/ever-co/ever-capture/compare/breadcrumb-data-access-0.1.1...breadcrumb-data-access-0.1.2) (2025-05-02)
+
+
+
 ## [0.1.1](https://github.com/ever-co/ever-capture/compare/breadcrumb-data-access-0.1.0...breadcrumb-data-access-0.1.1) (2025-02-12)
 
 
