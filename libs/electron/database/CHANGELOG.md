@@ -2,6 +2,37 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.2.0](https://github.com/ever-co/ever-capture/compare/database-electron-0.1.2...database-electron-0.2.0) (2025-05-02)
+
+### Dependency Updates
+
+* `electron-utils` updated to version `0.2.0`
+* `utils` updated to version `0.2.0`
+
+### Bug Fixes
+
+* **audio:** associate audio with latest time log even if stopped ([dce74bf](https://github.com/ever-co/ever-capture/commit/dce74bfec8a3dd49aaa7018379d3ac8a7c8df770))
+* fix inaccurate screenshot storage size calculation ([61ef441](https://github.com/ever-co/ever-capture/commit/61ef441e1d1b37885e896c9ad3d5418c55a1d860))
+
+
+### Features
+
+* **audio:** add audio recording CRUD functionality ([11b1b10](https://github.com/ever-co/ever-capture/commit/11b1b10ec965875116c5fa8f88c3eb8f66bb6794))
+* **audio:** add channel/rate metadata and refactor worker ([e307cc1](https://github.com/ever-co/ever-capture/commit/e307cc1f38bc36f82edb80031557a679b6c115c6))
+* **audio:** link audio entities to corresponding video ([978bc3f](https://github.com/ever-co/ever-capture/commit/978bc3fedbdff61eed683bdc8b8f51b2b64b5292))
+* configure macOS permissions and update activity calc ([63c6141](https://github.com/ever-co/ever-capture/commit/63c6141ba4123f4ad7e4292246a3953815d7b2ca))
+* **database:** add audio entity support ([a717dbf](https://github.com/ever-co/ever-capture/commit/a717dbf4c4eb767079b84c02ac55ce36cc7d9802))
+* **database:** link audio and video entities ([6852806](https://github.com/ever-co/ever-capture/commit/685280609f42baf475723e601ecb6525eaa44b81))
+* **database:** link root audio to video on timeline insert ([2128058](https://github.com/ever-co/ever-capture/commit/21280585b380e9f528048c22decc611cb0d4bc7a))
+* **desktop:** implement periodic webcam photo capture ([fa2dbdb](https://github.com/ever-co/ever-capture/commit/fa2dbdb4139b326683260dca1c2fcac16596ab0f))
+* **photo:** add photo capture and management functionality ([f674686](https://github.com/ever-co/ever-capture/commit/f6746866d756bd6f64d04fe317d6ddb48636e958))
+* **screenshot:** introduce screenshot chunking for multi-display captures ([0643604](https://github.com/ever-co/ever-capture/commit/0643604266df3d295ac8cbd28b2e678cf4816b3d))
+* **settings:** add audio storage tracking and deletion ([1ceedbd](https://github.com/ever-co/ever-capture/commit/1ceedbd575b5f49da1ea85cb39b8e48d7acc6036))
+* **statistics:** add confidence scores and advanced analysis to statistics ([17df069](https://github.com/ever-co/ever-capture/commit/17df0694add9391e985cf185d9e7e66d85fe1f1f))
+* **storage:** include photo size in storage usage ([cd4e7f7](https://github.com/ever-co/ever-capture/commit/cd4e7f7e074a593b582b49cbeafcae2d5f48ea98))
+
+
+
 ## [0.1.2](https://github.com/ever-co/ever-capture/compare/database-electron-0.1.1...database-electron-0.1.2) (2025-02-12)
 
 ### Dependency Updates
