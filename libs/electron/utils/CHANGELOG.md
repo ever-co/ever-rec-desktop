@@ -2,6 +2,23 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.3.0](https://github.com/ever-co/ever-capture/compare/electron-utils-0.2.0...electron-utils-0.3.0) (2025-05-02)
+
+### Dependency Updates
+
+* `utils` updated to version `0.2.0`
+
+### Bug Fixes
+
+* **electron-utils:** get correct browser window for progress bar ([00ce082](https://github.com/ever-co/ever-capture/commit/00ce0820164b0597b9c46766d74d001acc697230))
+
+
+### Features
+
+* **settings:** add granular delete and purge options for storage ([418df6d](https://github.com/ever-co/ever-capture/commit/418df6def7f107320da86110a385d46f0377f5f8))
+
+
+
 # [0.2.0](https://github.com/ever-co/ever-capture/compare/electron-utils-0.1.4...electron-utils-0.2.0) (2025-04-04)
 
 
