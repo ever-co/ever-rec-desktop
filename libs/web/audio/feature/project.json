@@ -45,6 +45,24 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint"
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+        "syncVersions": false,
+        "push": true,
+        "pushTags": true,
+        "trackDeps": true
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": false,
+        "commands": ["cd dist/libs/web/audio/feature && npm publish"]
+      },
+      "dependsOn": ["version", "build"],
+      "parallelism": false
     }
   }
 }
