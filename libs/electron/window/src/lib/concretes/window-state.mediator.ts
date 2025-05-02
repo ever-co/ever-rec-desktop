@@ -29,6 +29,10 @@ export class WindowStateMediator {
     this.dispatcher.register(factory);
   }
 
+  public clearAllBrokers(): void {
+    this.dispatcher.clear();
+  }
+
   public handleIncomingMessage(sourceId: AppWindowId, message: IMessage): void {
     this.dispatcher.dispatch(message, sourceId);
   }

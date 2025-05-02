@@ -28,6 +28,14 @@ export class MessageBrokerDispatcher {
   }
 
   /**
+   * Clears all registered message broker factories.
+   */
+  public clear(): void {
+    this.factories = [];
+    this.head = undefined;
+  }
+
+  /**
    * Builds a chain of responsibility from the given factories.
    */
   private buildChain(
