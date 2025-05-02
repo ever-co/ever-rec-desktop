@@ -2,6 +2,10 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.1.3](https://github.com/ever-co/ever-capture/compare/data-access-0.1.2...data-access-0.1.3) (2025-05-02)
+
+
+
 ## [0.1.2](https://github.com/ever-co/ever-capture/compare/data-access-0.1.1...data-access-0.1.2) (2025-05-02)
 
 ### Dependency Updates
