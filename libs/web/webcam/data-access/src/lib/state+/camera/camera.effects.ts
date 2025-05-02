@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { LocalStorageService } from '@ever-co/shared-service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
@@ -22,6 +22,8 @@ import { AudioService } from '../../service/audio.service';
 @Injectable()
 export class CameraEffects {
   private readonly cameraKey = '_camera';
+  private readonly actions$ = inject(Actions);
+  private readonly store = inject(Store);
 
   public loadCameras$ = createEffect(() =>
     this.actions$.pipe(
@@ -255,8 +257,6 @@ export class CameraEffects {
   }
 
   constructor(
-    private actions$: Actions,
-    private store: Store,
     private readonly localStorageService: LocalStorageService,
     private readonly cameraService: CameraService,
     private readonly audioService: AudioService,

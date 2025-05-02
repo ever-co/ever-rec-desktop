@@ -1,10 +1,9 @@
 import { bootstrapDatabase } from '@ever-co/electron-database';
+import { AppWindowId } from '@ever-co/shared-utils';
 import { Event, shell } from 'electron';
 import { IWindowConfig } from '../shared/interfaces/window-config.interface';
 import { Window } from '../shared/models/window.model';
 import { WindowManager } from './window.manager';
-import { AppWindowId } from '@ever-co/shared-utils';
-import { isDevMode } from '@angular/core';
 
 export class AppWindow extends Window {
   private readonly manager = WindowManager.getInstance();
