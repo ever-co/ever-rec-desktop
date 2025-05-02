@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { NotificationService } from '@ever-co/notification-data-access';
@@ -9,6 +9,10 @@ import { AudioService } from '../../services/audio.service';
 
 @Injectable()
 export class AudioEffects {
+  private readonly actions$ = inject(Actions);
+  private readonly audioService = inject(AudioService);
+  private readonly notificationService = inject(NotificationService);
+
   deleteAll$ = createEffect(() =>
     this.actions$.pipe(
       ofType(audioActions.deleteAudios),
@@ -78,10 +82,4 @@ export class AudioEffects {
       )
     )
   );
-
-  constructor(
-    private actions$: Actions,
-    private readonly audioService: AudioService,
-    private readonly notificationService: NotificationService
-  ) {}
 }
