@@ -2,6 +2,30 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.1.0](https://github.com/ever-co/ever-capture/compare/timesheet-feature-0.0.5...timesheet-feature-0.1.0) (2025-05-02)
+
+### Dependency Updates
+
+* `timeline-feature` updated to version `0.1.5`
+* `convert-video-data-access` updated to version `0.1.2`
+* `notification-data-access` updated to version `0.1.4`
+* `shared-components` updated to version `0.2.0`
+* `shared-service` updated to version `0.1.2`
+* `utils` updated to version `0.2.0`
+* `timesheet-data-access` updated to version `0.1.0`
+
+### Bug Fixes
+
+* **timesheet:** bring action buttons to front ([2f6f4da](https://github.com/ever-co/ever-capture/commit/2f6f4da86d25fbde3490831e83156b2e3b886c9d))
+* **timesheet:** ensure action buttons appear above other elements ([99a00be](https://github.com/ever-co/ever-capture/commit/99a00bea5db4da441aded6e04a0feaac8e227d09))
+
+
+### Features
+
+* implement navigation from audio metadata to video and timesheet ([f54dfd8](https://github.com/ever-co/ever-capture/commit/f54dfd831e6cef5b9ac1369a583d0d24f1a87aa1))
+
+
+
 ## [0.0.5](https://github.com/ever-co/ever-capture/compare/timesheet-feature-0.0.4...timesheet-feature-0.0.5) (2025-02-12)
 
 ### Dependency Updates
