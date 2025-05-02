@@ -6,6 +6,32 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 
 ### Dependency Updates
 
+* `utils` updated to version `0.2.0`
+* `data-access-electron` updated to version `0.2.1`
+
+### Bug Fixes
+
+* **webcam-audio:** set saving state on successful recording stop ([e54eb91](https://github.com/ever-co/ever-capture/commit/e54eb919620d053067cbf403d2e991b01d98c796))
+
+
+### Features
+
+* **audio-gallery:** add action popover to audio gallery items ([adfecb0](https://github.com/ever-co/ever-capture/commit/adfecb09a4cec12fe53f2464cedcb07cb5e01a24))
+* **audio:** add metadata display component ([9d440fa](https://github.com/ever-co/ever-capture/commit/9d440fafb02cf51e81c41849aa9dc9951939bf3a))
+* **date-picker:** change default date range to current week till now ([60b8b57](https://github.com/ever-co/ever-capture/commit/60b8b570cf6a4b2b1dab71a6f7f0f633257984e2))
+* **hydration:** make state hydration type-safe with generics ([582e043](https://github.com/ever-co/ever-capture/commit/582e0435e6f7489358cec2bcf6ef614f10ada999))
+* **mediator:** add service and effects for inter-window state sync ([ff2bd68](https://github.com/ever-co/ever-capture/commit/ff2bd6888ac1ec7b34ad5a138ed5742e9bb7774b))
+* **mediator:** sync screenshot stop success action ([0ec54a4](https://github.com/ever-co/ever-capture/commit/0ec54a436dd796ef001b814786adb44f94dca847))
+* **settings:** add codec dropdown and initial webcam settings ([df644e6](https://github.com/ever-co/ever-capture/commit/df644e656b92a35dea2993c69c0dd862c4404405))
+* **shared-service:** add deleteAll and conditional serialization to IndexedDbService ([3d5bc23](https://github.com/ever-co/ever-capture/commit/3d5bc236a27767f5670583c2e484e26fba3cdce0))
+* **shared-service:** implement ngrx state hydration via indexeddb ([eda38f9](https://github.com/ever-co/ever-capture/commit/eda38f9137530a5871d6a1c7ef197544f4345294))
+
+
+
+# [0.2.0](https://github.com/ever-co/ever-capture/compare/shared-service-0.1.2...shared-service-0.2.0) (2025-05-02)
+
+### Dependency Updates
+
 * `utils` updated to version `0.1.2`
 * `data-access-electron` updated to version `0.1.2`
 
