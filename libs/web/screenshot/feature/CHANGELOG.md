@@ -2,6 +2,33 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.2.0](https://github.com/ever-co/ever-capture/compare/screenshot-feature-0.1.4...screenshot-feature-0.2.0) (2025-05-02)
+
+### Dependency Updates
+
+* `screenshot-data-access` updated to version `0.2.0`
+* `shared-components` updated to version `0.2.0`
+* `shared-service` updated to version `0.1.2`
+* `utils` updated to version `0.2.0`
+* `convert-video-data-access` updated to version `0.1.2`
+* `breadcrumb-data-access` updated to version `0.1.2`
+* `notification-data-access` updated to version `0.1.4`
+
+### Bug Fixes
+
+* **screenshot-gallery:** limit displayed chunks and add safe access ([0f04c52](https://github.com/ever-co/ever-capture/commit/0f04c523827737debd947b36da2c09fb925b387d))
+* **ui:** limit height and enable scroll on detail views ([699bd6e](https://github.com/ever-co/ever-capture/commit/699bd6e8831bdeb4203389c7df96a2cd7f554334))
+
+
+### Features
+
+* **screenshot-gallery:** add stacked card view for screenshot chunks ([024885c](https://github.com/ever-co/ever-capture/commit/024885c38a183aa9723074172ebf766e70c1eda2))
+* **screenshot:** add support for viewing screenshot chunks ([01f7374](https://github.com/ever-co/ever-capture/commit/01f737459437b3ff190fb8d1875a9b0c46671c17))
+* **statistics:** display confidence percentage instead of trend ([613454d](https://github.com/ever-co/ever-capture/commit/613454d14f84713593cbb04b293d7b113933236c))
+* **webcam:** add webcam selection and state management ([f3adafe](https://github.com/ever-co/ever-capture/commit/f3adafed936cc59e7efc6224cdfbbaec33ab4e31))
+
+
+
 ## [0.1.4](https://github.com/ever-co/ever-capture/compare/screenshot-feature-0.1.3...screenshot-feature-0.1.4) (2025-02-12)
 
 ### Dependency Updates
