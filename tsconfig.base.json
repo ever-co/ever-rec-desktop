@@ -8,6 +8,9 @@
         "libs/web/activity/data-access/src/index.ts"
       ],
       "@ever-co/activity-feature": ["libs/web/activity/features/src/index.ts"],
+      "@ever-co/audio-data-access": ["libs/web/audio/data-access/src/index.ts"],
+      "@ever-co/audio-feature": ["libs/web/audio/feature/src/index.ts"],
+      "@ever-co/audio-ui": ["libs/web/audio/ui/src/index.ts"],
       "@ever-co/breadcrumb-data-access": [
         "libs/web/breadcrumb/data-access/src/index.ts"
       ],
@@ -20,6 +23,7 @@
       "@ever-co/convert-video-feature": [
         "libs/web/convert-video/feature/src/index.ts"
       ],
+      "@ever-co/photo-data-access": ["libs/web/photo/data-access/src/index.ts"],
       "@ever-co/electron-data-access": [
         "libs/electron/data-access/src/index.ts"
       ],
@@ -35,6 +39,8 @@
       "@ever-co/notification-feature": [
         "libs/web/notification/features/src/index.ts"
       ],
+      "@ever-co/photo-feature": ["libs/web/photo/feature/src/index.ts"],
+      "@ever-co/photo-ui": ["libs/web/photo/ui/src/index.ts"],
       "@ever-co/screenshot-data-access": [
         "libs/web/screenshot/data-access/src/index.ts"
       ],

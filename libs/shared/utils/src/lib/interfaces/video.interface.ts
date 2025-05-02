@@ -4,6 +4,7 @@ import type { IScreenshot } from './screenshot.interface';
 import { ITimeLog } from './time-log.interface';
 import type { ITimeline } from './timeline.interface';
 import type { IVideoConfig } from './video.config';
+import type { IAudio } from './audio.interface';
 
 export const VIDEO_DIR = 'videos';
 
@@ -17,6 +18,8 @@ export interface IVideo extends IBase {
   timeLog?: ITimeLog;
   timelines?: ITimeline[];
   isTimeline?: boolean;
+  audio?: IAudio;
+  audioId?: IAudio['id'];
 }
 
 export interface IVideoMetadata extends IBase, Partial<IVideoConfig> {

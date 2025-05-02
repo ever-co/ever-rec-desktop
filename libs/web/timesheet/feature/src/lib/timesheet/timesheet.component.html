@@ -228,6 +228,7 @@
 
 <ng-template #actions>
   <lib-action-button-group
+    class="z-50"
     [ngClass]="{ inline: isMobileView() === false }"
     [buttons]="actionButtons"
     [data]="selectedRow$ | async"

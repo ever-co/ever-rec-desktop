@@ -9,7 +9,7 @@ import {
   Relation,
 } from 'typeorm';
 import { TimeLog } from './time-log.entity';
-import { PhotoMetadata } from './metadata.entity';
+import { PhotoMetadata } from './photo-metadata.entity';
 
 @Entity('photo')
 export class Photo extends Base implements IPhoto {

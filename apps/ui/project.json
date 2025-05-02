@@ -15,6 +15,7 @@
         "browser": "apps/ui/src/main.ts",
         "polyfills": ["zone.js"],
         "tsConfig": "apps/ui/tsconfig.app.json",
+        "webWorkerTsConfig": "apps/ui/tsconfig.worker.json",
         "inlineStyleLanguage": "scss",
         "assets": ["apps/ui/src/favicon.ico", "apps/ui/src/assets"],
         "styles": [

@@ -1,47 +1,63 @@
 import { Injectable } from '@angular/core';
 import { LocalStorageService } from '@ever-co/shared-service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
-import { from, of } from 'rxjs';
-import { catchError, filter, map, switchMap, take } from 'rxjs/operators';
+import { Action, Store } from '@ngrx/store';
+import { defer, forkJoin, from, iif, Observable, of } from 'rxjs';
+import {
+  catchError,
+  filter,
+  map,
+  switchMap,
+  take,
+  withLatestFrom,
+} from 'rxjs/operators';
 import { CameraService } from '../../service/camera.service';
 
 import { ICameraPersistance } from '@ever-co/shared-utils';
 import { CameraStreamService } from '../../service/camera-stream.service';
 import { cameraActions } from './camera.actions';
 import { selectCameraIsAuthorized } from './camera.selectors';
+import { AudioService } from '../../service/audio.service';
 
 @Injectable()
 export class CameraEffects {
   private readonly cameraKey = '_camera';
 
-  loadCameras$ = createEffect(() =>
+  public loadCameras$ = createEffect(() =>
     this.actions$.pipe(
       ofType(cameraActions.loadCameras),
-      switchMap(() =>
-        this.store.select(selectCameraIsAuthorized).pipe(
-          switchMap((isAuthorized) =>
-            isAuthorized
-              ? from(this.cameraService.availableDevices()).pipe(
-                  map((cameras) =>
-                    cameraActions.loadCamerasSuccess({ cameras })
-                  ),
-                  catchError((error) =>
-                    of(
-                      cameraActions.loadCamerasFailure({
-                        error: this.getErrorMessage(error),
-                      })
-                    )
-                  )
-                )
-              : of(cameraActions.checkCameraAuthorization())
-          )
+      withLatestFrom(this.store.select(selectCameraIsAuthorized)),
+      switchMap(([, isAuthorized]) =>
+        iif(
+          () => isAuthorized,
+          this.loadAuthorizedDevices(),
+          of(cameraActions.checkCameraAuthorization())
         )
       )
     )
   );
 
-  authorized$ = createEffect(() =>
+  private loadAuthorizedDevices(): Observable<Action> {
+    return defer(() =>
+      forkJoin([
+        this.cameraService.availableDevices(),
+        this.audioService.availableDevices(),
+      ]).pipe(
+        map(([cameras, microphones]) =>
+          cameraActions.loadCamerasSuccess({ cameras, microphones })
+        ),
+        catchError((error) =>
+          of(
+            cameraActions.loadCamerasFailure({
+              error: this.getErrorMessage(error),
+            })
+          )
+        )
+      )
+    );
+  }
+
+  public authorized$ = createEffect(() =>
     this.actions$.pipe(
       ofType(cameraActions.checkCameraAuthorizationSuccess),
       take(1),
@@ -57,50 +73,75 @@ export class CameraEffects {
     )
   );
 
-  selectCamera$ = createEffect(() =>
+  public selectCamera$ = createEffect(() =>
     this.actions$.pipe(
       ofType(cameraActions.selectCamera),
-      switchMap(({ deviceId, tracking = false, resolution }) =>
-        this.localStorageService
-          .setItem<ICameraPersistance>(
-            this.cameraKey,
-            { deviceId, tracking, resolution },
-            { merge: true }
-          )
-          .pipe(
-            map(() =>
-              cameraActions.selectCameraSuccess({
+      switchMap(
+        ({
+          deviceId,
+          canUseCamera = false,
+          canUseMicrophone = false,
+          resolution,
+          microphoneId,
+        }) =>
+          this.localStorageService
+            .setItem<ICameraPersistance>(
+              this.cameraKey,
+              {
                 deviceId,
-                tracking,
+                canUseCamera,
+                canUseMicrophone,
                 resolution,
-              })
-            ),
-            catchError(() =>
-              of(
-                cameraActions.selectCameraFailure({
-                  error: 'Failed to select camera',
+                microphoneId,
+              },
+              { merge: true }
+            )
+            .pipe(
+              map(() =>
+                cameraActions.selectCameraSuccess({
+                  deviceId,
+                  canUseCamera,
+                  canUseMicrophone,
+                  resolution,
+                  microphoneId,
                 })
+              ),
+              catchError(() =>
+                of(
+                  cameraActions.selectCameraFailure({
+                    error: 'Failed to select camera',
+                  })
+                )
               )
             )
-          )
       )
     )
   );
 
-  loadSelectedCamera$ = createEffect(() =>
+  public loadSelectedCamera$ = createEffect(() =>
     this.actions$.pipe(
       ofType(cameraActions.loadCamerasSuccess),
-      switchMap(({ cameras }) =>
+      switchMap(({ cameras, microphones }) =>
         this.localStorageService
           .getItem<ICameraPersistance>(this.cameraKey)
           .pipe(
             filter(Boolean),
-            map(({ deviceId, tracking, resolution }) =>
-              cameraActions.selectCameraSuccess({
-                deviceId: deviceId ?? cameras[0]?.deviceId ?? null,
+            map(
+              ({
+                deviceId,
+                canUseCamera,
+                canUseMicrophone,
                 resolution,
-                tracking,
-              })
+                microphoneId,
+              }) =>
+                cameraActions.selectCameraSuccess({
+                  deviceId: deviceId ?? cameras[0]?.deviceId ?? null,
+                  microphoneId:
+                    microphoneId ?? microphones[0]?.deviceId ?? null,
+                  canUseCamera,
+                  canUseMicrophone,
+                  resolution,
+                })
             ),
             catchError(() =>
               of(
@@ -114,7 +155,7 @@ export class CameraEffects {
     )
   );
 
-  checkAuthorization$ = createEffect(() =>
+  public checkAuthorization$ = createEffect(() =>
     this.actions$.pipe(
       ofType(cameraActions.checkCameraAuthorization),
       switchMap(() =>
@@ -147,31 +188,36 @@ export class CameraEffects {
     )
   );
 
-  createStream$ = createEffect(() =>
+  public createStream$ = createEffect(() =>
     this.actions$.pipe(
       ofType(cameraActions.createCameraStream),
-      switchMap(({ deviceId, stream, resolution }) =>
-        from(
-          this.cameraStreamService.createStream({
-            deviceId,
-            stream,
-            resolution,
-          })
-        ).pipe(
-          map((stream) => cameraActions.createCameraStreamSuccess({ stream })),
-          catchError((error) =>
-            of(
-              cameraActions.createCameraStreamFailure({
-                error: this.getErrorMessage(error),
-              })
+      switchMap(
+        ({ deviceId, stream, resolution, canUseCamera, canUseMicrophone }) =>
+          from(
+            this.cameraStreamService.createStream({
+              deviceId,
+              stream,
+              resolution,
+              canUseCamera,
+              canUseMicrophone,
+            })
+          ).pipe(
+            map((stream) =>
+              cameraActions.createCameraStreamSuccess({ stream })
+            ),
+            catchError((error) =>
+              of(
+                cameraActions.createCameraStreamFailure({
+                  error: this.getErrorMessage(error),
+                })
+              )
             )
           )
-        )
       )
     )
   );
 
-  closeStream$ = createEffect(() =>
+  public closeStream$ = createEffect(() =>
     this.actions$.pipe(
       ofType(cameraActions.closeCameraStream),
       switchMap(({ stream }) =>
@@ -213,6 +259,7 @@ export class CameraEffects {
     private store: Store,
     private readonly localStorageService: LocalStorageService,
     private readonly cameraService: CameraService,
+    private readonly audioService: AudioService,
     private readonly cameraStreamService: CameraStreamService
   ) {}
 }

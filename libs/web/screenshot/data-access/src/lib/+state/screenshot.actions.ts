@@ -1,4 +1,5 @@
 import {
+  IFindOneOptions,
   IPaginationOptions,
   IPaginationResponse,
   IScreenCaptureConfig,
@@ -24,6 +25,10 @@ export const screenshotActions = createActionGroup({
     'Load Screenshots': props<IPaginationOptions<IScreenshot>>(),
     'Load Screenshots Success': props<IPaginationResponse<IScreenshot>>(),
     'Load Screenshots Failure': props<{ error: string }>(),
+
+    'Load Screenshot': props<{ options: IFindOneOptions<IScreenshot> }>(),
+    'Load Screenshot Success': props<{ screenshot: IScreenshot }>(),
+    'Load Screenshot Failure': props<{ error: string }>(),
 
     'Delete Screenshot': props<IScreenshot>(),
     'Delete Screenshot Success': props<{ id: string }>(),

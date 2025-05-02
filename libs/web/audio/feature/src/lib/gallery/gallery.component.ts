@@ -1,0 +1,351 @@
+import { CommonModule } from '@angular/common';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
+import {
+  ActionButtonComponent,
+  ConfirmationDialogService,
+  GalleryButtonsActionComponent,
+  NoDataComponent,
+} from '@ever-co/shared-components';
+import {
+  HumanizePipe,
+  InfiniteScrollDirective,
+  LayoutService,
+  PopoverDirective,
+  selectDatePickerState,
+} from '@ever-co/shared-service';
+import {
+  IActionButton,
+  IAudio,
+  IRange,
+  ISelected,
+  ITimeLog,
+  IVideo,
+} from '@ever-co/shared-utils';
+import { audioActions, selectAudioState } from '@ever-co/audio-data-access';
+import { Store } from '@ngrx/store';
+import { Observable, Subject, filter, map, take, takeUntil, tap } from 'rxjs';
+
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
+import {
+  audioPlayerActions,
+  selectCurrentAudio,
+  selectCurrentTimeFormatted,
+  selectDurationFormatted,
+  selectIsPlaying,
+  selectProgressPercentage,
+} from '@ever-co/audio-data-access';
+import {
+  AudioPlayerMode,
+  ContainerComponent,
+  MetadataComponent,
+} from '@ever-co/audio-ui';
+import { PlayerContainerComponent } from '../player-container/player-container.component';
+import { selectGenerateVideoState } from '@ever-co/convert-video-data-access';
+import { selectScreenshotState } from '@ever-co/screenshot-data-access';
+
+@Component({
+  selector: 'lib-audio-gallery',
+  imports: [
+    CommonModule,
+    InfiniteScrollDirective,
+    NoDataComponent,
+    MatCardModule,
+    MatProgressSpinnerModule,
+    GalleryButtonsActionComponent,
+    PlayerContainerComponent,
+    HumanizePipe,
+    MetadataComponent,
+    PopoverDirective,
+    MatIconModule,
+    MatCheckboxModule,
+    ActionButtonComponent,
+    MatButtonModule,
+    ContainerComponent,
+  ],
+  templateUrl: './gallery.component.html',
+  styleUrl: './gallery.component.scss',
+})
+export class GalleryComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+  public store = inject(Store);
+  private currentPage = 1;
+  private hasNext = false;
+  private range!: IRange;
+  public actionButtons: IActionButton[] = [
+    {
+      icon: 'remove_done',
+      label: 'Unselect All',
+      variant: 'default',
+      hide: this.lessThanOneSelected$,
+      action: this.unselectAll.bind(this),
+    },
+    {
+      icon: 'remove_done',
+      label: 'Unselect',
+      variant: 'default',
+      hide: this.moreThanOneSelected$,
+      action: this.unselectAll.bind(this),
+    },
+    {
+      icon: 'delete',
+      label: 'Delete',
+      variant: 'danger',
+      loading: this.deleting$,
+      action: this.deleteAudios.bind(this),
+    },
+  ];
+  public deleteButton: IActionButton = {
+    icon: 'delete',
+    label: 'Delete',
+    variant: 'danger',
+    action: this.deleteAudio.bind(this),
+  };
+  public infoButton: IActionButton = {
+    icon: 'info',
+    label: 'Get Info',
+    variant: 'default',
+  };
+
+  constructor(
+    private readonly confirmationDialogService: ConfirmationDialogService,
+    public readonly layoutService: LayoutService,
+    private readonly router: Router
+  ) {}
+
+  ngOnInit(): void {
+    this.store
+      .select(selectAudioState)
+      .pipe(
+        tap((state) => {
+          this.hasNext = state.hasNext;
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+
+    this.store
+      .select(selectDatePickerState)
+      .pipe(
+        tap((state) => {
+          this.range = state.selectedRange;
+          this.currentPage = 1;
+          this.store.dispatch(audioActions.resetAudios());
+          this.loadAudios();
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+
+    this.store
+      .select(selectAudioState)
+      .pipe(
+        filter(({ deleting }) => deleting),
+        tap(() => this.unselectAll()),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
+
+  public get isAvailable$() {
+    return this.store.select(selectAudioState).pipe(
+      map((state) => state.count > 0),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  public get loading$() {
+    return this.store.select(selectAudioState).pipe(
+      map((state) => state.loading),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  public get audios$() {
+    return this.store.select(selectAudioState).pipe(
+      map((state) => state.audios),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  public moreAudios(): void {
+    if (this.hasNext) {
+      this.currentPage++;
+      this.loadAudios();
+    }
+  }
+
+  public loadAudios(): void {
+    this.store.dispatch(
+      audioActions.loadAudios({
+        page: this.currentPage,
+        ...this.range,
+      })
+    );
+  }
+
+  public selectAudio(checked: boolean, data: IAudio): void {
+    const audio: ISelected<IAudio> = {
+      data,
+      selected: checked,
+    };
+    this.store.dispatch(
+      audio.selected
+        ? audioActions.selectAudio({ audio })
+        : audioActions.unselectAudio({ audio })
+    );
+  }
+
+  public get selectedAudios$(): Observable<ISelected<IAudio>[]> {
+    return this.store.select(selectAudioState).pipe(
+      map((state) => state.selectedAudios),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  public get moreThanOneSelected$(): Observable<boolean> {
+    return this.selectedAudios$.pipe(
+      map((audios) => audios.length > 1),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  public get lessThanOneSelected$(): Observable<boolean> {
+    return this.selectedAudios$.pipe(
+      map((audios) => audios.length <= 1),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  public get size$(): Observable<number> {
+    return this.selectedAudios$.pipe(
+      map((audios) => audios.length),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  private deleteAudios(selectedAudios: ISelected<IAudio>[]): void {
+    const audios = selectedAudios.map((audio) => audio.data);
+    this.confirmationDialogService
+      .open({
+        title: 'Delete Audios?',
+        message: `Are you sure you want to delete ${audios.length} audios?`,
+        variant: 'danger',
+      })
+      .pipe(
+        take(1),
+        filter(Boolean),
+        tap(() =>
+          this.store.dispatch(audioActions.deleteSelectedAudios({ audios }))
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
+
+  private deleteAudio(audio: IAudio): void {
+    this.confirmationDialogService
+      .open({
+        title: 'Delete Audio',
+        message: `Are you sure you want to delete this audio?`,
+        variant: 'danger',
+      })
+      .pipe(
+        take(1),
+        filter(Boolean),
+        tap(() => this.store.dispatch(audioActions.deleteAudio(audio))),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
+
+  public get deleting$(): Observable<boolean> {
+    return this.store.select(selectAudioState).pipe(
+      map((state) => state.deleting),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  public isChecked(audio: IAudio): Observable<boolean> {
+    return this.selectedAudios$.pipe(
+      map((selectedAudios) =>
+        selectedAudios.some((v) => v.data.id === audio.id)
+      ),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  public async viewTimeLog(timeLogId: ITimeLog['id']): Promise<void> {
+    await this.router.navigate(['/', 'timesheet'], {
+      queryParams: { timeLogId },
+    });
+  }
+
+  public async viewVideo(videoId: IVideo['id']): Promise<void> {
+    await this.router.navigate(['/', 'library', 'videos', videoId]);
+  }
+
+  public synchronizePlayPause(audio: IAudio): void {
+    this.store.dispatch(
+      audioPlayerActions.synchronizeAudio({ audio, kind: 'play' })
+    );
+  }
+
+  public synchronizeSeek(ratio: number, audio: IAudio): void {
+    this.store.dispatch(
+      audioPlayerActions.synchronizeAudio({ audio, ratio, kind: 'seek' })
+    );
+  }
+
+  public unselectAll(): void {
+    this.store.dispatch(audioActions.unselectAllAudios());
+  }
+
+  public get currentAudio$(): Observable<IAudio | null> {
+    return this.store.select(selectCurrentAudio);
+  }
+
+  public get isPlaying$() {
+    return this.store.select(selectIsPlaying);
+  }
+
+  public get progressPercentage$() {
+    return this.store.select(selectProgressPercentage);
+  }
+
+  public get currentTimeFormatted$() {
+    return this.store.select(selectCurrentTimeFormatted);
+  }
+
+  public get durationFormatted$() {
+    return this.store.select(selectDurationFormatted);
+  }
+
+  public get mode(): AudioPlayerMode {
+    return this.layoutService.isMobileView() ? 'card' : 'player';
+  }
+
+  public get generating$(): Observable<boolean> {
+    return this.store.select(selectGenerateVideoState).pipe(
+      map((state) => state.generating),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  public get capturing$(): Observable<boolean> {
+    return this.store.select(selectScreenshotState).pipe(
+      map((state) => state.capturing),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+}

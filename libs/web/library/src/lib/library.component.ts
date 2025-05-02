@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { breadcrumbActions } from '@ever-co/breadcrumb-data-access';
@@ -16,11 +17,12 @@ import {
 interface ILink {
   title: string;
   route: string;
+  icon?: string;
 }
 
 @Component({
   selector: 'lib-library',
-  imports: [CommonModule, RouterModule, MatTabsModule],
+  imports: [CommonModule, RouterModule, MatTabsModule, MatIconModule],
   templateUrl: './library.component.html',
   styleUrl: './library.component.scss',
 })
@@ -30,14 +32,22 @@ export class LibraryComponent implements OnDestroy {
     {
       title: 'Videos',
       route: 'videos',
+      icon: 'video_library',
     },
     {
       title: 'Screenshots',
       route: 'screenshots',
+      icon: 'photo_frame',
     },
     {
       title: 'Photos',
       route: 'photos',
+      icon: 'photo_library',
+    },
+    {
+      title: 'Audios',
+      route: 'audios',
+      icon: 'graphic_eq',
     },
   ];
 

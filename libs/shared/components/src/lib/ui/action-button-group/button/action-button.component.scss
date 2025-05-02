@@ -1,8 +1,21 @@
-:host ::ng-deep mat-spinner .mdc-circular-progress__indeterminate-circle-graphic {
+:host
+  ::ng-deep
+  mat-spinner
+  .mdc-circular-progress__indeterminate-circle-graphic {
   stroke: inherit;
 }
 
 :host mat-icon {
   width: 22px;
   height: 22px;
+}
+
+:host {
+  button:hover,
+  button:focus,
+  button:active {
+    mat-icon {
+      font-family: 'Material Icons' !important;
+    }
+  }
 }

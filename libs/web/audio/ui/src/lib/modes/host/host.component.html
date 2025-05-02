@@ -1,0 +1,23 @@
+<div class="flex items-center w-full">
+  <button
+    mat-icon-button
+    (click)="playPause.emit()"
+    class="text-gray-200"
+    aria-label="Play or pause"
+  >
+    <mat-icon>{{ isPlaying ? 'pause' : 'play_arrow' }}</mat-icon>
+  </button>
+
+  <div class="flex-1 mx-2">
+    <lib-progress-bar
+      [progress]="progress || 0"
+      [isActive]="!!isPlaying"
+      (seek)="seek.emit($event)"
+    ></lib-progress-bar>
+  </div>
+
+  <lib-time-display
+    [currentTime]="currentTime"
+    [showDuration]="false"
+  ></lib-time-display>
+</div>

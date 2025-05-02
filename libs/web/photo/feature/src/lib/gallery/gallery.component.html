@@ -1,0 +1,39 @@
+@if (isAvailable$ | async) {
+<div
+  libInfiniteScroll
+  (scrolled)="morePhotos()"
+  class="grid grid-cols-1 static md:grid-cols-2 lg:grid-cols-3 gap-4 pr-4 overflow-auto max-h-custom main"
+>
+  @for (photo of photos$ | async; track photo.id) {
+  <lib-photo
+    (selected)="selectPhoto($event)"
+    [checked]="isSelected(photo) | async"
+    (viewed)="onView(photo)"
+    (deleted)="onDelete(photo)"
+    class="card"
+    [photo]="photo"
+  ></lib-photo>
+  } @if(capturing$ | async) {
+  <mat-card
+    appearance="outlined"
+    class="screenshot-card flex items-center justify-center p-8"
+  >
+    <mat-spinner diameter="48" class="text-gray-300"></mat-spinner>
+  </mat-card>
+  }
+</div>
+
+@if((size$ | async)) {
+<div class="absolute inset-x-0 action-button-group">
+  <lib-gallery-buttons-action
+    [buttons]="actionButtons"
+    [size]="size$ | async"
+    [data]="selectedPhotos$ | async"
+  ></lib-gallery-buttons-action>
+</div>
+} } @else {
+<div class="flex h-full items-center p-4 justify-center">
+  <lib-no-data message="No photos available" class="text-center text-gray-500">
+  </lib-no-data>
+</div>
+}

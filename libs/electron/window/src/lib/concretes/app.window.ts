@@ -3,7 +3,8 @@ import { Event, shell } from 'electron';
 import { IWindowConfig } from '../shared/interfaces/window-config.interface';
 import { Window } from '../shared/models/window.model';
 import { WindowManager } from './window.manager';
-import { AppWindowId } from '../shared/enums/app-window-id.enum';
+import { AppWindowId } from '@ever-co/shared-utils';
+import { isDevMode } from '@angular/core';
 
 export class AppWindow extends Window {
   private readonly manager = WindowManager.getInstance();
@@ -35,7 +36,7 @@ export class AppWindow extends Window {
 
     event.preventDefault();
 
-    if (this._shouldHideOnClose) {
+    if (this._shouldHideOnClose || !this.config.isDevelopmentMode) {
       this.hide();
       this.setSkipTaskbar(true);
     } else {

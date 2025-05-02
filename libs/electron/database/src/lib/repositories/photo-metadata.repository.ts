@@ -1,5 +1,5 @@
 import { IPhotoMetadata } from '@ever-co/shared-utils';
-import { PhotoMetadata } from '../entities/metadata.entity';
+import { PhotoMetadata } from '../entities/photo-metadata.entity';
 import { Repository } from 'typeorm';
 import { appDataSource } from '../data-source';
 

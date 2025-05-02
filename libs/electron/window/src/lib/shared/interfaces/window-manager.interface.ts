@@ -1,4 +1,4 @@
-import { AppWindowId } from '../enums/app-window-id.enum';
+import { AppWindowId } from '@ever-co/shared-utils';
 import { IWindow } from './window.interface';
 
 export interface IWindowManager {
@@ -11,4 +11,6 @@ export interface IWindowManager {
   hide(id: AppWindowId): void;
 
   getOne(id: AppWindowId): IWindow | null;
+
+  getAll(): Map<AppWindowId, IWindow>;
 }

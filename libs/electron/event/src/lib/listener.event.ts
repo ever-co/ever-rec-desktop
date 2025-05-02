@@ -26,6 +26,7 @@ import { powerManagerHandlerEvents } from './power-manager.event';
 import { removeRetentionEvents, retentionEvents } from './retention.event';
 import { PhotoCaptureEvent } from './photo-capture.event';
 import { removeUploadEvent, uploadEventListener } from './upload.event';
+import { crudAudioEvent, removeCrudAudioEvent } from './crud-audio.event';
 
 export function subscribeEvents() {
   captureScreenEvent();
@@ -41,6 +42,7 @@ export function subscribeEvents() {
   activitiesEvents();
   crudPhotoEvent();
   new PhotoCaptureEvent();
+  crudAudioEvent();
 }
 
 export function unsubscribeEvents() {
@@ -55,4 +57,5 @@ export function unsubscribeEvents() {
   removeMainEvents();
   removeActivitiesEvents();
   removeCrudPhotoEvent();
+  removeCrudAudioEvent();
 }

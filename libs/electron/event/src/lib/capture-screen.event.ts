@@ -15,18 +15,17 @@ import {
   IScreenshot,
   IScreenshotInput,
   IScreenshotMetadata,
+  isEmpty,
   moment,
   SCREENSHOT_DIR,
   SCREENSHOT_INTERVAL_DELAY,
   Source,
 } from '@ever-co/shared-utils';
 import { desktopCapturer, ipcMain, IpcMainEvent } from 'electron';
-import { EventManager } from './event.manager';
 import { GetScreenShotMetadataQuery } from './get-screenshot-metadata.query';
 
 const logger = new ElectronLogger();
 const metadataQuery = new GetScreenShotMetadataQuery();
-const eventManager = EventManager.getInstance();
 const timeLogService = new TimeLogService();
 const screenshotService = new ScreenshotService();
 const timerScheduler = TimerScheduler.getInstance();
@@ -47,7 +46,7 @@ export function captureScreen(
     if (seconds % delay === 0) {
       const screenshot = await takeScreenshot(config);
       if (screenshot) {
-        eventManager.reply(Channel.SCREENSHOT_CAPTURED, screenshot);
+        event.reply(Channel.SCREENSHOT_CAPTURED, screenshot);
       }
     }
 
@@ -85,9 +84,29 @@ async function takeScreenshot(
       const screenshotPromises = sources
         .map((source) => createScreenshot(source, metadata))
         .filter((screenshot) => !!screenshot);
-      const [screenshot] = await Promise.all(screenshotPromises);
+      const chunks = (await Promise.all(screenshotPromises)).filter(
+        Boolean
+      ) as IScreenshot[];
 
-      return screenshot;
+      if (isEmpty(chunks)) return null;
+
+      const [parent, ...children] = chunks;
+
+      if (isEmpty(parent)) return null;
+
+      if (!isEmpty(children)) {
+        const validChildren = children.filter(Boolean);
+
+        for (const child of validChildren) {
+          child.parent = parent;
+        }
+
+        if (!isEmpty(validChildren)) {
+          await screenshotService.saveChunks(validChildren);
+        }
+      }
+
+      return parent;
     } else {
       return createScreenshot(sources[0], metadata);
     }

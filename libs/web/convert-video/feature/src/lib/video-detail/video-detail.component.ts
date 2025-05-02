@@ -46,6 +46,8 @@ import {
   tap,
 } from 'rxjs';
 
+import { PlayerContainerComponent } from '@ever-co/audio-feature';
+
 @Component({
   selector: 'lib-video-detail',
   imports: [
@@ -66,6 +68,7 @@ import {
     CopyToClipboardDirective,
     ResolutionPipe,
     FormsModule,
+    PlayerContainerComponent,
   ],
   templateUrl: './video-detail.component.html',
   styleUrl: './video-detail.component.scss',
@@ -118,7 +121,7 @@ export class VideoDetailComponent implements OnInit, OnDestroy {
                 where: {
                   id: params['id'],
                 },
-                relations: ['metadata'],
+                relations: ['metadata', 'audio', 'audio.metadata'],
               })
             );
           } else {

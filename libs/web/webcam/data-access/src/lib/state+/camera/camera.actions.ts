@@ -5,7 +5,10 @@ export const cameraActions = createActionGroup({
   source: 'Camera',
   events: {
     'Load Cameras': emptyProps(),
-    'Load Cameras Success': props<{ cameras: MediaDeviceInfo[] }>(),
+    'Load Cameras Success': props<{
+      cameras: MediaDeviceInfo[];
+      microphones: MediaDeviceInfo[];
+    }>(),
     'Load Cameras Failure': props<{ error: string }>(),
 
     'Check Camera Authorization': emptyProps(),

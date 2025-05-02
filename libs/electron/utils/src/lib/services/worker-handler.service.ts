@@ -3,7 +3,6 @@ import { BrowserWindow } from 'electron';
 import { Worker } from 'worker_threads';
 
 export class WorkerHandler implements ILoggable {
-  private window: BrowserWindow = BrowserWindow.getAllWindows()[0];
   constructor(
     private worker: Worker,
     private index: number,
@@ -30,18 +29,18 @@ export class WorkerHandler implements ILoggable {
       }) => {
         this.logger.info(`Worker ${this.index} send message:`, evt);
         if (evt.status === 'progress') {
-          this.window.setProgressBar(Number(evt.message) / 100);
+          this.window?.setProgressBar(Number(evt.message) / 100);
           this.event.reply(this.channel.CONVERSION_IN_PROGRESS, evt.message);
         }
         if (evt.status === 'done') {
-          this.window.setProgressBar(-1);
+          this.window?.setProgressBar(-1);
           this.logger.info(`Worker ${this.index} finished successfully`);
           this.onComplete(this.index, evt.message, {
             totalDuration: evt.totalDuration,
           });
         }
         if (evt.status === 'error') {
-          this.window.setProgressBar(-1);
+          this.window?.setProgressBar(-1);
           this.logger.info(
             `Worker ${this.index} send error message: ${evt.message}`
           );
@@ -70,5 +69,9 @@ export class WorkerHandler implements ILoggable {
       }
       this.worker.terminate();
     });
+  }
+
+  private get window(): BrowserWindow | null {
+    return BrowserWindow.fromId(this.event.frameId);
   }
 }

@@ -10,9 +10,14 @@ import {
   withViewTransitions,
 } from '@angular/router';
 import { provideActivityDataAccess } from '@ever-co/activity-data-access';
+import { provideAudioPlayerDataAccess } from '@ever-co/audio-data-access';
 import { provideBreadcrumbDataAccess } from '@ever-co/breadcrumb-data-access';
 import { provideConvertVideoDataAccess } from '@ever-co/convert-video-data-access';
-import { provideFactoriesDataAccess } from '@ever-co/factory';
+import {
+  provideFactoriesDataAccess,
+  provideHydrationDataAccess,
+  provideMediatorDataAccess,
+} from '@ever-co/factory';
 import { provideNotificationDataAccess } from '@ever-co/notification-data-access';
 import { provideScreenshotDataAccess } from '@ever-co/screenshot-data-access';
 import { provideDatePickerDataAccess } from '@ever-co/shared-service';
@@ -26,6 +31,7 @@ import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { appRoutes } from './app.routes';
+import { providePhotoDataAccess } from '@ever-co/photo-data-access';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -48,5 +54,9 @@ export const appConfig: ApplicationConfig = {
     provideTimelineDataAccess(),
     provideActivityDataAccess(),
     provideWebcamDataAccess(),
+    provideHydrationDataAccess(),
+    provideMediatorDataAccess(),
+    provideAudioPlayerDataAccess(),
+    providePhotoDataAccess()
   ],
 };

@@ -21,7 +21,12 @@ export const libraryRoutes: Route[] = [
       {
         path: 'photos',
         loadChildren: () =>
-          import('@ever-co/webcam-feature').then((m) => m.libraryRoutes),
+          import('@ever-co/photo-feature').then((m) => m.photoRoutes),
+      },
+      {
+        path: 'audios',
+        loadChildren: () =>
+          import('@ever-co/audio-feature').then((m) => m.audioRoutes),
       },
       { path: '**', redirectTo: '' },
     ],

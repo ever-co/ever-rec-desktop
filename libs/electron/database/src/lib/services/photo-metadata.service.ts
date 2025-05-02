@@ -3,7 +3,7 @@ import {
   IPhotoMetadataInput,
   IPhotoMetadataService,
 } from '@ever-co/shared-utils';
-import { PhotoMetadata } from '../entities/metadata.entity';
+import { PhotoMetadata } from '../entities/photo-metadata.entity';
 import { PhotoMetadataRepository } from '../repositories/photo-metadata.repository';
 
 export class PhotoMetadataService implements IPhotoMetadataService {

@@ -5,7 +5,7 @@
   <mat-card appearance="outlined" class="rounded-df p-4">
     <ul class="divide-y divide-gray-300">
       <li class="flex items-center py-3">
-        <mat-icon class="text-blue-500 mr-3">image</mat-icon>
+        <mat-icon class="text-blue-500 mr-1">image</mat-icon>
         <div class="text-sm text-gray-900">
           Screenshot {{ (size$ | async)?.screenshot | humanizeBytes }}
         </div>
@@ -15,7 +15,7 @@
         ></lib-action-button>
       </li>
       <li class="flex items-center py-3">
-        <mat-icon class="text-cyan-500 mr-3">camera</mat-icon>
+        <mat-icon class="text-cyan-500 mr-1">camera</mat-icon>
         <div class="text-sm text-gray-900">
           Photo {{ (size$ | async)?.photo | humanizeBytes }}
         </div>
@@ -25,13 +25,23 @@
         ></lib-action-button>
       </li>
       <li class="flex items-center py-3">
-        <mat-icon class="text-red-500 mr-3">movie</mat-icon>
+        <mat-icon class="text-red-500 mr-1">movie</mat-icon>
         <div class="text-sm text-gray-900">
           Video {{ (size$ | async)?.video | humanizeBytes }}
         </div>
         <lib-action-button
           class="ml-auto"
           [button]="deleteVideosButton"
+        ></lib-action-button>
+      </li>
+      <li class="flex items-center py-3">
+        <mat-icon class="text-purple-500 mr-1">graphic_eq</mat-icon>
+        <div class="text-sm text-gray-900">
+          Audio {{ (size$ | async)?.audio | humanizeBytes }}
+        </div>
+        <lib-action-button
+          class="ml-auto"
+          [button]="deleteAudiosButton"
         ></lib-action-button>
       </li>
     </ul>

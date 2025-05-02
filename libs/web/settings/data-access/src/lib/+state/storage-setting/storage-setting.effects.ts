@@ -1,17 +1,22 @@
 import { inject, Injectable } from '@angular/core';
+import { audioActions } from '@ever-co/audio-data-access';
 import {
   generateVideoActions,
   videoActions,
 } from '@ever-co/convert-video-data-access';
+import { photoActions } from '@ever-co/photo-data-access';
 import { screenshotActions } from '@ever-co/screenshot-data-access';
 import { SecureLocalStorageService } from '@ever-co/shared-service';
+import {
+  audioRecordingActions,
+  photoCaptureActions,
+} from '@ever-co/webcam-data-access';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { from, of } from 'rxjs';
 import { catchError, concatMap, filter, map, mergeMap } from 'rxjs/operators';
 import { StorageElectronService } from '../services/storage-electron.service';
 import { settingStorageActions } from './storage-setting.actions';
 import { IStorageState } from './storage-setting.reducer';
-import { photoActions } from '@ever-co/webcam-data-access';
 
 @Injectable()
 export class SettingStorageEffects {
@@ -55,7 +60,10 @@ export class SettingStorageEffects {
         screenshotActions.deleteScreenshotsSuccess,
         screenshotActions.deleteSelectedScreenshotsSuccess,
         photoActions.deletePhotosSuccess,
-        screenshotActions.purgeSuccess
+        photoCaptureActions.savePhotoSuccess,
+        screenshotActions.purgeSuccess,
+        audioActions.deleteAudiosSuccess,
+        audioRecordingActions.saveAudioSuccess
       ),
       mergeMap(() =>
         from(this.storageElectronService.getUsedSize()).pipe(

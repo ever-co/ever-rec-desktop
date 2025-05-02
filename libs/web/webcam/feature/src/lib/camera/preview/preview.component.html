@@ -1,0 +1,38 @@
+@let isDone = done$ | async; @let photo = photo$ | async; @let saving = saving$
+| async; @let previewIsAvailable = isDone && !!photo && !saving;
+
+<!-- Structure -->
+
+<div class="flex flex-row justify-center relative align-center gap-4">
+  <div class="preview relative">
+    <video #video autoplay playsinlin class="w-full h-full">
+      <p>Your browser does not support the HTML5 video element.</p>
+    </video>
+    @if(previewIsAvailable) {
+    <div
+      class="absolute z-50 inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-df opacity-0 hover:opacity-100 transition-opacity duration-300"
+    >
+      <div class="p-4 space-y-2">
+        <a
+          #anchor
+          rel="noopener"
+          target="_blank"
+          (click)="redirect($event, photo.pathname)"
+          class="text-white absolute top-2 right-2"
+        >
+          <button mat-icon-button color="primary" aria-label="open_in_new">
+            <mat-icon>open_in_new</mat-icon>
+          </button>
+        </a>
+      </div>
+    </div>
+    }
+  </div>
+  @if(control) {
+  <lib-control
+    [saving]="saving"
+    (capture)="onCapture()"
+    class="absolute bottom-4 right-4"
+  ></lib-control>
+  }
+</div>

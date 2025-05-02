@@ -33,6 +33,7 @@ const initialState: IStorageState = {
     video: 0,
     total: 0,
     photo: 0,
+    audio: 0,
   },
   error: '',
 };

@@ -10,6 +10,8 @@ export interface IScreenshot extends IBase {
   pathname: string;
   synced?: boolean;
   metadata?: IScreenshotMetadata;
+  parent?: IScreenshot;
+  chunks?: IScreenshot[];
   video?: IVideo;
   timeLog?: ITimeLog;
 }

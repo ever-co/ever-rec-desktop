@@ -7,11 +7,18 @@ export const cameraFeatureKey = 'webcamera';
 export interface ICameraState {
   cameras: MediaDeviceInfo[];
   camera: MediaDeviceInfo | null;
+  microphones: MediaDeviceInfo[];
+  microphone: MediaDeviceInfo | null;
   resolution: Resolution;
   isAuthorized: boolean;
-  tracking: boolean;
   loading: boolean;
   error: string | null;
+  authorization: {
+    canUseCamera: boolean;
+    canUseMicrophone: boolean;
+    loading: boolean;
+    error: string | null;
+  };
   streaming: {
     stream: MediaStream | null;
     creating: boolean;
@@ -21,13 +28,20 @@ export interface ICameraState {
 }
 
 export const initialCameraState: ICameraState = {
+  microphones: [],
+  microphone: null,
   cameras: [],
   camera: null,
   resolution: Resolution.MEDIUM,
   loading: false,
   isAuthorized: false,
-  tracking: false,
   error: null,
+  authorization: {
+    canUseCamera: false,
+    canUseMicrophone: false,
+    loading: false,
+    error: null,
+  },
   streaming: {
     stream: null,
     creating: false,
@@ -43,9 +57,10 @@ export const reducer = createReducer(
     loading: true,
     error: null,
   })),
-  on(cameraActions.loadCamerasSuccess, (state, { cameras }) => ({
+  on(cameraActions.loadCamerasSuccess, (state, { cameras, microphones }) => ({
     ...state,
     cameras,
+    microphones,
     loading: false,
   })),
   on(cameraActions.loadCamerasFailure, (state, { error }) => ({
@@ -53,21 +68,50 @@ export const reducer = createReducer(
     error,
     loading: false,
   })),
+  on(cameraActions.checkCameraAuthorization, (state) => ({
+    ...state,
+    authorization: {
+      ...state.authorization,
+      loading: true,
+    },
+  })),
   on(cameraActions.checkCameraAuthorizationSuccess, (state) => ({
     ...state,
     isAuthorized: true,
+    authorization: {
+      ...state.authorization,
+      loading: false,
+    },
   })),
   on(cameraActions.checkCameraAuthorizationFailure, (state, { error }) => ({
     ...state,
     isAuthorized: false,
-    error,
+    authorization: {
+      ...state.authorization,
+      loading: false,
+      error,
+    },
   })),
   on(
     cameraActions.selectCameraSuccess,
-    (state, { deviceId, tracking, resolution }) => ({
+    (
+      state,
+      { deviceId, canUseCamera, canUseMicrophone, resolution, microphoneId }
+    ) => ({
       ...state,
       resolution: resolution ?? state.resolution ?? Resolution.MEDIUM,
-      tracking: tracking ?? state.tracking ?? false,
+      authorization: {
+        ...state.authorization,
+        canUseCamera: canUseCamera ?? state.authorization.canUseCamera ?? false,
+        canUseMicrophone:
+          canUseMicrophone ?? state.authorization.canUseMicrophone ?? false,
+      },
+      microphone:
+        (microphoneId
+          ? state.microphones.find(
+              (microphone) => microphone.deviceId === microphoneId
+            )
+          : state.microphone) ?? null,
       camera:
         (deviceId
           ? state.cameras.find((camera) => camera.deviceId === deviceId)

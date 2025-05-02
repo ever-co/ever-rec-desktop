@@ -1,7 +1,6 @@
 import { TimerScheduler } from '@ever-co/electron-utils';
-import { Channel, moment } from '@ever-co/shared-utils';
+import { Channel, moment, AppWindowId } from '@ever-co/shared-utils';
 import {
-  AppWindowId,
   IWindow,
   IWindowManager,
   StreamWindow,
@@ -15,7 +14,7 @@ export class PhotoCaptureEvent {
   private readonly delayInSeconds: number;
 
   private mainWindow: IWindow | null = null;
-  private streamWindow: IWindow | null = null;
+  private streamWindow: StreamWindow | null = null;
 
   constructor() {
     this.scheduler = TimerScheduler.getInstance();
@@ -37,14 +36,29 @@ export class PhotoCaptureEvent {
       this.scheduler.onTick(this.handleTick.bind(this));
     });
     ipcMain.on(Channel.STOP_TRACKING, () => {
-      if (this.mainWindow) {
-        this.mainWindow.send(Channel.AUTO_STOP_SYNC);
-      }
+      this.handleStopTracking();
     });
   }
 
+  private handleStopTracking(): void {
+    if (!this.streamWindow) return;
+
+    this.streamWindow.on('window::closed', () => {
+      this.notifyAutoStopSync();
+      this.streamWindow = null;
+    });
+
+    this.streamWindow.close();
+  }
+
+  private notifyAutoStopSync(): void {
+    this.mainWindow?.send(Channel.AUTO_STOP_SYNC);
+  }
+
   private async createStreamingWindow(): Promise<void> {
-    this.streamWindow = this.windowManager.getOne(AppWindowId.STREAMING);
+    this.streamWindow = this.windowManager.getOne(
+      AppWindowId.STREAMING
+    ) as StreamWindow;
 
     if (!this.mainWindow) {
       return;
@@ -91,16 +105,27 @@ export class PhotoCaptureEvent {
   }
 
   private handleStop(): void {
-    if (this.streamWindow) {
-      this.streamWindow.send(Channel.TAKE_PHOTO);
-      this.streamWindow.close();
-      this.streamWindow = null;
+    if (this.validateStreamWindow()) {
+      this.streamWindow?.send(Channel.TAKE_PHOTO);
     }
   }
 
+  private validateStreamWindow(): boolean {
+    if (!this.streamWindow) {
+      return false;
+    }
+
+    if (this.streamWindow && this.streamWindow.isDestroyed()) {
+      this.streamWindow = null;
+      return false;
+    }
+
+    return true;
+  }
+
   private handleTick(seconds: number): void {
-    if (this.streamWindow && seconds % this.delayInSeconds === 0) {
-      this.streamWindow.send(Channel.TAKE_PHOTO);
+    if (this.validateStreamWindow() && seconds % this.delayInSeconds === 0) {
+      this.streamWindow?.send(Channel.TAKE_PHOTO);
     }
   }
 }

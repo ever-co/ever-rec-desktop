@@ -1,24 +1,46 @@
-@let cameras = cameras$ | async;
+@let cameras = cameras$ | async; @let microphones = microphones$ | async;
 
 <div class="setting max-w-xl space-y-6 w-full">
   <form [formGroup]="formGroup" class="form space-y-4" (ngSubmit)="onSubmit()">
     <!-- Toggle for tracking -->
     <div class="start flex justify-between items-center">
+      <span class="text-gray-700">Record audio while tracking</span>
+      <mat-slide-toggle formControlName="canUseMicrophone"> </mat-slide-toggle>
+    </div>
+
+    <!-- Select Input -->
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Available Microphones</mat-label>
+      <mat-select formControlName="microphoneId" required>
+        @for (micro of microphones; track micro.deviceId) {
+        <mat-option [value]="micro.deviceId">{{ micro.label }}</mat-option>
+        }
+      </mat-select>
+      @if (formGroup.controls['microphoneId'].hasError('required')) {
+      <mat-error>Please select a microphone source</mat-error>
+      }
+    </mat-form-field>
+    <!-- Toggle for tracking -->
+    <div class="start flex justify-between items-center">
       <span class="text-gray-700"
         >Take camera shot with screenshot while tracking</span
       >
-      <mat-slide-toggle formControlName="tracking"> </mat-slide-toggle>
+      <mat-slide-toggle
+        (change)="onCheck($event)"
+        formControlName="canUseCamera"
+      >
+      </mat-slide-toggle>
     </div>
 
     <!-- Select Input -->
     <mat-form-field appearance="outline" class="w-full">
       <mat-label>Available Camera</mat-label>
-      <mat-select formControlName="webcam" required>
+      <mat-select formControlName="deviceId" required>
         @for (camera of cameras; track camera.deviceId) {
         <mat-option [value]="camera.deviceId">{{ camera.label }}</mat-option>
         }
       </mat-select>
-      @if (formGroup.controls['webcam'].hasError('required')) {
+      @if (formGroup.controls['deviceId'].hasError('required')) {
       <mat-error>Please select a camera source</mat-error>
       }
     </mat-form-field>

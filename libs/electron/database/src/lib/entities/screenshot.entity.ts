@@ -9,6 +9,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   Relation,
 } from 'typeorm';
@@ -24,6 +25,19 @@ export class Screenshot extends Base implements IScreenshot {
 
   @Column({ default: false, type: 'boolean' })
   synced: boolean;
+
+  @ManyToOne(() => Screenshot, (screenshot) => screenshot.chunks, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn()
+  parent?: Relation<IScreenshot>;
+
+  @OneToMany(() => Screenshot, (screenshot) => screenshot.parent, {
+    onDelete: 'CASCADE',
+    nullable: true,
+  })
+  chunks?: Relation<IScreenshot[]>;
 
   @OneToOne(() => ScreenshotMetadata, (metadata) => metadata.screenshot, {
     nullable: true,

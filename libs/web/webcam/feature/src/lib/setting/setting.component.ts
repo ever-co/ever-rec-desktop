@@ -16,12 +16,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import {
+  MatSlideToggleChange,
+  MatSlideToggleModule,
+} from '@angular/material/slide-toggle';
 import { RouterOutlet } from '@angular/router';
 import { NotificationService } from '@ever-co/notification-data-access';
 import { Resolution } from '@ever-co/shared-utils';
 import {
   cameraActions,
+  selectCameraMicrophones,
   selectCameraPersistance,
   selectCameras,
 } from '@ever-co/webcam-data-access';
@@ -63,23 +67,22 @@ export class SettingComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.formGroup = new FormGroup({
-      webcam: new FormControl(null, [Validators.required]),
+      deviceId: new FormControl(null, [Validators.required]),
       resolution: new FormControl(Resolution.MEDIUM, [Validators.required]),
-      tracking: new FormControl(false),
+      canUseCamera: new FormControl(false),
+      canUseMicrophone: new FormControl(false),
       checkCamera: new FormControl(false),
+      microphoneId: new FormControl(null),
     });
 
     this.store
       .select(selectCameraPersistance)
       .pipe(
         distinctUntilChanged(),
-        tap((state) =>
-          this.formGroup.patchValue({
-            webcam: state.camera?.deviceId,
-            tracking: state.tracking,
-            resolution: state.resolution,
-          })
-        ),
+        tap((state) => {
+          this.formGroup.patchValue(state);
+          this.onCheck({ checked: state.canUseCamera });
+        }),
         takeUntil(this.destroy$)
       )
       .subscribe();
@@ -87,22 +90,32 @@ export class SettingComponent implements OnInit, OnDestroy {
     this.store.dispatch(cameraActions.loadCameras());
   }
 
+  public onCheck({ checked }: Partial<MatSlideToggleChange>) {
+    if (checked) {
+      this.formGroup.controls['resolution'].enable();
+      this.formGroup.controls['checkCamera'].enable();
+    } else {
+      this.formGroup.controls['resolution'].disable();
+      this.formGroup.controls['checkCamera'].disable();
+    }
+  }
+
   public onSubmit(): void {
     if (this.formGroup.invalid) {
       return;
     }
-    this.store.dispatch(
-      cameraActions.selectCamera({
-        deviceId: this.formGroup.value.webcam,
-        tracking: this.formGroup.value.tracking,
-        resolution: this.formGroup.value.resolution,
-      })
-    );
+    this.store.dispatch(cameraActions.selectCamera(this.formGroup.value));
     this.notificationService.show('Camera settings updated.', 'info');
   }
 
   public get cameras$(): Observable<MediaDeviceInfo[]> {
     return this.store.select(selectCameras).pipe(takeUntil(this.destroy$));
+  }
+
+  public get microphones$(): Observable<MediaDeviceInfo[]> {
+    return this.store
+      .select(selectCameraMicrophones)
+      .pipe(takeUntil(this.destroy$));
   }
 
   ngOnDestroy(): void {

@@ -1,5 +1,5 @@
 import { IpcMainEvent } from 'electron';
-import { FindOneOptions, FindOptionsWhere } from 'typeorm';
+import { FindOneOptions, FindOptionsWhere, FindManyOptions } from 'typeorm';
 
 export interface IBase {
   id: string;
@@ -9,6 +9,8 @@ export interface IBase {
 }
 
 export type IFindOneOptions<T> = FindOneOptions<T>;
+
+export type IFindManyOptions<T> = FindManyOptions<T>;
 
 export type IFindOptionsWhere<T> = FindOptionsWhere<T>;
 

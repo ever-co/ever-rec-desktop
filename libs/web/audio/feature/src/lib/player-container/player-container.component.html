@@ -1,0 +1,44 @@
+<!-- playing -->
+@let isPlaying = isPlaying$ | async;
+
+<!-- progress -->
+@let progress = progressPercentage$ | async;
+
+<!-- current time -->
+@let currentTime = currentTimeFormatted$ | async;
+
+<!-- duration -->
+@let duration = durationFormatted$ | async;
+
+<!-- Check if audio is available -->
+@if(audio) {
+<!-- Muted -->
+@let isMuted = isMuted$ | async;
+
+<!-- volume -->
+@let volume = volume$ | async;
+
+<!-- remaing time -->
+@let remainingTime = remainingTimeFormatted$ | async;
+
+<!-- complete player -->
+<lib-player-container
+  [audio]="audio"
+  [mode]="mode"
+  [isPlaying]="isPlaying"
+  [progress]="progress"
+  [currentTime]="currentTime"
+  [remainingTime]="remainingTime"
+  [duration]="duration"
+  [volume]="volume"
+  [isMuted]="isMuted"
+  (playPause)="togglePlayPause()"
+  (seek)="handleSeek($event)"
+  (skipForward)="skipForward()"
+  (skipBack)="skipBack()"
+  (volumeChange)="setVolume($event)"
+  (muteToggle)="toggleMute()"
+></lib-player-container>
+
+<audio #player [src]="audio.pathname" preload="metadata" hidden></audio>
+}

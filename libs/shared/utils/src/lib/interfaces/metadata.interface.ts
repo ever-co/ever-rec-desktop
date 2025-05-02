@@ -3,4 +3,5 @@ export interface IUsedSize {
   screenshot: number;
   video: number;
   photo: number;
+  audio: number;
 }

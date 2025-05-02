@@ -1,0 +1,10 @@
+<div class="flex-1 min-w-0">
+  <div class="text-gray-600 font-medium truncate">
+    {{ name || 'Unknown Track' }}
+  </div>
+  @if(author) {
+  <p class="text-gray-400 text-sm truncate">
+    {{ author }}
+  </p>
+  }
+</div>

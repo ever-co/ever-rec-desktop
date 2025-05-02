@@ -1,0 +1,28 @@
+<div class="flex items-center w-full bg-white shadow-sm rounded-md p-2">
+  <button
+    mat-icon-button
+    (click)="playPause.emit()"
+    class="text-white"
+    aria-label="Play or pause"
+  >
+    <mat-icon>{{ isPlaying ? 'pause' : 'play_arrow' }}</mat-icon>
+  </button>
+
+  <div class="flex-1 mx-3">
+    <lib-track [name]="name"></lib-track>
+
+    <div class="flex items-center">
+      <div class="flex-1 mr-2">
+        <lib-progress-bar
+          [progress]="progress || 0"
+          (seek)="seek.emit($event)"
+        ></lib-progress-bar>
+      </div>
+
+      <lib-time-display
+        [currentTime]="currentTime"
+        [duration]="duration"
+      ></lib-time-display>
+    </div>
+  </div>
+</div>

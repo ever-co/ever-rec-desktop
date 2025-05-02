@@ -57,4 +57,11 @@ export enum Channel {
   'STOP_TRACKING' = 'stop::photo::tracking',
   'START_TRACKING' = 'start::photo::tracking',
   'REQUEST_TRACKING' = 'request::photo::tracking',
+  'SAVE_AUDIO' = 'save::audio',
+  'GET_AUDIO' = 'get::audio',
+  'GET_ALL_AUDIO' = 'get::all::audio',
+  'DELETE_AUDIO' = 'delete::audio',
+  'DELETE_ALL_AUDIO' = 'delete::all::audio',
+  'MEDIATOR_INCOMING_MESSAGE' = 'mediator::incomming::message',
+  'MEDIATOR_OUTGOING_MESSAGE' = 'mediator::outgoing::message',
 }

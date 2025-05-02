@@ -24,6 +24,10 @@ mat-card {
     }
   }
 
+  .stack-cards {
+    padding-top: 0;
+  }
+
   .action-button-group {
     display: none;
   }
@@ -31,8 +35,99 @@ mat-card {
 
 .action-button-group {
   top: calc(100vh - 4rem);
+  z-index: 1000;
 }
 
 .max-h-custom {
   max-height: calc(100vh - 16rem);
+}
+
+// Base styling for stack container
+.stack-cards {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding-top: 20px;
+  transition: all 0.3s ease;
+
+  // The items within the stack
+  &__item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    background-color: #fff;
+
+    // Generate compact stacking effect
+    @for $i from 1 through 10 {
+      &:nth-child(#{$i}) {
+        z-index: 11 - $i;
+        transform: translateY(#{($i - 1) * 5}px) scale(#{1 - ($i - 1) * 0.04});
+        transform-origin: center top;
+        width: calc(100% - #{($i - 1) * 8}px);
+        margin-left: calc(#{($i - 1) * 4}px);
+      }
+    }
+
+    // First card (in front) styling
+    &:first-child {
+      position: relative;
+      z-index: 10;
+    }
+  }
+
+  // When mouse is over the entire stack
+  &:hover {
+    // Expand the stack slightly
+    .stack-cards__item {
+      @for $i from 1 through 10 {
+        &:nth-child(#{$i}) {
+          transform: translateY(#{($i - 1) * 10}px)
+            scale(#{1 - ($i - 1) * 0.04});
+        }
+      }
+    }
+  }
+
+  // Individual card hover effect
+  .stack-cards__item {
+    // When hovering an individual card
+    &:hover {
+      cursor: pointer;
+      z-index: 11;
+      width: 100%;
+      margin: 0;
+      transform: scale(1) !important;
+
+      &:has(+ .stack-cards__item) {
+        transform: scale(0.98) !important;
+      }
+
+      // Reveal the card behind by pushing it down more
+      & + .stack-cards__item {
+        transform: translateY(-2px) scale(0.98) !important;
+        z-index: 9;
+      }
+    }
+  }
+}
+
+// Additional styling for the card component
+.card {
+  border-radius: 8px;
+  overflow: hidden;
+  min-height: 200px;
+}
+
+// Optional: Add some basic styling for the screenshot component
+lib-screenshot {
+  display: block;
+  transition: all 0.3s ease;
+
+  &[checked='true'] {
+    outline: 2px solid #4a90e2;
+  }
 }

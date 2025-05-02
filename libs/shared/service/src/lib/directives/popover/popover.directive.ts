@@ -2,9 +2,13 @@ import {
   ConnectedPosition,
   Overlay,
   OverlayConfig,
-  OverlayRef
+  OverlayRef,
 } from '@angular/cdk/overlay';
-import { ComponentPortal, ComponentType, TemplatePortal } from '@angular/cdk/portal';
+import {
+  ComponentPortal,
+  ComponentType,
+  TemplatePortal,
+} from '@angular/cdk/portal';
 import {
   Directive,
   ElementRef,
@@ -13,14 +17,14 @@ import {
   OnDestroy,
   OnInit,
   TemplateRef,
-  ViewContainerRef
+  ViewContainerRef,
 } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Directive({
   selector: '[libPopover]',
-  standalone: true
+  standalone: true,
 })
 export class PopoverDirective<T = any> implements OnInit, OnDestroy {
   private overlay = inject(Overlay);
@@ -69,13 +73,14 @@ export class PopoverDirective<T = any> implements OnInit, OnDestroy {
       positionStrategy,
       scrollStrategy,
       hasBackdrop: this.hasBackdrop,
-      backdropClass: 'cdk-overlay-transparent-backdrop'
+      backdropClass: 'cdk-overlay-transparent-backdrop',
     };
 
     this.overlayRef = this.overlay.create(config);
 
     if (this.hasBackdrop) {
-      this.overlayRef.backdropClick()
+      this.overlayRef
+        .backdropClick()
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => this.hide());
     }
@@ -92,7 +97,7 @@ export class PopoverDirective<T = any> implements OnInit, OnDestroy {
       const portal = new TemplatePortal(
         this.content,
         this.viewContainerRef,
-        { $implicit: this.popoverContext }
+        this.popoverContext
       );
       this.overlayRef.attach(portal);
     } else {
@@ -116,7 +121,7 @@ export class PopoverDirective<T = any> implements OnInit, OnDestroy {
         overlayX: 'center',
         overlayY: 'bottom',
         offsetY: -8 + this.offsetY,
-        offsetX: this.offsetX
+        offsetX: this.offsetX,
       },
       bottom: {
         originX: 'center',
@@ -124,7 +129,7 @@ export class PopoverDirective<T = any> implements OnInit, OnDestroy {
         overlayX: 'center',
         overlayY: 'top',
         offsetY: 8 + this.offsetY,
-        offsetX: this.offsetX
+        offsetX: this.offsetX,
       },
       left: {
         originX: 'start',
@@ -132,7 +137,7 @@ export class PopoverDirective<T = any> implements OnInit, OnDestroy {
         overlayX: 'end',
         overlayY: 'center',
         offsetX: -8 + this.offsetX,
-        offsetY: this.offsetY
+        offsetY: this.offsetY,
       },
       right: {
         originX: 'end',
@@ -140,8 +145,8 @@ export class PopoverDirective<T = any> implements OnInit, OnDestroy {
         overlayX: 'start',
         overlayY: 'center',
         offsetX: 8 + this.offsetX,
-        offsetY: this.offsetY
-      }
+        offsetY: this.offsetY,
+      },
     };
 
     return [
@@ -149,7 +154,7 @@ export class PopoverDirective<T = any> implements OnInit, OnDestroy {
       positions['bottom'],
       positions['right'],
       positions['left'],
-      positions['top']
+      positions['top'],
     ];
   }
 }

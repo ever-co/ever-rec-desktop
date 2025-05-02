@@ -76,7 +76,14 @@
         </button>
       </div>
 
-      @if(video.metadata) {
+      @if(video.audio) {
+      <div class="mb-4">
+        <lib-audio-player-container
+          mode="inline"
+          [audio]="video.audio"
+        ></lib-audio-player-container>
+      </div>
+      } @if(video.metadata) {
       <div class="space-y-4">
         <!-- File Info -->
         <div class="bg-white rounded-df p-4">

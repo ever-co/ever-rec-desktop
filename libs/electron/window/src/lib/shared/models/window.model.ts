@@ -8,7 +8,7 @@ import { Channel } from '@ever-co/shared-utils';
 
 export abstract class Window extends EventEmitter implements IWindow {
   protected _browserWindow: BrowserWindow | null;
-  protected loaderContext: WindowLoaderContext;
+  protected _loaderContext: WindowLoaderContext;
   protected _shouldHideOnClose = true;
   protected _isWindowHidden = false;
   protected _isAppExiting = false;
@@ -16,7 +16,7 @@ export abstract class Window extends EventEmitter implements IWindow {
   constructor(readonly config: IWindowConfig) {
     super();
     this._browserWindow = null;
-    this.loaderContext = new WindowLoaderContext(this.config);
+    this._loaderContext = new WindowLoaderContext(this.config);
   }
 
   protected initalize() {
@@ -59,7 +59,7 @@ export abstract class Window extends EventEmitter implements IWindow {
     const window = this.browserWindow;
     if (!window) return;
 
-    const url = this.loaderContext.url();
+    const url = this._loaderContext.url();
     await window.loadURL(url);
     this.emit('did-finish-load');
   }
@@ -152,5 +152,10 @@ export abstract class Window extends EventEmitter implements IWindow {
   public send(channel: Channel, ...args: any[]): void {
     const window = this.browserWindow;
     if (window) window.webContents.send(channel, ...args);
+  }
+
+  public isDestroyed(): boolean {
+    const window = this.browserWindow;
+    return window ? window.isDestroyed() : true;
   }
 }

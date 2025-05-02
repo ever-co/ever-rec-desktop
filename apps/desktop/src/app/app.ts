@@ -1,5 +1,5 @@
 import { AppWindow } from '@ever-co/window';
-import { screen } from 'electron';
+import { desktopCapturer, screen, session } from 'electron';
 import { join } from 'path';
 import { environment } from '../environments/environment';
 import { rendererAppName, rendererAppPort } from './constants';
@@ -35,7 +35,36 @@ export default class App {
 
     const isDev = App.isDevelopmentMode();
     App.window = App.createMainWindow(isDev);
+    App.handlePermission();
+    App.handleMediaRequest();
     await App.window.onAppReady();
+  }
+
+  private static handlePermission(): void {
+    session.defaultSession.setPermissionRequestHandler(
+      (webContents, permission, callback) => {
+        const allowedPermissions = ['media', 'microphone', 'camera'];
+        if (allowedPermissions.includes(permission)) {
+          callback(true); // Granted
+        } else {
+          callback(false); // Denied
+        }
+      }
+    );
+  }
+
+  private static handleMediaRequest(): void {
+    session.defaultSession.setDisplayMediaRequestHandler(
+      (request, callback) => {
+        desktopCapturer
+          .getSources({ types: ['screen', 'window'] })
+          .then((sources) => {
+            // Grant access to the first screen found.
+            callback({ video: sources[0], audio: 'loopback' });
+          });
+      },
+      { useSystemPicker: true }
+    );
   }
 
   private static async handleAppActivate(): Promise<void> {
@@ -59,6 +88,7 @@ export default class App {
         height,
         webPreferences: {
           preload: join(__dirname, 'main.preload.js'),
+          enableBlinkFeatures: 'EnumerateDevices, MediaDevices',
         },
       },
       loader: {

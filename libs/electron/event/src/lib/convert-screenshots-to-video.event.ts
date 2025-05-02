@@ -48,13 +48,13 @@ export function convertScreenshotsToVideoEvent() {
         screenshots = await screenshotService.findAll({
           where: { id: In(screenshotIds) },
           order: { createdAt: 'ASC' },
-          withDeleted: true
+          withDeleted: true,
         });
       } else if (filter || timeLog) {
         screenshots = await screenshotService.findAll({
           where: {
             ...(filter && { metadata: { description: ILike(`%${filter}%`) } }),
-            ...(timeLog && { timeLog: { id: timeLog.id } }),
+            ...(timeLog && { timeLog: { id: timeLog.id }, parent: IsNull() }),
             ...(config.optimized && { video: { id: IsNull() } }),
           },
           withDeleted: true,

@@ -13,8 +13,10 @@ export interface IPhoto extends IBase {
 export interface ICameraPersistance {
   isAuthorized?: boolean;
   deviceId?: string;
-  tracking?: boolean;
+  microphoneId?: string;
   resolution?: Resolution;
+  canUseCamera?: boolean;
+  canUseMicrophone?: boolean;
 }
 
 export enum Resolution {
@@ -23,10 +25,8 @@ export enum Resolution {
   HIGH = 'high',
 }
 
-export interface IConstraintStream {
-  deviceId?: string;
+export interface IConstraintStream extends ICameraPersistance {
   stream?: MediaStream | null;
-  resolution?: Resolution;
 }
 
 export interface IPhotoMetadata extends IBase {
@@ -65,8 +65,8 @@ export interface IPhotoMetadataService {
   ): Promise<IPhotoMetadata>;
 }
 
-export type IPhotoCreateInput = IPhotoInput & {
-  metadata: Omit<IPhotoMetadataInput, 'id'>;
+export type IPhotoCreateInput = Omit<IPhotoInput, 'metadata'> & {
+  metadata?: Omit<IPhotoMetadataInput, 'id'>;
 };
 
 export const PHOTO_DIR = 'photos';
