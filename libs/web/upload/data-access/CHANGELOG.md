@@ -7,6 +7,17 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 ### Dependency Updates
 
 * `utils` updated to version `0.2.0`
+* `convert-video-data-access` updated to version `0.2.0`
+* `notification-data-access` updated to version `0.1.5`
+* `data-access-electron` updated to version `0.2.1`
+* `web-setting-data-access` updated to version `0.2.1`
+
+
+## [0.1.4](https://github.com/ever-co/ever-capture/compare/upload-data-access-0.1.3...upload-data-access-0.1.4) (2025-05-02)
+
+### Dependency Updates
+
+* `utils` updated to version `0.2.0`
 * `convert-video-data-access` updated to version `0.1.2`
 * `notification-data-access` updated to version `0.1.4`
 * `data-access-electron` updated to version `0.2.0`
