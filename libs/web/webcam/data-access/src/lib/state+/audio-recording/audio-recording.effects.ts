@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { generateVideoActions } from '@ever-co/convert-video-data-access';
@@ -12,6 +12,8 @@ import { audioRecordingActions } from './audio-recording.actions';
 
 @Injectable()
 export class AudioRecordingEffects {
+  private readonly actions$ = inject(Actions);
+
   processAudio$ = createEffect(() =>
     this.actions$.pipe(
       ofType(generateVideoActions.finish),
@@ -23,7 +25,9 @@ export class AudioRecordingEffects {
               videoId: video.id,
             })
           ),
-          catchError((error) => of(audioRecordingActions.saveAudioFailure({ error })))
+          catchError((error) =>
+            of(audioRecordingActions.saveAudioFailure({ error }))
+          )
         )
       )
     )
@@ -35,7 +39,9 @@ export class AudioRecordingEffects {
       mergeMap((options) =>
         this.audioService.save(options).pipe(
           map((audio) => audioRecordingActions.saveAudioSuccess({ audio })),
-          catchError((error) => of(audioRecordingActions.saveAudioFailure({ error })))
+          catchError((error) =>
+            of(audioRecordingActions.saveAudioFailure({ error }))
+          )
         )
       )
     )
@@ -47,8 +53,12 @@ export class AudioRecordingEffects {
         audioRecordingActions.startRecording,
         cameraActions.createCameraStreamSuccess
       ),
-      map(({ stream }) => audioRecordingActions.startRecordingSuccess({ stream })),
-      catchError((error) => of(audioRecordingActions.startRecordingFailure({ error })))
+      map(({ stream }) =>
+        audioRecordingActions.startRecordingSuccess({ stream })
+      ),
+      catchError((error) =>
+        of(audioRecordingActions.startRecordingFailure({ error }))
+      )
     )
   );
 
@@ -58,7 +68,9 @@ export class AudioRecordingEffects {
       mergeMap(({ stream }) =>
         this.audioRecorderService.start(stream).pipe(
           map((audio) => audioRecordingActions.saveAudio(audio)),
-          catchError((error) => of(audioRecordingActions.saveAudioFailure({ error })))
+          catchError((error) =>
+            of(audioRecordingActions.saveAudioFailure({ error }))
+          )
         )
       )
     )
@@ -82,7 +94,6 @@ export class AudioRecordingEffects {
   );
 
   constructor(
-    private actions$: Actions,
     private readonly audioService: AudioService,
     private readonly audioRecorderService: AudioRecorderService,
     private readonly audioWorkerService: AudioWorkerService

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { from, of } from 'rxjs';
@@ -8,6 +8,7 @@ import { photoCaptureActions } from './photo-capture.actions';
 
 @Injectable()
 export class PhotoCaptureEffects {
+  private readonly actions$ = inject(Actions);
   savePhoto$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(photoCaptureActions.savePhoto),
@@ -50,8 +51,5 @@ export class PhotoCaptureEffects {
     )
   );
 
-  constructor(
-    private readonly actions$: Actions,
-    private readonly photoCaptureService: PhotoCaptureService
-  ) {}
+  constructor(private readonly photoCaptureService: PhotoCaptureService) {}
 }
