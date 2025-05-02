@@ -2,6 +2,33 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.2.0](https://github.com/ever-co/ever-capture/compare/web-setting-data-access-0.1.3...web-setting-data-access-0.2.0) (2025-05-02)
+
+### Dependency Updates
+
+* `data-access-electron` updated to version `0.2.0`
+* `utils` updated to version `0.2.0`
+* `convert-video-data-access` updated to version `0.1.2`
+* `screenshot-data-access` updated to version `0.2.0`
+* `shared-service` updated to version `0.1.2`
+* `data-access` updated to version `0.1.0`
+* `photo-data-acess` updated to version `0.0.1`
+* `webcam-data-access` updated to version `1.0.0`
+
+### Bug Fixes
+
+* fix inaccurate screenshot storage size calculation ([61ef441](https://github.com/ever-co/ever-capture/commit/61ef441e1d1b37885e896c9ad3d5418c55a1d860))
+* **settings:** set default retention to unlimited ([070d6a2](https://github.com/ever-co/ever-capture/commit/070d6a20b8169a099e535aedba48e466a513ff06))
+
+
+### Features
+
+* **settings:** add audio storage tracking and deletion ([1ceedbd](https://github.com/ever-co/ever-capture/commit/1ceedbd575b5f49da1ea85cb39b8e48d7acc6036))
+* **settings:** add granular delete and purge options for storage ([418df6d](https://github.com/ever-co/ever-capture/commit/418df6def7f107320da86110a385d46f0377f5f8))
+* **storage:** include photo size in storage usage ([cd4e7f7](https://github.com/ever-co/ever-capture/commit/cd4e7f7e074a593b582b49cbeafcae2d5f48ea98))
+
+
+
 ## [0.1.3](https://github.com/ever-co/ever-capture/compare/web-setting-data-access-0.1.2...web-setting-data-access-0.1.3) (2025-02-12)
 
 ### Dependency Updates
