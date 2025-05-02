@@ -2,6 +2,26 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.2.0](https://github.com/ever-co/ever-capture/compare/sidebar-feature-0.1.2...sidebar-feature-0.2.0) (2025-05-02)
+
+### Dependency Updates
+
+* `breadcrumb-data-access` updated to version `0.1.2`
+* `shared-service` updated to version `0.1.2`
+* `sidebar` updated to version `0.1.2`
+
+### Bug Fixes
+
+* **sidebar:** remove selected class from active icon ([64f204c](https://github.com/ever-co/ever-capture/commit/64f204c9f13af42daa848fd44104071e8d6d668e))
+
+
+### Features
+
+* **sidebar:** enhance sidebar item styling and accessibility ([6dad957](https://github.com/ever-co/ever-capture/commit/6dad9573c93001cd098a71fd5ac6259d0e0b5a1f))
+* **webcam:** add responsive layout to audio gallery ([31cb668](https://github.com/ever-co/ever-capture/commit/31cb6684fc8cf0a0bb214b11511175e5fc3ab03a))
+
+
+
 ## [0.1.2](https://github.com/ever-co/ever-capture/compare/sidebar-feature-0.1.1...sidebar-feature-0.1.2) (2025-02-12)
 
 ### Dependency Updates
