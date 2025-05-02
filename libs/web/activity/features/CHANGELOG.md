@@ -2,6 +2,23 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.1.0](https://github.com/ever-co/ever-capture/compare/activity-feature-0.0.5...activity-feature-0.1.0) (2025-05-02)
+
+### Dependency Updates
+
+* `activity-data-access` updated to version `0.0.5`
+* `shared-service` updated to version `0.1.2`
+* `utils` updated to version `0.2.0`
+* `shared-components` updated to version `0.2.0`
+
+### Features
+
+* **activity/analysis:** display dynamic date range in analysis summary ([ad2ed19](https://github.com/ever-co/ever-capture/commit/ad2ed19fad5d2bbb937e0452a268a6adf6cea597))
+* **activity:** enhance analysis component UI and information display ([7320569](https://github.com/ever-co/ever-capture/commit/73205695545954eefd37a2a596e28f4eef1864fb))
+* **analysis:** enhance peak productivity hours display ([90fb831](https://github.com/ever-co/ever-capture/commit/90fb8313d371470bb068004ee258ea6977a1a1aa))
+
+
+
 ## [0.0.5](https://github.com/ever-co/ever-capture/compare/activity-feature-0.0.4...activity-feature-0.0.5) (2025-02-12)
 
 ### Dependency Updates
