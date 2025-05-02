@@ -2,7 +2,8 @@
 isPlaying = isPlaying$ | async; @let progress = progressPercentage$ | async;
 @let currentTime = currentTimeFormatted$ | async; @let duration =
 durationFormatted$ | async; @let isMobileView = layoutService.isMobileView();
-@if (isAvailable$ | async) {
+@let capturing = capturing$ | async; @let generating = generating$ | async; @if
+(isAvailable$ | async) {
 <div
   class="flex transition-all duration-300 ease-in-out"
   [ngClass]="{
@@ -160,6 +161,7 @@ durationFormatted$ | async; @let isMobileView = layoutService.isMobileView();
     <lib-audio-metadata
       [audio]="audio || currentAudio"
       [showDetailedInfo]="showDetails || false"
+      [hideTimeLogAction]="capturing || generating || false"
       (viewVideo)="viewVideo($event)"
       (viewTimeLog)="viewTimeLog($event)"
     ></lib-audio-metadata>

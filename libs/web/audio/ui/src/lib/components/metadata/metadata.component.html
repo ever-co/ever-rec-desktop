@@ -98,7 +98,7 @@
       <mat-icon class="mr-1">videocam</mat-icon>
       View Video
     </button>
-    } @if(audio?.timeLogId) {
+    } @if(audio?.timeLogId && hideTimeLogAction !== true) {
     <button
       (click)="viewTimeLog.emit(audio?.timeLogId)"
       mat-stroked-button

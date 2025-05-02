@@ -46,6 +46,8 @@ import {
   MetadataComponent,
 } from '@ever-co/audio-ui';
 import { PlayerContainerComponent } from '../player-container/player-container.component';
+import { selectGenerateVideoState } from '@ever-co/convert-video-data-access';
+import { selectScreenshotState } from '@ever-co/screenshot-data-access';
 
 @Component({
   selector: 'lib-audio-gallery',
@@ -157,7 +159,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
     );
   }
 
-  public get capturing$() {
+  public get loading$() {
     return this.store.select(selectAudioState).pipe(
       map((state) => state.loading),
       takeUntil(this.destroy$)
@@ -326,6 +328,20 @@ export class GalleryComponent implements OnInit, OnDestroy {
 
   public get mode(): AudioPlayerMode {
     return this.layoutService.isMobileView() ? 'card' : 'player';
+  }
+
+  public get generating$(): Observable<boolean> {
+    return this.store.select(selectGenerateVideoState).pipe(
+      map((state) => state.generating),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  public get capturing$(): Observable<boolean> {
+    return this.store.select(selectScreenshotState).pipe(
+      map((state) => state.capturing),
+      takeUntil(this.destroy$)
+    );
   }
 
   ngOnDestroy(): void {

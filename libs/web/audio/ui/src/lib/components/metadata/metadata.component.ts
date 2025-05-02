@@ -42,6 +42,7 @@ import {
 export class MetadataComponent {
   @Input() audio!: IAudio | null;
   @Input() showDetailedInfo = false;
+  @Input() hideTimeLogAction = false;
 
   @Output() viewVideo = new EventEmitter<string>();
   @Output() viewTimeLog = new EventEmitter<string>();
