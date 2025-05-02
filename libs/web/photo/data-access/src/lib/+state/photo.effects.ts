@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { NotificationService } from '@ever-co/notification-data-access';
@@ -7,9 +7,10 @@ import { catchError, map, mergeMap } from 'rxjs/operators';
 import { photoActions } from './photo.actions';
 import { PhotoService } from '../services/photo.service';
 
-
 @Injectable()
 export class PhotoEffects {
+  private readonly actions$ = inject(Actions);
+
   loadPhotos$ = createEffect(() =>
     this.actions$.pipe(
       ofType(photoActions.loadPhotos),
@@ -81,7 +82,6 @@ export class PhotoEffects {
   );
 
   constructor(
-    private readonly actions$: Actions,
     private readonly photoService: PhotoService,
     private readonly notificationService: NotificationService
   ) {}
