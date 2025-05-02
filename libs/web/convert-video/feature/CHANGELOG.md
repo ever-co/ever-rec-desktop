@@ -2,6 +2,34 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.3.0](https://github.com/ever-co/ever-capture/compare/convert-video-feature-0.2.2...convert-video-feature-0.3.0) (2025-05-02)
+
+### Dependency Updates
+
+* `convert-video-data-access` updated to version `0.1.2`
+* `notification-data-access` updated to version `0.1.4`
+* `shared-service` updated to version `0.1.2`
+* `utils` updated to version `0.2.0`
+* `screenshot-data-access` updated to version `0.2.0`
+* `shared-components` updated to version `0.2.0`
+* `upload-data-access` updated to version `0.1.3`
+* `web-setting-data-access` updated to version `0.2.0`
+* `feature` updated to version `0.1.0`
+
+### Bug Fixes
+
+* **ui/audio:** set explicit mode for audio component in video detail ([72c383c](https://github.com/ever-co/ever-capture/commit/72c383cd05f5344d456abe9d3bfaa81b61e6ddd1))
+* **ui:** limit height and enable scroll on detail views ([699bd6e](https://github.com/ever-co/ever-capture/commit/699bd6e8831bdeb4203389c7df96a2cd7f554334))
+
+
+### Features
+
+* **settings:** add codec dropdown and initial webcam settings ([df644e6](https://github.com/ever-co/ever-capture/commit/df644e656b92a35dea2993c69c0dd862c4404405))
+* **shared/components:** add audio player component ([bd39965](https://github.com/ever-co/ever-capture/commit/bd39965dd830ab7de33633e9ef70dd8e4e70f6e9))
+* **webcam:** add webcam selection and state management ([f3adafe](https://github.com/ever-co/ever-capture/commit/f3adafed936cc59e7efc6224cdfbbaec33ab4e31))
+
+
+
 ## [0.2.2](https://github.com/ever-co/ever-capture/compare/convert-video-feature-0.2.1...convert-video-feature-0.2.2) (2025-02-12)
 
 ### Dependency Updates
