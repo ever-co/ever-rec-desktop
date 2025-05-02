@@ -2,6 +2,26 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.1.0](https://github.com/ever-co/ever-capture/compare/library-0.0.5...library-0.1.0) (2025-05-02)
+
+### Dependency Updates
+
+* `convert-video-feature` updated to version `0.3.0`
+* `convert-video-feature` updated to version `0.3.0`
+* `screenshot-feature` updated to version `0.2.0`
+* `screenshot-feature` updated to version `0.2.0`
+* `breadcrumb-data-access` updated to version `0.1.2`
+* `photo-feature` updated to version `0.0.1`
+* `feature` updated to version `0.1.0`
+
+### Features
+
+* **library:** add icons to library tabs ([1c09253](https://github.com/ever-co/ever-capture/commit/1c09253a9fd7fae9a8012ecf217312e2fae233a8))
+* **webcam:** add audio gallery and management ([5fcb1af](https://github.com/ever-co/ever-capture/commit/5fcb1afcb7f1496dd620731423c7192a23ccea36))
+* **webcam:** add photo gallery and detail view ([c810cca](https://github.com/ever-co/ever-capture/commit/c810cca3ddcb6d7daeedc8a7b658de700718d045))
+
+
+
 ## [0.0.5](https://github.com/ever-co/ever-capture/compare/library-0.0.4...library-0.0.5) (2025-02-12)
 
 ### Dependency Updates
