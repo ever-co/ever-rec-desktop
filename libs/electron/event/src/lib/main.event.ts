@@ -33,14 +33,6 @@ export function MainEvents() {
     }
   );
 
-  app.on('ready', () => {
-    const mediator = WindowStateMediator.getInstance();
-    mediator.registerMessageBroker(new DefaultMessageBrokerFactory());
-    mediator.registerMessageBroker(new NotificationMessageBrokerFactory());
-    mediator.registerMessageBroker(new ErrorMessageBrokerFactory());
-    mediator.registerMessageBroker(new StateSyncMessageBrokerFactory());
-  });
-
   ipcMain.on(
     Channel.MEDIATOR_INCOMING_MESSAGE,
     (_, incomingMessage: MediatorIncomingMessage) => {
@@ -57,7 +49,23 @@ export function MainEvents() {
 export function removeMainEvents(): void {
   ipcMain.removeAllListeners(Channel.UPDATE_ICON_BADGE);
 
-  [Channel.GET_PASSWORD, Channel.DELETE_PASSWORD, Channel.SET_PASSWORD].forEach(
-    (channel) => ipcMain.removeHandler(channel)
-  );
+  [
+    Channel.GET_PASSWORD,
+    Channel.DELETE_PASSWORD,
+    Channel.SET_PASSWORD,
+    '__ELECTRON_LOG__',
+  ].forEach((channel) => ipcMain.removeHandler(channel));
+}
+
+export function registerBrokers(): void {
+  const mediator = WindowStateMediator.getInstance();
+  mediator.registerMessageBroker(new DefaultMessageBrokerFactory());
+  mediator.registerMessageBroker(new NotificationMessageBrokerFactory());
+  mediator.registerMessageBroker(new ErrorMessageBrokerFactory());
+  mediator.registerMessageBroker(new StateSyncMessageBrokerFactory());
+}
+
+export function removeBrokers(): void {
+  const mediator = WindowStateMediator.getInstance();
+  mediator.clearAllBrokers();
 }

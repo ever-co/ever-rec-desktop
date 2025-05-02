@@ -21,7 +21,12 @@ import {
   removeCrudTimeLogEvent,
 } from './crud-time-log.event';
 import { crudVideoEvents, removeCrudVideoEvent } from './crud-video.event';
-import { MainEvents, removeMainEvents } from './main.event';
+import {
+  MainEvents,
+  registerBrokers,
+  removeBrokers,
+  removeMainEvents,
+} from './main.event';
 import { powerManagerHandlerEvents } from './power-manager.event';
 import { removeRetentionEvents, retentionEvents } from './retention.event';
 import { PhotoCaptureEvent } from './photo-capture.event';
@@ -43,6 +48,7 @@ export function subscribeEvents() {
   crudPhotoEvent();
   new PhotoCaptureEvent();
   crudAudioEvent();
+  registerBrokers();
 }
 
 export function unsubscribeEvents() {
@@ -58,4 +64,5 @@ export function unsubscribeEvents() {
   removeActivitiesEvents();
   removeCrudPhotoEvent();
   removeCrudAudioEvent();
+  removeBrokers();
 }
