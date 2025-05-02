@@ -19,6 +19,7 @@ import { selectHydrationAppState } from './hydration.selectors';
 export class HydrationEffects {
   private store = inject(Store);
   private actions$ = inject(Actions);
+  private stateHydrationService = inject(StateHydrationService);
   // Save state changes to IndexedDB
   saveState$ = createEffect(
     () =>
@@ -56,6 +57,4 @@ export class HydrationEffects {
       ),
     { dispatch: false }
   );
-
-  constructor(private stateHydrationService: StateHydrationService) {}
 }

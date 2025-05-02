@@ -21,6 +21,7 @@ import { screenshotActions } from '@ever-co/screenshot-data-access';
 export class MediatorEffects {
   private store = inject(Store);
   private actions$ = inject(Actions);
+  private mediatorService = inject(MediatorService);
   // Sync specific actions to other windows
   mainWindowSync$ = createEffect(
     () =>
@@ -97,6 +98,4 @@ export class MediatorEffects {
       ),
     { dispatch: false }
   );
-
-  constructor(private mediatorService: MediatorService) {}
 }
