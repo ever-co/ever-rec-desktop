@@ -2,6 +2,38 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.2.0](https://github.com/ever-co/ever-capture/compare/shared-components-0.1.3...shared-components-0.2.0) (2025-05-02)
+
+### Dependency Updates
+
+* `notification-data-access` updated to version `0.1.4`
+* `data-access-electron` updated to version `0.2.0`
+* `shared-service` updated to version `0.1.2`
+* `utils` updated to version `0.2.0`
+* `web-setting-data-access` updated to version `0.2.0`
+* `convert-video-data-access` updated to version `0.1.2`
+* `screenshot-data-access` updated to version `0.2.0`
+* `timesheet-data-access` updated to version `0.1.0`
+* `upload-data-access` updated to version `0.1.3`
+
+### Bug Fixes
+
+* **action-button:** fix icon font on button interaction states ([a92eec5](https://github.com/ever-co/ever-capture/commit/a92eec5d3f0bd0475fc46c27d9a3b95e737ead8e))
+* **ui/audio:** set explicit mode for audio component in video detail ([72c383c](https://github.com/ever-co/ever-capture/commit/72c383cd05f5344d456abe9d3bfaa81b61e6ddd1))
+
+
+### Features
+
+* **action-button-group:** add blurred background style option ([6002ac0](https://github.com/ever-co/ever-capture/commit/6002ac01fc7984b81b319a75d0877187e3d4409a))
+* **settings:** add granular delete and purge options for storage ([418df6d](https://github.com/ever-co/ever-capture/commit/418df6def7f107320da86110a385d46f0377f5f8))
+* **shared/components:** add audio player component ([bd39965](https://github.com/ever-co/ever-capture/commit/bd39965dd830ab7de33633e9ef70dd8e4e70f6e9))
+* **webcam:** add audio gallery and management ([5fcb1af](https://github.com/ever-co/ever-capture/commit/5fcb1afcb7f1496dd620731423c7192a23ccea36))
+* **webcam:** add photo gallery and detail view ([c810cca](https://github.com/ever-co/ever-capture/commit/c810cca3ddcb6d7daeedc8a7b658de700718d045))
+* **webcam:** add webcam selection and state management ([f3adafe](https://github.com/ever-co/ever-capture/commit/f3adafed936cc59e7efc6224cdfbbaec33ab4e31))
+* **webcam:** implement audio recording capability ([993f19d](https://github.com/ever-co/ever-capture/commit/993f19d01e3da049aa3f8cc1f0649f788b0b316f))
+
+
+
 ## [0.1.3](https://github.com/ever-co/ever-capture/compare/shared-components-0.1.2...shared-components-0.1.3) (2025-02-12)
 
 ### Dependency Updates
