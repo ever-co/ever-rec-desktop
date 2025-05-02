@@ -2,6 +2,29 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.2.0](https://github.com/ever-co/ever-capture/compare/factory-0.1.3...factory-0.2.0) (2025-05-02)
+
+### Dependency Updates
+
+* `convert-video-data-access` updated to version `0.1.2`
+* `screenshot-data-access` updated to version `0.2.0`
+* `web-setting-data-access` updated to version `0.2.0`
+* `webcam-data-access` updated to version `1.0.0`
+* `shared-service` updated to version `0.1.2`
+* `data-access-electron` updated to version `0.2.0`
+* `utils` updated to version `0.2.0`
+
+### Bug Fixes
+
+* **auto-tracking:** prevent starting auto-tracking without a camera ([94b9501](https://github.com/ever-co/ever-capture/commit/94b950119369912c8fc3841c24eb7d68b864f3a7))
+
+
+### Features
+
+* **tracking:** implement auto-start tracking based on persisted state ([02bdb33](https://github.com/ever-co/ever-capture/commit/02bdb33ac9bee83b2dc5379b2719e3c28fe561ee))
+
+
+
 ## [0.1.3](https://github.com/ever-co/ever-capture/compare/factory-0.1.2...factory-0.1.3) (2025-02-12)
 
 ### Dependency Updates
