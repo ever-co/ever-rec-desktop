@@ -2,6 +2,48 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.2.0](https://github.com/ever-co/ever-capture/compare/convert-video-data-access-0.1.2...convert-video-data-access-0.2.0) (2025-05-02)
+
+### Dependency Updates
+
+* `utils` updated to version `0.2.0`
+* `notification-data-access` updated to version `0.1.5`
+* `shared-service` updated to version `0.2.0`
+* `data-access-electron` updated to version `0.2.1`
+
+### Bug Fixes
+
+* **state:** update item counts on add/delete operations ([56e76c8](https://github.com/ever-co/ever-capture/commit/56e76c8d7b29ba2a6d00253ec91586acf440dfa1))
+
+
+### Features
+
+* **settings:** add granular delete and purge options for storage ([418df6d](https://github.com/ever-co/ever-capture/commit/418df6def7f107320da86110a385d46f0377f5f8))
+* **webcam:** add photo gallery and detail view ([c810cca](https://github.com/ever-co/ever-capture/commit/c810cca3ddcb6d7daeedc8a7b658de700718d045))
+
+
+
+# [0.2.0](https://github.com/ever-co/ever-capture/compare/convert-video-data-access-0.1.2...convert-video-data-access-0.2.0) (2025-05-02)
+
+### Dependency Updates
+
+* `utils` updated to version `0.2.0`
+* `notification-data-access` updated to version `0.1.3`
+* `shared-service` updated to version `0.1.2`
+* `data-access-electron` updated to version `0.2.0`
+
+### Bug Fixes
+
+* **state:** update item counts on add/delete operations ([56e76c8](https://github.com/ever-co/ever-capture/commit/56e76c8d7b29ba2a6d00253ec91586acf440dfa1))
+
+
+### Features
+
+* **settings:** add granular delete and purge options for storage ([418df6d](https://github.com/ever-co/ever-capture/commit/418df6def7f107320da86110a385d46f0377f5f8))
+* **webcam:** add photo gallery and detail view ([c810cca](https://github.com/ever-co/ever-capture/commit/c810cca3ddcb6d7daeedc8a7b658de700718d045))
+
+
+
 ## [0.1.2](https://github.com/ever-co/ever-capture/compare/convert-video-data-access-0.1.1...convert-video-data-access-0.1.2) (2025-02-12)
 
 ### Dependency Updates
