@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.2.0](https://github.com/ever-co/ever-capture/compare/window-0.1.1...window-0.2.0) (2025-05-02)
+
+
+### Features
+
+* **electron/window:** add ability to clear message brokers ([01e4272](https://github.com/ever-co/ever-capture/commit/01e427256bedd55c805fa27c709a4eb13fb343a8))
+
+
+
 ## [0.1.1](https://github.com/ever-co/ever-capture/compare/window-0.1.0...window-0.1.1) (2025-05-02)
 
 ### Dependency Updates
