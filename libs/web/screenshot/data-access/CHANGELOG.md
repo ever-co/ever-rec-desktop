@@ -2,6 +2,28 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.2.0](https://github.com/ever-co/ever-capture/compare/screenshot-data-access-0.1.3...screenshot-data-access-0.2.0) (2025-05-02)
+
+### Dependency Updates
+
+* `utils` updated to version `0.2.0`
+* `notification-data-access` updated to version `0.1.3`
+* `shared-service` updated to version `0.1.2`
+* `data-access-electron` updated to version `0.2.0`
+
+### Bug Fixes
+
+* fix inaccurate screenshot storage size calculation ([61ef441](https://github.com/ever-co/ever-capture/commit/61ef441e1d1b37885e896c9ad3d5418c55a1d860))
+* **state:** update item counts on add/delete operations ([56e76c8](https://github.com/ever-co/ever-capture/commit/56e76c8d7b29ba2a6d00253ec91586acf440dfa1))
+
+
+### Features
+
+* **screenshot:** add support for viewing screenshot chunks ([01f7374](https://github.com/ever-co/ever-capture/commit/01f737459437b3ff190fb8d1875a9b0c46671c17))
+* **settings:** add granular delete and purge options for storage ([418df6d](https://github.com/ever-co/ever-capture/commit/418df6def7f107320da86110a385d46f0377f5f8))
+
+
+
 ## [0.1.3](https://github.com/ever-co/ever-capture/compare/screenshot-data-access-0.1.2...screenshot-data-access-0.1.3) (2025-02-12)
 
 ### Dependency Updates
