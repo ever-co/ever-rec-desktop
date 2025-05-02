@@ -35,6 +35,24 @@
       "options": {
         "jestConfig": "libs/electron/window/jest.config.ts"
       }
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+        "syncVersions": false,
+        "push": true,
+        "pushTags": true,
+        "trackDeps": true
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": false,
+        "commands": ["cd dist/libs/electron/window && npm publish"]
+      },
+      "dependsOn": ["version", "build"],
+      "parallelism": false
     }
   }
 }
