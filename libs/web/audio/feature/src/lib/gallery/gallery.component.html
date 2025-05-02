@@ -36,7 +36,7 @@ durationFormatted$ | async; @let isMobileView = layoutService.isMobileView();
         'bg-gray-800/90': checked,
         'scale-95': isSelected && isPlaying
       }"
-      class="relative h-fit backdrop-blur-md rounded-lg transform transition-all duration-300 ease-in-out hover:bg-gray-600 hover:pt-12 hover:shadow-lg group"
+      class="relative min-w-72 h-fit backdrop-blur-md rounded-lg transform transition-all duration-300 ease-in-out hover:bg-gray-600 hover:pt-12 hover:shadow-lg group"
     >
       <lib-player-container
         class="card"
@@ -46,7 +46,8 @@ durationFormatted$ | async; @let isMobileView = layoutService.isMobileView();
         [progress]="isSelected ? progress : 0"
         [currentTime]="isSelected ? currentTime : '00:00'"
         [duration]="isSelected ? duration : audioDuration"
-        (playPause)="synchronize(audio)"
+        (seek)="synchronizeSeek($event, audio)"
+        (playPause)="synchronizePlayPause(audio)"
       ></lib-player-container>
       <div
         class="flex w-full text-gray-900 z-[-1] absolute items-center top-0 pr-4 pl-4 opacity-0 group-hover:opacity-100 group-hover:z-10 justify-between transition-opacity duration-300"

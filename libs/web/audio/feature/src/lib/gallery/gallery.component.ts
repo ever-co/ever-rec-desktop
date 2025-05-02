@@ -288,8 +288,16 @@ export class GalleryComponent implements OnInit, OnDestroy {
     await this.router.navigate(['/', 'library', 'videos', videoId]);
   }
 
-  public synchronize(audio: IAudio): void {
-    this.store.dispatch(audioPlayerActions.synchronizeAudio({ audio }));
+  public synchronizePlayPause(audio: IAudio): void {
+    this.store.dispatch(
+      audioPlayerActions.synchronizeAudio({ audio, kind: 'play' })
+    );
+  }
+
+  public synchronizeSeek(ratio: number, audio: IAudio): void {
+    this.store.dispatch(
+      audioPlayerActions.synchronizeAudio({ audio, ratio, kind: 'seek' })
+    );
   }
 
   public unselectAll(): void {

@@ -13,7 +13,11 @@ export const audioPlayerActions = createActionGroup({
     'Skip Forward': emptyProps(),
     'Skip Backward': emptyProps(),
     'Select Audio': props<{ audio: IAudio }>(),
-    'Synchronize Audio': props<{ audio: IAudio }>(),
+    'Synchronize Audio': props<{
+      audio: IAudio;
+      kind: 'play' | 'seek';
+      ratio?: number;
+    }>(),
     'Synchronize Audio Success': emptyProps(),
     'Synchronize Audio Failure': props<{ error: string }>(),
     'Update Audio State': props<{

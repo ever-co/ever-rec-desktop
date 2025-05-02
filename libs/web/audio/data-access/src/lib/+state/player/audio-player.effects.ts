@@ -11,7 +11,14 @@ export class AudioPlayerEffects {
       this.actions$.pipe(
         ofType(audioPlayerActions.synchronizeAudio),
         delay(100),
-        tap(({ audio }) => this.synchronizeService.synchronize(audio))
+        tap(({ audio, kind, ratio }) => {
+          if (kind === 'seek' && ratio) {
+            this.synchronizeService.synchronizeSeek({ audio, ratio });
+          }
+          if (kind === 'play') {
+            this.synchronizeService.synchronizePlayPause(audio);
+          }
+        })
       ),
     { dispatch: false }
   );

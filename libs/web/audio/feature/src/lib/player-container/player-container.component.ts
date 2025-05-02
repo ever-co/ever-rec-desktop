@@ -151,7 +151,20 @@ export class PlayerContainerComponent implements OnInit, OnDestroy {
         );
       });
 
-    this.synchronizeService.onSynchronize
+    this.synchronizeService.onSynchronizeSeek
+      .pipe(
+        withLatestFrom(this.currentAudio$, this.isPlaying$),
+        filter(
+          ([{ audio }, current, isPlaying]) =>
+            audio.id === current?.id && isPlaying
+        ),
+        map(([{ ratio }]) => ratio),
+        tap((ratio) => this.handleSeek(ratio)),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+
+    this.synchronizeService.onSynchronizePlayPause
       .pipe(
         withLatestFrom(this.currentAudio$, this.isPlaying$),
         distinctUntilChanged(isDeepEqual.bind(this)),
