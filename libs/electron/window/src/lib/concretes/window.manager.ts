@@ -10,9 +10,6 @@ export class WindowManager implements IWindowManager, ILoggable {
   private windows: Map<AppWindowId, IWindow> = new Map();
   private observers: IWindowObserver[] = [];
 
-  // Private constructor to enforce singleton pattern
-  private constructor() {}
-
   /**
    * Retrieves the singleton instance of WindowManager.
    * Creates a new instance if none exists.

@@ -9,3 +9,4 @@ export * from './lib/concretes/factories/default-broker.factory';
 export * from './lib/concretes/factories/error-broker.factory';
 export * from './lib/concretes/factories/state-sync-broker.factory';
 export * from './lib/concretes/factories/notification-broker.factory';
+export * from './lib/shared/interfaces/window-observer.interface';
