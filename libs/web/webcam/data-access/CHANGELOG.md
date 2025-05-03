@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.6](https://github.com/ever-co/ever-capture/compare/webcam-data-access-1.0.5...webcam-data-access-1.0.6) (2025-05-03)
+
+
+### Reverts
+
+* Revert "build(webcam/data-access): configure build to include worker assets" ([8052c79](https://github.com/ever-co/ever-capture/commit/8052c79b0889863b220a3cc89b9018b3c5aad8bb))
+
+
+
 ## [1.0.5](https://github.com/ever-co/ever-capture/compare/webcam-data-access-1.0.4...webcam-data-access-1.0.5) (2025-05-03)
 
 
