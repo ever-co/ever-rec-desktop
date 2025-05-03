@@ -2,6 +2,18 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.2.6](https://github.com/ever-co/ever-capture/compare/event-0.2.5...event-0.2.6) (2025-05-03)
+
+### Dependency Updates
+
+* `window` updated to version `0.3.0`
+
+### Bug Fixes
+
+* **event:** optimize mediator instance usage in event handling ([cb8a64d](https://github.com/ever-co/ever-capture/commit/cb8a64d8d250f1c8330da3ef8c816b02ee76acb2))
+
+
+
 ## [0.2.5](https://github.com/ever-co/ever-capture/compare/event-0.2.4...event-0.2.5) (2025-05-03)
 
 ### Dependency Updates
