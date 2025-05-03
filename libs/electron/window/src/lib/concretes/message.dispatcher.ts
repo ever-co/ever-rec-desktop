@@ -14,7 +14,8 @@ export class MessageBrokerDispatcher {
   private factories: IMessageBrokerFactory[];
 
   constructor(factories: IMessageBrokerFactory[] = []) {
-    this.factories = factories;
+    this.factories = [];
+    this.register(...factories);
   }
 
   /**
@@ -22,8 +23,13 @@ export class MessageBrokerDispatcher {
    */
   public register(...factories: IMessageBrokerFactory[]): void {
     if (factories.length === 0) return;
-
-    this.factories = [...this.factories, ...factories];
+    // Check for duplicated factories
+    for (const factory of factories) {
+      if (!this.factories.includes(factory)) {
+        this.factories.push(factory);
+      }
+    }
+    // Rebuild the chain
     this.head = this.buildChain(this.factories);
   }
 
@@ -43,13 +49,12 @@ export class MessageBrokerDispatcher {
   ): IMessageBrokerFactory | undefined {
     if (factories.length === 0) return undefined;
 
-    // Start with the first factory as the head of our chain
-    const head = factories[0];
-
     // Link each factory to the next one
-    factories.reduce((prev, current) => prev.setNext(current));
+    for (let i = 0; i < factories.length - 1; i++) {
+      factories[i].setNext(factories[i + 1]);
+    }
 
-    return head;
+    return factories[0];
   }
 
   /**
