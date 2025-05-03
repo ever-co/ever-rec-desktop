@@ -4,13 +4,7 @@ import {
   isEmpty,
   MediatorIncomingMessage,
 } from '@ever-co/shared-utils';
-import {
-  WindowStateMediator,
-  DefaultMessageBrokerFactory,
-  NotificationMessageBrokerFactory,
-  ErrorMessageBrokerFactory,
-  StateSyncMessageBrokerFactory,
-} from '@ever-co/window';
+import { WindowStateMediator } from '@ever-co/window';
 import { app, ipcMain } from 'electron';
 
 export function MainEvents() {
@@ -55,17 +49,4 @@ export function removeMainEvents(): void {
     Channel.SET_PASSWORD,
     '__ELECTRON_LOG__',
   ].forEach((channel) => ipcMain.removeHandler(channel));
-}
-
-export function registerBrokers(): void {
-  const mediator = WindowStateMediator.getInstance();
-  mediator.registerMessageBroker(new DefaultMessageBrokerFactory());
-  mediator.registerMessageBroker(new NotificationMessageBrokerFactory());
-  mediator.registerMessageBroker(new ErrorMessageBrokerFactory());
-  mediator.registerMessageBroker(new StateSyncMessageBrokerFactory());
-}
-
-export function removeBrokers(): void {
-  const mediator = WindowStateMediator.getInstance();
-  mediator.clearAllBrokers();
 }
