@@ -5,9 +5,10 @@ import {
   IMessageBrokerFactory,
 } from '@ever-co/shared-utils';
 import { IWindowManager } from '../shared/interfaces/window-manager.interface';
-import { WindowManager } from './window.manager';
-import { MessageBrokerDispatcher } from './message.dispatcher';
 import { IWindow } from '../shared/interfaces/window.interface';
+import { StateSyncMessageBrokerFactory } from './factories/state-sync-broker.factory';
+import { MessageBrokerDispatcher } from './message.dispatcher';
+import { WindowManager } from './window.manager';
 
 export class WindowStateMediator {
   private static instance: WindowStateMediator;
@@ -16,6 +17,7 @@ export class WindowStateMediator {
 
   private constructor() {
     this.dispatcher = new MessageBrokerDispatcher();
+    this.dispatcher.register(new StateSyncMessageBrokerFactory());
   }
 
   public static getInstance(): WindowStateMediator {
