@@ -29,7 +29,10 @@ import {
 } from './main.event';
 import { powerManagerHandlerEvents } from './power-manager.event';
 import { removeRetentionEvents, retentionEvents } from './retention.event';
-import { PhotoCaptureEvent } from './photo-capture.event';
+import {
+  PhotoCaptureEvent,
+  removePhotoCaptureEvent,
+} from './photo-capture.event';
 import { removeUploadEvent, uploadEventListener } from './upload.event';
 import { crudAudioEvent, removeCrudAudioEvent } from './crud-audio.event';
 
@@ -65,4 +68,5 @@ export function unsubscribeEvents() {
   removeCrudPhotoEvent();
   removeCrudAudioEvent();
   removeBrokers();
+  removePhotoCaptureEvent();
 }

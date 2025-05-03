@@ -115,5 +115,5 @@ export function removeCrudAudioEvent(): void {
     Channel.GET_ALL_AUDIO,
     Channel.GET_AUDIO,
   ];
-  channels.forEach((channel) => ipcMain.removeAllListeners(channel));
+  channels.forEach((channel) => ipcMain.removeHandler(channel));
 }

@@ -127,3 +127,12 @@ export class PhotoCaptureEvent {
     }
   }
 }
+
+export function removePhotoCaptureEvent(): void {
+  [
+    Channel.TAKE_PHOTO,
+    Channel.START_TRACKING,
+    Channel.STOP_TRACKING,
+    Channel.REQUEST_TRACKING,
+  ].forEach((channel) => ipcMain.removeAllListeners(channel));
+}

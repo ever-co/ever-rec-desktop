@@ -106,5 +106,5 @@ export function removeCrudPhotoEvent(): void {
     Channel.GET_ALL_PHOTOS,
     Channel.GET_PHOT0,
   ];
-  channels.forEach((channel) => ipcMain.removeAllListeners(channel));
+  channels.forEach((channel) => ipcMain.removeHandler(channel));
 }
