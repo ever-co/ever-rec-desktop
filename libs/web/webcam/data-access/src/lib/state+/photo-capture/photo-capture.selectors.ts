@@ -1,12 +1,12 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromPhotoCapture from './photo-capture.reducer';
 
-export const selectPhotoState =
+export const selectPhotoCaptureState =
   createFeatureSelector<fromPhotoCapture.IPhotoCaptureState>(
     fromPhotoCapture.photoCaptureFeatureKey
   );
 
-export const selectPhotoSaving = createSelector(
-  selectPhotoState,
+export const selectPhotoCaptureSaving = createSelector(
+  selectPhotoCaptureState,
   (state) => state.saving
 );

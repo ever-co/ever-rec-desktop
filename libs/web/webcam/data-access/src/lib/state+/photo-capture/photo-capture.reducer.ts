@@ -26,9 +26,10 @@ export const reducer = createReducer(
     saving: true,
   })),
 
-  on(photoCaptureActions.savePhotoSuccess, (state) => ({
+  on(photoCaptureActions.savePhotoSuccess, (state, { photo }) => ({
     ...state,
     saving: false,
+    photo,
   })),
 
   on(photoCaptureActions.savePhotoFailure, (state, { error }) => ({

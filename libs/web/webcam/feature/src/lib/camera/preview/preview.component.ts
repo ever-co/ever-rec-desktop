@@ -8,6 +8,7 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { NotificationService } from '@ever-co/notification-data-access';
 import { IPhoto } from '@ever-co/shared-utils';
@@ -19,8 +20,8 @@ import {
   selectCameraAuthorizations,
   selectCameraPersistance,
   selectCameraStreaming,
-  selectPhotoSaving,
-  selectPhotoState,
+  selectPhotoCaptureSaving,
+  selectPhotoCaptureState,
 } from '@ever-co/webcam-data-access';
 import { Store } from '@ngrx/store';
 import {
@@ -45,7 +46,7 @@ import { ControlComponent } from '../control/control.component';
 @Component({
   selector: 'lib-preview',
   standalone: true,
-  imports: [CommonModule, ControlComponent, MatIconModule],
+  imports: [CommonModule, ControlComponent, MatIconModule, MatButtonModule],
   templateUrl: './preview.component.html',
   styleUrls: ['./preview.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -58,7 +59,7 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
   @Input()
   public control = true;
   private readonly destroy$ = new Subject<void>();
-  public done$ = new BehaviorSubject<boolean>(false);
+  public readonly done$ = new BehaviorSubject<boolean>(false);
 
   constructor(
     private readonly cameraService: CameraService,
@@ -225,11 +226,13 @@ export class PreviewComponent implements AfterViewInit, OnDestroy {
   }
 
   public get saving$(): Observable<boolean> {
-    return this.store.select(selectPhotoSaving).pipe(takeUntil(this.destroy$));
+    return this.store
+      .select(selectPhotoCaptureSaving)
+      .pipe(takeUntil(this.destroy$));
   }
 
   public get photo$(): Observable<IPhoto | null> {
-    return this.store.select(selectPhotoState).pipe(
+    return this.store.select(selectPhotoCaptureState).pipe(
       map((state) => state.photo),
       takeUntil(this.destroy$)
     );

@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  inject,
   OnDestroy,
   OnInit,
 } from '@angular/core';
@@ -39,6 +40,7 @@ import { PreviewComponent } from '../camera/preview/preview.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WebcamComponent implements OnInit, OnDestroy {
+  private readonly store = inject(Store);
   private readonly destroy$ = new Subject<void>();
   private readonly closing$ = new Subject<boolean>();
   readonly buttons: IActionButton[] = [
@@ -61,7 +63,6 @@ export class WebcamComponent implements OnInit, OnDestroy {
       action: this.startRecording.bind(this),
     },
   ];
-  constructor(private readonly store: Store) {}
 
   ngOnInit(): void {
     this.store
