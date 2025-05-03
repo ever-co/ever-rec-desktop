@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.3.0](https://github.com/ever-co/ever-capture/compare/window-0.2.2...window-0.3.0) (2025-05-03)
+
+
+### Features
+
+* **window:** add window observer interface and remove private constructor from WindowManager ([1848476](https://github.com/ever-co/ever-capture/commit/1848476f90e80f8c1b77357a8f7cc617aacc617b))
+
+
+
 ## [0.2.2](https://github.com/ever-co/ever-capture/compare/window-0.2.1...window-0.2.2) (2025-05-03)
 
 
