@@ -2,6 +2,10 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.5](https://github.com/ever-co/ever-capture/compare/webcam-data-access-1.0.4...webcam-data-access-1.0.5) (2025-05-03)
+
+
+
 ## [1.0.4](https://github.com/ever-co/ever-capture/compare/webcam-data-access-1.0.3...webcam-data-access-1.0.4) (2025-05-03)
 
 
