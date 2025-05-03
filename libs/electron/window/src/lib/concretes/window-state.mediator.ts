@@ -16,8 +16,9 @@ export class WindowStateMediator {
   private readonly dispatcher: MessageBrokerDispatcher;
 
   private constructor() {
-    this.dispatcher = new MessageBrokerDispatcher();
-    this.dispatcher.register(new StateSyncMessageBrokerFactory());
+    this.dispatcher = new MessageBrokerDispatcher([
+      new StateSyncMessageBrokerFactory(),
+    ]);
   }
 
   public static getInstance(): WindowStateMediator {

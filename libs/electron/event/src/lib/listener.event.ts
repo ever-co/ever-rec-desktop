@@ -23,6 +23,7 @@ import {
 } from './crud-time-log.event';
 import { crudVideoEvents, removeCrudVideoEvent } from './crud-video.event';
 import { MainEvents, removeMainEvents } from './main.event';
+import { mediatorEvents, removeMediatorEvents } from './mediator.event';
 import {
   PhotoCaptureEvent,
   removePhotoCaptureEvent,
@@ -46,6 +47,7 @@ export function subscribeEvents() {
   crudPhotoEvent();
   new PhotoCaptureEvent();
   crudAudioEvent();
+  mediatorEvents();
 }
 
 export function unsubscribeEvents() {
@@ -62,4 +64,5 @@ export function unsubscribeEvents() {
   removeCrudPhotoEvent();
   removeCrudAudioEvent();
   removePhotoCaptureEvent();
+  removeMediatorEvents();
 }

@@ -13,8 +13,8 @@ export class MessageBrokerDispatcher {
   private head?: IMessageBrokerFactory;
   private factories: IMessageBrokerFactory[];
 
-  constructor() {
-    this.factories = [];
+  constructor(factories: IMessageBrokerFactory[] = []) {
+    this.factories = factories;
   }
 
   /**

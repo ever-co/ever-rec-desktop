@@ -1,10 +1,5 @@
 import { KeytarService } from '@ever-co/electron-utils';
-import {
-  Channel,
-  isEmpty,
-  MediatorIncomingMessage,
-} from '@ever-co/shared-utils';
-import { WindowStateMediator } from '@ever-co/window';
+import { Channel } from '@ever-co/shared-utils';
 import { app, ipcMain } from 'electron';
 
 export function MainEvents() {
@@ -26,22 +21,12 @@ export function MainEvents() {
       return KeytarService.setPassword(account, password);
     }
   );
-
-  ipcMain.on(
-    Channel.MEDIATOR_INCOMING_MESSAGE,
-    (_, incomingMessage: MediatorIncomingMessage) => {
-      if (isEmpty(incomingMessage)) {
-        return;
-      }
-      const { sourceId, message } = incomingMessage;
-      const mediator = WindowStateMediator.getInstance();
-      mediator.handleIncomingMessage(sourceId, message);
-    }
-  );
 }
 
 export function removeMainEvents(): void {
-  ipcMain.removeAllListeners(Channel.UPDATE_ICON_BADGE);
+  [Channel.UPDATE_ICON_BADGE].forEach((channel) =>
+    ipcMain.removeAllListeners(channel)
+  );
 
   [
     Channel.GET_PASSWORD,
