@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.3.1](https://github.com/ever-co/ever-capture/compare/window-0.3.0...window-0.3.1) (2025-05-03)
+
+
+### Bug Fixes
+
+* **message-dispatcher:** prevent duplicate factories during registration ([bc76fb3](https://github.com/ever-co/ever-capture/commit/bc76fb335da31ef6157ca856194a9ac1808f9243))
+
+
+
 # [0.3.0](https://github.com/ever-co/ever-capture/compare/window-0.2.2...window-0.3.0) (2025-05-03)
 
 
