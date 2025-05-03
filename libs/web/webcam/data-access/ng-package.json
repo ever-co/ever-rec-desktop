@@ -3,8 +3,5 @@
   "dest": "../../../../dist/libs/web/webcam/data-access",
   "lib": {
     "entryFile": "src/index.ts"
-  },
-  "assets": [
-    "src/**/workers/*"
-  ]
+  }
 }
