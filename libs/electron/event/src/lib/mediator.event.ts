@@ -6,6 +6,8 @@ import {
 import { WindowStateMediator } from '@ever-co/window';
 import { ipcMain } from 'electron';
 
+const mediator = WindowStateMediator.getInstance();
+
 export function mediatorEvents(): void {
   ipcMain.on(
     Channel.MEDIATOR_INCOMING_MESSAGE,
@@ -14,7 +16,6 @@ export function mediatorEvents(): void {
         return;
       }
       const { sourceId, message } = incomingMessage;
-      const mediator = WindowStateMediator.getInstance();
       mediator.handleIncomingMessage(sourceId, message);
     }
   );
