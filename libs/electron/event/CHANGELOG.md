@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.2.5](https://github.com/ever-co/ever-capture/compare/event-0.2.4...event-0.2.5) (2025-05-03)
+
+### Dependency Updates
+
+* `window` updated to version `0.2.2`
+
+
 ## [0.2.4](https://github.com/ever-co/ever-capture/compare/event-0.2.3...event-0.2.4) (2025-05-03)
 
 ### Dependency Updates
