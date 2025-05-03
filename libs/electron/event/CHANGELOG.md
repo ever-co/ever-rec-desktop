@@ -2,6 +2,10 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.2.2](https://github.com/ever-co/ever-capture/compare/event-0.2.1...event-0.2.2) (2025-05-03)
+
+
+
 ## [0.2.1](https://github.com/ever-co/ever-capture/compare/event-0.2.0...event-0.2.1) (2025-05-02)
 
 ### Dependency Updates
