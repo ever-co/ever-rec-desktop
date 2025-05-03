@@ -78,15 +78,13 @@ export class PhotoCaptureEvent {
           route: '/#/webcam',
         },
         options: {
+          ...this.mainWindow.config.options,
           width,
           height,
           frame: false,
           resizable: false,
           x: padding,
           y: workArea.height - height - padding,
-          webPreferences: {
-            preload: this.mainWindow.config.options?.webPreferences?.preload,
-          },
         },
       });
 
