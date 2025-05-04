@@ -27,8 +27,11 @@
         },
         "scripts": [],
         "allowedCommonJsDependencies": [
+          "@ever-co/shared-utils",
+          "moment-timezone",
           "moment-duration-format",
-          "moment-timezone"
+          "@swimlane/ngx-charts",
+          "rfdc"
         ]
       },
       "configurations": {
