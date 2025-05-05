@@ -2,6 +2,18 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.3.0](https://github.com/ever-co/ever-capture/compare/shared-service-0.2.0...shared-service-0.3.0) (2025-05-05)
+
+### Dependency Updates
+
+* `utils` updated to version `0.2.1`
+
+### Features
+
+* **app:** integrate REC_ENV for environment configuration ([306d2e2](https://github.com/ever-co/ever-capture/commit/306d2e2f77f2c02f3409d73f67dddc21b2fe412f))
+
+
+
 # [0.2.0](https://github.com/ever-co/ever-capture/compare/shared-service-0.1.2...shared-service-0.2.0) (2025-05-02)
 
 ### Dependency Updates
