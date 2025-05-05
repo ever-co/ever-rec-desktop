@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.7](https://github.com/ever-co/ever-capture/compare/webcam-data-access-1.0.6...webcam-data-access-1.0.7) (2025-05-05)
+
+
+### Bug Fixes
+
+* **audio-recorder:** correct import path for AudioWorkerService and remove obsolete audio-woker.service.ts file ([cb9495e](https://github.com/ever-co/ever-capture/commit/cb9495edf1256ad40485510b68b01b53a2cb94ee))
+
+
+
 ## [1.0.6](https://github.com/ever-co/ever-capture/compare/webcam-data-access-1.0.5...webcam-data-access-1.0.6) (2025-05-03)
 
 
