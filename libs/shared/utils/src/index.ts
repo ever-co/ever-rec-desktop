@@ -36,3 +36,4 @@ export * from './lib/interfaces/conflict-resolution.strategy';
 export * from './lib/interfaces/conflict.type';
 export * from './lib/interfaces/message-broker.interface';
 export * from './lib/interfaces/mediator.interface';
+export * from './lib/interfaces/environment.interface';

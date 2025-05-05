@@ -20,7 +20,7 @@ import {
 } from '@ever-co/factory';
 import { provideNotificationDataAccess } from '@ever-co/notification-data-access';
 import { provideScreenshotDataAccess } from '@ever-co/screenshot-data-access';
-import { provideDatePickerDataAccess } from '@ever-co/shared-service';
+import { provideDatePickerDataAccess, REC_ENV } from '@ever-co/shared-service';
 import { provideSidebarDataAccess } from '@ever-co/sidebar-data-access';
 import { provideTimelineDataAccess } from '@ever-co/timeline-data-access';
 import { provideTimeLogDataAccess } from '@ever-co/timesheet-data-access';
@@ -32,6 +32,7 @@ import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { appRoutes } from './app.routes';
 import { providePhotoDataAccess } from '@ever-co/photo-data-access';
+import { Environment } from '../environment/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -57,6 +58,10 @@ export const appConfig: ApplicationConfig = {
     provideHydrationDataAccess(),
     provideMediatorDataAccess(),
     provideAudioPlayerDataAccess(),
-    providePhotoDataAccess()
+    providePhotoDataAccess(),
+    {
+      provide: REC_ENV,
+      useClass: Environment,
+    },
   ],
 };

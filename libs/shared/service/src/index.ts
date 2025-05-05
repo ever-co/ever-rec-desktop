@@ -29,3 +29,4 @@ export * from './test-setup';
 export * from './lib/pipes/codec.pipe';
 export * from './lib/local-storage/indexed-db.service';
 export * from './lib/pipes/sample-rate.pipe';
+export * from './lib/tokens/env.token';
