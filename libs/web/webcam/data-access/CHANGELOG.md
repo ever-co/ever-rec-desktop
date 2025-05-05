@@ -2,6 +2,19 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.1.0](https://github.com/ever-co/ever-capture/compare/webcam-data-access-1.0.7...webcam-data-access-1.1.0) (2025-05-05)
+
+### Dependency Updates
+
+* `utils` updated to version `0.3.0`
+* `shared-service` updated to version `0.3.0`
+
+### Features
+
+* **app:** integrate REC_ENV for environment configuration ([306d2e2](https://github.com/ever-co/ever-capture/commit/306d2e2f77f2c02f3409d73f67dddc21b2fe412f))
+
+
+
 ## [1.0.7](https://github.com/ever-co/ever-capture/compare/webcam-data-access-1.0.6...webcam-data-access-1.0.7) (2025-05-05)
 
 
