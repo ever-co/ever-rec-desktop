@@ -5,7 +5,7 @@ import { generateVideoActions } from '@ever-co/convert-video-data-access';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { AudioRecorderService } from '../../service/audio-recorder.service';
-import { AudioWorkerService } from '../../service/audio-woker.service';
+import { AudioWorkerService } from '../../service/audio-worker.service';
 import { AudioService } from '../../service/audio.service';
 import { cameraActions } from '../camera/camera.actions';
 import { audioRecordingActions } from './audio-recording.actions';

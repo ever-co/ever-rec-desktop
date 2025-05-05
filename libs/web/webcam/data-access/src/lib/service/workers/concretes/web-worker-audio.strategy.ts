@@ -1,25 +1,18 @@
-import { Injectable } from '@angular/core';
-import { IAudioSave } from '@ever-co/shared-utils';
 import { Observable, Subject } from 'rxjs';
-import { MessageType } from './workers/interfaces/audio-worker.interface';
+import { IAudioSave } from '@ever-co/shared-utils';
+import { MessageType } from '../interfaces/audio-worker.interface';
+import { IAudioWorkerStrategy } from '../interfaces/audio-worker-strategy.interface';
 
-@Injectable({ providedIn: 'root' })
-export class AudioWorkerService {
-  private worker!: Worker;
+export class WebWorkerAudioStrategy implements IAudioWorkerStrategy {
+  private worker: Worker;
 
   constructor() {
-    if (typeof Worker !== 'undefined') {
-      // For Angular 12+ with Webpack 5
-      this.worker = new Worker(
-        new URL('./workers/audio.worker', import.meta.url),
-        {
-          type: 'module',
-          name: 'audio-worker',
-        }
-      );
-    } else {
-      // Fallback for browsers without Web Worker support
-      console.warn('Web Workers are not supported in this environment');
+    this.worker = new Worker(new URL('../audio.worker', import.meta.url), {
+      type: 'module',
+      name: 'audio-worker',
+    });
+    if (!this.worker) {
+      throw new Error("There's an issue with web worker");
     }
   }
 
@@ -65,7 +58,7 @@ export class AudioWorkerService {
     return workerSubject.asObservable();
   }
 
-  terminate() {
+  public terminate(): void {
     this.worker.terminate();
   }
 }

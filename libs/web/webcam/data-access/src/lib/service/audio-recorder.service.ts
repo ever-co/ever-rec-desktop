@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IAudioSave } from '@ever-co/shared-utils';
 import { Observable, defer, lastValueFrom } from 'rxjs';
-import { AudioWorkerService } from './audio-woker.service';
+import { AudioWorkerService } from './audio-worker.service';
 
 @Injectable({ providedIn: 'root' })
 export class AudioRecorderService {
