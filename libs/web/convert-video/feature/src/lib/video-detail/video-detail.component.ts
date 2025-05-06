@@ -216,7 +216,7 @@ export class VideoDetailComponent implements OnInit, OnDestroy {
         take(1),
         filter(Boolean),
         tap(() =>
-          this.store.dispatch(uploadActions.uploadVideo({ videos: [video] }))
+          this.store.dispatch(uploadActions.uploadVideos({ videos: [video] }))
         ),
         takeUntil(this.destroy$)
       )

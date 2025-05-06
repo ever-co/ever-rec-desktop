@@ -24,11 +24,11 @@ export const initialState: UploadState = {
 
 export const reducer = createReducer(
   initialState,
-  on(uploadActions.uploadVideo, (state) => ({
+  on(uploadActions.uploadVideos, (state) => ({
     ...state,
     uploading: true,
   })),
-  on(uploadActions.uploadVideoSuccess, (state) => ({
+  on(uploadActions.uploadVideosSuccess, (state) => ({
     ...state,
     uploading: false,
   })),
@@ -44,7 +44,7 @@ export const reducer = createReducer(
     config,
   })),
 
-  on(uploadActions.uploadVideoFailure, (state, { error }) => ({
+  on(uploadActions.uploadVideosFailure, (state, { error }) => ({
     ...state,
     uploading: false,
     error,
