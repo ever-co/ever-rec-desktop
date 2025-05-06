@@ -1,9 +1,11 @@
 import {
+  AudioService,
   PhotoService,
   ScreenshotService,
   VideoService,
 } from '@ever-co/electron-database';
 import {
+  AudioUploaderService,
   PhotoUploaderService,
   ScreenshotUploaderService,
   VideoUploaderService,
@@ -24,6 +26,8 @@ export class UploaderServiceFactory implements IUploaderServiceFactory {
         return new VideoUploaderService(new VideoService());
       case UploadType.PHOTO:
         return new PhotoUploaderService(new PhotoService());
+      case UploadType.AUDIO:
+        return new AudioUploaderService(new AudioService());
       default:
         throw new Error('Invalid upload type');
     }

@@ -23,6 +23,7 @@ export * from './lib/services/scheduler/timer-scheduler';
 export * from './lib/services/uploader/services/video-uploader.service';
 export * from './lib/services/uploader/services/screenshot-uploader.service';
 export * from './lib/services/uploader/services/photo-uploader.service';
+export * from './lib/services/uploader/services/audio-uploader.service';
 export * from './lib/services/video-conversion.service';
 export * from './lib/services/worker-factory.service';
 export * from './lib/services/worker-handler.service';
