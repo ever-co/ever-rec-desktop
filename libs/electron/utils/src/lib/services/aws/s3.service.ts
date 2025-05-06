@@ -15,13 +15,11 @@ export class S3Service {
     });
   }
   public async signedURL(uploadType: UploadType): Promise<string> {
-    const now = new Date();
     const params = {
       Bucket: this.s3Config.s3Bucket,
-      Key: `gauzy/videos/${now.getUTCFullYear()}/${now.getUTCMonth()}/${now.getUTCDate()}`,
+      Key: this.generateS3Key(uploadType),
       Expires: 60,
-      ContentType:
-        uploadType === UploadType.SCREENSHOT ? 'image/png' : 'video/mp4',
+      ContentType: this.getContentType(uploadType),
     };
 
     try {
@@ -33,6 +31,25 @@ export class S3Service {
     } catch (error) {
       console.error('Error generating signed URL', error);
       throw new Error('Could not generate signed URL. Please try again later.');
+    }
+  }
+
+  private generateS3Key(uploadType: UploadType): string {
+    const now = new Date();
+    return `ever_rec/${uploadType}/${now.getUTCFullYear()}/${
+      now.getUTCMonth() + 1
+    }/${now.getUTCDate()}`;
+  }
+
+  private getContentType(type: UploadType): string {
+    switch (type) {
+      case UploadType.PHOTO:
+      case UploadType.SCREENSHOT:
+        return 'image/png';
+      case UploadType.VIDEO:
+        return 'video/mp4';
+      case UploadType.AUDIO:
+        return 'audio/webm';
     }
   }
 }

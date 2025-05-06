@@ -20,9 +20,9 @@ export * from './lib/services/power-event-manager/concrete-event-handlers/suspen
 export * from './lib/services/power-event-manager/concrete-event-handlers/unlock-screen.handler';
 export * from './lib/services/power-event-manager/power-event-manager';
 export * from './lib/services/scheduler/timer-scheduler';
-export * from './lib/services/uploader.service';
+export * from './lib/services/uploader/services/video-uploader.service';
+export * from './lib/services/uploader/services/screenshot-uploader.service';
 export * from './lib/services/video-conversion.service';
 export * from './lib/services/worker-factory.service';
 export * from './lib/services/worker-handler.service';
 export * from './lib/window-size';
-

@@ -1,6 +1,7 @@
 import { FindManyOptions, FindOneOptions } from 'typeorm';
 import { IBase } from './base.interface';
 import { ITimeLog } from './time-log.interface';
+import { IUploadableService } from './upload.interface';
 
 export interface IPhoto extends IBase {
   pathname: string;
@@ -46,7 +47,7 @@ export type IPhotoInput = Omit<IPhoto, 'timeLog' | 'id'>;
 
 export type IPhotoMetadataInput = Omit<IPhotoMetadata, 'photo' | 'id'>;
 
-export interface IPhotoService {
+export interface IPhotoService extends IUploadableService {
   save(input: IPhotoInput): Promise<IPhoto>;
   update(id: string, photo: Partial<IPhotoInput>): Promise<IPhoto>;
   findAll(options: FindManyOptions<IPhoto>): Promise<IPhoto[]>;
