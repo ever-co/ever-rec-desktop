@@ -29,13 +29,16 @@
     height: 6px;
   }
 
+  .mdc-list {
+    max-height: calc(100vh - 27rem);
+    overflow: auto;
+  }
+
   // Custom list item styling
   .mat-mdc-list-item {
     border-radius: 4px;
     margin-bottom: 4px;
     transition: background-color 0.2s ease;
-    max-height: calc(100vh - 27rem);
-    overflow: auto;
 
     &:hover {
       background-color: rgba(0, 0, 0, 0.04);
