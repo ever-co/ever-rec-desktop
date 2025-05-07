@@ -102,11 +102,12 @@
             <mat-icon mat-list-icon class="text-blue-400"
               >insert_drive_file</mat-icon
             >
-            <div mat-line class="font-medium">{{ file.name }}</div>
+            <div mat-line class="font-medium truncate">{{ file.name }}</div>
+            <span class="mx-2"> • </span>
             <div mat-line class="text-gray-500 text-sm">
               {{ file.size | humanizeBytes }}
             </div>
-            <div>
+            <div class="ml-auto">
               <button
                 mat-icon-button
                 color="warn"
@@ -125,7 +126,11 @@
     <mat-tab>
       <ng-template mat-tab-label>
         <div class="flex items-center">
-          <mat-icon class="mr-2">sync</mat-icon>
+          <mat-icon
+            class="mr-2"
+            [ngClass]="{ 'animate-spin': (inProgress$ | async)?.length }"
+            >sync</mat-icon
+          >
           <span>In Progress</span>
           <span
             *ngIf="(inProgress$ | async)?.length"

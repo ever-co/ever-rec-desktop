@@ -36,8 +36,8 @@ export const selectActiveUploads = createSelector(
 );
 
 export const selectUploadInProgress = createSelector(
-  selectActiveUploads,
-  (state: number) => state > 0
+  selectUploadState,
+  (state) => state.activeUploads > 0 && state.inProgress.length > 0
 );
 
 export const selectMaxParallelUploads = createSelector(

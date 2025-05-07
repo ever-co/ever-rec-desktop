@@ -90,6 +90,7 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
       variant: 'success',
       action: this.upload.bind(this),
       loading: this.uploading$,
+      hide: this.isHidden$,
     },
     {
       icon: 'remove_done',
@@ -159,14 +160,10 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
   }
 
   public get isHidden$(): Observable<boolean> {
-    return combineLatest([
-      this.moreThanOneSelected$,
-      this.isUploadHidden$,
-      this.selectedVideos$,
-    ]).pipe(
+    return combineLatest([this.isUploadHidden$, this.selectedVideos$]).pipe(
       map(
-        ([moreThanOneSelected, isUploadHidden, videos]) =>
-          moreThanOneSelected || isUploadHidden || !!videos[0]?.data?.isTimeline
+        ([isUploadHidden, videos]) =>
+          isUploadHidden || !!videos[0]?.data?.isTimeline
       )
     );
   }
