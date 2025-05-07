@@ -27,7 +27,11 @@ import {
   ResolutionPipe,
 } from '@ever-co/shared-service';
 import { IActionButton, IVideo, IVideoMetadata } from '@ever-co/shared-utils';
-import { selectUploadState, uploadActions } from '@ever-co/upload-data-access';
+import {
+  selectUploadInProgress,
+  uploadActions,
+  UploadVideoItem,
+} from '@ever-co/upload-data-access';
 import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
 import {
@@ -216,7 +220,9 @@ export class VideoDetailComponent implements OnInit, OnDestroy {
         take(1),
         filter(Boolean),
         tap(() =>
-          this.store.dispatch(uploadActions.uploadVideos({ videos: [video] }))
+          this.store.dispatch(
+            uploadActions.addItemToQueue({ item: new UploadVideoItem(video) })
+          )
         ),
         takeUntil(this.destroy$)
       )
@@ -238,10 +244,9 @@ export class VideoDetailComponent implements OnInit, OnDestroy {
   }
 
   public get uploading$(): Observable<boolean> {
-    return this.store.select(selectUploadState).pipe(
-      map(({ uploading }) => uploading),
-      takeUntil(this.destroy$)
-    );
+    return this.store
+      .select(selectUploadInProgress)
+      .pipe(takeUntil(this.destroy$));
   }
 
   ngOnDestroy(): void {

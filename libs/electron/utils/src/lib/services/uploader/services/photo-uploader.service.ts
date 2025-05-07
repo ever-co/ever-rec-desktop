@@ -17,6 +17,7 @@ export class PhotoUploaderService extends UploaderService<IPhoto> {
     return data.map((item: IPhoto) => ({
       recordedAt: item.metadata?.createdAt,
       pathname: FileManager.decodePath(item.pathname),
+      id: item.id,
       key: upload.key,
     }));
   }

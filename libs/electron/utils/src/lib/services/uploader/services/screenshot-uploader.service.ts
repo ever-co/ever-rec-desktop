@@ -23,6 +23,7 @@ export class ScreenshotUploaderService extends UploaderService<IScreenshot> {
     return data.map((item: IScreenshot) => ({
       recordedAt: item.metadata?.createdAt,
       pathname: FileManager.decodePath(item.pathname),
+      id: item.id,
       key: upload.key,
     }));
   }

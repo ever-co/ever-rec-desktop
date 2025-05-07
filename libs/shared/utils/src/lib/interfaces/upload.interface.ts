@@ -19,6 +19,20 @@ export interface IUpload {
   ids: string[];
 }
 
+export interface IUploadProgress {
+  itemId: string;
+  progress: number;
+}
+
+export interface IUploadError {
+  error: string;
+  itemId: string;
+}
+
+export interface IUploadDone {
+  itemId: string;
+}
+
 export interface IUploadableService<T = any> {
   findAll(options: IFindOneOptions<T>): Promise<T[]>;
   update(id: string, data: Partial<T>): Promise<T>;

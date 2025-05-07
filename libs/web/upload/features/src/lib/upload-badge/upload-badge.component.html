@@ -1,0 +1,16 @@
+@let count = active$ | async;
+<!-- structure -->
+<button mat-icon-button [libPopover]="menu" class="relative">
+  <mat-icon> {{ count ? 'cloud_upload' : 'cloud' }}_cloud_sync</mat-icon>
+  @if (count) {
+  <span
+    class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center"
+  >
+    {{ count }}
+  </span>
+  }
+</button>
+
+<ng-template #menu>
+  <lib-upload-queue></lib-upload-queue>
+</ng-template>

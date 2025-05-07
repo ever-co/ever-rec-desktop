@@ -27,7 +27,11 @@ import {
   ISelected,
   IVideo,
 } from '@ever-co/shared-utils';
-import { selectUploadState, uploadActions } from '@ever-co/upload-data-access';
+import {
+  UploadVideoItem,
+  selectUploadInProgress,
+  uploadActions,
+} from '@ever-co/upload-data-access';
 import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
 import {
@@ -257,10 +261,9 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
   }
 
   public get uploading$(): Observable<boolean> {
-    return this.store.select(selectUploadState).pipe(
-      map(({ uploading }) => uploading),
-      takeUntil(this.destroy$)
-    );
+    return this.store
+      .select(selectUploadInProgress)
+      .pipe(takeUntil(this.destroy$));
   }
 
   public get deleting$(): Observable<boolean> {
@@ -308,8 +311,10 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
         take(1),
         filter(Boolean),
         tap(() => {
-          const videos = selectedVideos.map((video) => video.data);
-          this.store.dispatch(uploadActions.uploadVideos({ videos }));
+          const items = selectedVideos.map(
+            ({ data }) => new UploadVideoItem(data)
+          );
+          this.store.dispatch(uploadActions.addItemToQueue({ items }));
         }),
         takeUntil(this.destroy$)
       )

@@ -25,6 +25,7 @@ export class VideoUploaderService extends UploaderService<IVideo> {
       codec: item.metadata?.codec,
       frameRate: item.metadata?.frameRate,
       pathname: FileManager.decodePath(item.pathname),
+      id: item.id,
       key: upload.key,
     }));
   }

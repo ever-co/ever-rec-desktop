@@ -1,22 +1,34 @@
-import { IPhoto, IUpload, IVideo } from '@ever-co/shared-utils';
+import { IUpload } from '@ever-co/shared-utils';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import { IUploadItem } from '../models/upload.model';
 
 export const uploadActions = createActionGroup({
   source: 'Upload',
   events: {
-    'In Progress': props<{ config: IUpload }>(),
-    'On Progress': props<{ progress: number }>(),
+    'Add Item To Queue': props<{ items?: IUploadItem[]; item?: IUploadItem }>(),
 
-    'Upload Videos': props<{ videos: IVideo[] }>(),
-    'Upload Videos Success': emptyProps(),
-    'Upload Videos Failure': props<{ error: string }>(),
+    'Start Item Upload': props<{ item: IUploadItem }>(),
+    'Start Item Upload Success': props<{ config: IUpload }>(),
 
-    'Upload Photos': props<{ photos: IPhoto[] }>(),
-    'Upload Photos Success': emptyProps(),
-    'Upload Photos Failure': props<{ error: string }>(),
+    'Upload Item In Progress': props<{
+      itemId: IUploadItem['id'];
+      progress: number;
+    }>(),
 
-    'Cancel Upload': emptyProps(),
+    'Upload Item Success': props<{ itemId: IUploadItem['id'] }>(),
+    'Upload Item Failure': props<{
+      itemId: IUploadItem['id'];
+      error: string;
+    }>(),
+
+    'Remove Item From Queue': props<{ itemId: IUploadItem['id'] }>(),
+    'Retry Upload Item': props<{ itemId: IUploadItem['id'] }>(),
+    'Clear Upload On Complete': emptyProps(),
+
+    'Cancel Upload': props<{ itemId: IUploadItem['id'] }>(),
     'Silent Upload Cancellation': emptyProps(),
     'Cancel Upload Success': emptyProps(),
+
+    'No Operation': emptyProps(),
   },
 });

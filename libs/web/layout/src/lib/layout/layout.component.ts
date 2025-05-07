@@ -9,14 +9,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSnackBarRef } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterOutlet } from '@angular/router';
 import { breadcrumbActions } from '@ever-co/breadcrumb-data-access';
 import { BreadcrumbComponent } from '@ever-co/breadcrumb-feature';
-import { NotificationService } from '@ever-co/notification-data-access';
 import { NotificationBadgeComponent } from '@ever-co/notification-feature';
 import {
   DatePickerComponent,
@@ -24,19 +22,10 @@ import {
 } from '@ever-co/shared-components';
 import { LayoutService } from '@ever-co/shared-service';
 import { SidebarComponent } from '@ever-co/sidebar-feature';
-import { selectUploadState } from '@ever-co/upload-data-access';
-import { UploadProgressComponent } from '@ever-co/upload-feature';
 import { SearchComponent } from '@ever-co/web-search';
 import { Store } from '@ngrx/store';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  map,
-  Observable,
-  Subject,
-  takeUntil,
-  tap,
-} from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
+import { UploadBadgeComponent } from '@ever-co/upload-feature';
 
 @Component({
   selector: 'lib-layout',
@@ -59,18 +48,17 @@ import {
     DatePickerComponent,
     MatTooltipModule,
     NotificationBadgeComponent,
+    UploadBadgeComponent,
   ],
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
 })
 export class LayoutComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
-  private snackbarRef: MatSnackBarRef<UploadProgressComponent> | null = null;
 
   constructor(
     private readonly store: Store,
     private readonly breakpointObserver: BreakpointObserver,
-    private readonly notificationService: NotificationService,
     private readonly layoutService: LayoutService
   ) {}
 
@@ -98,38 +86,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
           isExpanded: !isMobile || isTablet,
         });
       });
-
-    this.uploading$
-      .pipe(
-        distinctUntilChanged(),
-        tap((uploading) => {
-          if (uploading && !this.snackbarRef) {
-            this.notificationService.show('Upload started', 'success', {
-              component: UploadProgressComponent,
-              afterOpened: (snackbarRef) => {
-                if (!snackbarRef) {
-                  return;
-                }
-                this.snackbarRef = snackbarRef;
-              },
-            });
-          }
-
-          if (this.snackbarRef && !uploading) {
-            this.snackbarRef.dismiss();
-            this.snackbarRef = null;
-          }
-        }),
-        takeUntil(this.destroy$)
-      )
-      .subscribe();
-  }
-
-  public get uploading$(): Observable<boolean> {
-    return this.store.select(selectUploadState).pipe(
-      debounceTime(150),
-      map((state) => state.uploading)
-    );
   }
 
   public get isExpanded(): boolean {

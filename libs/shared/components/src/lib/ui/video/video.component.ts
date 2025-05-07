@@ -24,7 +24,11 @@ import {
   UtcToLocalTimePipe,
 } from '@ever-co/shared-service';
 import { IActionButton, ISelected, IVideo } from '@ever-co/shared-utils';
-import { selectUploadState, uploadActions } from '@ever-co/upload-data-access';
+import {
+  selectUploadInProgress,
+  uploadActions,
+  UploadVideoItem,
+} from '@ever-co/upload-data-access';
 import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
 import {
@@ -195,7 +199,9 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
         take(1),
         filter(Boolean),
         tap(() =>
-          this.store.dispatch(uploadActions.uploadVideos({ videos: [video] }))
+          this.store.dispatch(
+            uploadActions.addItemToQueue({ item: new UploadVideoItem(video) })
+          )
         ),
         takeUntil(this.destroy$)
       )
@@ -216,10 +222,9 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
   }
 
   private get uploading$(): Observable<boolean> {
-    return this.store.select(selectUploadState).pipe(
-      map(({ uploading }) => uploading),
-      takeUntil(this.destroy$)
-    );
+    return this.store
+      .select(selectUploadInProgress)
+      .pipe(takeUntil(this.destroy$));
   }
 
   public onSelected(checked: boolean): void {

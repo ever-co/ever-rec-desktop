@@ -114,10 +114,12 @@ export abstract class UploaderService<T>
       worker.terminate();
     });
 
-    ipcMain.on(Channel.UPLOAD_CANCELED, (event) => {
-      worker.terminate();
-      event.reply(Channel.UPLOAD_DONE);
-      this.logger.error('Canceled...');
+    ipcMain.on(Channel.UPLOAD_CANCELED, (event, { itemId }) => {
+      if (upload.ids.includes(itemId)) {
+        worker.terminate();
+        event.reply(Channel.UPLOAD_DONE, { itemId });
+        this.logger.error('Canceled...');
+      }
     });
 
     worker.postMessage({

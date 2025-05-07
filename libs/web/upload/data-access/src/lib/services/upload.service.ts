@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ElectronService } from '@ever-co/electron-data-access';
-import { Channel, IUpload } from '@ever-co/shared-utils';
+import {
+  Channel,
+  IUpload,
+  IUploadDone,
+  IUploadError,
+  IUploadProgress,
+} from '@ever-co/shared-utils';
 import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
 import { filter, map, Observable, of, take } from 'rxjs';
@@ -24,21 +30,21 @@ export class UploadService {
     );
   }
 
-  public cancel(): Observable<void> {
-    return of(this.electronService.send(Channel.UPLOAD_CANCELED));
+  public cancel(itemId: string): Observable<void> {
+    return of(this.electronService.send(Channel.UPLOAD_CANCELED, { itemId }));
   }
 
-  public onProgress(): Observable<number> {
-    return this.electronService.fromEvent<number>(Channel.UPLOAD_PROGRESS);
+  public onProgress(): Observable<IUploadProgress> {
+    return this.electronService.fromEvent<IUploadProgress>(
+      Channel.UPLOAD_PROGRESS
+    );
   }
 
-  public onDone(): Observable<void> {
-    return this.electronService.fromEvent<void>(Channel.UPLOAD_DONE);
+  public onDone(): Observable<IUploadDone> {
+    return this.electronService.fromEvent<IUploadDone>(Channel.UPLOAD_DONE);
   }
 
-  public onError(): Observable<string> {
-    return this.electronService
-      .fromEvent<Error>(Channel.UPLOAD_ERROR)
-      .pipe(map((error: Error) => error.message ?? error));
+  public onError(): Observable<IUploadError> {
+    return this.electronService.fromEvent<IUploadError>(Channel.UPLOAD_ERROR);
   }
 }
