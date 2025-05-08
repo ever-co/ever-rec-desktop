@@ -25,7 +25,8 @@ export abstract class UploadItem implements IUploadItem {
   public readonly data: Uploadable;
   public progress: number;
   public error: string | null;
-  public abstract get name(): string;
+  public name: string;
+  public size: number;
 
   constructor(item: Uploadable, type: UploadType) {
     this.id = item.id;
@@ -33,10 +34,8 @@ export abstract class UploadItem implements IUploadItem {
     this.progress = 0;
     this.data = item;
     this.error = null;
-  }
-
-  public get size(): number {
-    return this.data.metadata?.size || 0;
+    this.name = '';
+    this.size = this.data.metadata?.size || 0;
   }
 }
 

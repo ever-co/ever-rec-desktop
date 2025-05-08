@@ -4,13 +4,11 @@ import { UploadItem } from './upload.model';
 export class UploadAudioItem extends UploadItem {
   constructor(item: IAudio) {
     super(item, UploadType.AUDIO);
+    this.update();
   }
 
-  public get name(): string {
-    return this.loadData()?.metadata?.name || 'Unnamed Audio';
-  }
-
-  private loadData(): IAudio {
-    return this.data as IAudio;
+  private update() {
+    const data = this.data as IAudio;
+    this.name = data?.metadata?.name || 'Unnamed Audio';
   }
 }

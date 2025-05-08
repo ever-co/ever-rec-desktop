@@ -4,13 +4,11 @@ import { UploadItem } from './upload.model';
 export class UploadScreenshotItem extends UploadItem {
   constructor(item: IScreenshot) {
     super(item, UploadType.SCREENSHOT);
+    this.update();
   }
 
-  public get name(): string {
-    return this.loadData()?.metadata?.application?.name || 'Unnamed Photo';
-  }
-
-  private loadData(): IScreenshot {
-    return this.data as IScreenshot;
+  private update(): void {
+    const data = this.data as IScreenshot;
+    this.name = data?.metadata?.application?.name || 'Unnamed Screenshot';
   }
 }

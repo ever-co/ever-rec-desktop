@@ -244,21 +244,35 @@
         <mat-list *ngIf="(failed$ | async)?.length">
           <mat-list-item
             *ngFor="let file of failed$ | async; trackBy: trackByFileId"
-            class="hover:bg-gray-50 rounded-lg mb-2 border-l-4 border-red-500 pl-2"
+            class="hover:bg-gray-50 rounded-lg mb-2 border-l-4 border-red-400 pl-3 transition-colors duration-200 ease-in-out"
           >
-            <mat-icon mat-list-icon class="text-red-500">error</mat-icon>
-            <div mat-line class="font-medium">{{ file.name }}</div>
-            <div mat-line class="text-red-500 text-sm">
-              Error: {{ file.error }}
+            <!-- Icon with better visual hierarchy -->
+            <mat-icon mat-list-icon class="text-red-500 !text-2xl"
+              >error_outline</mat-icon
+            >
+
+            <div class="flex flex-col flex-grow min-w-0">
+              <!-- File name with better truncation -->
+              <div mat-line class="font-medium text-gray-800 truncate">
+                {{ file.name }}
+              </div>
+
+              <!-- Error message with improved readability -->
+              <div mat-line class="text-red-600 text-sm truncate">
+                <span class="font-semibold">Error:</span> {{ file.error }}
+              </div>
             </div>
-            <div>
+
+            <!-- Retry button with better affordance -->
+            <div class="ml-4 flex-shrink-0">
               <button
                 mat-stroked-button
                 color="primary"
                 (click)="retryUpload(file)"
-                class="text-sm"
+                class="!text-sm !py-1 !px-3 hover:bg-blue-50 transition-colors"
+                aria-label="Retry upload"
               >
-                <mat-icon class="text-sm mr-1">refresh</mat-icon>
+                <mat-icon class="!text-sm !w-4 !h-4 mr-1">refresh</mat-icon>
                 Retry
               </button>
             </div>
@@ -370,7 +384,7 @@
             <div mat-line class="text-gray-500 text-sm">
               {{ file.size | humanizeBytes }}
             </div>
-            <div>
+            <div class="ml-auto">
               <button
                 mat-stroked-button
                 color="primary"

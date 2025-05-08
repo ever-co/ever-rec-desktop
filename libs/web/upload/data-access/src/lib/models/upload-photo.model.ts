@@ -4,13 +4,11 @@ import { UploadItem } from './upload.model';
 export class UploadPhotoItem extends UploadItem {
   constructor(item: IPhoto) {
     super(item, UploadType.PHOTO);
+    this.update();
   }
 
-  public get name(): string {
-    return this.loadData()?.metadata?.name || 'Unnamed Photo';
-  }
-
-  private loadData(): IPhoto {
-    return this.data as IPhoto;
+  private update(): void {
+    const data = this.data as IPhoto;
+    this.name = data?.metadata?.name || 'Unnamed Photo';
   }
 }

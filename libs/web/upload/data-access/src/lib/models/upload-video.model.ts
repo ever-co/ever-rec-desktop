@@ -4,13 +4,11 @@ import { UploadItem } from './upload.model';
 export class UploadVideoItem extends UploadItem {
   constructor(item: IVideo) {
     super(item, UploadType.VIDEO);
+    this.update();
   }
 
-  public get name(): string {
-    return this.loadData()?.metadata?.name || 'Unnamed Video';
-  }
-
-  private loadData(): IVideo {
-    return this.data as IVideo;
+  private update(): void {
+    const data = this.data as IVideo;
+    this.name = data?.metadata?.name || 'Unnamed Video';
   }
 }
