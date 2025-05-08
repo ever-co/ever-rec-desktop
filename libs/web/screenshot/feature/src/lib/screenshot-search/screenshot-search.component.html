@@ -16,7 +16,8 @@
   <lib-screenshot
     (selected)="selectScreenshot($event)"
     [checked]="isSelected(screenshot) | async"
-    class="card"
+    (click)="onView(screenshot)"
+    class="card cursor-pointer"
     [screenshot]="screenshot"
   ></lib-screenshot>
   } @if(capturing$ | async) {

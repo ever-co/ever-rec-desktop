@@ -293,6 +293,10 @@ export class ScreenshotSearchComponent implements OnInit, OnDestroy {
     this.store.dispatch(screenshotActions.unselectAllScreenshots());
   }
 
+  public async onView(screenshot: IScreenshot): Promise<void> {
+    await this.router.navigate(['/', 'library', 'screenshots', screenshot.id]);
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
