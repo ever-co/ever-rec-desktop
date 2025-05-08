@@ -1,7 +1,7 @@
 @if(isShow$ | async) {
 <div class="flex main flex-col p-2 w-full rounded-df bg-gray-50 shadow-md">
-  @for (button of buttons; track button) { @if((button.hide | async) === false)
-  {
+  @for (button of buttons; track (button?.label || button?.icon || button)) {
+  @if((button.hide | async) === false) {
   <lib-action-button
     [button]="button"
     (actionTriggered)="onActionTriggered(button)"
