@@ -191,6 +191,10 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
     );
   }
 
+  public async onView(video: IVideo): Promise<void> {
+    await this.router.navigate(['/', 'library', 'videos', video.id]);
+  }
+
   private deleteVideos(selectedVideos: ISelected<IVideo>[]): void {
     const videos = selectedVideos.map((video) => video.data);
     this.confirmationDialogService
