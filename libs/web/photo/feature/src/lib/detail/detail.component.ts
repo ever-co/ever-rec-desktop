@@ -17,6 +17,12 @@ import {
   UtcToLocalTimePipe,
 } from '@ever-co/shared-service';
 import { IActionButton, IPhoto } from '@ever-co/shared-utils';
+import {
+  selectUploadInProgress,
+  uploadActions,
+  UploadPhotoItem,
+} from '@ever-co/upload-data-access';
+import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
 import {
   filter,
@@ -24,6 +30,7 @@ import {
   map,
   Observable,
   Subject,
+  take,
   takeUntil,
   tap,
 } from 'rxjs';
@@ -49,6 +56,16 @@ export class DetailComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   public actionButtons: IActionButton[] = [
     {
+      label: 'Upload',
+      variant: 'success',
+      icon: 'backup',
+      action: this.upload.bind(this),
+      loading: this.uploading$,
+      loadingLabel: 'Uploading...',
+      disable: this.uploading$,
+      hide: this.isUploadHidden$,
+    },
+    {
       icon: 'delete',
       label: 'Delete',
       variant: 'danger',
@@ -59,7 +76,7 @@ export class DetailComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store,
-    private readonly confirationDialogService: ConfirmationDialogService
+    private readonly confirmationDialogService: ConfirmationDialogService
   ) {}
 
   ngOnInit(): void {
@@ -101,7 +118,7 @@ export class DetailComponent implements OnInit, OnDestroy {
 
   public async delete(photo: IPhoto) {
     const isConfirmed = await lastValueFrom(
-      this.confirationDialogService.open({
+      this.confirmationDialogService.open({
         title: 'Delete Photo',
         message: 'Are you sure you want to delete this photo?',
         variant: 'danger',
@@ -111,6 +128,46 @@ export class DetailComponent implements OnInit, OnDestroy {
       this.store.dispatch(photoActions.deletePhoto(photo));
       await this.router.navigate(['/', 'library', 'photos']);
     }
+  }
+
+  private get uploading$(): Observable<boolean> {
+    return this.store
+      .select(selectUploadInProgress)
+      .pipe(takeUntil(this.destroy$));
+  }
+
+  private get isUploadHidden$(): Observable<boolean> {
+    return this.store.select(selectSettingStorageState).pipe(
+      map(({ uploadConfig }) => !uploadConfig.manualSync),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  private upload(photo: IPhoto): void {
+    this.confirmationDialogService
+      .open({
+        title: 'Upload Photo',
+        message: `Are you sure you want to upload this photo?`,
+        variant: 'primary',
+        button: {
+          confirm: {
+            label: 'Upload',
+            variant: 'success',
+            icon: 'backup',
+          },
+        },
+      })
+      .pipe(
+        take(1),
+        filter(Boolean),
+        tap(() =>
+          this.store.dispatch(
+            uploadActions.addItemToQueue({ item: new UploadPhotoItem(photo) })
+          )
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {

@@ -22,8 +22,14 @@ import {
   IRange,
   ISelected,
 } from '@ever-co/shared-utils';
+import {
+  UploadPhotoItem,
+  selectUploadInProgress,
+  uploadActions,
+} from '@ever-co/upload-data-access';
 import { Store } from '@ngrx/store';
 import { Observable, Subject, filter, map, take, takeUntil, tap } from 'rxjs';
+import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 
 @Component({
   selector: 'lib-photo-gallery',
@@ -48,7 +54,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
   private currentPage = 1;
   private hasNext = false;
   private range!: IRange;
-  public actionButtons: IActionButton[] = [
+  public commonButtons: IActionButton[] = [
     {
       icon: 'visibility',
       label: 'View',
@@ -57,19 +63,16 @@ export class GalleryComponent implements OnInit, OnDestroy {
       action: this.view.bind(this),
     },
     {
-      icon: 'remove_done',
-      label: 'Unselect All',
-      variant: 'default',
-      hide: this.lessThanOneSelected$,
-      action: this.unselectAll.bind(this),
+      label: 'Upload',
+      variant: 'success',
+      icon: 'backup',
+      action: this.upload.bind(this),
+      loading: this.uploading$,
+      loadingLabel: 'Uploading...',
+      disable: this.uploading$,
+      hide: this.isUploadHidden$,
     },
-    {
-      icon: 'remove_done',
-      label: 'Unselect',
-      variant: 'default',
-      hide: this.moreThanOneSelected$,
-      action: this.unselectAll.bind(this),
-    },
+
     {
       icon: 'delete',
       label: 'Delete',
@@ -79,10 +82,30 @@ export class GalleryComponent implements OnInit, OnDestroy {
     },
   ];
 
+  public galleryButtons: IActionButton[] = [];
+
   constructor(
     private readonly router: Router,
     private readonly confirmationDialogService: ConfirmationDialogService
-  ) {}
+  ) {
+    this.galleryButtons = [
+      ...this.commonButtons,
+      {
+        icon: 'remove_done',
+        label: 'Unselect All',
+        variant: 'default',
+        hide: this.lessThanOneSelected$,
+        action: this.unselectAll.bind(this),
+      },
+      {
+        icon: 'remove_done',
+        label: 'Unselect',
+        variant: 'default',
+        hide: this.moreThanOneSelected$,
+        action: this.unselectAll.bind(this),
+      },
+    ];
+  }
 
   ngOnInit(): void {
     this.store
@@ -190,10 +213,12 @@ export class GalleryComponent implements OnInit, OnDestroy {
 
   private deletePhotos(selectedPhotos: ISelected<IPhoto>[]): void {
     const photos = selectedPhotos.map((photo) => photo.data);
+    const size = photos.length;
+    const s = size > 1 ? 's' : '';
     this.confirmationDialogService
       .open({
-        title: 'Delete Photos?',
-        message: `Are you sure you want to delete ${photos.length} photos?`,
+        title: `Delete Photo${s}?`,
+        message: `Are you sure you want to delete ${photos.length} photo${s}?`,
         variant: 'danger',
       })
       .pipe(
@@ -227,25 +252,51 @@ export class GalleryComponent implements OnInit, OnDestroy {
     this.store.dispatch(photoActions.unselectAllPhotos());
   }
 
-  public onDelete(photo: IPhoto): void {
+  private async onView(photo: IPhoto): Promise<void> {
+    await this.router.navigate(['/', 'library', 'photos', photo.id]);
+    this.store.dispatch(photoActions.unselectAllPhotos());
+  }
+
+  private get uploading$(): Observable<boolean> {
+    return this.store
+      .select(selectUploadInProgress)
+      .pipe(takeUntil(this.destroy$));
+  }
+
+  private get isUploadHidden$(): Observable<boolean> {
+    return this.store.select(selectSettingStorageState).pipe(
+      map(({ uploadConfig }) => !uploadConfig.manualSync),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  private upload(selectedPhotos: ISelected<IPhoto>[]): void {
+    const size = selectedPhotos.length;
+    const s = size > 1 ? 's' : '';
+
     this.confirmationDialogService
       .open({
-        title: 'Delete Photo',
-        message: `Are you sure you want to delete this photo?`,
-        variant: 'danger',
+        title: `Upload Photo${s}`,
+        message: `Are you sure you want to upload photo${s}?`,
+        variant: 'primary',
+        button: {
+          confirm: {
+            label: `Upload(${size})`,
+            variant: 'success',
+            icon: 'backup',
+          },
+        },
       })
       .pipe(
         take(1),
         filter(Boolean),
-        tap(() => this.store.dispatch(photoActions.deletePhoto(photo))),
+        map(() => selectedPhotos.map(({ data }) => new UploadPhotoItem(data))),
+        tap((items) =>
+          this.store.dispatch(uploadActions.addItemToQueue({ items }))
+        ),
         takeUntil(this.destroy$)
       )
       .subscribe();
-  }
-
-  public async onView(photo: IPhoto): Promise<void> {
-    await this.router.navigate(['/', 'library', 'photos', photo.id]);
-    this.store.dispatch(photoActions.unselectAllPhotos());
   }
 
   ngOnDestroy(): void {

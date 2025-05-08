@@ -41,35 +41,13 @@ export class PhotoComponent implements OnDestroy, OnDestroy {
   @Input()
   public checked: boolean | null = false;
 
+  @Input()
+  public actionButtons: IActionButton[] = [];
+
   @Output()
   public selected = new EventEmitter<ISelected<IPhoto>>();
 
-  @Output()
-  public deleted = new EventEmitter<IPhoto>();
-
-  @Output()
-  public viewed = new EventEmitter<IPhoto>();
-
   private destroy$ = new Subject<void>();
-
-  public actionButtons: IActionButton[] = [
-    {
-      icon: 'visibility',
-      label: 'View',
-      variant: 'default',
-      action: this.view.bind(this),
-    },
-    {
-      icon: 'delete',
-      label: 'Delete',
-      variant: 'danger',
-      action: this.delete.bind(this),
-    },
-  ];
-
-  public view(photo: IPhoto): void {
-    this.viewed.emit(photo);
-  }
 
   public onSelected(checked: boolean): void {
     this.checked = checked;
@@ -79,8 +57,13 @@ export class PhotoComponent implements OnDestroy, OnDestroy {
     });
   }
 
-  public delete(photo: IPhoto) {
-    this.deleted.emit(photo);
+  public adapter(photo: IPhoto): ISelected<IPhoto>[] {
+    return [
+      {
+        data: photo,
+        selected: this.checked || false,
+      },
+    ];
   }
 
   ngOnDestroy(): void {
