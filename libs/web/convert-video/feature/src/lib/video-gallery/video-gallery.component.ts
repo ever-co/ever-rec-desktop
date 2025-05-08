@@ -196,12 +196,21 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
   }
 
   private deleteVideos(selectedVideos: ISelected<IVideo>[]): void {
+    const size = selectedVideos.length;
+    const s = size > 1 ? 's' : '';
     const videos = selectedVideos.map((video) => video.data);
     this.confirmationDialogService
       .open({
-        title: 'Delete Videos',
-        message: `Are you sure you want to delete these ${videos.length} videos?`,
+        title: `Delete Video${s}`,
+        message: `Are you sure you want to delete these ${videos.length} video${s}?`,
         variant: 'danger',
+        button: {
+          confirm: {
+            label: `Delete(${size})`,
+            variant: 'danger',
+            icon: 'delete',
+          },
+        },
       })
       .pipe(
         take(1),
@@ -295,14 +304,16 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
   }
 
   private upload(selectedVideos: ISelected<IVideo>[]): void {
+    const size = selectedVideos.length;
+    const s = size > 1 ? 's' : '';
     this.confirmationDialogService
       .open({
-        title: 'Upload Videos',
-        message: `Are you sure you want to upload selected videos?`,
+        title: `Upload Video${s}`,
+        message: `Are you sure you want to upload selected video${s}?`,
         variant: 'primary',
         button: {
           confirm: {
-            label: 'Upload',
+            label: `Upload(${size})`,
             variant: 'success',
             icon: 'backup',
           },

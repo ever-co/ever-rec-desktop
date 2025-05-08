@@ -33,7 +33,6 @@ import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
 import {
   BehaviorSubject,
-  combineLatest,
   filter,
   fromEvent,
   map,
@@ -99,6 +98,7 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
       action: this.upload.bind(this),
       loading: this.uploading$,
       disable: this.uploading$,
+      loadingLabel: 'Uploading...',
       hide: this.isUploadHidden$,
     },
     {
@@ -209,13 +209,10 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
   }
 
   private get isUploadHidden$(): Observable<boolean> {
-    return combineLatest([
-      this.store.select(selectSettingStorageState),
-      this.uploading$,
-    ]).pipe(
+    return this.store.select(selectSettingStorageState).pipe(
       map(
-        ([{ uploadConfig }, isUploading]) =>
-          !uploadConfig.manualSync || isUploading || !!this.video?.isTimeline
+        ({ uploadConfig }) =>
+          !uploadConfig.manualSync || !!this.video?.isTimeline
       ),
       takeUntil(this.destroy$)
     );

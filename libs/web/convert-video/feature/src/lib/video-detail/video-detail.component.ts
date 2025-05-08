@@ -81,11 +81,6 @@ export class VideoDetailComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   public actionButtons: IActionButton[] = [
     {
-      icon: 'copy',
-      label: 'Duplicate',
-      variant: 'default',
-    },
-    {
       icon: 'summarize',
       label: 'Summarize',
       variant: 'warning',
@@ -98,6 +93,7 @@ export class VideoDetailComponent implements OnInit, OnDestroy {
       action: this.upload.bind(this),
       loading: this.uploading$,
       disable: this.uploading$,
+      loadingLabel: 'Uploading...',
     },
     {
       icon: 'delete',
@@ -232,12 +228,11 @@ export class VideoDetailComponent implements OnInit, OnDestroy {
   private get isUploadHidden$(): Observable<boolean> {
     return combineLatest([
       this.store.select(selectSettingStorageState),
-      this.uploading$,
       this.video$,
     ]).pipe(
       map(
-        ([{ uploadConfig }, uploading, video]) =>
-          !uploadConfig.manualSync || uploading || !!video?.isTimeline
+        ([{ uploadConfig }, video]) =>
+          !uploadConfig.manualSync || !!video?.isTimeline
       ),
       takeUntil(this.destroy$)
     );
