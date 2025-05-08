@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { generateVideoActions } from '@ever-co/convert-video-data-access';
 import { NotificationService } from '@ever-co/notification-data-access';
 import { IUpload } from '@ever-co/shared-utils';
+import { selectSettingUploadAutoSync } from '@ever-co/web-setting-data-access';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { EMPTY, of } from 'rxjs';
@@ -33,21 +34,22 @@ export class UploadEffects {
         uploadActions.uploadItemFailure,
         uploadActions.retryAllFailedUploads
       ),
-      withLatestFrom(this.store.select(selectCanUploadMore)),
-      mergeMap(([_, canUploadMore]) => {
-        if (canUploadMore) {
-          return this.store.select(selectUploadQueue).pipe(
-            map((queue) => queue[0]),
-            map((next) =>
-              next
-                ? uploadActions.startItemUpload({ item: next })
-                : uploadActions.noOperation()
-            ),
-            filter((action) => action.type !== uploadActions.noOperation.type)
-          );
+      withLatestFrom(
+        this.store.select(selectCanUploadMore),
+        this.store.select(selectSettingUploadAutoSync),
+        this.store.select(selectUploadQueue)
+      ),
+      mergeMap(([_, canUploadMore, canUpload, queue]) => {
+        // Early return if conditions aren't met
+        if (!canUploadMore || !canUpload || queue.length === 0) {
+          return EMPTY;
         }
-        return EMPTY;
-      })
+
+        const nextItem = queue[0];
+        return of(uploadActions.startItemUpload({ item: nextItem }));
+      }),
+      // Filter out any undefined/empty actions if needed
+      filter((action) => !!action)
     )
   );
 

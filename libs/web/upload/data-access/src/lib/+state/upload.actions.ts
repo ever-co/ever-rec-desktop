@@ -31,8 +31,6 @@ export const uploadActions = createActionGroup({
     'Silent Upload Cancellation': emptyProps(),
     'Cancel Upload Success': emptyProps(),
 
-    'No Operation': emptyProps(),
-
     'Clear Upload Queue': emptyProps(),
     'Clear Failed Uploads': emptyProps(),
     'Clear Canceled Uploads': emptyProps(),
