@@ -30,7 +30,8 @@ export class UploadEffects {
       ofType(
         uploadActions.addItemToQueue,
         uploadActions.uploadItemSuccess,
-        uploadActions.uploadItemFailure
+        uploadActions.uploadItemFailure,
+        uploadActions.retryAllFailedUploads
       ),
       withLatestFrom(this.store.select(selectCanUploadMore)),
       mergeMap(([_, canUploadMore]) => {

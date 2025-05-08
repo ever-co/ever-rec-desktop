@@ -307,9 +307,9 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
         take(1),
         filter(Boolean),
         tap(() => {
-          const items = selectedVideos.map(
-            ({ data }) => new UploadVideoItem(data)
-          );
+          const items = selectedVideos
+            .filter(({ data }) => !data.isTimeline)
+            .map(({ data }) => new UploadVideoItem(data));
           this.store.dispatch(uploadActions.addItemToQueue({ items }));
         }),
         takeUntil(this.destroy$)

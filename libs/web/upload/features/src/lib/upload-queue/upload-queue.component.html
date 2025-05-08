@@ -187,7 +187,6 @@
           <lib-upload-progress [item]="file"></lib-upload-progress>
           <div class="flex justify-between text-xs text-gray-500 mt-1">
             <span>{{ file.progress }}% complete</span>
-            <span>{{ calculateRemainingTime(file) }}</span>
           </div>
         </div>
       </div>
@@ -316,25 +315,6 @@
             <div mat-line class="font-medium">{{ file.name }}</div>
             <div mat-line class="text-gray-500 text-sm">
               {{ file.size | humanizeBytes }} • Uploaded successfully
-            </div>
-            <div class="flex">
-              <button
-                mat-icon-button
-                color="primary"
-                (click)="downloadFile(file)"
-                matTooltip="Download"
-                *ngIf="file"
-              >
-                <mat-icon>download</mat-icon>
-              </button>
-              <button
-                mat-icon-button
-                (click)="copyFileLink(file)"
-                matTooltip="Copy Link"
-                *ngIf="file"
-              >
-                <mat-icon>link</mat-icon>
-              </button>
             </div>
           </mat-list-item>
         </mat-list>

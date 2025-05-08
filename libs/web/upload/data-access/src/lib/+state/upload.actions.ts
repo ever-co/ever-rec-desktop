@@ -15,6 +15,7 @@ export const uploadActions = createActionGroup({
       progress: number;
     }>(),
 
+    'Upload All From Queue': emptyProps(),
     'Upload Item Success': props<{ itemId: IUploadItem['id'] }>(),
     'Upload Item Failure': props<{
       itemId: IUploadItem['id'];
@@ -23,6 +24,7 @@ export const uploadActions = createActionGroup({
 
     'Remove Item From Queue': props<{ itemId: IUploadItem['id'] }>(),
     'Retry Upload Item': props<{ itemId: IUploadItem['id'] }>(),
+    'Retry All Failed Uploads': emptyProps(),
     'Clear Upload On Complete': emptyProps(),
 
     'Cancel Upload': props<{ itemId: IUploadItem['id'] }>(),
@@ -30,5 +32,11 @@ export const uploadActions = createActionGroup({
     'Cancel Upload Success': emptyProps(),
 
     'No Operation': emptyProps(),
+
+    'Clear Upload Queue': emptyProps(),
+    'Clear Failed Uploads': emptyProps(),
+    'Clear Canceled Uploads': emptyProps(),
+
+    'Cancel All Uploads': emptyProps(),
   },
 });
