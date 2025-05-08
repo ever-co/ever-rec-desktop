@@ -83,11 +83,11 @@ durationFormatted$ | async; @let isMobileView = layoutService.isMobileView();
           [popoverContext]="{ audio, showDetails: true }"
           class="hover:bg-gray-100 transition-colors duration-200"
         ></lib-action-button>
-        <lib-action-button
-          [button]="deleteButton"
-          [data]="audio"
-          class="hover:bg-red-50 transition-colors duration-200"
-        ></lib-action-button>
+        <lib-action-button-group
+          [buttons]="cardButtons"
+          [data]="adapter(audio)"
+          class="no-effect transition-colors duration-200"
+        ></lib-action-button-group>
       </div>
     </ng-template>
     }
@@ -137,7 +137,7 @@ durationFormatted$ | async; @let isMobileView = layoutService.isMobileView();
   class="absolute inset-x-0 action-button-group animate-slideInUp transition-all duration-300"
 >
   <lib-gallery-buttons-action
-    [buttons]="actionButtons"
+    [buttons]="galleryButtons"
     [size]="size$ | async"
     [data]="selectedAudios$ | async"
   ></lib-gallery-buttons-action>
