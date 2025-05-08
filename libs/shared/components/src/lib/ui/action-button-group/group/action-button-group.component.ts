@@ -1,15 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { IActionButton } from '@ever-co/shared-utils';
 import { combineLatest, filter, map, Observable, of } from 'rxjs';
 import { ActionButtonComponent } from '../button/action-button.component';
 
 @Component({
-    selector: 'lib-action-button-group',
-    imports: [CommonModule, ActionButtonComponent],
-    templateUrl: './action-button-group.component.html',
-    styleUrl: './action-button-group.component.scss',
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'lib-action-button-group',
+  imports: [CommonModule, ActionButtonComponent],
+  templateUrl: './action-button-group.component.html',
+  styleUrl: './action-button-group.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ActionButtonGroupComponent {
   private _buttons: IActionButton[] = [];

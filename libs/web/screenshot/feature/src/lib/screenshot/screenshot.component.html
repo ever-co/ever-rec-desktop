@@ -62,18 +62,18 @@
     <!-- Metadata Section -->
     <div class="w-full flex flex-col gap-4 lg:w-1/3 bg-gray-100 p-4">
       <div class="flex items-start gap-4">
-        @if(screenshot.metadata?.application?.icon) {
+        @if(screenshot?.metadata?.application?.icon) {
         <img
           libIconFallback
-          [src]="screenshot.metadata?.application?.icon"
-          [alt]="screenshot.metadata?.application?.name"
+          [src]="screenshot?.metadata?.application?.icon"
+          [alt]="screenshot?.metadata?.application?.name"
           class="w-12 h-12"
         />
         }
         <div class="flex-grow">
-          @if(screenshot.metadata?.application?.name) {
+          @if(screenshot?.metadata?.application?.name) {
           <div class="text-xl font-bold text-gray-800 mb-1">
-            {{ screenshot.metadata?.application?.name }}
+            {{ screenshot?.metadata?.application?.name }}
           </div>
           }
           <div class="text-sm text-gray-600 flex items-center flex-wrap">
@@ -81,7 +81,7 @@
               screenshot.createdAt | utcToLocalTime
             }}</span>
             <span class="text-gray-400 mr-2">•</span>
-            <span>{{ screenshot.metadata?.size | humanizeBytes }}</span>
+            <span>{{ screenshot?.metadata?.size | humanizeBytes }}</span>
           </div>
         </div>
         <button
@@ -93,16 +93,16 @@
         </button>
       </div>
 
-      @if(screenshot.metadata?.description) {
+      @if(screenshot?.metadata?.description) {
       <div class="bg-white rounded-df p-4">
         <div class="flex items-center justify-between mb-2">
           <div>Description</div>
           <div
-            [libCopyToClipboard]="screenshot.metadata?.description || ''"
+            [libCopyToClipboard]="screenshot?.metadata?.description || ''"
             class="text-lg font-semibold text-gray-700"
           ></div>
         </div>
-        <p class="text-gray-600">{{ screenshot.metadata?.description }}</p>
+        <p class="text-gray-600">{{ screenshot?.metadata?.description }}</p>
       </div>
       } @if(screenshot.video; as video) {
       <div class="bg-white rounded-df p-4">

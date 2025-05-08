@@ -217,6 +217,10 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
     );
   }
 
+  public async onView(screenshot: IScreenshot): Promise<void> {
+    await this.router.navigate(['/', 'library', 'screenshots', screenshot.id]);
+  }
+
   private deleteScreenshots(
     selectedScreenshots: ISelected<IScreenshot>[]
   ): void {
