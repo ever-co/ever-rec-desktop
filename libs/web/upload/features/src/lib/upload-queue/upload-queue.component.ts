@@ -1,6 +1,18 @@
 // upload-queue.component.ts
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { HumanizeBytesPipe } from '@ever-co/shared-service';
 import {
   selectCanceled,
   selectCompleted,
@@ -13,19 +25,6 @@ import {
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { UploadProgressComponent } from '../upload-progress/upload-progress.component';
-import { HumanizeBytesPipe } from '@ever-co/shared-service';
-import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatButtonModule } from '@angular/material/button';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatBadgeModule } from '@angular/material/badge';
-import { MatDividerModule } from '@angular/material/divider';
-import { Clipboard } from '@angular/cdk/clipboard';
-import { ClipboardModule } from '@angular/cdk/clipboard';
-import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'lib-upload-queue',
@@ -106,7 +105,7 @@ export class UploadQueueComponent {
     this.store.dispatch(uploadActions.cancelAllUploads());
   }
 
-  trackByFileId(index: number, file: UploadItem): string {
+  trackByFileId(_: number, file: UploadItem): string {
     return file.id;
   }
 }
