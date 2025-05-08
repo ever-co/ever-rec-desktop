@@ -42,7 +42,7 @@ export const reducer = createReducer(
       if (!existingIds.has(item.id)) {
         return {
           ...state,
-          queue: [...state.queue, { ...item }],
+          queue: [...state.queue, item.clone()],
         };
       }
       return state;
@@ -51,9 +51,9 @@ export const reducer = createReducer(
     // Handle multiple items addition
     if (items && !isEmpty(items)) {
       // Filter out items that already exist in the queue using the Set
-      const uniqueItems = items.filter(
-        (newItem) => !existingIds.has(newItem.id)
-      );
+      const uniqueItems = items
+        .filter((newItem) => !existingIds.has(newItem.id))
+        .map((item) => item.clone());
 
       // Only update state if there are new unique items
       if (uniqueItems.length > 0) {

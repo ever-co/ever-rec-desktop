@@ -1,4 +1,5 @@
 import {
+  Clonable,
   IAudio,
   IPhoto,
   IScreenshot,
@@ -9,7 +10,7 @@ import {
 
 export type Uploadable = IVideo | IPhoto | IAudio | IScreenshot;
 
-export interface IUploadItem {
+export interface IUploadItem extends Clonable<IUploadItem> {
   id: string;
   type: UploadType;
   name: string;
@@ -36,6 +37,22 @@ export abstract class UploadItem implements IUploadItem {
     this.error = null;
     this.name = '';
     this.size = this.data.metadata?.size || 0;
+  }
+
+  public clone(): IUploadItem {
+    const cloned = Object.create(this.constructor.prototype) as IUploadItem;
+
+    Object.assign(cloned, {
+      id: this.id,
+      type: this.type,
+      data: structuredClone(this.data),
+      progress: this.progress,
+      error: this.error,
+      name: this.name,
+      size: this.size,
+    });
+
+    return cloned;
   }
 }
 
