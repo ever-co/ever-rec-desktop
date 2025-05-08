@@ -90,6 +90,7 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
       variant: 'success',
       action: this.upload.bind(this),
       loading: this.uploading$,
+      loadingLabel: 'Uploading...',
       hide: this.isHidden$,
     },
     {
