@@ -42,7 +42,7 @@ export const reducer = createReducer(
       if (!existingIds.has(item.id)) {
         return {
           ...state,
-          queue: [...state.queue, item],
+          queue: [...state.queue, { ...item }],
         };
       }
       return state;

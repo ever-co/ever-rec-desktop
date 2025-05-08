@@ -170,7 +170,7 @@
           <div class="flex justify-between items-center mb-2">
             <div class="flex items-center">
               <mat-icon class="text-indigo-500 mr-2">file_upload</mat-icon>
-              <span class="font-medium">{{ file.name }}</span>
+              <span class="font-medium truncate">{{ file.name }}</span>
             </div>
             <button
               mat-icon-button
@@ -326,7 +326,7 @@
             <mat-icon mat-list-icon class="text-green-500"
               >check_circle</mat-icon
             >
-            <div mat-line class="font-medium">{{ file.name }}</div>
+            <div mat-line class="font-medium truncate">{{ file.name }}</div>
             <div mat-line class="text-gray-500 text-sm">
               {{ file.size | humanizeBytes }} • Uploaded successfully
             </div>
@@ -379,8 +379,7 @@
             *ngFor="let file of canceled$ | async; trackBy: trackByFileId"
             class="hover:bg-gray-50 rounded-lg mb-2 border-l-4 border-gray-500 pl-2"
           >
-            <mat-icon mat-list-icon class="text-gray-500">cancel</mat-icon>
-            <div mat-line class="font-medium">{{ file.name }}</div>
+            <div mat-line class="font-medium truncate">{{ file.name }}</div>
             <span class="mx-2"> • </span>
             <div mat-line class="text-gray-500 text-sm">
               {{ file.size | humanizeBytes }}
