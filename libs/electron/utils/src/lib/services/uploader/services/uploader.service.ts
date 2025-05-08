@@ -85,6 +85,7 @@ export abstract class UploaderService<T>
           this.logger.info('Done...');
           await this.synchronize(upload);
           event.reply(Channel.UPLOAD_DONE, payload.message);
+          worker.terminate();
           break;
         case 'progress':
           this.logger.info('In Progress::' + payload.message);
@@ -93,6 +94,7 @@ export abstract class UploaderService<T>
         case 'error':
           this.logger.error('Error::' + payload.message);
           event.reply(Channel.UPLOAD_ERROR, payload.message);
+          worker.terminate();
           break;
         default:
           this.logger.warn('Unknown status');
