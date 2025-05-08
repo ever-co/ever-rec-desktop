@@ -8,8 +8,9 @@
   <lib-photo
     (selected)="selectPhoto($event)"
     [checked]="isSelected(photo) | async"
-    [actionButtons]="commonButtons"
-    class="card"
+    [actionButtons]="cardButtons"
+    (click)="onView(photo)"
+    class="card cursor-pointer"
     [photo]="photo"
   ></lib-photo>
   } @if(capturing$ | async) {

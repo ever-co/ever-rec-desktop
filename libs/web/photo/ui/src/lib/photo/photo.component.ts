@@ -8,7 +8,10 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import {
+  MatCheckboxChange,
+  MatCheckboxModule,
+} from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { ActionButtonGroupComponent } from '@ever-co/shared-components';
 import {
@@ -49,12 +52,17 @@ export class PhotoComponent implements OnDestroy, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  public onSelected(checked: boolean): void {
+  public onSelected({ checked }: MatCheckboxChange): void {
     this.checked = checked;
     this.selected.emit({
       data: this.photo,
       selected: checked,
     });
+  }
+
+  public handle(event: Event): void {
+    event.stopPropagation();
+    event.preventDefault();
   }
 
   public adapter(photo: IPhoto): ISelected<IPhoto>[] {

@@ -54,14 +54,9 @@ export class GalleryComponent implements OnInit, OnDestroy {
   private currentPage = 1;
   private hasNext = false;
   private range!: IRange;
-  public commonButtons: IActionButton[] = [
-    {
-      icon: 'visibility',
-      label: 'View',
-      variant: 'default',
-      hide: this.moreThanOneSelected$,
-      action: this.view.bind(this),
-    },
+  public galleryButtons: IActionButton[] = [];
+  public cardButtons: IActionButton[] = [];
+  private readonly commonButtons: IActionButton[] = [
     {
       label: 'Upload',
       variant: 'success',
@@ -82,14 +77,27 @@ export class GalleryComponent implements OnInit, OnDestroy {
     },
   ];
 
-  public galleryButtons: IActionButton[] = [];
-
   constructor(
     private readonly router: Router,
     private readonly confirmationDialogService: ConfirmationDialogService
   ) {
-    this.galleryButtons = [
+    this.cardButtons = [
+      {
+        icon: 'visibility',
+        label: 'View',
+        variant: 'default',
+        action: this.view.bind(this),
+      },
       ...this.commonButtons,
+    ];
+    this.galleryButtons = [
+      {
+        icon: 'visibility',
+        label: 'View',
+        variant: 'default',
+        hide: this.moreThanOneSelected$,
+        action: this.view.bind(this),
+      },
       {
         icon: 'remove_done',
         label: 'Unselect All',
@@ -104,6 +112,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
         hide: this.moreThanOneSelected$,
         action: this.unselectAll.bind(this),
       },
+      ...this.commonButtons,
     ];
   }
 
@@ -252,7 +261,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
     this.store.dispatch(photoActions.unselectAllPhotos());
   }
 
-  private async onView(photo: IPhoto): Promise<void> {
+  public async onView(photo: IPhoto): Promise<void> {
     await this.router.navigate(['/', 'library', 'photos', photo.id]);
     this.store.dispatch(photoActions.unselectAllPhotos());
   }
