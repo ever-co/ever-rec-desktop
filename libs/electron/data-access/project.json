@@ -42,7 +42,8 @@
         "syncVersions": false,
         "push": true,
         "pushTags": true,
-        "trackDeps": true
+        "trackDeps": true,
+        "baseBranch": "develop"
       }
     },
     "publish": {
