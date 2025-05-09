@@ -31,14 +31,19 @@ jobs:
 
       - name: Set up dependencies (Python & Build Tools)
         run: |
-          python3 -m pip install --user packaging setuptools
+          python3 -m pip install --break-system-packages --user packaging setuptools
           npm install -g electron-builder
+          npm install -g nx@latest
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: |
+          yarn install --frozen-lockfile
+          yarn add -D nx@latest
 
       - name: Build Electron app
-        run: yarn build:prod
+        run: |
+          yarn nx reset
+          yarn build:prod
 
       - name: Package Electron app
         run: yarn make
