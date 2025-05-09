@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
 import { photoActions, selectPhotoState } from '@ever-co/photo-data-access';
 import {
@@ -48,6 +49,7 @@ import {
     PopoverDirective,
     ActionButtonGroupComponent,
     ImgFallbackDirective,
+    MatTooltipModule,
   ],
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss',
