@@ -3,6 +3,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   screenshotActions,
@@ -58,6 +59,7 @@ import {
     CopyToClipboardDirective,
     ImgFallbackDirective,
     IconFallbackDirective,
+    MatTooltipModule,
   ],
   templateUrl: './screenshot.component.html',
   styleUrl: './screenshot.component.scss',
@@ -88,7 +90,7 @@ export class ScreenshotComponent implements OnInit, OnDestroy {
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store,
     private readonly confirmationDialogService: ConfirmationDialogService,
-    private readonly location: Location
+    private readonly location: Location,
   ) {}
   ngOnInit(): void {
     this.activatedRoute.params
@@ -101,7 +103,7 @@ export class ScreenshotComponent implements OnInit, OnDestroy {
             await this.router.navigate(['/dashboard']);
           }
         }),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
@@ -115,14 +117,14 @@ export class ScreenshotComponent implements OnInit, OnDestroy {
           },
           relations: ['metadata', 'metadata.application', 'video', 'chunks'],
         },
-      })
+      }),
     );
   }
 
   public get screenshot$(): Observable<IScreenshot | null> {
     return this.store.select(selectScreenshotState).pipe(
       map((state) => state.screenshot),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -147,7 +149,7 @@ export class ScreenshotComponent implements OnInit, OnDestroy {
         title: 'Delete Screenshot',
         message: 'Are you sure you want to delete this screenshot?',
         variant: 'danger',
-      })
+      }),
     );
     if (isConfirmed) {
       this.store.dispatch(screenshotActions.deleteScreenshot(screenshot));
@@ -176,10 +178,10 @@ export class ScreenshotComponent implements OnInit, OnDestroy {
           this.store.dispatch(
             uploadActions.addItemToQueue({
               item: new UploadScreenshotItem(screenshot),
-            })
-          )
+            }),
+          ),
         ),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
