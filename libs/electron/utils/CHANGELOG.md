@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.2](https://github.com/ever-co/ever-capture/compare/electron-utils-1.0.1...electron-utils-1.0.2) (2025-05-09)
+
+
+### Bug Fixes
+
+* **uploader:** improve robustness of screenshot uploader URL handling ([a797ed3](https://github.com/ever-co/ever-capture/commit/a797ed3b062d86daf0bf9554a79c3f0540ecb85e))
+
+
+
 ## [1.0.1](https://github.com/ever-co/ever-capture/compare/electron-utils-1.0.0...electron-utils-1.0.1) (2025-05-09)
 
 
