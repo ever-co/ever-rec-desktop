@@ -2,6 +2,72 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.0.0](https://github.com/ever-co/ever-capture/compare/convert-video-feature-0.3.1...convert-video-feature-1.0.0) (2025-05-09)
+
+### Dependency Updates
+
+* `convert-video-data-access` updated to version `0.2.1`
+* `notification-data-access` updated to version `0.1.6`
+* `shared-service` updated to version `0.3.1`
+* `utils` updated to version `1.0.0`
+* `shared-components` updated to version `1.0.0`
+* `upload-data-access` updated to version `1.0.0`
+* `web-setting-data-access` updated to version `0.3.0`
+* `feature` updated to version `0.2.0`
+
+### Bug Fixes
+
+* **upload:** correct upload action visibility and progress status ([cee4d0c](https://github.com/ever-co/ever-capture/commit/cee4d0cf1b2267714e50702bc00d9936ae151cce))
+
+
+### Code Refactoring
+
+* **convert-video:** remove ErrorComponent and StatisticComponent ([6633d29](https://github.com/ever-co/ever-capture/commit/6633d2987d282659919e264f44498e92c07dcf87))
+
+
+### Features
+
+* **screenshot-gallery:** add manual upload option ([1826a45](https://github.com/ever-co/ever-capture/commit/1826a452288b2a4f304007b18a2197d035c05c70))
+* **upload:** add batch queue actions and enhance stability ([0a197f5](https://github.com/ever-co/ever-capture/commit/0a197f5805cd4c2e800cff5189ac67b148312e0e))
+* **upload:** add photo upload capability and generalize upload service ([71aac04](https://github.com/ever-co/ever-capture/commit/71aac047b27863408c8062f6ce421d955f16132c))
+* **upload:** implement item-based upload queue with UI and parallel processing ([a4e3df3](https://github.com/ever-co/ever-capture/commit/a4e3df3751db121359f024d9d78fd1d97a89af54))
+* **video-gallery:** enable video detail view on card click ([5fa3078](https://github.com/ever-co/ever-capture/commit/5fa3078c0912413fadff40a2581d0fc0f7d947af))
+* **video-gallery:** ensure upload action is consistently displayed ([5b23a51](https://github.com/ever-co/ever-capture/commit/5b23a518b7f263286e3e7ceca423bbc8df106d5f))
+* **video:** enhance upload button with loading state and improve dialogs ([9104406](https://github.com/ever-co/ever-capture/commit/9104406622966226d6671a5b25e3b8d113660d1a))
+
+
+### BREAKING CHANGES
+
+* **convert-video:** The `ErrorComponent` and `StatisticComponent` are no
+longer exported from `@ever-co/web/convert-video/feature`. Consumers
+that were previously importing these components will need to find
+alternatives or remove their usage.
+* **upload:** The Ngrx store for uploads has been completely refactored:
+- `uploadFeatureKey` changed from 'upload' to 'uploadQueue'.
+- The state structure is now item-based (managing lists for `queue`,
+`inProgress`, `completed`, `failed`, `canceled`, `activeUploads`)
+replacing the previous global upload status.
+- Actions like `uploadActions.uploadVideos` are replaced by
+`uploadActions.addItemToQueue({ item: new UploadVideoItem(video) })`
+or `uploadActions.addItemToQueue({ items: [...] })`.
+- Selectors like `selectUploadState.uploading` are deprecated. Use new
+selectors such as `selectUploadInProgress` (boolean),
+`selectInProgress` (list of items), `selectCanUploadMore`, etc.
+The global `UploadProgressComponent` snackbar previously managed by
+`LayoutComponent` has been removed. Upload status is now primarily
+managed through the new `UploadBadgeComponent` and `UploadQueueComponent`.
+The `UploadProgressComponent` itself has been repurposed to display
+progress for a single `IUploadItem` (passed as an `@Input()`) and is
+used within the `UploadQueueComponent`.
+The `UploaderService.cancel()` method now requires an `itemId` parameter.
+The data payload for IPC events `Channel.UPLOAD_PROGRESS`,
+`Channel.UPLOAD_DONE`, and `Channel.UPLOAD_ERROR` has changed. They
+now emit objects containing an `itemId` and conform to the new
+`IUploadProgress`, `IUploadDone`, and `IUploadError` interfaces
+respectively.
+
+
+
 ## [0.3.1](https://github.com/ever-co/ever-capture/compare/convert-video-feature-0.3.0...convert-video-feature-0.3.1) (2025-05-02)
 
 ### Dependency Updates
