@@ -2,6 +2,26 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.2.0](https://github.com/ever-co/ever-capture/compare/feature-0.1.1...feature-0.2.0) (2025-05-09)
+
+### Dependency Updates
+
+* `data-access` updated to version `0.1.4`
+* `shared-components` updated to version `1.0.0`
+* `shared-service` updated to version `0.3.1`
+* `utils` updated to version `1.0.0`
+* `audio-ui` updated to version `0.1.0`
+* `convert-video-data-access` updated to version `0.2.1`
+* `screenshot-data-access` updated to version `0.2.2`
+* `upload-data-access` updated to version `1.0.0`
+* `web-setting-data-access` updated to version `0.3.0`
+
+### Features
+
+* **audio-gallery:** add upload action for audio items ([fafa302](https://github.com/ever-co/ever-capture/commit/fafa30286d4e44333c56340b7cbbc52b7a6c63b0))
+
+
+
 ## [0.1.1](https://github.com/ever-co/ever-capture/compare/feature-0.1.0...feature-0.1.1) (2025-05-02)
 
 ### Dependency Updates
