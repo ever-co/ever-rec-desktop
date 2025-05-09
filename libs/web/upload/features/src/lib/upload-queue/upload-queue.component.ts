@@ -1,5 +1,4 @@
 // upload-queue.component.ts
-import { ClipboardModule } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -9,7 +8,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { HumanizeBytesPipe } from '@ever-co/shared-service';
@@ -39,8 +37,6 @@ import { UploadProgressComponent } from '../upload-progress/upload-progress.comp
     MatButtonModule,
     MatProgressBarModule,
     MatTabsModule,
-    MatSnackBarModule,
-    ClipboardModule,
     MatMenuModule,
     MatBadgeModule,
     MatDividerModule,

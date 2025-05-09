@@ -32,7 +32,8 @@ export class UploadEffects {
         uploadActions.addItemToQueue,
         uploadActions.uploadItemSuccess,
         uploadActions.uploadItemFailure,
-        uploadActions.retryAllFailedUploads
+        uploadActions.retryAllFailedUploads,
+        uploadActions.uploadAllFromQueue
       ),
       withLatestFrom(
         this.store.select(selectCanUploadMore),
