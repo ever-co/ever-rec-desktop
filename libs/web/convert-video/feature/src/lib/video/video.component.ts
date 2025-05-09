@@ -18,7 +18,7 @@ import {
   selectGenerateVideoState,
   selectVideoRemoteControlState,
 } from '@ever-co/convert-video-data-access';
-import { IVideo, moment } from '@ever-co/shared-utils';
+import { moment } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import {
   BehaviorSubject,
@@ -34,10 +34,10 @@ import {
 } from 'rxjs';
 
 @Component({
-    selector: 'lib-video',
-    imports: [CommonModule, MatTooltipModule, MatIconModule],
-    templateUrl: './video.component.html',
-    styleUrls: ['./video.component.scss']
+  selector: 'lib-video',
+  imports: [CommonModule, MatTooltipModule, MatIconModule],
+  templateUrl: './video.component.html',
+  styleUrls: ['./video.component.scss'],
 })
 export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
   private store = inject(Store);
@@ -54,7 +54,6 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public source$!: Observable<string>;
   public generating$!: Observable<boolean>;
-  private video!: IVideo;
   public isPlaying$ = new BehaviorSubject<boolean>(false);
   public isFullscreen$ = new BehaviorSubject<boolean>(false);
   public currentTime$ = new BehaviorSubject<string>('00:00:00');
@@ -107,7 +106,7 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   @HostListener('document:keydown', ['$event'])
-  private handleKeydown(event: KeyboardEvent): void {
+  public handleKeydown(event: KeyboardEvent): void {
     if (event.target instanceof HTMLInputElement) return;
 
     switch (event.code) {
@@ -151,7 +150,6 @@ export class VideoComponent implements OnInit, AfterViewInit, OnDestroy {
   private setupSourceObservable(): void {
     this.source$ = this.store.select(selectGenerateVideoState).pipe(
       map((state) => {
-        this.video = state.video;
         return state.video.pathname;
       }),
       catchError((err) => {

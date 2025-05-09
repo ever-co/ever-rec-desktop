@@ -1,0 +1,195 @@
+:host {
+  display: block;
+  margin-bottom: 2rem;
+}
+
+// Make Angular Material tab styles consistent with Tailwind design
+::ng-deep {
+  .mat-mdc-tab-header {
+    --mdc-secondary-navigation-tab-container-height: 48px;
+  }
+
+  .mat-mdc-tab {
+    min-width: 120px;
+
+    &.mdc-tab--active {
+      .mdc-tab__text-label {
+        font-weight: 500;
+      }
+    }
+  }
+
+  .mat-mdc-tab-body-content {
+    overflow: hidden;
+  }
+
+  // Custom progress bar styling
+  .mat-mdc-progress-bar {
+    border-radius: 4px;
+    height: 6px;
+  }
+
+  .mdc-list {
+    max-height: calc(100vh - 27rem);
+    overflow: auto;
+  }
+
+  // Custom list item styling
+  .mat-mdc-list-item {
+    border-radius: 4px;
+    margin-bottom: 4px;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
+
+  // Style for badges
+  .badge-counter {
+    min-width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 6px;
+  }
+
+  // Empty state
+  .empty-state {
+    padding: 2rem;
+    text-align: center;
+    color: #6b7280;
+
+    mat-icon {
+      font-size: 2.5rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      margin-bottom: 1rem;
+    }
+  }
+
+  // Override mat-button padding for smaller buttons
+  .mat-mdc-stroked-button.compact,
+  .mat-mdc-raised-button.compact {
+    line-height: 32px;
+    padding: 0 10px;
+
+    .mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      line-height: 18px;
+    }
+  }
+
+  // Customize the tab group
+  .mat-mdc-tab-group {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  // Custom scrollbar
+  .mat-mdc-tab-body-content {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 3px;
+    }
+  }
+
+  // Custom animation for hover states
+  .mat-list-item,
+  .mat-stroked-button,
+  .mat-raised-button {
+    transition: all 0.2s ease-in-out;
+  }
+
+  // Ensure proper spacing in flex layouts
+  .flex.space-x-2 > * {
+    margin-right: 0.5rem;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+// Error text styling
+.text-error {
+  color: #ef4444;
+}
+
+// Status dashboard
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.status-card {
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+
+  .status-icon {
+    margin-right: 0.75rem;
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+
+  .status-content {
+    .label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+
+    .count {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+  }
+}
+
+// Border highlight for list items
+.border-highlight {
+  border-left-width: 4px;
+  padding-left: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .status-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  ::ng-deep {
+    .mat-mdc-tab {
+      min-width: auto;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .status-grid {
+    grid-template-columns: 1fr;
+  }
+}

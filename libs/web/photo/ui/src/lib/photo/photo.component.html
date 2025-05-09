@@ -23,14 +23,20 @@
         <div class="flex items-center group">
           <mat-checkbox
             [checked]="checked"
-            (change)="onSelected($event.checked)"
+            (change)="onSelected($event)"
+            (click)="handle($event)"
             [color]="'primary'"
             class="relative text-white transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900 rounded group-hover:text-indigo-600"
           >
           </mat-checkbox>
         </div>
         <div class="flex flex-col justify-between h-full">
-          <button [libPopover]="menu" mat-icon-button class="bg-black">
+          <button
+            (click)="handle($event)"
+            [libPopover]="menu"
+            mat-icon-button
+            class="bg-black"
+          >
             <mat-icon class="text-white hover:text-indigo-600 transition-colors"
               >more_vert</mat-icon
             >
@@ -58,7 +64,7 @@
 
 <ng-template #menu>
   <lib-action-button-group
-    [data]="photo"
+    [data]="adapter(photo)"
     [buttons]="actionButtons"
   ></lib-action-button-group>
 </ng-template>

@@ -1,5 +1,6 @@
 import { IBase, IFindOneOptions, IFindManyOptions } from './base.interface';
 import { ITimeLog } from './time-log.interface';
+import { IUploadableService } from './upload.interface';
 import { IVideo } from './video.interface';
 
 export interface IAudioMetadata extends IBase {
@@ -37,7 +38,7 @@ export interface IAudioSave
   videoId?: IVideo['id'];
 }
 
-export interface IAudioService {
+export interface IAudioService extends IUploadableService {
   save(input: IAudioInput): Promise<IAudio>;
   update(id: string, audio: Partial<IAudioInput>): Promise<IAudio>;
   findAll(options: IFindManyOptions<IAudio>): Promise<IAudio[]>;

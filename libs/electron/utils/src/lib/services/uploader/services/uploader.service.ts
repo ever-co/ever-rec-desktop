@@ -6,36 +6,40 @@ import {
   isEmpty,
   IUpload,
   IUploadableService,
-  IVideo,
+  IUploaderService,
 } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
 import * as path from 'path';
-import { In } from 'typeorm';
-import { FileManager } from './files/file-manager';
-import { ElectronLogger } from './logger/electron-logger';
-import { WorkerFactory } from './worker-factory.service';
-import { S3UploaderStrategy } from './uploader/strategies/s3.uploader';
-import { ContextUploader } from './uploader/context-uploader';
-import { GauzyUploaderStrategy } from './uploader/strategies/gauzy.uploader';
-import { Worker } from 'worker_threads';
 
-export class UploaderService implements ILoggable {
+import { Worker } from 'worker_threads';
+import { ElectronLogger } from '../../logger/electron-logger';
+import { WorkerFactory } from '../../worker-factory.service';
+import { ContextUploader } from '../context-uploader';
+import { GauzyUploaderStrategy } from '../strategies/gauzy.uploader';
+import { S3UploaderStrategy } from '../strategies/s3.uploader';
+
+export abstract class UploaderService<T>
+  implements IUploaderService, ILoggable
+{
   readonly logger: ILogger = new ElectronLogger('Uploader Service');
-  private readonly context = new ContextUploader(new GauzyUploaderStrategy());
+
+  protected readonly context = new ContextUploader();
+
+  protected constructor(protected readonly service: IUploadableService<T>) {}
 
   public async execute(
     event: Electron.IpcMainEvent,
     upload: IUpload,
-    service: IUploadableService,
     s3Config: IS3Config
   ): Promise<void> {
     this.logger.info('Start uploading...');
 
-    let config = this.context.strategy.config();
+    this.context.strategy = new GauzyUploaderStrategy(upload.type);
 
+    let config = await this.loadConfig();
     if (isEmpty(config) && s3Config) {
       this.context.strategy = new S3UploaderStrategy(s3Config, upload.type);
-      config = await this.context.strategy.config();
+      config = await this.loadConfig();
 
       if (isEmpty(config)) {
         this.logger.error('Error getting signed URL');
@@ -50,7 +54,7 @@ export class UploaderService implements ILoggable {
       return;
     }
 
-    const files = await this.prepareFiles(service, upload);
+    const files = await this.prepareFiles(upload);
 
     this.logger.info('Create upload worker...');
 
@@ -59,51 +63,38 @@ export class UploaderService implements ILoggable {
       { files, config }
     );
 
-    this.workerHandler(worker, service, upload, event);
+    this.workerHandler(worker, upload, event);
   }
 
-  private async prepareFiles(service: IUploadableService, upload: IUpload) {
-    const data = await service.findAll({
-      where: { id: In(upload.ids) },
-      relations: ['metadata'],
-    });
+  protected abstract prepareFiles(upload: IUpload): Promise<any>;
 
-    return data.map((item: IVideo) => ({
-      title: item.metadata?.name,
-      description: item.metadata?.summary,
-      duration: item.metadata?.duration,
-      recordedAt: item.metadata?.createdAt,
-      size: item.metadata?.size,
-      resolution: item.metadata?.resolution,
-      codec: item.metadata?.codec,
-      frameRate: item.metadata?.frameRate,
-      pathname: FileManager.decodePath(item.pathname),
-      key: upload.key,
-    }));
+  protected abstract synchronize(upload: IUpload): Promise<void>;
+
+  protected loadConfig() {
+    return this.context.strategy.config();
   }
 
   private workerHandler(
     worker: Worker,
-    service: IUploadableService,
     upload: IUpload,
     event: Electron.IpcMainEvent
   ) {
-    worker.on('message', (payload) => {
+    worker.on('message', async (payload) => {
       switch (payload.status) {
         case 'done':
           this.logger.info('Done...');
-          upload.ids.forEach((id) => {
-            service.update(id, { synced: true });
-          });
+          await this.synchronize(upload);
           event.reply(Channel.UPLOAD_DONE, payload.message);
+          worker.terminate();
           break;
         case 'progress':
-          this.logger.info('In Progress::' + payload.message);
+          this.logger.info('In Progress::' + JSON.stringify(payload.message));
           event.reply(Channel.UPLOAD_PROGRESS, payload.message);
           break;
         case 'error':
-          this.logger.error('Error::' + payload.message);
+          this.logger.error('Error::' + JSON.stringify(payload.message));
           event.reply(Channel.UPLOAD_ERROR, payload.message);
+          worker.terminate();
           break;
         default:
           this.logger.warn('Unknown status');
@@ -125,10 +116,12 @@ export class UploaderService implements ILoggable {
       worker.terminate();
     });
 
-    ipcMain.on(Channel.UPLOAD_CANCELED, (event) => {
-      worker.terminate();
-      event.reply(Channel.UPLOAD_DONE);
-      this.logger.error('Canceled...');
+    ipcMain.on(Channel.UPLOAD_CANCELED, (event, { itemId }) => {
+      if (upload.ids.includes(itemId)) {
+        worker.terminate();
+        event.reply(Channel.UPLOAD_DONE, { itemId });
+        this.logger.error('Canceled...');
+      }
     });
 
     worker.postMessage({

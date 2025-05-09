@@ -25,10 +25,10 @@
     [gradient]="true"
     [showGridLines]="true"
     [roundDomains]="true"
-    [roundEdges]="true"
+    [roundEdges]="false"
     [rotateXAxisTicks]="isMobile"
     [yAxisTickFormatting]="yAxisTickFormatting"
-    [xAxisTickFormatting]='axisFormat'
+    [xAxisTickFormatting]="axisFormat"
   >
     <ng-template #tooltipTemplate let-model="model">
       <div class="p-2 rounded flex flex-col items-center justify-center">
@@ -56,7 +56,7 @@
     [gradient]="true"
     [wrapTicks]="true"
     [rotateXAxisTicks]="isMobile"
-    [xAxisTickFormatting]='axisFormat'
+    [xAxisTickFormatting]="axisFormat"
   >
   </ngx-charts-line-chart>
   } } @else {

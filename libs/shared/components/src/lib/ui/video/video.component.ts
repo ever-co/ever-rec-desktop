@@ -24,12 +24,15 @@ import {
   UtcToLocalTimePipe,
 } from '@ever-co/shared-service';
 import { IActionButton, ISelected, IVideo } from '@ever-co/shared-utils';
-import { selectUploadState, uploadActions } from '@ever-co/upload-data-access';
+import {
+  selectUploadInProgress,
+  uploadActions,
+  UploadVideoItem,
+} from '@ever-co/upload-data-access';
 import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
 import {
   BehaviorSubject,
-  combineLatest,
   filter,
   fromEvent,
   map,
@@ -43,23 +46,23 @@ import { ActionButtonGroupComponent } from '../action-button-group/group/action-
 import { ConfirmationDialogService } from '../dialogs/services/confirmation-dialog.service';
 
 @Component({
-    selector: 'lib-video',
-    imports: [
-        CommonModule,
-        MatCardModule,
-        MatButtonModule,
-        MatIconModule,
-        UtcToLocalTimePipe,
-        PopoverDirective,
-        ActionButtonGroupComponent,
-        MatRippleModule,
-        MatTooltipModule,
-        MatCheckboxModule,
-        ResolutionPipe,
-        HumanizePipe,
-    ],
-    templateUrl: './video.component.html',
-    styleUrl: './video.component.scss'
+  selector: 'lib-video',
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    UtcToLocalTimePipe,
+    PopoverDirective,
+    ActionButtonGroupComponent,
+    MatRippleModule,
+    MatTooltipModule,
+    MatCheckboxModule,
+    ResolutionPipe,
+    HumanizePipe,
+  ],
+  templateUrl: './video.component.html',
+  styleUrl: './video.component.scss',
 })
 export class VideoComponent implements AfterViewInit, OnDestroy {
   @ViewChild('videoPlayer', { static: false })
@@ -95,6 +98,7 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
       action: this.upload.bind(this),
       loading: this.uploading$,
       disable: this.uploading$,
+      loadingLabel: 'Uploading...',
       hide: this.isUploadHidden$,
     },
     {
@@ -195,7 +199,9 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
         take(1),
         filter(Boolean),
         tap(() =>
-          this.store.dispatch(uploadActions.uploadVideo({ videos: [video] }))
+          this.store.dispatch(
+            uploadActions.addItemToQueue({ item: new UploadVideoItem(video) })
+          )
         ),
         takeUntil(this.destroy$)
       )
@@ -203,23 +209,19 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
   }
 
   private get isUploadHidden$(): Observable<boolean> {
-    return combineLatest([
-      this.store.select(selectSettingStorageState),
-      this.uploading$,
-    ]).pipe(
+    return this.store.select(selectSettingStorageState).pipe(
       map(
-        ([{ uploadConfig }, isUploading]) =>
-          !uploadConfig.manualSync || isUploading || !!this.video?.isTimeline
+        ({ uploadConfig }) =>
+          !uploadConfig.manualSync || !!this.video?.isTimeline
       ),
       takeUntil(this.destroy$)
     );
   }
 
   private get uploading$(): Observable<boolean> {
-    return this.store.select(selectUploadState).pipe(
-      map(({ uploading }) => uploading),
-      takeUntil(this.destroy$)
-    );
+    return this.store
+      .select(selectUploadInProgress)
+      .pipe(takeUntil(this.destroy$));
   }
 
   public onSelected(checked: boolean): void {

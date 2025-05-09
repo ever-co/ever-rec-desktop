@@ -3,6 +3,7 @@ import type { IApplication } from './application.interface';
 import { IBase } from './base.interface';
 import { ITimeLog } from './time-log.interface';
 import type { IVideo } from './video.interface';
+import { IUploadableService } from './upload.interface';
 
 export const SCREENSHOT_DIR = 'screenshots';
 
@@ -43,7 +44,7 @@ export interface IGetScreenshotQueryResult {
   icon: string;
 }
 
-export interface IScreenshotService {
+export interface IScreenshotService extends IUploadableService {
   save(input: IScreenshotInput): Promise<IScreenshot>;
   findAll(options: FindManyOptions<IScreenshot>): Promise<IScreenshot[]>;
   update(id: string, video: Partial<IScreenshotInput>): Promise<IScreenshot>;

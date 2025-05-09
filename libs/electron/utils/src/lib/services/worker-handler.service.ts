@@ -38,6 +38,7 @@ export class WorkerHandler implements ILoggable {
           this.onComplete(this.index, evt.message, {
             totalDuration: evt.totalDuration,
           });
+          this.worker.terminate();
         }
         if (evt.status === 'error') {
           this.window?.setProgressBar(-1);
@@ -45,6 +46,7 @@ export class WorkerHandler implements ILoggable {
             `Worker ${this.index} send error message: ${evt.message}`
           );
           this.event.reply(this.channel.GENERATION_ERROR, evt.message);
+          this.worker.terminate();
         }
       }
     );

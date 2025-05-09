@@ -5,6 +5,7 @@ import { ITimeLog } from './time-log.interface';
 import type { ITimeline } from './timeline.interface';
 import type { IVideoConfig } from './video.config';
 import type { IAudio } from './audio.interface';
+import { IUploadableService } from './upload.interface';
 
 export const VIDEO_DIR = 'videos';
 
@@ -42,7 +43,7 @@ export type IVideoMetadataInput = Partial<IVideoMetadata> & {
   videoId?: string;
 };
 
-export interface IVideoService {
+export interface IVideoService extends IUploadableService {
   save(input: IVideoInput): Promise<IVideo>;
   findAll(options: FindManyOptions<IVideo>): Promise<IVideo[]>;
   update(id: string, video: Partial<IVideoInput>): Promise<IVideo>;

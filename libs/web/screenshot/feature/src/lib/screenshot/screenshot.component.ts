@@ -6,7 +6,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   screenshotActions,
-  ScreenshotElectronService,
   selectScreenshotState,
 } from '@ever-co/screenshot-data-access';
 import {
@@ -24,6 +23,12 @@ import {
   UtcToLocalTimePipe,
 } from '@ever-co/shared-service';
 import { IActionButton, IScreenshot } from '@ever-co/shared-utils';
+import {
+  selectUploadInProgress,
+  uploadActions,
+  UploadScreenshotItem,
+} from '@ever-co/upload-data-access';
+import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
 import {
   concatMap,
@@ -32,7 +37,9 @@ import {
   map,
   Observable,
   Subject,
+  take,
   takeUntil,
+  tap,
 } from 'rxjs';
 
 @Component({
@@ -56,11 +63,16 @@ import {
   styleUrl: './screenshot.component.scss',
 })
 export class ScreenshotComponent implements OnInit, OnDestroy {
-  public actionButtons: IActionButton[] = [
+  public readonly actionButtons: IActionButton[] = [
     {
-      icon: 'copy',
-      label: 'Duplicate',
-      variant: 'default',
+      icon: 'backup',
+      label: 'Upload',
+      variant: 'success',
+      action: this.upload.bind(this),
+      loading: this.uploading$,
+      loadingLabel: 'Uploading...',
+      disable: this.uploading$,
+      hide: this.isUploadHidden$,
     },
     {
       icon: 'delete',
@@ -75,7 +87,7 @@ export class ScreenshotComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store,
-    private readonly confirationDialogService: ConfirmationDialogService,
+    private readonly confirmationDialogService: ConfirmationDialogService,
     private readonly location: Location
   ) {}
   ngOnInit(): void {
@@ -131,7 +143,7 @@ export class ScreenshotComponent implements OnInit, OnDestroy {
 
   public async delete(screenshot: IScreenshot) {
     const isConfirmed = await lastValueFrom(
-      this.confirationDialogService.open({
+      this.confirmationDialogService.open({
         title: 'Delete Screenshot',
         message: 'Are you sure you want to delete this screenshot?',
         variant: 'danger',
@@ -141,6 +153,47 @@ export class ScreenshotComponent implements OnInit, OnDestroy {
       this.store.dispatch(screenshotActions.deleteScreenshot(screenshot));
       await this.router.navigate(['/', 'library', 'screenshots']);
     }
+  }
+
+  private upload(screenshot: IScreenshot): void {
+    this.confirmationDialogService
+      .open({
+        title: 'Upload Screenshot',
+        message: `Are you sure you want to upload this screenshot?`,
+        variant: 'primary',
+        button: {
+          confirm: {
+            label: 'Upload',
+            variant: 'success',
+            icon: 'backup',
+          },
+        },
+      })
+      .pipe(
+        take(1),
+        filter(Boolean),
+        tap(() =>
+          this.store.dispatch(
+            uploadActions.addItemToQueue({
+              item: new UploadScreenshotItem(screenshot),
+            })
+          )
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
+
+  private get isUploadHidden$(): Observable<boolean> {
+    return this.store
+      .select(selectSettingStorageState)
+      .pipe(map(({ uploadConfig }) => !uploadConfig.manualSync));
+  }
+
+  private get uploading$(): Observable<boolean> {
+    return this.store
+      .select(selectUploadInProgress)
+      .pipe(takeUntil(this.destroy$));
   }
 
   ngOnDestroy(): void {

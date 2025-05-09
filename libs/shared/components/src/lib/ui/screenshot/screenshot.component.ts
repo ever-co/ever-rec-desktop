@@ -19,8 +19,14 @@ import {
   UtcToLocalTimePipe,
 } from '@ever-co/shared-service';
 import { IActionButton, IScreenshot, ISelected } from '@ever-co/shared-utils';
+import {
+  selectUploadInProgress,
+  uploadActions,
+  UploadScreenshotItem,
+} from '@ever-co/upload-data-access';
+import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
-import { filter, Subject, take, takeUntil, tap } from 'rxjs';
+import { filter, map, Observable, Subject, take, takeUntil, tap } from 'rxjs';
 import { ActionButtonGroupComponent } from '../action-button-group/group/action-button-group.component';
 import { ConfirmationDialogService } from '../dialogs/services/confirmation-dialog.service';
 
@@ -58,6 +64,16 @@ export class ScreenshotComponent implements OnDestroy, OnDestroy {
       label: 'View',
       variant: 'default',
       action: this.view.bind(this),
+    },
+    {
+      icon: 'backup',
+      label: 'Upload',
+      variant: 'success',
+      action: this.upload.bind(this),
+      loading: this.uploading$,
+      loadingLabel: 'Uploading...',
+      disable: this.uploading$,
+      hide: this.isUploadHidden$,
     },
     {
       icon: 'delete',
@@ -106,6 +122,48 @@ export class ScreenshotComponent implements OnDestroy, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe();
+  }
+
+  private upload(screenshot: IScreenshot): void {
+    this.confirmationDialogService
+      .open({
+        title: 'Upload Screenshot',
+        message: `Are you sure you want to upload this screenshot?`,
+        variant: 'primary',
+        button: {
+          confirm: {
+            label: 'Upload',
+            variant: 'success',
+            icon: 'backup',
+          },
+        },
+      })
+      .pipe(
+        take(1),
+        filter(Boolean),
+        tap(() =>
+          this.store.dispatch(
+            uploadActions.addItemToQueue({
+              item: new UploadScreenshotItem(screenshot),
+            })
+          )
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
+
+  private get isUploadHidden$(): Observable<boolean> {
+    return this.store.select(selectSettingStorageState).pipe(
+      map(({ uploadConfig }) => !uploadConfig.manualSync),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  private get uploading$(): Observable<boolean> {
+    return this.store
+      .select(selectUploadInProgress)
+      .pipe(takeUntil(this.destroy$));
   }
 
   ngOnDestroy(): void {

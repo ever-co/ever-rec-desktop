@@ -9,6 +9,7 @@
     <lib-screenshot
       class="stack-cards__item"
       (selected)="selectScreenshot($event)"
+      (click)="onView(screenshot)"
       [checked]="isSelected(screenshot) | async"
       [screenshot]="screenshot"
     ></lib-screenshot>
@@ -16,6 +17,7 @@
     <lib-screenshot
       class="stack-cards__item"
       (selected)="selectScreenshot($event)"
+      (click)="onView(chunk)"
       [checked]="isSelected(chunk) | async"
       [screenshot]="chunk"
     ></lib-screenshot>

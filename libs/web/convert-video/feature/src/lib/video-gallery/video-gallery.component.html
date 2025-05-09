@@ -10,6 +10,7 @@
     [checked]="isSelected(video) | async"
     [video]="video"
     (selected)="selectVideo($event)"
+    (click)="onView(video)"
   ></lib-video>
   } @if((size$ | async)) {
   <div class="absolute inset-x-0 action-button-group">

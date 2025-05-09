@@ -3,8 +3,10 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
+import { audioActions, selectAudioState } from '@ever-co/audio-data-access';
 import {
   ActionButtonComponent,
+  ActionButtonGroupComponent,
   ConfirmationDialogService,
   GalleryButtonsActionComponent,
   NoDataComponent,
@@ -24,7 +26,6 @@ import {
   ITimeLog,
   IVideo,
 } from '@ever-co/shared-utils';
-import { audioActions, selectAudioState } from '@ever-co/audio-data-access';
 import { Store } from '@ngrx/store';
 import { Observable, Subject, filter, map, take, takeUntil, tap } from 'rxjs';
 
@@ -45,9 +46,15 @@ import {
   ContainerComponent,
   MetadataComponent,
 } from '@ever-co/audio-ui';
-import { PlayerContainerComponent } from '../player-container/player-container.component';
 import { selectGenerateVideoState } from '@ever-co/convert-video-data-access';
 import { selectScreenshotState } from '@ever-co/screenshot-data-access';
+import {
+  UploadAudioItem,
+  selectUploadInProgress,
+  uploadActions,
+} from '@ever-co/upload-data-access';
+import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
+import { PlayerContainerComponent } from '../player-container/player-container.component';
 
 @Component({
   selector: 'lib-audio-gallery',
@@ -58,6 +65,7 @@ import { selectScreenshotState } from '@ever-co/screenshot-data-access';
     MatCardModule,
     MatProgressSpinnerModule,
     GalleryButtonsActionComponent,
+    ActionButtonGroupComponent,
     PlayerContainerComponent,
     HumanizePipe,
     MetadataComponent,
@@ -77,21 +85,20 @@ export class GalleryComponent implements OnInit, OnDestroy {
   private currentPage = 1;
   private hasNext = false;
   private range!: IRange;
-  public actionButtons: IActionButton[] = [
+  public galleryButtons: IActionButton[] = [];
+  public cardButtons: IActionButton[] = [];
+  private readonly commonButtons: IActionButton[] = [
     {
-      icon: 'remove_done',
-      label: 'Unselect All',
-      variant: 'default',
-      hide: this.lessThanOneSelected$,
-      action: this.unselectAll.bind(this),
+      label: 'Upload',
+      variant: 'success',
+      icon: 'backup',
+      action: this.upload.bind(this),
+      loading: this.uploading$,
+      loadingLabel: 'Uploading...',
+      disable: this.uploading$,
+      hide: this.isUploadHidden$,
     },
-    {
-      icon: 'remove_done',
-      label: 'Unselect',
-      variant: 'default',
-      hide: this.moreThanOneSelected$,
-      action: this.unselectAll.bind(this),
-    },
+
     {
       icon: 'delete',
       label: 'Delete',
@@ -100,12 +107,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
       action: this.deleteAudios.bind(this),
     },
   ];
-  public deleteButton: IActionButton = {
-    icon: 'delete',
-    label: 'Delete',
-    variant: 'danger',
-    action: this.deleteAudio.bind(this),
-  };
+
   public infoButton: IActionButton = {
     icon: 'info',
     label: 'Get Info',
@@ -116,7 +118,26 @@ export class GalleryComponent implements OnInit, OnDestroy {
     private readonly confirmationDialogService: ConfirmationDialogService,
     public readonly layoutService: LayoutService,
     private readonly router: Router
-  ) {}
+  ) {
+    this.galleryButtons = [
+      {
+        icon: 'remove_done',
+        label: 'Unselect All',
+        variant: 'default',
+        hide: this.lessThanOneSelected$,
+        action: this.unselectAll.bind(this),
+      },
+      {
+        icon: 'remove_done',
+        label: 'Unselect',
+        variant: 'default',
+        hide: this.moreThanOneSelected$,
+        action: this.unselectAll.bind(this),
+      },
+      ...this.commonButtons,
+    ];
+    this.cardButtons = [...this.commonButtons];
+  }
 
   ngOnInit(): void {
     this.store
@@ -231,10 +252,11 @@ export class GalleryComponent implements OnInit, OnDestroy {
 
   private deleteAudios(selectedAudios: ISelected<IAudio>[]): void {
     const audios = selectedAudios.map((audio) => audio.data);
+    const s = audios.length > 1 ? 's' : '';
     this.confirmationDialogService
       .open({
-        title: 'Delete Audios?',
-        message: `Are you sure you want to delete ${audios.length} audios?`,
+        title: `Delete Audio${s}?`,
+        message: `Are you sure you want to delete ${audios.length} audio${s}?`,
         variant: 'danger',
       })
       .pipe(
@@ -248,20 +270,13 @@ export class GalleryComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  private deleteAudio(audio: IAudio): void {
-    this.confirmationDialogService
-      .open({
-        title: 'Delete Audio',
-        message: `Are you sure you want to delete this audio?`,
-        variant: 'danger',
-      })
-      .pipe(
-        take(1),
-        filter(Boolean),
-        tap(() => this.store.dispatch(audioActions.deleteAudio(audio))),
-        takeUntil(this.destroy$)
-      )
-      .subscribe();
+  public adapter(audio: IAudio): ISelected<IAudio>[] {
+    return [
+      {
+        data: audio,
+        selected: false,
+      },
+    ];
   }
 
   public get deleting$(): Observable<boolean> {
@@ -342,6 +357,48 @@ export class GalleryComponent implements OnInit, OnDestroy {
       map((state) => state.capturing),
       takeUntil(this.destroy$)
     );
+  }
+
+  private get uploading$(): Observable<boolean> {
+    return this.store
+      .select(selectUploadInProgress)
+      .pipe(takeUntil(this.destroy$));
+  }
+
+  private get isUploadHidden$(): Observable<boolean> {
+    return this.store.select(selectSettingStorageState).pipe(
+      map(({ uploadConfig }) => !uploadConfig.manualSync),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  private upload(selectedAudios: ISelected<IAudio>[]): void {
+    const size = selectedAudios.length;
+    const s = size > 1 ? 's' : '';
+
+    this.confirmationDialogService
+      .open({
+        title: `Upload Audio${s}`,
+        message: `Are you sure you want to upload audio${s}?`,
+        variant: 'primary',
+        button: {
+          confirm: {
+            label: `Upload(${size})`,
+            variant: 'success',
+            icon: 'backup',
+          },
+        },
+      })
+      .pipe(
+        take(1),
+        filter(Boolean),
+        map(() => selectedAudios.map(({ data }) => new UploadAudioItem(data))),
+        tap((items) =>
+          this.store.dispatch(uploadActions.addItemToQueue({ items }))
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {

@@ -1,0 +1,403 @@
+<div class="upload-manager bg-white p-4 rounded-df shadow max-w-xl mx-auto">
+  <!-- Status Bar -->
+  <div class="grid grid-cols-2 gap-4 mb-6">
+    <div class="bg-blue-50 flex-grow rounded-md p-3 flex items-center">
+      <mat-icon class="text-blue-500 mr-2">schedule</mat-icon>
+      <div>
+        <div class="text-xs text-blue-600 font-medium">Queued</div>
+        <div class="text-2xl text-blue-700 font-bold">
+          {{ (queue$ | async)?.length || 0 }}
+        </div>
+      </div>
+    </div>
+    <div class="bg-indigo-50 flex-grow rounded-md p-3 flex items-center">
+      <mat-icon class="text-indigo-500 mr-2">sync</mat-icon>
+      <div>
+        <div class="text-xs text-indigo-600 font-medium">Uploading</div>
+        <div class="text-2xl text-indigo-700 font-bold">
+          {{ (inProgress$ | async)?.length || 0 }}
+        </div>
+      </div>
+    </div>
+    <div class="bg-red-50 rounded-md flex-grow p-3 flex items-center">
+      <mat-icon class="text-red-500 mr-2">error_outline</mat-icon>
+      <div>
+        <div class="text-xs text-red-600 font-medium">Failed</div>
+        <div class="text-2xl text-red-700 font-bold">
+          {{ (failed$ | async)?.length || 0 }}
+        </div>
+      </div>
+    </div>
+    <div class="bg-green-50 flex-grow rounded-md p-3 flex items-center">
+      <mat-icon class="text-green-500 mr-2">check_circle_outline</mat-icon>
+      <div>
+        <div class="text-xs text-green-600 font-medium">Completed</div>
+        <div class="text-2xl text-green-700 font-bold">
+          {{ (completed$ | async)?.length || 0 }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upload Sections with Tabs -->
+  <mat-tab-group
+    mat-align-tabs="start"
+    animationDuration="300ms"
+    class="bg-white rounded-df shadow"
+  >
+    <!-- Queued Files Tab -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <div class="flex items-center">
+          <mat-icon class="mr-2">schedule</mat-icon>
+          <span>Queued</span>
+          <span
+            *ngIf="(queue$ | async)?.length"
+            class="ml-2 bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+          >
+            {{ (queue$ | async)?.length }}
+          </span>
+        </div>
+      </ng-template>
+
+      <div class="p-4">
+        <div class="flex justify-between items-center mb-4">
+          <div class="flex space-x-2">
+            <button
+              mat-stroked-button
+              color="warn"
+              (click)="clearQueue()"
+              *ngIf="(queue$ | async)?.length"
+              class="text-sm"
+            >
+              <mat-icon class="text-sm mr-1">clear_all</mat-icon>
+              Clear All
+            </button>
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="uploadAll()"
+              *ngIf="(queue$ | async)?.length"
+              class="text-sm"
+            >
+              <mat-icon class="text-sm mr-1">cloud_upload</mat-icon>
+              Upload All
+            </button>
+          </div>
+        </div>
+
+        <div
+          *ngIf="!(queue$ | async)?.length"
+          class="flex flex-col items-center justify-center p-8 text-gray-500"
+        >
+          <mat-icon class="mb-2">inbox</mat-icon>
+          <p>No files in queue</p>
+        </div>
+
+        <mat-list *ngIf="(queue$ | async)?.length">
+          <mat-list-item
+            *ngFor="let file of queue$ | async; trackBy: trackByFileId"
+            class="hover:bg-gray-50 rounded mb-1"
+          >
+            <mat-icon mat-list-icon class="text-blue-400"
+              >insert_drive_file</mat-icon
+            >
+            <div mat-line class="font-medium truncate">{{ file.name }}</div>
+            <span class="mx-2"> • </span>
+            <div mat-line class="text-gray-500 text-sm">
+              {{ file.size | humanizeBytes }}
+            </div>
+            <div class="ml-auto">
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="removeFromQueue(file.id)"
+                matTooltip="Remove"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-tab>
+
+    <!-- In Progress Tab -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <div class="flex items-center">
+          <mat-icon
+            class="mr-2"
+            [ngClass]="{ 'animate-spin': (inProgress$ | async)?.length }"
+            >sync</mat-icon
+          >
+          <span>In Progress</span>
+          <span
+            *ngIf="(inProgress$ | async)?.length"
+            class="ml-2 bg-indigo-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+          >
+            {{ (inProgress$ | async)?.length }}
+          </span>
+        </div>
+      </ng-template>
+
+      <div class="p-4">
+        <div class="flex justify-between items-center mb-4">
+          <button
+            mat-stroked-button
+            color="warn"
+            (click)="cancelAllUploads()"
+            *ngIf="(inProgress$ | async)?.length"
+            class="text-sm"
+          >
+            <mat-icon class="text-sm mr-1">cancel</mat-icon>
+            Cancel All
+          </button>
+        </div>
+
+        <div
+          *ngIf="!(inProgress$ | async)?.length"
+          class="flex flex-col items-center justify-center p-8 text-gray-500"
+        >
+          <mat-icon class="mb-2">hourglass_empty</mat-icon>
+          <p>No uploads in progress</p>
+        </div>
+
+        <div
+          *ngFor="let file of inProgress$ | async; trackBy: trackByFileId"
+          class="mb-4 p-4 border border-gray-200 rounded-lg"
+        >
+          <div class="flex justify-between items-center mb-2">
+            <div class="flex items-center">
+              <mat-icon class="text-indigo-500 mr-2">file_upload</mat-icon>
+              <span class="font-medium truncate">{{ file.name }}</span>
+            </div>
+            <button
+              mat-icon-button
+              color="warn"
+              (click)="cancelUpload(file.id)"
+              matTooltip="Cancel"
+            >
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </div>
+          <div class="text-sm text-gray-500 mb-2">
+            {{ file.size | humanizeBytes }}
+          </div>
+          <lib-upload-progress [item]="file"></lib-upload-progress>
+          <div class="flex justify-between text-xs text-gray-500 mt-1">
+            <span>{{ file.progress / 100 | percent : '1.2-2' }} complete</span>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- Failed Uploads Tab -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <div class="flex items-center">
+          <mat-icon class="mr-2">error_outline</mat-icon>
+          <span>Failed</span>
+          <span
+            *ngIf="(failed$ | async)?.length"
+            class="ml-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+          >
+            {{ (failed$ | async)?.length }}
+          </span>
+        </div>
+      </ng-template>
+
+      <div class="p-4">
+        <div class="flex justify-between items-center mb-4">
+          <div class="flex space-x-2">
+            <button
+              mat-stroked-button
+              color="warn"
+              (click)="clearFailed()"
+              *ngIf="(failed$ | async)?.length"
+              class="text-sm"
+            >
+              <mat-icon class="text-sm mr-1">clear_all</mat-icon>
+              Clear All
+            </button>
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="retryAllFailed()"
+              *ngIf="(failed$ | async)?.length"
+              class="text-sm"
+            >
+              <mat-icon class="text-sm mr-1">refresh</mat-icon>
+              Retry All
+            </button>
+          </div>
+        </div>
+
+        <div
+          *ngIf="!(failed$ | async)?.length"
+          class="flex flex-col items-center justify-center p-8 text-gray-500"
+        >
+          <mat-icon class="mb-2">check_circle</mat-icon>
+          <p>No failed uploads</p>
+        </div>
+
+        <mat-list *ngIf="(failed$ | async)?.length">
+          <mat-list-item
+            *ngFor="let file of failed$ | async; trackBy: trackByFileId"
+            class="hover:bg-gray-50 rounded-lg mb-2 border-l-4 border-red-400 pl-3 transition-colors duration-200 ease-in-out"
+          >
+            <!-- Icon with better visual hierarchy -->
+            <mat-icon mat-list-icon class="text-red-500 !text-2xl"
+              >error_outline</mat-icon
+            >
+
+            <div class="flex flex-col flex-grow min-w-0">
+              <!-- File name with better truncation -->
+              <div mat-line class="font-medium text-gray-800 truncate">
+                {{ file.name }}
+              </div>
+
+              <!-- Error message with improved readability -->
+              <div mat-line class="text-red-600 text-sm truncate">
+                <span class="font-semibold">Error:</span> {{ file.error }}
+              </div>
+            </div>
+
+            <!-- Retry button with better affordance -->
+            <div class="ml-4 flex-shrink-0">
+              <button
+                mat-stroked-button
+                color="primary"
+                (click)="retryUpload(file)"
+                class="!text-sm !py-1 !px-3 hover:bg-blue-50 transition-colors"
+                aria-label="Retry upload"
+              >
+                <mat-icon class="!text-sm !w-4 !h-4 mr-1">refresh</mat-icon>
+                Retry
+              </button>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-tab>
+
+    <!-- Completed Tab -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <div class="flex items-center">
+          <mat-icon class="mr-2">check_circle_outline</mat-icon>
+          <span>Completed</span>
+          <span
+            *ngIf="(completed$ | async)?.length"
+            class="ml-2 bg-green-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+          >
+            {{ (completed$ | async)?.length }}
+          </span>
+        </div>
+      </ng-template>
+
+      <div class="p-4">
+        <div class="flex justify-between items-center mb-4">
+          <button
+            mat-stroked-button
+            color="primary"
+            (click)="clearCompleted()"
+            *ngIf="(completed$ | async)?.length"
+            class="text-sm"
+          >
+            <mat-icon class="text-sm mr-1">clear_all</mat-icon>
+            Clear All
+          </button>
+        </div>
+
+        <div
+          *ngIf="!(completed$ | async)?.length"
+          class="flex flex-col items-center justify-center p-8 text-gray-500"
+        >
+          <mat-icon class="mb-2">cloud_done</mat-icon>
+          <p>No completed uploads</p>
+        </div>
+
+        <mat-list *ngIf="(completed$ | async)?.length">
+          <mat-list-item
+            *ngFor="let file of completed$ | async; trackBy: trackByFileId"
+            class="hover:bg-gray-50 rounded-lg mb-2 border-l-4 border-green-500 pl-2"
+          >
+            <mat-icon mat-list-icon class="text-green-500"
+              >check_circle</mat-icon
+            >
+            <div mat-line class="font-medium truncate">{{ file.name }}</div>
+            <div mat-line class="text-gray-500 text-sm">
+              {{ file.size | humanizeBytes }} • Uploaded successfully
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-tab>
+
+    <!-- Canceled Tab -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <div class="flex items-center">
+          <mat-icon class="mr-2">cancel</mat-icon>
+          <span>Canceled</span>
+          <span
+            *ngIf="(canceled$ | async)?.length"
+            class="ml-2 bg-gray-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+          >
+            {{ (canceled$ | async)?.length }}
+          </span>
+        </div>
+      </ng-template>
+
+      <div class="p-4">
+        <div class="flex justify-between items-center mb-4">
+          <div class="flex space-x-2">
+            <button
+              mat-stroked-button
+              color="warn"
+              (click)="clearCanceled()"
+              *ngIf="(canceled$ | async)?.length"
+              class="text-sm"
+            >
+              <mat-icon class="text-sm mr-1">clear_all</mat-icon>
+              Clear All
+            </button>
+          </div>
+        </div>
+
+        <div
+          *ngIf="!(canceled$ | async)?.length"
+          class="flex flex-col items-center justify-center p-8 text-gray-500"
+        >
+          <mat-icon class="mb-2">remove_circle_outline</mat-icon>
+          <p>No canceled uploads</p>
+        </div>
+
+        <mat-list *ngIf="(canceled$ | async)?.length">
+          <mat-list-item
+            *ngFor="let file of canceled$ | async; trackBy: trackByFileId"
+            class="hover:bg-gray-50 rounded-lg mb-2 border-l-4 border-gray-500 pl-2"
+          >
+            <div mat-line class="font-medium truncate">{{ file.name }}</div>
+            <span class="mx-2"> • </span>
+            <div mat-line class="text-gray-500 text-sm">
+              {{ file.size | humanizeBytes }}
+            </div>
+            <div class="ml-auto">
+              <button
+                mat-stroked-button
+                color="primary"
+                (click)="retryUpload(file)"
+                class="text-sm"
+              >
+                <mat-icon class="text-sm mr-1">replay</mat-icon>
+                Retry
+              </button>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

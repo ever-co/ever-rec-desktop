@@ -85,7 +85,7 @@ class UploadManager {
 
     this.files.forEach((file) => {
       // Create read stream
-      const { pathname, key } = file;
+      const { pathname, key, id } = file;
       const readStream = createReadStream(pathname, {
         highWaterMark: CHUNK_SIZE,
       });
@@ -95,7 +95,8 @@ class UploadManager {
         this.uploadedBytes += chunk.length;
         this.progressNotifier.notifyProgress(
           this.uploadedBytes,
-          this.totalSize
+          this.totalSize,
+          id
         );
       });
       // Handle stream errors
@@ -110,7 +111,7 @@ class UploadManager {
       // Append file properties to FormData
       if (this.config?.token) {
         // Exclude 'pathname' and 'key'
-        const excludedKeys = ['pathname', 'key'];
+        const excludedKeys = ['pathname', 'key', 'id'];
         // Iterate over file properties and exclude 'pathname' and 'key'
         for (const [k, v] of Object.entries(file)) {
           if (!excludedKeys.includes(k) && v !== undefined && v !== null) {
@@ -178,13 +179,13 @@ class ProgressNotifier {
     this.lastProgressUpdate = 0;
   }
 
-  notifyProgress(uploadedBytes, totalSize) {
+  notifyProgress(uploadedBytes, totalSize, itemId) {
     const now = Date.now();
     if (now - this.lastProgressUpdate >= this.progressThrottle) {
       const progress = (uploadedBytes / totalSize) * 100;
       this.port.postMessage({
         status: 'progress',
-        message: progress,
+        message: { itemId, progress },
         uploadedBytes,
         totalSize,
       });
@@ -215,9 +216,21 @@ parentPort.on('message', async () => {
   try {
     await uploadManager.prepareUpload();
     const result = await uploadManager.upload();
-    parentPort.postMessage({ status: 'done', message: result });
+    parentPort.postMessage({
+      status: 'done',
+      message: {
+        result,
+        itemId: files[0]?.id,
+      },
+    });
   } catch (error) {
-    parentPort.postMessage({ status: 'error', message: error.message });
+    parentPort.postMessage({
+      status: 'error',
+      message: {
+        error: error.message,
+        itemId: files[0]?.id,
+      },
+    });
   } finally {
     uploadManager.cleanup();
   }

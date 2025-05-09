@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -15,75 +15,58 @@ import {
   settingScreenCaptureActions,
 } from '@ever-co/screenshot-data-access';
 import { LayoutService } from '@ever-co/shared-service';
-import { IScreenCaptureConfig, IVideoConfig } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
-import { Observable, Subject, map, takeUntil, tap } from 'rxjs';
+import { combineLatest, map, Observable, take } from 'rxjs';
 
 @Component({
-    selector: 'lib-start',
-    imports: [CommonModule, MatButtonModule, MatIconModule, MatTooltipModule],
-    templateUrl: './start.component.html',
-    styleUrl: './start.component.scss'
+  selector: 'lib-start',
+  imports: [CommonModule, MatButtonModule, MatIconModule, MatTooltipModule],
+  templateUrl: './start.component.html',
+  styleUrl: './start.component.scss',
+  standalone: true,
 })
-export class StartComponent implements OnInit, OnDestroy {
+export class StartComponent implements OnInit {
   private readonly store = inject(Store);
-  public notCapturing$ = new Observable<boolean>();
-  private destroy$ = new Subject<void>();
-  private screenCaptureConfig!: IScreenCaptureConfig;
-  private videoConfig!: IVideoConfig;
+  private readonly layoutService = inject(LayoutService);
 
-  constructor( private readonly layoutService: LayoutService){}
+  public readonly notCapturing$: Observable<boolean> = this.store
+    .select(selectScreenshotState)
+    .pipe(map((state) => !state.capturing));
 
-  public ngOnInit(): void {
-    this.notCapturing$ = this.store.select(selectScreenshotState).pipe(
-      map((state) => !state.capturing),
-      takeUntil(this.destroy$)
-    );
-    this.store
-      .select(selectSettingScreenCaptureState)
-      .pipe(
-        tap(
-          ({ screenCaptureConfig }) =>
-            (this.screenCaptureConfig = screenCaptureConfig)
-        ),
-        takeUntil(this.destroy$)
-      )
-      .subscribe();
+  private readonly screenCaptureConfig$ = this.store
+    .select(selectSettingScreenCaptureState)
+    .pipe(map(({ screenCaptureConfig }) => screenCaptureConfig));
 
-    this.store
-      .select(selectSettingState)
-      .pipe(
-        tap(({ videoConfig }) => (this.videoConfig = videoConfig)),
-        takeUntil(this.destroy$)
-      )
-      .subscribe();
+  private readonly videoConfig$ = this.store
+    .select(selectSettingState)
+    .pipe(map(({ videoConfig }) => videoConfig));
 
+  ngOnInit() {
     this.store.dispatch(settingActions.load());
     this.store.dispatch(settingScreenCaptureActions.load());
   }
 
   public startCapture(): void {
-    if (this.videoConfig.autoGenerate) {
-      this.store.dispatch(
-        generateVideoActions.autoGenerate({ config: this.videoConfig })
-      );
-    }
+    combineLatest([this.videoConfig$, this.screenCaptureConfig$])
+      .pipe(take(1))
+      .subscribe(([videoConfig, screenCaptureConfig]) => {
+        if (videoConfig.autoGenerate) {
+          this.store.dispatch(
+            generateVideoActions.autoGenerate({ config: videoConfig })
+          );
+        }
 
-    this.store.dispatch(
-      screenshotActions.startCapture(this.screenCaptureConfig)
-    );
+        this.store.dispatch(
+          screenshotActions.startCapture(screenCaptureConfig)
+        );
+      });
   }
 
-  public stopCapture() {
+  public stopCapture(): void {
     this.store.dispatch(screenshotActions.stopCapture());
   }
 
-  public get isTabletView() {
+  public get isTabletView(): boolean {
     return this.layoutService.isTabletView();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

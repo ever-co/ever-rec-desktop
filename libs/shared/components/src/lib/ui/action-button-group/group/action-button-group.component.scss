@@ -23,3 +23,15 @@
     box-shadow: unset !important;
   }
 }
+
+:host(.no-effect) {
+  .main {
+    box-shadow: unset !important;
+    background-color: unset !important;
+    padding: unset !important;
+
+    &:hover {
+      padding: unset !important;
+    }
+  }
+}

@@ -8,7 +8,10 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import {
+  MatCheckboxChange,
+  MatCheckboxModule,
+} from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { ActionButtonGroupComponent } from '@ever-co/shared-components';
 import {
@@ -41,37 +44,15 @@ export class PhotoComponent implements OnDestroy, OnDestroy {
   @Input()
   public checked: boolean | null = false;
 
+  @Input()
+  public actionButtons: IActionButton[] = [];
+
   @Output()
   public selected = new EventEmitter<ISelected<IPhoto>>();
 
-  @Output()
-  public deleted = new EventEmitter<IPhoto>();
-
-  @Output()
-  public viewed = new EventEmitter<IPhoto>();
-
   private destroy$ = new Subject<void>();
 
-  public actionButtons: IActionButton[] = [
-    {
-      icon: 'visibility',
-      label: 'View',
-      variant: 'default',
-      action: this.view.bind(this),
-    },
-    {
-      icon: 'delete',
-      label: 'Delete',
-      variant: 'danger',
-      action: this.delete.bind(this),
-    },
-  ];
-
-  public view(photo: IPhoto): void {
-    this.viewed.emit(photo);
-  }
-
-  public onSelected(checked: boolean): void {
+  public onSelected({ checked }: MatCheckboxChange): void {
     this.checked = checked;
     this.selected.emit({
       data: this.photo,
@@ -79,8 +60,18 @@ export class PhotoComponent implements OnDestroy, OnDestroy {
     });
   }
 
-  public delete(photo: IPhoto) {
-    this.deleted.emit(photo);
+  public handle(event: Event): void {
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
+  public adapter(photo: IPhoto): ISelected<IPhoto>[] {
+    return [
+      {
+        data: photo,
+        selected: this.checked || false,
+      },
+    ];
   }
 
   ngOnDestroy(): void {

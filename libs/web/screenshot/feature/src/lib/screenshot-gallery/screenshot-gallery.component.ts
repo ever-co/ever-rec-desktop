@@ -28,6 +28,12 @@ import {
   IScreenshot,
   ISelected,
 } from '@ever-co/shared-utils';
+import {
+  selectUploadInProgress,
+  uploadActions,
+  UploadScreenshotItem,
+} from '@ever-co/upload-data-access';
+import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
 import {
   Observable,
@@ -78,6 +84,15 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
       hide: this.lessThanOneSelected$,
       action: this.generateVideo.bind(this),
       loading: this.generating$,
+    },
+    {
+      icon: 'backup',
+      label: 'Upload',
+      variant: 'success',
+      action: this.upload.bind(this),
+      loading: this.uploading$,
+      loadingLabel: 'Uploading...',
+      hide: this.isUploadHidden$,
     },
     {
       icon: 'remove_done',
@@ -217,6 +232,10 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
     );
   }
 
+  public async onView(screenshot: IScreenshot): Promise<void> {
+    await this.router.navigate(['/', 'library', 'screenshots', screenshot.id]);
+  }
+
   private deleteScreenshots(
     selectedScreenshots: ISelected<IScreenshot>[]
   ): void {
@@ -298,6 +317,49 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
 
   public unselectAll(): void {
     this.store.dispatch(screenshotActions.unselectAllScreenshots());
+  }
+
+  private get isUploadHidden$(): Observable<boolean> {
+    return this.store.select(selectSettingStorageState).pipe(
+      map(({ uploadConfig }) => !uploadConfig.manualSync),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  private get uploading$(): Observable<boolean> {
+    return this.store
+      .select(selectUploadInProgress)
+      .pipe(takeUntil(this.destroy$));
+  }
+
+  private upload(selectedScreenshots: ISelected<IScreenshot>[]): void {
+    const size = selectedScreenshots.length;
+    const s = size > 1 ? 's' : '';
+    this.confirmationDialogService
+      .open({
+        title: `Upload Screenshot${s}`,
+        message: `Are you sure you want to upload selected screenshot${s}?`,
+        variant: 'primary',
+        button: {
+          confirm: {
+            label: `Upload(${size})`,
+            variant: 'success',
+            icon: 'backup',
+          },
+        },
+      })
+      .pipe(
+        take(1),
+        filter(Boolean),
+        tap(() => {
+          const items = selectedScreenshots.map(
+            ({ data }) => new UploadScreenshotItem(data)
+          );
+          this.store.dispatch(uploadActions.addItemToQueue({ items }));
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {

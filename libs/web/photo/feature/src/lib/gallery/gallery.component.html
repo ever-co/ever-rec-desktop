@@ -8,9 +8,9 @@
   <lib-photo
     (selected)="selectPhoto($event)"
     [checked]="isSelected(photo) | async"
-    (viewed)="onView(photo)"
-    (deleted)="onDelete(photo)"
-    class="card"
+    [actionButtons]="cardButtons"
+    (click)="onView(photo)"
+    class="card cursor-pointer"
     [photo]="photo"
   ></lib-photo>
   } @if(capturing$ | async) {
@@ -26,7 +26,7 @@
 @if((size$ | async)) {
 <div class="absolute inset-x-0 action-button-group">
   <lib-gallery-buttons-action
-    [buttons]="actionButtons"
+    [buttons]="galleryButtons"
     [size]="size$ | async"
     [data]="selectedPhotos$ | async"
   ></lib-gallery-buttons-action>

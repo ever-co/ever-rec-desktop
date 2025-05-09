@@ -27,7 +27,11 @@ import {
   ResolutionPipe,
 } from '@ever-co/shared-service';
 import { IActionButton, IVideo, IVideoMetadata } from '@ever-co/shared-utils';
-import { selectUploadState, uploadActions } from '@ever-co/upload-data-access';
+import {
+  selectUploadInProgress,
+  uploadActions,
+  UploadVideoItem,
+} from '@ever-co/upload-data-access';
 import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
 import {
@@ -77,11 +81,6 @@ export class VideoDetailComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   public actionButtons: IActionButton[] = [
     {
-      icon: 'copy',
-      label: 'Duplicate',
-      variant: 'default',
-    },
-    {
       icon: 'summarize',
       label: 'Summarize',
       variant: 'warning',
@@ -94,6 +93,7 @@ export class VideoDetailComponent implements OnInit, OnDestroy {
       action: this.upload.bind(this),
       loading: this.uploading$,
       disable: this.uploading$,
+      loadingLabel: 'Uploading...',
     },
     {
       icon: 'delete',
@@ -216,7 +216,9 @@ export class VideoDetailComponent implements OnInit, OnDestroy {
         take(1),
         filter(Boolean),
         tap(() =>
-          this.store.dispatch(uploadActions.uploadVideo({ videos: [video] }))
+          this.store.dispatch(
+            uploadActions.addItemToQueue({ item: new UploadVideoItem(video) })
+          )
         ),
         takeUntil(this.destroy$)
       )
@@ -226,22 +228,20 @@ export class VideoDetailComponent implements OnInit, OnDestroy {
   private get isUploadHidden$(): Observable<boolean> {
     return combineLatest([
       this.store.select(selectSettingStorageState),
-      this.uploading$,
       this.video$,
     ]).pipe(
       map(
-        ([{ uploadConfig }, uploading, video]) =>
-          !uploadConfig.manualSync || uploading || !!video?.isTimeline
+        ([{ uploadConfig }, video]) =>
+          !uploadConfig.manualSync || !!video?.isTimeline
       ),
       takeUntil(this.destroy$)
     );
   }
 
   public get uploading$(): Observable<boolean> {
-    return this.store.select(selectUploadState).pipe(
-      map(({ uploading }) => uploading),
-      takeUntil(this.destroy$)
-    );
+    return this.store
+      .select(selectUploadInProgress)
+      .pipe(takeUntil(this.destroy$));
   }
 
   ngOnDestroy(): void {

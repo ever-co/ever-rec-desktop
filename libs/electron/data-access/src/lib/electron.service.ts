@@ -97,7 +97,7 @@ export class ElectronService {
         return;
       }
 
-      const handler = (...args: any[]) => {
+      const handler = (_: Electron.IpcMainEvent, ...args: any[]) => {
         this.ngZone.run(() => {
           if (args.length === 1) {
             subscriber.next(args[0]);

@@ -27,7 +27,11 @@ import {
   ISelected,
   IVideo,
 } from '@ever-co/shared-utils';
-import { selectUploadState, uploadActions } from '@ever-co/upload-data-access';
+import {
+  UploadVideoItem,
+  selectUploadInProgress,
+  uploadActions,
+} from '@ever-co/upload-data-access';
 import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
 import {
@@ -86,6 +90,7 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
       variant: 'success',
       action: this.upload.bind(this),
       loading: this.uploading$,
+      loadingLabel: 'Uploading...',
       hide: this.isHidden$,
     },
     {
@@ -156,14 +161,10 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
   }
 
   public get isHidden$(): Observable<boolean> {
-    return combineLatest([
-      this.moreThanOneSelected$,
-      this.isUploadHidden$,
-      this.selectedVideos$,
-    ]).pipe(
+    return combineLatest([this.isUploadHidden$, this.selectedVideos$]).pipe(
       map(
-        ([moreThanOneSelected, isUploadHidden, videos]) =>
-          moreThanOneSelected || isUploadHidden || !!videos[0]?.data?.isTimeline
+        ([isUploadHidden, videos]) =>
+          isUploadHidden || !!videos[0]?.data?.isTimeline
       )
     );
   }
@@ -190,13 +191,26 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
     );
   }
 
+  public async onView(video: IVideo): Promise<void> {
+    await this.router.navigate(['/', 'library', 'videos', video.id]);
+  }
+
   private deleteVideos(selectedVideos: ISelected<IVideo>[]): void {
+    const size = selectedVideos.length;
+    const s = size > 1 ? 's' : '';
     const videos = selectedVideos.map((video) => video.data);
     this.confirmationDialogService
       .open({
-        title: 'Delete Videos',
-        message: `Are you sure you want to delete these ${videos.length} videos?`,
+        title: `Delete Video${s}`,
+        message: `Are you sure you want to delete these ${videos.length} video${s}?`,
         variant: 'danger',
+        button: {
+          confirm: {
+            label: `Delete(${size})`,
+            variant: 'danger',
+            icon: 'delete',
+          },
+        },
       })
       .pipe(
         take(1),
@@ -257,10 +271,9 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
   }
 
   public get uploading$(): Observable<boolean> {
-    return this.store.select(selectUploadState).pipe(
-      map(({ uploading }) => uploading),
-      takeUntil(this.destroy$)
-    );
+    return this.store
+      .select(selectUploadInProgress)
+      .pipe(takeUntil(this.destroy$));
   }
 
   public get deleting$(): Observable<boolean> {
@@ -291,14 +304,16 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
   }
 
   private upload(selectedVideos: ISelected<IVideo>[]): void {
+    const size = selectedVideos.length;
+    const s = size > 1 ? 's' : '';
     this.confirmationDialogService
       .open({
-        title: 'Upload Videos',
-        message: `Are you sure you want to upload selected videos?`,
+        title: `Upload Video${s}`,
+        message: `Are you sure you want to upload selected video${s}?`,
         variant: 'primary',
         button: {
           confirm: {
-            label: 'Upload',
+            label: `Upload(${size})`,
             variant: 'success',
             icon: 'backup',
           },
@@ -308,8 +323,10 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
         take(1),
         filter(Boolean),
         tap(() => {
-          const videos = selectedVideos.map((video) => video.data);
-          this.store.dispatch(uploadActions.uploadVideo({ videos }));
+          const items = selectedVideos
+            .filter(({ data }) => !data.isTimeline)
+            .map(({ data }) => new UploadVideoItem(data));
+          this.store.dispatch(uploadActions.addItemToQueue({ items }));
         }),
         takeUntil(this.destroy$)
       )
