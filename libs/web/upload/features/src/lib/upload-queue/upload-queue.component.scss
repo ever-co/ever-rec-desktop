@@ -3,6 +3,11 @@
   margin-bottom: 2rem;
 }
 
+.progress-container {
+  max-height: calc(100vh - 27rem);
+  overflow: auto;
+}
+
 // Make Angular Material tab styles consistent with Tailwind design
 ::ng-deep {
   .mat-mdc-tab-header {
