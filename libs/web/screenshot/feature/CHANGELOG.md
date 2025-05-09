@@ -2,6 +2,18 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.4.0](https://github.com/ever-co/ever-capture/compare/screenshot-feature-0.3.0...screenshot-feature-0.4.0) (2025-05-09)
+
+### Dependency Updates
+
+* `shared-components` updated to version `1.1.0`
+
+### Features
+
+* **screenshot:** display sync status indicator ([ac52929](https://github.com/ever-co/ever-capture/commit/ac5292927356b7e1e8efd26f36a746b71df01ed7))
+
+
+
 # [0.3.0](https://github.com/ever-co/ever-capture/compare/screenshot-feature-0.2.1...screenshot-feature-0.3.0) (2025-05-09)
 
 ### Dependency Updates
