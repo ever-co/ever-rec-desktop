@@ -2,6 +2,63 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.0.0](https://github.com/ever-co/ever-capture/compare/shared-components-0.2.2...shared-components-1.0.0) (2025-05-09)
+
+### Dependency Updates
+
+* `notification-data-access` updated to version `0.1.6`
+* `data-access-electron` updated to version `0.2.2`
+* `shared-service` updated to version `0.3.1`
+* `utils` updated to version `1.0.0`
+* `web-setting-data-access` updated to version `0.3.0`
+* `convert-video-data-access` updated to version `0.2.1`
+* `screenshot-data-access` updated to version `0.2.2`
+* `upload-data-access` updated to version `1.0.0`
+* `timesheet-data-access` updated to version `0.1.2`
+
+### Features
+
+* **audio-gallery:** add upload action for audio items ([fafa302](https://github.com/ever-co/ever-capture/commit/fafa30286d4e44333c56340b7cbbc52b7a6c63b0))
+* **screenshot:** add manual upload and enhance gallery interaction ([4520d5a](https://github.com/ever-co/ever-capture/commit/4520d5a64e35481ef355a0df620998408a62d930))
+* **upload:** add photo upload capability and generalize upload service ([71aac04](https://github.com/ever-co/ever-capture/commit/71aac047b27863408c8062f6ce421d955f16132c))
+* **upload:** implement item-based upload queue with UI and parallel processing ([a4e3df3](https://github.com/ever-co/ever-capture/commit/a4e3df3751db121359f024d9d78fd1d97a89af54))
+* **video-gallery:** enable video detail view on card click ([5fa3078](https://github.com/ever-co/ever-capture/commit/5fa3078c0912413fadff40a2581d0fc0f7d947af))
+* **video:** enhance upload button with loading state and improve dialogs ([9104406](https://github.com/ever-co/ever-capture/commit/9104406622966226d6671a5b25e3b8d113660d1a))
+
+
+### Performance Improvements
+
+* **action-button-group:** optimize button rendering with specific trackBy ([f614db6](https://github.com/ever-co/ever-capture/commit/f614db6cc2962953b013ed220d928d1ec53de3e3))
+
+
+### BREAKING CHANGES
+
+* **upload:** The Ngrx store for uploads has been completely refactored:
+- `uploadFeatureKey` changed from 'upload' to 'uploadQueue'.
+- The state structure is now item-based (managing lists for `queue`,
+`inProgress`, `completed`, `failed`, `canceled`, `activeUploads`)
+replacing the previous global upload status.
+- Actions like `uploadActions.uploadVideos` are replaced by
+`uploadActions.addItemToQueue({ item: new UploadVideoItem(video) })`
+or `uploadActions.addItemToQueue({ items: [...] })`.
+- Selectors like `selectUploadState.uploading` are deprecated. Use new
+selectors such as `selectUploadInProgress` (boolean),
+`selectInProgress` (list of items), `selectCanUploadMore`, etc.
+The global `UploadProgressComponent` snackbar previously managed by
+`LayoutComponent` has been removed. Upload status is now primarily
+managed through the new `UploadBadgeComponent` and `UploadQueueComponent`.
+The `UploadProgressComponent` itself has been repurposed to display
+progress for a single `IUploadItem` (passed as an `@Input()`) and is
+used within the `UploadQueueComponent`.
+The `UploaderService.cancel()` method now requires an `itemId` parameter.
+The data payload for IPC events `Channel.UPLOAD_PROGRESS`,
+`Channel.UPLOAD_DONE`, and `Channel.UPLOAD_ERROR` has changed. They
+now emit objects containing an `itemId` and conform to the new
+`IUploadProgress`, `IUploadDone`, and `IUploadError` interfaces
+respectively.
+
+
+
 ## [0.2.2](https://github.com/ever-co/ever-capture/compare/shared-components-0.2.1...shared-components-0.2.2) (2025-05-02)
 
 ### Dependency Updates
