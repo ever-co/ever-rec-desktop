@@ -31,11 +31,11 @@ jobs:
 
       - name: Set up dependencies (Python & Build Tools)
         run: |
-        python3 -m pip install --break-system-packages packaging setuptools
-        npm install -g electron-builder
+          python3 -m pip install --user packaging setuptools
+          npm install -g electron-builder
 
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
 
       - name: Build Electron app
         run: yarn build:prod
@@ -49,10 +49,12 @@ jobs:
           name: electron-build-${{ inputs.os }}-${{ inputs.arch }}
           path: dist/executables/
           if-no-files-found: error
+          retention-days: 7
 
       - name: Upload Logs (if failure occurs)
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: logs-${{ inputs.os }}
+          name: logs-${{ github.run_id }}-${{ inputs.os }}
           path: logs/
+          retention-days: 7
