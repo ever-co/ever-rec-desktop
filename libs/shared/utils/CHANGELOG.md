@@ -2,6 +2,43 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.0.0](https://github.com/ever-co/ever-capture/compare/utils-0.3.0...utils-1.0.0) (2025-05-09)
+
+
+### Features
+
+* **upload:** implement deep cloning for UploadItem ([87d995d](https://github.com/ever-co/ever-capture/commit/87d995d708d5a7a179c839974c3e08925682f0a7))
+* **upload:** implement item-based upload queue with UI and parallel processing ([a4e3df3](https://github.com/ever-co/ever-capture/commit/a4e3df3751db121359f024d9d78fd1d97a89af54))
+
+
+### BREAKING CHANGES
+
+* **upload:** The Ngrx store for uploads has been completely refactored:
+- `uploadFeatureKey` changed from 'upload' to 'uploadQueue'.
+- The state structure is now item-based (managing lists for `queue`,
+`inProgress`, `completed`, `failed`, `canceled`, `activeUploads`)
+replacing the previous global upload status.
+- Actions like `uploadActions.uploadVideos` are replaced by
+`uploadActions.addItemToQueue({ item: new UploadVideoItem(video) })`
+or `uploadActions.addItemToQueue({ items: [...] })`.
+- Selectors like `selectUploadState.uploading` are deprecated. Use new
+selectors such as `selectUploadInProgress` (boolean),
+`selectInProgress` (list of items), `selectCanUploadMore`, etc.
+The global `UploadProgressComponent` snackbar previously managed by
+`LayoutComponent` has been removed. Upload status is now primarily
+managed through the new `UploadBadgeComponent` and `UploadQueueComponent`.
+The `UploadProgressComponent` itself has been repurposed to display
+progress for a single `IUploadItem` (passed as an `@Input()`) and is
+used within the `UploadQueueComponent`.
+The `UploaderService.cancel()` method now requires an `itemId` parameter.
+The data payload for IPC events `Channel.UPLOAD_PROGRESS`,
+`Channel.UPLOAD_DONE`, and `Channel.UPLOAD_ERROR` has changed. They
+now emit objects containing an `itemId` and conform to the new
+`IUploadProgress`, `IUploadDone`, and `IUploadError` interfaces
+respectively.
+
+
+
 # [0.3.0](https://github.com/ever-co/ever-capture/compare/utils-0.2.1...utils-0.3.0) (2025-05-05)
 
 
