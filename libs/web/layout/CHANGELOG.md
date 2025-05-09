@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.1](https://github.com/ever-co/ever-capture/compare/layout-1.0.0...layout-1.0.1) (2025-05-09)
+
+### Dependency Updates
+
+* `search` updated to version `0.1.5`
+
+
 # [1.0.0](https://github.com/ever-co/ever-capture/compare/layout-0.2.3...layout-1.0.0) (2025-05-09)
 
 ### Dependency Updates
