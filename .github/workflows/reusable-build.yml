@@ -30,7 +30,9 @@ jobs:
           cache: 'yarn'
 
       - name: Set up dependencies (Python & Build Tools)
-        run: python3 -m pip install --break-system-packages packaging setuptools
+        run: |
+        python3 -m pip install --break-system-packages packaging setuptools
+        npm install -g electron-builder
 
       - name: Install dependencies
         run: yarn install
