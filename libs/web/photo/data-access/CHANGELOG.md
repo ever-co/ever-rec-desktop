@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# 0.1.0 (2025-05-09)
+
+
+### Bug Fixes
+
+* **state:** update item counts on add/delete operations ([56e76c8](https://github.com/ever-co/ever-capture/commit/56e76c8d7b29ba2a6d00253ec91586acf440dfa1))
+
+
+
 ## [0.0.4](https://github.com/ever-co/ever-capture/compare/photo-data-acess-0.0.3...photo-data-acess-0.0.4) (2025-05-09)
 
 ### Dependency Updates

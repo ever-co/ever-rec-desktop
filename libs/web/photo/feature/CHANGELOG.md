@@ -2,6 +2,17 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# 0.1.0 (2025-05-09)
+
+
+### Features
+
+* **photo-detail:** display photo sync status ([7f40c27](https://github.com/ever-co/ever-capture/commit/7f40c273e710fdb1832b6eb3650c999ad05651e1))
+* **photo-gallery:** allow viewing photo by clicking card ([b3b1997](https://github.com/ever-co/ever-capture/commit/b3b199709c22514d56e36dd83289d2b1c4391a01))
+* **photo:** add manual photo upload option ([293f319](https://github.com/ever-co/ever-capture/commit/293f319dc30b61ebcfa6c340a533b26a0b940374))
+
+
+
 ## [0.1.1](https://github.com/ever-co/ever-capture/compare/photo-feature-0.1.0...photo-feature-0.1.1) (2025-05-09)
 
 

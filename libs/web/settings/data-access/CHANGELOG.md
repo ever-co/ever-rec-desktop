@@ -2,6 +2,26 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# 0.1.0 (2025-05-09)
+
+
+### Bug Fixes
+
+* fix inaccurate screenshot storage size calculation ([61ef441](https://github.com/ever-co/ever-capture/commit/61ef441e1d1b37885e896c9ad3d5418c55a1d860))
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+* **settings:** set default retention to unlimited ([070d6a2](https://github.com/ever-co/ever-capture/commit/070d6a20b8169a099e535aedba48e466a513ff06))
+
+
+### Features
+
+* improve video upload setting ([4d71737](https://github.com/ever-co/ever-capture/commit/4d71737ef629795aabf9ef4bc08dce24e4a15808))
+* **settings:** add audio storage tracking and deletion ([1ceedbd](https://github.com/ever-co/ever-capture/commit/1ceedbd575b5f49da1ea85cb39b8e48d7acc6036))
+* **settings:** add granular delete and purge options for storage ([418df6d](https://github.com/ever-co/ever-capture/commit/418df6def7f107320da86110a385d46f0377f5f8))
+* **storage:** include photo size in storage usage ([cd4e7f7](https://github.com/ever-co/ever-capture/commit/cd4e7f7e074a593b582b49cbeafcae2d5f48ea98))
+* **upload:** honor auto-sync setting for automatic uploads ([178c515](https://github.com/ever-co/ever-capture/commit/178c51544838a508080b404b7f9f12821b2d8e90))
+
+
+
 # [0.3.0](https://github.com/ever-co/ever-capture/compare/web-setting-data-access-0.2.2...web-setting-data-access-0.3.0) (2025-05-09)
 
 ### Dependency Updates

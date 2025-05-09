@@ -1,6 +1,6 @@
 {
   "name": "@ever-co/shared-service",
-  "version": "0.3.1",
+  "version": "0.1.0",
   "peerDependencies": {
     "@angular/common": "^17.3.0",
     "@angular/core": "^17.3.0"

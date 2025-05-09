@@ -2,6 +2,58 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# 0.1.0 (2025-05-09)
+
+
+### Bug Fixes
+
+* layout ([e542186](https://github.com/ever-co/ever-capture/commit/e54218637103ee7690e405a07d863ae851b834ad))
+* **layout:** truncate header title ([03ffb41](https://github.com/ever-co/ever-capture/commit/03ffb411e2e6367367ef7acc5359fbeadb3a7cbb))
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+* remove unecessary imports ([5332e43](https://github.com/ever-co/ever-capture/commit/5332e43f5405ee4c9936cb3bdf2bc5a4e9630083))
+* tailwind config js ([9761084](https://github.com/ever-co/ever-capture/commit/97610843fa16e2fbcea5261b70ed53cca5e669f0))
+
+
+### Features
+
+* **desktop:** implement periodic webcam photo capture ([fa2dbdb](https://github.com/ever-co/ever-capture/commit/fa2dbdb4139b326683260dca1c2fcac16596ab0f))
+* implement sidebar ([0e5252d](https://github.com/ever-co/ever-capture/commit/0e5252d4a984b1111daf7d260994cf71fe68ae2c))
+* improves upload progress notification ([1299007](https://github.com/ever-co/ever-capture/commit/129900771fc07f6a91f1174c373bfd311d69c11d))
+* move command buttons ([08ef606](https://github.com/ever-co/ever-capture/commit/08ef60687fa0f50858d8a1c513277dcccbdc691b))
+* separate all timeline elements ([6c3920a](https://github.com/ever-co/ever-capture/commit/6c3920a264f61c3905b74caa474a584eb6809e79))
+* separate layout from screenshot ([4b859f2](https://github.com/ever-co/ever-capture/commit/4b859f2d4d5dbe5cec1fc8c189a6754e23554b68))
+* **upload:** create upload feature to allow user to see uploading progress ([2d823d6](https://github.com/ever-co/ever-capture/commit/2d823d6aadb5c438f007807370ffbb8850b543a9))
+* **upload:** implement item-based upload queue with UI and parallel processing ([a4e3df3](https://github.com/ever-co/ever-capture/commit/a4e3df3751db121359f024d9d78fd1d97a89af54))
+
+
+### BREAKING CHANGES
+
+* **upload:** The Ngrx store for uploads has been completely refactored:
+- `uploadFeatureKey` changed from 'upload' to 'uploadQueue'.
+- The state structure is now item-based (managing lists for `queue`,
+`inProgress`, `completed`, `failed`, `canceled`, `activeUploads`)
+replacing the previous global upload status.
+- Actions like `uploadActions.uploadVideos` are replaced by
+`uploadActions.addItemToQueue({ item: new UploadVideoItem(video) })`
+or `uploadActions.addItemToQueue({ items: [...] })`.
+- Selectors like `selectUploadState.uploading` are deprecated. Use new
+selectors such as `selectUploadInProgress` (boolean),
+`selectInProgress` (list of items), `selectCanUploadMore`, etc.
+The global `UploadProgressComponent` snackbar previously managed by
+`LayoutComponent` has been removed. Upload status is now primarily
+managed through the new `UploadBadgeComponent` and `UploadQueueComponent`.
+The `UploadProgressComponent` itself has been repurposed to display
+progress for a single `IUploadItem` (passed as an `@Input()`) and is
+used within the `UploadQueueComponent`.
+The `UploaderService.cancel()` method now requires an `itemId` parameter.
+The data payload for IPC events `Channel.UPLOAD_PROGRESS`,
+`Channel.UPLOAD_DONE`, and `Channel.UPLOAD_ERROR` has changed. They
+now emit objects containing an `itemId` and conform to the new
+`IUploadProgress`, `IUploadDone`, and `IUploadError` interfaces
+respectively.
+
+
+
 ## [1.0.1](https://github.com/ever-co/ever-capture/compare/layout-1.0.0...layout-1.0.1) (2025-05-09)
 
 ### Dependency Updates

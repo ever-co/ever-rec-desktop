@@ -2,6 +2,21 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# 0.1.0 (2025-05-09)
+
+
+### Bug Fixes
+
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+
+
+### Features
+
+* initialize timeline structure ([943cf62](https://github.com/ever-co/ever-capture/commit/943cf6279083e81e98d1d542f60fe08a21013cae))
+* separate all timeline elements ([6c3920a](https://github.com/ever-co/ever-capture/commit/6c3920a264f61c3905b74caa474a584eb6809e79))
+
+
+
 ## [0.1.6](https://github.com/ever-co/ever-capture/compare/timeline-data-access-0.1.5...timeline-data-access-0.1.6) (2025-05-09)
 
 ### Dependency Updates

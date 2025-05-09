@@ -2,6 +2,78 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# 0.1.0 (2025-05-09)
+
+
+### Bug Fixes
+
+* **action-button:** fix icon font on button interaction states ([a92eec5](https://github.com/ever-co/ever-capture/commit/a92eec5d3f0bd0475fc46c27d9a3b95e737ead8e))
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+* tailwind config js ([9761084](https://github.com/ever-co/ever-capture/commit/97610843fa16e2fbcea5261b70ed53cca5e669f0))
+* **ui/audio:** set explicit mode for audio component in video detail ([72c383c](https://github.com/ever-co/ever-capture/commit/72c383cd05f5344d456abe9d3bfaa81b61e6ddd1))
+* updated gallery component HTML and SCSS: added createdAt timestamp to figcaption, wrapped figcaption content in div, and added display flex and margin styles to figure element. ([8545924](https://github.com/ever-co/ever-capture/commit/8545924649a24ce9464da6c2d61caa598e0e5d1f))
+* upload button visibility for single/timeline videos ([0f85986](https://github.com/ever-co/ever-capture/commit/0f8598684bd5f4b731145fc0234dc8c4e7f9a50c))
+
+
+### Features
+
+* **action-button-group:** add blurred background style option ([6002ac0](https://github.com/ever-co/ever-capture/commit/6002ac01fc7984b81b319a75d0877187e3d4409a))
+* **audio-gallery:** add upload action for audio items ([fafa302](https://github.com/ever-co/ever-capture/commit/fafa30286d4e44333c56340b7cbbc52b7a6c63b0))
+* create pipe, utc to local time pipe ([acc794d](https://github.com/ever-co/ever-capture/commit/acc794d6ebbdc5b9b6df75f83bc4d41fdc4bbb06))
+* create reusable component ([d1bce63](https://github.com/ever-co/ever-capture/commit/d1bce6369b54fd614114e84c3ebf755148f4e79d))
+* displays video sync status and full name ([b164ccf](https://github.com/ever-co/ever-capture/commit/b164ccf9de583ad56f6ef6fe16b2bb0ae48c8d55))
+* improve gallery button group ([1e093b5](https://github.com/ever-co/ever-capture/commit/1e093b53f05de6f474ca309aee0df4481d869899))
+* improve video upload setting ([4d71737](https://github.com/ever-co/ever-capture/commit/4d71737ef629795aabf9ef4bc08dce24e4a15808))
+* modularize ever capture ([0549ee2](https://github.com/ever-co/ever-capture/commit/0549ee29138fe36f7e3c80a7351d28235f9b9055))
+* move command buttons ([08ef606](https://github.com/ever-co/ever-capture/commit/08ef60687fa0f50858d8a1c513277dcccbdc691b))
+* optimize storage ([c73da1b](https://github.com/ever-co/ever-capture/commit/c73da1b0d79e33ba6fd85e21848254be77eee80a))
+* **screenshot:** add manual upload and enhance gallery interaction ([4520d5a](https://github.com/ever-co/ever-capture/commit/4520d5a64e35481ef355a0df620998408a62d930))
+* **screenshot:** display screenshot sync status icon ([a125b6a](https://github.com/ever-co/ever-capture/commit/a125b6a590376e881d029d20f746efd0bffbbad2))
+* **settings:** add granular delete and purge options for storage ([418df6d](https://github.com/ever-co/ever-capture/commit/418df6def7f107320da86110a385d46f0377f5f8))
+* **shared/components:** add audio player component ([bd39965](https://github.com/ever-co/ever-capture/commit/bd39965dd830ab7de33633e9ef70dd8e4e70f6e9))
+* **upload:** add photo upload capability and generalize upload service ([71aac04](https://github.com/ever-co/ever-capture/commit/71aac047b27863408c8062f6ce421d955f16132c))
+* **upload:** implement item-based upload queue with UI and parallel processing ([a4e3df3](https://github.com/ever-co/ever-capture/commit/a4e3df3751db121359f024d9d78fd1d97a89af54))
+* **video-gallery:** enable video detail view on card click ([5fa3078](https://github.com/ever-co/ever-capture/commit/5fa3078c0912413fadff40a2581d0fc0f7d947af))
+* **video:** enhance upload button with loading state and improve dialogs ([9104406](https://github.com/ever-co/ever-capture/commit/9104406622966226d6671a5b25e3b8d113660d1a))
+* **webcam:** add audio gallery and management ([5fcb1af](https://github.com/ever-co/ever-capture/commit/5fcb1afcb7f1496dd620731423c7192a23ccea36))
+* **webcam:** add photo gallery and detail view ([c810cca](https://github.com/ever-co/ever-capture/commit/c810cca3ddcb6d7daeedc8a7b658de700718d045))
+* **webcam:** add webcam selection and state management ([f3adafe](https://github.com/ever-co/ever-capture/commit/f3adafed936cc59e7efc6224cdfbbaec33ab4e31))
+* **webcam:** implement audio recording capability ([993f19d](https://github.com/ever-co/ever-capture/commit/993f19d01e3da049aa3f8cc1f0649f788b0b316f))
+
+
+### Performance Improvements
+
+* **action-button-group:** optimize button rendering with specific trackBy ([f614db6](https://github.com/ever-co/ever-capture/commit/f614db6cc2962953b013ed220d928d1ec53de3e3))
+
+
+### BREAKING CHANGES
+
+* **upload:** The Ngrx store for uploads has been completely refactored:
+- `uploadFeatureKey` changed from 'upload' to 'uploadQueue'.
+- The state structure is now item-based (managing lists for `queue`,
+`inProgress`, `completed`, `failed`, `canceled`, `activeUploads`)
+replacing the previous global upload status.
+- Actions like `uploadActions.uploadVideos` are replaced by
+`uploadActions.addItemToQueue({ item: new UploadVideoItem(video) })`
+or `uploadActions.addItemToQueue({ items: [...] })`.
+- Selectors like `selectUploadState.uploading` are deprecated. Use new
+selectors such as `selectUploadInProgress` (boolean),
+`selectInProgress` (list of items), `selectCanUploadMore`, etc.
+The global `UploadProgressComponent` snackbar previously managed by
+`LayoutComponent` has been removed. Upload status is now primarily
+managed through the new `UploadBadgeComponent` and `UploadQueueComponent`.
+The `UploadProgressComponent` itself has been repurposed to display
+progress for a single `IUploadItem` (passed as an `@Input()`) and is
+used within the `UploadQueueComponent`.
+The `UploaderService.cancel()` method now requires an `itemId` parameter.
+The data payload for IPC events `Channel.UPLOAD_PROGRESS`,
+`Channel.UPLOAD_DONE`, and `Channel.UPLOAD_ERROR` has changed. They
+now emit objects containing an `itemId` and conform to the new
+`IUploadProgress`, `IUploadDone`, and `IUploadError` interfaces
+respectively.
+
+
+
 # [1.1.0](https://github.com/ever-co/ever-capture/compare/shared-components-1.0.0...shared-components-1.1.0) (2025-05-09)
 
 

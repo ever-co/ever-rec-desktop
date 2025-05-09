@@ -2,6 +2,29 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# 0.1.0 (2025-05-09)
+
+
+### Bug Fixes
+
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+* **state:** update item counts on add/delete operations ([56e76c8](https://github.com/ever-co/ever-capture/commit/56e76c8d7b29ba2a6d00253ec91586acf440dfa1))
+* timeline generation for single videos ([508d8a2](https://github.com/ever-co/ever-capture/commit/508d8a22d270749b8bd150c24426335e33c01433))
+* timeline guard to include additional state checks and actions ([b6ef27a](https://github.com/ever-co/ever-capture/commit/b6ef27ade7508e3cbca58d7092201d59d20b528c))
+
+
+### Features
+
+*  migrate to nx 19.8.3 ([a5b23fd](https://github.com/ever-co/ever-capture/commit/a5b23fd62e6e3c707e51b0b58d33d91592aafe4d))
+* add timeline guard ([208a247](https://github.com/ever-co/ever-capture/commit/208a2475ed3ca6df996e0d80e42a28ad751ad762))
+* dispatch load action in timelineGuard ([e8a04c8](https://github.com/ever-co/ever-capture/commit/e8a04c8e3ed34334e502cf62b302f5de7ce93c20))
+* modularize ever capture ([0549ee2](https://github.com/ever-co/ever-capture/commit/0549ee29138fe36f7e3c80a7351d28235f9b9055))
+* **settings:** add granular delete and purge options for storage ([418df6d](https://github.com/ever-co/ever-capture/commit/418df6def7f107320da86110a385d46f0377f5f8))
+* updated video conversion service, added effects and reducer for generate video actions, and modified components for video and screenshot timeline ([bce655a](https://github.com/ever-co/ever-capture/commit/bce655a3f653149da08bd41b98b369a68f3d60f0))
+* **webcam:** add photo gallery and detail view ([c810cca](https://github.com/ever-co/ever-capture/commit/c810cca3ddcb6d7daeedc8a7b658de700718d045))
+
+
+
 ## [0.2.1](https://github.com/ever-co/ever-capture/compare/convert-video-data-access-0.2.0...convert-video-data-access-0.2.1) (2025-05-09)
 
 ### Dependency Updates

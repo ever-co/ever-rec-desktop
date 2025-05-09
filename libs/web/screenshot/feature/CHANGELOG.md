@@ -2,6 +2,40 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# 0.1.0 (2025-05-09)
+
+
+### Bug Fixes
+
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+* **screenshot-gallery:** limit displayed chunks and add safe access ([0f04c52](https://github.com/ever-co/ever-capture/commit/0f04c523827737debd947b36da2c09fb925b387d))
+* **screenshot-statistics-chart:** disable rounded edges on bars ([71a4f54](https://github.com/ever-co/ever-capture/commit/71a4f541c428223d68500b7d7ec52482fd51e781))
+* tailwind config js ([9761084](https://github.com/ever-co/ever-capture/commit/97610843fa16e2fbcea5261b70ed53cca5e669f0))
+* **ui:** limit height and enable scroll on detail views ([699bd6e](https://github.com/ever-co/ever-capture/commit/699bd6e8831bdeb4203389c7df96a2cd7f554334))
+
+
+### Features
+
+* add app usage overview ([cdea491](https://github.com/ever-co/ever-capture/commit/cdea491f9f0dcc83ffe1a2eca223822f59d22e75))
+* add timeline guard ([208a247](https://github.com/ever-co/ever-capture/commit/208a2475ed3ca6df996e0d80e42a28ad751ad762))
+* create reusable component ([d1bce63](https://github.com/ever-co/ever-capture/commit/d1bce6369b54fd614114e84c3ebf755148f4e79d))
+* implement sidebar ([0e5252d](https://github.com/ever-co/ever-capture/commit/0e5252d4a984b1111daf7d260994cf71fe68ae2c))
+* modularize ever capture ([0549ee2](https://github.com/ever-co/ever-capture/commit/0549ee29138fe36f7e3c80a7351d28235f9b9055))
+* move command buttons ([08ef606](https://github.com/ever-co/ever-capture/commit/08ef60687fa0f50858d8a1c513277dcccbdc691b))
+* optimize storage ([c73da1b](https://github.com/ever-co/ever-capture/commit/c73da1b0d79e33ba6fd85e21848254be77eee80a))
+* **screenshot-gallery:** add manual upload option ([1826a45](https://github.com/ever-co/ever-capture/commit/1826a452288b2a4f304007b18a2197d035c05c70))
+* **screenshot-gallery:** add stacked card view for screenshot chunks ([024885c](https://github.com/ever-co/ever-capture/commit/024885c38a183aa9723074172ebf766e70c1eda2))
+* **screenshot-search:** add manual upload for selected screenshots ([3695634](https://github.com/ever-co/ever-capture/commit/3695634e7db1b01984d84b24e2a96fd60c9cc58d))
+* **screenshot-search:** navigate to screenshot detail on card click ([899663f](https://github.com/ever-co/ever-capture/commit/899663fb4f1be61426a0c78aed071d331892c2de))
+* **screenshot:** add manual upload and enhance gallery interaction ([4520d5a](https://github.com/ever-co/ever-capture/commit/4520d5a64e35481ef355a0df620998408a62d930))
+* **screenshot:** add support for viewing screenshot chunks ([01f7374](https://github.com/ever-co/ever-capture/commit/01f737459437b3ff190fb8d1875a9b0c46671c17))
+* **screenshot:** display sync status indicator ([ac52929](https://github.com/ever-co/ever-capture/commit/ac5292927356b7e1e8efd26f36a746b71df01ed7))
+* separate layout from screenshot ([4b859f2](https://github.com/ever-co/ever-capture/commit/4b859f2d4d5dbe5cec1fc8c189a6754e23554b68))
+* **statistics:** display confidence percentage instead of trend ([613454d](https://github.com/ever-co/ever-capture/commit/613454d14f84713593cbb04b293d7b113933236c))
+* **webcam:** add webcam selection and state management ([f3adafe](https://github.com/ever-co/ever-capture/commit/f3adafed936cc59e7efc6224cdfbbaec33ab4e31))
+
+
+
 # [0.4.0](https://github.com/ever-co/ever-capture/compare/screenshot-feature-0.3.0...screenshot-feature-0.4.0) (2025-05-09)
 
 ### Dependency Updates

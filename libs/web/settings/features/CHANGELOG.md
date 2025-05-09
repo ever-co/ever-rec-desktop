@@ -2,6 +2,26 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# 0.1.0 (2025-05-09)
+
+
+### Bug Fixes
+
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+* tailwind config js ([9761084](https://github.com/ever-co/ever-capture/commit/97610843fa16e2fbcea5261b70ed53cca5e669f0))
+
+
+### Features
+
+* improve video upload setting ([4d71737](https://github.com/ever-co/ever-capture/commit/4d71737ef629795aabf9ef4bc08dce24e4a15808))
+* **settings:** add audio storage tracking and deletion ([1ceedbd](https://github.com/ever-co/ever-capture/commit/1ceedbd575b5f49da1ea85cb39b8e48d7acc6036))
+* **settings:** add codec dropdown and initial webcam settings ([df644e6](https://github.com/ever-co/ever-capture/commit/df644e656b92a35dea2993c69c0dd862c4404405))
+* **settings:** add granular delete and purge options for storage ([418df6d](https://github.com/ever-co/ever-capture/commit/418df6def7f107320da86110a385d46f0377f5f8))
+* **settings:** add icons to settings tabs ([eaaafd3](https://github.com/ever-co/ever-capture/commit/eaaafd313802788f27709ac77581f4e1c0dc3e83))
+* **storage:** include photo size in storage usage ([cd4e7f7](https://github.com/ever-co/ever-capture/commit/cd4e7f7e074a593b582b49cbeafcae2d5f48ea98))
+
+
+
 ## [0.2.2](https://github.com/ever-co/ever-capture/compare/web-setting-feature-0.2.1...web-setting-feature-0.2.2) (2025-05-09)
 
 ### Dependency Updates

@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# 0.1.0 (2025-05-09)
+
+
+### Bug Fixes
+
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+
+
+
 ## [0.0.7](https://github.com/ever-co/ever-capture/compare/activity-data-access-0.0.6...activity-data-access-0.0.7) (2025-05-09)
 
 ### Dependency Updates

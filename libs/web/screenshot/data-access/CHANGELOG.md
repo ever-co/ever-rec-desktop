@@ -2,6 +2,27 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# 0.1.0 (2025-05-09)
+
+
+### Bug Fixes
+
+* fix inaccurate screenshot storage size calculation ([61ef441](https://github.com/ever-co/ever-capture/commit/61ef441e1d1b37885e896c9ad3d5418c55a1d860))
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+* **state:** update item counts on add/delete operations ([56e76c8](https://github.com/ever-co/ever-capture/commit/56e76c8d7b29ba2a6d00253ec91586acf440dfa1))
+
+
+### Features
+
+*  migrate to nx 19.8.3 ([a5b23fd](https://github.com/ever-co/ever-capture/commit/a5b23fd62e6e3c707e51b0b58d33d91592aafe4d))
+* improve ([ca0c7da](https://github.com/ever-co/ever-capture/commit/ca0c7da98ae74a395ae7f9edf31971afaefd30df))
+* modularize ever capture ([0549ee2](https://github.com/ever-co/ever-capture/commit/0549ee29138fe36f7e3c80a7351d28235f9b9055))
+* **screenshot:** add support for viewing screenshot chunks ([01f7374](https://github.com/ever-co/ever-capture/commit/01f737459437b3ff190fb8d1875a9b0c46671c17))
+* separete factories from libs ([130eae8](https://github.com/ever-co/ever-capture/commit/130eae837172f8ac359707db1df1ab75d15b47dd))
+* **settings:** add granular delete and purge options for storage ([418df6d](https://github.com/ever-co/ever-capture/commit/418df6def7f107320da86110a385d46f0377f5f8))
+
+
+
 ## [0.2.2](https://github.com/ever-co/ever-capture/compare/screenshot-data-access-0.2.1...screenshot-data-access-0.2.2) (2025-05-09)
 
 ### Dependency Updates

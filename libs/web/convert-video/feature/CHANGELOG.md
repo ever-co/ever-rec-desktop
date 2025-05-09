@@ -2,6 +2,78 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# 0.1.0 (2025-05-09)
+
+
+### Bug Fixes
+
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+* tailwind config js ([9761084](https://github.com/ever-co/ever-capture/commit/97610843fa16e2fbcea5261b70ed53cca5e669f0))
+* **ui/audio:** set explicit mode for audio component in video detail ([72c383c](https://github.com/ever-co/ever-capture/commit/72c383cd05f5344d456abe9d3bfaa81b61e6ddd1))
+* **ui:** limit height and enable scroll on detail views ([699bd6e](https://github.com/ever-co/ever-capture/commit/699bd6e8831bdeb4203389c7df96a2cd7f554334))
+* unnecessary coalescence sign ([0df9110](https://github.com/ever-co/ever-capture/commit/0df911041a54187f3abdd8fc860e2371d0677d7b))
+* upload button visibility for single/timeline videos ([0f85986](https://github.com/ever-co/ever-capture/commit/0f8598684bd5f4b731145fc0234dc8c4e7f9a50c))
+* **upload:** correct upload action visibility and progress status ([cee4d0c](https://github.com/ever-co/ever-capture/commit/cee4d0cf1b2267714e50702bc00d9936ae151cce))
+
+
+### Code Refactoring
+
+* **convert-video:** remove ErrorComponent and StatisticComponent ([6633d29](https://github.com/ever-co/ever-capture/commit/6633d2987d282659919e264f44498e92c07dcf87))
+
+
+### Features
+
+* adds inline editing for video title and summary ([89dd099](https://github.com/ever-co/ever-capture/commit/89dd0995a4bceceb64a9535dfa0259d78faf99ad))
+* create reusable component ([d1bce63](https://github.com/ever-co/ever-capture/commit/d1bce6369b54fd614114e84c3ebf755148f4e79d))
+* displays video sync status and full name ([b164ccf](https://github.com/ever-co/ever-capture/commit/b164ccf9de583ad56f6ef6fe16b2bb0ae48c8d55))
+* improve code ([dbe8570](https://github.com/ever-co/ever-capture/commit/dbe857012a1f536779871cc1eff7aeb1feedf94a))
+* improve video upload setting ([4d71737](https://github.com/ever-co/ever-capture/commit/4d71737ef629795aabf9ef4bc08dce24e4a15808))
+* modularize ever capture ([0549ee2](https://github.com/ever-co/ever-capture/commit/0549ee29138fe36f7e3c80a7351d28235f9b9055))
+* **screenshot-gallery:** add manual upload option ([1826a45](https://github.com/ever-co/ever-capture/commit/1826a452288b2a4f304007b18a2197d035c05c70))
+* **settings:** add codec dropdown and initial webcam settings ([df644e6](https://github.com/ever-co/ever-capture/commit/df644e656b92a35dea2993c69c0dd862c4404405))
+* **shared/components:** add audio player component ([bd39965](https://github.com/ever-co/ever-capture/commit/bd39965dd830ab7de33633e9ef70dd8e4e70f6e9))
+* updated video conversion service, added effects and reducer for generate video actions, and modified components for video and screenshot timeline ([bce655a](https://github.com/ever-co/ever-capture/commit/bce655a3f653149da08bd41b98b369a68f3d60f0))
+* **upload:** add batch queue actions and enhance stability ([0a197f5](https://github.com/ever-co/ever-capture/commit/0a197f5805cd4c2e800cff5189ac67b148312e0e))
+* **upload:** add photo upload capability and generalize upload service ([71aac04](https://github.com/ever-co/ever-capture/commit/71aac047b27863408c8062f6ce421d955f16132c))
+* **upload:** implement item-based upload queue with UI and parallel processing ([a4e3df3](https://github.com/ever-co/ever-capture/commit/a4e3df3751db121359f024d9d78fd1d97a89af54))
+* **video-gallery:** enable video detail view on card click ([5fa3078](https://github.com/ever-co/ever-capture/commit/5fa3078c0912413fadff40a2581d0fc0f7d947af))
+* **video-gallery:** ensure upload action is consistently displayed ([5b23a51](https://github.com/ever-co/ever-capture/commit/5b23a518b7f263286e3e7ceca423bbc8df106d5f))
+* **video:** enhance upload button with loading state and improve dialogs ([9104406](https://github.com/ever-co/ever-capture/commit/9104406622966226d6671a5b25e3b8d113660d1a))
+* **webcam:** add webcam selection and state management ([f3adafe](https://github.com/ever-co/ever-capture/commit/f3adafed936cc59e7efc6224cdfbbaec33ab4e31))
+
+
+### BREAKING CHANGES
+
+* **convert-video:** The `ErrorComponent` and `StatisticComponent` are no
+longer exported from `@ever-co/web/convert-video/feature`. Consumers
+that were previously importing these components will need to find
+alternatives or remove their usage.
+* **upload:** The Ngrx store for uploads has been completely refactored:
+- `uploadFeatureKey` changed from 'upload' to 'uploadQueue'.
+- The state structure is now item-based (managing lists for `queue`,
+`inProgress`, `completed`, `failed`, `canceled`, `activeUploads`)
+replacing the previous global upload status.
+- Actions like `uploadActions.uploadVideos` are replaced by
+`uploadActions.addItemToQueue({ item: new UploadVideoItem(video) })`
+or `uploadActions.addItemToQueue({ items: [...] })`.
+- Selectors like `selectUploadState.uploading` are deprecated. Use new
+selectors such as `selectUploadInProgress` (boolean),
+`selectInProgress` (list of items), `selectCanUploadMore`, etc.
+The global `UploadProgressComponent` snackbar previously managed by
+`LayoutComponent` has been removed. Upload status is now primarily
+managed through the new `UploadBadgeComponent` and `UploadQueueComponent`.
+The `UploadProgressComponent` itself has been repurposed to display
+progress for a single `IUploadItem` (passed as an `@Input()`) and is
+used within the `UploadQueueComponent`.
+The `UploaderService.cancel()` method now requires an `itemId` parameter.
+The data payload for IPC events `Channel.UPLOAD_PROGRESS`,
+`Channel.UPLOAD_DONE`, and `Channel.UPLOAD_ERROR` has changed. They
+now emit objects containing an `itemId` and conform to the new
+`IUploadProgress`, `IUploadDone`, and `IUploadError` interfaces
+respectively.
+
+
+
 # [1.0.0](https://github.com/ever-co/ever-capture/compare/convert-video-feature-0.3.1...convert-video-feature-1.0.0) (2025-05-09)
 
 ### Dependency Updates

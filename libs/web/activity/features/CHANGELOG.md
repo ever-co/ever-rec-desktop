@@ -2,6 +2,23 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# 0.1.0 (2025-05-09)
+
+
+### Bug Fixes
+
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+* tailwind config js ([9761084](https://github.com/ever-co/ever-capture/commit/97610843fa16e2fbcea5261b70ed53cca5e669f0))
+
+
+### Features
+
+* **activity/analysis:** display dynamic date range in analysis summary ([ad2ed19](https://github.com/ever-co/ever-capture/commit/ad2ed19fad5d2bbb937e0452a268a6adf6cea597))
+* **activity:** enhance analysis component UI and information display ([7320569](https://github.com/ever-co/ever-capture/commit/73205695545954eefd37a2a596e28f4eef1864fb))
+* **analysis:** enhance peak productivity hours display ([90fb831](https://github.com/ever-co/ever-capture/commit/90fb8313d371470bb068004ee258ea6977a1a1aa))
+
+
+
 ## [0.1.2](https://github.com/ever-co/ever-capture/compare/activity-feature-0.1.1...activity-feature-0.1.2) (2025-05-09)
 
 ### Dependency Updates

@@ -2,6 +2,23 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# 0.1.0 (2025-05-09)
+
+
+### Bug Fixes
+
+* improves search overlay and component performance ([7b1b63c](https://github.com/ever-co/ever-capture/commit/7b1b63ccb7c5dc802b13a735933da1d234813ff8))
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+* search bar misalignment on window resize ([d326fab](https://github.com/ever-co/ever-capture/commit/d326fab7ae6c28a77a940ef22c5378edd0bdc380))
+* tailwind config js ([9761084](https://github.com/ever-co/ever-capture/commit/97610843fa16e2fbcea5261b70ed53cca5e669f0))
+
+
+### Features
+
+* improves window resize handling ([d75498d](https://github.com/ever-co/ever-capture/commit/d75498d0b4d58d691155d29937dc49dd044a1c0c))
+
+
+
 ## [0.1.5](https://github.com/ever-co/ever-capture/compare/search-0.1.4...search-0.1.5) (2025-05-09)
 
 ### Dependency Updates

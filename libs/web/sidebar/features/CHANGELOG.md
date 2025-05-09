@@ -2,6 +2,24 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# 0.1.0 (2025-05-09)
+
+
+### Bug Fixes
+
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+* **sidebar:** remove selected class from active icon ([64f204c](https://github.com/ever-co/ever-capture/commit/64f204c9f13af42daa848fd44104071e8d6d668e))
+* tailwind config js ([9761084](https://github.com/ever-co/ever-capture/commit/97610843fa16e2fbcea5261b70ed53cca5e669f0))
+
+
+### Features
+
+* implement sidebar ([0e5252d](https://github.com/ever-co/ever-capture/commit/0e5252d4a984b1111daf7d260994cf71fe68ae2c))
+* **sidebar:** enhance sidebar item styling and accessibility ([6dad957](https://github.com/ever-co/ever-capture/commit/6dad9573c93001cd098a71fd5ac6259d0e0b5a1f))
+* **webcam:** add responsive layout to audio gallery ([31cb668](https://github.com/ever-co/ever-capture/commit/31cb6684fc8cf0a0bb214b11511175e5fc3ab03a))
+
+
+
 ## [0.2.2](https://github.com/ever-co/ever-capture/compare/sidebar-feature-0.2.1...sidebar-feature-0.2.2) (2025-05-09)
 
 ### Dependency Updates

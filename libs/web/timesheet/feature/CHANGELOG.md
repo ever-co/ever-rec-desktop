@@ -2,6 +2,23 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# 0.1.0 (2025-05-09)
+
+
+### Bug Fixes
+
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+* tailwind config js ([9761084](https://github.com/ever-co/ever-capture/commit/97610843fa16e2fbcea5261b70ed53cca5e669f0))
+* **timesheet:** bring action buttons to front ([2f6f4da](https://github.com/ever-co/ever-capture/commit/2f6f4da86d25fbde3490831e83156b2e3b886c9d))
+* **timesheet:** ensure action buttons appear above other elements ([99a00be](https://github.com/ever-co/ever-capture/commit/99a00bea5db4da441aded6e04a0feaac8e227d09))
+
+
+### Features
+
+* implement navigation from audio metadata to video and timesheet ([f54dfd8](https://github.com/ever-co/ever-capture/commit/f54dfd831e6cef5b9ac1369a583d0d24f1a87aa1))
+
+
+
 ## [0.1.3](https://github.com/ever-co/ever-capture/compare/timesheet-feature-0.1.2...timesheet-feature-0.1.3) (2025-05-09)
 
 ### Dependency Updates

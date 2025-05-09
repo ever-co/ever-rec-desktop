@@ -2,6 +2,24 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# 0.1.0 (2025-05-09)
+
+
+### Bug Fixes
+
+* **auto-tracking:** prevent starting auto-tracking without a camera ([94b9501](https://github.com/ever-co/ever-capture/commit/94b950119369912c8fc3841c24eb7d68b864f3a7))
+* **electron:** ensure correct payload is passed from IPC events ([6edcea7](https://github.com/ever-co/ever-capture/commit/6edcea7604fb4a201a2f628891707846ba769b16))
+* publish commands ([ec40beb](https://github.com/ever-co/ever-capture/commit/ec40beb144bea21e949e86f1d6e61dd699790b6a))
+
+
+### Features
+
+* improve auto sync adding auto sync service ([46e247f](https://github.com/ever-co/ever-capture/commit/46e247f4d592c2be2b757e5954d33c7e27099d36))
+* separete factories from libs ([130eae8](https://github.com/ever-co/ever-capture/commit/130eae837172f8ac359707db1df1ab75d15b47dd))
+* **tracking:** implement auto-start tracking based on persisted state ([02bdb33](https://github.com/ever-co/ever-capture/commit/02bdb33ac9bee83b2dc5379b2719e3c28fe561ee))
+
+
+
 ## [0.2.5](https://github.com/ever-co/ever-capture/compare/factory-0.2.4...factory-0.2.5) (2025-05-09)
 
 ### Dependency Updates
