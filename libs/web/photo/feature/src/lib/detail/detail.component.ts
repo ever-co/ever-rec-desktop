@@ -54,30 +54,33 @@ import {
 })
 export class DetailComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  public actionButtons: IActionButton[] = [
-    {
-      label: 'Upload',
-      variant: 'success',
-      icon: 'backup',
-      action: this.upload.bind(this),
-      loading: this.uploading$,
-      loadingLabel: 'Uploading...',
-      disable: this.uploading$,
-      hide: this.isUploadHidden$,
-    },
-    {
-      icon: 'delete',
-      label: 'Delete',
-      variant: 'danger',
-      action: this.delete.bind(this),
-    },
-  ];
+  public actionButtons: IActionButton[] = [];
+
   constructor(
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store,
-    private readonly confirmationDialogService: ConfirmationDialogService
-  ) {}
+    private readonly confirmationDialogService: ConfirmationDialogService,
+  ) {
+    this.actionButtons = [
+      {
+        label: 'Upload',
+        variant: 'success',
+        icon: 'backup',
+        action: this.upload.bind(this),
+        loading: this.uploading$,
+        loadingLabel: 'Uploading...',
+        disable: this.uploading$,
+        hide: this.isUploadHidden$,
+      },
+      {
+        icon: 'delete',
+        label: 'Delete',
+        variant: 'danger',
+        action: this.delete.bind(this),
+      },
+    ];
+  }
 
   ngOnInit(): void {
     this.activatedRoute.params
@@ -91,13 +94,13 @@ export class DetailComponent implements OnInit, OnDestroy {
                   id: params['id'],
                 },
                 relations: ['metadata'],
-              })
+              }),
             );
           } else {
             await this.router.navigate(['/dashboard']);
           }
         }),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
@@ -105,14 +108,14 @@ export class DetailComponent implements OnInit, OnDestroy {
   public get photo$(): Observable<IPhoto | null> {
     return this.store.select(selectPhotoState).pipe(
       map((state) => state.photo),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public get isLoading$(): Observable<boolean> {
     return this.store.select(selectPhotoState).pipe(
       map((state) => state.loading),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -122,7 +125,7 @@ export class DetailComponent implements OnInit, OnDestroy {
         title: 'Delete Photo',
         message: 'Are you sure you want to delete this photo?',
         variant: 'danger',
-      })
+      }),
     );
     if (isConfirmed) {
       this.store.dispatch(photoActions.deletePhoto(photo));
@@ -139,7 +142,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   private get isUploadHidden$(): Observable<boolean> {
     return this.store.select(selectSettingStorageState).pipe(
       map(({ uploadConfig }) => !uploadConfig.manualSync),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -162,10 +165,10 @@ export class DetailComponent implements OnInit, OnDestroy {
         filter(Boolean),
         tap(() =>
           this.store.dispatch(
-            uploadActions.addItemToQueue({ item: new UploadPhotoItem(photo) })
-          )
+            uploadActions.addItemToQueue({ item: new UploadPhotoItem(photo) }),
+          ),
         ),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
