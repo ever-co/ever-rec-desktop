@@ -1,4 +1,3 @@
-export * from './lib/convert-video.route';
 export * from './lib/progress/progress.component';
 export * from './lib/setting/setting.component';
 export * from './lib/video-detail/video-detail.component';
