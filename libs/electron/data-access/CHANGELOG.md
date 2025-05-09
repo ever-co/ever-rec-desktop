@@ -2,6 +2,18 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.2.2](https://github.com/ever-co/ever-capture/compare/data-access-electron-0.2.1...data-access-electron-0.2.2) (2025-05-09)
+
+### Dependency Updates
+
+* `utils` updated to version `1.0.0`
+
+### Bug Fixes
+
+* **electron:** ensure correct payload is passed from IPC events ([6edcea7](https://github.com/ever-co/ever-capture/commit/6edcea7604fb4a201a2f628891707846ba769b16))
+
+
+
 ## [0.2.1](https://github.com/ever-co/ever-capture/compare/data-access-electron-0.2.0...data-access-electron-0.2.1) (2025-05-02)
 
 ### Dependency Updates
