@@ -44,12 +44,13 @@ export class ScreenshotUploaderService extends UploaderService<IScreenshot> {
     const config = strategy.config();
 
     // Use parent's config if current config is empty
-    if (isEmpty(config)) {
+    if (isEmpty(config) || !config?.url) {
       return super.loadConfig();
     }
 
     // Safely extract base URL
-    const baseUrl = config?.url?.split('/api/')[0];
+    const url = new URL(config.url);
+    const baseUrl = `${url.protocol}//${url.host}`;
     if (!baseUrl) {
       console.warn('Invalid URL format in uploader config');
       return super.loadConfig();
