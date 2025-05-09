@@ -323,9 +323,6 @@
             *ngFor="let file of completed$ | async; trackBy: trackByFileId"
             class="hover:bg-gray-50 rounded-lg mb-2 border-l-4 border-green-500 pl-2"
           >
-            <mat-icon mat-list-icon class="text-green-500"
-              >check_circle</mat-icon
-            >
             <div mat-line class="font-medium truncate">{{ file.name }}</div>
             <div mat-line class="text-gray-500 text-sm">
               {{ file.size | humanizeBytes }} • Uploaded successfully
