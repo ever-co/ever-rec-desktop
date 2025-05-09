@@ -2,6 +2,18 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.2.0](https://github.com/ever-co/ever-capture/compare/photo-ui-0.1.0...photo-ui-0.2.0) (2025-05-09)
+
+### Dependency Updates
+
+* `shared-components` updated to version `1.1.0`
+
+### Features
+
+* **photo:** add sync status indicator to photo card ([412d839](https://github.com/ever-co/ever-capture/commit/412d83990787c61a6571657d2c4435e69c107490))
+
+
+
 # [0.1.0](https://github.com/ever-co/ever-capture/compare/photo-ui-0.0.1...photo-ui-0.1.0) (2025-05-09)
 
 ### Dependency Updates
