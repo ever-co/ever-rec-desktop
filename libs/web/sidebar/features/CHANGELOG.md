@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.2.2](https://github.com/ever-co/ever-capture/compare/sidebar-feature-0.2.1...sidebar-feature-0.2.2) (2025-05-09)
+
+### Dependency Updates
+
+* `shared-service` updated to version `0.3.1`
+
+
 ## [0.2.1](https://github.com/ever-co/ever-capture/compare/sidebar-feature-0.2.0...sidebar-feature-0.2.1) (2025-05-02)
 
 ### Dependency Updates
