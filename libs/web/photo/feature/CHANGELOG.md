@@ -2,6 +2,10 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.1.1](https://github.com/ever-co/ever-capture/compare/photo-feature-0.1.0...photo-feature-0.1.1) (2025-05-09)
+
+
+
 # [0.1.0](https://github.com/ever-co/ever-capture/compare/photo-feature-0.0.1...photo-feature-0.1.0) (2025-05-09)
 
 ### Dependency Updates
