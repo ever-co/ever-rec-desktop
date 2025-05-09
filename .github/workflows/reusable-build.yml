@@ -29,21 +29,21 @@ jobs:
           node-version: ${{ inputs.node-version }}
           cache: 'yarn'
 
-      - name: Set up dependencies (Python & Build Tools)
+      - name: Set up dependencies
         run: |
           python3 -m pip install --break-system-packages --user packaging setuptools
           npm install -g electron-builder
-          npm install -g nx@latest
+          yarn global add nx@latest
 
       - name: Install dependencies
         run: |
           yarn install --frozen-lockfile
-          yarn add -D nx@latest
+          yarn add -D nx@latest @nrwl/node @nrwl/workspace
 
       - name: Build Electron app
         run: |
-          yarn nx reset
-          yarn build:prod
+          npx nx reset
+          npx nx run-many --target=build --configuration=production --verbose
 
       - name: Package Electron app
         run: yarn make
