@@ -99,9 +99,6 @@
             *ngFor="let file of queue$ | async; trackBy: trackByFileId"
             class="hover:bg-gray-50 rounded mb-1"
           >
-            <mat-icon mat-list-icon class="text-blue-400"
-              >insert_drive_file</mat-icon
-            >
             <div mat-line class="font-medium truncate">{{ file.name }}</div>
             <span class="mx-2"> • </span>
             <div mat-line class="text-gray-500 text-sm">
@@ -186,7 +183,7 @@
           </div>
           <lib-upload-progress [item]="file"></lib-upload-progress>
           <div class="flex justify-between text-xs text-gray-500 mt-1">
-            <span>{{ file.progress / 100 | percent : '1.2-2' }} complete</span>
+            <span>{{ file.progress / 100 | percent: '1.2-2' }} complete</span>
           </div>
         </div>
       </div>
@@ -246,11 +243,6 @@
             *ngFor="let file of failed$ | async; trackBy: trackByFileId"
             class="hover:bg-gray-50 rounded-lg mb-2 border-l-4 border-red-400 pl-3 transition-colors duration-200 ease-in-out"
           >
-            <!-- Icon with better visual hierarchy -->
-            <mat-icon mat-list-icon class="text-red-500 !text-2xl"
-              >error_outline</mat-icon
-            >
-
             <div class="flex flex-col flex-grow min-w-0">
               <!-- File name with better truncation -->
               <div mat-line class="font-medium text-gray-800 truncate">
