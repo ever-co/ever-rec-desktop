@@ -2,6 +2,33 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.3.0](https://github.com/ever-co/ever-capture/compare/screenshot-feature-0.2.1...screenshot-feature-0.3.0) (2025-05-09)
+
+### Dependency Updates
+
+* `screenshot-data-access` updated to version `0.2.2`
+* `shared-components` updated to version `1.0.0`
+* `shared-service` updated to version `0.3.1`
+* `utils` updated to version `1.0.0`
+* `convert-video-data-access` updated to version `0.2.1`
+* `upload-data-access` updated to version `1.0.0`
+* `web-setting-data-access` updated to version `0.3.0`
+* `notification-data-access` updated to version `0.1.6`
+
+### Bug Fixes
+
+* **screenshot-statistics-chart:** disable rounded edges on bars ([71a4f54](https://github.com/ever-co/ever-capture/commit/71a4f541c428223d68500b7d7ec52482fd51e781))
+
+
+### Features
+
+* **screenshot-gallery:** add manual upload option ([1826a45](https://github.com/ever-co/ever-capture/commit/1826a452288b2a4f304007b18a2197d035c05c70))
+* **screenshot-search:** add manual upload for selected screenshots ([3695634](https://github.com/ever-co/ever-capture/commit/3695634e7db1b01984d84b24e2a96fd60c9cc58d))
+* **screenshot-search:** navigate to screenshot detail on card click ([899663f](https://github.com/ever-co/ever-capture/commit/899663fb4f1be61426a0c78aed071d331892c2de))
+* **screenshot:** add manual upload and enhance gallery interaction ([4520d5a](https://github.com/ever-co/ever-capture/commit/4520d5a64e35481ef355a0df620998408a62d930))
+
+
+
 ## [0.2.1](https://github.com/ever-co/ever-capture/compare/screenshot-feature-0.2.0...screenshot-feature-0.2.1) (2025-05-02)
 
 ### Dependency Updates
