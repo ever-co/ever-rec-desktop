@@ -2,6 +2,14 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.1.1](https://github.com/ever-co/ever-capture/compare/audio-ui-0.1.0...audio-ui-0.1.1) (2025-05-09)
+
+### Dependency Updates
+
+* `utils` updated to version `1.0.0`
+* `shared-service` updated to version `0.3.1`
+
+
 # 0.1.0 (2025-05-02)
 
 ### Dependency Updates
