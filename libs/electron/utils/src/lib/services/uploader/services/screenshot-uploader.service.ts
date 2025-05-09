@@ -30,7 +30,7 @@ export class ScreenshotUploaderService extends UploaderService<IScreenshot> {
 
   protected override async synchronize(upload: IUpload): Promise<void> {
     await Promise.all(
-      upload.ids.map((id) => this.service.update(id, { synced: true }))
+      upload.ids.map((id) => this.service.update(id, { synced: true })),
     );
   }
 
@@ -49,7 +49,7 @@ export class ScreenshotUploaderService extends UploaderService<IScreenshot> {
     }
 
     // Safely extract base URL
-    const baseUrl = config?.url?.split('/api')[0];
+    const baseUrl = config?.url?.split('/api/')[0];
     if (!baseUrl) {
       console.warn('Invalid URL format in uploader config');
       return super.loadConfig();
