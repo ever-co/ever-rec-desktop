@@ -2,6 +2,24 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.2.5](https://github.com/ever-co/ever-capture/compare/factory-0.2.4...factory-0.2.5) (2025-05-09)
+
+### Dependency Updates
+
+* `convert-video-data-access` updated to version `0.2.1`
+* `screenshot-data-access` updated to version `0.2.2`
+* `web-setting-data-access` updated to version `0.3.0`
+* `webcam-data-access` updated to version `1.1.1`
+* `shared-service` updated to version `0.3.1`
+* `data-access-electron` updated to version `0.2.2`
+* `utils` updated to version `1.0.0`
+
+### Bug Fixes
+
+* **electron:** ensure correct payload is passed from IPC events ([6edcea7](https://github.com/ever-co/ever-capture/commit/6edcea7604fb4a201a2f628891707846ba769b16))
+
+
+
 ## [0.2.4](https://github.com/ever-co/ever-capture/compare/factory-0.2.3...factory-0.2.4) (2025-05-02)
 
 
