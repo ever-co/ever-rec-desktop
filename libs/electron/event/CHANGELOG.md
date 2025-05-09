@@ -2,6 +2,23 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.3.0](https://github.com/ever-co/ever-capture/compare/event-0.2.6...event-0.3.0) (2025-05-09)
+
+### Dependency Updates
+
+* `database-electron` updated to version `0.2.1`
+* `electron-utils` updated to version `1.0.0`
+* `utils` updated to version `1.0.0`
+* `window` updated to version `0.3.2`
+
+### Features
+
+* **photo:** add manual photo upload option ([293f319](https://github.com/ever-co/ever-capture/commit/293f319dc30b61ebcfa6c340a533b26a0b940374))
+* **upload:** add photo upload service implementation ([70bf8cb](https://github.com/ever-co/ever-capture/commit/70bf8cb85106c283d0f10f3da3e86ae1b512a958))
+* **uploader:** add support for audio uploads ([0ce4550](https://github.com/ever-co/ever-capture/commit/0ce4550a3f07cb644a9baca968097e37e179b8bc))
+
+
+
 ## [0.2.6](https://github.com/ever-co/ever-capture/compare/event-0.2.5...event-0.2.6) (2025-05-03)
 
 ### Dependency Updates
