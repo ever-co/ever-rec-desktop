@@ -88,11 +88,11 @@ export abstract class UploaderService<T>
           worker.terminate();
           break;
         case 'progress':
-          this.logger.info('In Progress::' + payload.message);
+          this.logger.info('In Progress::' + JSON.stringify(payload.message));
           event.reply(Channel.UPLOAD_PROGRESS, payload.message);
           break;
         case 'error':
-          this.logger.error('Error::' + payload.message);
+          this.logger.error('Error::' + JSON.stringify(payload.message));
           event.reply(Channel.UPLOAD_ERROR, payload.message);
           worker.terminate();
           break;

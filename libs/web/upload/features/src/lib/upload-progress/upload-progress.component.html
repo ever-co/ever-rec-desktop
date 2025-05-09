@@ -3,5 +3,5 @@
   <div class="progress-bar">
     <div class="progress" [style.width.%]="item.progress"></div>
   </div>
-  <div class="progress-text">{{ item.progress }}%</div>
+  <div class="progress-text">{{ item.progress / 100 | percent : '1.2-2' }}</div>
 </div>

@@ -186,7 +186,7 @@
           </div>
           <lib-upload-progress [item]="file"></lib-upload-progress>
           <div class="flex justify-between text-xs text-gray-500 mt-1">
-            <span>{{ file.progress }}% complete</span>
+            <span>{{ file.progress / 100 | percent : '1.2-2' }} complete</span>
           </div>
         </div>
       </div>
