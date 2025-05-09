@@ -2,6 +2,54 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.0.0](https://github.com/ever-co/ever-capture/compare/electron-utils-0.3.0...electron-utils-1.0.0) (2025-05-09)
+
+### Dependency Updates
+
+* `utils` updated to version `1.0.0`
+
+### Bug Fixes
+
+* **uploader:** terminate worker after upload completion or error ([b937891](https://github.com/ever-co/ever-capture/commit/b9378919693ea911ed4d836ef576c9613679cb12))
+* **upload:** format progress percentage display and stringify log messages ([32cfde2](https://github.com/ever-co/ever-capture/commit/32cfde26083f6edf3bee8ce0f378b1c12b346060))
+* **worker-handler:** terminate worker on completion or error ([039979c](https://github.com/ever-co/ever-capture/commit/039979cae6aa33bc9a0f3ad858a50889dffcc7ba))
+
+
+### Features
+
+* **upload:** add photo upload service implementation ([70bf8cb](https://github.com/ever-co/ever-capture/commit/70bf8cb85106c283d0f10f3da3e86ae1b512a958))
+* **uploader:** add support for audio uploads ([0ce4550](https://github.com/ever-co/ever-capture/commit/0ce4550a3f07cb644a9baca968097e37e179b8bc))
+* **upload:** implement item-based upload queue with UI and parallel processing ([a4e3df3](https://github.com/ever-co/ever-capture/commit/a4e3df3751db121359f024d9d78fd1d97a89af54))
+
+
+### BREAKING CHANGES
+
+* **upload:** The Ngrx store for uploads has been completely refactored:
+- `uploadFeatureKey` changed from 'upload' to 'uploadQueue'.
+- The state structure is now item-based (managing lists for `queue`,
+`inProgress`, `completed`, `failed`, `canceled`, `activeUploads`)
+replacing the previous global upload status.
+- Actions like `uploadActions.uploadVideos` are replaced by
+`uploadActions.addItemToQueue({ item: new UploadVideoItem(video) })`
+or `uploadActions.addItemToQueue({ items: [...] })`.
+- Selectors like `selectUploadState.uploading` are deprecated. Use new
+selectors such as `selectUploadInProgress` (boolean),
+`selectInProgress` (list of items), `selectCanUploadMore`, etc.
+The global `UploadProgressComponent` snackbar previously managed by
+`LayoutComponent` has been removed. Upload status is now primarily
+managed through the new `UploadBadgeComponent` and `UploadQueueComponent`.
+The `UploadProgressComponent` itself has been repurposed to display
+progress for a single `IUploadItem` (passed as an `@Input()`) and is
+used within the `UploadQueueComponent`.
+The `UploaderService.cancel()` method now requires an `itemId` parameter.
+The data payload for IPC events `Channel.UPLOAD_PROGRESS`,
+`Channel.UPLOAD_DONE`, and `Channel.UPLOAD_ERROR` has changed. They
+now emit objects containing an `itemId` and conform to the new
+`IUploadProgress`, `IUploadDone`, and `IUploadError` interfaces
+respectively.
+
+
+
 # [0.3.0](https://github.com/ever-co/ever-capture/compare/electron-utils-0.2.0...electron-utils-0.3.0) (2025-05-02)
 
 ### Dependency Updates
