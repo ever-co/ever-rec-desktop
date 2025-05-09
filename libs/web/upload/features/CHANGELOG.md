@@ -2,6 +2,10 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.1](https://github.com/ever-co/ever-capture/compare/upload-feature-1.0.0...upload-feature-1.0.1) (2025-05-09)
+
+
+
 # [1.0.0](https://github.com/ever-co/ever-capture/compare/upload-feature-0.1.5...upload-feature-1.0.0) (2025-05-09)
 
 ### Dependency Updates
