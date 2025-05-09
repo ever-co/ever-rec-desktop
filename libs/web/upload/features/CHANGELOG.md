@@ -2,6 +2,19 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.1.0](https://github.com/ever-co/ever-capture/compare/upload-feature-1.0.3...upload-feature-1.1.0) (2025-05-09)
+
+### Dependency Updates
+
+* `upload-data-access` updated to version `1.0.0`
+* `shared-service` updated to version `0.3.1`
+
+### Features
+
+* **upload-queue:** make in-progress file list scrollable ([a75806e](https://github.com/ever-co/ever-capture/commit/a75806e4ee1ed22afc3ec6285cd8b7af51207fca))
+
+
+
 # 0.1.0 (2025-05-09)
 
 
