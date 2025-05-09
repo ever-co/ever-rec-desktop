@@ -29,6 +29,7 @@ import { Store } from '@ngrx/store';
 import { filter, map, Observable, Subject, take, takeUntil, tap } from 'rxjs';
 import { ActionButtonGroupComponent } from '../action-button-group/group/action-button-group.component';
 import { ConfirmationDialogService } from '../dialogs/services/confirmation-dialog.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'lib-screenshot',
@@ -43,6 +44,7 @@ import { ConfirmationDialogService } from '../dialogs/services/confirmation-dial
     ImgFallbackDirective,
     IconFallbackDirective,
     MatCheckboxModule,
+    MatTooltipModule,
   ],
   templateUrl: './screenshot.component.html',
   styleUrl: './screenshot.component.scss',
@@ -86,7 +88,7 @@ export class ScreenshotComponent implements OnDestroy, OnDestroy {
   constructor(
     private readonly router: Router,
     private readonly store: Store,
-    private readonly confirmationDialogService: ConfirmationDialogService
+    private readonly confirmationDialogService: ConfirmationDialogService,
   ) {}
 
   public async view(): Promise<void> {
@@ -117,9 +119,9 @@ export class ScreenshotComponent implements OnDestroy, OnDestroy {
         take(1),
         filter(Boolean),
         tap(() =>
-          this.store.dispatch(screenshotActions.deleteScreenshot(screenshot))
+          this.store.dispatch(screenshotActions.deleteScreenshot(screenshot)),
         ),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
@@ -145,10 +147,10 @@ export class ScreenshotComponent implements OnDestroy, OnDestroy {
           this.store.dispatch(
             uploadActions.addItemToQueue({
               item: new UploadScreenshotItem(screenshot),
-            })
-          )
+            }),
+          ),
         ),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
@@ -156,7 +158,7 @@ export class ScreenshotComponent implements OnDestroy, OnDestroy {
   private get isUploadHidden$(): Observable<boolean> {
     return this.store.select(selectSettingStorageState).pipe(
       map(({ uploadConfig }) => !uploadConfig.manualSync),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 

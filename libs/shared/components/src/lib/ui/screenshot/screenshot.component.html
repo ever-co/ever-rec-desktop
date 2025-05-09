@@ -1,82 +1,99 @@
 @if (screenshot) {
-<mat-card
-  appearance="outlined"
-  class="transform transition-transform h-full rounded-t-df duration-300 scale-[0.99] hover:scale-[1.00]"
->
-  <div
-    class="relative overflow-hidden image-container h-full rounded-t-df group"
+  <mat-card
+    appearance="outlined"
+    class="transform transition-transform h-full rounded-t-df duration-300 scale-[0.99] hover:scale-[1.00]"
   >
-    <img
-      mat-card-image
-      libImgFallback
-      [src]="screenshot.pathname"
-      alt="Screenshot"
-      class="w-full h-full object-cover rounded-t-df"
-      loading="lazy"
-    />
     <div
-      [ngClass]="{ 'bg-opacity-20': checked }"
-      class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 rounded-t-df"
+      class="relative overflow-hidden image-container h-full rounded-t-df group"
     >
-      <div
-        [ngClass]="{ 'opacity-100': checked }"
-        class="absolute p-1 bg-gradient-to-t from-black/80 to-transparent h-full w-full justify-between items-start flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-      >
-        <div class="flex items-center group">
-          <mat-checkbox
-            [checked]="checked"
-            (change)="onSelected($event.checked)"
-            (click)="$event.stopPropagation()"
-            [color]="'primary'"
-            class="relative text-white transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900 rounded group-hover:text-indigo-600"
-          >
-          </mat-checkbox>
-        </div>
-        <div class="flex flex-col justify-between h-full">
-          <button
-            (click)="$event.stopPropagation()"
-            [libPopover]="menu"
-            mat-icon-button
-            class="bg-black"
-          >
-            <mat-icon class="text-white hover:text-indigo-600 transition-colors"
-              >more_vert</mat-icon
-            >
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <mat-card-content class="p-4">
-    <div class="flex items-center gap-4">
-      @if (screenshot.metadata?.application?.icon) {
       <img
-        libIconFallback
-        [src]="screenshot.metadata?.application?.icon"
-        [alt]="screenshot.metadata?.application?.name"
-        class="w-10 h-10 rounded-full object-cover"
+        mat-card-image
+        libImgFallback
+        [src]="screenshot.pathname"
+        alt="Screenshot"
+        class="w-full h-full object-cover rounded-t-df"
         loading="lazy"
       />
-      }
-      <div class="flex-1 mt-4 min-w-0">
-        @if (screenshot.metadata?.application?.name) {
-        <div class="text-lg font-medium text-gray-900 truncate">
-          {{ screenshot.metadata?.application?.name }}
+      <div
+        [ngClass]="{ 'bg-opacity-20': checked }"
+        class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 rounded-t-df"
+      >
+        <div
+          [ngClass]="{ 'opacity-100': checked }"
+          class="absolute p-1 bg-gradient-to-t from-black/80 to-transparent h-full w-full justify-between items-start flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        >
+          <div class="flex items-start flex-col justify-between h-full group">
+            <mat-checkbox
+              [checked]="checked"
+              (change)="onSelected($event.checked)"
+              (click)="$event.stopPropagation()"
+              [color]="'primary'"
+              class="relative text-white transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900 rounded group-hover:text-indigo-600"
+            >
+            </mat-checkbox>
+            @if (screenshot.metadata) {
+              <div class="flex gap-1 p-2">
+                <span>
+                  <mat-icon
+                    class="cursor-pointer"
+                    [matTooltip]="screenshot.synced ? 'Synced' : 'Not Synced'"
+                    [ngClass]="{
+                      'text-red-500': !screenshot.synced,
+                      'text-green-500': screenshot.synced,
+                    }"
+                  >
+                    {{ screenshot.synced ? 'cloud_done' : 'cloud_off' }}
+                  </mat-icon>
+                </span>
+              </div>
+            }
+          </div>
+          <div class="flex flex-col justify-between h-full">
+            <button
+              (click)="$event.stopPropagation()"
+              [libPopover]="menu"
+              mat-icon-button
+              class="bg-black"
+            >
+              <mat-icon
+                class="text-white hover:text-indigo-600 transition-colors"
+                >more_vert</mat-icon
+              >
+            </button>
+          </div>
         </div>
-        }
-        <p class="text-sm text-gray-500 truncate">
-          {{ screenshot.createdAt | utcToLocalTime }}
-        </p>
       </div>
     </div>
-  </mat-card-content>
-</mat-card>
 
-<ng-template #menu>
-  <lib-action-button-group
-    [data]="screenshot"
-    [buttons]="actionButtons"
-  ></lib-action-button-group>
-</ng-template>
+    <mat-card-content class="p-4">
+      <div class="flex items-center gap-4">
+        @if (screenshot.metadata?.application?.icon) {
+          <img
+            libIconFallback
+            [src]="screenshot.metadata?.application?.icon"
+            [alt]="screenshot.metadata?.application?.name"
+            class="w-10 h-10 rounded-full object-cover"
+            loading="lazy"
+          />
+        }
+        <div class="flex-1 mt-4 min-w-0">
+          @if (screenshot.metadata?.application?.name) {
+            <div class="text-lg font-medium text-gray-900 truncate">
+              {{ screenshot.metadata?.application?.name }}
+            </div>
+          }
+          <p class="text-sm text-gray-500 truncate">
+            {{ screenshot.createdAt | utcToLocalTime }}
+          </p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <ng-template #menu>
+    <lib-action-button-group
+      [data]="screenshot"
+      [buttons]="actionButtons"
+    ></lib-action-button-group>
+  </ng-template>
 }
