@@ -2,6 +2,25 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.3.0](https://github.com/ever-co/ever-capture/compare/web-setting-data-access-0.2.2...web-setting-data-access-0.3.0) (2025-05-09)
+
+### Dependency Updates
+
+* `data-access-electron` updated to version `0.2.2`
+* `utils` updated to version `1.0.0`
+* `convert-video-data-access` updated to version `0.2.1`
+* `screenshot-data-access` updated to version `0.2.2`
+* `shared-service` updated to version `0.3.1`
+* `data-access` updated to version `0.1.4`
+* `photo-data-acess` updated to version `0.0.4`
+* `webcam-data-access` updated to version `1.1.1`
+
+### Features
+
+* **upload:** honor auto-sync setting for automatic uploads ([178c515](https://github.com/ever-co/ever-capture/commit/178c51544838a508080b404b7f9f12821b2d8e90))
+
+
+
 ## [0.2.2](https://github.com/ever-co/ever-capture/compare/web-setting-data-access-0.2.1...web-setting-data-access-0.2.2) (2025-05-02)
 
 ### Dependency Updates
