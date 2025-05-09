@@ -2,6 +2,24 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.2.0](https://github.com/ever-co/ever-capture/compare/photo-feature-0.1.1...photo-feature-0.2.0) (2025-05-09)
+
+### Dependency Updates
+
+* `photo-data-acess` updated to version `0.0.4`
+* `shared-components` updated to version `1.1.0`
+* `shared-service` updated to version `0.3.1`
+* `utils` updated to version `1.0.0`
+* `upload-data-access` updated to version `1.0.0`
+* `web-setting-data-access` updated to version `0.3.0`
+* `photo-ui` updated to version `0.2.0`
+
+### Features
+
+* **photo-detail:** display photo sync status ([7f40c27](https://github.com/ever-co/ever-capture/commit/7f40c273e710fdb1832b6eb3650c999ad05651e1))
+
+
+
 # 0.1.0 (2025-05-09)
 
 
