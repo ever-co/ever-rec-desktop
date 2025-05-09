@@ -13,6 +13,7 @@ import {
   MatCheckboxModule,
 } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActionButtonGroupComponent } from '@ever-co/shared-components';
 import {
   ImgFallbackDirective,
@@ -34,6 +35,7 @@ import { Subject } from 'rxjs';
     ActionButtonGroupComponent,
     ImgFallbackDirective,
     MatCheckboxModule,
+    MatTooltipModule,
   ],
   templateUrl: './photo.component.html',
   styleUrl: './photo.component.scss',

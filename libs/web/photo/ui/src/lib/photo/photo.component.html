@@ -1,71 +1,88 @@
 @if (photo) {
-<mat-card
-  appearance="outlined"
-  class="transform transition-transform h-full rounded-t-df duration-300 scale-[0.99] hover:scale-[1.00]"
->
-  <div class="relative h-full rounded-t-df group">
-    <img
-      mat-card-image
-      libImgFallback
-      [src]="photo.pathname"
-      alt="Photo"
-      class="w-full h-full object-cover rounded-t-df"
-      loading="lazy"
-    />
-    <div
-      [ngClass]="{ 'bg-opacity-20': checked }"
-      class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 rounded-t-df"
-    >
+  <mat-card
+    appearance="outlined"
+    class="transform transition-transform h-full rounded-t-df duration-300 scale-[0.99] hover:scale-[1.00]"
+  >
+    <div class="relative h-full rounded-t-df group">
+      <img
+        mat-card-image
+        libImgFallback
+        [src]="photo.pathname"
+        alt="Photo"
+        class="w-full h-full object-cover rounded-t-df"
+        loading="lazy"
+      />
       <div
-        [ngClass]="{ 'opacity-100': checked }"
-        class="absolute p-1 bg-gradient-to-t from-black/80 to-transparent h-full w-full justify-between items-start flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        [ngClass]="{ 'bg-opacity-20': checked }"
+        class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 rounded-t-df"
       >
-        <div class="flex items-center group">
-          <mat-checkbox
-            [checked]="checked"
-            (change)="onSelected($event)"
-            (click)="handle($event)"
-            [color]="'primary'"
-            class="relative text-white transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900 rounded group-hover:text-indigo-600"
-          >
-          </mat-checkbox>
-        </div>
-        <div class="flex flex-col justify-between h-full">
-          <button
-            (click)="handle($event)"
-            [libPopover]="menu"
-            mat-icon-button
-            class="bg-black"
-          >
-            <mat-icon class="text-white hover:text-indigo-600 transition-colors"
-              >more_vert</mat-icon
+        <div
+          [ngClass]="{ 'opacity-100': checked }"
+          class="absolute p-1 bg-gradient-to-t from-black/80 to-transparent h-full w-full justify-between items-start flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        >
+          <div class="flex items-start flex-col justify-between h-full group">
+            <mat-checkbox
+              [checked]="checked"
+              (change)="onSelected($event)"
+              (click)="handle($event)"
+              [color]="'primary'"
+              class="relative text-white transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900 rounded group-hover:text-indigo-600"
             >
-          </button>
+            </mat-checkbox>
+            @if (photo.metadata) {
+              <div class="flex gap-1 p-2">
+                <span>
+                  <mat-icon
+                    class="cursor-pointer"
+                    [matTooltip]="photo.synced ? 'Synced' : 'Not Synced'"
+                    [ngClass]="{
+                      'text-red-500': !photo.synced,
+                      'text-green-500': photo.synced,
+                    }"
+                  >
+                    {{ photo.synced ? 'cloud_done' : 'cloud_off' }}
+                  </mat-icon>
+                </span>
+              </div>
+            }
+          </div>
+          <div class="flex flex-col justify-between h-full">
+            <button
+              (click)="handle($event)"
+              [libPopover]="menu"
+              mat-icon-button
+              class="bg-black"
+            >
+              <mat-icon
+                class="text-white hover:text-indigo-600 transition-colors"
+                >more_vert</mat-icon
+              >
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <mat-card-content class="p-4">
-    <div class="flex items-center gap-4">
-      <div class="flex-1 mt-4 min-w-0">
-        @if (photo.metadata?.name) {
-        <div class="text-lg font-medium text-gray-900 truncate">
-          {{ photo.metadata?.name }}
+    <mat-card-content class="p-4">
+      <div class="flex items-center gap-4">
+        <div class="flex-1 mt-4 min-w-0">
+          @if (photo.metadata?.name) {
+            <div class="text-lg font-medium text-gray-900 truncate">
+              {{ photo.metadata?.name }}
+            </div>
+          }
+          <p class="text-sm text-gray-500 truncate">
+            {{ photo.createdAt | utcToLocalTime }}
+          </p>
         </div>
-        }
-        <p class="text-sm text-gray-500 truncate">
-          {{ photo.createdAt | utcToLocalTime }}
-        </p>
       </div>
-    </div>
-  </mat-card-content>
-</mat-card>
+    </mat-card-content>
+  </mat-card>
 
-<ng-template #menu>
-  <lib-action-button-group
-    [data]="adapter(photo)"
-    [buttons]="actionButtons"
-  ></lib-action-button-group>
-</ng-template>
+  <ng-template #menu>
+    <lib-action-button-group
+      [data]="adapter(photo)"
+      [buttons]="actionButtons"
+    ></lib-action-button-group>
+  </ng-template>
 }
