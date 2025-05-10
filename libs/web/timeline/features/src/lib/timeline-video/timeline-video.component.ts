@@ -33,11 +33,11 @@ import {
 } from 'rxjs';
 
 @Component({
-    selector: 'lib-timeline-video',
-    imports: [CommonModule, MatTooltipModule, MatIconModule],
-    templateUrl: './timeline-video.component.html',
-    styleUrl: './timeline-video.component.scss',
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'lib-timeline-video',
+  imports: [CommonModule, MatTooltipModule, MatIconModule],
+  templateUrl: './timeline-video.component.html',
+  styleUrl: './timeline-video.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimelineVideoComponent
   implements OnInit, OnDestroy, AfterViewInit
@@ -64,7 +64,7 @@ export class TimelineVideoComponent
       .pipe(
         filter(() => !!this.videoPlayer),
         tap(() => this.reload()),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
 
@@ -74,7 +74,7 @@ export class TimelineVideoComponent
         map((state) => state.currentTime),
         distinctUntilChanged(),
         map((currentTime) => (this.player.currentTime = currentTime)),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
 
@@ -82,10 +82,10 @@ export class TimelineVideoComponent
       .pipe(
         tap(() =>
           this.store.dispatch(
-            timelineActions.togglePlayback({ isPlaying: true })
-          )
+            timelineActions.togglePlayback({ isPlaying: true }),
+          ),
         ),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
 
@@ -94,9 +94,9 @@ export class TimelineVideoComponent
         map((event) => event.target as HTMLVideoElement),
         filter(Boolean),
         tap(({ currentTime }) =>
-          this.store.dispatch(timelineActions.seekTo({ currentTime }))
+          this.store.dispatch(timelineActions.seekTo({ currentTime })),
         ),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
 
@@ -108,10 +108,10 @@ export class TimelineVideoComponent
           this.currentTime$.next(
             moment
               .duration(currentTime, 'seconds')
-              .format('hh:mm:ss.SS', { trim: false })
-          )
+              .format('hh:mm:ss.SS', { trim: false }),
+          ),
         ),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
 
@@ -119,16 +119,16 @@ export class TimelineVideoComponent
       .pipe(
         tap(() =>
           this.store.dispatch(
-            timelineActions.togglePlayback({ isPlaying: false })
-          )
+            timelineActions.togglePlayback({ isPlaying: false }),
+          ),
         ),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
 
   @HostListener('document:keydown', ['$event'])
-  private handleKeydown(event: KeyboardEvent): void {
+  public handleKeydown(event: KeyboardEvent): void {
     if (event.target instanceof HTMLInputElement) return;
 
     switch (event.code) {
@@ -178,7 +178,7 @@ export class TimelineVideoComponent
         console.error('Error in source observable', err);
         return '';
       }),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -186,7 +186,7 @@ export class TimelineVideoComponent
     return this.store.select(selectTimelineState).pipe(
       map(({ player }) => player),
       distinctUntilChanged(),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -205,7 +205,7 @@ export class TimelineVideoComponent
 
         return time.format('HH:mm', { trim: false });
       }),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -216,7 +216,7 @@ export class TimelineVideoComponent
         console.error('Error in generating observable', err);
         return of(false);
       }),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -237,7 +237,7 @@ export class TimelineVideoComponent
       map(({ isPlaying }) => {
         return isPlaying;
       }),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 

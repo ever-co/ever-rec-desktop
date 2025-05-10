@@ -16,7 +16,6 @@ import {
   InfiniteScrollDirective,
   LayoutService,
   PopoverDirective,
-  selectDatePickerState,
 } from '@ever-co/shared-service';
 import {
   IActionButton,
@@ -55,6 +54,7 @@ import {
 } from '@ever-co/upload-data-access';
 import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 import { PlayerContainerComponent } from '../player-container/player-container.component';
+import { selectDateRange } from '@ever-co/date-picker-data-access';
 
 @Component({
   selector: 'lib-audio-gallery',
@@ -117,7 +117,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
   constructor(
     private readonly confirmationDialogService: ConfirmationDialogService,
     public readonly layoutService: LayoutService,
-    private readonly router: Router
+    private readonly router: Router,
   ) {
     this.galleryButtons = [
       {
@@ -146,20 +146,20 @@ export class GalleryComponent implements OnInit, OnDestroy {
         tap((state) => {
           this.hasNext = state.hasNext;
         }),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
 
     this.store
-      .select(selectDatePickerState)
+      .select(selectDateRange)
       .pipe(
-        tap((state) => {
-          this.range = state.selectedRange;
+        tap((range) => {
+          this.range = range;
           this.currentPage = 1;
           this.store.dispatch(audioActions.resetAudios());
           this.loadAudios();
         }),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
 
@@ -168,7 +168,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
       .pipe(
         filter(({ deleting }) => deleting),
         tap(() => this.unselectAll()),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
@@ -176,21 +176,21 @@ export class GalleryComponent implements OnInit, OnDestroy {
   public get isAvailable$() {
     return this.store.select(selectAudioState).pipe(
       map((state) => state.count > 0),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public get loading$() {
     return this.store.select(selectAudioState).pipe(
       map((state) => state.loading),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public get audios$() {
     return this.store.select(selectAudioState).pipe(
       map((state) => state.audios),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -206,7 +206,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
       audioActions.loadAudios({
         page: this.currentPage,
         ...this.range,
-      })
+      }),
     );
   }
 
@@ -218,35 +218,35 @@ export class GalleryComponent implements OnInit, OnDestroy {
     this.store.dispatch(
       audio.selected
         ? audioActions.selectAudio({ audio })
-        : audioActions.unselectAudio({ audio })
+        : audioActions.unselectAudio({ audio }),
     );
   }
 
   public get selectedAudios$(): Observable<ISelected<IAudio>[]> {
     return this.store.select(selectAudioState).pipe(
       map((state) => state.selectedAudios),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public get moreThanOneSelected$(): Observable<boolean> {
     return this.selectedAudios$.pipe(
       map((audios) => audios.length > 1),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public get lessThanOneSelected$(): Observable<boolean> {
     return this.selectedAudios$.pipe(
       map((audios) => audios.length <= 1),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public get size$(): Observable<number> {
     return this.selectedAudios$.pipe(
       map((audios) => audios.length),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -263,9 +263,9 @@ export class GalleryComponent implements OnInit, OnDestroy {
         take(1),
         filter(Boolean),
         tap(() =>
-          this.store.dispatch(audioActions.deleteSelectedAudios({ audios }))
+          this.store.dispatch(audioActions.deleteSelectedAudios({ audios })),
         ),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
@@ -282,16 +282,16 @@ export class GalleryComponent implements OnInit, OnDestroy {
   public get deleting$(): Observable<boolean> {
     return this.store.select(selectAudioState).pipe(
       map((state) => state.deleting),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public isChecked(audio: IAudio): Observable<boolean> {
     return this.selectedAudios$.pipe(
       map((selectedAudios) =>
-        selectedAudios.some((v) => v.data.id === audio.id)
+        selectedAudios.some((v) => v.data.id === audio.id),
       ),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -307,13 +307,13 @@ export class GalleryComponent implements OnInit, OnDestroy {
 
   public synchronizePlayPause(audio: IAudio): void {
     this.store.dispatch(
-      audioPlayerActions.synchronizeAudio({ audio, kind: 'play' })
+      audioPlayerActions.synchronizeAudio({ audio, kind: 'play' }),
     );
   }
 
   public synchronizeSeek(ratio: number, audio: IAudio): void {
     this.store.dispatch(
-      audioPlayerActions.synchronizeAudio({ audio, ratio, kind: 'seek' })
+      audioPlayerActions.synchronizeAudio({ audio, ratio, kind: 'seek' }),
     );
   }
 
@@ -348,14 +348,14 @@ export class GalleryComponent implements OnInit, OnDestroy {
   public get generating$(): Observable<boolean> {
     return this.store.select(selectGenerateVideoState).pipe(
       map((state) => state.generating),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public get capturing$(): Observable<boolean> {
     return this.store.select(selectScreenshotState).pipe(
       map((state) => state.capturing),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -368,7 +368,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
   private get isUploadHidden$(): Observable<boolean> {
     return this.store.select(selectSettingStorageState).pipe(
       map(({ uploadConfig }) => !uploadConfig.manualSync),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -394,9 +394,9 @@ export class GalleryComponent implements OnInit, OnDestroy {
         filter(Boolean),
         map(() => selectedAudios.map(({ data }) => new UploadAudioItem(data))),
         tap((items) =>
-          this.store.dispatch(uploadActions.addItemToQueue({ items }))
+          this.store.dispatch(uploadActions.addItemToQueue({ items })),
         ),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }

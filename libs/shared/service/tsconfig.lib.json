@@ -13,5 +13,5 @@
     "jest.config.ts",
     "src/**/*.test.ts"
   ],
-  "include": ["src/**/*.ts", "../utils/src/lib/interfaces/logger.interface.ts"]
+  "include": ["src/**/*.ts"]
 }

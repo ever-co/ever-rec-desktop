@@ -23,7 +23,12 @@
       "@ever-co/convert-video-feature": [
         "libs/web/convert-video/feature/src/index.ts"
       ],
-      "@ever-co/photo-data-access": ["libs/web/photo/data-access/src/index.ts"],
+      "@ever-co/date-picker-data-access": [
+        "libs/shared/date-picker/data-access/src/index.ts"
+      ],
+      "@ever-co/date-picker-feature": [
+        "libs/shared/date-picker/feature/src/index.ts"
+      ],
       "@ever-co/electron-data-access": [
         "libs/electron/data-access/src/index.ts"
       ],
@@ -31,6 +36,13 @@
       "@ever-co/electron-events": ["libs/electron/event/src/index.ts"],
       "@ever-co/electron-utils": ["libs/electron/utils/src/index.ts"],
       "@ever-co/factory": ["libs/shared/factory/src/index.ts"],
+      "@ever-co/generate-video-data-access": [
+        "libs/web/generate-video/data-access/src/index.ts"
+      ],
+      "@ever-co/generate-video-feature": [
+        "libs/web/generate-video/feature/src/index.ts"
+      ],
+      "@ever-co/generate-video-ui": ["libs/web/generate-video/ui/src/index.ts"],
       "@ever-co/layout": ["libs/web/layout/src/index.ts"],
       "@ever-co/library": ["libs/web/library/src/index.ts"],
       "@ever-co/notification-data-access": [
@@ -39,6 +51,7 @@
       "@ever-co/notification-feature": [
         "libs/web/notification/features/src/index.ts"
       ],
+      "@ever-co/photo-data-access": ["libs/web/photo/data-access/src/index.ts"],
       "@ever-co/photo-feature": ["libs/web/photo/feature/src/index.ts"],
       "@ever-co/photo-ui": ["libs/web/photo/ui/src/index.ts"],
       "@ever-co/screenshot-data-access": [
@@ -47,6 +60,7 @@
       "@ever-co/screenshot-feature": [
         "libs/web/screenshot/feature/src/index.ts"
       ],
+      "@ever-co/screenshot-ui": ["libs/web/screenshot/ui/src/index.ts"],
       "@ever-co/shared-components": ["libs/shared/components/src/index.ts"],
       "@ever-co/shared-service": ["libs/shared/service/src/index.ts"],
       "@ever-co/shared-utils": ["libs/shared/utils/src/index.ts"],
@@ -66,6 +80,9 @@
         "libs/web/upload/data-access/src/index.ts"
       ],
       "@ever-co/upload-feature": ["libs/web/upload/features/src/index.ts"],
+      "@ever-co/video-data-access": ["libs/web/video/data-access/src/index.ts"],
+      "@ever-co/video-feature": ["libs/web/video/feature/src/index.ts"],
+      "@ever-co/video-ui": ["libs/web/video/ui/src/index.ts"],
       "@ever-co/web-dashboard": ["libs/web/dashboard/src/index.ts"],
       "@ever-co/web-search": ["libs/web/search/src/index.ts"],
       "@ever-co/web-setting-data-access": [

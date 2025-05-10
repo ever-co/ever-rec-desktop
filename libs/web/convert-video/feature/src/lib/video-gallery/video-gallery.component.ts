@@ -11,16 +11,14 @@ import {
   selectVideoState,
   videoActions,
 } from '@ever-co/convert-video-data-access';
+import { selectDateRange } from '@ever-co/date-picker-data-access';
 import {
   ConfirmationDialogService,
   GalleryButtonsActionComponent,
   NoDataComponent,
   VideoComponent,
 } from '@ever-co/shared-components';
-import {
-  InfiniteScrollDirective,
-  selectDatePickerState,
-} from '@ever-co/shared-service';
+import { InfiniteScrollDirective } from '@ever-co/shared-service';
 import {
   IActionButton,
   IRange,
@@ -118,7 +116,7 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly router: Router,
-    private readonly confirmationDialogService: ConfirmationDialogService
+    private readonly confirmationDialogService: ConfirmationDialogService,
   ) {}
 
   ngOnInit(): void {
@@ -128,25 +126,25 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
         tap((state) => {
           this.hasNext = state.hasNext;
         }),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
 
     this.isAvailable$ = this.store.select(selectVideoState).pipe(
       map((state) => state.count > 0),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
 
     this.store
-      .select(selectDatePickerState)
+      .select(selectDateRange)
       .pipe(
-        tap((state) => {
-          this.range = state.selectedRange;
+        tap((range) => {
+          this.range = range;
           this.currentPage = 1;
           this.store.dispatch(videoActions.resetVideos());
           this.loadVideos();
         }),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
 
@@ -155,7 +153,7 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
       .pipe(
         filter(({ deleting }) => deleting),
         tap(() => this.unselectAll()),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
@@ -164,22 +162,22 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
     return combineLatest([this.isUploadHidden$, this.selectedVideos$]).pipe(
       map(
         ([isUploadHidden, videos]) =>
-          isUploadHidden || !!videos[0]?.data?.isTimeline
-      )
+          isUploadHidden || !!videos[0]?.data?.isTimeline,
+      ),
     );
   }
 
   public get videos$(): Observable<IVideo[]> {
     return this.store.select(selectVideoState).pipe(
       map((state) => state.videos),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   private get generating$(): Observable<boolean> {
     return this.store.select(selectGenerateVideoState).pipe(
       map((state) => state.generating),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -187,7 +185,7 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
     const videoId = selectedVideos[0].data.id;
     await this.router.navigate(['/', 'library', 'videos', videoId]);
     this.store.dispatch(
-      videoActions.unselectVideo({ video: selectedVideos[0] })
+      videoActions.unselectVideo({ video: selectedVideos[0] }),
     );
   }
 
@@ -216,7 +214,7 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
         take(1),
         filter(Boolean),
         tap(() => this.store.dispatch(videoActions.deleteVideos({ videos }))),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
@@ -230,7 +228,7 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
 
   public loadVideos(): void {
     this.store.dispatch(
-      videoActions.loadVideos({ page: this.currentPage, ...this.range })
+      videoActions.loadVideos({ page: this.currentPage, ...this.range }),
     );
   }
 
@@ -238,35 +236,35 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
     this.store.dispatch(
       video.selected
         ? videoActions.selectVideo({ video })
-        : videoActions.unselectVideo({ video })
+        : videoActions.unselectVideo({ video }),
     );
   }
 
   public get selectedVideos$(): Observable<ISelected<IVideo>[]> {
     return this.store.select(selectVideoState).pipe(
       map((state) => state.selectedVideos),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public get moreThanOneSelected$(): Observable<boolean> {
     return this.selectedVideos$.pipe(
       map((videos) => videos.length > 1),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public get lessThanOneSelected$(): Observable<boolean> {
     return this.selectedVideos$.pipe(
       map((videos) => videos.length <= 1),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public get size$(): Observable<number> {
     return this.selectedVideos$.pipe(
       map((videos) => videos.length),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -279,16 +277,16 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
   public get deleting$(): Observable<boolean> {
     return this.store.select(selectVideoState).pipe(
       map((video) => video.deleting),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public isSelected(video: IVideo): Observable<boolean> {
     return this.selectedVideos$.pipe(
       map((selectedVideos) =>
-        selectedVideos.some((v) => v.data.id === video.id)
+        selectedVideos.some((v) => v.data.id === video.id),
       ),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -299,7 +297,7 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
   private get isUploadHidden$(): Observable<boolean> {
     return this.store.select(selectSettingStorageState).pipe(
       map(({ uploadConfig }) => !uploadConfig.manualSync),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -328,7 +326,7 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
             .map(({ data }) => new UploadVideoItem(data));
           this.store.dispatch(uploadActions.addItemToQueue({ items }));
         }),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
@@ -353,9 +351,9 @@ export class VideoGalleryComponent implements OnInit, OnDestroy {
         filter(Boolean),
         withLatestFrom(this.store.select(selectSettingState)),
         tap(([, { videoConfig: config }]) =>
-          this.store.dispatch(generateVideoActions.start({ videoIds, config }))
+          this.store.dispatch(generateVideoActions.start({ videoIds, config })),
         ),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }

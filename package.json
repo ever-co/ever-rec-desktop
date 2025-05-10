@@ -103,6 +103,7 @@
     "@typescript-eslint/eslint-plugin": "8.32.0",
     "@typescript-eslint/parser": "8.32.0",
     "@typescript-eslint/utils": "^8.32.0",
+    "angular-eslint": "^19.2.0",
     "autoprefixer": "^10.4.21",
     "electron": "36.2.0",
     "electron-builder": "^26.0.12",

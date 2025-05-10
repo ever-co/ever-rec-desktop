@@ -16,10 +16,8 @@ import { RouterOutlet } from '@angular/router';
 import { breadcrumbActions } from '@ever-co/breadcrumb-data-access';
 import { BreadcrumbComponent } from '@ever-co/breadcrumb-feature';
 import { NotificationBadgeComponent } from '@ever-co/notification-feature';
-import {
-  DatePickerComponent,
-  StartComponent,
-} from '@ever-co/shared-components';
+import { StartComponent } from '@ever-co/shared-components';
+import { DatePickerComponent } from '@ever-co/date-picker-feature';
 import { LayoutService } from '@ever-co/shared-service';
 import { SidebarComponent } from '@ever-co/sidebar-feature';
 import { SearchComponent } from '@ever-co/web-search';
@@ -59,14 +57,14 @@ export class LayoutComponent implements OnInit, OnDestroy {
   constructor(
     private readonly store: Store,
     private readonly breakpointObserver: BreakpointObserver,
-    private readonly layoutService: LayoutService
+    private readonly layoutService: LayoutService,
   ) {}
 
   public ngOnInit(): void {
     this.store.dispatch(
       breadcrumbActions.set({
         breadcrumbs: [{ label: 'Dashboard', url: 'dashboard' }],
-      })
+      }),
     );
 
     this.breakpointObserver

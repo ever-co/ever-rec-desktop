@@ -1,11 +1,12 @@
 import { inject, Injectable } from '@angular/core';
+import { selectDateRange } from '@ever-co/date-picker-data-access';
 import { NotificationService } from '@ever-co/notification-data-access';
 import { screenshotActions } from '@ever-co/screenshot-data-access';
-import { DatePickerService } from '@ever-co/shared-service';
 import { IPaginationOptions, ITimeLog } from '@ever-co/shared-utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { from, of } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, map, mergeMap, withLatestFrom } from 'rxjs/operators';
 import { TimeLogElectronService } from '../services/time-log-electron.service';
 import { timeLogActions } from './time-log.actions';
 
@@ -20,11 +21,11 @@ export class TimeLogEffects {
         return from(this.timeLogElectronService.getLog(options)).pipe(
           map((timeLog) => timeLogActions.loadTimeLogSuccess({ timeLog })),
           catchError((error) =>
-            of(timeLogActions.loadTimeLogFailure({ error }))
-          )
+            of(timeLogActions.loadTimeLogFailure({ error })),
+          ),
         );
-      })
-    )
+      }),
+    ),
   );
 
   getAllTimeLogs$ = createEffect(() =>
@@ -32,21 +33,21 @@ export class TimeLogEffects {
       ofType(
         timeLogActions.loadTimeLogs,
         screenshotActions.stopCaptureSuccess,
-        screenshotActions.startCaptureSuccess
+        screenshotActions.startCaptureSuccess,
       ),
       mergeMap((options) =>
         from(
           this.timeLogElectronService.getLogs(
-            options as IPaginationOptions<ITimeLog>
-          )
+            options as IPaginationOptions<ITimeLog>,
+          ),
         ).pipe(
           map((response) => timeLogActions.loadTimeLogsSuccess(response)),
           catchError((error) =>
-            of(timeLogActions.loadTimeLogsFailure({ error }))
-          )
-        )
-      )
-    )
+            of(timeLogActions.loadTimeLogsFailure({ error })),
+          ),
+        ),
+      ),
+    ),
   );
 
   updateDuration$ = createEffect(() =>
@@ -55,18 +56,18 @@ export class TimeLogEffects {
       mergeMap((options) =>
         from(
           this.timeLogElectronService.getLogs(
-            options as IPaginationOptions<ITimeLog>
-          )
+            options as IPaginationOptions<ITimeLog>,
+          ),
         ).pipe(
           map((response) =>
-            timeLogActions.updateTimeLogDurationSuccess(response)
+            timeLogActions.updateTimeLogDurationSuccess(response),
           ),
           catchError((error) =>
-            of(timeLogActions.loadTimeLogsFailure({ error }))
-          )
-        )
-      )
-    )
+            of(timeLogActions.loadTimeLogsFailure({ error })),
+          ),
+        ),
+      ),
+    ),
   );
 
   onTick$ = createEffect(() =>
@@ -75,9 +76,9 @@ export class TimeLogEffects {
       mergeMap(() =>
         this.timeLogElectronService
           .onTick()
-          .pipe(map(() => timeLogActions.tick()))
-      )
-    )
+          .pipe(map(() => timeLogActions.tick())),
+      ),
+    ),
   );
 
   deleteTimeLog$ = createEffect(() =>
@@ -90,11 +91,11 @@ export class TimeLogEffects {
             return timeLogActions.deleteTimeLogSuccess({ id: timeLog.id });
           }),
           catchError((error) =>
-            of(timeLogActions.deleteTimeLogFailure({ error }))
-          )
-        )
-      )
-    )
+            of(timeLogActions.deleteTimeLogFailure({ error })),
+          ),
+        ),
+      ),
+    ),
   );
 
   timeLogStatistics$ = createEffect(() =>
@@ -103,25 +104,26 @@ export class TimeLogEffects {
         timeLogActions.getTimeLogStatistics,
         timeLogActions.loadTimeLogs,
         screenshotActions.loadScreenshots,
-        timeLogActions.tick
+        timeLogActions.tick,
       ),
-      mergeMap((options) =>
+      withLatestFrom(this.store.select(selectDateRange)),
+      mergeMap(([options, range]) =>
         from(
           this.timeLogElectronService.getLogStatistics({
-            start: this.datePickerService.start,
-            end: this.datePickerService.end,
+            start: range.start,
+            end: range.end,
             ...options,
-          })
+          }),
         ).pipe(
           map((response) =>
-            timeLogActions.getTimeLogStatisticsSuccess(response)
+            timeLogActions.getTimeLogStatisticsSuccess(response),
           ),
           catchError((error) =>
-            of(timeLogActions.getTimeLogStatisticsFailure({ error }))
-          )
-        )
-      )
-    )
+            of(timeLogActions.getTimeLogStatisticsFailure({ error })),
+          ),
+        ),
+      ),
+    ),
   );
 
   getTimeLogContext$ = createEffect(() =>
@@ -130,20 +132,20 @@ export class TimeLogEffects {
       mergeMap((action) =>
         from(this.timeLogElectronService.getContext(action)).pipe(
           map((context) =>
-            timeLogActions.getTimeLogContextSuccess({ context })
+            timeLogActions.getTimeLogContextSuccess({ context }),
           ),
           catchError((error) => {
             this.notificationService.show('Failed to copy context', 'error');
             return of(timeLogActions.getTimeLogContextFailure({ error }));
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
 
   constructor(
     private readonly timeLogElectronService: TimeLogElectronService,
-    private readonly datePickerService: DatePickerService,
-    private readonly notificationService: NotificationService
+    private readonly notificationService: NotificationService,
+    private readonly store: Store,
   ) {}
 }

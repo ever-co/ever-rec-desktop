@@ -9,8 +9,8 @@ import {
   activityActions,
   selectActivityState,
 } from '@ever-co/activity-data-access';
+import { selectDateRange } from '@ever-co/date-picker-data-access';
 import { NoDataComponent } from '@ever-co/shared-components';
-import { selectDatePickerState } from '@ever-co/shared-service';
 import {
   IActivityStateDistribution,
   IdleState,
@@ -18,7 +18,14 @@ import {
 } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { Color, NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
-import { distinctUntilChanged, map, Observable, Subject, takeUntil, withLatestFrom } from 'rxjs';
+import {
+  distinctUntilChanged,
+  map,
+  Observable,
+  Subject,
+  takeUntil,
+  withLatestFrom,
+} from 'rxjs';
 
 interface ChartData {
   name: string;
@@ -26,33 +33,36 @@ interface ChartData {
 }
 
 @Component({
-    selector: 'lib-distribution',
-    imports: [
-        CommonModule,
-        MatCardModule,
-        MatTooltipModule,
-        MatProgressBarModule,
-        MatIconModule,
-        NgxChartsModule,
-        NoDataComponent
-    ],
-    templateUrl: './distribution.component.html',
-    styleUrl: './distribution.component.scss',
-    animations: [
-        trigger('fadeInUp', [
-            transition(':enter', [
-                style({ opacity: 0, transform: 'translateY(10px)' }),
-                animate('400ms ease-out', style({ opacity: 1, transform: 'translateY(0)' })),
-            ]),
-        ]),
-        trigger('widthGrow', [
-            transition(':enter', [
-                style({ width: 0 }),
-                animate('600ms ease-out', style({ width: '*' })),
-            ]),
-        ]),
-    ],
-    providers: [TitleCasePipe]
+  selector: 'lib-distribution',
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatTooltipModule,
+    MatProgressBarModule,
+    MatIconModule,
+    NgxChartsModule,
+    NoDataComponent,
+  ],
+  templateUrl: './distribution.component.html',
+  styleUrl: './distribution.component.scss',
+  animations: [
+    trigger('fadeInUp', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(10px)' }),
+        animate(
+          '400ms ease-out',
+          style({ opacity: 1, transform: 'translateY(0)' }),
+        ),
+      ]),
+    ]),
+    trigger('widthGrow', [
+      transition(':enter', [
+        style({ width: 0 }),
+        animate('600ms ease-out', style({ width: '*' })),
+      ]),
+    ]),
+  ],
+  providers: [TitleCasePipe],
 })
 export class DistributionComponent implements OnDestroy, OnInit {
   private readonly destroy$ = new Subject<void>();
@@ -66,7 +76,7 @@ export class DistributionComponent implements OnDestroy, OnInit {
 
   constructor(
     private readonly store: Store,
-    private readonly titleCasePipe: TitleCasePipe
+    private readonly titleCasePipe: TitleCasePipe,
   ) {}
   ngOnInit(): void {
     this.dateRanges$().subscribe((range) => {
@@ -75,26 +85,23 @@ export class DistributionComponent implements OnDestroy, OnInit {
   }
 
   public dateRanges$(): Observable<IRange> {
-    return this.store.select(selectDatePickerState).pipe(
-      map((state) => state.selectedRange),
-      takeUntil(this.destroy$)
-    );
+    return this.store.select(selectDateRange).pipe(takeUntil(this.destroy$));
   }
 
   private get distribution$(): Observable<IActivityStateDistribution> {
     return this.store.select(selectActivityState).pipe(
       map((state) => state.distribution),
       distinctUntilChanged(),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public get stateEntries$(): Observable<[IdleState, number][]> {
     return this.distribution$.pipe(
       map(
-        (distribution) => Object.entries(distribution) as [IdleState, number][]
+        (distribution) => Object.entries(distribution) as [IdleState, number][],
       ),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -104,9 +111,9 @@ export class DistributionComponent implements OnDestroy, OnInit {
         Object.entries(distribution).map(([state, count]) => ({
           name: this.titleCasePipe.transform(state),
           value: Number(count),
-        }))
+        })),
       ),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -114,16 +121,16 @@ export class DistributionComponent implements OnDestroy, OnInit {
     return this.distribution$.pipe(
       withLatestFrom(this.count$),
       map(([distribution, total]) => distribution[IdleState.ACTIVE] / total),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public get count$(): Observable<number> {
     return this.distribution$.pipe(
       map((distribution) =>
-        Object.values(distribution).reduce((sum, count) => sum + count, 0)
+        Object.values(distribution).reduce((sum, count) => sum + count, 0),
       ),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 

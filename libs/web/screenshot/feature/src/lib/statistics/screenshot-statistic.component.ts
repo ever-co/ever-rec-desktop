@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { Router } from '@angular/router';
+import { selectDateRange } from '@ever-co/date-picker-data-access';
 import {
   screenshotActions,
   selectScreenshotState,
@@ -15,7 +16,6 @@ import {
   IconFallbackDirective,
   InfiniteScrollDirective,
   NumberSuffixPipe,
-  selectDatePickerState,
 } from '@ever-co/shared-service';
 import { IRange, IScreenshotMetadataStatistic } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
@@ -23,22 +23,22 @@ import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { ScreenshotStatisticsChartComponent } from '../chart/screenshot-statistics-chart.component';
 
 @Component({
-    selector: 'lib-screenshot-statistic',
-    imports: [
-        CommonModule,
-        MatCardModule,
-        MatProgressBarModule,
-        MatIconModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        NoDataComponent,
-        InfiniteScrollDirective,
-        IconFallbackDirective,
-        ScreenshotStatisticsChartComponent,
-        NumberSuffixPipe,
-    ],
-    templateUrl: './screenshot-statistic.component.html',
-    styleUrl: './screenshot-statistic.component.scss'
+  selector: 'lib-screenshot-statistic',
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatProgressBarModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    NoDataComponent,
+    InfiniteScrollDirective,
+    IconFallbackDirective,
+    ScreenshotStatisticsChartComponent,
+    NumberSuffixPipe,
+  ],
+  templateUrl: './screenshot-statistic.component.html',
+  styleUrl: './screenshot-statistic.component.scss',
 })
 export class ScreenshotStatisticComponent implements OnInit {
   private destroy$ = new Subject<void>();
@@ -47,14 +47,17 @@ export class ScreenshotStatisticComponent implements OnInit {
   private hasNext = false;
   private range!: IRange;
 
-  constructor(private readonly store: Store, private router: Router) {}
+  constructor(
+    private readonly store: Store,
+    private router: Router,
+  ) {}
   ngOnInit(): void {
     this.store
       .select(selectScreenshotState)
       .pipe(
         tap((state) => {
           this.hasNext = state.statistic.hasNext;
-        })
+        }),
       )
       .subscribe();
     this.statistics$ = this.store
@@ -62,15 +65,15 @@ export class ScreenshotStatisticComponent implements OnInit {
       .pipe(map((state) => state.statistic.currents));
 
     this.store
-      .select(selectDatePickerState)
+      .select(selectDateRange)
       .pipe(
-        tap((state) => {
-          this.range = state.selectedRange;
+        tap((range) => {
+          this.range = range;
           this.currentPage = 1;
           this.store.dispatch(screenshotActions.resetScreenshotsStatistics());
           this.loadStats();
         }),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
@@ -102,17 +105,17 @@ export class ScreenshotStatisticComponent implements OnInit {
         deleted: true,
         page: this.currentPage,
         ...this.range,
-      })
+      }),
     );
   }
 
   public onSearch(statistic: IScreenshotMetadataStatistic) {
     this.store.dispatch(screenshotActions.resetAsk());
     this.store.dispatch(
-      screenshotActions.ask({ filter: statistic.name, page: 1 })
+      screenshotActions.ask({ filter: statistic.name, page: 1 }),
     );
     this.store.dispatch(
-      screenshotActions.addToHistory({ searchQuery: statistic.name })
+      screenshotActions.addToHistory({ searchQuery: statistic.name }),
     );
     this.router.navigate(['/', 'search']);
   }

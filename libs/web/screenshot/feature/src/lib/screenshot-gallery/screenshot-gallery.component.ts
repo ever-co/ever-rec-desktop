@@ -8,6 +8,7 @@ import {
   selectGenerateVideoState,
   selectSettingState,
 } from '@ever-co/convert-video-data-access';
+import { selectDateRange } from '@ever-co/date-picker-data-access';
 import {
   screenshotActions,
   selectScreenshotState,
@@ -18,10 +19,7 @@ import {
   NoDataComponent,
   ScreenshotComponent,
 } from '@ever-co/shared-components';
-import {
-  InfiniteScrollDirective,
-  selectDatePickerState,
-} from '@ever-co/shared-service';
+import { InfiniteScrollDirective } from '@ever-co/shared-service';
 import {
   IActionButton,
   IRange,
@@ -119,7 +117,7 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly router: Router,
-    private readonly confirmationDialogService: ConfirmationDialogService
+    private readonly confirmationDialogService: ConfirmationDialogService,
   ) {}
 
   ngOnInit(): void {
@@ -129,33 +127,33 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
         tap((state) => {
           this.hasNext = state.hasNext;
         }),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
     this.isAvailable$ = this.store.select(selectScreenshotState).pipe(
       map((state) => state.count > 0),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
 
     this.capturing$ = this.store.select(selectScreenshotState).pipe(
       map((state) => state.capturing || state.loading),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
 
     this.screenshots$ = this.store.select(selectScreenshotState).pipe(
       map((state) => state.screenshots),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
     this.store
-      .select(selectDatePickerState)
+      .select(selectDateRange)
       .pipe(
-        tap((state) => {
-          this.range = state.selectedRange;
+        tap((range) => {
+          this.range = range;
           this.currentPage = 1;
           this.store.dispatch(screenshotActions.resetScreenshots());
           this.loadScreenshots();
         }),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
     this.store
@@ -163,7 +161,7 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
       .pipe(
         filter(({ deleting }) => deleting),
         tap(() => this.unselectAll()),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
@@ -180,7 +178,7 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
       screenshotActions.loadScreenshots({
         page: this.currentPage,
         ...this.range,
-      })
+      }),
     );
   }
 
@@ -188,47 +186,47 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
     this.store.dispatch(
       screenshot.selected
         ? screenshotActions.selectScreenshot({ screenshot })
-        : screenshotActions.unselectScreenshot({ screenshot })
+        : screenshotActions.unselectScreenshot({ screenshot }),
     );
   }
 
   public get selectedScreenshots$(): Observable<ISelected<IScreenshot>[]> {
     return this.store.select(selectScreenshotState).pipe(
       map((state) => state.selectedScreenshots),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public get moreThanOneSelected$(): Observable<boolean> {
     return this.selectedScreenshots$.pipe(
       map((screenshots) => screenshots.length > 1),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public get lessThanOneSelected$(): Observable<boolean> {
     return this.selectedScreenshots$.pipe(
       map((screenshots) => screenshots.length <= 1),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public get size$(): Observable<number> {
     return this.selectedScreenshots$.pipe(
       map((screenshots) => screenshots.length),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   private async view(
-    selectedScreenshots: ISelected<IScreenshot>[]
+    selectedScreenshots: ISelected<IScreenshot>[],
   ): Promise<void> {
     const screenshotId = selectedScreenshots[0].data.id;
     await this.router.navigate(['/', 'library', 'screenshots', screenshotId]);
     this.store.dispatch(
       screenshotActions.unselectScreenshot({
         screenshot: selectedScreenshots[0],
-      })
+      }),
     );
   }
 
@@ -237,10 +235,10 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
   }
 
   private deleteScreenshots(
-    selectedScreenshots: ISelected<IScreenshot>[]
+    selectedScreenshots: ISelected<IScreenshot>[],
   ): void {
     const screenshots = selectedScreenshots.map(
-      (screenshot) => screenshot.data
+      (screenshot) => screenshot.data,
     );
     this.confirmationDialogService
       .open({
@@ -253,17 +251,17 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
         filter(Boolean),
         tap(() =>
           this.store.dispatch(
-            screenshotActions.deleteSelectedScreenshots({ screenshots })
-          )
+            screenshotActions.deleteSelectedScreenshots({ screenshots }),
+          ),
         ),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
 
   private generateVideo(selectedScreenshots: ISelected<IScreenshot>[]): void {
     const screenshotIds = selectedScreenshots.map(
-      (screenshot) => screenshot.data.id
+      (screenshot) => screenshot.data.id,
     );
     this.confirmationDialogService
       .open({
@@ -284,10 +282,10 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
         withLatestFrom(this.store.select(selectSettingState)),
         tap(([, { videoConfig: config }]) =>
           this.store.dispatch(
-            generateVideoActions.start({ screenshotIds, config })
-          )
+            generateVideoActions.start({ screenshotIds, config }),
+          ),
         ),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
@@ -295,23 +293,23 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
   private get generating$(): Observable<boolean> {
     return this.store.select(selectGenerateVideoState).pipe(
       map((state) => state.generating),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public get deleting$(): Observable<boolean> {
     return this.store.select(selectScreenshotState).pipe(
       map((screenshot) => screenshot.deleting),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public isSelected(screenshot: IScreenshot): Observable<boolean> {
     return this.selectedScreenshots$.pipe(
       map((selectedScreenshots) =>
-        selectedScreenshots.some((v) => v.data.id === screenshot.id)
+        selectedScreenshots.some((v) => v.data.id === screenshot.id),
       ),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -322,7 +320,7 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
   private get isUploadHidden$(): Observable<boolean> {
     return this.store.select(selectSettingStorageState).pipe(
       map(({ uploadConfig }) => !uploadConfig.manualSync),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -353,11 +351,11 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
         filter(Boolean),
         tap(() => {
           const items = selectedScreenshots.map(
-            ({ data }) => new UploadScreenshotItem(data)
+            ({ data }) => new UploadScreenshotItem(data),
           );
           this.store.dispatch(uploadActions.addItemToQueue({ items }));
         }),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }

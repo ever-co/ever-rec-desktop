@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { HumanizePipe, selectDatePickerState } from '@ever-co/shared-service';
+import { selectDateRange } from '@ever-co/date-picker-data-access';
+import { HumanizePipe } from '@ever-co/shared-service';
 import { ITimeLogStatistics } from '@ever-co/shared-utils';
 import {
   selectTimeLogState,
@@ -24,14 +25,12 @@ export class TimeLogStatisticsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.store
-      .select(selectDatePickerState)
+      .select(selectDateRange)
       .pipe(
-        tap((state) =>
-          this.store.dispatch(
-            timeLogActions.getTimeLogStatistics(state.selectedRange)
-          )
+        tap((range) =>
+          this.store.dispatch(timeLogActions.getTimeLogStatistics(range)),
         ),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
@@ -39,14 +38,14 @@ export class TimeLogStatisticsComponent implements OnInit, OnDestroy {
   public get statistics$(): Observable<ITimeLogStatistics> {
     return this.store.select(selectTimeLogState).pipe(
       map((state) => state.statistics),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public get showMonth$(): Observable<boolean> {
     return this.store.select(selectSettingStorageState).pipe(
       map(({ retention }) => retention > 7 || retention === -1),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 

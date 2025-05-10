@@ -12,10 +12,7 @@ import {
   GalleryButtonsActionComponent,
   NoDataComponent,
 } from '@ever-co/shared-components';
-import {
-  InfiniteScrollDirective,
-  selectDatePickerState,
-} from '@ever-co/shared-service';
+import { InfiniteScrollDirective } from '@ever-co/shared-service';
 import {
   IActionButton,
   IPhoto,
@@ -30,6 +27,7 @@ import {
 import { Store } from '@ngrx/store';
 import { Observable, Subject, filter, map, take, takeUntil, tap } from 'rxjs';
 import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
+import { selectDateRange } from '@ever-co/date-picker-data-access';
 
 @Component({
   selector: 'lib-photo-gallery',
@@ -79,7 +77,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly router: Router,
-    private readonly confirmationDialogService: ConfirmationDialogService
+    private readonly confirmationDialogService: ConfirmationDialogService,
   ) {
     this.cardButtons = [
       {
@@ -123,34 +121,34 @@ export class GalleryComponent implements OnInit, OnDestroy {
         tap((state) => {
           this.hasNext = state.hasNext;
         }),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
     this.isAvailable$ = this.store.select(selectPhotoState).pipe(
       map((state) => state.count > 0),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
 
     this.capturing$ = this.store.select(selectPhotoState).pipe(
       map((state) => state.loading),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
 
     this.photos$ = this.store.select(selectPhotoState).pipe(
       map((state) => state.photos),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
 
     this.store
-      .select(selectDatePickerState)
+      .select(selectDateRange)
       .pipe(
-        tap((state) => {
-          this.range = state.selectedRange;
+        tap((range) => {
+          this.range = range;
           this.currentPage = 1;
           this.store.dispatch(photoActions.resetPhotos());
           this.loadPhotos();
         }),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
     this.store
@@ -158,7 +156,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
       .pipe(
         filter(({ deleting }) => deleting),
         tap(() => this.unselectAll()),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
@@ -175,7 +173,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
       photoActions.loadPhotos({
         page: this.currentPage,
         ...this.range,
-      })
+      }),
     );
   }
 
@@ -183,35 +181,35 @@ export class GalleryComponent implements OnInit, OnDestroy {
     this.store.dispatch(
       photo.selected
         ? photoActions.selectPhoto({ photo })
-        : photoActions.unselectPhoto({ photo })
+        : photoActions.unselectPhoto({ photo }),
     );
   }
 
   public get selectedPhotos$(): Observable<ISelected<IPhoto>[]> {
     return this.store.select(selectPhotoState).pipe(
       map((state) => state.selectedPhotos),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public get moreThanOneSelected$(): Observable<boolean> {
     return this.selectedPhotos$.pipe(
       map((photos) => photos.length > 1),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public get lessThanOneSelected$(): Observable<boolean> {
     return this.selectedPhotos$.pipe(
       map((photos) => photos.length <= 1),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public get size$(): Observable<number> {
     return this.selectedPhotos$.pipe(
       map((photos) => photos.length),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -234,9 +232,9 @@ export class GalleryComponent implements OnInit, OnDestroy {
         take(1),
         filter(Boolean),
         tap(() =>
-          this.store.dispatch(photoActions.deleteSelectedPhotos({ photos }))
+          this.store.dispatch(photoActions.deleteSelectedPhotos({ photos })),
         ),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
@@ -244,16 +242,16 @@ export class GalleryComponent implements OnInit, OnDestroy {
   public get deleting$(): Observable<boolean> {
     return this.store.select(selectPhotoState).pipe(
       map((screenshot) => screenshot.deleting),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public isSelected(photo: IPhoto): Observable<boolean> {
     return this.selectedPhotos$.pipe(
       map((selectedPhotos) =>
-        selectedPhotos.some((v) => v.data.id === photo.id)
+        selectedPhotos.some((v) => v.data.id === photo.id),
       ),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -275,7 +273,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
   private get isUploadHidden$(): Observable<boolean> {
     return this.store.select(selectSettingStorageState).pipe(
       map(({ uploadConfig }) => !uploadConfig.manualSync),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -301,9 +299,9 @@ export class GalleryComponent implements OnInit, OnDestroy {
         filter(Boolean),
         map(() => selectedPhotos.map(({ data }) => new UploadPhotoItem(data))),
         tap((items) =>
-          this.store.dispatch(uploadActions.addItemToQueue({ items }))
+          this.store.dispatch(uploadActions.addItemToQueue({ items })),
         ),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }

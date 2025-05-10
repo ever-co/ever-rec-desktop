@@ -26,7 +26,6 @@ import {
   HumanizePipe,
   LayoutService,
   PopoverDirective,
-  selectDatePickerState,
 } from '@ever-co/shared-service';
 import {
   IActionButton,
@@ -55,6 +54,7 @@ import {
 } from 'rxjs';
 import { TimesheetViewComponent } from '../timesheet-view/timesheet-view.component';
 import { ActivatedRoute } from '@angular/router';
+import { selectDateRange } from '@ever-co/date-picker-data-access';
 
 @Component({
   selector: 'lib-timesheet-feature',
@@ -123,7 +123,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       loading: this.generating$,
       disable: this.isRunning$.pipe(
         withLatestFrom(this.generating$),
-        map(([isRunning, generating]) => isRunning || generating)
+        map(([isRunning, generating]) => isRunning || generating),
       ),
     },
     {
@@ -146,7 +146,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     private readonly clipboard: Clipboard,
     private readonly matDialog: MatDialog,
     private readonly notificationService: NotificationService,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
   ) {}
 
   ngOnInit() {
@@ -158,7 +158,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
           this.dataSource.data = state.timeLogs;
           this.loading = state.loading;
         }),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
 
@@ -195,26 +195,24 @@ export class TimesheetComponent implements OnInit, OnDestroy {
                 this.clipboard.copy(context);
                 this.notificationService.show(
                   'Copied time log context to clipboard',
-                  'success'
+                  'success',
                 );
-              })
-            )
+              }),
+            ),
         ),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
 
     this.store
-      .select(selectDatePickerState)
+      .select(selectDateRange)
       .pipe(
-        tap((state) => {
-          this.range = state.selectedRange;
-          this.store.dispatch(
-            timeLogActions.getTimeLogStatistics(state.selectedRange)
-          );
+        tap((range) => {
+          this.range = range;
+          this.store.dispatch(timeLogActions.getTimeLogStatistics(range));
           this.loadTimeLogs(0, this.pageSize);
         }),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
 
@@ -225,7 +223,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
         tap((timeLogId) => this.select({ id: timeLogId } as ITimeLog)),
         debounceTime(300),
         tap(() => this.generateVideo()),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
@@ -270,9 +268,9 @@ export class TimesheetComponent implements OnInit, OnDestroy {
         map(() => this.selectedRow),
         filter(Boolean),
         tap((timeLog) =>
-          this.store.dispatch(timeLogActions.deleteTimeLog({ timeLog }))
+          this.store.dispatch(timeLogActions.deleteTimeLog({ timeLog })),
         ),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
@@ -282,7 +280,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       map((state) => {
         this.selectedRow = state.timeLog;
         return this.selectedRow;
-      })
+      }),
     );
   }
 
@@ -297,10 +295,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   }
 
   public get dateRange$(): Observable<IRange> {
-    return this.store.select(selectDatePickerState).pipe(
-      map((state) => state.selectedRange),
-      takeUntil(this.destroy$)
-    );
+    return this.store.select(selectDateRange).pipe(takeUntil(this.destroy$));
   }
 
   public get timeLogStatisticsComponent() {
@@ -310,7 +305,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   public get statistics$(): Observable<ITimeLogStatistics> {
     return this.store.select(selectTimeLogState).pipe(
       map((state) => state.statistics),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -340,13 +335,13 @@ export class TimesheetComponent implements OnInit, OnDestroy {
         withLatestFrom(this.store.select(selectSettingState)),
         tap(([, { videoConfig: config }]) =>
           this.store.dispatch(
-            generateVideoActions.start({ timeLogId, config, isTimeLine: true })
-          )
+            generateVideoActions.start({ timeLogId, config, isTimeLine: true }),
+          ),
         ),
         concatMap(() =>
-          this.matDialog.open(TimesheetViewComponent).afterClosed()
+          this.matDialog.open(TimesheetViewComponent).afterClosed(),
         ),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
@@ -354,14 +349,14 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   private get generating$(): Observable<boolean> {
     return this.store.select(selectGenerateVideoState).pipe(
       map((state) => state.generating),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   private get isRunning$(): Observable<boolean> {
     return this.store.select(selectTimeLogState).pipe(
       map(({ timeLog }) => timeLog?.running),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -374,8 +369,8 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       .pipe(
         take(1),
         tap((range) =>
-          this.store.dispatch(timeLogActions.getTimeLogContext({ range }))
-        )
+          this.store.dispatch(timeLogActions.getTimeLogContext({ range })),
+        ),
       )
       .subscribe();
   }

@@ -18,11 +18,8 @@ import {
   activityActions,
   selectActivityState,
 } from '@ever-co/activity-data-access';
-import {
-  HumanizeDateRangePipe,
-  HumanizePipe,
-  selectDatePickerState,
-} from '@ever-co/shared-service';
+import { selectDateRange } from '@ever-co/date-picker-data-access';
+import { HumanizeDateRangePipe, HumanizePipe } from '@ever-co/shared-service';
 import { IRange, IWorkPatternAnalysis } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import {
@@ -55,7 +52,7 @@ import {
         style({ opacity: 0, transform: 'translateY(20px)' }),
         animate(
           '500ms ease-out',
-          style({ opacity: 1, transform: 'translateY(0)' })
+          style({ opacity: 1, transform: 'translateY(0)' }),
         ),
       ]),
     ]),
@@ -88,15 +85,12 @@ export class AnalysisComponent implements OnInit, OnDestroy {
     return this.store.select(selectActivityState).pipe(
       map((state) => state.analysis),
       distinctUntilChanged(),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public dateRanges$(): Observable<IRange> {
-    return this.store.select(selectDatePickerState).pipe(
-      map((state) => state.selectedRange),
-      takeUntil(this.destroy$)
-    );
+    return this.store.select(selectDateRange).pipe(takeUntil(this.destroy$));
   }
 
   public getConsistencyColor(score: number): string {

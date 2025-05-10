@@ -20,7 +20,8 @@ import {
 } from '@ever-co/factory';
 import { provideNotificationDataAccess } from '@ever-co/notification-data-access';
 import { provideScreenshotDataAccess } from '@ever-co/screenshot-data-access';
-import { provideDatePickerDataAccess, REC_ENV } from '@ever-co/shared-service';
+import { REC_ENV } from '@ever-co/shared-service';
+import { provideDatePickerDataAccess } from '@ever-co/date-picker-data-access';
 import { provideSidebarDataAccess } from '@ever-co/sidebar-data-access';
 import { provideTimelineDataAccess } from '@ever-co/timeline-data-access';
 import { provideTimeLogDataAccess } from '@ever-co/timesheet-data-access';
