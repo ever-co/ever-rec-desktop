@@ -1,53 +1,56 @@
 @if ((isAvailable$ | async) && filter) {
-<div class="flex justify-between items-center mb-3">
-  <h4 class="text-xl md:text-xl font-bold">
-    Result for <span class="quotes">{{ filter }}</span>
-  </h4>
-  <div class="font-medium text-sm text-gray-600">
-    About {{ count$ | async }} results
+  <div class="flex justify-between items-center mb-3">
+    <h4 class="text-xl md:text-xl font-bold">
+      Result for <span class="quotes">{{ filter }}</span>
+    </h4>
+    <div class="font-medium text-sm text-gray-600">
+      About {{ count$ | async }} results
+    </div>
   </div>
-</div>
-<div
-  libInfiniteScroll
-  (scrolled)="moreScreenshots()"
-  class="grid grid-cols-1 static md:grid-cols-2 lg:grid-cols-3 gap-4 pr-4 overflow-auto max-h-custom main"
->
-  @for (screenshot of screenshots$ | async; track screenshot.id) {
-  <lib-screenshot
-    (selected)="selectScreenshot($event)"
-    [checked]="isSelected(screenshot) | async"
-    (click)="onView(screenshot)"
-    class="card cursor-pointer"
-    [screenshot]="screenshot"
-  ></lib-screenshot>
-  } @if(capturing$ | async) {
-  <mat-card
-    appearance="outlined"
-    class="screenshot-card flex items-center justify-center p-8"
+  <div
+    libInfiniteScroll
+    (scrolled)="moreScreenshots()"
+    class="grid grid-cols-1 static md:grid-cols-2 lg:grid-cols-3 gap-4 pr-4 overflow-auto max-h-custom main"
   >
-    <mat-spinner diameter="48" class="text-gray-300"></mat-spinner>
-  </mat-card>
-  }
-</div>
+    @for (screenshot of screenshots$ | async; track screenshot.id) {
+      <lib-screenshot
+        (selected)="selectScreenshot($event)"
+        [checked]="isSelected(screenshot) | async"
+        (click)="onView(screenshot)"
+        [actionButtons]="cardButtons"
+        class="card cursor-pointer"
+        [screenshot]="screenshot"
+      ></lib-screenshot>
+    }
+    @if (capturing$ | async) {
+      <mat-card
+        appearance="outlined"
+        class="screenshot-card flex items-center justify-center p-8"
+      >
+        <mat-spinner diameter="48" class="text-gray-300"></mat-spinner>
+      </mat-card>
+    }
+  </div>
 
-@if((size$ | async)) {
-<div class="absolute inset-x-0 action-button-group">
-  <lib-gallery-buttons-action
-    [buttons]="actionButtons"
-    [size]="size$ | async"
-    [data]="selectedScreenshots$ | async"
-  ></lib-gallery-buttons-action>
-</div>
-} } @else {
-<div class="flex h-full items-center p-4 justify-center">
-  <lib-no-data
-    [message]="
-      filter
-        ? 'Your search - ' + filter + ' - did not match any documents'
-        : 'No search data available'
-    "
-    class="text-center text-gray-500"
-  >
-  </lib-no-data>
-</div>
+  @if (size$ | async) {
+    <div class="absolute inset-x-0 action-button-group">
+      <lib-gallery-buttons-action
+        [buttons]="galleryButtons"
+        [size]="size$ | async"
+        [data]="selectedScreenshots$ | async"
+      ></lib-gallery-buttons-action>
+    </div>
+  }
+} @else {
+  <div class="flex h-full items-center p-4 justify-center">
+    <lib-no-data
+      [message]="
+        filter
+          ? 'Your search - ' + filter + ' - did not match any documents'
+          : 'No search data available'
+      "
+      class="text-center text-gray-500"
+    >
+    </lib-no-data>
+  </div>
 }

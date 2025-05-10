@@ -65,25 +65,8 @@ import {
   styleUrl: './screenshot.component.scss',
 })
 export class ScreenshotComponent implements OnInit, OnDestroy {
-  public readonly actionButtons: IActionButton[] = [
-    {
-      icon: 'backup',
-      label: 'Upload',
-      variant: 'success',
-      action: this.upload.bind(this),
-      loading: this.uploading$,
-      loadingLabel: 'Uploading...',
-      disable: this.uploading$,
-      hide: this.isUploadHidden$,
-    },
-    {
-      icon: 'delete',
-      label: 'Delete',
-      variant: 'danger',
-      action: this.delete.bind(this),
-    },
-  ];
-  private destroy$ = new Subject<void>();
+  private readonly destroy$ = new Subject<void>();
+  public readonly actionButtons: IActionButton[] = [];
 
   constructor(
     private readonly router: Router,
@@ -91,7 +74,27 @@ export class ScreenshotComponent implements OnInit, OnDestroy {
     private readonly store: Store,
     private readonly confirmationDialogService: ConfirmationDialogService,
     private readonly location: Location,
-  ) {}
+  ) {
+    this.actionButtons = [
+      {
+        icon: 'backup',
+        label: 'Upload',
+        variant: 'success',
+        action: this.upload.bind(this),
+        loading: this.uploading$,
+        loadingLabel: 'Uploading...',
+        disable: this.uploading$,
+        hide: this.isUploadHidden$,
+      },
+      {
+        icon: 'delete',
+        label: 'Delete',
+        variant: 'danger',
+        action: this.delete.bind(this),
+      },
+    ];
+  }
+
   ngOnInit(): void {
     this.activatedRoute.params
       .pipe(

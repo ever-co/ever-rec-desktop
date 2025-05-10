@@ -13,11 +13,11 @@ import {
   screenshotActions,
   selectScreenshotState,
 } from '@ever-co/screenshot-data-access';
+import { ScreenshotComponent } from '@ever-co/screenshot-ui';
 import {
   ConfirmationDialogService,
   GalleryButtonsActionComponent,
   NoDataComponent,
-  ScreenshotComponent,
 } from '@ever-co/shared-components';
 import { InfiniteScrollDirective } from '@ever-co/shared-service';
 import { IActionButton, IScreenshot, ISelected } from '@ever-co/shared-utils';
@@ -62,22 +62,9 @@ export class ScreenshotSearchComponent implements OnInit, OnDestroy {
   private currentPage = 1;
   private hasNext = false;
   public filter = '';
-  public actionButtons: IActionButton[] = [
-    {
-      icon: 'visibility',
-      label: 'View',
-      variant: 'default',
-      hide: this.moreThanOneSelected$,
-      action: this.view.bind(this),
-    },
-    {
-      icon: 'subscriptions',
-      label: 'Generate',
-      variant: 'warning',
-      hide: this.lessThanOneSelected$,
-      action: this.generateVideo.bind(this),
-      loading: this.generating$,
-    },
+  public readonly galleryButtons: IActionButton[] = [];
+  public readonly cardButtons: IActionButton[] = [];
+  private readonly commonsButtons: IActionButton[] = [
     {
       icon: 'backup',
       label: 'Upload',
@@ -86,20 +73,6 @@ export class ScreenshotSearchComponent implements OnInit, OnDestroy {
       loading: this.uploading$,
       loadingLabel: 'Uploading...',
       hide: this.isUploadHidden$,
-    },
-    {
-      icon: 'remove_done',
-      label: 'Unselect All',
-      variant: 'default',
-      hide: this.lessThanOneSelected$,
-      action: this.unselectAll.bind(this),
-    },
-    {
-      icon: 'remove_done',
-      label: 'Unselect',
-      variant: 'default',
-      hide: this.moreThanOneSelected$,
-      action: this.unselectAll.bind(this),
     },
     {
       icon: 'delete',
@@ -113,8 +86,51 @@ export class ScreenshotSearchComponent implements OnInit, OnDestroy {
   constructor(
     private readonly router: Router,
     private readonly store: Store,
-    private readonly confirmationDialogService: ConfirmationDialogService
-  ) {}
+    private readonly confirmationDialogService: ConfirmationDialogService,
+  ) {
+    this.cardButtons = [
+      {
+        icon: 'visibility',
+        label: 'View',
+        variant: 'default',
+        action: this.view.bind(this),
+      },
+      ...this.commonsButtons,
+    ];
+
+    this.galleryButtons = [
+      {
+        icon: 'visibility',
+        label: 'View',
+        variant: 'default',
+        hide: this.moreThanOneSelected$,
+        action: this.view.bind(this),
+      },
+      {
+        icon: 'subscriptions',
+        label: 'Generate',
+        variant: 'warning',
+        hide: this.lessThanOneSelected$,
+        action: this.generateVideo.bind(this),
+        loading: this.generating$,
+      },
+      {
+        icon: 'remove_done',
+        label: 'Unselect All',
+        variant: 'default',
+        hide: this.lessThanOneSelected$,
+        action: this.unselectAll.bind(this),
+      },
+      {
+        icon: 'remove_done',
+        label: 'Unselect',
+        variant: 'default',
+        hide: this.moreThanOneSelected$,
+        action: this.unselectAll.bind(this),
+      },
+      ...this.commonsButtons,
+    ];
+  }
 
   ngOnInit(): void {
     this.store
@@ -124,40 +140,40 @@ export class ScreenshotSearchComponent implements OnInit, OnDestroy {
           this.hasNext = state.search.hasNext;
           this.filter = state.search.filter;
         }),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
     this.isAvailable$ = this.store.select(selectScreenshotState).pipe(
       map((state) => state.search.count > 0),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
 
     this.count$ = this.store.select(selectScreenshotState).pipe(
       map((state) => state.search.count),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
 
     this.capturing$ = this.store.select(selectScreenshotState).pipe(
       map((state) => state.capturing || state.search.loading),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
 
     this.screenshots$ = this.store.select(selectScreenshotState).pipe(
       map((state) => state.search.screenshots),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
     this.store
       .select(selectScreenshotState)
       .pipe(
         filter(({ deleting }) => deleting),
         tap(() => this.unselectAll()),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
     this.store.dispatch(
       breadcrumbActions.set({
         breadcrumbs: [{ label: 'Search', url: '/search' }],
-      })
+      }),
     );
   }
 
@@ -173,7 +189,7 @@ export class ScreenshotSearchComponent implements OnInit, OnDestroy {
       screenshotActions.ask({
         page: this.currentPage,
         filter: this.filter,
-      })
+      }),
     );
   }
 
@@ -181,55 +197,55 @@ export class ScreenshotSearchComponent implements OnInit, OnDestroy {
     this.store.dispatch(
       screenshot.selected
         ? screenshotActions.selectScreenshot({ screenshot })
-        : screenshotActions.unselectScreenshot({ screenshot })
+        : screenshotActions.unselectScreenshot({ screenshot }),
     );
   }
 
   public get selectedScreenshots$(): Observable<ISelected<IScreenshot>[]> {
     return this.store.select(selectScreenshotState).pipe(
       map((state) => state.selectedScreenshots),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public get moreThanOneSelected$(): Observable<boolean> {
     return this.selectedScreenshots$.pipe(
       map((screenshots) => screenshots.length > 1),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public get lessThanOneSelected$(): Observable<boolean> {
     return this.selectedScreenshots$.pipe(
       map((screenshots) => screenshots.length <= 1),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public get size$(): Observable<number> {
     return this.selectedScreenshots$.pipe(
       map((screenshots) => screenshots.length),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   private async view(
-    selectedScreenshots: ISelected<IScreenshot>[]
+    selectedScreenshots: ISelected<IScreenshot>[],
   ): Promise<void> {
     const screenshotId = selectedScreenshots[0].data.id;
     await this.router.navigate(['/', 'library', 'screenshots', screenshotId]);
     this.store.dispatch(
       screenshotActions.unselectScreenshot({
         screenshot: selectedScreenshots[0],
-      })
+      }),
     );
   }
 
   private deleteScreenshots(
-    selectedScreenshots: ISelected<IScreenshot>[]
+    selectedScreenshots: ISelected<IScreenshot>[],
   ): void {
     const screenshots = selectedScreenshots.map(
-      (screenshot) => screenshot.data
+      (screenshot) => screenshot.data,
     );
     this.confirmationDialogService
       .open({
@@ -242,17 +258,17 @@ export class ScreenshotSearchComponent implements OnInit, OnDestroy {
         filter(Boolean),
         tap(() =>
           this.store.dispatch(
-            screenshotActions.deleteSelectedScreenshots({ screenshots })
-          )
+            screenshotActions.deleteSelectedScreenshots({ screenshots }),
+          ),
         ),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
 
   private generateVideo(selectedScreenshots: ISelected<IScreenshot>[]): void {
     const screenshotIds = selectedScreenshots.map(
-      (screenshot) => screenshot.data.id
+      (screenshot) => screenshot.data.id,
     );
     this.confirmationDialogService
       .open({
@@ -273,10 +289,10 @@ export class ScreenshotSearchComponent implements OnInit, OnDestroy {
         withLatestFrom(this.store.select(selectSettingState)),
         tap(([, { videoConfig: config }]) =>
           this.store.dispatch(
-            generateVideoActions.start({ screenshotIds, config })
-          )
+            generateVideoActions.start({ screenshotIds, config }),
+          ),
         ),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
@@ -284,23 +300,23 @@ export class ScreenshotSearchComponent implements OnInit, OnDestroy {
   private get generating$(): Observable<boolean> {
     return this.store.select(selectGenerateVideoState).pipe(
       map((state) => state.generating),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public get deleting$(): Observable<boolean> {
     return this.store.select(selectScreenshotState).pipe(
       map((screenshot) => screenshot.deleting),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
   public isSelected(screenshot: IScreenshot): Observable<boolean> {
     return this.selectedScreenshots$.pipe(
       map((selectedScreenshots) =>
-        selectedScreenshots.some((v) => v.data.id === screenshot.id)
+        selectedScreenshots.some((v) => v.data.id === screenshot.id),
       ),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -315,7 +331,7 @@ export class ScreenshotSearchComponent implements OnInit, OnDestroy {
   private get isUploadHidden$(): Observable<boolean> {
     return this.store.select(selectSettingStorageState).pipe(
       map(({ uploadConfig }) => !uploadConfig.manualSync),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -346,11 +362,11 @@ export class ScreenshotSearchComponent implements OnInit, OnDestroy {
         filter(Boolean),
         tap(() => {
           const items = selectedScreenshots.map(
-            ({ data }) => new UploadScreenshotItem(data)
+            ({ data }) => new UploadScreenshotItem(data),
           );
           this.store.dispatch(uploadActions.addItemToQueue({ items }));
         }),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }

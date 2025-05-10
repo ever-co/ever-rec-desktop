@@ -13,11 +13,11 @@ import {
   screenshotActions,
   selectScreenshotState,
 } from '@ever-co/screenshot-data-access';
+import { ScreenshotComponent } from '@ever-co/screenshot-ui';
 import {
   ConfirmationDialogService,
   GalleryButtonsActionComponent,
   NoDataComponent,
-  ScreenshotComponent,
 } from '@ever-co/shared-components';
 import { InfiniteScrollDirective } from '@ever-co/shared-service';
 import {
@@ -27,9 +27,9 @@ import {
   ISelected,
 } from '@ever-co/shared-utils';
 import {
+  UploadScreenshotItem,
   selectUploadInProgress,
   uploadActions,
-  UploadScreenshotItem,
 } from '@ever-co/upload-data-access';
 import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
@@ -67,22 +67,9 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
   private currentPage = 1;
   private hasNext = false;
   private range!: IRange;
-  public actionButtons: IActionButton[] = [
-    {
-      icon: 'visibility',
-      label: 'View',
-      variant: 'default',
-      hide: this.moreThanOneSelected$,
-      action: this.view.bind(this),
-    },
-    {
-      icon: 'subscriptions',
-      label: 'Generate',
-      variant: 'warning',
-      hide: this.lessThanOneSelected$,
-      action: this.generateVideo.bind(this),
-      loading: this.generating$,
-    },
+  public readonly galleryButtons: IActionButton[] = [];
+  public readonly cardButtons: IActionButton[] = [];
+  private readonly commonsButtons: IActionButton[] = [
     {
       icon: 'backup',
       label: 'Upload',
@@ -91,20 +78,6 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
       loading: this.uploading$,
       loadingLabel: 'Uploading...',
       hide: this.isUploadHidden$,
-    },
-    {
-      icon: 'remove_done',
-      label: 'Unselect All',
-      variant: 'default',
-      hide: this.lessThanOneSelected$,
-      action: this.unselectAll.bind(this),
-    },
-    {
-      icon: 'remove_done',
-      label: 'Unselect',
-      variant: 'default',
-      hide: this.moreThanOneSelected$,
-      action: this.unselectAll.bind(this),
     },
     {
       icon: 'delete',
@@ -118,7 +91,50 @@ export class ScreenshotGalleryComponent implements OnInit, OnDestroy {
   constructor(
     private readonly router: Router,
     private readonly confirmationDialogService: ConfirmationDialogService,
-  ) {}
+  ) {
+    this.cardButtons = [
+      {
+        icon: 'visibility',
+        label: 'View',
+        variant: 'default',
+        action: this.view.bind(this),
+      },
+      ...this.commonsButtons,
+    ];
+
+    this.galleryButtons = [
+      {
+        icon: 'visibility',
+        label: 'View',
+        variant: 'default',
+        hide: this.moreThanOneSelected$,
+        action: this.view.bind(this),
+      },
+      {
+        icon: 'subscriptions',
+        label: 'Generate',
+        variant: 'warning',
+        hide: this.lessThanOneSelected$,
+        action: this.generateVideo.bind(this),
+        loading: this.generating$,
+      },
+      {
+        icon: 'remove_done',
+        label: 'Unselect All',
+        variant: 'default',
+        hide: this.lessThanOneSelected$,
+        action: this.unselectAll.bind(this),
+      },
+      {
+        icon: 'remove_done',
+        label: 'Unselect',
+        variant: 'default',
+        hide: this.moreThanOneSelected$,
+        action: this.unselectAll.bind(this),
+      },
+      ...this.commonsButtons,
+    ];
+  }
 
   ngOnInit(): void {
     this.store
