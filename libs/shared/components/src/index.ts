@@ -1,4 +1,3 @@
-export * from './lib/features/start/start.component';
 export * from './lib/ui/action-button-group/button/action-button.component';
 export * from './lib/ui/action-button-group/gallery/gallery-buttons-action.component';
 export * from './lib/ui/action-button-group/group/action-button-group.component';

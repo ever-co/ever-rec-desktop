@@ -16,7 +16,6 @@ import { RouterOutlet } from '@angular/router';
 import { breadcrumbActions } from '@ever-co/breadcrumb-data-access';
 import { BreadcrumbComponent } from '@ever-co/breadcrumb-feature';
 import { NotificationBadgeComponent } from '@ever-co/notification-feature';
-import { StartComponent } from '@ever-co/shared-components';
 import { DatePickerComponent } from '@ever-co/date-picker-feature';
 import { LayoutService } from '@ever-co/shared-service';
 import { SidebarComponent } from '@ever-co/sidebar-feature';
@@ -24,6 +23,7 @@ import { SearchComponent } from '@ever-co/web-search';
 import { Store } from '@ngrx/store';
 import { Subject, takeUntil } from 'rxjs';
 import { UploadBadgeComponent } from '@ever-co/upload-feature';
+import { StartComponent } from '../start/start.component';
 
 @Component({
   selector: 'lib-layout',
