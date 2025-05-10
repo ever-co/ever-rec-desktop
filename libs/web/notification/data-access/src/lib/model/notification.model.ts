@@ -1,6 +1,6 @@
-import { INotification, NotificationDTO } from '@ever-co/shared-utils';
+import { Clonable, INotification } from '@ever-co/shared-utils';
 
-export class Notification implements INotification {
+export class Notification implements INotification, Clonable<INotification> {
   private _id: string;
   private _message: string;
   private _type: 'success' | 'error' | 'info' | 'warning';
@@ -11,7 +11,7 @@ export class Notification implements INotification {
     message: string,
     type: 'success' | 'error' | 'info' | 'warning',
     timestamp: Date,
-    read: boolean
+    read: boolean,
   ) {
     this._id = crypto.randomUUID();
     this._message = message;
@@ -60,7 +60,7 @@ export class Notification implements INotification {
     this._read = value;
   }
 
-  public toDTO(): NotificationDTO {
+  public clone(): INotification {
     return {
       id: this.id,
       message: this.message,

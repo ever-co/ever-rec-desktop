@@ -12,7 +12,7 @@ import { ComponentType } from '@angular/cdk/portal';
 export class NotificationService {
   constructor(
     private readonly store: Store,
-    private readonly queueService: SnackbarQueueService
+    private readonly queueService: SnackbarQueueService,
   ) {}
 
   public show<T>(
@@ -22,7 +22,7 @@ export class NotificationService {
       component?: ComponentType<T>;
       afterDismissed?: () => void;
       afterOpened?: (snackbarRef?: MatSnackBarRef<T> | null) => void;
-    }
+    },
   ) {
     const { component, afterOpened, afterDismissed } = options || {};
 
@@ -41,8 +41,8 @@ export class NotificationService {
         const notification = new Notification(message, type, new Date(), false);
         this.store.dispatch(
           notificationActions.addNotification({
-            notification: notification.toDTO(),
-          })
+            notification: notification.clone(),
+          }),
         );
         if (afterOpened) {
           afterOpened(snackbarRef);
