@@ -6,6 +6,7 @@ import { from, of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { VideoService } from '../services/video.service';
 import { videoActions } from './video.actions';
+import { generateVideoActions } from '@ever-co/generate-video-data-access';
 
 @Injectable()
 export class VideoEffects {
@@ -19,6 +20,13 @@ export class VideoEffects {
           catchError((error) => of(videoActions.loadVideoFailure({ error }))),
         );
       }),
+    ),
+  );
+
+  saveOnFinish$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(generateVideoActions.finish),
+      map(({ video }) => videoActions.addVideo({ video })),
     ),
   );
 

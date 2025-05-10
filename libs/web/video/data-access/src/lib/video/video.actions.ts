@@ -34,5 +34,7 @@ export const videoActions = createActionGroup({
     'Select Video': props<{ video: ISelected<IVideo> }>(),
 
     'Reset Videos': emptyProps(),
+
+    'Add Video': props<{ video: IVideo }>(),
   },
 });

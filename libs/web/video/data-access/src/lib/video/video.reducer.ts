@@ -40,7 +40,7 @@ export const reducer = createReducer(
     hasNext,
     videos: [
       ...new Map(
-        [...state.videos, ...data].map((item) => [item.id, item])
+        [...state.videos, ...data].map((item) => [item.id, item]),
       ).values(),
     ],
     loading: false,
@@ -99,7 +99,7 @@ export const reducer = createReducer(
 
     // Filter out deleted videos
     const updatedVideos = state.videos.filter(
-      (video) => !videoIdsDeleted.includes(video.id)
+      (video) => !videoIdsDeleted.includes(video.id),
     );
 
     return {
@@ -146,7 +146,7 @@ export const reducer = createReducer(
     ...state,
     selectedVideos: [
       ...new Map(
-        [...state.selectedVideos, video].map((item) => [item.data.id, item])
+        [...state.selectedVideos, video].map((item) => [item.data.id, item]),
       ).values(),
     ].filter((video) => video.selected),
   })),
@@ -155,7 +155,7 @@ export const reducer = createReducer(
   on(videoActions.unselectVideo, (state, { video }) => ({
     ...state,
     selectedVideos: state.selectedVideos.filter(
-      ({ data }) => video.data.id !== data.id
+      ({ data }) => video.data.id !== data.id,
     ),
   })),
 
@@ -164,7 +164,12 @@ export const reducer = createReducer(
     ...state,
     deleting: false,
     selectedVideos: [],
-  }))
+  })),
+
+  on(videoActions.addVideo, (state, { video }) => ({
+    ...state,
+    videos: [video, ...state.videos],
+  })),
 );
 
 export const videoFeature = createFeature({
