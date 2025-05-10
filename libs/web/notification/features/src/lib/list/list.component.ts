@@ -6,10 +6,7 @@ import {
   NotificationService,
   selectNotificationState,
 } from '@ever-co/notification-data-access';
-import {
-  ActionButtonComponent,
-  NoDataComponent,
-} from '@ever-co/shared-components';
+import { ActionButtonComponent } from '@ever-co/shared-components';
 import { CopyToClipboardDirective } from '@ever-co/shared-service';
 import { IActionButton, INotification } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
@@ -48,7 +45,7 @@ export class ListComponent {
 
   constructor(
     private store: Store,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
   ) {
     this.notifications$ = this.store
       .select(selectNotificationState)
