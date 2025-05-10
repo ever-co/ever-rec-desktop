@@ -10,6 +10,7 @@ import {
   selectScreenshotState,
 } from '@ever-co/screenshot-data-access';
 import {
+  ActionButtonComponent,
   ActionButtonGroupComponent,
   ConfirmationDialogService,
   NoDataComponent,
@@ -22,7 +23,7 @@ import {
   PopoverDirective,
   UtcToLocalTimePipe,
 } from '@ever-co/shared-service';
-import { IActionButton, IScreenshot } from '@ever-co/shared-utils';
+import { IActionButton, IScreenshot, IVideo } from '@ever-co/shared-utils';
 import {
   selectUploadInProgress,
   uploadActions,
@@ -42,8 +43,6 @@ import {
   tap,
 } from 'rxjs';
 
-import { VideoComponent } from '@ever-co/video-ui';
-
 @Component({
   selector: 'lib-screenshot',
   imports: [
@@ -53,10 +52,10 @@ import { VideoComponent } from '@ever-co/video-ui';
     MatCardModule,
     MatIconModule,
     MatChipsModule,
-    VideoComponent,
     HumanizeBytesPipe,
     PopoverDirective,
     ActionButtonGroupComponent,
+    ActionButtonComponent,
     CopyToClipboardDirective,
     ImgFallbackDirective,
     IconFallbackDirective,
@@ -68,6 +67,11 @@ import { VideoComponent } from '@ever-co/video-ui';
 export class ScreenshotComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
   public readonly actionButtons: IActionButton[] = [];
+  public readonly redirectButton: IActionButton = {
+    icon: 'open_in_new',
+    label: 'See Video',
+    action: this.open.bind(this),
+  };
 
   constructor(
     private readonly router: Router,
@@ -159,6 +163,10 @@ export class ScreenshotComponent implements OnInit, OnDestroy {
       this.store.dispatch(screenshotActions.deleteScreenshot(screenshot));
       await this.router.navigate(['/', 'library', 'screenshots']);
     }
+  }
+
+  private async open(video: IVideo): Promise<void> {
+    await this.router.navigate(['/', 'library', 'videos', video.id]);
   }
 
   private upload(screenshot: IScreenshot): void {

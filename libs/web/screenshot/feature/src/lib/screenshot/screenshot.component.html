@@ -128,10 +128,11 @@
             <div class="text-lg font-semibold text-gray-600 mb-2">
               Associated Video
             </div>
-            <lib-video
-              class="w-full rounded-df overflow-hidden"
-              [video]="video"
-            ></lib-video>
+            <lib-action-button
+              class="block w-fit"
+              [data]="video"
+              [button]="redirectButton"
+            ></lib-action-button>
           </div>
         }
       </div>
