@@ -19,7 +19,6 @@ import {
   ActionButtonGroupComponent,
   ConfirmationDialogService,
   NoDataComponent,
-  TimeLogStatisticsComponent,
 } from '@ever-co/shared-components';
 import {
   HumanizeDateRangePipe,
@@ -55,6 +54,7 @@ import {
 import { TimesheetViewComponent } from '../timesheet-view/timesheet-view.component';
 import { ActivatedRoute } from '@angular/router';
 import { selectDateRange } from '@ever-co/date-picker-data-access';
+import { TimesheetStatisticsComponent } from '../timesheet-statistics/timesheet-statistics.component';
 
 @Component({
   selector: 'lib-timesheet-feature',
@@ -298,8 +298,8 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     return this.store.select(selectDateRange).pipe(takeUntil(this.destroy$));
   }
 
-  public get timeLogStatisticsComponent() {
-    return TimeLogStatisticsComponent;
+  public get timesheetStatisticsComponent() {
+    return TimesheetStatisticsComponent;
   }
 
   public get statistics$(): Observable<ITimeLogStatistics> {

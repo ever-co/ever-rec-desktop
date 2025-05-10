@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { selectDateRange } from '@ever-co/date-picker-data-access';
 import { selectScreenshotState } from '@ever-co/screenshot-data-access';
-import { TimeLogStatisticsComponent } from '@ever-co/shared-components';
+import { TimesheetStatisticsComponent } from '@ever-co/timesheet-feature';
 import {
   HumanizeDateRangePipe,
   HumanizePipe,
@@ -67,8 +67,8 @@ export class TimeLogStaComponent implements OnInit, OnDestroy {
     );
   }
 
-  public get timeLogStatisticsComponent() {
-    return TimeLogStatisticsComponent;
+  public get timesheetStatisticsComponent() {
+    return TimesheetStatisticsComponent;
   }
 
   ngOnDestroy(): void {

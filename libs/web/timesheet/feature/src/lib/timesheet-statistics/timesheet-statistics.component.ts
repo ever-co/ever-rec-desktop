@@ -13,12 +13,12 @@ import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
-  selector: 'lib-timelog-statistics',
+  selector: 'lib-timesheet-statistics',
   imports: [CommonModule, MatIconModule, HumanizePipe],
-  templateUrl: './time-log-statistics.component.html',
-  styleUrl: './time-log-statistics.component.scss',
+  templateUrl: './timesheet-statistics.component.html',
+  styleUrl: './timesheet-statistics.component.scss',
 })
-export class TimeLogStatisticsComponent implements OnInit, OnDestroy {
+export class TimesheetStatisticsComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(private readonly store: Store) {}
