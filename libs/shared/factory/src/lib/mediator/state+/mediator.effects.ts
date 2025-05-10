@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { generateVideoActions } from '@ever-co/convert-video-data-access';
+import { generateVideoActions } from '@ever-co/generate-video-data-access';
 import { AppWindowId, isDeepEqual, MessageType } from '@ever-co/shared-utils';
 import {
   audioRecordingActions,
@@ -24,7 +24,7 @@ export class MediatorEffects {
         // Filter for actions that should be synced
         ofType(
           generateVideoActions.finish,
-          screenshotActions.stopCaptureSuccess
+          screenshotActions.stopCaptureSuccess,
         ),
         // Filter for actions that should be synced
         distinctUntilChanged(isDeepEqual.bind(this)),
@@ -41,9 +41,9 @@ export class MediatorEffects {
             },
             sourceId: AppWindowId.MAIN,
           });
-        })
+        }),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
   // Sync specific actions to other windows
@@ -55,7 +55,7 @@ export class MediatorEffects {
           audioRecordingActions.startRecordingSuccess,
           audioRecordingActions.stopRecordingSuccess,
           photoCaptureActions.startTrackingSuccess,
-          audioRecordingActions.saveAudioSuccess
+          audioRecordingActions.saveAudioSuccess,
         ),
         // Filter for actions that should be synced
         distinctUntilChanged(isDeepEqual.bind(this)),
@@ -72,9 +72,9 @@ export class MediatorEffects {
             },
             sourceId: AppWindowId.STREAMING,
           });
-        })
+        }),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
   // Listen for remote actions from other windows
@@ -88,8 +88,8 @@ export class MediatorEffects {
         // Dispatch the remote action to the local store
         tap((message) => {
           this.store.dispatch({ ...message.payload });
-        })
+        }),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 }

@@ -1,8 +1,8 @@
 import { inject, provideAppInitializer } from '@angular/core';
 import {
   generateVideoActions,
-  selectSettingState,
-} from '@ever-co/convert-video-data-access';
+  selectGenerateVideoConfig,
+} from '@ever-co/generate-video-data-access';
 import {
   screenshotActions,
   selectScreenshotState,
@@ -14,7 +14,7 @@ import { AutoSyncService } from '../services/auto-sync.service';
 
 export function autoSyncFactory(
   store: Store,
-  service: AutoSyncService
+  service: AutoSyncService,
 ): () => void {
   return () => {
     service
@@ -22,22 +22,18 @@ export function autoSyncFactory(
       .pipe(
         withLatestFrom(
           store.select(selectScreenshotState),
-          store.select(selectSettingState),
-          store.select(selectSettingScreenCaptureState)
+          store.select(selectGenerateVideoConfig),
+          store.select(selectSettingScreenCaptureState),
         ),
         filter(([, state]) => !state.capturing),
-        tap(([, , videoSettingState, screenCaptureState]) => {
-          store.dispatch(
-            screenshotActions.startCapture(
-              screenCaptureState.screenCaptureConfig
-            )
-          );
+        tap(([, , videoConfig, { screenCaptureConfig }]) => {
+          store.dispatch(screenshotActions.startCapture(screenCaptureConfig));
           store.dispatch(
             generateVideoActions.autoGenerate({
-              config: videoSettingState.videoConfig,
-            })
+              config: videoConfig,
+            }),
           );
-        })
+        }),
       )
       .subscribe();
 
@@ -46,7 +42,7 @@ export function autoSyncFactory(
       .pipe(
         withLatestFrom(store.select(selectScreenshotState)),
         filter(([, state]) => state.capturing),
-        tap(() => store.dispatch(screenshotActions.stopCapture()))
+        tap(() => store.dispatch(screenshotActions.stopCapture())),
       )
       .subscribe();
 
@@ -55,27 +51,27 @@ export function autoSyncFactory(
       .pipe(
         withLatestFrom(
           store.select(selectScreenshotState),
-          store.select(selectSettingState)
+          store.select(selectGenerateVideoConfig),
         ),
-        tap(([screenshot, screenshotState, videoSettingState]) => {
+        tap(([screenshot, screenshotState, videoConfig]) => {
           if (!screenshotState.capturing && screenshot) {
             store.dispatch(screenshotActions.startCaptureSuccess());
             store.dispatch(screenshotActions.captureSuccess({ screenshot }));
-            if (videoSettingState.videoConfig.autoGenerate) {
+            if (videoConfig.autoGenerate) {
               store.dispatch(
                 generateVideoActions.autoGenerate({
-                  config: videoSettingState.videoConfig,
-                })
+                  config: videoConfig,
+                }),
               );
             }
           }
-        })
+        }),
       )
       .subscribe();
   };
 }
 
 export const autoSyncProvider = provideAppInitializer(() => {
-        const initializerFn = (autoSyncFactory)(inject(Store), inject(AutoSyncService));
-        return initializerFn();
-      });
+  const initializerFn = autoSyncFactory(inject(Store), inject(AutoSyncService));
+  return initializerFn();
+});

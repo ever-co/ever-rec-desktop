@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { generateVideoActions } from '@ever-co/convert-video-data-access';
+import { generateVideoActions } from '@ever-co/generate-video-data-access';
 import { NotificationService } from '@ever-co/notification-data-access';
 import { IUpload } from '@ever-co/shared-utils';
 import { selectSettingUploadAutoSync } from '@ever-co/web-setting-data-access';
@@ -34,12 +34,12 @@ export class UploadEffects {
         uploadActions.uploadItemFailure,
         uploadActions.retryAllFailedUploads,
         uploadActions.uploadAllFromQueue,
-        uploadActions.startItemUploadSuccess
+        uploadActions.startItemUploadSuccess,
       ),
       withLatestFrom(
         this.store.select(selectCanUploadMore),
         this.store.select(selectSettingUploadAutoSync),
-        this.store.select(selectUploadQueue)
+        this.store.select(selectUploadQueue),
       ),
       mergeMap(([_, canUploadMore, canUpload, queue]) => {
         // Early return if conditions aren't met
@@ -51,8 +51,8 @@ export class UploadEffects {
         return of(uploadActions.startItemUpload({ item: nextItem }));
       }),
       // Filter out any undefined/empty actions if needed
-      filter((action) => !!action)
-    )
+      filter((action) => !!action),
+    ),
   );
 
   uploadOnFinish$ = createEffect(() =>
@@ -61,9 +61,9 @@ export class UploadEffects {
       map(({ video }) =>
         uploadActions.addItemToQueue({
           item: new UploadVideoItem(video),
-        })
-      )
-    )
+        }),
+      ),
+    ),
   );
 
   upload$ = createEffect(() =>
@@ -82,10 +82,10 @@ export class UploadEffects {
           catchError((_) => {
             this.notificationService.show('Upload failed', 'error');
             return of(uploadActions.removeItemFromQueue({ itemId: item.id }));
-          })
+          }),
         );
-      })
-    )
+      }),
+    ),
   );
 
   onError$ = createEffect(() =>
@@ -95,11 +95,11 @@ export class UploadEffects {
         this.uploadService.onError().pipe(
           tap(({ error }) => this.notificationService.show(error, 'error')),
           map(({ itemId, error }) =>
-            uploadActions.uploadItemFailure({ error, itemId })
-          )
-        )
-      )
-    )
+            uploadActions.uploadItemFailure({ error, itemId }),
+          ),
+        ),
+      ),
+    ),
   );
 
   onProgress$ = createEffect(() =>
@@ -108,9 +108,11 @@ export class UploadEffects {
       switchMap(() =>
         this.uploadService
           .onProgress()
-          .pipe(map((progress) => uploadActions.uploadItemInProgress(progress)))
-      )
-    )
+          .pipe(
+            map((progress) => uploadActions.uploadItemInProgress(progress)),
+          ),
+      ),
+    ),
   );
 
   onDone$ = createEffect(() =>
@@ -119,12 +121,12 @@ export class UploadEffects {
       switchMap(() =>
         this.uploadService.onDone().pipe(
           tap(() =>
-            this.notificationService.show('Upload successfully', 'success')
+            this.notificationService.show('Upload successfully', 'success'),
           ),
-          map(({ itemId }) => uploadActions.uploadItemSuccess({ itemId }))
-        )
-      )
-    )
+          map(({ itemId }) => uploadActions.uploadItemSuccess({ itemId })),
+        ),
+      ),
+    ),
   );
 
   onCancel$ = createEffect(() =>
@@ -133,23 +135,23 @@ export class UploadEffects {
       switchMap(({ itemId }) =>
         this.uploadService.cancel(itemId).pipe(
           tap(() =>
-            this.notificationService.show('Upload Canceled.', 'warning')
+            this.notificationService.show('Upload Canceled.', 'warning'),
           ),
-          map(() => uploadActions.cancelUploadSuccess())
-        )
-      )
-    )
+          map(() => uploadActions.cancelUploadSuccess()),
+        ),
+      ),
+    ),
   );
 
   onSilentCancellation$ = createEffect(() =>
     this.actions$.pipe(
       ofType(uploadActions.silentUploadCancellation),
-      map(() => uploadActions.cancelUploadSuccess())
-    )
+      map(() => uploadActions.cancelUploadSuccess()),
+    ),
   );
 
   constructor(
     private readonly uploadService: UploadService,
-    private readonly notificationService: NotificationService
+    private readonly notificationService: NotificationService,
   ) {}
 }

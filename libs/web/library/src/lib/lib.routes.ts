@@ -11,7 +11,7 @@ export const libraryRoutes: Route[] = [
       {
         path: 'videos',
         loadChildren: () =>
-          import('@ever-co/convert-video-feature').then((m) => m.videoRoutes),
+          import('@ever-co/video-feature').then((m) => m.videoRoutes),
       },
       {
         path: 'screenshots',

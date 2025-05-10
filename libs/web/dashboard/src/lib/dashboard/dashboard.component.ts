@@ -5,8 +5,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
-import { AnalysisComponent, DistributionComponent } from '@ever-co/activity-feature';
-import { VideoGalleryComponent } from '@ever-co/convert-video-feature';
+import {
+  AnalysisComponent,
+  DistributionComponent,
+} from '@ever-co/activity-feature';
+import { VideoGalleryComponent } from '@ever-co/video-feature';
 import {
   ScreenshotGalleryComponent,
   ScreenshotStatisticComponent,
@@ -18,26 +21,26 @@ import { TimeLogStaComponent } from '../timelog-stat/timelog-stat.component';
 import { VideoComponent } from '../video/video.component';
 
 @Component({
-    selector: 'lib-dashboard',
-    imports: [
-        CommonModule,
-        MatCardModule,
-        ScreenshotGalleryComponent,
-        VideoGalleryComponent,
-        ScreenshotStatisticComponent,
-        ScreenshotComponent,
-        VideoComponent,
-        StateComponent,
-        TimeLogStaComponent,
-        RouterLink,
-        MatIconModule,
-        MatTooltipModule,
-        MatButtonModule,
-        GreetingPipe,
-        AnalysisComponent,
-        DistributionComponent
-    ],
-    templateUrl: './dashboard.component.html',
-    styleUrl: './dashboard.component.scss'
+  selector: 'lib-dashboard',
+  imports: [
+    CommonModule,
+    MatCardModule,
+    ScreenshotGalleryComponent,
+    VideoGalleryComponent,
+    ScreenshotStatisticComponent,
+    ScreenshotComponent,
+    VideoComponent,
+    StateComponent,
+    TimeLogStaComponent,
+    RouterLink,
+    MatIconModule,
+    MatTooltipModule,
+    MatButtonModule,
+    GreetingPipe,
+    AnalysisComponent,
+    DistributionComponent,
+  ],
+  templateUrl: './dashboard.component.html',
+  styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent {}

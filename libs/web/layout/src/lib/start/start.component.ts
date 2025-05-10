@@ -5,9 +5,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {
   generateVideoActions,
-  selectSettingState,
-  settingActions,
-} from '@ever-co/convert-video-data-access';
+  selectGenerateVideoConfig,
+  generateVideoSettingActions,
+} from '@ever-co/generate-video-data-access';
 import {
   screenshotActions,
   selectScreenshotState,
@@ -38,11 +38,11 @@ export class StartComponent implements OnInit {
     .pipe(map(({ screenCaptureConfig }) => screenCaptureConfig));
 
   private readonly videoConfig$ = this.store
-    .select(selectSettingState)
-    .pipe(map(({ videoConfig }) => videoConfig));
+    .select(selectGenerateVideoConfig)
+    .pipe(map((config) => config));
 
   ngOnInit() {
-    this.store.dispatch(settingActions.load());
+    this.store.dispatch(generateVideoSettingActions.load());
     this.store.dispatch(settingScreenCaptureActions.load());
   }
 
@@ -52,12 +52,12 @@ export class StartComponent implements OnInit {
       .subscribe(([videoConfig, screenCaptureConfig]) => {
         if (videoConfig.autoGenerate) {
           this.store.dispatch(
-            generateVideoActions.autoGenerate({ config: videoConfig })
+            generateVideoActions.autoGenerate({ config: videoConfig }),
           );
         }
 
         this.store.dispatch(
-          screenshotActions.startCapture(screenCaptureConfig)
+          screenshotActions.startCapture(screenCaptureConfig),
         );
       });
   }

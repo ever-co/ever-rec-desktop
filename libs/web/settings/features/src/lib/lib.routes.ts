@@ -11,8 +11,8 @@ export const settingRoutes: Route[] = [
       {
         path: 'generate-video-settings',
         loadComponent: () =>
-          import('@ever-co/convert-video-feature').then(
-            (m) => m.SettingComponent
+          import('@ever-co/generate-video-feature').then(
+            (m) => m.GenerateVideoSettingComponent,
           ),
       },
       {

@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { generateVideoActions } from '@ever-co/convert-video-data-access';
+import { generateVideoActions } from '@ever-co/generate-video-data-access';
 import { ScreenshotElectronService } from '@ever-co/screenshot-data-access';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { from, of } from 'rxjs';
@@ -20,43 +20,41 @@ export class TimelineEffects {
             sortOrder: 'ASC',
             ignoreRange: true,
             ...action,
-          })
+          }),
         ).pipe(
           map((frames) => timelineActions.loadFramesSuccess(frames)),
           catchError((error) =>
             of(
               timelineActions.loadFramesFailure({
                 error,
-              })
-            )
-          )
-        )
-      )
-    )
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   updateCurrentTime$ = createEffect(() =>
     this.actions$.pipe(
       ofType(timelineActions.updateCurrentTime),
-      map(({ currentTime }) => timelineActions.seekTo({ currentTime }))
-    )
+      map(({ currentTime }) => timelineActions.seekTo({ currentTime })),
+    ),
   );
 
   saveLastVideo$ = createEffect(() =>
     this.actions$.pipe(
       ofType(generateVideoActions.loadLastVideoSuccess),
-      map(({ video }) => timelineActions.loadLastVideo({ video }))
-    )
+      map(({ video }) => timelineActions.loadLastVideo({ video })),
+    ),
   );
 
   reset$ = createEffect(() =>
     this.actions$.pipe(
       ofType(timelineActions.resetTimeline),
-      map(() => generateVideoActions.reset())
-    )
+      map(() => generateVideoActions.reset()),
+    ),
   );
 
-  constructor(
-    private readonly frameService: ScreenshotElectronService
-  ) {}
+  constructor(private readonly frameService: ScreenshotElectronService) {}
 }

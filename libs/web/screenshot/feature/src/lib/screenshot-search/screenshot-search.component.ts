@@ -7,8 +7,8 @@ import { breadcrumbActions } from '@ever-co/breadcrumb-data-access';
 import {
   generateVideoActions,
   selectGenerateVideoState,
-  selectSettingState,
-} from '@ever-co/convert-video-data-access';
+  selectGenerateVideoConfig,
+} from '@ever-co/generate-video-data-access';
 import {
   screenshotActions,
   selectScreenshotState,
@@ -286,8 +286,8 @@ export class ScreenshotSearchComponent implements OnInit, OnDestroy {
       .pipe(
         take(1),
         filter(Boolean),
-        withLatestFrom(this.store.select(selectSettingState)),
-        tap(([, { videoConfig: config }]) =>
+        withLatestFrom(this.store.select(selectGenerateVideoConfig)),
+        tap(([, config]) =>
           this.store.dispatch(
             generateVideoActions.start({ screenshotIds, config }),
           ),

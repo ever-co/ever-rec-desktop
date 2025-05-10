@@ -12,8 +12,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import {
   generateVideoActions,
   selectGenerateVideoState,
-  selectSettingState,
-} from '@ever-co/convert-video-data-access';
+  selectGenerateVideoConfig,
+} from '@ever-co/generate-video-data-access';
 import { NotificationService } from '@ever-co/notification-data-access';
 import {
   ActionButtonGroupComponent,
@@ -332,8 +332,8 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       .pipe(
         take(1),
         filter(Boolean),
-        withLatestFrom(this.store.select(selectSettingState)),
-        tap(([, { videoConfig: config }]) =>
+        withLatestFrom(this.store.select(selectGenerateVideoConfig)),
+        tap(([, config]) =>
           this.store.dispatch(
             generateVideoActions.start({ timeLogId, config, isTimeLine: true }),
           ),

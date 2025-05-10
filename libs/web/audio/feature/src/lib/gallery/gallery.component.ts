@@ -45,7 +45,7 @@ import {
   ContainerComponent,
   MetadataComponent,
 } from '@ever-co/audio-ui';
-import { selectGenerateVideoState } from '@ever-co/convert-video-data-access';
+import { selectGenerateVideoState } from '@ever-co/generate-video-data-access';
 import { selectScreenshotState } from '@ever-co/screenshot-data-access';
 import {
   UploadAudioItem,

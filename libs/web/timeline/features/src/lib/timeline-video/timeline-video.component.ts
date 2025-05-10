@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { selectGenerateVideoState } from '@ever-co/convert-video-data-access';
+import { selectGenerateVideoState } from '@ever-co/generate-video-data-access';
 import { ITimelinePlayer, moment } from '@ever-co/shared-utils';
 import {
   selectTimelineState,

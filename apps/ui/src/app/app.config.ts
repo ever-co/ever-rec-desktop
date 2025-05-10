@@ -12,7 +12,8 @@ import {
 import { provideActivityDataAccess } from '@ever-co/activity-data-access';
 import { provideAudioPlayerDataAccess } from '@ever-co/audio-data-access';
 import { provideBreadcrumbDataAccess } from '@ever-co/breadcrumb-data-access';
-import { provideConvertVideoDataAccess } from '@ever-co/convert-video-data-access';
+import { provideGenerateVideoDataAccess } from '@ever-co/generate-video-data-access';
+import { provideVideoDataAccess } from '@ever-co/video-data-access';
 import {
   provideFactoriesDataAccess,
   provideHydrationDataAccess,
@@ -39,7 +40,8 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideScreenshotDataAccess(),
     provideBreadcrumbDataAccess(),
-    provideConvertVideoDataAccess(),
+    provideVideoDataAccess(),
+    provideGenerateVideoDataAccess(),
     provideSidebarDataAccess(),
     provideSettingsDataAccess(),
     provideStoreDevtools({ logOnly: !isDevMode() }),

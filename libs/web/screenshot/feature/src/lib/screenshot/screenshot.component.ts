@@ -13,7 +13,6 @@ import {
   ActionButtonGroupComponent,
   ConfirmationDialogService,
   NoDataComponent,
-  VideoComponent,
 } from '@ever-co/shared-components';
 import {
   CopyToClipboardDirective,
@@ -42,6 +41,8 @@ import {
   takeUntil,
   tap,
 } from 'rxjs';
+
+import { VideoComponent } from '@ever-co/video-ui';
 
 @Component({
   selector: 'lib-screenshot',

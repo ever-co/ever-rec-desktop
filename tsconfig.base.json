@@ -17,12 +17,6 @@
       "@ever-co/breadcrumb-feature": [
         "libs/web/breadcrumb/feature/src/index.ts"
       ],
-      "@ever-co/convert-video-data-access": [
-        "libs/web/convert-video/data-access/src/index.ts"
-      ],
-      "@ever-co/convert-video-feature": [
-        "libs/web/convert-video/feature/src/index.ts"
-      ],
       "@ever-co/date-picker-data-access": [
         "libs/shared/date-picker/data-access/src/index.ts"
       ],
@@ -42,7 +36,6 @@
       "@ever-co/generate-video-feature": [
         "libs/web/generate-video/feature/src/index.ts"
       ],
-      "@ever-co/generate-video-ui": ["libs/web/generate-video/ui/src/index.ts"],
       "@ever-co/layout": ["libs/web/layout/src/index.ts"],
       "@ever-co/library": ["libs/web/library/src/index.ts"],
       "@ever-co/notification-data-access": [

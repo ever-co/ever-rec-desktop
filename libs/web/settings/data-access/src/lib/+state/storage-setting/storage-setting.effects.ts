@@ -1,12 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { audioActions } from '@ever-co/audio-data-access';
-import {
-  generateVideoActions,
-  videoActions,
-} from '@ever-co/convert-video-data-access';
+import { generateVideoActions } from '@ever-co/generate-video-data-access';
 import { photoActions } from '@ever-co/photo-data-access';
 import { screenshotActions } from '@ever-co/screenshot-data-access';
 import { SecureLocalStorageService } from '@ever-co/shared-service';
+import { videoActions } from '@ever-co/video-data-access';
 import {
   audioRecordingActions,
   photoCaptureActions,
@@ -29,9 +27,9 @@ export class SettingStorageEffects {
       concatMap(() =>
         this.localStorageService.getItem<IStorageState>(this.key).pipe(
           map((storage) => settingStorageActions.loadSuccess(storage)),
-          catchError((error) => of(settingStorageActions.failure({ error })))
-        )
-      )
+          catchError((error) => of(settingStorageActions.failure({ error }))),
+        ),
+      ),
     );
   });
 
@@ -43,9 +41,9 @@ export class SettingStorageEffects {
           .setItem<Partial<IStorageState>>(this.key, storage, { merge: true })
           .pipe(
             map(() => settingStorageActions.load()),
-            catchError((error) => of(settingStorageActions.failure({ error })))
-          )
-      )
+            catchError((error) => of(settingStorageActions.failure({ error }))),
+          ),
+      ),
     );
   });
 
@@ -63,15 +61,15 @@ export class SettingStorageEffects {
         photoCaptureActions.savePhotoSuccess,
         screenshotActions.purgeSuccess,
         audioActions.deleteAudiosSuccess,
-        audioRecordingActions.saveAudioSuccess
+        audioRecordingActions.saveAudioSuccess,
       ),
       mergeMap(() =>
         from(this.storageElectronService.getUsedSize()).pipe(
           map((used) => settingStorageActions.update({ used })),
-          catchError((error) => of(settingStorageActions.failure({ error })))
-        )
-      )
-    )
+          catchError((error) => of(settingStorageActions.failure({ error }))),
+        ),
+      ),
+    ),
   );
 
   autoDeletion$ = createEffect(() =>
@@ -81,14 +79,14 @@ export class SettingStorageEffects {
         this.localStorageService.getItem<IStorageState>(this.key).pipe(
           filter((state) => !!state?.autoScreenshotDeletion),
           map(() => screenshotActions.autoDeletion({ video })),
-          catchError((error) => of(settingStorageActions.failure({ error })))
-        )
-      )
-    )
+          catchError((error) => of(settingStorageActions.failure({ error }))),
+        ),
+      ),
+    ),
   );
 
   constructor(
     private readonly localStorageService: SecureLocalStorageService,
-    private readonly storageElectronService: StorageElectronService
+    private readonly storageElectronService: StorageElectronService,
   ) {}
 }

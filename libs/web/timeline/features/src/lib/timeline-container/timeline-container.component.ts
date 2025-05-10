@@ -5,8 +5,8 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { selectGenerateVideoState } from '@ever-co/convert-video-data-access';
-import { ProgressComponent } from '@ever-co/convert-video-feature';
+import { selectGenerateVideoState } from '@ever-co/generate-video-data-access';
+import { GenerateVideoProgressComponent } from '@ever-co/generate-video-feature';
 import { timelineActions } from '@ever-co/timeline-data-access';
 import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
@@ -15,17 +15,17 @@ import { TimelineTrackComponent } from '../timeline-track/timeline-track.compone
 import { TimelineVideoComponent } from '../timeline-video/timeline-video.component';
 
 @Component({
-    selector: 'lib-timeline-container',
-    imports: [
-        CommonModule,
-        TimelineTrackComponent,
-        TimelineVideoComponent,
-        TimelineCursorComponent,
-        ProgressComponent,
-    ],
-    templateUrl: './timeline-container.component.html',
-    styleUrl: './timeline-container.component.scss',
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'lib-timeline-container',
+  imports: [
+    CommonModule,
+    TimelineTrackComponent,
+    TimelineVideoComponent,
+    TimelineCursorComponent,
+    GenerateVideoProgressComponent,
+  ],
+  templateUrl: './timeline-container.component.html',
+  styleUrl: './timeline-container.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimelineContainerComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -37,9 +37,9 @@ export class TimelineContainerComponent implements OnInit, OnDestroy {
       .select(selectGenerateVideoState)
       .pipe(
         tap((state) =>
-          this.store.dispatch(timelineActions.loadLastVideo(state))
+          this.store.dispatch(timelineActions.loadLastVideo(state)),
         ),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
@@ -47,7 +47,7 @@ export class TimelineContainerComponent implements OnInit, OnDestroy {
   public get generating$(): Observable<boolean> {
     return this.store.select(selectGenerateVideoState).pipe(
       map((state) => state.generating),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 

@@ -14,10 +14,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
 import { audioActions, selectAudioState } from '@ever-co/audio-data-access';
-import {
-  selectVideoState,
-  videoActions,
-} from '@ever-co/convert-video-data-access';
 import { NotificationService } from '@ever-co/notification-data-access';
 import { photoActions, selectPhotoState } from '@ever-co/photo-data-access';
 import {
@@ -31,6 +27,7 @@ import {
 } from '@ever-co/shared-components';
 import { HumanizeBytesPipe, HumanizePipe } from '@ever-co/shared-service';
 import { IActionButton, IUsedSize } from '@ever-co/shared-utils';
+import { selectVideoState, videoActions } from '@ever-co/video-data-access';
 import {
   selectSettingStorageState,
   settingStorageActions,
@@ -127,7 +124,7 @@ export class StorageComponent implements OnInit, OnDestroy {
   constructor(
     private readonly store: Store,
     private readonly notificationService: NotificationService,
-    private readonly confirmationDialogService: ConfirmationDialogService
+    private readonly confirmationDialogService: ConfirmationDialogService,
   ) {}
 
   ngOnInit(): void {
@@ -139,14 +136,14 @@ export class StorageComponent implements OnInit, OnDestroy {
 
     this.size$ = this.store.select(selectSettingStorageState).pipe(
       map(({ used }) => used),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
 
     this.store
       .select(selectSettingStorageState)
       .pipe(
         tap(({ retention }) => this.formGroup.patchValue({ retention })),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
 
@@ -170,7 +167,7 @@ export class StorageComponent implements OnInit, OnDestroy {
         take(1),
         filter(Boolean),
         tap(() => this.store.dispatch(screenshotActions.purge())),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
@@ -186,7 +183,7 @@ export class StorageComponent implements OnInit, OnDestroy {
         take(1),
         filter(Boolean),
         tap(() => this.store.dispatch(photoActions.deletePhotos())),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
@@ -202,7 +199,7 @@ export class StorageComponent implements OnInit, OnDestroy {
         take(1),
         filter(Boolean),
         tap(() => this.store.dispatch(audioActions.deleteAudios())),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
@@ -218,7 +215,7 @@ export class StorageComponent implements OnInit, OnDestroy {
         take(1),
         filter(Boolean),
         tap(() => this.store.dispatch(videoActions.deleteVideos({}))),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
@@ -234,9 +231,9 @@ export class StorageComponent implements OnInit, OnDestroy {
         take(1),
         filter(Boolean),
         tap(() =>
-          this.store.dispatch(screenshotActions.deleteSelectedScreenshots({}))
+          this.store.dispatch(screenshotActions.deleteSelectedScreenshots({})),
         ),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }

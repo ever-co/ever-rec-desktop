@@ -5,4 +5,3 @@ export * from './lib/ui/dialogs/confirmation/confirmation.component';
 export * from './lib/ui/dialogs/services/confirmation-dialog.service';
 export * from './lib/ui/no-data/no-data.component';
 export * from './lib/ui/time-log-statistics/time-log-statistics.component';
-export * from './lib/ui/video/video.component';
