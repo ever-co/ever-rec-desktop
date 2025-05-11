@@ -13,6 +13,7 @@ import { timeLogActions } from './time-log.actions';
 @Injectable()
 export class TimeLogEffects {
   private readonly actions$ = inject(Actions);
+  private readonly store = inject(Store);
 
   loadTimeLog$ = createEffect(() =>
     this.actions$.pipe(
@@ -145,7 +146,6 @@ export class TimeLogEffects {
 
   constructor(
     private readonly timeLogElectronService: TimeLogElectronService,
-    private readonly notificationService: NotificationService,
-    private readonly store: Store,
+    private readonly notificationService: NotificationService
   ) {}
 }
