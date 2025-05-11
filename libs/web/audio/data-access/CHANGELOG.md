@@ -2,6 +2,21 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.2.0](https://github.com/ever-co/ever-capture/compare/data-access-0.1.4...data-access-0.2.0) (2025-05-11)
+
+### Dependency Updates
+
+* `utils` updated to version `1.1.0`
+* `notification-data-access` updated to version `1.0.0`
+* `webcam-data-access` updated to version `1.1.2`
+* `data-access-electron` updated to version `0.2.2`
+
+### Features
+
+* **media-sync:** update media item status on upload completion ([c86716f](https://github.com/ever-co/ever-capture/commit/c86716f2d191666024df7a629067cf596a170dfa))
+
+
+
 # 0.1.0 (2025-05-09)
 
 
