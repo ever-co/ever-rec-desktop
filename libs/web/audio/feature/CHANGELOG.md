@@ -2,6 +2,18 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.2](https://github.com/ever-co/ever-capture/compare/feature-1.0.1...feature-1.0.2) (2025-05-11)
+
+### Dependency Updates
+
+* `data-access` updated to version `0.2.2`
+* `shared-service` updated to version `1.0.0`
+* `audio-ui` updated to version `0.1.4`
+* `generate-video-data-access` updated to version `1.0.2`
+* `screenshot-data-access` updated to version `1.0.2`
+* `web-setting-data-access` updated to version `1.0.2`
+
+
 ## [1.0.1](https://github.com/ever-co/ever-capture/compare/feature-1.0.0...feature-1.0.1) (2025-05-11)
 
 ### Dependency Updates
