@@ -2,6 +2,38 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [2.0.0](https://github.com/ever-co/ever-capture/compare/upload-data-access-1.0.0...upload-data-access-2.0.0) (2025-05-11)
+
+### Dependency Updates
+
+* `utils` updated to version `1.1.0`
+* `generate-video-data-access` updated to version `1.0.0`
+* `notification-data-access` updated to version `1.0.0`
+* `web-setting-data-access` updated to version `1.0.0`
+* `data-access-electron` updated to version `0.2.2`
+
+### chore
+
+* **upload-data-access:** update peer dependencies and upgrade Angular to v19 ([743b320](https://github.com/ever-co/ever-capture/commit/743b3202214822a6fd4d99b8ebd3c85203c5f1a8))
+
+
+### BREAKING CHANGES
+
+* **upload-data-access:** Removes several peer dependencies. Consumers must now
+explicitly manage these if they were relying on this library to declare
+them.
+Removed dependencies:
+- @ever-co/shared-utils
+- @ngrx/store
+- @ever-co/convert-video-data-access
+- @ever-co/notification-data-access
+- @ngrx/effects
+- rxjs
+- @ever-co/electron-data-access
+- @ever-co/web-setting-data-access
+
+
+
 # 0.1.0 (2025-05-09)
 
 
