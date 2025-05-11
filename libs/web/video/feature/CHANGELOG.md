@@ -2,6 +2,22 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.1](https://github.com/ever-co/ever-capture/compare/video-feature-1.0.0...video-feature-1.0.1) (2025-05-11)
+
+### Dependency Updates
+
+* `video-data-access` updated to version `1.0.1`
+* `shared-components` updated to version `2.0.0`
+* `shared-service` updated to version `0.3.1`
+* `utils` updated to version `1.1.0`
+* `upload-data-access` updated to version `2.0.0`
+* `web-setting-data-access` updated to version `1.0.0`
+* `feature` updated to version `1.0.0`
+* `video-ui` updated to version `1.0.1`
+* `generate-video-data-access` updated to version `1.0.0`
+* `date-picker-data-access` updated to version `1.0.0`
+
+
 # 1.0.0 (2025-05-11)
 
 ### Dependency Updates
