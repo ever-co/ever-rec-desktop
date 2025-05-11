@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.1.7](https://github.com/ever-co/ever-capture/compare/webcam-feature-0.1.6...webcam-feature-0.1.7) (2025-05-11)
+
+### Dependency Updates
+
+* `notification-data-access` updated to version `1.0.2`
+* `webcam-data-access` updated to version `1.1.6`
+* `screenshot-data-access` updated to version `1.0.3`
+
+
 ## [0.1.6](https://github.com/ever-co/ever-capture/compare/webcam-feature-0.1.5...webcam-feature-0.1.6) (2025-05-11)
 
 ### Dependency Updates
