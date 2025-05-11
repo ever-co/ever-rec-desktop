@@ -42,14 +42,16 @@ mat-card {
   max-height: calc(100vh - 16rem);
 }
 
+$max-stack-item: 3;
+
 // Base styling for stack container
 .stack-cards {
   position: relative;
   width: 100%;
   max-width: 500px;
   margin: 0 auto;
-  padding-top: 20px;
   transition: all 0.3s ease;
+  display: flex;
 
   // The items within the stack
   &__item {
@@ -62,13 +64,13 @@ mat-card {
     background-color: #fff;
 
     // Generate compact stacking effect
-    @for $i from 1 through 10 {
+    @for $i from 1 through $max-stack-item {
       &:nth-child(#{$i}) {
         z-index: 11 - $i;
-        transform: translateY(#{($i - 1) * 5}px) scale(#{1 - ($i - 1) * 0.04});
+        transform: translateY(#{($max-stack-item + 1 - $i) * 5}px)
+          scale(#{1 - ($i) * 0.075});
         transform-origin: center top;
         width: calc(100% - #{($i - 1) * 8}px);
-        margin-left: calc(#{($i - 1) * 4}px);
       }
     }
 
@@ -83,10 +85,10 @@ mat-card {
   &:hover {
     // Expand the stack slightly
     .stack-cards__item {
-      @for $i from 1 through 10 {
+      @for $i from 1 through $max-stack-item {
         &:nth-child(#{$i}) {
-          transform: translateY(#{($i - 1) * 10}px)
-            scale(#{1 - ($i - 1) * 0.04});
+          transform: translateY(#{($i - 1 - $max-stack-item) * 5}px)
+            scale(#{1 - ($i - 1) * 0.075});
         }
       }
     }

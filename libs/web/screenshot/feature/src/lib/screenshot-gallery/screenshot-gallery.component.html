@@ -14,7 +14,7 @@
           [actionButtons]="cardButtons"
           [screenshot]="screenshot"
         ></lib-screenshot>
-        @for (chunk of screenshot.chunks?.slice(0, 9); track chunk.id) {
+        @for (chunk of screenshot.chunks?.slice(0, 2); track chunk.id) {
           <lib-screenshot
             class="stack-cards__item"
             (selected)="selectScreenshot($event)"
