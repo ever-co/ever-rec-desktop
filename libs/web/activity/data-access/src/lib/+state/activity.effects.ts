@@ -12,6 +12,7 @@ import { selectDateRange } from '@ever-co/date-picker-data-access';
 @Injectable()
 export class ActivityEffects {
   private readonly actions$ = inject(Actions);
+  private readonly store = inject(Store);
 
   loadSateDistribution$ = createEffect(() =>
     this.actions$.pipe(
@@ -110,7 +111,6 @@ export class ActivityEffects {
   );
 
   constructor(
-    private readonly activityService: ActivityService,
-    private readonly store: Store,
+    private readonly activityService: ActivityService
   ) {}
 }
