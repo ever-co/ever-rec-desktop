@@ -2,6 +2,17 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.4](https://github.com/ever-co/ever-capture/compare/timesheet-feature-1.0.3...timesheet-feature-1.0.4) (2025-05-11)
+
+### Dependency Updates
+
+* `timesheet-data-access` updated to version `1.0.4`
+* `web-setting-data-access` updated to version `1.0.4`
+* `timeline-feature` updated to version `1.0.4`
+* `generate-video-data-access` updated to version `1.0.4`
+* `notification-data-access` updated to version `1.0.2`
+
+
 ## [1.0.3](https://github.com/ever-co/ever-capture/compare/timesheet-feature-1.0.2...timesheet-feature-1.0.3) (2025-05-11)
 
 ### Dependency Updates
