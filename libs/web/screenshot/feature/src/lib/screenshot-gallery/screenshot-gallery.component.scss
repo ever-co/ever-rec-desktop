@@ -26,6 +26,11 @@ mat-card {
 
   .stack-cards {
     padding-top: 0;
+
+    &__item {
+      transform: translateY(0) scale(1) !important;
+      width: 100% !important;
+    }
   }
 
   .action-button-group {
