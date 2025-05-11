@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.3](https://github.com/ever-co/ever-capture/compare/activity-feature-1.0.2...activity-feature-1.0.3) (2025-05-11)
+
+### Dependency Updates
+
+* `activity-data-access` updated to version `1.0.3`
+
+
 ## [1.0.2](https://github.com/ever-co/ever-capture/compare/activity-feature-1.0.1...activity-feature-1.0.2) (2025-05-11)
 
 ### Dependency Updates
