@@ -2,6 +2,19 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.1](https://github.com/ever-co/ever-capture/compare/screenshot-feature-1.0.0...screenshot-feature-1.0.1) (2025-05-11)
+
+### Dependency Updates
+
+* `screenshot-data-access` updated to version `1.0.1`
+* `shared-service` updated to version `0.3.1`
+* `generate-video-data-access` updated to version `1.0.1`
+* `screenshot-ui` updated to version `1.0.0`
+* `upload-data-access` updated to version `2.0.1`
+* `web-setting-data-access` updated to version `1.0.1`
+* `notification-data-access` updated to version `1.0.1`
+
+
 # [1.0.0](https://github.com/ever-co/ever-capture/compare/screenshot-feature-0.4.0...screenshot-feature-1.0.0) (2025-05-11)
 
 ### Dependency Updates
