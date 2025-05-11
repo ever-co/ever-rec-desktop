@@ -60,7 +60,7 @@
       "options": {
         "parallel": false,
         "commands": [
-          "cd dist/libs/shared/date-picker/data-acces && npm publish"
+          "cd dist/libs/shared/date-picker/data-access && npm publish"
         ]
       },
       "dependsOn": ["build"],
