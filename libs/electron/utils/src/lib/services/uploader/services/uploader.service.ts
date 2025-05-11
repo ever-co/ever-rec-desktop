@@ -30,7 +30,7 @@ export abstract class UploaderService<T>
   public async execute(
     event: Electron.IpcMainEvent,
     upload: IUpload,
-    s3Config: IS3Config
+    s3Config: IS3Config,
   ): Promise<void> {
     this.logger.info('Start uploading...');
 
@@ -60,7 +60,7 @@ export abstract class UploaderService<T>
 
     const worker = WorkerFactory.createWorker(
       path.join(__dirname, 'assets', 'workers', 'upload.worker.js'),
-      { files, config }
+      { files, config },
     );
 
     this.workerHandler(worker, upload, event);
@@ -77,13 +77,13 @@ export abstract class UploaderService<T>
   private workerHandler(
     worker: Worker,
     upload: IUpload,
-    event: Electron.IpcMainEvent
+    event: Electron.IpcMainEvent,
   ) {
     worker.on('message', async (payload) => {
       switch (payload.status) {
         case 'done':
           this.logger.info('Done...');
-          await this.synchronize(upload);
+          this.synchronize(upload);
           event.reply(Channel.UPLOAD_DONE, payload.message);
           worker.terminate();
           break;
