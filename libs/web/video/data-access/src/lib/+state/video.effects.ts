@@ -17,6 +17,8 @@ import { videoActions } from './video.actions';
 @Injectable()
 export class VideoEffects {
   private readonly actions$ = inject(Actions);
+  private readonly videoService = inject(VideoService);
+
   onLoadVideo$ = createEffect(() =>
     this.actions$.pipe(
       ofType(videoActions.loadVideo),
@@ -100,8 +102,5 @@ export class VideoEffects {
     ),
   );
 
-  constructor(
-    private readonly videoService: VideoService,
-    private readonly notificationService: NotificationService,
-  ) {}
+  constructor(private readonly notificationService: NotificationService) {}
 }
