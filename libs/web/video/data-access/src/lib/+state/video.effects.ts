@@ -1,10 +1,16 @@
 import { inject, Injectable } from '@angular/core';
 import { generateVideoActions } from '@ever-co/generate-video-data-access';
 import { NotificationService } from '@ever-co/notification-data-access';
-import { IPaginationOptions, IVideo } from '@ever-co/shared-utils';
+import { IPaginationOptions, isDeepEqual, IVideo } from '@ever-co/shared-utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { from, of } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import {
+  catchError,
+  distinctUntilChanged,
+  filter,
+  map,
+  mergeMap,
+} from 'rxjs/operators';
 import { VideoService } from '../services/video.service';
 import { videoActions } from './video.actions';
 
@@ -83,6 +89,14 @@ export class VideoEffects {
           catchError((error) => of(videoActions.updateVideoFailure({ error }))),
         ),
       ),
+    ),
+  );
+
+  uploadVideo$ = createEffect(() =>
+    this.videoService.onUploadVideo().pipe(
+      filter(Boolean),
+      distinctUntilChanged(isDeepEqual.bind(this)),
+      map((upload) => videoActions.updateUploadedVideo({ upload })),
     ),
   );
 

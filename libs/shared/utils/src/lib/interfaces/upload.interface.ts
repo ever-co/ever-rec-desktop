@@ -31,6 +31,10 @@ export interface IUploadError {
 
 export interface IUploadDone {
   itemId: string;
+  result: {
+    fullUrl: string;
+    id: string;
+  };
 }
 
 export interface IUploadableService<T = any> {
@@ -42,7 +46,7 @@ export interface IUploaderService {
   execute(
     event: Electron.IpcMainEvent,
     upload: IUpload,
-    s3Config: IS3Config
+    s3Config: IS3Config,
   ): Promise<void>;
 }
 

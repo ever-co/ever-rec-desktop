@@ -4,8 +4,10 @@ import {
   Channel,
   IPaginationOptions,
   IPaginationResponse,
-  IPhoto
+  IPhoto,
+  IUploadDone,
 } from '@ever-co/shared-utils';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +16,7 @@ export class PhotoService {
   constructor(private readonly electronService: ElectronService) {}
 
   public getAllPhotos(
-    options: IPaginationOptions<IPhoto>
+    options: IPaginationOptions<IPhoto>,
   ): Promise<IPaginationResponse<IPhoto>> {
     return this.electronService.invoke(Channel.GET_ALL_PHOTOS, options);
   }
@@ -29,5 +31,9 @@ export class PhotoService {
 
   public deleteAllPhoto(photos?: IPhoto[]): Promise<void> {
     return this.electronService.invoke(Channel.DELETE_ALL_PHOTOS, photos);
+  }
+
+  public onUploadPhoto(): Observable<IUploadDone> {
+    return this.electronService.fromEvent<IUploadDone>(Channel.UPLOAD_DONE);
   }
 }

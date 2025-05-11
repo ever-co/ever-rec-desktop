@@ -4,6 +4,7 @@ import { LocalStorageService } from '@ever-co/shared-service';
 import {
   IPaginationOptions,
   IScreenshotMetadataStatistic,
+  isDeepEqual,
 } from '@ever-co/shared-utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
@@ -12,6 +13,8 @@ import {
   catchError,
   concatMap,
   debounceTime,
+  distinctUntilChanged,
+  filter,
   map,
   mergeMap,
 } from 'rxjs/operators';
@@ -27,7 +30,7 @@ export class ScreenshotEffects {
 
   constructor(
     private readonly notificationService: NotificationService,
-    private readonly localStorageService: LocalStorageService
+    private readonly localStorageService: LocalStorageService,
   ) {}
 
   startCaptureScreen$ = createEffect(() =>
@@ -38,8 +41,8 @@ export class ScreenshotEffects {
         this.notificationService.show('Start capturing screen.', 'success');
         return screenshotActions.startCaptureSuccess();
       }),
-      catchError((error) => of(screenshotActions.captureFailure({ error })))
-    )
+      catchError((error) => of(screenshotActions.captureFailure({ error }))),
+    ),
   );
 
   stopCaptureScreen$ = createEffect(() =>
@@ -50,15 +53,15 @@ export class ScreenshotEffects {
         this.notificationService.show('Stop capturing screen.', 'success');
         return screenshotActions.stopCaptureSuccess();
       }),
-      catchError((error) => of(screenshotActions.captureFailure({ error })))
-    )
+      catchError((error) => of(screenshotActions.captureFailure({ error }))),
+    ),
   );
 
   captureScreen$ = createEffect(() =>
     this.actions$.pipe(
       ofType(
         screenshotActions.startCaptureSuccess,
-        screenshotActions.captureSuccess
+        screenshotActions.captureSuccess,
       ),
       mergeMap(() => {
         return new Promise<Action<string>>((resolve) => {
@@ -67,8 +70,8 @@ export class ScreenshotEffects {
           });
         });
       }),
-      catchError((error) => of(screenshotActions.captureFailure({ error })))
-    )
+      catchError((error) => of(screenshotActions.captureFailure({ error }))),
+    ),
   );
 
   getAllScreenshots = createEffect(() =>
@@ -78,11 +81,11 @@ export class ScreenshotEffects {
         from(this.electronService.getAllScreenshots(options)).pipe(
           map((response) => screenshotActions.loadScreenshotsSuccess(response)),
           catchError((error) =>
-            of(screenshotActions.loadScreenshotsFailure({ error }))
-          )
-        )
-      )
-    )
+            of(screenshotActions.loadScreenshotsFailure({ error })),
+          ),
+        ),
+      ),
+    ),
   );
 
   deleteAllData$ = createEffect(() =>
@@ -95,11 +98,11 @@ export class ScreenshotEffects {
             return screenshotActions.deleteScreenshotsSuccess();
           }),
           catchError((error) =>
-            of(screenshotActions.deleteScreenshotsFailure({ error }))
-          )
-        )
-      )
-    )
+            of(screenshotActions.deleteScreenshotsFailure({ error })),
+          ),
+        ),
+      ),
+    ),
   );
 
   deleteScreenshot$ = createEffect(() =>
@@ -112,11 +115,11 @@ export class ScreenshotEffects {
             return screenshotActions.deleteScreenshotSuccess(screenshot);
           }),
           catchError((error) =>
-            of(screenshotActions.deleteScreenshotFailure({ error }))
-          )
-        )
-      )
-    )
+            of(screenshotActions.deleteScreenshotFailure({ error })),
+          ),
+        ),
+      ),
+    ),
   );
 
   askFor$ = createEffect(() =>
@@ -126,10 +129,10 @@ export class ScreenshotEffects {
       mergeMap((options) =>
         from(this.electronService.askFor(options)).pipe(
           map((response) => screenshotActions.askSuccess(response)),
-          catchError((error) => of(screenshotActions.askFailure({ error })))
-        )
-      )
-    )
+          catchError((error) => of(screenshotActions.askFailure({ error }))),
+        ),
+      ),
+    ),
   );
 
   getStatistics$ = createEffect(() =>
@@ -140,27 +143,27 @@ export class ScreenshotEffects {
         screenshotActions.captureSuccess,
         screenshotActions.deleteScreenshotsSuccess,
         screenshotActions.deleteScreenshotSuccess,
-        screenshotActions.purgeSuccess
+        screenshotActions.purgeSuccess,
       ),
       mergeMap((options) =>
         from(
           this.electronService.getStatistics(
-            options as IPaginationOptions<IScreenshotMetadataStatistic>
-          )
+            options as IPaginationOptions<IScreenshotMetadataStatistic>,
+          ),
         ).pipe(
           map(({ hasNext, count, data }) =>
             screenshotActions.getScreenshotsStatisticsSuccess({
               hasNext,
               count,
               data,
-            })
+            }),
           ),
           catchError((error) =>
-            of(screenshotActions.getScreenshotsStatisticsFailure({ error }))
-          )
-        )
-      )
-    )
+            of(screenshotActions.getScreenshotsStatisticsFailure({ error })),
+          ),
+        ),
+      ),
+    ),
   );
 
   deleteSelectedScreenshots$ = createEffect(() =>
@@ -171,18 +174,18 @@ export class ScreenshotEffects {
           map(() => {
             this.notificationService.show(
               'Selected screenshots deleted',
-              'success'
+              'success',
             );
             return screenshotActions.deleteSelectedScreenshotsSuccess({
               screenshots,
             });
           }),
           catchError((error) =>
-            of(screenshotActions.deleteSelectedScreenshotsFailure({ error }))
-          )
-        )
-      )
-    )
+            of(screenshotActions.deleteSelectedScreenshotsFailure({ error })),
+          ),
+        ),
+      ),
+    ),
   );
 
   autoScreenshotDeletion$ = createEffect(() =>
@@ -198,7 +201,7 @@ export class ScreenshotEffects {
             },
             limit: -1,
             ignoreRange: true,
-          })
+          }),
         ).pipe(
           concatMap(async ({ data }) => {
             await this.electronService.deleteSelectedScreenshots(data);
@@ -207,18 +210,18 @@ export class ScreenshotEffects {
           map((screenshots) => {
             this.notificationService.show(
               'Screenshots deleted After Video Creation',
-              'info'
+              'info',
             );
             return screenshotActions.deleteSelectedScreenshotsSuccess({
               screenshots,
             });
           }),
           catchError((error) =>
-            of(screenshotActions.deleteSelectedScreenshotsFailure({ error }))
-          )
-        )
-      )
-    )
+            of(screenshotActions.deleteSelectedScreenshotsFailure({ error })),
+          ),
+        ),
+      ),
+    ),
   );
 
   purge$ = createEffect(() =>
@@ -227,10 +230,10 @@ export class ScreenshotEffects {
       mergeMap(() =>
         from(this.electronService.deleteAllData()).pipe(
           map(() => screenshotActions.purgeSuccess()),
-          catchError((error) => of(screenshotActions.purgeFailure({ error })))
-        )
-      )
-    )
+          catchError((error) => of(screenshotActions.purgeFailure({ error }))),
+        ),
+      ),
+    ),
   );
 
   loadScreenshot = createEffect(() =>
@@ -239,14 +242,14 @@ export class ScreenshotEffects {
       mergeMap(({ options }) =>
         from(this.electronService.getOneScreenshot(options)).pipe(
           map((screenshot) =>
-            screenshotActions.loadScreenshotSuccess({ screenshot })
+            screenshotActions.loadScreenshotSuccess({ screenshot }),
           ),
           catchError((error) =>
-            of(screenshotActions.loadScreenshotsFailure({ error }))
-          )
-        )
-      )
-    )
+            of(screenshotActions.loadScreenshotsFailure({ error })),
+          ),
+        ),
+      ),
+    ),
   );
 
   // Helper method to handle common error scenarios
@@ -262,7 +265,7 @@ export class ScreenshotEffects {
       catchError((error) => {
         console.error('Failed to retrieve history:', error);
         return of([]);
-      })
+      }),
     );
   }
 
@@ -271,9 +274,9 @@ export class ScreenshotEffects {
     const trimmedHistory = history.slice(0, this.MAX_HISTORY_ITEMS);
     return this.localStorageService.setItem(this.KEY, trimmedHistory).pipe(
       map(() =>
-        screenshotActions.loadHistorySuccess({ history: trimmedHistory })
+        screenshotActions.loadHistorySuccess({ history: trimmedHistory }),
       ),
-      catchError((error) => of(this.handleError(error)))
+      catchError((error) => of(this.handleError(error))),
     );
   }
 
@@ -285,10 +288,10 @@ export class ScreenshotEffects {
           mergeMap((history) => {
             const updatedHistory = [...new Set([searchQuery, ...history])];
             return this.saveHistory(updatedHistory);
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
 
   removeFromHistory$ = createEffect(() =>
@@ -299,10 +302,10 @@ export class ScreenshotEffects {
           mergeMap((history) => {
             const updatedHistory = history.filter((q) => q !== searchQuery);
             return this.saveHistory(updatedHistory);
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
 
   loadHistory$ = createEffect(() =>
@@ -311,10 +314,10 @@ export class ScreenshotEffects {
       mergeMap(() =>
         this.getHistory().pipe(
           map((history) => screenshotActions.loadHistorySuccess({ history })),
-          catchError((error) => of(this.handleError(error)))
-        )
-      )
-    )
+          catchError((error) => of(this.handleError(error))),
+        ),
+      ),
+    ),
   );
 
   filterHistory$ = createEffect(() =>
@@ -324,15 +327,15 @@ export class ScreenshotEffects {
         this.getHistory().pipe(
           map((history) => {
             const filtered = history.filter((q) =>
-              q.toLowerCase().includes(searchQuery.toLowerCase())
+              q.toLowerCase().includes(searchQuery.toLowerCase()),
             );
             return screenshotActions.loadHistorySuccess({
               history: filtered,
             });
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
 
   getScreenshotsChartLine$ = createEffect(() =>
@@ -342,18 +345,26 @@ export class ScreenshotEffects {
         screenshotActions.getScreenshotsChartLine,
         screenshotActions.deleteScreenshotsSuccess,
         screenshotActions.purgeSuccess,
-        screenshotActions.deleteScreenshotsSuccess
+        screenshotActions.deleteScreenshotsSuccess,
       ),
       mergeMap(() =>
         from(this.electronService.getScreenshotsChartLine()).pipe(
           map((dataLine) =>
-            screenshotActions.getScreenshotsChartLineSuccess({ dataLine })
+            screenshotActions.getScreenshotsChartLineSuccess({ dataLine }),
           ),
           catchError((error) =>
-            of(screenshotActions.getScreenshotsChartLineFailure({ error }))
-          )
-        )
-      )
-    )
+            of(screenshotActions.getScreenshotsChartLineFailure({ error })),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  uploadScreenshot$ = createEffect(() =>
+    this.electronService.onUploadScreenshot().pipe(
+      filter(Boolean),
+      distinctUntilChanged(isDeepEqual.bind(this)),
+      map((upload) => screenshotActions.updateUploadedScreenshot({ upload })),
+    ),
   );
 }

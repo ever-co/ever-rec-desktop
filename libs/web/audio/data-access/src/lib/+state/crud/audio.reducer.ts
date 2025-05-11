@@ -59,7 +59,7 @@ export const reducer = createReducer(
 
     // Filter out deleted audios
     const updatedAudios = state.audios.filter(
-      (audio) => !audioIdsDeleted.includes(audio.id)
+      (audio) => !audioIdsDeleted.includes(audio.id),
     );
 
     return {
@@ -81,7 +81,7 @@ export const reducer = createReducer(
     ...state,
     selectedAudios: [
       ...new Map(
-        [...state.selectedAudios, audio].map((item) => [item, item])
+        [...state.selectedAudios, audio].map((item) => [item, item]),
       ).values(),
     ].filter((audio) => audio.selected),
   })),
@@ -90,7 +90,7 @@ export const reducer = createReducer(
   on(audioActions.unselectAudio, (state, { audio }) => ({
     ...state,
     selectedAudios: state.selectedAudios.filter(
-      ({ data }) => audio.data.id !== data.id
+      ({ data }) => audio.data.id !== data.id,
     ),
   })),
 
@@ -135,7 +135,7 @@ export const reducer = createReducer(
     hasNext,
     audios: [
       ...new Map(
-        [...state.audios, ...data].map((item) => [item.id, item])
+        [...state.audios, ...data].map((item) => [item.id, item]),
       ).values(),
     ],
     loading: false,
@@ -168,7 +168,29 @@ export const reducer = createReducer(
     ...state,
     audios: [audio, ...state.audios],
     count: state.count + 1,
-  }))
+  })),
+
+  on(audioActions.updateUploadedAudio, (state, { upload }) => {
+    const { audio, audios } = state;
+    const { itemId } = upload;
+
+    // Check if updates are needed
+    const shouldUpdateAudio = audio?.id === itemId;
+    const shouldUpdateAudios = audios.some((a) => a.id === itemId);
+
+    // Return unchanged state if no updates are needed
+    if (!shouldUpdateAudio && !shouldUpdateAudios) return state;
+
+    return {
+      ...state,
+      // Update audio if needed
+      audio: shouldUpdateAudio ? { ...audio, synced: true } : audio,
+      // Update audios array if needed (map preserves order)
+      audios: shouldUpdateAudios
+        ? audios.map((a) => (a.id === itemId ? { ...a, synced: true } : a))
+        : audios,
+    };
+  }),
 );
 
 export const audioFeature = createFeature({

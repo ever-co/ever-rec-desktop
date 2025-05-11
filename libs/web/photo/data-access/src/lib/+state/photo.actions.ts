@@ -4,6 +4,7 @@ import {
   IPhoto,
   ISelected,
   IFindOneOptions,
+  IUploadDone,
 } from '@ever-co/shared-utils';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
@@ -36,5 +37,7 @@ export const photoActions = createActionGroup({
     'Unselect All Photos': emptyProps(),
     'Unselect Photo': props<{ photo: ISelected<IPhoto> }>(),
     'Select Photo': props<{ photo: ISelected<IPhoto> }>(),
+
+    'Update Uploaded Photo': props<{ upload: IUploadDone }>(),
   },
 });

@@ -170,6 +170,29 @@ export const reducer = createReducer(
     ...state,
     videos: [video, ...state.videos],
   })),
+
+  on(videoActions.updateUploadedVideo, (state, { upload }) => {
+    const { itemId } = upload;
+    // Early return if the item doesn't exist in either video or videos
+    const videoNeedsUpdate = state.video?.id === itemId;
+    const videosNeedUpdate = state.videos.some((video) => video.id === itemId);
+
+    if (!videoNeedsUpdate && !videosNeedUpdate) {
+      return state;
+    }
+
+    return {
+      ...state,
+      // Only update video if it matches the itemId
+      video: videoNeedsUpdate ? { ...state.video, synced: true } : state.video,
+      // Update videos array only if it contains the itemId, preserving order
+      videos: videosNeedUpdate
+        ? state.videos.map((video) =>
+            video.id === itemId ? { ...video, synced: true } : video,
+          )
+        : state.videos,
+    };
+  }),
 );
 
 export const videoFeature = createFeature({

@@ -42,7 +42,7 @@ export const reducer = createReducer(
     hasNext,
     photos: [
       ...new Map(
-        [...state.photos, ...data].map((item) => [item.id, item])
+        [...state.photos, ...data].map((item) => [item.id, item]),
       ).values(),
     ],
     loading: false,
@@ -109,7 +109,7 @@ export const reducer = createReducer(
 
     // Filter out deleted photos
     const updatedPhotos = state.photos.filter(
-      (photo) => !photoIdsDeleted.includes(photo.id)
+      (photo) => !photoIdsDeleted.includes(photo.id),
     );
 
     return {
@@ -131,7 +131,7 @@ export const reducer = createReducer(
     ...state,
     selectedPhotos: [
       ...new Map(
-        [...state.selectedPhotos, photo].map((item) => [item, item])
+        [...state.selectedPhotos, photo].map((item) => [item, item]),
       ).values(),
     ].filter((photo) => photo.selected),
   })),
@@ -140,7 +140,7 @@ export const reducer = createReducer(
   on(photoActions.unselectPhoto, (state, { photo }) => ({
     ...state,
     selectedPhotos: state.selectedPhotos.filter(
-      ({ data }) => photo.data.id !== data.id
+      ({ data }) => photo.data.id !== data.id,
     ),
   })),
 
@@ -187,7 +187,31 @@ export const reducer = createReducer(
     ...state,
     deleting: false,
     error,
-  }))
+  })),
+
+  on(photoActions.updateUploadedPhoto, (state, { upload }) => {
+    const { photo, photos } = state;
+    const { itemId } = upload;
+
+    // Check if updates are needed
+    const shouldUpdatePhoto = photo?.id === itemId;
+    const shouldUpdatePhotos = photos.some((photo) => photo.id === itemId);
+
+    // Return unchanged state if no updates are needed
+    if (!shouldUpdatePhoto && !shouldUpdatePhotos) return state;
+
+    return {
+      ...state,
+      // Update photo if needed
+      photo: shouldUpdatePhoto ? { ...photo, synced: true } : photo,
+      // Update photos array if needed (map preserves order)
+      photos: shouldUpdatePhoto
+        ? photos.map((photo) =>
+            photo.id === itemId ? { ...photo, synced: true } : photo,
+          )
+        : photos,
+    };
+  }),
 );
 
 export const photoFeature = createFeature({

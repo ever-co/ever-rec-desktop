@@ -3,9 +3,16 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { NotificationService } from '@ever-co/notification-data-access';
 import { from, of } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import {
+  catchError,
+  distinctUntilChanged,
+  filter,
+  map,
+  mergeMap,
+} from 'rxjs/operators';
 import { photoActions } from './photo.actions';
 import { PhotoService } from '../services/photo.service';
+import { isDeepEqual } from '@ever-co/shared-utils';
 
 @Injectable()
 export class PhotoEffects {
@@ -17,10 +24,10 @@ export class PhotoEffects {
       mergeMap((options) =>
         from(this.photoService.getAllPhotos(options)).pipe(
           map((response) => photoActions.loadPhotosSuccess(response)),
-          catchError((error) => of(photoActions.loadPhotosFailure({ error })))
-        )
-      )
-    )
+          catchError((error) => of(photoActions.loadPhotosFailure({ error }))),
+        ),
+      ),
+    ),
   );
 
   loadPhoto$ = createEffect(() =>
@@ -29,10 +36,10 @@ export class PhotoEffects {
       mergeMap((options) =>
         from(this.photoService.getOnePhoto(options)).pipe(
           map((photo) => photoActions.loadPhotoSuccess({ photo })),
-          catchError((error) => of(photoActions.loadPhotoFailure({ error })))
-        )
-      )
-    )
+          catchError((error) => of(photoActions.loadPhotoFailure({ error }))),
+        ),
+      ),
+    ),
   );
 
   deletePhotot$ = createEffect(() =>
@@ -44,10 +51,10 @@ export class PhotoEffects {
             this.notificationService.show('Photo deleted', 'success');
             return photoActions.deletePhotoSuccess(photo);
           }),
-          catchError((error) => of(photoActions.deletePhotoFailure({ error })))
-        )
-      )
-    )
+          catchError((error) => of(photoActions.deletePhotoFailure({ error }))),
+        ),
+      ),
+    ),
   );
 
   deleteSelectedScreenshots$ = createEffect(() =>
@@ -62,11 +69,11 @@ export class PhotoEffects {
             });
           }),
           catchError((error) =>
-            of(photoActions.deleteSelectedPhotosFailure({ error }))
-          )
-        )
-      )
-    )
+            of(photoActions.deleteSelectedPhotosFailure({ error })),
+          ),
+        ),
+      ),
+    ),
   );
 
   deletePhotos$ = createEffect(() =>
@@ -75,14 +82,24 @@ export class PhotoEffects {
       mergeMap(() =>
         from(this.photoService.deleteAllPhoto()).pipe(
           map(() => photoActions.deletePhotosSuccess()),
-          catchError((error) => of(photoActions.deletePhotosFailure({ error })))
-        )
-      )
-    )
+          catchError((error) =>
+            of(photoActions.deletePhotosFailure({ error })),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  uploadPhoto$ = createEffect(() =>
+    this.photoService.onUploadPhoto().pipe(
+      filter(Boolean),
+      distinctUntilChanged(isDeepEqual.bind(this)),
+      map((upload) => photoActions.updateUploadedPhoto({ upload })),
+    ),
   );
 
   constructor(
     private readonly photoService: PhotoService,
-    private readonly notificationService: NotificationService
+    private readonly notificationService: NotificationService,
   ) {}
 }

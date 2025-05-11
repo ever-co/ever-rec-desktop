@@ -8,8 +8,10 @@ import {
   IScreenshot,
   IScreenshotChartLine,
   IScreenshotMetadataStatistic,
+  IUploadDone,
   TimeSlot,
 } from '@ever-co/shared-utils';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +23,7 @@ export class ScreenshotElectronService {
     this.electronService.removeAllListeners(Channel.SCREENSHOT_CAPTURED);
     this.electronService.on(
       Channel.SCREENSHOT_CAPTURED,
-      (_, screenshot: IScreenshot) => callback(screenshot)
+      (_, screenshot: IScreenshot) => callback(screenshot),
     );
   }
 
@@ -34,7 +36,7 @@ export class ScreenshotElectronService {
   }
 
   public getAllScreenshots(
-    options: IPaginationOptions<IScreenshot>
+    options: IPaginationOptions<IScreenshot>,
   ): Promise<IPaginationResponse<IScreenshot>> {
     return this.electronService.invoke(Channel.REQUEST_SCREENSHOTS, options);
   }
@@ -50,35 +52,39 @@ export class ScreenshotElectronService {
   public deleteScreenshot(screenshot: IScreenshot): Promise<void> {
     return this.electronService.invoke(
       Channel.REQUEST_DELETE_ONE_SCREENSHOT,
-      screenshot
+      screenshot,
     );
   }
 
   public askFor(
-    options: IPaginationOptions<IScreenshot>
+    options: IPaginationOptions<IScreenshot>,
   ): Promise<IPaginationResponse<IScreenshot>> {
     return this.electronService.invoke(Channel.SEARCHING, options);
   }
 
   public getStatistics(
-    options = {} as IPaginationOptions<IScreenshotMetadataStatistic>
+    options = {} as IPaginationOptions<IScreenshotMetadataStatistic>,
   ): Promise<IPaginationResponse<IScreenshotMetadataStatistic>> {
     return this.electronService.invoke(
       Channel.REQUEST_SCREENSHOTS_STATISTICS,
-      options
+      options,
     );
   }
 
   public deleteSelectedScreenshots(screenshots: IScreenshot[]): Promise<void> {
     return this.electronService.invoke(
       Channel.REQUEST_DELETE_SELECTED_SCREENSHOTS,
-      screenshots
+      screenshots,
     );
   }
 
   public getScreenshotsChartLine(
-    timeslot = 'minute' as TimeSlot
+    timeslot = 'minute' as TimeSlot,
   ): Promise<IScreenshotChartLine[]> {
     return this.electronService.invoke(Channel.CHART_LINE_DATA, timeslot);
+  }
+
+  public onUploadScreenshot(): Observable<IUploadDone> {
+    return this.electronService.fromEvent<IUploadDone>(Channel.UPLOAD_DONE);
   }
 }

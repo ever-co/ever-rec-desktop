@@ -7,6 +7,7 @@ import {
   IScreenshotChartLine,
   IScreenshotMetadataStatistic,
   ISelected,
+  IUploadDone,
   IVideo,
 } from '@ever-co/shared-utils';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
@@ -80,5 +81,7 @@ export const screenshotActions = createActionGroup({
     Purge: emptyProps(),
     'Purge Success': emptyProps(),
     'Purge Failure': props<{ error: string }>(),
+
+    'Update Uploaded Screenshot': props<{ upload: IUploadDone }>(),
   },
 });

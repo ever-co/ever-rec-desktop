@@ -4,6 +4,7 @@ import {
   IPaginationOptions,
   IPaginationResponse,
   ISelected,
+  IUploadDone,
 } from '@ever-co/shared-utils';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
@@ -35,5 +36,7 @@ export const audioActions = createActionGroup({
     'Unselect Audio': props<{ audio: ISelected<IAudio> }>(),
 
     'Select Audio': props<{ audio: ISelected<IAudio> }>(),
+
+    'Update Uploaded Audio': props<{ upload: IUploadDone }>(),
   },
 });

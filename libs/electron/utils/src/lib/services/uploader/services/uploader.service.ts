@@ -79,7 +79,7 @@ export abstract class UploaderService<T>
     upload: IUpload,
     event: Electron.IpcMainEvent,
   ) {
-    worker.on('message', async (payload) => {
+    worker.on('message', (payload) => {
       switch (payload.status) {
         case 'done':
           this.logger.info('Done...');

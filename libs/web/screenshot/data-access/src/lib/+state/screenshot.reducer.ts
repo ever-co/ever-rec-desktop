@@ -118,12 +118,12 @@ export const reducer = createReducer(
       hasNext,
       screenshots: [
         ...new Map(
-          [...state.screenshots, ...data].map((item) => [item.id, item])
+          [...state.screenshots, ...data].map((item) => [item.id, item]),
         ).values(),
       ],
       loading: false,
       error: '',
-    })
+    }),
   ),
   on(screenshotActions.loadScreenshotsFailure, (state, { error }) => ({
     ...state,
@@ -177,7 +177,7 @@ export const reducer = createReducer(
       loading: false,
       screenshots: [
         ...new Map(
-          [...state.search.screenshots, ...data].map((item) => [item.id, item])
+          [...state.search.screenshots, ...data].map((item) => [item.id, item]),
         ).values(),
       ],
       hasNext,
@@ -221,12 +221,12 @@ export const reducer = createReducer(
             [...state.statistic.currents, ...data].map((item) => [
               item.name,
               item,
-            ])
+            ]),
           ).values(),
         ],
         count,
       },
-    })
+    }),
   ),
 
   // Reset screenshots
@@ -254,12 +254,12 @@ export const reducer = createReducer(
     screenshotActions.deleteSelectedScreenshotsSuccess,
     (state, { screenshots }) => {
       const screenshotIdsDeleted = screenshots.map(
-        (screenshot) => screenshot.id
+        (screenshot) => screenshot.id,
       );
 
       // Filter out deleted screenshots
       const updatedScreenshots = state.screenshots.filter(
-        (screenshot) => !screenshotIdsDeleted.includes(screenshot.id)
+        (screenshot) => !screenshotIdsDeleted.includes(screenshot.id),
       );
 
       return {
@@ -268,7 +268,7 @@ export const reducer = createReducer(
         screenshots: updatedScreenshots,
         deleting: false,
       };
-    }
+    },
   ),
 
   on(
@@ -277,7 +277,7 @@ export const reducer = createReducer(
       ...state,
       deleting: false,
       error,
-    })
+    }),
   ),
 
   // Select Screenshot
@@ -285,7 +285,7 @@ export const reducer = createReducer(
     ...state,
     selectedScreenshots: [
       ...new Map(
-        [...state.selectedScreenshots, screenshot].map((item) => [item, item])
+        [...state.selectedScreenshots, screenshot].map((item) => [item, item]),
       ).values(),
     ].filter((screenshot) => screenshot.selected),
   })),
@@ -294,7 +294,7 @@ export const reducer = createReducer(
   on(screenshotActions.unselectScreenshot, (state, { screenshot }) => ({
     ...state,
     selectedScreenshots: state.selectedScreenshots.filter(
-      ({ data }) => screenshot.data.id !== data.id
+      ({ data }) => screenshot.data.id !== data.id,
     ),
   })),
 
@@ -333,7 +333,7 @@ export const reducer = createReducer(
         loading: false,
         error: '',
       },
-    })
+    }),
   ),
 
   on(screenshotActions.getScreenshotsChartLineFailure, (state, { error }) => ({
@@ -375,7 +375,37 @@ export const reducer = createReducer(
     ...state,
     loading: false,
     error,
-  }))
+  })),
+
+  on(screenshotActions.updateUploadedScreenshot, (state, { upload }) => {
+    const { screenshot, screenshots } = state;
+    const { itemId } = upload;
+
+    // Check if updates are needed
+    const shouldUpdateScreenshot = screenshot?.id === itemId;
+    const shouldUpdateScreenshots = screenshots.some(
+      (screenshot) => screenshot.id === itemId,
+    );
+
+    // Return unchanged state if no updates are needed
+    if (!shouldUpdateScreenshot && !shouldUpdateScreenshots) return state;
+
+    return {
+      ...state,
+      // Update screnshot if needed
+      screenshot: shouldUpdateScreenshot
+        ? { ...screenshot, synced: true }
+        : screenshot,
+      // Update audios array if needed (map preserves order)
+      screenshots: shouldUpdateScreenshots
+        ? screenshots.map((screenshot) =>
+            screenshot.id === itemId
+              ? { ...screenshot, synced: true }
+              : screenshot,
+          )
+        : screenshots,
+    };
+  }),
 );
 
 export const screenshotFeature = createFeature({

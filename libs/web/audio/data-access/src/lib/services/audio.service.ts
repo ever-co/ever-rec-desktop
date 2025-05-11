@@ -7,6 +7,7 @@ import {
   IFindOneOptions,
   IPaginationOptions,
   IPaginationResponse,
+  IUploadDone,
 } from '@ever-co/shared-utils';
 import { Observable } from 'rxjs';
 
@@ -21,7 +22,7 @@ export class AudioService {
   }
 
   public getAll(
-    options: IPaginationOptions<IAudio>
+    options: IPaginationOptions<IAudio>,
   ): Observable<IPaginationResponse<IAudio>> {
     return this.electronService.invoke$(Channel.GET_ALL_AUDIO, options);
   }
@@ -36,5 +37,9 @@ export class AudioService {
 
   public deleteAll(audios?: IAudio[]): Observable<void> {
     return this.electronService.invoke$(Channel.DELETE_ALL_AUDIO, audios);
+  }
+
+  public onUploadAudio(): Observable<IUploadDone> {
+    return this.electronService.fromEvent<IUploadDone>(Channel.UPLOAD_DONE);
   }
 }

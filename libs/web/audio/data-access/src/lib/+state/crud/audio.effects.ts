@@ -3,9 +3,16 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { NotificationService } from '@ever-co/notification-data-access';
 import { of } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import {
+  catchError,
+  distinctUntilChanged,
+  filter,
+  map,
+  mergeMap,
+} from 'rxjs/operators';
 import { audioActions } from './audio.actions';
 import { AudioService } from '../../services/audio.service';
+import { isDeepEqual } from '@ever-co/shared-utils';
 
 @Injectable()
 export class AudioEffects {
@@ -19,10 +26,10 @@ export class AudioEffects {
       mergeMap(() =>
         this.audioService.deleteAll().pipe(
           map(() => audioActions.deleteAudiosSuccess()),
-          catchError((error) => of(audioActions.deleteAudioFailure({ error })))
-        )
-      )
-    )
+          catchError((error) => of(audioActions.deleteAudioFailure({ error }))),
+        ),
+      ),
+    ),
   );
 
   deleteSelectedAudios$ = createEffect(() =>
@@ -37,11 +44,11 @@ export class AudioEffects {
             });
           }),
           catchError((error) =>
-            of(audioActions.deleteSelectedAudiosFailure({ error }))
-          )
-        )
-      )
-    )
+            of(audioActions.deleteSelectedAudiosFailure({ error })),
+          ),
+        ),
+      ),
+    ),
   );
 
   loadAudios$ = createEffect(() =>
@@ -50,10 +57,10 @@ export class AudioEffects {
       mergeMap((options) =>
         this.audioService.getAll(options).pipe(
           map((response) => audioActions.loadAudiosSuccess(response)),
-          catchError((error) => of(audioActions.loadAudiosFailure({ error })))
-        )
-      )
-    )
+          catchError((error) => of(audioActions.loadAudiosFailure({ error }))),
+        ),
+      ),
+    ),
   );
 
   loadAudio$ = createEffect(() =>
@@ -62,10 +69,10 @@ export class AudioEffects {
       mergeMap((options) =>
         this.audioService.getOne(options).pipe(
           map((audio) => audioActions.loadAudioSuccess({ audio })),
-          catchError((error) => of(audioActions.loadAudioFailure({ error })))
-        )
-      )
-    )
+          catchError((error) => of(audioActions.loadAudioFailure({ error }))),
+        ),
+      ),
+    ),
   );
 
   deleteAudio$ = createEffect(() =>
@@ -77,9 +84,17 @@ export class AudioEffects {
             this.notificationService.show('Audio deleted', 'success');
             return audioActions.deleteAudioSuccess(audio);
           }),
-          catchError((error) => of(audioActions.deleteAudioFailure({ error })))
-        )
-      )
-    )
+          catchError((error) => of(audioActions.deleteAudioFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  uploadAudio$ = createEffect(() =>
+    this.audioService.onUploadAudio().pipe(
+      filter(Boolean),
+      distinctUntilChanged(isDeepEqual.bind(this)),
+      map((upload) => audioActions.updateUploadedAudio({ upload })),
+    ),
   );
 }

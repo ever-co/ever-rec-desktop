@@ -3,6 +3,7 @@ import {
   IPaginationOptions,
   IPaginationResponse,
   ISelected,
+  IUploadDone,
   IVideo,
 } from '@ever-co/shared-utils';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
@@ -36,5 +37,7 @@ export const videoActions = createActionGroup({
     'Reset Videos': emptyProps(),
 
     'Add Video': props<{ video: IVideo }>(),
+
+    'Update Uploaded Video': props<{ upload: IUploadDone }>(),
   },
 });
