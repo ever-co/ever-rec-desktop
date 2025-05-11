@@ -1,6 +1,6 @@
 {
   "name": "@ever-co/audio-data-access",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "peerDependencies": {
     "@angular/common": "^19.2.0",
     "@angular/core": "^19.2.0"
