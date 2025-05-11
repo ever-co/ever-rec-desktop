@@ -2,6 +2,77 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.0.0](https://github.com/ever-co/ever-capture/compare/screenshot-feature-0.4.0...screenshot-feature-1.0.0) (2025-05-11)
+
+### Dependency Updates
+
+* `screenshot-data-access` updated to version `1.0.0`
+* `shared-components` updated to version `2.0.0`
+* `shared-service` updated to version `0.3.1`
+* `utils` updated to version `1.1.0`
+* `generate-video-data-access` updated to version `1.0.0`
+* `date-picker-data-access` updated to version `1.0.0`
+* `screenshot-ui` updated to version `1.0.0`
+* `upload-data-access` updated to version `2.0.0`
+* `web-setting-data-access` updated to version `1.0.0`
+* `breadcrumb-data-access` updated to version `1.0.0`
+* `notification-data-access` updated to version `1.0.0`
+
+### Bug Fixes
+
+* **screenshot-gallery:** apply stack-cards class only for screenshots with chunks ([13ee0cd](https://github.com/ever-co/ever-capture/commit/13ee0cdf585e93dc72bb5e97b310fd0c53cd2d4e))
+* **screenshot-gallery:** ensure stack card items are full width and untransformed ([1c1c54a](https://github.com/ever-co/ever-capture/commit/1c1c54a8a57e1b2f7817ab5bfd052267db1c6e6b))
+
+
+### Code Refactoring
+
+* **date-picker:** modularize date picker into dedicated libraries ([f19b188](https://github.com/ever-co/ever-capture/commit/f19b1883bc7392e9a42f7342afca689ab24fd029))
+* **screenshot:** make screenshot card presentational and move logic ([44cfc69](https://github.com/ever-co/ever-capture/commit/44cfc69f610b7004634df4d68ee429a8858669a2))
+
+
+* build(libs)!: upgrade Angular to v19 and simplify peer dependencies ([8a519ca](https://github.com/ever-co/ever-capture/commit/8a519ca4c491dfce28d1be34e7680dde4fce1023))
+
+
+### Features
+
+* **screenshot-gallery:** reduce displayed chunks in stack view ([855a63e](https://github.com/ever-co/ever-capture/commit/855a63ed34e9c11d83896bf82ea9fa598c6d57e6))
+* **screenshot:** refine screenshot display and enhance chunk interaction ([e4a8231](https://github.com/ever-co/ever-capture/commit/e4a823140bd9bffe22b5946bd93b3bd84a3d3303))
+* **screenshot:** use action button to navigate to associated video ([373512b](https://github.com/ever-co/ever-capture/commit/373512b48f186893e1bbe6d8fa18bcc581e97db4))
+
+
+### BREAKING CHANGES
+
+* Peer dependency declarations for numerous libraries
+have been significantly reduced.
+Most affected libraries now list only `@angular/common` and
+`@angular/core` as `peerDependencies`. Previously declared peers
+(e.g., `@ngrx/store`, `rxjs`, various `@ever-co/*` packages,
+`@angular/material`) have been removed from these libraries'
+`peerDependencies`.
+Consuming applications must ensure these dependencies are directly
+managed if still required. This change aims for greater flexibility
+and reduced dependency conflicts but may require project adjustments.
+* **screenshot:** `ScreenshotComponent` is no longer available from
+`libs/shared/components`. It has been moved to `libs/web/screenshot/ui`
+(importable via `@ever-co/screenshot-ui`).
+The component's API has changed:
+- It no longer contains internal action logic (view, delete, upload).
+- It now requires an `actionButtons: IActionButton[]` input to define
+its actions.
+Consumers must update import paths and provide the `actionButtons` input.
+* **date-picker:** Date picker components and state management have been
+relocated from `shared-components` and `shared-service`.
+`CopyContextButtonComponent` and `ToggleComponent` have been removed
+from `shared-components`.
+Migration:
+- Update imports for `DatePickerComponent` to `@ever-co/date-picker-feature`.
+- Update imports for date picker NgRx state to
+`@ever-co/date-picker-data-access`.
+- Replace usage of `DatePickerService` with NgRx selectors/actions from
+`@ever-co/date-picker-data-access`.
+
+
+
 # 0.1.0 (2025-05-09)
 
 
