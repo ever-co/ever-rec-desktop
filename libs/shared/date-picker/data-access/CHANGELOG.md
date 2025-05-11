@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.1](https://github.com/ever-co/ever-capture/compare/date-picker-data-access-1.0.0...date-picker-data-access-1.0.1) (2025-05-11)
+
+
+### Bug Fixes
+
+* **date-picker-data-access:** correct typo in npm publish path ([4b63609](https://github.com/ever-co/ever-capture/commit/4b6360980058ea84b767d499e7b36324422abb00))
+
+
+
 # 1.0.0 (2025-05-11)
 
 ### Dependency Updates

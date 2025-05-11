@@ -1,6 +1,6 @@
 {
   "name": "@ever-co/date-picker-data-access",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "peerDependencies": {
     "@angular/common": "^19.2.0",
     "@angular/core": "^19.2.0"
