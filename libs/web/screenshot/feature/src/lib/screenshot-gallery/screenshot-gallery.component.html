@@ -2,7 +2,7 @@
   <div
     libInfiniteScroll
     (scrolled)="moreScreenshots()"
-    class="grid grid-cols-1 static md:grid-cols-2 lg:grid-cols-3 gap-4 pr-4 overflow-auto max-h-custom main"
+    class="grid grid-cols-1 static md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-auto max-h-custom main"
   >
     @for (screenshot of screenshots$ | async; track screenshot.id) {
       <div class="stack-cards card">

@@ -103,16 +103,6 @@ $max-stack-item: 3;
       width: 100%;
       margin: 0;
       transform: scale(1) !important;
-
-      &:has(+ .stack-cards__item) {
-        transform: scale(0.98) !important;
-      }
-
-      // Reveal the card behind by pushing it down more
-      & + .stack-cards__item {
-        transform: translateY(-2px) scale(0.98) !important;
-        z-index: 9;
-      }
     }
   }
 }
