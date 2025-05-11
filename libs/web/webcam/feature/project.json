@@ -53,7 +53,8 @@
         "push": true,
         "pushTags": true,
         "trackDeps": true,
-        "baseBranch": "develop"
+        "baseBranch": "develop",
+        "postTargets": ["publish"]
       }
     },
     "publish": {
@@ -62,7 +63,7 @@
         "parallel": false,
         "commands": ["cd dist/libs/web/webcam/feature && npm publish"]
       },
-      "dependsOn": ["version", "build"],
+      "dependsOn": ["build"],
       "parallelism": false
     }
   }

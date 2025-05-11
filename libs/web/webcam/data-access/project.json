@@ -55,7 +55,8 @@
         "push": true,
         "pushTags": true,
         "trackDeps": true,
-        "baseBranch": "develop"
+        "baseBranch": "develop",
+        "postTargets": ["publish"]
       }
     },
     "publish": {
@@ -64,7 +65,7 @@
         "parallel": false,
         "commands": ["cd dist/libs/web/webcam/data-access && npm publish"]
       },
-      "dependsOn": ["version", "build"],
+      "dependsOn": ["build"],
       "parallelism": false
     }
   }

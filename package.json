@@ -17,8 +17,8 @@
     "serve": "nx run-many --target=serve --projects=ui,desktop",
     "make": "nx run desktop:make",
     "build:lib": "nx run-many --target=build --exclude=ui,desktop --tailwindConfig=apps/ui/tailwind.config.js",
-    "publish:all": "nx run-many --target=publish --exclude=ui,desktop --base=develop",
-    "publish:affected:libraries": "nx affected  --exclude=ui,desktop --base=develop --target=publish"
+    "publish:all": "nx run-many --target=version --exclude=ui,desktop --base=develop",
+    "publish:affected:libraries": "nx affected  --exclude=ui,desktop --base=develop --target=version"
   },
   "author": "Ever Co. LTD <ever@ever.co> (https://ever.co)",
   "keywords": [],

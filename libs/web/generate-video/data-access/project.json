@@ -51,7 +51,8 @@
         "push": true,
         "pushTags": true,
         "trackDeps": true,
-        "baseBranch": "develop"
+        "baseBranch": "develop",
+        "postTargets": ["publish"]
       }
     },
     "publish": {
@@ -62,7 +63,7 @@
           "cd dist/libs/web/generate-video/data-access && npm publish"
         ]
       },
-      "dependsOn": ["version", "build"],
+      "dependsOn": ["build"],
       "parallelism": false
     }
   }

@@ -43,7 +43,8 @@
         "push": true,
         "pushTags": true,
         "trackDeps": true,
-        "baseBranch": "develop"
+        "baseBranch": "develop",
+        "postTargets": ["publish"]
       }
     },
     "publish": {
@@ -54,10 +55,7 @@
           "cd dist/libs/shared/service && npm publish"
         ]
       },
-      "dependsOn": [
-        "version",
-        "build"
-      ],
+       "dependsOn": ["build"],
       "parallelism": false
     }
   }
