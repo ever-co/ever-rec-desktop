@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [2.0.4](https://github.com/ever-co/ever-capture/compare/upload-data-access-2.0.3...upload-data-access-2.0.4) (2025-05-11)
+
+### Dependency Updates
+
+* `web-setting-data-access` updated to version `1.0.5`
+
+
 ## [2.0.3](https://github.com/ever-co/ever-capture/compare/upload-data-access-2.0.2...upload-data-access-2.0.3) (2025-05-11)
 
 ### Dependency Updates
