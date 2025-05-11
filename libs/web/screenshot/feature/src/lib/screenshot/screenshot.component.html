@@ -4,12 +4,12 @@
       <!-- Screenshot Display Section -->
       <div class="w-full lg:w-2/3 p-4">
         <div
-          class="rounded-df overflow-hidden bg-gray-800 relative w-full h-full flex items-center justify-center transform transition-transform duration-300 scale-[0.99] hover:scale-[1.00]"
+          class="rounded-df overflow-hidden bg-gray-800 relative w-full max-h-img flex items-center justify-center transform transition-transform duration-300 scale-[0.99] hover:scale-[1.00]"
         >
           <img
             [src]="screenshot.pathname"
             alt="Screenshot"
-            class="max-w-full max-h-full rounded-df shadow-lg"
+            class="max-w-full max-h-img rounded-df shadow-lg"
             libImgFallback
           />
           <div
@@ -49,14 +49,23 @@
             @for (chunk of screenshot.chunks; track chunk.id) {
               <div
                 (click)="load(chunk.id)"
-                class="overflow-hidden cursor-pointer rounded-df shadow-md hover:shadow-lg transition-shadow duration-300"
+                (keyup.enter)="load(chunk.id)"
+                role="button"
+                tabindex="0"
+                class="group relative overflow-hidden flex justify-center items-center bg-gray-800/90 cursor-pointer rounded-df shadow-md hover:shadow-xl transition-all duration-300 ease-in-out hover:bg-gray-800/80"
               >
                 <img
                   [src]="chunk.pathname"
-                  alt="Screenshot chunk"
-                  class="w-full h-auto hover:scale-105 object-cover"
+                  [alt]="'Screenshot section ' + chunk.id"
+                  width="400"
+                  height="300"
+                  class="w-full h-auto transition-transform duration-500 ease-in-out group-hover:scale-105 object-cover aspect-video"
                   libImgFallback
+                  loading="lazy"
                 />
+                <div
+                  class="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors duration-300"
+                ></div>
               </div>
             }
           </div>
