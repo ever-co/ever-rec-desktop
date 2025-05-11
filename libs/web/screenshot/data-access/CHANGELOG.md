@@ -2,6 +2,38 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.0.0](https://github.com/ever-co/ever-capture/compare/screenshot-data-access-0.2.2...screenshot-data-access-1.0.0) (2025-05-11)
+
+### Dependency Updates
+
+* `utils` updated to version `1.1.0`
+* `notification-data-access` updated to version `1.0.0`
+* `shared-service` updated to version `0.3.1`
+* `data-access-electron` updated to version `0.2.2`
+
+* build(libs)!: upgrade Angular to v19 and simplify peer dependencies ([8a519ca](https://github.com/ever-co/ever-capture/commit/8a519ca4c491dfce28d1be34e7680dde4fce1023))
+
+
+### Features
+
+* **media-sync:** update media item status on upload completion ([c86716f](https://github.com/ever-co/ever-capture/commit/c86716f2d191666024df7a629067cf596a170dfa))
+
+
+### BREAKING CHANGES
+
+* Peer dependency declarations for numerous libraries
+have been significantly reduced.
+Most affected libraries now list only `@angular/common` and
+`@angular/core` as `peerDependencies`. Previously declared peers
+(e.g., `@ngrx/store`, `rxjs`, various `@ever-co/*` packages,
+`@angular/material`) have been removed from these libraries'
+`peerDependencies`.
+Consuming applications must ensure these dependencies are directly
+managed if still required. This change aims for greater flexibility
+and reduced dependency conflicts but may require project adjustments.
+
+
+
 # 0.1.0 (2025-05-09)
 
 
