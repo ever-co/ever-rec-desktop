@@ -17,6 +17,7 @@ import { isDeepEqual } from '@ever-co/shared-utils';
 @Injectable()
 export class PhotoEffects {
   private readonly actions$ = inject(Actions);
+  private readonly photoService = inject(PhotoService);
 
   loadPhotos$ = createEffect(() =>
     this.actions$.pipe(
@@ -98,8 +99,5 @@ export class PhotoEffects {
     ),
   );
 
-  constructor(
-    private readonly photoService: PhotoService,
-    private readonly notificationService: NotificationService,
-  ) {}
+  constructor(private readonly notificationService: NotificationService) {}
 }
