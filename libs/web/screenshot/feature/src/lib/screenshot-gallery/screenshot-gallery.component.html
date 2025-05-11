@@ -5,7 +5,10 @@
     class="grid grid-cols-1 static md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-auto max-h-custom main"
   >
     @for (screenshot of screenshots$ | async; track screenshot.id) {
-      <div class="stack-cards card">
+      <div
+        [ngClass]="{ 'stack-cards': screenshot.chunks?.length }"
+        class="card"
+      >
         <lib-screenshot
           class="stack-cards__item"
           (selected)="selectScreenshot($event)"
