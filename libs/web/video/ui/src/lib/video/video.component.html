@@ -93,7 +93,7 @@
         <div class="flex items-center gap-4">
           <button
             mat-icon-button
-            (click)="togglePlayPause()"
+            (click)="togglePlayPause(); $event.stopPropagation()"
             class="bg-primary-100 hover:bg-primary-200 transition-colors duration-200"
           >
             <mat-icon class="mat-primary">{{

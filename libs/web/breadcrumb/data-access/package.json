@@ -2,8 +2,8 @@
   "name": "@ever-co/breadcrumb-data-access",
   "version": "0.1.0",
   "peerDependencies": {
-    "@angular/common": "^17.3.0",
-    "@angular/core": "^17.3.0"
+    "@angular/common": "^19.2.0",
+    "@angular/core": "^19.2.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"
