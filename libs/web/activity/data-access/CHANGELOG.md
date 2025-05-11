@@ -2,6 +2,10 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.6](https://github.com/ever-co/ever-capture/compare/activity-data-access-1.0.5...activity-data-access-1.0.6) (2025-05-11)
+
+
+
 ## [1.0.5](https://github.com/ever-co/ever-capture/compare/activity-data-access-1.0.4...activity-data-access-1.0.5) (2025-05-11)
 
 ### Dependency Updates
