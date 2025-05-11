@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.5](https://github.com/ever-co/ever-capture/compare/photo-feature-1.0.4...photo-feature-1.0.5) (2025-05-11)
+
+### Dependency Updates
+
+* `upload-data-access` updated to version `2.0.4`
+* `web-setting-data-access` updated to version `1.0.5`
+* `date-picker-data-access` updated to version `1.0.1`
+
+
 ## [1.0.4](https://github.com/ever-co/ever-capture/compare/photo-feature-1.0.3...photo-feature-1.0.4) (2025-05-11)
 
 ### Dependency Updates
