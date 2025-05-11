@@ -10,6 +10,14 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 * `utils` updated to version `1.1.0`
 
 
+## [0.2.2](https://github.com/ever-co/ever-capture/compare/database-electron-0.2.1...database-electron-0.2.2) (2025-05-11)
+
+### Dependency Updates
+
+* `electron-utils` updated to version `1.1.0`
+* `utils` updated to version `1.1.0`
+
+
 # 0.1.0 (2025-05-09)
 
 
