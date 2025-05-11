@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.3.4](https://github.com/ever-co/ever-capture/compare/window-0.3.3...window-0.3.4) (2025-05-11)
+
+### Dependency Updates
+
+* `database-electron` updated to version `0.2.2`
+
+
 ## [0.3.3](https://github.com/ever-co/ever-capture/compare/window-0.3.2...window-0.3.3) (2025-05-11)
 
 ### Dependency Updates
