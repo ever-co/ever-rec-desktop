@@ -2,6 +2,23 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.1.0](https://github.com/ever-co/ever-capture/compare/electron-utils-1.0.2...electron-utils-1.1.0) (2025-05-11)
+
+### Dependency Updates
+
+* `utils` updated to version `1.1.0`
+
+### Features
+
+* **media-sync:** update media item status on upload completion ([c86716f](https://github.com/ever-co/ever-capture/commit/c86716f2d191666024df7a629067cf596a170dfa))
+
+
+### Performance Improvements
+
+* **uploader:** expedite upload completion signal by not awaiting synchronization ([f711d2a](https://github.com/ever-co/ever-capture/commit/f711d2aef1b1cac73727a11a7ae7308e5a6c897b))
+
+
+
 # 0.1.0 (2025-05-09)
 
 
