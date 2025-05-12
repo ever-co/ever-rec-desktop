@@ -1,6 +1,6 @@
 <mat-card
   appearance="outlined"
-  class="bg-white max-w-[400px] rounded-df h-full p-4"
+  class="bg-white max-w-[500px] rounded-df h-full p-4"
 >
   <div class="flex items-center justify-between mb-4">
     <p class="text-sm font-medium text-gray-600">Activity Distribution</p>
@@ -12,33 +12,35 @@
   </div>
 
   <div class="flex gap-4 space-y-6">
-    @if (chartData$ | async; as chartData) { @if(chartData.length) {
-    <div class="w-full min-h-80 max-w-[400px] relative">
-      <div
-        class="text-2xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-      >
-        <p class="text-sm font-medium text-gray-600 mb-4">Productivity</p>
-        <h6 class="text-2xl font-bold">
-          {{ active$ | async | percent : '1.2-2' }}
-        </h6>
-      </div>
-      <ngx-charts-pie-chart
-        [results]="chartData"
-        [gradient]="true"
-        [animations]="false"
-        [labels]="false"
-        [doughnut]="true"
-        [legend]="false"
-        [scheme]="scheme"
-        class="h-full"
-      >
-      </ngx-charts-pie-chart>
-    </div>
-    }@else {
-    <lib-no-data
-      class="w-full min-w-72 min-h-80"
-      message="No activities available"
-    ></lib-no-data>
-    } }
+    @if (chartData$ | async; as chartData) {
+      @if (chartData.length) {
+        <div class="w-full min-h-64 min-w-[200px] relative">
+          <div
+            class="text-2xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+          >
+            <p class="text-sm font-medium text-gray-600 mb-4">Productivity</p>
+            <h6 class="text-2xl font-bold">
+              {{ active$ | async | percent: '1.2-2' }}
+            </h6>
+          </div>
+          <ngx-charts-pie-chart
+            [results]="chartData"
+            [gradient]="true"
+            [animations]="false"
+            [labels]="false"
+            [doughnut]="true"
+            [legend]="false"
+            [scheme]="scheme"
+            class="h-full"
+          >
+          </ngx-charts-pie-chart>
+        </div>
+      } @else {
+        <lib-no-data
+          class="w-full min-w-72 min-h-80"
+          message="No activities available"
+        ></lib-no-data>
+      }
+    }
   </div>
 </mat-card>

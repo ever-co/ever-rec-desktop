@@ -62,26 +62,26 @@
     </mat-card>
   </div>
 
-  <div class="flex gap-4 flex-col sm:flex-row">
-    <lib-distribution></lib-distribution>
-    <div class="flex flex-col gap-4 w-full">
+  <div class="flex flex-col gap-4 w-full">
+    <div class="flex gap-4 flex-col sm:flex-row">
+      <lib-distribution></lib-distribution>
       <lib-analysis></lib-analysis>
-      <!-- Content Cards - Stack on mobile, 2 columns on larger screens -->
-      <div class="grid grid-cols-1">
-        <!-- Statistics Overview -->
-        <mat-card class="w-full" appearance="outlined">
-          <mat-card-content class="p-6 h-full">
-            <p class="text-sm font-medium text-gray-600 mb-4">
-              Statistics Overview
-            </p>
-            <div class="h-full">
-              <lib-screenshot-statistic
-                class="dashboard"
-              ></lib-screenshot-statistic>
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
+    </div>
+    <!-- Content Cards - Stack on mobile, 2 columns on larger screens -->
+    <div class="grid grid-cols-1">
+      <!-- Statistics Overview -->
+      <mat-card class="w-full" appearance="outlined">
+        <mat-card-content class="p-6 h-full">
+          <p class="text-sm font-medium text-gray-600 mb-4">
+            Statistics Overview
+          </p>
+          <div class="h-full">
+            <lib-screenshot-statistic
+              class="dashboard"
+            ></lib-screenshot-statistic>
+          </div>
+        </mat-card-content>
+      </mat-card>
     </div>
   </div>
 </div>
