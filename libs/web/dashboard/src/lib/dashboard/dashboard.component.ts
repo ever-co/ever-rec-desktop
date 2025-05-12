@@ -15,10 +15,12 @@ import {
   ScreenshotStatisticComponent,
 } from '@ever-co/screenshot-feature';
 import { GreetingPipe } from '@ever-co/shared-service';
-import { ScreenshotComponent } from '../screenshot/screenshot.component';
+import { ScreenshotWidgetComponent } from '@ever-co/screenshot-feature';
 import { StateComponent } from '../state/state.component';
-import { TimeLogStaComponent } from '../timelog-stat/timelog-stat.component';
-import { VideoComponent } from '../video/video.component';
+import { TimesheetWidgetComponent } from '@ever-co/timesheet-feature';
+import { VideoWidgetComponent } from '@ever-co/video-feature';
+import { AudioWidgetComponent } from '@ever-co/audio-feature';
+import { PhotoWidgetComponent } from '@ever-co/photo-feature';
 
 @Component({
   selector: 'lib-dashboard',
@@ -28,10 +30,12 @@ import { VideoComponent } from '../video/video.component';
     ScreenshotGalleryComponent,
     VideoGalleryComponent,
     ScreenshotStatisticComponent,
-    ScreenshotComponent,
-    VideoComponent,
+    ScreenshotWidgetComponent,
+    VideoWidgetComponent,
     StateComponent,
-    TimeLogStaComponent,
+    TimesheetWidgetComponent,
+    PhotoWidgetComponent,
+    AudioWidgetComponent,
     RouterLink,
     MatIconModule,
     MatTooltipModule,

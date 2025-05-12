@@ -4,13 +4,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
-import { selectScreenshotState } from '@ever-co/screenshot-data-access';
+import { selectVideoState } from '@ever-co/video-data-access';
 import { NumberSuffixPipe } from '@ever-co/shared-service';
 import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'lib-screenshot',
+  selector: 'lib-video-widget',
   imports: [
     CommonModule,
     MatCardModule,
@@ -19,18 +19,18 @@ import { map, Observable, Subject, takeUntil } from 'rxjs';
     MatTooltipModule,
     NumberSuffixPipe,
   ],
-  templateUrl: './screenshot.component.html',
-  styleUrl: './screenshot.component.scss',
+  templateUrl: './video-widget.component.html',
+  styleUrl: './video-widget.component.scss',
 })
-export class ScreenshotComponent implements OnDestroy {
+export class VideoWidgetComponent implements OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(private readonly store: Store) {}
 
-  public get screenshotCount$(): Observable<number> {
-    return this.store.select(selectScreenshotState).pipe(
+  public get videoCount$(): Observable<number> {
+    return this.store.select(selectVideoState).pipe(
       map((state) => state.count),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 

@@ -5,4 +5,5 @@ export * from './lib/screenshot.route';
 export * from './lib/screenshot/screenshot.component';
 export * from './lib/setting/setting.component';
 export * from './lib/statistics/screenshot-statistic.component';
+export * from './lib/screenshot-widget/screenshot-widget.component';
 

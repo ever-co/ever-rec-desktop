@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { selectDateRange } from '@ever-co/date-picker-data-access';
 import { selectScreenshotState } from '@ever-co/screenshot-data-access';
-import { TimesheetStatisticsComponent } from '@ever-co/timesheet-feature';
+import { TimesheetStatisticsComponent } from '../timesheet-statistics/timesheet-statistics.component';
 import {
   HumanizeDateRangePipe,
   HumanizePipe,
@@ -20,7 +20,7 @@ import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
-  selector: 'lib-timelog-stat',
+  selector: 'lib-timesheet-widget',
   imports: [
     CommonModule,
     MatCardModule,
@@ -30,10 +30,10 @@ import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
     MatTooltipModule,
     PopoverDirective,
   ],
-  templateUrl: './timelog-stat.component.html',
-  styleUrl: './timelog-stat.component.scss',
+  templateUrl: './timesheet-widget.component.html',
+  styleUrl: './timesheet-widget.component.scss',
 })
-export class TimeLogStaComponent implements OnInit, OnDestroy {
+export class TimesheetWidgetComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(private readonly store: Store) {}
