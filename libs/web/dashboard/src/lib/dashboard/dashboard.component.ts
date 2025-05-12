@@ -9,18 +9,20 @@ import {
   AnalysisComponent,
   DistributionComponent,
 } from '@ever-co/activity-feature';
-import { VideoGalleryComponent } from '@ever-co/video-feature';
+import { AudioWidgetComponent } from '@ever-co/audio-feature';
+import { PhotoWidgetComponent } from '@ever-co/photo-feature';
 import {
   ScreenshotGalleryComponent,
   ScreenshotStatisticComponent,
+  ScreenshotWidgetComponent,
 } from '@ever-co/screenshot-feature';
 import { GreetingPipe } from '@ever-co/shared-service';
-import { ScreenshotWidgetComponent } from '@ever-co/screenshot-feature';
-import { StateComponent } from '../state/state.component';
 import { TimesheetWidgetComponent } from '@ever-co/timesheet-feature';
-import { VideoWidgetComponent } from '@ever-co/video-feature';
-import { AudioWidgetComponent } from '@ever-co/audio-feature';
-import { PhotoWidgetComponent } from '@ever-co/photo-feature';
+import {
+  VideoGalleryComponent,
+  VideoWidgetComponent,
+} from '@ever-co/video-feature';
+import { StateComponent } from '../state/state.component';
 
 @Component({
   selector: 'lib-dashboard',
