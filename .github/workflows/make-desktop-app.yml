@@ -1,9 +1,17 @@
 name: Make Desktop App
 
 on:
-  push:
-    branches:
-      - develop
+  workflow_dispatch:
+    inputs:
+      debug:
+        type: boolean
+        description: 'Run the build with debug logging'
+        required: false
+        default: false
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   build:
