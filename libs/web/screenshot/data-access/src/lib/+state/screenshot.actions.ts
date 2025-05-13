@@ -2,10 +2,10 @@ import {
   IFindOneOptions,
   IPaginationOptions,
   IPaginationResponse,
+  IPaginationScreenshotStatisticsResponse,
   IScreenCaptureConfig,
   IScreenshot,
   IScreenshotChartLine,
-  IScreenshotMetadataStatistic,
   ISelected,
   IUploadDone,
   IVideo,
@@ -48,7 +48,7 @@ export const screenshotActions = createActionGroup({
 
     'Get Screenshots Statistics': props<IPaginationOptions<IScreenshot>>(),
     'Get Screenshots Statistics Success':
-      props<IPaginationResponse<IScreenshotMetadataStatistic>>(),
+      props<IPaginationScreenshotStatisticsResponse>(),
     'Get Screenshots Statistics Failure': props<{ error: string }>(),
     'Reset Screenshots Statistics': emptyProps(),
 

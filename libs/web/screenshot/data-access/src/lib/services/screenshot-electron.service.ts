@@ -4,10 +4,10 @@ import {
   Channel,
   IPaginationOptions,
   IPaginationResponse,
+  IPaginationScreenshotStatisticsResponse,
   IScreenCaptureConfig,
   IScreenshot,
   IScreenshotChartLine,
-  IScreenshotMetadataStatistic,
   IUploadDone,
   TimeSlot,
 } from '@ever-co/shared-utils';
@@ -63,8 +63,8 @@ export class ScreenshotElectronService {
   }
 
   public getStatistics(
-    options = {} as IPaginationOptions<IScreenshotMetadataStatistic>,
-  ): Promise<IPaginationResponse<IScreenshotMetadataStatistic>> {
+    options = {} as IPaginationOptions<IScreenshot>,
+  ): Promise<IPaginationScreenshotStatisticsResponse> {
     return this.electronService.invoke(
       Channel.REQUEST_SCREENSHOTS_STATISTICS,
       options,

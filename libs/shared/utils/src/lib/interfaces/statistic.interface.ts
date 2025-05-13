@@ -1,3 +1,5 @@
+import { IPaginationResponse } from './pagination.interface';
+
 export interface IScreenshotMetadataStatistic {
   name: string;
   icon: string;
@@ -6,3 +8,15 @@ export interface IScreenshotMetadataStatistic {
   trend?: number;
   confidence?: number;
 }
+
+export interface IStatisticalResult extends IScreenshotMetadataStatistic {
+  standardError?: number;
+  effectSize?: number;
+  statisticalPower?: number;
+}
+
+export type IPaginationScreenshotStatisticsResponse =
+  IPaginationResponse<IStatisticalResult> & {
+    confidence: number;
+    statisticalPower: number;
+  };

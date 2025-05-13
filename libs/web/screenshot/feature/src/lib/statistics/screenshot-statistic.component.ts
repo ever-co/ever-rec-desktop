@@ -17,7 +17,11 @@ import {
   InfiniteScrollDirective,
   NumberSuffixPipe,
 } from '@ever-co/shared-service';
-import { IRange, IScreenshotMetadataStatistic } from '@ever-co/shared-utils';
+import {
+  IRange,
+  IScreenshotMetadataStatistic,
+  IStatisticalResult,
+} from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { ScreenshotStatisticsChartComponent } from '../chart/screenshot-statistics-chart.component';
@@ -42,7 +46,7 @@ import { ScreenshotStatisticsChartComponent } from '../chart/screenshot-statisti
 })
 export class ScreenshotStatisticComponent implements OnInit {
   private destroy$ = new Subject<void>();
-  public statistics$!: Observable<IScreenshotMetadataStatistic[]>;
+  public statistics$!: Observable<IStatisticalResult[]>;
   private currentPage = 1;
   private hasNext = false;
   private range!: IRange;

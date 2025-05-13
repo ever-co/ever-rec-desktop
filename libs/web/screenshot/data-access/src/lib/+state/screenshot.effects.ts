@@ -3,6 +3,7 @@ import { NotificationService } from '@ever-co/notification-data-access';
 import { LocalStorageService } from '@ever-co/shared-service';
 import {
   IPaginationOptions,
+  IScreenshot,
   IScreenshotMetadataStatistic,
   isDeepEqual,
 } from '@ever-co/shared-utils';
@@ -148,15 +149,11 @@ export class ScreenshotEffects {
       mergeMap((options) =>
         from(
           this.electronService.getStatistics(
-            options as IPaginationOptions<IScreenshotMetadataStatistic>,
+            options as IPaginationOptions<IScreenshot>,
           ),
         ).pipe(
-          map(({ hasNext, count, data }) =>
-            screenshotActions.getScreenshotsStatisticsSuccess({
-              hasNext,
-              count,
-              data,
-            }),
+          map((response) =>
+            screenshotActions.getScreenshotsStatisticsSuccess(response),
           ),
           catchError((error) =>
             of(screenshotActions.getScreenshotsStatisticsFailure({ error })),

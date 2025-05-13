@@ -3,6 +3,7 @@ import {
   IScreenshotChartLine,
   IScreenshotMetadataStatistic,
   ISelected,
+  IStatisticalResult,
 } from '@ever-co/shared-utils';
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { screenshotActions } from './screenshot.actions';
@@ -21,7 +22,9 @@ export interface IScreenshotState {
   purging: boolean;
   selectedScreenshots: ISelected<IScreenshot>[];
   statistic: {
-    currents: IScreenshotMetadataStatistic[];
+    currents: IStatisticalResult[];
+    confidence: number;
+    statisticalPower: number;
     hasNext: boolean;
     count: number;
   };
@@ -57,6 +60,8 @@ export const initialState: IScreenshotState = {
   statistic: {
     currents: [],
     hasNext: false,
+    confidence: 0,
+    statisticalPower: 0,
     count: 0,
   },
   search: {
@@ -212,9 +217,12 @@ export const reducer = createReducer(
 
   on(
     screenshotActions.getScreenshotsStatisticsSuccess,
-    (state, { hasNext, data, count }) => ({
+    (state, { hasNext, data, count, statisticalPower, confidence }) => ({
       ...state,
       statistic: {
+        ...state.statistic,
+        confidence,
+        statisticalPower,
         hasNext,
         currents: [
           ...new Map(

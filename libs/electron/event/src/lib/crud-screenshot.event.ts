@@ -12,7 +12,6 @@ import {
   currentDay,
   IPaginationOptions,
   IScreenshot,
-  IScreenshotMetadataStatistic,
   PHOTO_DIR,
   SCREENSHOT_DIR,
   TimeSlot,
@@ -64,7 +63,7 @@ export function crudScreeshotEvents() {
       const hasNext = page * limit < count;
 
       return { data, count, hasNext };
-    }
+    },
   );
 
   // Get one screenshot
@@ -108,7 +107,7 @@ export function crudScreeshotEvents() {
       const hasNext = page * limit < count;
 
       return { data, count, hasNext };
-    }
+    },
   );
 
   // Purge Data
@@ -117,8 +116,8 @@ export function crudScreeshotEvents() {
   // Request statistics
   ipcMain.handle(
     Channel.REQUEST_SCREENSHOTS_STATISTICS,
-    (_, options: IPaginationOptions<IScreenshotMetadataStatistic>) =>
-      ScreenshotMetadataService.statistics(options)
+    (_, options: IPaginationOptions<IScreenshot>) =>
+      ScreenshotMetadataService.statistics(options),
   );
 
   ipcMain.handle(
@@ -129,7 +128,7 @@ export function crudScreeshotEvents() {
         await ScreenshotMetadataService.delete(screenshot.metadata?.id);
       }
       await FileManager.deleteFile(screenshot.pathname);
-    }
+    },
   );
 
   ipcMain.handle(
@@ -158,13 +157,13 @@ export function crudScreeshotEvents() {
 
         // Delete files concurrently
         await Promise.all(
-          paths.map(async (pathname) => await FileManager.deleteFile(pathname))
+          paths.map(async (pathname) => await FileManager.deleteFile(pathname)),
         );
       } catch (error) {
         console.error('Error deleting screenshots:', error);
         throw new Error('Failed to delete selected screenshots.');
       }
-    }
+    },
   );
 }
 

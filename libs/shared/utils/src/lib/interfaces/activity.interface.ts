@@ -47,6 +47,14 @@ export interface IHourlyActivity {
   locked: number;
 }
 
+export interface ITimeHeatMap {
+  [key: string]: number;
+}
+
+export interface ITimeHeatMapMatrix {
+  [key: string]: ITimeHeatMap;
+}
+
 export type IHourlyDistribution = Array<IHourlyActivity>;
 
 export interface IProductivityInterval {
