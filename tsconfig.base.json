@@ -69,6 +69,7 @@
         "libs/web/timesheet/data-access/src/index.ts"
       ],
       "@ever-co/timesheet-feature": ["libs/web/timesheet/feature/src/index.ts"],
+      "@ever-co/timesheet-ui": ["libs/web/timesheet/ui/src/index.ts"],
       "@ever-co/upload-data-access": [
         "libs/web/upload/data-access/src/index.ts"
       ],

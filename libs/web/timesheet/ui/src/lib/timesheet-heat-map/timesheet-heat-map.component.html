@@ -1,0 +1,25 @@
+<div class="heat-map-container">
+  <div class="chart-container min-h-72" [class.has-legend]="showLegend">
+    <ngx-charts-heat-map
+      class="w-full h-full"
+      [scheme]="colorScheme"
+      [results]="chartData"
+      [gradient]="gradient"
+      [xAxis]="xAxis"
+      [yAxis]="yAxis"
+      [legend]="showLegend"
+      [showXAxisLabel]="showXAxisLabel"
+      [showYAxisLabel]="showYAxisLabel"
+      [xAxisLabel]="xAxisLabel"
+      [yAxisLabel]="yAxisLabel"
+      [animations]="animations"
+      [tooltipText]="tooltipText"
+      [legendTitle]="legendTitle"
+    >
+    </ngx-charts-heat-map>
+  </div>
+  <!-- Fallback message when no data is available -->
+  <div *ngIf="!data || data.length === 0" class="no-data-message">
+    No timesheet data available for the selected period
+  </div>
+</div>

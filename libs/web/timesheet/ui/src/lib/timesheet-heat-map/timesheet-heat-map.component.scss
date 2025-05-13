@@ -1,0 +1,92 @@
+.heat-map-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+
+  .chart-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  ::ng-deep {
+    // Improve text readability
+    .ngx-charts {
+      .tick text {
+        font-size: 12px !important;
+        font-weight: 500 !important;
+      }
+
+      .axis-label {
+        font-size: 14px !important;
+        font-weight: 600 !important;
+      }
+
+      // Ensure cells maintain minimum size for small screens
+      .heat-map {
+        .cell {
+          min-width: 20px;
+          min-height: 20px;
+        }
+      }
+
+      // Improve tooltip styling
+      .tooltip-anchor {
+        .tooltip-item {
+          padding: 8px 12px;
+          border-radius: 4px;
+          font-weight: 500;
+          box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+        }
+      }
+
+      // Improve legend readability
+      .legend-labels {
+        .legend-label-text {
+          font-size: 12px !important;
+          font-weight: 500 !important;
+        }
+      }
+    }
+  }
+
+  // Styling for no data message
+  .no-data-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px;
+    color: #666;
+    font-weight: 500;
+    text-align: center;
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  // Media queries for better responsiveness
+  @media screen and (max-width: 768px) {
+    ::ng-deep {
+      .ngx-charts {
+        .x-axis-label,
+        .y-axis-label {
+          font-size: 12px !important;
+        }
+
+        .tick text {
+          font-size: 10px !important;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    min-height: 300px;
+  }
+}

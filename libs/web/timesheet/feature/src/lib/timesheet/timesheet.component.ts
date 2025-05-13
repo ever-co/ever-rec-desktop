@@ -9,10 +9,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ActivatedRoute } from '@angular/router';
+import { selectDateRange } from '@ever-co/date-picker-data-access';
 import {
   generateVideoActions,
-  selectGenerateVideoState,
   selectGenerateVideoConfig,
+  selectGenerateVideoState,
 } from '@ever-co/generate-video-data-access';
 import { NotificationService } from '@ever-co/notification-data-access';
 import {
@@ -37,6 +39,7 @@ import {
   selectTimeLogState,
   timeLogActions,
 } from '@ever-co/timesheet-data-access';
+import { TimesheetHeatMapComponent } from '@ever-co/timesheet-ui';
 import { Store } from '@ngrx/store';
 import {
   concatMap,
@@ -51,10 +54,8 @@ import {
   tap,
   withLatestFrom,
 } from 'rxjs';
-import { TimesheetViewComponent } from '../timesheet-view/timesheet-view.component';
-import { ActivatedRoute } from '@angular/router';
-import { selectDateRange } from '@ever-co/date-picker-data-access';
 import { TimesheetStatisticsComponent } from '../timesheet-statistics/timesheet-statistics.component';
+import { TimesheetViewComponent } from '../timesheet-view/timesheet-view.component';
 
 @Component({
   selector: 'lib-timesheet-feature',
@@ -73,6 +74,7 @@ import { TimesheetStatisticsComponent } from '../timesheet-statistics/timesheet-
     HumanizeDateRangePipe,
     PopoverDirective,
     MatTooltipModule,
+    TimesheetHeatMapComponent,
   ],
   templateUrl: './timesheet.component.html',
   styleUrl: './timesheet.component.scss',
