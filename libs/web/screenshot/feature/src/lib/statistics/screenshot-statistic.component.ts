@@ -25,6 +25,11 @@ import {
 import { Store } from '@ngrx/store';
 import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { ScreenshotStatisticsChartComponent } from '../chart/screenshot-statistics-chart.component';
+import {
+  EffectSizeMatrixComponent,
+  PowerAnalysisGraphComponent,
+  WaterfallChartComponent,
+} from '@ever-co/screenshot-ui';
 
 @Component({
   selector: 'lib-screenshot-statistic',
@@ -39,6 +44,9 @@ import { ScreenshotStatisticsChartComponent } from '../chart/screenshot-statisti
     InfiniteScrollDirective,
     IconFallbackDirective,
     ScreenshotStatisticsChartComponent,
+    EffectSizeMatrixComponent,
+    PowerAnalysisGraphComponent,
+    WaterfallChartComponent,
     NumberSuffixPipe,
   ],
   templateUrl: './screenshot-statistic.component.html',

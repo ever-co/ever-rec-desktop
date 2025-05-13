@@ -1,0 +1,55 @@
+<div class="p-4 bg-white rounded-lg shadow">
+  <div class="text-lg font-semibold mb-4">Trend Analysis Waterfall</div>
+
+  <div class="overflow-auto min-h-96">
+    <ngx-charts-bar-vertical
+      class="w-full"
+      [results]="processedData"
+      [scheme]="colorScheme"
+      [xAxis]="showXAxis"
+      [yAxis]="showYAxis"
+      [legend]="showLegend"
+      [showXAxisLabel]="showXAxisLabel"
+      [xAxisLabel]="xAxisLabel"
+      [showYAxisLabel]="showYAxisLabel"
+      [yAxisLabel]="yAxisLabel"
+      [showGridLines]="showGridLines"
+      [barPadding]="barPadding"
+      [roundDomains]="roundDomains"
+      [yAxisTickFormatting]="yAxisTickFormatting"
+      [animations]="animations"
+    >
+      <ng-template #tooltipTemplate let-model="model">
+        <div
+          class="p-2 flex flex-col items-start justify-items-start"
+          [innerHTML]="customTooltipText(model)"
+        ></div>
+      </ng-template>
+    </ngx-charts-bar-vertical>
+  </div>
+
+  <ng-container *ngIf="showLegendBelow && processedData.length > 0">
+    <div class="flex justify-center mt-4 gap-4 flex-wrap">
+      <div class="flex items-center">
+        <div class="w-4 h-4 bg-[#16a34a] mr-2 rounded-sm"></div>
+        <span class="text-sm">Strong Increase (>50%)</span>
+      </div>
+      <div class="flex items-center">
+        <div class="w-4 h-4 bg-[#22c55e] mr-2 rounded-sm"></div>
+        <span class="text-sm">Moderate Increase (>20%)</span>
+      </div>
+      <div class="flex items-center">
+        <div class="w-4 h-4 bg-[#d1d5db] mr-2 rounded-sm"></div>
+        <span class="text-sm">Neutral (±20%)</span>
+      </div>
+      <div class="flex items-center">
+        <div class="w-4 h-4 bg-[#f97316] mr-2 rounded-sm"></div>
+        <span class="text-sm">Moderate Decrease (<-20%)</span>
+      </div>
+      <div class="flex items-center">
+        <div class="w-4 h-4 bg-[#ef4444] mr-2 rounded-sm"></div>
+        <span class="text-sm">Strong Decrease (<-50%)</span>
+      </div>
+    </div>
+  </ng-container>
+</div>

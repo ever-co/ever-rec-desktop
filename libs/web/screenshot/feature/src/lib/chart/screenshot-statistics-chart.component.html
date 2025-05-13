@@ -1,71 +1,74 @@
 <!-- screenshot-statistics-chart.component.html -->
 <div class="flex justify-center mb-4">
   @for (type of chartTypes; track type) {
-  <button
-    (click)="selectChartType(type)"
-    [class]="getButtonClasses(type)"
-    type="button"
-  >
-    {{ type === 'bar' ? 'Usage' : 'Trend' }}
-  </button>
+    <button
+      (click)="selectChartType(type)"
+      [class]="getButtonClasses(type)"
+      type="button"
+    >
+      {{ type === 'bar' ? 'Usage' : 'Trend' }}
+    </button>
   }
 </div>
 <div class="max-h-96">
-  @if (chartData$ | async; as chartData) { @if (chartData.length) { @if
-  (selectedChartType === 'bar') {
-  <ngx-charts-bar-vertical
-    [results]="chartData"
-    [xAxis]="chartConfig.showXAxis"
-    [yAxis]="chartConfig.showYAxis"
-    [showXAxisLabel]="chartConfig.showXAxisLabel"
-    [showYAxisLabel]="chartConfig.showYAxisLabel"
-    [xAxisLabel]="chartConfig.xAxisLabel"
-    [yAxisLabel]="'Usage (%)'"
-    [animations]="chartConfig.animations"
-    [gradient]="true"
-    [showGridLines]="true"
-    [roundDomains]="true"
-    [roundEdges]="false"
-    [rotateXAxisTicks]="isMobile"
-    [yAxisTickFormatting]="yAxisTickFormatting"
-    [xAxisTickFormatting]="axisFormat"
-  >
-    <ng-template #tooltipTemplate let-model="model">
-      <div class="p-2 rounded flex flex-col items-center justify-center">
-        <div class="text-gray-100 font-semibold">{{ model.name }}</div>
-        <div class="text-gray-200 text-2xl">
-          {{ model.value / 100 | percent : '1.0-1' }}
-        </div>
-      </div>
-    </ng-template>
-  </ngx-charts-bar-vertical>
+  @if (chartData$ | async; as chartData) {
+    @if (chartData.length) {
+      @if (selectedChartType === 'bar') {
+        <ngx-charts-bar-vertical
+          [results]="chartData"
+          [xAxis]="chartConfig.showXAxis"
+          [yAxis]="chartConfig.showYAxis"
+          [showXAxisLabel]="chartConfig.showXAxisLabel"
+          [showYAxisLabel]="chartConfig.showYAxisLabel"
+          [xAxisLabel]="chartConfig.xAxisLabel"
+          [yAxisLabel]="'Usage (%)'"
+          [animations]="chartConfig.animations"
+          [gradient]="true"
+          [showGridLines]="true"
+          [roundDomains]="true"
+          [roundEdges]="false"
+          [rotateXAxisTicks]="isMobile"
+          [yAxisTickFormatting]="yAxisTickFormatting"
+          [xAxisTickFormatting]="axisFormat"
+        >
+          <ng-template #tooltipTemplate let-model="model">
+            <div class="p-2 rounded flex flex-col items-center justify-center">
+              <div class="text-gray-100 font-semibold">{{ model.name }}</div>
+              <div class="text-gray-200 text-2xl">
+                {{ model.value / 100 | percent: '1.0-1' }}
+              </div>
+            </div>
+          </ng-template>
+        </ngx-charts-bar-vertical>
+      } @else {
+        <ngx-charts-line-chart
+          class="chart-line"
+          [results]="chartData"
+          [xAxis]="chartConfig.showXAxis"
+          [yAxis]="chartConfig.showYAxis"
+          [showXAxisLabel]="false"
+          [showYAxisLabel]="chartConfig.showYAxisLabel"
+          [xAxisLabel]="chartConfig.xAxisLabel"
+          yAxisLabel="Screenshots"
+          [animations]="chartConfig.animations"
+          [roundDomains]="true"
+          [autoScale]="true"
+          [timeline]="true"
+          [gradient]="true"
+          [wrapTicks]="true"
+          [rotateXAxisTicks]="isMobile"
+          [xAxisTickFormatting]="axisFormat"
+        >
+        </ngx-charts-line-chart>
+      }
+    } @else {
+      <lib-no-data message="No activities available"></lib-no-data>
+    }
   } @else {
-  <ngx-charts-line-chart
-    class="chart-line"
-    [results]="chartData"
-    [xAxis]="chartConfig.showXAxis"
-    [yAxis]="chartConfig.showYAxis"
-    [showXAxisLabel]="false"
-    [showYAxisLabel]="chartConfig.showYAxisLabel"
-    [xAxisLabel]="chartConfig.xAxisLabel"
-    yAxisLabel="Screenshots"
-    [animations]="chartConfig.animations"
-    [roundDomains]="true"
-    [autoScale]="true"
-    [timeline]="true"
-    [gradient]="true"
-    [wrapTicks]="true"
-    [rotateXAxisTicks]="isMobile"
-    [xAxisTickFormatting]="axisFormat"
-  >
-  </ngx-charts-line-chart>
-  } } @else {
-  <lib-no-data message="No activities available"></lib-no-data>
-  } } @else {
-  <div class="flex justify-center items-center h-64">
-    <div
-      class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-600"
-    ></div>
-  </div>
+    <div class="flex justify-center items-center h-64">
+      <div
+        class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-600"
+      ></div>
+    </div>
   }
 </div>

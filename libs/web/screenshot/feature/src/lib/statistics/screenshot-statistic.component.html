@@ -1,16 +1,29 @@
-@if ((statistics$ | async)?.length) {
+@let statistics = (statistics$ | async) || [];
+
+<!-- structure -->
+
+@if (statistics.length) {
   <div class="w-full">
     <h4 class="text-xl md:text-xl font-bold title mb-6">Applications</h4>
     <lib-screenshot-statistics-chart
       class="chart"
     ></lib-screenshot-statistics-chart>
+    <div class="grid grid-cols-1 chart gap-4 mb-4">
+      <lib-waterfall-chart [data]="statistics"></lib-waterfall-chart>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <lib-effect-size-matrix [data]="statistics"></lib-effect-size-matrix>
+        <lib-power-analysis-graph
+          [data]="statistics"
+        ></lib-power-analysis-graph>
+      </div>
+    </div>
     <!-- Responsive Grid -->
     <div
       libInfiniteScroll
       (scrolled)="moreStats()"
       class="grid grid-cols-1 main sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 max-h-screen md:max-h-96 overflow-auto"
     >
-      @for (statistic of statistics$ | async; track statistic.name) {
+      @for (statistic of statistics; track statistic.name) {
         <mat-card
           appearance="outlined"
           class="transform transition-all mt-3 duration-300 ease-in-out bg-white hover:shadow-md hover:-translate-y-0.5 break-words cursor-pointer border border-gray-100 rounded-xl"

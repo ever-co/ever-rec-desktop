@@ -35,11 +35,11 @@ type ChartData = BarChartData | LineChartData;
 type ChartType = 'bar' | 'line';
 
 @Component({
-    selector: 'lib-screenshot-statistics-chart',
-    imports: [CommonModule, NgxChartsModule, NoDataComponent],
-    templateUrl: './screenshot-statistics-chart.component.html',
-    styleUrls: ['./screenshot-statistics-chart.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'lib-screenshot-statistics-chart',
+  imports: [CommonModule, NgxChartsModule, NoDataComponent],
+  templateUrl: './screenshot-statistics-chart.component.html',
+  styleUrls: ['./screenshot-statistics-chart.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScreenshotStatisticsChartComponent implements OnInit, OnDestroy {
   public readonly chartTypes: ChartType[] = ['bar', 'line'];
@@ -62,7 +62,7 @@ export class ScreenshotStatisticsChartComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly store: Store,
-    private readonly layoutService: LayoutService
+    private readonly layoutService: LayoutService,
   ) {}
   ngOnInit(): void {
     this.store.dispatch(screenshotActions.getScreenshotsChartLine());
@@ -77,10 +77,10 @@ export class ScreenshotStatisticsChartComponent implements OnInit, OnDestroy {
       map((state) =>
         this.prepareChartData(
           state.statistic.currents || [],
-          state.chart.dataLine || []
-        )
+          state.chart.dataLine || [],
+        ),
       ),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -90,7 +90,7 @@ export class ScreenshotStatisticsChartComponent implements OnInit, OnDestroy {
 
   private prepareChartData(
     data: IScreenshotMetadataStatistic[],
-    chartLine: IScreenshotChartLine[]
+    chartLine: IScreenshotChartLine[],
   ): ChartData[] {
     if (!data?.length) return [];
     return this.selectedChartType === 'bar'
@@ -99,7 +99,7 @@ export class ScreenshotStatisticsChartComponent implements OnInit, OnDestroy {
   }
 
   private prepareBarChartData(
-    data: IScreenshotMetadataStatistic[]
+    data: IScreenshotMetadataStatistic[],
   ): BarChartData[] {
     this.ticks = [...data.map((item) => item.name || 'Unnamed')];
     return data

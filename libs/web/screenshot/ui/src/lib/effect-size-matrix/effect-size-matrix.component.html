@@ -1,0 +1,38 @@
+<div class="p-4 bg-white rounded-lg shadow">
+  <div class="text-lg font-semibold mb-4">Effect Size Matrix</div>
+  <div class="chart-container min-h-96" (window:resize)="onResize($event)">
+    <ngx-charts-bubble-chart
+      class="w-full"
+      [scheme]="colorScheme"
+      [results]="processedData"
+      [xAxis]="showXAxis"
+      [yAxis]="showYAxis"
+      [legend]="showLegend"
+      [xAxisLabel]="xAxisLabel"
+      [yAxisLabel]="yAxisLabel"
+      [showGridLines]="showGridLines"
+      [roundDomains]="roundDomains"
+      [maxRadius]="maxRadius"
+      [animations]="true"
+      aria-label="Effect size matrix visualization"
+    >
+      <ng-template #tooltipTemplate let-model="model">
+        <div class="p-2 flex flex-col items-start justify-items-start">
+          <div class="font-bold text-lg">{{ model.series }}</div>
+          <div>Effect Size: {{ model.x.toFixed(2) }}</div>
+          <div>Confidence: {{ (model.y * 100).toFixed(0) }}%</div>
+          <div>Sample Size: {{ model.r | number }}</div>
+        </div>
+      </ng-template>
+    </ngx-charts-bubble-chart>
+  </div>
+  <div class="mt-4 text-sm text-gray-500">
+    <p>
+      Bubble size represents relative sample size. Color indicates effect
+      direction and magnitude (red = negative, green = positive).
+    </p>
+    <p *ngIf="data.length === 0" class="text-amber-600">
+      No data available to display.
+    </p>
+  </div>
+</div>
