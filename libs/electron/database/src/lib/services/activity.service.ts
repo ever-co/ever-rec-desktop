@@ -49,7 +49,7 @@ export class ActivityService {
 
   public async update(
     id: string,
-    activity: IActivityUpdateInput
+    activity: IActivityUpdateInput,
   ): Promise<IActivity> {
     await this.activityRepository.update(id, activity);
     return this.findOne({ where: { id } });
@@ -92,7 +92,7 @@ export class ActivityService {
    * Get hourly activity distribution
    */
   public async getHourlyActivityDistribution(
-    date: Date
+    date: Date,
   ): Promise<IHourlyDistribution> {
     const startOfDay = moment(date).startOf('day').toISOString();
 
@@ -144,7 +144,7 @@ export class ActivityService {
    */
   public async getProductivityTrends(
     range: IRange,
-    interval: 'daily' | 'weekly' | 'monthly' = 'daily'
+    interval: 'daily' | 'weekly' | 'monthly' = 'daily',
   ): Promise<IAggregatedProductivity> {
     const timeLogs = await this.timeLogService.findAll({
       where: {
@@ -163,7 +163,7 @@ export class ActivityService {
    * Get activity state distribution
    */
   public async getActivityStateDistribution(
-    range: IRange
+    range: IRange,
   ): Promise<IActivityStateDistribution> {
     const activities = await this.activityRepository.find({
       where: {
@@ -186,7 +186,7 @@ export class ActivityService {
    * Get work patterns analysis
    */
   public async getWorkPatternAnalysis(
-    range: IRange
+    range: IRange,
   ): Promise<IWorkPatternAnalysis> {
     const timeLogs = await this.timeLogService.findAll({
       where: {
@@ -214,14 +214,14 @@ export class ActivityService {
       .filter(
         (activity) =>
           activity.state === IdleState.IDLE ||
-          activity.state === IdleState.LOCKED
+          activity.state === IdleState.LOCKED,
       )
       .reduce((sum, activity) => sum + Number(activity.duration), 0);
   }
 
   private aggregateProductivityByInterval(
     timeLogs: ITimeLog[],
-    interval: 'daily' | 'weekly' | 'monthly'
+    interval: 'daily' | 'weekly' | 'monthly',
   ): IAggregatedProductivity {
     const aggregated = {} as IAggregatedProductivity;
 
@@ -251,7 +251,7 @@ export class ActivityService {
 
       aggregated[key].totalDuration += Number(log.duration);
       aggregated[key].activeDuration += this.calculateActiveDuration(
-        log.activities
+        log.activities,
       );
       aggregated[key].productivity =
         (aggregated[key].activeDuration / aggregated[key].totalDuration) * 100;
@@ -288,7 +288,7 @@ export class ActivityService {
       {
         dailyTotals: {} as Record<string, { weighted: number; raw: number }>,
         dayCount: 0,
-      }
+      },
     );
 
     // Phase 2: Special Case Handling for Single Day
@@ -350,7 +350,7 @@ export class ActivityService {
         const duration = Number(log.duration);
         acc[date].totalDuration += duration;
         acc[date].activeDuration += this.calculateActiveDuration(
-          log.activities
+          log.activities,
         );
         acc[date].recencyWeight += decayFactor * duration;
         acc[date].logCount += 1;
@@ -365,7 +365,7 @@ export class ActivityService {
           recencyWeight: number;
           logCount: number;
         }
-      >
+      >,
     );
 
     // Phase 2: Bayesian Productivity Scoring
@@ -391,7 +391,7 @@ export class ActivityService {
     // Phase 3: Optimal Day Selection with Statistical Significance
     const optimalDay = scoredDays.reduce(
       (best, current) => (current.score > best.score ? current : best),
-      { date: null, score: -Infinity }
+      { date: null, score: -Infinity },
     );
 
     return optimalDay.date;
@@ -402,21 +402,27 @@ export class ActivityService {
     if (timeLogs.length === 0) return [];
 
     // Phase 1: Statistical Aggregation
-    const hourlyMetrics = timeLogs.reduce((acc, log) => {
-      const hour = moment(log.start).hour();
-      const duration = Number(log.duration);
-      const activeDuration = this.calculateActiveDuration(log.activities);
+    const hourlyMetrics = timeLogs.reduce(
+      (acc, log) => {
+        const hour = moment(log.start).hour();
+        const duration = Number(log.duration);
+        const activeDuration = this.calculateActiveDuration(log.activities);
 
-      if (!acc[hour]) {
-        acc[hour] = { totalDuration: 0, activeDuration: 0, count: 0 };
-      }
+        if (!acc[hour]) {
+          acc[hour] = { totalDuration: 0, activeDuration: 0, count: 0 };
+        }
 
-      acc[hour].totalDuration += duration;
-      acc[hour].activeDuration += activeDuration;
-      acc[hour].count += 1;
+        acc[hour].totalDuration += duration;
+        acc[hour].activeDuration += activeDuration;
+        acc[hour].count += 1;
 
-      return acc;
-    }, {} as Record<number, { totalDuration: number; activeDuration: number; count: number }>);
+        return acc;
+      },
+      {} as Record<
+        number,
+        { totalDuration: number; activeDuration: number; count: number }
+      >,
+    );
 
     // Phase 2: Bayesian Productivity Scoring
     const productivityScores = Object.entries(hourlyMetrics).map(
@@ -434,7 +440,7 @@ export class ActivityService {
           confidenceWeight * rawProductivity * Math.log1p(totalDuration);
 
         return { hour, score: productivityScore };
-      }
+      },
     );
 
     // Phase 3: Robust Ranking and Selection
@@ -477,7 +483,7 @@ export class ActivityService {
       {
         durations: [] as number[],
         dailyTotals: {} as Record<string, { sum: number; count: number }>,
-      }
+      },
     );
 
     // Phase 2: Multi-Dimensional Consistency Analysis
@@ -487,12 +493,12 @@ export class ActivityService {
 
       // Dimension 2: Daily total consistency
       this.calculateDimensionScore(
-        Object.values(dailyTotals).map((d) => d.sum)
+        Object.values(dailyTotals).map((d) => d.sum),
       ),
 
       // Dimension 3: Daily session count consistency
       this.calculateDimensionScore(
-        Object.values(dailyTotals).map((d) => d.count)
+        Object.values(dailyTotals).map((d) => d.count),
       ),
     ];
 
@@ -500,7 +506,7 @@ export class ActivityService {
     const weights = this.calculateEntropyWeights(analysisDimensions);
     const weightedScore = analysisDimensions.reduce(
       (sum, score, i) => sum + score * weights[i],
-      0
+      0,
     );
 
     // Phase 4: Temporal Decay Adjustment
@@ -518,7 +524,7 @@ export class ActivityService {
     const normalized = values.map((v) => (v - median) / (mad * 1.4826));
 
     // Gini's mean difference for robust variability measure
-    const gini = this.calculateGiniCoefficient(values);
+    const gini = this.calculateGiniCoefficient(normalized);
 
     // Information-preserving transform
     return Math.exp(-gini);
@@ -533,12 +539,12 @@ export class ActivityService {
     // Shannon entropy calculation
     const entropy = probabilities.reduce(
       (sum, p) => sum - (p > 0 ? p * Math.log(p) : 0),
-      0
+      0,
     );
 
     // Inverse entropy weighting
     return probabilities.map(
-      (p) => (1 - entropy) * p + entropy * (1 / probabilities.length)
+      (p) => (1 - entropy) * p + entropy * (1 / probabilities.length),
     );
   }
 
@@ -546,7 +552,7 @@ export class ActivityService {
   private calculateRecencyFactor(timeLogs: ITimeLog[]): number {
     const now = moment();
     const timeDeltas = timeLogs.map((log) =>
-      now.diff(moment(log.start), 'days')
+      now.diff(moment(log.start), 'days'),
     );
     const maxDelta = Math.max(...timeDeltas);
 
