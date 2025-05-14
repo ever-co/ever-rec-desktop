@@ -6,7 +6,9 @@ import { HourlyDataStrategy } from '../strategies/hourly-data.strategy';
 import { DateService } from './date.service';
 import { MonthlyDataStrategy } from '../strategies/monthly-data.strategy';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class DataStrategyFactory {
   public createStrategy(logs: ITimeLog[] | null): DataProcessingStrategy {
     if (!logs || logs.length === 0) {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,7 +17,10 @@ import {
   ScreenshotWidgetComponent,
 } from '@ever-co/screenshot-feature';
 import { GreetingPipe } from '@ever-co/shared-service';
-import { TimesheetWidgetComponent } from '@ever-co/timesheet-feature';
+import {
+  TimesheetHeatMapWidgetComponent,
+  TimesheetWidgetComponent,
+} from '@ever-co/timesheet-feature';
 import {
   VideoGalleryComponent,
   VideoWidgetComponent,
@@ -45,8 +48,10 @@ import { StateComponent } from '../state/state.component';
     GreetingPipe,
     AnalysisComponent,
     DistributionComponent,
+    TimesheetHeatMapWidgetComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent {}

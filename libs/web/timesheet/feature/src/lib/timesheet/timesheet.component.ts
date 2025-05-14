@@ -36,11 +36,9 @@ import {
   ITimeLogStatistics,
 } from '@ever-co/shared-utils';
 import {
-  selectHeatMapLogs,
   selectTimeLogState,
   timeLogActions,
 } from '@ever-co/timesheet-data-access';
-import { TimesheetHeatMapComponent } from '@ever-co/timesheet-ui';
 import { Store } from '@ngrx/store';
 import {
   concatMap,
@@ -55,6 +53,7 @@ import {
   tap,
   withLatestFrom,
 } from 'rxjs';
+import { TimesheetHeatMapWidgetComponent } from '../timesheet-heat-map-widget/timesheet-heat-map-widget.component';
 import { TimesheetStatisticsComponent } from '../timesheet-statistics/timesheet-statistics.component';
 import { TimesheetViewComponent } from '../timesheet-view/timesheet-view.component';
 
@@ -75,7 +74,7 @@ import { TimesheetViewComponent } from '../timesheet-view/timesheet-view.compone
     HumanizeDateRangePipe,
     PopoverDirective,
     MatTooltipModule,
-    TimesheetHeatMapComponent,
+    TimesheetHeatMapWidgetComponent,
   ],
   templateUrl: './timesheet.component.html',
   styleUrl: './timesheet.component.scss',
@@ -212,7 +211,6 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       .pipe(
         tap((range) => {
           this.range = range;
-          this.store.dispatch(timeLogActions.getTimeLogStatistics(range));
           this.store.dispatch(timeLogActions.getTimeLogHeatMap({ range }));
           this.loadTimeLogs(0, this.pageSize);
         }),
@@ -286,10 +284,6 @@ export class TimesheetComponent implements OnInit, OnDestroy {
         return this.selectedRow;
       }),
     );
-  }
-
-  public get timeHeatMapLogs$(): Observable<ITimeLog[]> {
-    return this.store.select(selectHeatMapLogs).pipe(takeUntil(this.destroy$));
   }
 
   public get isMobileView() {

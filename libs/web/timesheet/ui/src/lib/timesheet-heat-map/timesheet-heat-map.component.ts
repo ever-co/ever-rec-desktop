@@ -20,7 +20,6 @@ import { NoDataComponent } from '@ever-co/shared-components';
   selector: 'lib-timesheet-heat-map',
   standalone: true,
   imports: [NgxChartsModule, NoDataComponent],
-  providers: [DataStrategyFactory],
   templateUrl: './timesheet-heat-map.component.html',
   styleUrls: ['./timesheet-heat-map.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
