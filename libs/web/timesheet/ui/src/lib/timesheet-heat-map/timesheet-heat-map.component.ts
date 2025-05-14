@@ -2,31 +2,39 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  HostListener,
+  inject,
   Input,
   OnChanges,
+  OnDestroy,
   SimpleChanges,
 } from '@angular/core';
 import { IHeatMapDataPoint, ITimeLog, moment } from '@ever-co/shared-utils';
 import { NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
+import { debounceTime, fromEvent, Subscription } from 'rxjs';
 import { DataStrategyFactory } from './services/data-factory.service';
+import { DailyDataStrategy } from './strategies/daily-data.strategy';
+import { HourlyDataStrategy } from './strategies/hourly-data.strategy';
+import { NoDataComponent } from '@ever-co/shared-components';
 
 @Component({
   selector: 'lib-timesheet-heat-map',
   standalone: true,
-  imports: [NgxChartsModule],
+  imports: [NgxChartsModule, NoDataComponent],
   providers: [DataStrategyFactory],
   templateUrl: './timesheet-heat-map.component.html',
   styleUrls: ['./timesheet-heat-map.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TimesheetHeatMapComponent implements OnChanges {
+export class TimesheetHeatMapComponent implements OnChanges, OnDestroy {
+  private readonly elementRef = inject(ElementRef);
+  private readonly factory = inject(DataStrategyFactory);
+  private resizeSubscription!: Subscription;
+
   @Input() data: ITimeLog[] | null = [];
   @Input() view: [number, number] | undefined;
-
-  // Calculated dimensions based on container size
-  chartWidth: number = 0;
-  chartHeight: number = 0;
+  @Input() minHeight = 100; // Minimum height in pixels
+  @Input() aspectRatio = 128 / 37; // Width to height ratio
+  @Input() margin: [number, number, number, number] = [10, 10, 10, 20]; // [top, right, bottom, left]
 
   // Heatmap options
   legend = false;
@@ -53,21 +61,33 @@ export class TimesheetHeatMapComponent implements OnChanges {
   // Processed data for the chart
   chartData: IHeatMapDataPoint[] = [];
 
-  constructor(
-    private elementRef: ElementRef,
-    private readonly factory: DataStrategyFactory,
-  ) {}
+  // Chart dimensions with initial values
+  chartWidth = 0;
+  chartHeight = 0;
+
+  ngOnInit() {
+    // Use RxJS for more efficient resize handling
+    this.resizeSubscription = fromEvent(window, 'resize')
+      .pipe(debounceTime(100))
+      .subscribe(() => this.updateChartDimensions());
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['data']) {
       this.updateChartData();
     }
-    this.updateChartDimensions();
+    if (
+      changes['data'] ||
+      changes['view'] ||
+      changes['minHeight'] ||
+      changes['aspectRatio']
+    ) {
+      this.updateChartDimensions();
+    }
   }
 
-  @HostListener('window:resize')
-  onResize(): void {
-    this.updateChartDimensions();
+  ngOnDestroy(): void {
+    this.resizeSubscription?.unsubscribe();
   }
 
   private updateChartDimensions(): void {
@@ -78,17 +98,28 @@ export class TimesheetHeatMapComponent implements OnChanges {
       // Calculate responsive dimensions based on parent container
       const parentElement = this.elementRef.nativeElement.parentElement;
       if (parentElement) {
-        // Get the parent width and calculate height (minimum 400px for readability)
-        this.chartWidth = parentElement.clientWidth;
-        this.chartHeight = Math.max(400, parentElement.clientHeight);
+        const parentWidth = parentElement.clientWidth;
+
+        // Calculate width considering margins
+        const availableWidth = parentWidth - this.margin[1] - this.margin[3];
+
+        // Calculate height based on aspect ratio, but not less than minHeight
+        const calculatedHeight = availableWidth / this.aspectRatio;
+        this.chartHeight = Math.max(this.minHeight, calculatedHeight);
+        this.chartWidth = availableWidth;
 
         // Adjust legend visibility based on available width
-        this.showLegend = this.chartWidth >= 500;
+        this.showLegend = availableWidth >= 500;
       }
     }
   }
 
   private updateChartData(): void {
+    if (!this.data || this.data.length === 0) {
+      this.chartData = [];
+      return;
+    }
+
     // Use the factory to get the appropriate strategy based on data
     const strategy = this.factory.createStrategy(this.data);
 
@@ -98,9 +129,22 @@ export class TimesheetHeatMapComponent implements OnChanges {
 
     // Process data using the strategy
     this.chartData = strategy.processData(this.data);
+
+    if (strategy instanceof DailyDataStrategy) {
+      this.aspectRatio = 4 / 3;
+    }
+
+    if (strategy instanceof HourlyDataStrategy) {
+      this.aspectRatio = 128 / 37;
+    }
   }
 
   public tooltipText({ cell }: any): string {
+    if (!cell?.value) return 'No work';
     return `${cell.series} - ${cell.name}: ${moment.duration(cell.value, 'h').format('h[h] m[m] s[s]')}`;
+  }
+
+  get chartView(): [number, number] {
+    return [this.chartWidth, this.chartHeight];
   }
 }

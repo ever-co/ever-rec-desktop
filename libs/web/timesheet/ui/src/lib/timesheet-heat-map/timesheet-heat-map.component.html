@@ -1,5 +1,5 @@
 <div class="heat-map-container">
-  <div class="chart-container min-h-72" [class.has-legend]="showLegend">
+  <div class="chart-container" [class.has-legend]="showLegend">
     <ngx-charts-heat-map
       class="w-full h-full"
       [scheme]="colorScheme"
@@ -16,11 +16,15 @@
       [tooltipText]="tooltipText"
       [legendTitle]="legendTitle"
       [maxXAxisTickLength]="maxXAxisTickLength"
+      [view]="chartView"
     >
     </ngx-charts-heat-map>
   </div>
   <!-- Fallback message when no data is available -->
-  <div *ngIf="!data || data.length === 0" class="no-data-message">
-    No timesheet data available for the selected period
-  </div>
+  @if (!data || data.length === 0) {
+    <lib-no-data
+      class="no-data-message"
+      message="No timesheet data available for the selected period"
+    ></lib-no-data>
+  }
 </div>
