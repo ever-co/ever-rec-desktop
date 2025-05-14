@@ -22,3 +22,9 @@ export interface ISelected<T> {
 export interface IConversionStrategy {
   execute(event: IpcMainEvent): Promise<void>;
 }
+
+export interface ISerie {
+  name: string;
+  value: number;
+  [extra: string]: any;
+}

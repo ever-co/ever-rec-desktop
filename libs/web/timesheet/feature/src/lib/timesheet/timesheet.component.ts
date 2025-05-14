@@ -289,10 +289,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   }
 
   public get timeHeatMapLogs$(): Observable<ITimeLog[]> {
-    return this.store.select(selectHeatMapLogs).pipe(
-      map((logs) => logs),
-      takeUntil(this.destroy$),
-    );
+    return this.store.select(selectHeatMapLogs).pipe(takeUntil(this.destroy$));
   }
 
   public get isMobileView() {

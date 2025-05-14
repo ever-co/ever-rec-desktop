@@ -1,6 +1,6 @@
 import { TimeLogType } from '../time-log.type';
 import { IActivity } from './activity.interface';
-import { IBase } from './base.interface';
+import { IBase, ISerie } from './base.interface';
 import type { IScreenshot } from './screenshot.interface';
 import type { ITimeline } from './timeline.interface';
 import type { IVideo } from './video.interface';
@@ -36,4 +36,9 @@ export interface ITimeLogStatistics {
   week: number;
   month: number;
   range: number;
+}
+
+export interface IHeatMapDataPoint {
+  name: string;
+  series: ISerie[];
 }
