@@ -3,6 +3,7 @@ import { ElectronService } from '@ever-co/electron-data-access';
 import {
   Channel,
   IPaginationResponse,
+  IRange,
   ITimeLog,
   ITimeLogStatistics,
 } from '@ever-co/shared-utils';
@@ -32,6 +33,10 @@ export class TimeLogElectronService {
 
   public getContext(options = {}): Promise<string> {
     return this.electronService.invoke(Channel.GET_CONTEXT, options);
+  }
+
+  public getHeatMap(range: IRange): Observable<ITimeLog[]> {
+    return this.electronService.invoke$(Channel.GET_HEAT_MAP, { range });
   }
 
   public onTick(): Observable<void> {

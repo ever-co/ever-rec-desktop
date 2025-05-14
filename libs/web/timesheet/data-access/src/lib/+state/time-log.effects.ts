@@ -6,7 +6,7 @@ import { IPaginationOptions, ITimeLog } from '@ever-co/shared-utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { from, of } from 'rxjs';
-import { catchError, map, mergeMap, withLatestFrom } from 'rxjs/operators';
+import { catchError, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 import { TimeLogElectronService } from '../services/time-log-electron.service';
 import { timeLogActions } from './time-log.actions';
 
@@ -144,8 +144,24 @@ export class TimeLogEffects {
     ),
   );
 
+  getHeatMap$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(timeLogActions.getTimeLogHeatMap),
+      mergeMap(({ range }) =>
+        this.timeLogElectronService.getHeatMap(range).pipe(
+          map((heatMapLogs) =>
+            timeLogActions.getTimeLogHeatMapSuccess({ heatMapLogs }),
+          ),
+          catchError((error) =>
+            of(timeLogActions.getTimeLogHeatMapFailure({ error })),
+          ),
+        ),
+      ),
+    ),
+  );
+
   constructor(
     private readonly timeLogElectronService: TimeLogElectronService,
-    private readonly notificationService: NotificationService
+    private readonly notificationService: NotificationService,
   ) {}
 }

@@ -35,6 +35,11 @@ export const timeLogActions = createActionGroup({
     'Get TimeLog Context Success': props<{ context: string }>(),
     'Get TimeLog Context Failure': props<{ error: string }>(),
     'Reset TimeLog Context': emptyProps(),
+
+    'Get TimeLog HeatMap': props<{ range: IRange }>(),
+    'Get TimeLog HeatMap Success': props<{ heatMapLogs: ITimeLog[] }>(),
+    'Get TimeLog HeatMap Failure': props<{ error: string }>(),
+
     Tick: emptyProps(),
   },
 });

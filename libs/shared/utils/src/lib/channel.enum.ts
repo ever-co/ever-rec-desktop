@@ -64,4 +64,5 @@ export enum Channel {
   'DELETE_ALL_AUDIO' = 'delete::all::audio',
   'MEDIATOR_INCOMING_MESSAGE' = 'mediator::incomming::message',
   'MEDIATOR_OUTGOING_MESSAGE' = 'mediator::outgoing::message',
+  'GET_HEAT_MAP' = 'get::heat::map',
 }

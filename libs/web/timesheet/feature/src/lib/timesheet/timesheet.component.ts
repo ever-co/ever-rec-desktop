@@ -36,6 +36,7 @@ import {
   ITimeLogStatistics,
 } from '@ever-co/shared-utils';
 import {
+  selectHeatMapLogs,
   selectTimeLogState,
   timeLogActions,
 } from '@ever-co/timesheet-data-access';
@@ -212,6 +213,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
         tap((range) => {
           this.range = range;
           this.store.dispatch(timeLogActions.getTimeLogStatistics(range));
+          this.store.dispatch(timeLogActions.getTimeLogHeatMap({ range }));
           this.loadTimeLogs(0, this.pageSize);
         }),
         takeUntil(this.destroy$),
@@ -283,6 +285,13 @@ export class TimesheetComponent implements OnInit, OnDestroy {
         this.selectedRow = state.timeLog;
         return this.selectedRow;
       }),
+    );
+  }
+
+  public get timeHeatMapLogs$(): Observable<ITimeLog[]> {
+    return this.store.select(selectHeatMapLogs).pipe(
+      map((logs) => logs),
+      takeUntil(this.destroy$),
     );
   }
 

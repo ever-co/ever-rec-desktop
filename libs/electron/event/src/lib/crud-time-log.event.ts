@@ -38,7 +38,7 @@ export function crudTimeLogEvents() {
       const hasNext = page * limit < count;
 
       return { data, count, hasNext };
-    }
+    },
   );
 
   // Get one video
@@ -71,13 +71,25 @@ export function crudTimeLogEvents() {
         timeLogService.statistics(options as IRange),
       ]);
       return { today, week, month, range };
-    }
+    },
   );
 
   // Get Context
   ipcMain.handle(Channel.GET_CONTEXT, async (_, options = {}) => {
     return timeLogService.getContext(options);
   });
+
+  // Get time heat logs
+  ipcMain.handle(
+    Channel.GET_HEAT_MAP,
+    async (_, { range }: { range: IRange }) => {
+      return timeLogService.findAll({
+        where: {
+          createdAt: Between(range.start, range.end),
+        },
+      });
+    },
+  );
 }
 
 // Removes any handler for channels, if present.
@@ -87,7 +99,7 @@ export function removeCrudTimeLogEvent(): void {
     Channel.REQUEST_ONE_LOG,
     Channel.REQUEST_DELETE_ONE_LOG,
     Channel.REQUEST_LOG_STATISTICS,
-    Channel.GET_CONTEXT
+    Channel.GET_CONTEXT,
   ];
   channels.forEach((channel) => ipcMain.removeHandler(channel));
 }

@@ -19,7 +19,7 @@ import { ITimeLog, moment } from '@ever-co/shared-utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimesheetHeatMapComponent implements OnChanges {
-  @Input() data: ITimeLog[] = [];
+  @Input() data: ITimeLog[] | null = [];
   @Input() view: [number, number] | undefined;
 
   // Calculated dimensions based on container size

@@ -8,6 +8,7 @@ export interface State {
   error: string;
   timeLog: ITimeLog;
   timeLogs: ITimeLog[];
+  heatMapLogs: ITimeLog[];
   hasNext: boolean;
   count: number;
   loading: boolean;
@@ -19,6 +20,7 @@ export interface State {
 export const initialState: State = {
   timeLog: {} as ITimeLog,
   timeLogs: [],
+  heatMapLogs: [],
   error: '',
   count: 0,
   hasNext: false,
@@ -118,7 +120,7 @@ export const reducer = createReducer(
     return {
       ...state,
       timeLogs: state.timeLogs.map(
-        (timeLog) => dataMap.get(timeLog.id) || timeLog
+        (timeLog) => dataMap.get(timeLog.id) || timeLog,
       ),
     };
   }),
@@ -152,7 +154,28 @@ export const reducer = createReducer(
   // Reset Time Logs Context
   on(timeLogActions.resetTimeLogContext, (state) => ({
     ...state,
-    context: ''
+    context: '',
+  })),
+
+  // Get Time Logs Heat Map
+  on(timeLogActions.getTimeLogHeatMap, (state) => ({
+    ...state,
+    loading: true,
+  })),
+
+  // Get Time Logs Heat Map Success
+  on(timeLogActions.getTimeLogHeatMapSuccess, (state, { heatMapLogs }) => ({
+    ...state,
+    heatMapLogs: heatMapLogs,
+    loading: false,
+    error: '',
+  })),
+
+  // Get Time Logs Heat Map Failure
+  on(timeLogActions.getTimeLogHeatMapFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
   })),
 );
 
