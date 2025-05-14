@@ -44,4 +44,11 @@ export class DateService {
   ): boolean {
     return end.diff(start, 'days') > 7;
   }
+
+  static isDateRangeMoreThanMonth(
+    start: moment.Moment,
+    end: moment.Moment,
+  ): boolean {
+    return end.diff(start, 'days') > 30;
+  }
 }

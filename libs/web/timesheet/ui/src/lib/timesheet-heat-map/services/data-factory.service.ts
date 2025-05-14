@@ -4,6 +4,7 @@ import { DataProcessingStrategy } from '../models/data-processing.strategy';
 import { DailyDataStrategy } from '../strategies/daily-data.strategy';
 import { HourlyDataStrategy } from '../strategies/hourly-data.strategy';
 import { DateService } from './date.service';
+import { MonthlyDataStrategy } from '../strategies/monthly-data.strategy';
 
 @Injectable()
 export class DataStrategyFactory {
@@ -13,6 +14,10 @@ export class DataStrategyFactory {
     }
 
     const { start, end } = DateService.calculateDateRange(logs);
+
+    if (DateService.isDateRangeMoreThanMonth(start, end)) {
+      return new MonthlyDataStrategy();
+    }
 
     if (DateService.isDateRangeMoreThanWeek(start, end)) {
       return new DailyDataStrategy();
