@@ -8,7 +8,7 @@ import { MonthlyDataStrategy } from '../strategies/monthly-data.strategy';
 
 @Injectable()
 export class DataStrategyFactory {
-  public createStrategy(logs: ITimeLog[]): DataProcessingStrategy {
+  public createStrategy(logs: ITimeLog[] | null): DataProcessingStrategy {
     if (!logs || logs.length === 0) {
       return new HourlyDataStrategy();
     }

@@ -90,14 +90,14 @@ export class TimesheetHeatMapComponent implements OnChanges {
 
   private updateChartData(): void {
     // Use the factory to get the appropriate strategy based on data
-    const strategy = this.factory.createStrategy(this.data || []);
+    const strategy = this.factory.createStrategy(this.data);
 
     // Update axis labels based on the strategy
     this.xAxisLabel = strategy.getXAxisLabel();
     this.yAxisLabel = strategy.getYAxisLabel();
 
     // Process data using the strategy
-    this.chartData = strategy.processData(this.data || []);
+    this.chartData = strategy.processData(this.data);
   }
 
   public tooltipText({ cell }: any): string {
