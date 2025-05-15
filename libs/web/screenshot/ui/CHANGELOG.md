@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.1.1](https://github.com/ever-co/ever-capture/compare/screenshot-ui-1.1.0...screenshot-ui-1.1.1) (2025-05-15)
+
+### Dependency Updates
+
+* `utils` updated to version `1.1.0`
+* `shared-components` updated to version `2.0.2`
+* `shared-service` updated to version `1.0.1`
+
+
 # [1.1.0](https://github.com/ever-co/ever-capture/compare/screenshot-ui-1.0.1...screenshot-ui-1.1.0) (2025-05-15)
 
 ### Dependency Updates
