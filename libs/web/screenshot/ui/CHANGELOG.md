@@ -2,6 +2,22 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.1.0](https://github.com/ever-co/ever-capture/compare/screenshot-ui-1.0.1...screenshot-ui-1.1.0) (2025-05-15)
+
+### Dependency Updates
+
+* `utils` updated to version `1.1.0`
+* `shared-components` updated to version `2.0.1`
+* `shared-service` updated to version `1.0.0`
+
+### Features
+
+* **screenshot:** add statistical analysis charts ([3f2ec85](https://github.com/ever-co/ever-capture/commit/3f2ec8524ec595e00a6a2229a7b389d2e3a812b3))
+* **screenshot:** add statistics by date range ([df5ca95](https://github.com/ever-co/ever-capture/commit/df5ca9558e4e21760a5aea8277add35fd98741c3))
+* **ui:** move chart descriptions to tooltips ([cec100d](https://github.com/ever-co/ever-capture/commit/cec100ddbb227fe1da9913a67007516115f59ede))
+
+
+
 ## [1.0.1](https://github.com/ever-co/ever-capture/compare/screenshot-ui-1.0.0...screenshot-ui-1.0.1) (2025-05-11)
 
 ### Dependency Updates
