@@ -1,6 +1,6 @@
 import { IHeatMapDataPoint, ITimeLog, moment } from '@ever-co/shared-utils';
-import { DataProcessor } from '../interfaces/data.interface';
 import { DateService } from '../../../services/date.service';
+import { DataProcessor } from '../interfaces/data.interface';
 
 export class MonthlyDataProcessor implements DataProcessor {
   execute(logs: ITimeLog[]): IHeatMapDataPoint[] {
@@ -30,44 +30,60 @@ export class MonthlyDataProcessor implements DataProcessor {
 
     // Process all logs and aggregate by date and day of week
     logs.forEach((log) => {
-      if (log.start) {
-        const startMoment = moment(log.start);
-        const dateKey = DateService.formatDateLabel(startMoment);
-        const dayOfWeek = DateService.getDayName(startMoment);
+      if (!log.start) return;
 
-        // Calculate duration using moment
-        let durationHours = 0;
-        if (log.duration) {
-          durationHours = DateService.durationToHours(log.duration);
-        } else if (log.end) {
-          const endMoment = moment(log.end);
-          durationHours = moment
-            .duration(endMoment.diff(startMoment))
-            .asHours();
-        }
+      const startMoment = moment(log.start);
+
+      let endMoment: moment.Moment;
+      if (log.end) {
+        endMoment = moment(log.end);
+      } else {
+        endMoment = moment();
+      }
+
+      // Ensure end is after start
+      if (endMoment.isBefore(startMoment)) {
+        return;
+      }
+
+      // Handle logs that span multiple days
+      let currentMoment = moment(startMoment);
+      while (currentMoment.isBefore(endMoment)) {
+        const currentDateKey = DateService.formatDateLabel(currentMoment);
+        const currentDayOfWeek = DateService.getDayName(currentMoment);
+
+        // Calculate end of current day
+        const dayEnd = moment(currentMoment).endOf('day');
+        const segmentEnd = moment.min(endMoment, dayEnd);
+
+        // Calculate duration in this segment in hours
+        const segmentDuration = moment
+          .duration(segmentEnd.diff(currentMoment))
+          .asHours();
 
         // Initialize the date if it doesn't exist in our map
-        if (!dateMap.has(dateKey)) {
-          dateMap.set(dateKey, new Map<string, number>());
+        if (!dateMap.has(currentDateKey)) {
+          dateMap.set(currentDateKey, new Map<string, number>());
         }
 
         // Get the day map for this date
-        const dayMap = dateMap.get(dateKey)!;
+        const dayMap = dateMap.get(currentDateKey)!;
 
         // Add the duration to the day
-        dayMap.set(dayOfWeek, (dayMap.get(dayOfWeek) || 0) + durationHours);
+        dayMap.set(
+          currentDayOfWeek,
+          (dayMap.get(currentDayOfWeek) || 0) + segmentDuration,
+        );
+
+        // Move to next day
+        currentMoment = segmentEnd;
       }
     });
 
     // Convert the map data to our heatmap format
-    // For each day of week (row)
     heatmapData.forEach((dayData) => {
-      // For each date we have data for
       dateMap.forEach((dayHours, dateKey) => {
-        // Get hours for this day of week, or 0 if none
         const hours = dayHours.get(dayData.name) || 0;
-
-        // Add this date as a column in our data
         dayData.series.push({
           name: dateKey,
           value: hours,
