@@ -6,14 +6,20 @@ import {
   OnInit,
 } from '@angular/core';
 import { selectDateRange } from '@ever-co/date-picker-data-access';
-import { ITimeLog } from '@ever-co/shared-utils';
+import { isDeepEqual, ITimeLog } from '@ever-co/shared-utils';
 import {
   selectHeatMapLogs,
   timeLogActions,
 } from '@ever-co/timesheet-data-access';
 import { TimesheetHeatMapComponent } from '@ever-co/timesheet-ui';
 import { Store } from '@ngrx/store';
-import { Observable, Subject, takeUntil, tap } from 'rxjs';
+import {
+  distinctUntilChanged,
+  Observable,
+  Subject,
+  takeUntil,
+  tap,
+} from 'rxjs';
 
 @Component({
   selector: 'lib-timesheet-heat-map-widget',
@@ -32,7 +38,7 @@ export class TimesheetHeatMapWidgetComponent implements OnInit, OnDestroy {
       .select(selectDateRange)
       .pipe(
         tap((range) =>
-          this.store.dispatch(timeLogActions.getTimeLogStatistics(range)),
+          this.store.dispatch(timeLogActions.getTimeLogHeatMap({ range })),
         ),
         takeUntil(this.destroy$),
       )
@@ -40,7 +46,9 @@ export class TimesheetHeatMapWidgetComponent implements OnInit, OnDestroy {
   }
 
   public get timeHeatMapLogs$(): Observable<ITimeLog[]> {
-    return this.store.select(selectHeatMapLogs).pipe(takeUntil(this.destroy$));
+    return this.store
+      .select(selectHeatMapLogs)
+      .pipe(distinctUntilChanged(isDeepEqual), takeUntil(this.destroy$));
   }
 
   ngOnDestroy(): void {
