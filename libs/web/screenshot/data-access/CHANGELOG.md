@@ -2,6 +2,22 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.1.0](https://github.com/ever-co/ever-capture/compare/screenshot-data-access-1.0.4...screenshot-data-access-1.1.0) (2025-05-15)
+
+### Dependency Updates
+
+* `utils` updated to version `1.1.0`
+* `date-picker-data-access` updated to version `1.0.2`
+* `shared-service` updated to version `1.0.0`
+* `data-access-electron` updated to version `1.0.1`
+
+### Features
+
+* **screenshot:** add statistics by date range ([df5ca95](https://github.com/ever-co/ever-capture/commit/df5ca9558e4e21760a5aea8277add35fd98741c3))
+* **screenshot:** provide enhanced statistics data ([b117591](https://github.com/ever-co/ever-capture/commit/b1175913322ecd53dee4b2cb8e9fe0d5e64cd9c4))
+
+
+
 ## [1.0.4](https://github.com/ever-co/ever-capture/compare/screenshot-data-access-1.0.3...screenshot-data-access-1.0.4) (2025-05-11)
 
 ### Dependency Updates
