@@ -1,5 +1,5 @@
 import { IHeatMapDataPoint, ITimeLog } from '@ever-co/shared-utils';
-import { asapScheduler, Observable, of, Subject } from 'rxjs';
+import { asyncScheduler, Observable, of, Subject } from 'rxjs';
 import { DataProcessingStrategy } from '../models/data-processing.strategy';
 import { DataProcessor } from '../strategies/workers/interfaces/data.interface';
 
@@ -11,7 +11,7 @@ export abstract class DataWrapperProcessor implements DataProcessingStrategy {
       return of([]);
     }
     const processorSubject = new Subject<IHeatMapDataPoint[]>();
-    asapScheduler.schedule(() => {
+    asyncScheduler.schedule(() => {
       processorSubject.next(this.processor.execute(logs));
       processorSubject.complete();
     });

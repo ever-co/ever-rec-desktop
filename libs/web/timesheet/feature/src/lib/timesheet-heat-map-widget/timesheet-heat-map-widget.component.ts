@@ -6,6 +6,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { selectDateRange } from '@ever-co/date-picker-data-access';
+import { NoDataComponent } from '@ever-co/shared-components';
 import { isDeepEqual, ITimeLog } from '@ever-co/shared-utils';
 import {
   selectHeatMapLogs,
@@ -23,7 +24,7 @@ import {
 
 @Component({
   selector: 'lib-timesheet-heat-map-widget',
-  imports: [CommonModule, TimesheetHeatMapComponent],
+  imports: [CommonModule, TimesheetHeatMapComponent, NoDataComponent],
   templateUrl: './timesheet-heat-map-widget.component.html',
   styleUrl: './timesheet-heat-map-widget.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,5 +1,11 @@
 @let timeHeatMapLogs = timeHeatMapLogs$ | async;
 <!-- Structure -->
 <div class="w-full max-h-72 overflow-auto">
-  <lib-timesheet-heat-map [data]="timeHeatMapLogs"></lib-timesheet-heat-map>
+  @defer {
+    <lib-timesheet-heat-map [data]="timeHeatMapLogs"></lib-timesheet-heat-map>
+  } @placeholder {
+    <div class="w-full h-full">
+      <lib-no-data message="Heat map is loading..."></lib-no-data>
+    </div>
+  }
 </div>

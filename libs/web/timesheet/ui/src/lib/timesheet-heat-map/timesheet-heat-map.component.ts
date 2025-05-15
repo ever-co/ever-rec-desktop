@@ -8,22 +8,26 @@ import {
   OnDestroy,
   SimpleChanges,
 } from '@angular/core';
+import { NoDataComponent } from '@ever-co/shared-components';
 import { IHeatMapDataPoint, ITimeLog, moment } from '@ever-co/shared-utils';
 import { NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
 import {
   BehaviorSubject,
   debounceTime,
+  EMPTY,
   fromEvent,
-  Subscription,
+  map,
+  Observable,
+  Subject,
   take,
+  takeUntil,
   tap,
 } from 'rxjs';
 import { DataStrategyFactory } from './services/data-factory.service';
-import { DailyDataStrategy } from './strategies/daily-data.strategy';
-import { HourlyDataStrategy } from './strategies/hourly-data.strategy';
-import { NoDataComponent } from '@ever-co/shared-components';
 import { DailyDataWorkerStrategy } from './strategies/daily-data-worker.strategy';
+import { DailyDataStrategy } from './strategies/daily-data.strategy';
 import { HourlyDataWorkerStrategy } from './strategies/hourly-data-worker.strategy';
+import { HourlyDataStrategy } from './strategies/hourly-data.strategy';
 
 @Component({
   selector: 'lib-timesheet-heat-map',
@@ -36,13 +40,13 @@ import { HourlyDataWorkerStrategy } from './strategies/hourly-data-worker.strate
 export class TimesheetHeatMapComponent implements OnChanges, OnDestroy {
   private readonly elementRef = inject(ElementRef);
   private readonly factory = inject(DataStrategyFactory);
-  private resizeSubscription!: Subscription;
+  private destroyed$ = new Subject<void>();
 
   @Input() data: ITimeLog[] | null = [];
   @Input() view: [number, number] | undefined;
   @Input() minHeight = 270; // Minimum height in pixels
   @Input() minWidth = 890; // Minimum width in pixels
-  @Input() aspectRatio = 16 / 9; // Width to height ratio
+  @Input() aspectRatio = 128 / 37; // Width to height ratio
   @Input() margin: [number, number, number, number] = [10, 10, 10, 20]; // [top, right, bottom, left]
 
   // Heatmap options
@@ -76,27 +80,25 @@ export class TimesheetHeatMapComponent implements OnChanges, OnDestroy {
 
   ngOnInit() {
     // Use RxJS for more efficient resize handling
-    this.resizeSubscription = fromEvent(window, 'resize')
-      .pipe(debounceTime(100))
+    fromEvent(window, 'resize')
+      .pipe(debounceTime(100), takeUntil(this.destroyed$))
       .subscribe(() => this.updateChartDimensions());
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['data']) {
-      this.updateChartData();
-    }
-    if (
-      changes['data'] ||
-      changes['view'] ||
-      changes['minHeight'] ||
-      changes['aspectRatio']
-    ) {
-      this.updateChartDimensions();
+      this.updateChartData()
+        .pipe(
+          tap(() => this.updateChartDimensions()),
+          takeUntil(this.destroyed$),
+        )
+        .subscribe();
     }
   }
 
   ngOnDestroy(): void {
-    this.resizeSubscription?.unsubscribe();
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 
   private updateChartDimensions(): void {
@@ -129,10 +131,10 @@ export class TimesheetHeatMapComponent implements OnChanges, OnDestroy {
     }
   }
 
-  private updateChartData(): void {
+  private updateChartData(): Observable<void> {
     if (!this.data || this.data.length === 0) {
       this.chartData$.next([]);
-      return;
+      return EMPTY;
     }
 
     // Use the factory to get the appropriate strategy based on data
@@ -143,29 +145,28 @@ export class TimesheetHeatMapComponent implements OnChanges, OnDestroy {
     this.yAxisLabel = strategy.getYAxisLabel();
 
     // Process data using the strategy
-    strategy
-      .processData(this.data)
-      .pipe(
-        take(1),
-        tap((data) => {
-          this.chartData$.next(data);
+    return strategy.processData(this.data).pipe(
+      take(1),
+      map((data) => {
+        this.chartData$.next(data);
 
-          if (
-            strategy instanceof DailyDataStrategy ||
-            strategy instanceof DailyDataWorkerStrategy
-          ) {
-            this.aspectRatio = 4 / 3;
-          }
+        if (
+          strategy instanceof DailyDataStrategy ||
+          strategy instanceof DailyDataWorkerStrategy
+        ) {
+          this.aspectRatio = 4 / 3;
+        }
 
-          if (
-            strategy instanceof HourlyDataStrategy ||
-            strategy instanceof HourlyDataWorkerStrategy
-          ) {
-            this.aspectRatio = 128 / 37;
-          }
-        }),
-      )
-      .subscribe();
+        if (
+          strategy instanceof HourlyDataStrategy ||
+          strategy instanceof HourlyDataWorkerStrategy
+        ) {
+          this.aspectRatio = 128 / 37;
+        }
+
+        return;
+      }),
+    );
   }
 
   public tooltipText({ cell }: any): string {
