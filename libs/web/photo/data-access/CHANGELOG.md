@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.1.11](https://github.com/ever-co/ever-rec-desktop/compare/photo-data-acess-0.1.10...photo-data-acess-0.1.11) (2025-05-15)
+
+### Dependency Updates
+
+* `webcam-data-access` updated to version `1.1.11`
+
+
 ## [0.1.10](https://github.com/ever-co/ever-rec-desktop/compare/photo-data-acess-0.1.9...photo-data-acess-0.1.10) (2025-05-15)
 
 ### Dependency Updates
