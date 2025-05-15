@@ -2,6 +2,26 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.1.0](https://github.com/ever-co/ever-capture/compare/video-feature-1.0.6...video-feature-1.1.0) (2025-05-15)
+
+### Dependency Updates
+
+* `video-data-access` updated to version `1.0.7`
+* `shared-components` updated to version `2.0.1`
+* `shared-service` updated to version `1.0.0`
+* `utils` updated to version `1.1.0`
+* `upload-data-access` updated to version `2.0.5`
+* `web-setting-data-access` updated to version `1.0.6`
+* `feature` updated to version `1.1.0`
+* `generate-video-data-access` updated to version `1.0.5`
+* `date-picker-data-access` updated to version `1.0.2`
+
+### Features
+
+* add audio and photo widgets to dashboard ([2821814](https://github.com/ever-co/ever-capture/commit/28218149d4ae3070bd37e4d353c29d8775e07434))
+
+
+
 ## [1.0.6](https://github.com/ever-co/ever-capture/compare/video-feature-1.0.5...video-feature-1.0.6) (2025-05-11)
 
 ### Dependency Updates
