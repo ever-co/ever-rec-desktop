@@ -146,8 +146,12 @@ export class TimeLogEffects {
 
   getHeatMap$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(timeLogActions.getTimeLogHeatMap),
-      mergeMap(({ range }) =>
+      ofType(
+        timeLogActions.getTimeLogHeatMap,
+        timeLogActions.getTimeLogStatisticsSuccess,
+      ),
+      withLatestFrom(this.store.select(selectDateRange)),
+      mergeMap(([, range]) =>
         this.timeLogElectronService.getHeatMap(range).pipe(
           map((heatMapLogs) =>
             timeLogActions.getTimeLogHeatMapSuccess({ heatMapLogs }),
