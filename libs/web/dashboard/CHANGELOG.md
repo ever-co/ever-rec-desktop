@@ -2,6 +2,21 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.1.1](https://github.com/ever-co/ever-capture/compare/dashboard-1.1.0...dashboard-1.1.1) (2025-05-15)
+
+### Dependency Updates
+
+* `activity-feature` updated to version `1.1.1`
+* `feature` updated to version `1.1.1`
+* `photo-feature` updated to version `1.1.1`
+* `screenshot-feature` updated to version `1.1.1`
+* `shared-service` updated to version `1.0.1`
+* `timesheet-feature` updated to version `1.1.1`
+* `video-feature` updated to version `1.1.0`
+* `generate-video-data-access` updated to version `1.0.6`
+* `screenshot-data-access` updated to version `1.1.1`
+
+
 # [1.1.0](https://github.com/ever-co/ever-capture/compare/dashboard-1.0.5...dashboard-1.1.0) (2025-05-15)
 
 ### Dependency Updates
