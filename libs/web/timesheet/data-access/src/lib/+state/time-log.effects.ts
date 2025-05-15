@@ -6,7 +6,7 @@ import { IPaginationOptions, ITimeLog } from '@ever-co/shared-utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { from, of } from 'rxjs';
-import { catchError, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
+import { catchError, map, mergeMap, withLatestFrom } from 'rxjs/operators';
 import { TimeLogElectronService } from '../services/time-log-electron.service';
 import { timeLogActions } from './time-log.actions';
 
@@ -104,7 +104,6 @@ export class TimeLogEffects {
       ofType(
         timeLogActions.getTimeLogStatistics,
         timeLogActions.loadTimeLogs,
-        screenshotActions.loadScreenshots,
         timeLogActions.tick,
       ),
       withLatestFrom(this.store.select(selectDateRange)),
