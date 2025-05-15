@@ -2,6 +2,14 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.1.4](https://github.com/ever-co/ever-rec-desktop/compare/dashboard-1.1.3...dashboard-1.1.4) (2025-05-15)
+
+### Dependency Updates
+
+* `feature` updated to version `1.1.4`
+* `video-feature` updated to version `1.1.4`
+
+
 ## [1.1.3](https://github.com/ever-co/ever-rec-desktop/compare/dashboard-1.1.2...dashboard-1.1.3) (2025-05-15)
 
 ### Dependency Updates
