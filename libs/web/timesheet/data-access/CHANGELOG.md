@@ -2,6 +2,22 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.1.0](https://github.com/ever-co/ever-capture/compare/timesheet-data-access-1.0.6...timesheet-data-access-1.1.0) (2025-05-15)
+
+### Dependency Updates
+
+* `utils` updated to version `1.1.0`
+* `date-picker-data-access` updated to version `1.0.2`
+* `screenshot-data-access` updated to version `1.1.0`
+* `data-access-electron` updated to version `1.0.1`
+
+### Features
+
+* **timesheet-effects:** fetch heatmap on time log statistics success ([460f9e5](https://github.com/ever-co/ever-capture/commit/460f9e5d7687a7bb780056c27018156478d6a9a0))
+* **timesheet:** fetch data for heat map ([e498521](https://github.com/ever-co/ever-capture/commit/e498521a8652651ca6bd864663ecec06235630f1))
+
+
+
 ## [1.0.6](https://github.com/ever-co/ever-capture/compare/timesheet-data-access-1.0.5...timesheet-data-access-1.0.6) (2025-05-11)
 
 
