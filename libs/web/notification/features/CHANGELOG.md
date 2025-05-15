@@ -2,6 +2,16 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.6](https://github.com/ever-co/ever-capture/compare/notification-feature-1.0.5...notification-feature-1.0.6) (2025-05-15)
+
+### Dependency Updates
+
+* `notification-data-access` updated to version `1.0.3`
+* `shared-service` updated to version `1.0.1`
+* `shared-components` updated to version `2.0.2`
+* `utils` updated to version `1.1.0`
+
+
 ## [1.0.5](https://github.com/ever-co/ever-capture/compare/notification-feature-1.0.4...notification-feature-1.0.5) (2025-05-15)
 
 ### Dependency Updates
