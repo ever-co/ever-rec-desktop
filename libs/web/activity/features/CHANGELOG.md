@@ -2,6 +2,22 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.1.0](https://github.com/ever-co/ever-capture/compare/activity-feature-1.0.5...activity-feature-1.1.0) (2025-05-15)
+
+### Dependency Updates
+
+* `activity-data-access` updated to version `1.0.7`
+* `date-picker-data-access` updated to version `1.0.2`
+* `shared-service` updated to version `1.0.0`
+* `utils` updated to version `1.1.0`
+* `shared-components` updated to version `2.0.1`
+
+### Features
+
+* **workflows:** add concurrency settings to desktop app workflow ([7656a6d](https://github.com/ever-co/ever-capture/commit/7656a6d10368d1f9a6fde36925eb396d44c03b77))
+
+
+
 ## [1.0.5](https://github.com/ever-co/ever-capture/compare/activity-feature-1.0.4...activity-feature-1.0.5) (2025-05-11)
 
 ### Dependency Updates
