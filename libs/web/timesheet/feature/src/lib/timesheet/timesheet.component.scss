@@ -4,3 +4,7 @@
     background-color: rgba(103, 58, 183, 0.05);
   }
 }
+
+.max-h-custom {
+  max-height: calc(100vh - 13rem);
+}

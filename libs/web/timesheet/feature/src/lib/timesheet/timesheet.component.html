@@ -32,211 +32,216 @@
       </button>
     </div>
   </div>
+  <div class="grid grid-cols-1 max-h-custom overflow-auto gap-4">
+    <!-- heat map widget -->
+    <lib-timesheet-heat-map-widget></lib-timesheet-heat-map-widget>
+    <!-- Timesheet Table  -->
+    <div class="mat-elevation-z0 p-4 rounded-df">
+      <div class="overflow-x-auto h-96 max-w-full rounded-df">
+        @if (dataSource.data.length) {
+          <table
+            mat-table
+            [dataSource]="dataSource"
+            matSort
+            class="min-w-full rounded-df bg-gray-50"
+            (matSortChange)="sortChange()"
+          >
+            <!-- CreatedAt Column -->
+            <ng-container matColumnDef="createdAt">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                class="px-4 py-2 text-left text-gray-600"
+              >
+                Date
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let log"
+                class="px-4 py-2 truncate md:table-cell"
+              >
+                {{ log.createdAt | date: 'EEEE, MMM d, y' }}
+              </td>
+            </ng-container>
+            <!-- Start Column -->
+            <ng-container matColumnDef="start">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                class="px-4 py-2 text-left text-gray-600"
+              >
+                Start
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let log"
+                class="px-4 py-2 truncate md:table-cell"
+              >
+                {{ log.start | date: 'h:mm a' }}
+              </td>
+            </ng-container>
 
-  <lib-timesheet-heat-map-widget></lib-timesheet-heat-map-widget>
+            <!-- End Column (Visible on md screens and above) -->
+            <ng-container matColumnDef="end">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                class="px-4 py-2 text-left text-gray-600 md:table-cell"
+              >
+                End
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let log"
+                class="px-4 py-2 truncate md:table-cell"
+              >
+                @if (log.end) {
+                  {{ log.end | date: 'h:mm a' }}
+                } @else {
+                  Not Yet
+                }
+              </td>
+            </ng-container>
 
-  <!-- Timesheet Table  -->
-  <div class="mat-elevation-z0 p-4 rounded-df mt-2">
-    <div class="overflow-x-auto h-96 max-w-full rounded-df">
-      @if (dataSource.data.length) {
-        <table
-          mat-table
-          [dataSource]="dataSource"
-          matSort
-          class="min-w-full rounded-df bg-gray-50"
-          (matSortChange)="sortChange()"
+            <!-- Duration Column -->
+            <ng-container matColumnDef="duration">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                class="px-4 py-2 text-left text-gray-600"
+              >
+                Duration
+              </th>
+              <td mat-cell *matCellDef="let log" class="px-4 py-2">
+                {{ log.duration | humanize: 'seconds' : 'hh:mm:ss' }}
+              </td>
+            </ng-container>
+
+            <!-- Type Column (Visible on lg screens and above) -->
+            <ng-container matColumnDef="type">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                class="px-4 py-2 text-left text-gray-600 lg:table-cell"
+              >
+                Type
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let log"
+                class="px-4 py-2 lg:table-cell"
+              >
+                <div class="flex items-center justify-center">
+                  @if (log.type === 'tracked') {
+                    <span
+                      class="bg-green-100 text-emerald-600 font-medium rounded-df p-1 pl-2 pr-2"
+                      >{{ log.type | titlecase }}</span
+                    >
+                  }
+                  @if (log.type === 'manual') {
+                    <span
+                      class="bg-blue-100 text-sky-600 font-medium rounded-df p-1 pl-2 pr-2"
+                      >{{ log.type | titlecase }}</span
+                    >
+                  }
+                  @if (log.type === 'idle') {
+                    <span
+                      class="bg-red-100 text-rose-600 font-medium rounded-df p-1 pl-2 pr-2"
+                      >{{ log.type | titlecase }}</span
+                    >
+                  }
+                </div>
+              </td>
+            </ng-container>
+
+            <!-- Running Column -->
+            <ng-container matColumnDef="running">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="px-4 py-2 text-left text-gray-600"
+              >
+                Running
+              </th>
+              <td mat-cell *matCellDef="let log" class="px-4 py-2">
+                @if (log.running) {
+                  <mat-icon matTooltip="Running" class="text-green-600"
+                    >play_arrow</mat-icon
+                  >
+                } @else {
+                  <mat-icon matTooltip="Stopped" class="text-red-600"
+                    >stop</mat-icon
+                  >
+                }
+              </td>
+            </ng-container>
+
+            <!-- Synced Column -->
+            <ng-container matColumnDef="synced">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="px-4 py-2 text-left text-gray-600"
+              >
+                Synced
+              </th>
+              <td mat-cell *matCellDef="let log" class="px-4 py-2">
+                @if (log.synced) {
+                  <mat-icon class="text-blue-600">sync</mat-icon>
+                } @else {
+                  <mat-icon class="text-gray-400">sync_disabled</mat-icon>
+                }
+              </td>
+            </ng-container>
+
+            <!-- Table Headers and Rows -->
+            <tr
+              mat-header-row
+              *matHeaderRowDef="displayedColumns"
+              class="bg-gray-200"
+            ></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: displayedColumns"
+              (click)="select(row)"
+              [ngClass]="{
+                'selected-row': row.id === (selectedRow$ | async)?.id,
+              }"
+              class="row hover:bg-gray-200"
+            ></tr>
+          </table>
+        } @else {
+          <lib-no-data message="No timeline available"></lib-no-data>
+        }
+      </div>
+
+      <!-- Paginator -->
+      <div class="flex justify-end mt-4 rounded-df">
+        <mat-paginator
+          class="rounded-df"
+          [length]="count"
+          [pageSize]="pageSize"
+          [pageSizeOptions]="[5, 10, 20]"
+          (page)="onPaginateChange($event)"
         >
-          <!-- CreatedAt Column -->
-          <ng-container matColumnDef="createdAt">
-            <th
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              class="px-4 py-2 text-left text-gray-600"
-            >
-              Date
-            </th>
-            <td
-              mat-cell
-              *matCellDef="let log"
-              class="px-4 py-2 truncate md:table-cell"
-            >
-              {{ log.createdAt | date: 'EEEE, MMM d, y' }}
-            </td>
-          </ng-container>
-          <!-- Start Column -->
-          <ng-container matColumnDef="start">
-            <th
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              class="px-4 py-2 text-left text-gray-600"
-            >
-              Start
-            </th>
-            <td
-              mat-cell
-              *matCellDef="let log"
-              class="px-4 py-2 truncate md:table-cell"
-            >
-              {{ log.start | date: 'h:mm a' }}
-            </td>
-          </ng-container>
+        </mat-paginator>
+      </div>
 
-          <!-- End Column (Visible on md screens and above) -->
-          <ng-container matColumnDef="end">
-            <th
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              class="px-4 py-2 text-left text-gray-600 md:table-cell"
-            >
-              End
-            </th>
-            <td
-              mat-cell
-              *matCellDef="let log"
-              class="px-4 py-2 truncate md:table-cell"
-            >
-              @if (log.end) {
-                {{ log.end | date: 'h:mm a' }}
-              } @else {
-                Not Yet
-              }
-            </td>
-          </ng-container>
-
-          <!-- Duration Column -->
-          <ng-container matColumnDef="duration">
-            <th
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              class="px-4 py-2 text-left text-gray-600"
-            >
-              Duration
-            </th>
-            <td mat-cell *matCellDef="let log" class="px-4 py-2">
-              {{ log.duration | humanize: 'seconds' : 'hh:mm:ss' }}
-            </td>
-          </ng-container>
-
-          <!-- Type Column (Visible on lg screens and above) -->
-          <ng-container matColumnDef="type">
-            <th
-              mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header
-              class="px-4 py-2 text-left text-gray-600 lg:table-cell"
-            >
-              Type
-            </th>
-            <td mat-cell *matCellDef="let log" class="px-4 py-2 lg:table-cell">
-              <div class="flex items-center justify-center">
-                @if (log.type === 'tracked') {
-                  <span
-                    class="bg-green-100 text-emerald-600 font-medium rounded-df p-1 pl-2 pr-2"
-                    >{{ log.type | titlecase }}</span
-                  >
-                }
-                @if (log.type === 'manual') {
-                  <span
-                    class="bg-blue-100 text-sky-600 font-medium rounded-df p-1 pl-2 pr-2"
-                    >{{ log.type | titlecase }}</span
-                  >
-                }
-                @if (log.type === 'idle') {
-                  <span
-                    class="bg-red-100 text-rose-600 font-medium rounded-df p-1 pl-2 pr-2"
-                    >{{ log.type | titlecase }}</span
-                  >
-                }
-              </div>
-            </td>
-          </ng-container>
-
-          <!-- Running Column -->
-          <ng-container matColumnDef="running">
-            <th
-              mat-header-cell
-              *matHeaderCellDef
-              class="px-4 py-2 text-left text-gray-600"
-            >
-              Running
-            </th>
-            <td mat-cell *matCellDef="let log" class="px-4 py-2">
-              @if (log.running) {
-                <mat-icon matTooltip="Running" class="text-green-600"
-                  >play_arrow</mat-icon
-                >
-              } @else {
-                <mat-icon matTooltip="Stopped" class="text-red-600"
-                  >stop</mat-icon
-                >
-              }
-            </td>
-          </ng-container>
-
-          <!-- Synced Column -->
-          <ng-container matColumnDef="synced">
-            <th
-              mat-header-cell
-              *matHeaderCellDef
-              class="px-4 py-2 text-left text-gray-600"
-            >
-              Synced
-            </th>
-            <td mat-cell *matCellDef="let log" class="px-4 py-2">
-              @if (log.synced) {
-                <mat-icon class="text-blue-600">sync</mat-icon>
-              } @else {
-                <mat-icon class="text-gray-400">sync_disabled</mat-icon>
-              }
-            </td>
-          </ng-container>
-
-          <!-- Table Headers and Rows -->
-          <tr
-            mat-header-row
-            *matHeaderRowDef="displayedColumns"
-            class="bg-gray-200"
-          ></tr>
-          <tr
-            mat-row
-            *matRowDef="let row; columns: displayedColumns"
-            (click)="select(row)"
-            [ngClass]="{
-              'selected-row': row.id === (selectedRow$ | async)?.id,
-            }"
-            class="row hover:bg-gray-200"
-          ></tr>
-        </table>
-      } @else {
-        <lib-no-data message="No timeline available"></lib-no-data>
+      <!-- Loading Spinner -->
+      @if (loading) {
+        <div class="flex justify-center w-full mt-4">
+          <mat-progress-spinner
+            mode="indeterminate"
+            class="text-blue-500"
+          ></mat-progress-spinner>
+        </div>
       }
     </div>
-
-    <!-- Paginator -->
-    <div class="flex justify-end mt-4 rounded-df">
-      <mat-paginator
-        class="rounded-df"
-        [length]="count"
-        [pageSize]="pageSize"
-        [pageSizeOptions]="[5, 10, 20]"
-        (page)="onPaginateChange($event)"
-      >
-      </mat-paginator>
-    </div>
-
-    <!-- Loading Spinner -->
-    @if (loading) {
-      <div class="flex justify-center w-full mt-4">
-        <mat-progress-spinner
-          mode="indeterminate"
-          class="text-blue-500"
-        ></mat-progress-spinner>
-      </div>
-    }
   </div>
 </div>
 
