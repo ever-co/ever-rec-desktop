@@ -2,6 +2,23 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.6](https://github.com/ever-co/ever-capture/compare/web-setting-feature-1.0.5...web-setting-feature-1.0.6) (2025-05-15)
+
+### Dependency Updates
+
+* `web-setting-data-access` updated to version `1.0.6`
+* `shared-service` updated to version `1.0.0`
+* `utils` updated to version `1.1.0`
+* `generate-video-feature` updated to version `1.0.5`
+* `screenshot-feature` updated to version `1.1.0`
+* `webcam-feature` updated to version `0.1.9`
+* `data-access` updated to version `0.2.5`
+* `photo-data-acess` updated to version `0.1.6`
+* `screenshot-data-access` updated to version `1.1.0`
+* `shared-components` updated to version `2.0.1`
+* `video-data-access` updated to version `1.0.7`
+
+
 ## [1.0.5](https://github.com/ever-co/ever-capture/compare/web-setting-feature-1.0.4...web-setting-feature-1.0.5) (2025-05-11)
 
 ### Dependency Updates
