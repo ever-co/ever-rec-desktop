@@ -2,6 +2,20 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.1.2](https://github.com/ever-co/ever-rec-desktop/compare/photo-feature-1.1.1...photo-feature-1.1.2) (2025-05-15)
+
+### Dependency Updates
+
+* `photo-data-acess` updated to version `0.1.9`
+* `shared-components` updated to version `2.0.3`
+* `shared-service` updated to version `1.0.2`
+* `utils` updated to version `1.2.0`
+* `upload-data-access` updated to version `2.0.8`
+* `web-setting-data-access` updated to version `1.0.9`
+* `photo-ui` updated to version `0.2.6`
+* `date-picker-data-access` updated to version `1.0.4`
+
+
 ## [1.1.1](https://github.com/ever-co/ever-capture/compare/photo-feature-1.1.0...photo-feature-1.1.1) (2025-05-15)
 
 ### Dependency Updates
