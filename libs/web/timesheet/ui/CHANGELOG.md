@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.1](https://github.com/ever-co/ever-capture/compare/timesheet-ui-1.0.0...timesheet-ui-1.0.1) (2025-05-15)
+
+### Dependency Updates
+
+* `utils` updated to version `1.1.0`
+* `shared-service` updated to version `1.0.1`
+* `shared-components` updated to version `2.0.2`
+
+
 # 1.0.0 (2025-05-15)
 
 ### Dependency Updates
