@@ -2,6 +2,16 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.6](https://github.com/ever-co/ever-capture/compare/generate-video-feature-1.0.5...generate-video-feature-1.0.6) (2025-05-15)
+
+### Dependency Updates
+
+* `generate-video-data-access` updated to version `1.0.6`
+* `notification-data-access` updated to version `1.0.3`
+* `shared-service` updated to version `1.0.1`
+* `utils` updated to version `1.1.0`
+
+
 ## [1.0.5](https://github.com/ever-co/ever-capture/compare/generate-video-feature-1.0.4...generate-video-feature-1.0.5) (2025-05-15)
 
 ### Dependency Updates
