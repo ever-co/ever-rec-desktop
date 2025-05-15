@@ -2,6 +2,16 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.1.3](https://github.com/ever-co/ever-rec-desktop/compare/feature-1.1.2...feature-1.1.3) (2025-05-15)
+
+### Dependency Updates
+
+* `data-access` updated to version `0.2.9`
+* `screenshot-data-access` updated to version `1.1.4`
+* `upload-data-access` updated to version `2.0.9`
+* `web-setting-data-access` updated to version `1.0.10`
+
+
 ## [1.1.2](https://github.com/ever-co/ever-rec-desktop/compare/feature-1.1.1...feature-1.1.2) (2025-05-15)
 
 ### Dependency Updates
