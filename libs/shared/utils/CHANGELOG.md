@@ -2,6 +2,28 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.2.0](https://github.com/ever-co/ever-capture/compare/utils-1.1.0...utils-1.2.0) (2025-05-15)
+
+
+### Features
+
+* **screenshot:** add statistics by date range ([df5ca95](https://github.com/ever-co/ever-capture/commit/df5ca9558e4e21760a5aea8277add35fd98741c3))
+* **screenshot:** provide enhanced statistics data ([b117591](https://github.com/ever-co/ever-capture/commit/b1175913322ecd53dee4b2cb8e9fe0d5e64cd9c4))
+* **timesheet:** fetch data for heat map ([e498521](https://github.com/ever-co/ever-capture/commit/e498521a8652651ca6bd864663ecec06235630f1))
+
+
+
+# [1.2.0](https://github.com/ever-co/ever-capture/compare/utils-1.1.0...utils-1.2.0) (2025-05-15)
+
+
+### Features
+
+* **screenshot:** add statistics by date range ([df5ca95](https://github.com/ever-co/ever-capture/commit/df5ca9558e4e21760a5aea8277add35fd98741c3))
+* **screenshot:** provide enhanced statistics data ([b117591](https://github.com/ever-co/ever-capture/commit/b1175913322ecd53dee4b2cb8e9fe0d5e64cd9c4))
+* **timesheet:** fetch data for heat map ([e498521](https://github.com/ever-co/ever-capture/commit/e498521a8652651ca6bd864663ecec06235630f1))
+
+
+
 # [1.1.0](https://github.com/ever-co/ever-capture/compare/utils-1.0.0...utils-1.1.0) (2025-05-11)
 
 
