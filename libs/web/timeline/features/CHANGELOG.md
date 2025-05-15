@@ -2,6 +2,18 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.6](https://github.com/ever-co/ever-capture/compare/timeline-feature-1.0.5...timeline-feature-1.0.6) (2025-05-15)
+
+### Dependency Updates
+
+* `generate-video-data-access` updated to version `1.0.5`
+* `generate-video-feature` updated to version `1.0.5`
+* `timeline-data-access` updated to version `1.0.6`
+* `utils` updated to version `1.1.0`
+* `shared-service` updated to version `1.0.0`
+* `screenshot-feature` updated to version `1.1.0`
+
+
 ## [1.0.5](https://github.com/ever-co/ever-capture/compare/timeline-feature-1.0.4...timeline-feature-1.0.5) (2025-05-11)
 
 ### Dependency Updates
