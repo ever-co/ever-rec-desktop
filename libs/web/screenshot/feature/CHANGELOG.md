@@ -2,6 +2,31 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.1.0](https://github.com/ever-co/ever-capture/compare/screenshot-feature-1.0.5...screenshot-feature-1.1.0) (2025-05-15)
+
+### Dependency Updates
+
+* `screenshot-data-access` updated to version `1.1.0`
+* `shared-components` updated to version `2.0.1`
+* `shared-service` updated to version `1.0.0`
+* `utils` updated to version `1.1.0`
+* `generate-video-data-access` updated to version `1.0.5`
+* `date-picker-data-access` updated to version `1.0.2`
+* `screenshot-ui` updated to version `1.1.0`
+* `upload-data-access` updated to version `2.0.5`
+* `web-setting-data-access` updated to version `1.0.6`
+
+### Features
+
+* add audio and photo widgets to dashboard ([2821814](https://github.com/ever-co/ever-capture/commit/28218149d4ae3070bd37e4d353c29d8775e07434))
+* **screenshot:** add statistical analysis charts ([3f2ec85](https://github.com/ever-co/ever-capture/commit/3f2ec8524ec595e00a6a2229a7b389d2e3a812b3))
+* **screenshot:** add statistics by date range ([df5ca95](https://github.com/ever-co/ever-capture/commit/df5ca9558e4e21760a5aea8277add35fd98741c3))
+* **screenshot:** provide enhanced statistics data ([b117591](https://github.com/ever-co/ever-capture/commit/b1175913322ecd53dee4b2cb8e9fe0d5e64cd9c4))
+* **statistics:** display neutral indicator for zero trend ([fb64a8a](https://github.com/ever-co/ever-capture/commit/fb64a8a686420f089ae60c88d2043566cc94e9c4))
+* **timesheet:** add timesheet heatmap component ([36018d9](https://github.com/ever-co/ever-capture/commit/36018d9aac0e64664e69ae14396198707778287d))
+
+
+
 ## [1.0.5](https://github.com/ever-co/ever-capture/compare/screenshot-feature-1.0.4...screenshot-feature-1.0.5) (2025-05-11)
 
 ### Dependency Updates
