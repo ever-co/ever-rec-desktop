@@ -1,30 +1,37 @@
-import { Injectable } from '@angular/core';
-import { ITimeLog } from '@ever-co/shared-utils';
-import { DataProcessingStrategy } from '../models/data-processing.strategy';
-import { DailyDataStrategy } from '../strategies/daily-data.strategy';
-import { HourlyDataStrategy } from '../strategies/hourly-data.strategy';
+import { Inject, Injectable } from '@angular/core';
+import { IEnvironment, ITimeLog } from '@ever-co/shared-utils';
+import { DailyDataFactory } from '../factories/daily-data.factory';
+import { HourlyDataFactory } from '../factories/hourly-data.factory';
+import { MonthlyDataFactory } from '../factories/monthly-data.factory';
+import {
+  DataProcessingFactory,
+  DataProcessingStrategy,
+} from '../models/data-processing.strategy';
 import { DateService } from './date.service';
-import { MonthlyDataStrategy } from '../strategies/monthly-data.strategy';
+import { REC_ENV } from '@ever-co/shared-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataStrategyFactory {
+  constructor(@Inject(REC_ENV) private env: IEnvironment) {}
+
   public createStrategy(logs: ITimeLog[] | null): DataProcessingStrategy {
+    let factory: DataProcessingFactory = new HourlyDataFactory(this.env);
     if (!logs || logs.length === 0) {
-      return new HourlyDataStrategy();
+      return factory.createStrategy();
     }
 
     const { start, end } = DateService.calculateDateRange(logs);
 
     if (DateService.isDateRangeMoreThanMonth(start, end)) {
-      return new MonthlyDataStrategy();
+      factory = new MonthlyDataFactory(this.env);
     }
 
     if (DateService.isDateRangeMoreThanWeek(start, end)) {
-      return new DailyDataStrategy();
+      factory = new DailyDataFactory(this.env);
     }
 
-    return new HourlyDataStrategy();
+    return factory.createStrategy();
   }
 }

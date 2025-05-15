@@ -3,7 +3,7 @@
     <ngx-charts-heat-map
       class="w-full h-full"
       [scheme]="colorScheme"
-      [results]="chartData"
+      [results]="chartData$ | async"
       [gradient]="gradient"
       [xAxis]="xAxis"
       [yAxis]="yAxis"

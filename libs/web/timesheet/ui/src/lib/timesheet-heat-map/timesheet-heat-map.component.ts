@@ -10,11 +10,20 @@ import {
 } from '@angular/core';
 import { IHeatMapDataPoint, ITimeLog, moment } from '@ever-co/shared-utils';
 import { NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
-import { debounceTime, fromEvent, Subscription } from 'rxjs';
+import {
+  BehaviorSubject,
+  debounceTime,
+  fromEvent,
+  Subscription,
+  take,
+  tap,
+} from 'rxjs';
 import { DataStrategyFactory } from './services/data-factory.service';
 import { DailyDataStrategy } from './strategies/daily-data.strategy';
 import { HourlyDataStrategy } from './strategies/hourly-data.strategy';
 import { NoDataComponent } from '@ever-co/shared-components';
+import { DailyDataWorkerStrategy } from './strategies/daily-data-worker.strategy';
+import { HourlyDataWorkerStrategy } from './strategies/hourly-data-worker.strategy';
 
 @Component({
   selector: 'lib-timesheet-heat-map',
@@ -59,7 +68,7 @@ export class TimesheetHeatMapComponent implements OnChanges, OnDestroy {
   };
 
   // Processed data for the chart
-  chartData: IHeatMapDataPoint[] = [];
+  chartData$ = new BehaviorSubject<IHeatMapDataPoint[]>([]);
 
   // Chart dimensions with initial values
   chartWidth = 0;
@@ -122,7 +131,7 @@ export class TimesheetHeatMapComponent implements OnChanges, OnDestroy {
 
   private updateChartData(): void {
     if (!this.data || this.data.length === 0) {
-      this.chartData = [];
+      this.chartData$.next([]);
       return;
     }
 
@@ -134,15 +143,29 @@ export class TimesheetHeatMapComponent implements OnChanges, OnDestroy {
     this.yAxisLabel = strategy.getYAxisLabel();
 
     // Process data using the strategy
-    this.chartData = strategy.processData(this.data);
+    strategy
+      .processData(this.data)
+      .pipe(
+        take(1),
+        tap((data) => {
+          this.chartData$.next(data);
 
-    if (strategy instanceof DailyDataStrategy) {
-      this.aspectRatio = 4 / 3;
-    }
+          if (
+            strategy instanceof DailyDataStrategy ||
+            strategy instanceof DailyDataWorkerStrategy
+          ) {
+            this.aspectRatio = 4 / 3;
+          }
 
-    if (strategy instanceof HourlyDataStrategy) {
-      this.aspectRatio = 128 / 37;
-    }
+          if (
+            strategy instanceof HourlyDataStrategy ||
+            strategy instanceof HourlyDataWorkerStrategy
+          ) {
+            this.aspectRatio = 128 / 37;
+          }
+        }),
+      )
+      .subscribe();
   }
 
   public tooltipText({ cell }: any): string {
