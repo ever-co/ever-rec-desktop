@@ -4,7 +4,7 @@ import { LocalStorageService } from '@ever-co/shared-service';
 import {
   IPaginationOptions,
   IScreenshot,
-  IScreenshotMetadataStatistic,
+  IRange,
   isDeepEqual,
 } from '@ever-co/shared-utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -157,6 +157,37 @@ export class ScreenshotEffects {
           ),
           catchError((error) =>
             of(screenshotActions.getScreenshotsStatisticsFailure({ error })),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  getStatisticsMediator$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(screenshotActions.getScreenshotsStatistics),
+      distinctUntilChanged(isDeepEqual),
+      map(({ start, end }) => {
+        const range = { start, end } as IRange;
+        return screenshotActions.getScreenshotsStatisticsByRange(range);
+      }),
+    ),
+  );
+
+  getStatisticsByRange$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(screenshotActions.getScreenshotsStatisticsByRange),
+      mergeMap((range) =>
+        this.electronService.getStatisticsByRange(range).pipe(
+          map((data) =>
+            screenshotActions.getScreenshotsStatisticsByRangeSuccess({ data }),
+          ),
+          catchError((error) =>
+            of(
+              screenshotActions.getScreenshotsStatisticsByRangeFailure({
+                error,
+              }),
+            ),
           ),
         ),
       ),

@@ -3,10 +3,12 @@ import {
   IPaginationOptions,
   IPaginationResponse,
   IPaginationScreenshotStatisticsResponse,
+  IRange,
   IScreenCaptureConfig,
   IScreenshot,
   IScreenshotChartLine,
   ISelected,
+  IStatisticalResult,
   IUploadDone,
   IVideo,
 } from '@ever-co/shared-utils';
@@ -51,6 +53,12 @@ export const screenshotActions = createActionGroup({
       props<IPaginationScreenshotStatisticsResponse>(),
     'Get Screenshots Statistics Failure': props<{ error: string }>(),
     'Reset Screenshots Statistics': emptyProps(),
+
+    'Get Screenshots Statistics By Range': props<IRange>(),
+    'Get Screenshots Statistics By Range Success': props<{
+      data: IStatisticalResult[];
+    }>(),
+    'Get Screenshots Statistics By Range Failure': props<{ error: string }>(),
 
     ask: props<IPaginationOptions<IScreenshot>>(),
     'ask Success': props<IPaginationResponse<IScreenshot>>(),

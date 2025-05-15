@@ -1,5 +1,5 @@
 <div class="p-4 bg-white rounded-lg shadow">
-  <div class="text-lg flex items-center gap-1 font-semibold mb-4">
+  <div class="flex items-center gap-1 font-semibold mb-4">
     <mat-icon
       matTooltip=" Shows the relationship between sample size and statistical power for each
       metric."
@@ -9,9 +9,8 @@
   </div>
 
   @if (processedData().length > 0) {
-    <div class="overflow-auto min-h-96">
+    <div class="max-h-96 min-h-72 h-full">
       <ngx-charts-line-chart
-        class="w-full"
         [scheme]="colorScheme"
         [results]="processedData()"
         [xAxis]="showXAxis"

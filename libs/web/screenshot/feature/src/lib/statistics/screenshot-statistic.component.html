@@ -1,4 +1,5 @@
 @let statistics = (statistics$ | async) || [];
+@let data = (statisticalData$ | async) || [];
 
 <!-- structure -->
 
@@ -8,16 +9,11 @@
     <lib-screenshot-statistics-chart
       class="chart"
     ></lib-screenshot-statistics-chart>
-    <div class="grid grid-cols-1 gap-4 mb-4">
-      <lib-waterfall-chart
-        class="chart"
-        [data]="statistics"
-      ></lib-waterfall-chart>
+    <div class="grid grid-cols-1 gap-4 mb-3">
+      <lib-waterfall-chart class="chart" [data]="data"></lib-waterfall-chart>
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <lib-effect-size-matrix [data]="statistics"></lib-effect-size-matrix>
-        <lib-power-analysis-graph
-          [data]="statistics"
-        ></lib-power-analysis-graph>
+        <lib-effect-size-matrix [data]="data"></lib-effect-size-matrix>
+        <lib-power-analysis-graph [data]="data"></lib-power-analysis-graph>
       </div>
     </div>
     <!-- Responsive Grid -->

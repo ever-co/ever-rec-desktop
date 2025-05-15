@@ -2,6 +2,7 @@ import {
   currentDay,
   IPaginationOptions,
   IPaginationScreenshotStatisticsResponse,
+  IRange,
   IScreenshot,
   IScreenshotMetadata,
   IStatisticalResult,
@@ -449,5 +450,83 @@ export class ScreenshotStatisticsAnalyzer {
       hasNext: page * limit < total,
       effectiveSampleSize: rawData.length,
     };
+  }
+  /**
+   * Computes statistics for a specific date range without pagination
+   *
+   * @param range - Date range for analysis
+   * @returns Statistical results with confidence measures
+   *
+   * Mathematical Basis:
+   * 1. Uses the same Bayesian comparison framework as main statistics method
+   * 2. Optimized for single-range analysis without pagination overhead
+   */
+  public async statisticsByRange(
+    range: IRange,
+  ): Promise<Pick<IPaginationScreenshotStatisticsResponse, 'data'>> {
+    // Normalize the input range
+    const { start, end } = this.normalizeRange(range);
+
+    // Calculate optimal analysis window
+    const analysisWindow = this.calculateOptimalWindow(start, end);
+    const comparisonWindow = this.generateComparisonWindow(
+      start,
+      end,
+      analysisWindow.duration,
+    );
+
+    // Fetch data for both periods
+    const [currentData, previousData] = await Promise.all([
+      this.executeFullRangeQuery(start, end),
+      this.executeFullRangeQuery(
+        comparisonWindow.prevStart,
+        comparisonWindow.prevEnd,
+      ),
+    ]);
+
+    // Analyze trends with uncertainty quantification
+    const data = this.analyzeTrendsWithUncertainty(currentData, previousData);
+
+    return { data };
+  }
+
+  /**
+   * Normalizes the input range with mathematical safeguards
+   *
+   * @param range - Input date range
+   * @returns Normalized range with proper date handling
+   */
+  private normalizeRange(range: IRange): { start: string; end: string } {
+    return {
+      start: moment(range.start).startOf('day').toISOString(),
+      end: moment(range.end).endOf('day').toISOString(),
+    };
+  }
+
+  /**
+   * Executes a query for the full date range without pagination
+   *
+   * @param start - Start date
+   * @param end - End date
+   * @returns Complete dataset for the range
+   */
+  private async executeFullRangeQuery(
+    start: string | Date,
+    end: string | Date,
+  ) {
+    return this.repository
+      .createQueryBuilder('metadata')
+      .leftJoinAndSelect('metadata.application', 'application')
+      .select([
+        'application.name AS name',
+        'application.icon AS icon',
+        'COUNT(application.name) AS count',
+        'SUM(COUNT(metadata.id)) OVER() AS total',
+      ])
+      .where('metadata.createdAt BETWEEN :start AND :end', { start, end })
+      .withDeleted()
+      .groupBy('application.name')
+      .orderBy('count', 'DESC')
+      .getRawMany();
   }
 }

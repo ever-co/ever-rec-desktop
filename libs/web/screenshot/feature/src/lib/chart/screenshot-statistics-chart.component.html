@@ -10,7 +10,7 @@
     </button>
   }
 </div>
-<div class="max-h-96">
+<div class="max-h-96 h-full min-h-72">
   @if (chartData$ | async; as chartData) {
     @if (chartData.length) {
       @if (selectedChartType === 'bar') {

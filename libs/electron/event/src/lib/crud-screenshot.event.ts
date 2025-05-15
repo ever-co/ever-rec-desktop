@@ -11,6 +11,7 @@ import {
   Channel,
   currentDay,
   IPaginationOptions,
+  IRange,
   IScreenshot,
   PHOTO_DIR,
   SCREENSHOT_DIR,
@@ -118,6 +119,12 @@ export function crudScreeshotEvents() {
     Channel.REQUEST_SCREENSHOTS_STATISTICS,
     (_, options: IPaginationOptions<IScreenshot>) =>
       ScreenshotMetadataService.statistics(options),
+  );
+
+  // Request statistics By Range
+  ipcMain.handle(
+    Channel.REQUEST_SCREENSHOTS_STATISTICS_BY_RANGE,
+    (_, range: IRange) => ScreenshotMetadataService.statisticsByRange(range),
   );
 
   ipcMain.handle(

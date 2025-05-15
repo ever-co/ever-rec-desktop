@@ -10,6 +10,7 @@ import { selectDateRange } from '@ever-co/date-picker-data-access';
 import {
   screenshotActions,
   selectScreenshotState,
+  selectScreesnhotStatisticsData,
 } from '@ever-co/screenshot-data-access';
 import { NoDataComponent } from '@ever-co/shared-components';
 import {
@@ -55,6 +56,7 @@ import {
 export class ScreenshotStatisticComponent implements OnInit {
   private destroy$ = new Subject<void>();
   public statistics$!: Observable<IStatisticalResult[]>;
+  public statisticalData$!: Observable<IStatisticalResult[]>;
   private currentPage = 1;
   private hasNext = false;
   private range!: IRange;
@@ -63,6 +65,7 @@ export class ScreenshotStatisticComponent implements OnInit {
     private readonly store: Store,
     private router: Router,
   ) {}
+
   ngOnInit(): void {
     this.store
       .select(selectScreenshotState)
@@ -75,6 +78,10 @@ export class ScreenshotStatisticComponent implements OnInit {
     this.statistics$ = this.store
       .select(selectScreenshotState)
       .pipe(map((state) => state.statistic.currents));
+
+    this.statisticalData$ = this.store
+      .select(selectScreesnhotStatisticsData)
+      .pipe(takeUntil(this.destroy$));
 
     this.store
       .select(selectDateRange)

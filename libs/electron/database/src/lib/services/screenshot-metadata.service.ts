@@ -1,8 +1,10 @@
 import {
   IPaginationOptions,
   IPaginationScreenshotStatisticsResponse,
+  IRange,
   IScreenshot,
   IScreenshotMetadata,
+  IStatisticalResult,
 } from '@ever-co/shared-utils';
 import { FindManyOptions, FindOneOptions, In } from 'typeorm';
 import { ScreenshotMetadata } from '../entities/screenshot-metadata.entity';
@@ -66,5 +68,12 @@ export class ScreenshotMetadataService {
     options: IPaginationOptions<IScreenshot> = {},
   ): Promise<IPaginationScreenshotStatisticsResponse> {
     return this.analyser.statistics(options);
+  }
+
+  public static async statisticsByRange(
+    range: IRange,
+  ): Promise<IStatisticalResult[]> {
+    const { data = [] } = await this.analyser.statisticsByRange(range);
+    return data;
   }
 }

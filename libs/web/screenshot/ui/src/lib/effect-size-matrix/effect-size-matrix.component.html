@@ -5,9 +5,11 @@
     >
     Effect Size Matrix
   </div>
-  <div class="chart-container min-h-96" (window:resize)="onResize($event)">
+  <div
+    class="chart-container max-h-96 min-h-72 h-full"
+    (window:resize)="onResize($event)"
+  >
     <ngx-charts-bubble-chart
-      class="w-full"
       [scheme]="colorScheme"
       [results]="processedData"
       [xAxis]="showXAxis"

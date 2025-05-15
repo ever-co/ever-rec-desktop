@@ -5,9 +5,11 @@ import {
   IPaginationOptions,
   IPaginationResponse,
   IPaginationScreenshotStatisticsResponse,
+  IRange,
   IScreenCaptureConfig,
   IScreenshot,
   IScreenshotChartLine,
+  IStatisticalResult,
   IUploadDone,
   TimeSlot,
 } from '@ever-co/shared-utils';
@@ -68,6 +70,13 @@ export class ScreenshotElectronService {
     return this.electronService.invoke(
       Channel.REQUEST_SCREENSHOTS_STATISTICS,
       options,
+    );
+  }
+
+  public getStatisticsByRange(range: IRange): Observable<IStatisticalResult[]> {
+    return this.electronService.invoke$(
+      Channel.REQUEST_SCREENSHOTS_STATISTICS_BY_RANGE,
+      range,
     );
   }
 

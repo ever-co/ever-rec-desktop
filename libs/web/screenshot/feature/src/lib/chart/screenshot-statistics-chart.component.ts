@@ -76,7 +76,7 @@ export class ScreenshotStatisticsChartComponent implements OnInit, OnDestroy {
     return this.store.select(selectScreenshotState).pipe(
       map((state) =>
         this.prepareChartData(
-          state.statistic.currents || [],
+          state.statistic.data || [],
           state.chart.dataLine || [],
         ),
       ),

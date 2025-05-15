@@ -1,7 +1,6 @@
 import {
   IScreenshot,
   IScreenshotChartLine,
-  IScreenshotMetadataStatistic,
   ISelected,
   IStatisticalResult,
 } from '@ever-co/shared-utils';
@@ -22,6 +21,7 @@ export interface IScreenshotState {
   purging: boolean;
   selectedScreenshots: ISelected<IScreenshot>[];
   statistic: {
+    data: IStatisticalResult[];
     currents: IStatisticalResult[];
     confidence: number;
     statisticalPower: number;
@@ -58,6 +58,7 @@ export const initialState: IScreenshotState = {
   deleting: false,
   purging: false,
   statistic: {
+    data: [],
     currents: [],
     hasNext: false,
     confidence: 0,
@@ -414,6 +415,40 @@ export const reducer = createReducer(
         : screenshots,
     };
   }),
+
+  on(screenshotActions.getScreenshotsStatisticsByRange, (state) => ({
+    ...state,
+    statistic: {
+      ...state.statistic,
+      loading: true,
+      error: '',
+    },
+  })),
+
+  on(
+    screenshotActions.getScreenshotsStatisticsByRangeSuccess,
+    (state, { data }) => ({
+      ...state,
+      statistic: {
+        ...state.statistic,
+        data,
+        loading: false,
+        error: '',
+      },
+    }),
+  ),
+
+  on(
+    screenshotActions.getScreenshotsStatisticsByRangeFailure,
+    (state, { error }) => ({
+      ...state,
+      statistic: {
+        ...state.statistic,
+        loading: false,
+        error,
+      },
+    }),
+  ),
 );
 
 export const screenshotFeature = createFeature({
