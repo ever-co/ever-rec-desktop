@@ -1,14 +1,14 @@
 import { Injectable, inject } from '@angular/core';
+import { selectDateRange } from '@ever-co/date-picker-data-access';
 import { NotificationService } from '@ever-co/notification-data-access';
 import { LocalStorageService } from '@ever-co/shared-service';
 import {
   IPaginationOptions,
   IScreenshot,
-  IRange,
   isDeepEqual,
 } from '@ever-co/shared-utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Action } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { from, of } from 'rxjs';
 import {
   catchError,
@@ -18,6 +18,7 @@ import {
   filter,
   map,
   mergeMap,
+  withLatestFrom,
 } from 'rxjs/operators';
 import { ScreenshotElectronService } from '../services/screenshot-electron.service';
 import { screenshotActions } from './screenshot.actions';
@@ -25,6 +26,7 @@ import { screenshotActions } from './screenshot.actions';
 @Injectable()
 export class ScreenshotEffects {
   private electronService = inject(ScreenshotElectronService);
+  private store = inject(Store);
   private readonly actions$ = inject(Actions);
   private readonly KEY = '_history';
   private readonly MAX_HISTORY_ITEMS = 25;
@@ -165,12 +167,12 @@ export class ScreenshotEffects {
 
   getStatisticsMediator$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(screenshotActions.getScreenshotsStatistics),
+      ofType(screenshotActions.getScreenshotsStatisticsSuccess),
+      withLatestFrom(this.store.select(selectDateRange)),
       distinctUntilChanged(isDeepEqual),
-      map(({ start, end }) => {
-        const range = { start, end } as IRange;
-        return screenshotActions.getScreenshotsStatisticsByRange(range);
-      }),
+      map(([, range]) =>
+        screenshotActions.getScreenshotsStatisticsByRange(range),
+      ),
     ),
   );
 
