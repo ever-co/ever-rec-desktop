@@ -2,6 +2,20 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.3.0](https://github.com/ever-co/ever-capture/compare/database-electron-0.2.2...database-electron-0.3.0) (2025-05-15)
+
+### Dependency Updates
+
+* `electron-utils` updated to version `1.1.1`
+* `utils` updated to version `1.1.0`
+
+### Features
+
+* **screenshot:** add statistics by date range ([df5ca95](https://github.com/ever-co/ever-capture/commit/df5ca9558e4e21760a5aea8277add35fd98741c3))
+* **screenshot:** provide enhanced statistics data ([b117591](https://github.com/ever-co/ever-capture/commit/b1175913322ecd53dee4b2cb8e9fe0d5e64cd9c4))
+
+
+
 ## [0.2.2](https://github.com/ever-co/ever-capture/compare/database-electron-0.2.1...database-electron-0.2.2) (2025-05-11)
 
 ### Dependency Updates
