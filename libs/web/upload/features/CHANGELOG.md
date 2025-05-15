@@ -2,6 +2,14 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [2.0.7](https://github.com/ever-co/ever-capture/compare/upload-feature-2.0.6...upload-feature-2.0.7) (2025-05-15)
+
+### Dependency Updates
+
+* `upload-data-access` updated to version `2.0.6`
+* `shared-service` updated to version `1.0.1`
+
+
 ## [2.0.6](https://github.com/ever-co/ever-capture/compare/upload-feature-2.0.5...upload-feature-2.0.6) (2025-05-15)
 
 ### Dependency Updates
