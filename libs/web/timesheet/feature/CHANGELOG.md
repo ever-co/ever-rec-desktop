@@ -2,6 +2,35 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.1.0](https://github.com/ever-co/ever-capture/compare/timesheet-feature-1.0.5...timesheet-feature-1.1.0) (2025-05-15)
+
+### Dependency Updates
+
+* `date-picker-data-access` updated to version `1.0.2`
+* `shared-components` updated to version `2.0.1`
+* `utils` updated to version `1.1.0`
+* `timesheet-data-access` updated to version `1.1.0`
+* `timesheet-ui` updated to version `1.0.0`
+* `shared-service` updated to version `1.0.0`
+* `web-setting-data-access` updated to version `1.0.6`
+* `timeline-feature` updated to version `1.0.6`
+* `screenshot-data-access` updated to version `1.1.0`
+* `generate-video-data-access` updated to version `1.0.5`
+
+### Features
+
+* add audio and photo widgets to dashboard ([2821814](https://github.com/ever-co/ever-capture/commit/28218149d4ae3070bd37e4d353c29d8775e07434))
+* **timesheet-heat-map-widget:** add timesheet heat map widget ([2ba91a0](https://github.com/ever-co/ever-capture/commit/2ba91a0d60c3809a4b3d2f554c1cf27c77f973fb))
+* **timesheet:** add timesheet heatmap component ([36018d9](https://github.com/ever-co/ever-capture/commit/36018d9aac0e64664e69ae14396198707778287d))
+* **timesheet:** fetch data for heat map ([e498521](https://github.com/ever-co/ever-capture/commit/e498521a8652651ca6bd864663ecec06235630f1))
+
+
+### Performance Improvements
+
+* **web/timesheet:** lazy load timesheet heat map widget ([c3ce5d0](https://github.com/ever-co/ever-capture/commit/c3ce5d0344b660651084e9802b30afbf8a2e30b7))
+
+
+
 ## [1.0.5](https://github.com/ever-co/ever-capture/compare/timesheet-feature-1.0.4...timesheet-feature-1.0.5) (2025-05-11)
 
 ### Dependency Updates
