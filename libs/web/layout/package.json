@@ -1,6 +1,6 @@
 {
   "name": "@ever-co/layout",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "peerDependencies": {
     "@angular/common": "^19.2.0",
     "@angular/core": "^19.2.0"
