@@ -11,8 +11,7 @@
     height: 100%;
     display: flex;
     justify-content: center;
-    max-height: 250px;
-    overflow: auto;
+    overflow: unset;
   }
 
   ::ng-deep {
@@ -52,6 +51,10 @@
           font-size: 12px !important;
           font-weight: 500 !important;
         }
+      }
+
+      .ngx-charts-outer {
+        overflow: hidden;
       }
     }
   }

@@ -31,8 +31,9 @@ export class TimesheetHeatMapComponent implements OnChanges, OnDestroy {
 
   @Input() data: ITimeLog[] | null = [];
   @Input() view: [number, number] | undefined;
-  @Input() minHeight = 100; // Minimum height in pixels
-  @Input() aspectRatio = 128 / 37; // Width to height ratio
+  @Input() minHeight = 270; // Minimum height in pixels
+  @Input() minWidth = 890; // Minimum width in pixels
+  @Input() aspectRatio = 16 / 9; // Width to height ratio
   @Input() margin: [number, number, number, number] = [10, 10, 10, 20]; // [top, right, bottom, left]
 
   // Heatmap options
@@ -100,7 +101,13 @@ export class TimesheetHeatMapComponent implements OnChanges, OnDestroy {
         const parentWidth = parentElement.clientWidth;
 
         // Calculate width considering margins
-        const availableWidth = parentWidth - this.margin[1] - this.margin[3];
+        let availableWidth = Math.max(
+          parentWidth - this.margin[1] - this.margin[3],
+        );
+
+        if (availableWidth < this.minWidth) {
+          availableWidth = this.minWidth;
+        }
 
         // Calculate height based on aspect ratio, but not less than minHeight
         const calculatedHeight = availableWidth / this.aspectRatio;
