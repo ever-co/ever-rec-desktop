@@ -5,12 +5,14 @@ import {
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { IStatisticalResult } from '@ever-co/shared-utils';
 import { NgxChartsModule, Color, ScaleType } from '@swimlane/ngx-charts';
 
 @Component({
   selector: 'lib-effect-size-matrix',
-  imports: [NgxChartsModule],
+  imports: [NgxChartsModule, MatIconModule, MatTooltipModule],
   templateUrl: './effect-size-matrix.component.html',
   styleUrls: ['./effect-size-matrix.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,

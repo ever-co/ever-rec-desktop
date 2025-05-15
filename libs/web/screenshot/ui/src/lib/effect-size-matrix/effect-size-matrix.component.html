@@ -1,5 +1,10 @@
 <div class="p-4 bg-white rounded-lg shadow">
-  <div class="text-lg font-semibold mb-4">Effect Size Matrix</div>
+  <div class="text-lg flex items-center gap-1 font-semibold mb-4">
+    <mat-icon matTooltip="Bubble size represents relative sample size."
+      >info</mat-icon
+    >
+    Effect Size Matrix
+  </div>
   <div class="chart-container min-h-96" (window:resize)="onResize($event)">
     <ngx-charts-bubble-chart
       class="w-full"
@@ -27,10 +32,6 @@
     </ngx-charts-bubble-chart>
   </div>
   <div class="mt-4 text-sm text-gray-500">
-    <p>
-      Bubble size represents relative sample size. Color indicates effect
-      direction and magnitude (red = negative, green = positive).
-    </p>
     <p *ngIf="data.length === 0" class="text-amber-600">
       No data available to display.
     </p>

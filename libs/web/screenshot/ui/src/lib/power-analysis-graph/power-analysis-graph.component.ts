@@ -5,15 +5,16 @@ import {
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { IStatisticalResult } from '@ever-co/shared-utils';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { Color, NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
 import * as shape from 'd3-shape';
-import { Color, ScaleType } from '@swimlane/ngx-charts';
 
 @Component({
   selector: 'lib-power-analysis-graph',
   standalone: true,
-  imports: [NgxChartsModule],
+  imports: [NgxChartsModule, MatIconModule, MatTooltipModule],
   templateUrl: './power-analysis-graph.component.html',
   styleUrl: './power-analysis-graph.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,7 +23,7 @@ export class PowerAnalysisGraphComponent implements OnChanges {
   @Input() data: IStatisticalResult[] = [];
 
   // Chart configuration
-  view: [number, number] = [700, 400];
+  view: [number, number] = [700, 500];
   showXAxis = true;
   showYAxis = true;
   gradient = false;

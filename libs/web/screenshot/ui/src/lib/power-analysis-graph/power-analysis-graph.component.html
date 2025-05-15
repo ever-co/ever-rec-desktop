@@ -1,5 +1,12 @@
 <div class="p-4 bg-white rounded-lg shadow">
-  <div class="text-lg font-semibold mb-4">Power Analysis</div>
+  <div class="text-lg flex items-center gap-1 font-semibold mb-4">
+    <mat-icon
+      matTooltip=" Shows the relationship between sample size and statistical power for each
+      metric."
+      >info</mat-icon
+    >
+    Power Analysis
+  </div>
 
   @if (processedData().length > 0) {
     <div class="overflow-auto min-h-96">
@@ -32,11 +39,4 @@
       No data available for power analysis
     </div>
   }
-
-  <div class="mt-4 text-sm text-gray-500">
-    <p>
-      Shows the relationship between sample size and statistical power for each
-      metric.
-    </p>
-  </div>
 </div>
