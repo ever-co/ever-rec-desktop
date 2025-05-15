@@ -2,6 +2,28 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.1.0](https://github.com/ever-co/ever-capture/compare/dashboard-1.0.5...dashboard-1.1.0) (2025-05-15)
+
+### Dependency Updates
+
+* `activity-feature` updated to version `1.1.0`
+* `feature` updated to version `1.1.0`
+* `photo-feature` updated to version `1.1.0`
+* `screenshot-feature` updated to version `1.1.0`
+* `shared-service` updated to version `1.0.0`
+* `timesheet-feature` updated to version `1.1.0`
+* `video-feature` updated to version `1.0.6`
+* `generate-video-data-access` updated to version `1.0.5`
+* `screenshot-data-access` updated to version `1.1.0`
+
+### Features
+
+* add audio and photo widgets to dashboard ([2821814](https://github.com/ever-co/ever-capture/commit/28218149d4ae3070bd37e4d353c29d8775e07434))
+* **timesheet-heat-map-widget:** add timesheet heat map widget ([2ba91a0](https://github.com/ever-co/ever-capture/commit/2ba91a0d60c3809a4b3d2f554c1cf27c77f973fb))
+* **workflows:** add concurrency settings to desktop app workflow ([7656a6d](https://github.com/ever-co/ever-capture/commit/7656a6d10368d1f9a6fde36925eb396d44c03b77))
+
+
+
 ## [1.0.5](https://github.com/ever-co/ever-capture/compare/dashboard-1.0.4...dashboard-1.0.5) (2025-05-11)
 
 ### Dependency Updates
