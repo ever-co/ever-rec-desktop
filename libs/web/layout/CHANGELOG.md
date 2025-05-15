@@ -2,6 +2,14 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [2.0.10](https://github.com/ever-co/ever-rec-desktop/compare/layout-2.0.9...layout-2.0.10) (2025-05-15)
+
+### Dependency Updates
+
+* `dashboard` updated to version `1.1.4`
+* `library` updated to version `1.0.9`
+
+
 ## [2.0.9](https://github.com/ever-co/ever-rec-desktop/compare/layout-2.0.8...layout-2.0.9) (2025-05-15)
 
 ### Dependency Updates
