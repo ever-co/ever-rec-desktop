@@ -59,7 +59,7 @@
       "executor": "nx:run-commands",
       "options": {
         "parallel": false,
-        "commands": ["cd dist/libs/web/screenshot/ui && npm publish"]
+        "commands": ["cd dist/libs/web/timesheet/ui && npm publish"]
       },
       "dependsOn": ["build"],
       "parallelism": false
