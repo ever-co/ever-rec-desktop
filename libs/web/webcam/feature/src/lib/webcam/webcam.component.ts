@@ -45,12 +45,6 @@ export class WebcamComponent implements OnInit, OnDestroy {
   private readonly closing$ = new Subject<boolean>();
   readonly buttons: IActionButton[] = [
     {
-      icon: 'close_fullscreen',
-      variant: 'default',
-      action: this.hide.bind(this),
-      tooltip: 'Minimize',
-    },
-    {
       icon: 'pause',
       variant: 'danger',
       loading: this.closing$.asObservable(),
@@ -70,6 +64,12 @@ export class WebcamComponent implements OnInit, OnDestroy {
       hide: this.micOn$,
       action: this.startRecording.bind(this),
       tooltip: 'Start Recording Audio',
+    },
+    {
+      icon: 'close_fullscreen',
+      variant: 'default',
+      action: this.minimize.bind(this),
+      tooltip: 'Minimize',
     },
   ];
 
@@ -150,7 +150,7 @@ export class WebcamComponent implements OnInit, OnDestroy {
     this.store.dispatch(audioRecordingActions.stopRecording({ delayed }));
   }
 
-  private hide(): void {
+  private minimize(): void {
     this.store.dispatch(audioRecordingActions.minimizeRecordingScreen());
   }
 
