@@ -30,22 +30,22 @@ export class LibraryComponent implements OnDestroy {
   private readonly destroy$ = new Subject<void>();
   public links: ILink[] = [
     {
-      title: 'Videos',
+      title: 'Recordings',
       route: 'videos',
       icon: 'video_library',
     },
     {
-      title: 'Screenshots',
+      title: 'Camshots',
       route: 'screenshots',
       icon: 'photo_frame',
     },
     {
-      title: 'Photos',
+      title: 'Camera',
       route: 'photos',
       icon: 'photo_library',
     },
     {
-      title: 'Audios',
+      title: 'Sound Recording',
       route: 'audios',
       icon: 'graphic_eq',
     },
