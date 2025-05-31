@@ -145,5 +145,6 @@ export function removePhotoCaptureEvent(): void {
     Channel.START_TRACKING,
     Channel.STOP_TRACKING,
     Channel.REQUEST_TRACKING,
+    Channel.MINIMIZE_WINDOW,
   ].forEach((channel) => ipcMain.removeAllListeners(channel));
 }
