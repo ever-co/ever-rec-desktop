@@ -45,22 +45,31 @@ export class WebcamComponent implements OnInit, OnDestroy {
   private readonly closing$ = new Subject<boolean>();
   readonly buttons: IActionButton[] = [
     {
+      icon: 'close_fullscreen',
+      variant: 'default',
+      action: this.hide.bind(this),
+      tooltip: 'Minimize',
+    },
+    {
       icon: 'pause',
       variant: 'danger',
       loading: this.closing$.asObservable(),
       action: this.stopTracking.bind(this),
+      tooltip: 'Stop Tracking',
     },
     {
       icon: 'mic',
       variant: 'warning',
       hide: this.micOff$,
       action: this.stopRecording.bind(this),
+      tooltip: 'Stop Recording Audio',
     },
     {
       icon: 'mic_off',
       variant: 'danger',
       hide: this.micOn$,
       action: this.startRecording.bind(this),
+      tooltip: 'Start Recording Audio',
     },
   ];
 
@@ -139,6 +148,10 @@ export class WebcamComponent implements OnInit, OnDestroy {
 
   private stopRecording(delayed?: boolean): void {
     this.store.dispatch(audioRecordingActions.stopRecording({ delayed }));
+  }
+
+  private hide(): void {
+    //TODO: Implement hide
   }
 
   ngOnDestroy(): void {
