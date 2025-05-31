@@ -35,9 +35,20 @@ export class PhotoCaptureEvent {
       this.createStreamingWindow();
       this.scheduler.onTick(this.handleTick.bind(this));
     });
+
     ipcMain.on(Channel.STOP_TRACKING, () => {
       this.handleStopTracking();
     });
+
+    ipcMain.on(Channel.MINIMIZE_WINDOW, () => {
+      this.handleMinimizeWindow();
+    });
+  }
+
+  private handleMinimizeWindow(): void {
+    if (this.streamWindow) {
+      this.streamWindow.minimize();
+    }
   }
 
   private handleStopTracking(): void {

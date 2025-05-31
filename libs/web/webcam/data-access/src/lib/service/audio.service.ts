@@ -11,10 +11,14 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AudioService {
-  constructor(private readonly electronService: ElectronService) {}
+  constructor(private readonly electronService: ElectronService) { }
 
   public save(options: IAudioSave): Observable<IAudio> {
     return this.electronService.invoke$(Channel.SAVE_AUDIO, options);
+  }
+
+  public minimize(): void {
+    this.electronService.send(Channel.MINIMIZE_WINDOW);
   }
 
   public async availableDevices(): Promise<MediaDeviceInfo[]> {

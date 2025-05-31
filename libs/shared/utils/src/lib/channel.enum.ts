@@ -66,4 +66,5 @@ export enum Channel {
   'MEDIATOR_INCOMING_MESSAGE' = 'mediator::incomming::message',
   'MEDIATOR_OUTGOING_MESSAGE' = 'mediator::outgoing::message',
   'GET_HEAT_MAP' = 'get::heat::map',
+  'MINIMIZE_WINDOW' = 'minimize::window',
 }

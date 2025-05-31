@@ -17,6 +17,8 @@ export const audioRecordingActions = createActionGroup({
 
     'Stop Recording': props<{ delayed?: boolean }>(),
     'Stop Recording Success': emptyProps(),
-    'Stop Recording Failure': props<{ error: string }>()
+    'Stop Recording Failure': props<{ error: string }>(),
+
+    'Minimize Recording Screen': emptyProps(),
   },
 });

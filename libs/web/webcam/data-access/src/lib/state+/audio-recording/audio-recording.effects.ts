@@ -2,8 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { generateVideoActions } from '@ever-co/generate-video-data-access';
-import { of } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { EMPTY, of } from 'rxjs';
+import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { AudioRecorderService } from '../../service/audio-recorder.service';
 import { AudioWorkerService } from '../../service/audio-worker.service';
 import { AudioService } from '../../service/audio.service';
@@ -93,9 +93,17 @@ export class AudioRecordingEffects {
     ),
   );
 
+  minimize$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(audioRecordingActions.minimizeRecordingScreen),
+      tap(() => this.audioService.minimize()),
+    ),
+    { dispatch: false }
+  );
+
   constructor(
     private readonly audioService: AudioService,
     private readonly audioRecorderService: AudioRecorderService,
     private readonly audioWorkerService: AudioWorkerService,
-  ) {}
+  ) { }
 }

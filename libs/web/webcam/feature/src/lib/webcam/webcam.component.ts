@@ -151,7 +151,7 @@ export class WebcamComponent implements OnInit, OnDestroy {
   }
 
   private hide(): void {
-    //TODO: Implement hide
+    this.store.dispatch(audioRecordingActions.minimizeRecordingScreen());
   }
 
   ngOnDestroy(): void {
