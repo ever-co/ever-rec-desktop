@@ -2,6 +2,7 @@ import {
   Channel,
   ILoggable,
   ILogger,
+  IRemoteUpload,
   IS3Config,
   isEmpty,
   IUpload,
@@ -19,13 +20,12 @@ import { GauzyUploaderStrategy } from '../strategies/gauzy.uploader';
 import { S3UploaderStrategy } from '../strategies/s3.uploader';
 
 export abstract class UploaderService<T>
-  implements IUploaderService, ILoggable
-{
+  implements IUploaderService, ILoggable {
   readonly logger: ILogger = new ElectronLogger('Uploader Service');
 
   protected readonly context = new ContextUploader();
 
-  protected constructor(protected readonly service: IUploadableService<T>) {}
+  protected constructor(protected readonly service: IUploadableService<T>) { }
 
   public async execute(
     event: Electron.IpcMainEvent,
@@ -68,7 +68,7 @@ export abstract class UploaderService<T>
 
   protected abstract prepareFiles(upload: IUpload): Promise<any>;
 
-  protected abstract synchronize(upload: IUpload): Promise<void>;
+  protected abstract synchronize(upload: IUpload, remoteUpload: IRemoteUpload): Promise<void>;
 
   protected loadConfig() {
     return this.context.strategy.config();
@@ -83,7 +83,7 @@ export abstract class UploaderService<T>
       switch (payload.status) {
         case 'done':
           this.logger.info('Done...');
-          this.synchronize(upload);
+          this.synchronize(upload, payload.message.result);
           event.reply(Channel.UPLOAD_DONE, payload.message);
           worker.terminate();
           break;

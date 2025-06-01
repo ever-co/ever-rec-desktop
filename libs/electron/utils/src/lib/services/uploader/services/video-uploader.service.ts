@@ -1,4 +1,10 @@
-import { IUpload, IVideo, IVideoService } from '@ever-co/shared-utils';
+import {
+  IRemoteUpload,
+  IUpload,
+  IVideo,
+  IVideoService,
+  IVideoUpload,
+} from '@ever-co/shared-utils';
 
 import { In } from 'typeorm';
 import { FileManager } from '../../files/file-manager';
@@ -30,9 +36,17 @@ export class VideoUploaderService extends UploaderService<IVideo> {
     }));
   }
 
-  protected override async synchronize(upload: IUpload): Promise<void> {
+  protected override async synchronize(upload: IUpload, remoteUpload: IRemoteUpload): Promise<void> {
     await Promise.all(
-      upload.ids.map((id) => this.service.update(id, { synced: true }))
+      upload.ids.map(async (id) => {
+        await this.service.update(id, { synced: true });
+        await this.service.saveUpload<IVideoUpload>({
+          id,
+          remoteUrl: remoteUpload.fullUrl,
+          remoteId: remoteUpload.id,
+          uploadedAt: remoteUpload.recordedAt,
+        });
+      }),
     );
   }
 }

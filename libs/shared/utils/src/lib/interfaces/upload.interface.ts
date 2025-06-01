@@ -44,6 +44,7 @@ export interface IUploadDone {
 export interface IUploadableService<T = any> {
   findAll(options: IFindOneOptions<T>): Promise<T[]>;
   update(id: string, data: Partial<T>): Promise<T>;
+  saveUpload<U = IVideoUpload | IScreenshotUpload | IAudioUpload | IPhotoUpload>(upload: U): Promise<IUploadBase>;
 }
 
 export interface IUploaderService {
@@ -69,6 +70,12 @@ export interface IUploadBase extends IBase {
   remoteUrl?: string;
   remoteId?: string;
   uploadedAt?: string;
+}
+
+export interface IRemoteUpload {
+  fullUrl: string;
+  id: string;
+  recordedAt: string;
 }
 
 export interface IVideoUpload extends IUploadBase {

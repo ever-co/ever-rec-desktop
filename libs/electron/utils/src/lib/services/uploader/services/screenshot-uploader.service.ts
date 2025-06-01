@@ -1,6 +1,8 @@
 import {
+  IRemoteUpload,
   IScreenshot,
   IScreenshotService,
+  IScreenshotUpload,
   isEmpty,
   IUpload,
 } from '@ever-co/shared-utils';
@@ -28,9 +30,17 @@ export class ScreenshotUploaderService extends UploaderService<IScreenshot> {
     }));
   }
 
-  protected override async synchronize(upload: IUpload): Promise<void> {
+  protected override async synchronize(upload: IUpload, remoteUpload: IRemoteUpload): Promise<void> {
     await Promise.all(
-      upload.ids.map((id) => this.service.update(id, { synced: true })),
+      upload.ids.map(async (id) => {
+        await this.service.update(id, { synced: true });
+        await this.service.saveUpload<IScreenshotUpload>({
+          id,
+          remoteUrl: remoteUpload.fullUrl,
+          remoteId: remoteUpload.id,
+          uploadedAt: remoteUpload.recordedAt,
+        });
+      }),
     );
   }
 
