@@ -7,6 +7,7 @@ import {
   IDailyStatistics,
   IHourlyDistribution,
   IRange,
+  ITopApplicationProductivity,
   IWorkPatternAnalysis,
 } from '@ever-co/shared-utils';
 import { Observable, from } from 'rxjs';
@@ -15,7 +16,7 @@ import { Observable, from } from 'rxjs';
   providedIn: 'root',
 })
 export class ActivityService {
-  constructor(private electronService: ElectronService) {}
+  constructor(private electronService: ElectronService) { }
 
   /**
    * Get activity state distribution for a given date range
@@ -89,6 +90,16 @@ export class ActivityService {
         Channel.REQUEST_ACTIVITIES_WORK_PATTERN,
         range
       )
+    );
+  }
+
+  /**
+   * Get top applications productivity for a given date range
+   */
+  public getTopApplicationsProductivity(range: IRange, limit: number): Observable<ITopApplicationProductivity[]> {
+    return this.electronService.invoke$<{ range: IRange, limit: number }, ITopApplicationProductivity[]>(
+      Channel.REQUEST_TOP_APPLICATIONS_PRODUCTIVITY,
+      { range, limit }
     );
   }
 }

@@ -4,6 +4,7 @@ import {
   IDailyStatistics,
   IHourlyDistribution,
   IWorkPatternAnalysis,
+  ITopApplicationProductivity,
 } from '@ever-co/shared-utils';
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { activityActions } from './activity.actions';
@@ -16,6 +17,7 @@ export interface IActivityState {
   statistics: IDailyStatistics;
   trends: IAggregatedProductivity;
   hourlyDistribution: IHourlyDistribution;
+  topApplicationsProductivity: ITopApplicationProductivity[];
   error: string;
   loading: boolean;
 }
@@ -41,6 +43,7 @@ export const initialState: IActivityState = {
   },
   trends: {} as IAggregatedProductivity,
   hourlyDistribution: [],
+  topApplicationsProductivity: [],
   error: '',
   loading: false,
 };
@@ -78,7 +81,21 @@ export const reducer = createReducer(
       loading: false,
     })
   ),
-
+  on(activityActions.loadTopApplicationsProductivitySuccess, (state, { productivity }) => ({
+    ...state,
+    topApplicationsProductivity: productivity,
+    loading: false,
+  })),
+  on(activityActions.loadTopApplicationsProductivityFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false,
+  })),
+  on(activityActions.loadTopApplicationsProductivity, (state) => ({
+    ...state,
+    loading: true,
+    error: ''
+  })),
   on(
     activityActions.loadStateDistributionFailure,
     activityActions.loadWorkPatternAnalysisFailure,

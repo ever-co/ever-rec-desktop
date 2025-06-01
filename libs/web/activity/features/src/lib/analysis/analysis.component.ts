@@ -17,10 +17,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import {
   activityActions,
   selectActivityState,
+  selectTopApplicationsProductivity,
 } from '@ever-co/activity-data-access';
 import { selectDateRange } from '@ever-co/date-picker-data-access';
 import { HumanizeDateRangePipe, HumanizePipe } from '@ever-co/shared-service';
-import { IRange, IWorkPatternAnalysis } from '@ever-co/shared-utils';
+import { IRange, IWorkPatternAnalysis, ITopApplicationProductivity } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import {
   distinctUntilChanged,
@@ -29,6 +30,7 @@ import {
   Subject,
   takeUntil,
 } from 'rxjs';
+import { TopAppsComponent } from './top-apps.component';
 
 @Component({
   selector: 'lib-analysis',
@@ -43,6 +45,7 @@ import {
     HumanizeDateRangePipe,
     HumanizePipe,
     MatTooltipModule,
+    TopAppsComponent,
   ],
   templateUrl: './analysis.component.html',
   styleUrl: './analysis.component.scss',
@@ -73,11 +76,15 @@ import {
 })
 export class AnalysisComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
-  constructor(private readonly store: Store) {}
+  public readonly topApps$: Observable<ITopApplicationProductivity[]>;
+  constructor(private readonly store: Store) {
+    this.topApps$ = this.store.select(selectTopApplicationsProductivity);
+  }
 
   ngOnInit(): void {
     this.dateRanges$().subscribe((range) => {
       this.store.dispatch(activityActions.loadWorkPatternAnalysis({ range }));
+      this.store.dispatch(activityActions.loadTopApplicationsProductivity({ range, limit: 5 }));
     });
   }
 

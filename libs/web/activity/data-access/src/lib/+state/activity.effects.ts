@@ -110,7 +110,23 @@ export class ActivityEffects {
     ),
   );
 
+  loadTopApplicationsProductivity$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(activityActions.loadTopApplicationsProductivity),
+      concatMap(({ range, limit }) =>
+        this.activityService.getTopApplicationsProductivity(range, limit).pipe(
+          concatMap((productivity) => [
+            activityActions.loadTopApplicationsProductivitySuccess({ productivity }),
+          ]),
+          catchError((error) =>
+            of(activityActions.loadTopApplicationsProductivityFailure({ error })),
+          ),
+        ),
+      ),
+    ),
+  );
+
   constructor(
     private readonly activityService: ActivityService
-  ) {}
+  ) { }
 }

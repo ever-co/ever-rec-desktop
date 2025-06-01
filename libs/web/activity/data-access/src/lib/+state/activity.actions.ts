@@ -4,6 +4,7 @@ import {
   IDailyStatistics,
   IHourlyDistribution,
   IRange,
+  ITopApplicationProductivity,
   IWorkPatternAnalysis,
 } from '@ever-co/shared-utils';
 import { createActionGroup, props } from '@ngrx/store';
@@ -48,5 +49,12 @@ export const activityActions = createActionGroup({
       hourlyDistribution: IHourlyDistribution;
     }>(),
     'Load State Distribution Hourly Failure': props<{ error: string }>(),
+
+    // Top Applications Productivity
+    'Load Top Applications Productivity': props<{ range: IRange, limit: number }>(),
+    'Load Top Applications Productivity Success': props<{
+      productivity: ITopApplicationProductivity[];
+    }>(),
+    'Load Top Applications Productivity Failure': props<{ error: string }>(),
   },
 });
