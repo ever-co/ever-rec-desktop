@@ -19,6 +19,14 @@ import { Audio } from './entities/audio.entity';
 import { AudioMetadata } from './entities/audio-metadata.entity';
 import { AudioSubscriber } from './subscribers/audio.subscriber';
 import { TimelineSubscriber } from './subscribers/timeline.subscriber';
+import { AudioUpload } from './entities/audio-upload.entity';
+import { PhotoUpload } from './entities/photo-upload.entity';
+import { ScreenshotUpload } from './entities/screenshot-upload.entity';
+import { VideoUpload } from './entities/video-upload.entity';
+import { AudioUploadSubscriber } from './subscribers/audio-upload.subscriber';
+import { VideoUploadSubscriber } from './subscribers/video-upload.subscriber';
+import { PhotoUploadSubscriber } from './subscribers/photo-upload.subscriber';
+import { ScreenshotUploadSubscriber } from './subscribers/screenshot-upload.subscriber';
 
 const database = FileManager.createFilePathSync(
   'db',
@@ -41,6 +49,10 @@ export const appDataSource = new DataSource({
     PhotoMetadata,
     Audio,
     AudioMetadata,
+    AudioUpload,
+    PhotoUpload,
+    ScreenshotUpload,
+    VideoUpload,
   ],
   synchronize: true,
   logging: true,
@@ -51,6 +63,10 @@ export const appDataSource = new DataSource({
     PhotoSubscriber,
     AudioSubscriber,
     TimelineSubscriber,
+    AudioUploadSubscriber,
+    VideoUploadSubscriber,
+    PhotoUploadSubscriber,
+    ScreenshotUploadSubscriber,
   ],
   enableWAL: true,
   prepareDatabase: (db) => {

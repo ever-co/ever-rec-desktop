@@ -1,6 +1,6 @@
 import { IBase, IFindOneOptions, IFindManyOptions } from './base.interface';
 import { ITimeLog } from './time-log.interface';
-import { IUploadableService } from './upload.interface';
+import { IUploadable, IUploadableService } from './upload.interface';
 import { IVideo } from './video.interface';
 
 export interface IAudioMetadata extends IBase {
@@ -13,7 +13,7 @@ export interface IAudioMetadata extends IBase {
   audioId?: IAudio['id'];
 }
 
-export interface IAudio extends IBase {
+export interface IAudio extends IBase, IUploadable {
   pathname: string;
   synced?: boolean;
   parent?: IAudio;

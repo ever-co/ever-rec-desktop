@@ -1,5 +1,9 @@
-import { IFindOneOptions } from './base.interface';
+import { IBase, IFindOneOptions } from './base.interface';
 import { IS3Config } from './storage.interface';
+import type { IAudio } from './audio.interface';
+import type { IScreenshot } from './screenshot.interface';
+import type { IVideo } from './video.interface';
+import type { IPhoto } from './webcam.interface';
 
 export enum UploadType {
   VIDEO = 'videos',
@@ -59,4 +63,34 @@ export interface IUploadEventHandler {
 // Interface for factory to follow Dependency Inversion
 export interface IUploaderServiceFactory {
   create(upload: IUpload): IUploaderService;
+}
+
+export interface IUploadBase extends IBase {
+  remoteUrl?: string;
+  remoteId?: string;
+  uploadedAt?: string;
+}
+
+export interface IVideoUpload extends IUploadBase {
+  videoId?: string;
+  video?: IVideo;
+}
+
+export interface IScreenshotUpload extends IUploadBase {
+  screenshotId?: string;
+  screenshot?: IScreenshot;
+}
+
+export interface IAudioUpload extends IUploadBase {
+  audioId?: string;
+  audio?: IAudio;
+}
+
+export interface IPhotoUpload extends IUploadBase {
+  photoId?: string;
+  photo?: IPhoto;
+}
+
+export interface IUploadable {
+  uploads?: IUploadBase[];
 }

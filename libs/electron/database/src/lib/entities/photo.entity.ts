@@ -1,15 +1,17 @@
-import { IPhoto, IPhotoMetadata, ITimeLog } from '@ever-co/shared-utils';
+import { IPhoto, IPhotoMetadata, IPhotoUpload, ITimeLog } from '@ever-co/shared-utils';
 import { Base } from './base.entity';
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   Relation,
 } from 'typeorm';
 import { TimeLog } from './time-log.entity';
 import { PhotoMetadata } from './photo-metadata.entity';
+import { PhotoUpload } from './photo-upload.entity';
 
 @Entity('photo')
 export class Photo extends Base implements IPhoto {
@@ -34,4 +36,10 @@ export class Photo extends Base implements IPhoto {
 
   @Column({ nullable: true })
   timeLogId?: ITimeLog['id'];
+
+  @OneToMany(() => PhotoUpload, (upload) => upload.photo, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  uploads?: Relation<IPhotoUpload[]>;
 }

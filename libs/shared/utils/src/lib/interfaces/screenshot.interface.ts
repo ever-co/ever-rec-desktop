@@ -3,11 +3,11 @@ import type { IApplication } from './application.interface';
 import { IBase } from './base.interface';
 import { ITimeLog } from './time-log.interface';
 import type { IVideo } from './video.interface';
-import { IUploadableService } from './upload.interface';
+import { IUploadable, IUploadableService } from './upload.interface';
 
 export const SCREENSHOT_DIR = 'screenshots';
 
-export interface IScreenshot extends IBase {
+export interface IScreenshot extends IBase, IUploadable {
   pathname: string;
   synced?: boolean;
   metadata?: IScreenshotMetadata;
@@ -33,8 +33,8 @@ export type TimeSlot = 'minute' | 'tenMinutes' | 'hour';
 
 export type IScreenshotInput =
   | Omit<IScreenshot, 'id' | 'metadata'> & {
-      metadata: Omit<IScreenshotMetadata, 'id'>;
-    };
+    metadata: Omit<IScreenshotMetadata, 'id'>;
+  };
 
 export type IScreenshotTimeLine = IScreenshot & { duration: number };
 

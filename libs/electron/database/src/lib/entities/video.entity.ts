@@ -5,6 +5,7 @@ import type {
   ITimeLog,
   IVideo,
   IVideoMetadata,
+  IVideoUpload,
 } from '@ever-co/shared-utils';
 import {
   Column,
@@ -21,6 +22,7 @@ import { TimeLog } from './time-log.entity';
 import { Timeline } from './timeline.entity';
 import { VideoMetadata } from './video-metadata.entity';
 import { Audio } from './audio.entity';
+import { VideoUpload } from './video-upload.entity';
 
 @Entity('video')
 export class Video extends Base implements IVideo {
@@ -76,4 +78,10 @@ export class Video extends Base implements IVideo {
     onDelete: 'SET NULL',
   })
   audio: Relation<IAudio>;
+
+  @OneToMany(() => VideoUpload, (upload) => upload.video, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  uploads?: Relation<IVideoUpload[]>;
 }

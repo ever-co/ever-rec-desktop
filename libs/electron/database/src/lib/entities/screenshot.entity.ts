@@ -1,6 +1,7 @@
 import type {
   IScreenshot,
   IScreenshotMetadata,
+  IScreenshotUpload,
   ITimeLog,
   IVideo,
 } from '@ever-co/shared-utils';
@@ -17,6 +18,7 @@ import { Base } from './base.entity';
 import { ScreenshotMetadata } from './screenshot-metadata.entity';
 import { TimeLog } from './time-log.entity';
 import { Video } from './video.entity';
+import { ScreenshotUpload } from './screenshot-upload.entity';
 
 @Entity('screenshot')
 export class Screenshot extends Base implements IScreenshot {
@@ -58,4 +60,10 @@ export class Screenshot extends Base implements IScreenshot {
   })
   @JoinColumn()
   timeLog?: Relation<ITimeLog>;
+
+  @OneToMany(() => ScreenshotUpload, (upload) => upload.screenshot, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  uploads?: Relation<IScreenshotUpload[]>;
 }

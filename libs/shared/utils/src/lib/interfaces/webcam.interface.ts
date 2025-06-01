@@ -1,9 +1,9 @@
 import { FindManyOptions, FindOneOptions } from 'typeorm';
 import { IBase } from './base.interface';
 import { ITimeLog } from './time-log.interface';
-import { IUploadableService } from './upload.interface';
+import { IUploadable, IUploadableService } from './upload.interface';
 
-export interface IPhoto extends IBase {
+export interface IPhoto extends IBase, IUploadable {
   pathname: string;
   synced?: boolean;
   timeLog?: ITimeLog;

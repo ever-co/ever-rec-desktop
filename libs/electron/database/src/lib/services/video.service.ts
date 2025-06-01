@@ -5,12 +5,15 @@ import { VideoRepository } from '../repositories/video.repository';
 import { ScreenshotService } from './screenshot.service';
 import { TimeLogService } from './time-log.service';
 import { VideoMetadataService } from './video-metadata.service';
+import { VideoUploadService } from './video-upload.service';
+import { IVideoUpload } from '@ever-co/shared-utils';
 
 export class VideoService implements IVideoService {
   private readonly metadataService = new VideoMetadataService();
   private readonly screenshotService = new ScreenshotService();
   private readonly timeLogService = new TimeLogService();
   private readonly repository = VideoRepository.instance;
+  private readonly videoUploadService = new VideoUploadService();
 
   public async save(input: IVideoInput): Promise<IVideo> {
     if (!input) {
@@ -150,5 +153,9 @@ export class VideoService implements IVideoService {
 
   public async deleteAll(videoIds?: string[]): Promise<void> {
     await this.repository.delete(videoIds ? { id: In(videoIds) } : {});
+  }
+
+  public async saveUpload(input: Partial<IVideoUpload>): Promise<IVideoUpload> {
+    return this.videoUploadService.save(input);
   }
 }

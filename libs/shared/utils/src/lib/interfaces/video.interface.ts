@@ -5,11 +5,11 @@ import { ITimeLog } from './time-log.interface';
 import type { ITimeline } from './timeline.interface';
 import type { IVideoConfig } from './video.config';
 import type { IAudio } from './audio.interface';
-import { IUploadableService } from './upload.interface';
+import { IUploadableService, IUploadable } from './upload.interface';
 
 export const VIDEO_DIR = 'videos';
 
-export interface IVideo extends IBase {
+export interface IVideo extends IBase, IUploadable {
   pathname: string;
   synced?: boolean;
   parent?: IVideo;

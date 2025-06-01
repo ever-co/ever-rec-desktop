@@ -3,15 +3,18 @@ import {
   IPhotoCreateInput,
   IPhotoInput,
   IPhotoService,
+  IPhotoUpload,
 } from '@ever-co/shared-utils';
 import { FindManyOptions, FindOneOptions, In } from 'typeorm';
 import { Photo } from '../entities/photo.entity';
 import { PhotoRepository } from '../repositories/photo.repository';
 import { PhotoMetadataService } from './photo-metadata.service';
+import { PhotoUploadService } from './photo-upload.service';
 
 export class PhotoService implements IPhotoService {
   private readonly repository = PhotoRepository.instance;
   private readonly photoMetadataService = new PhotoMetadataService();
+  private readonly photoUploadService = new PhotoUploadService();
 
   public async save(input: IPhotoCreateInput): Promise<IPhoto> {
     const photo = new Photo();
@@ -54,5 +57,9 @@ export class PhotoService implements IPhotoService {
 
   public async deleteAll(videoIds?: string[]): Promise<void> {
     await this.repository.delete(videoIds ? { id: In(videoIds) } : {});
+  }
+
+  public async saveUpload(input: Partial<IPhotoUpload>): Promise<IPhotoUpload> {
+    return this.photoUploadService.save(input);
   }
 }

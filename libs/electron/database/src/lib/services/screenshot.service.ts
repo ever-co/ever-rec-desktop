@@ -4,15 +4,18 @@ import {
   IScreenshotInput,
   IScreenshotService,
   moment,
+  IScreenshotUpload,
 } from '@ever-co/shared-utils';
 import { FindManyOptions, FindOneOptions, In } from 'typeorm';
 import { Screenshot } from '../entities/screenshot.entity';
 import { ScreenshotRepository } from '../repositories/screenshot.repository';
 import { ScreenshotMetadataService } from './screenshot-metadata.service';
+import { ScreenshotUploadService } from './screenshot-upload.service';
 
 export class ScreenshotService implements IScreenshotService {
   private readonly repository = ScreenshotRepository.instance;
   private readonly metadataService = ScreenshotMetadataService;
+  private readonly screenshotUploadService = new ScreenshotUploadService();
 
   public async save(input: IScreenshotInput): Promise<IScreenshot> {
     const screenshot = new Screenshot();
@@ -131,5 +134,9 @@ export class ScreenshotService implements IScreenshotService {
         .format('H[h]mm[m]'), // The timestamp formatted as YYYY-MM-DD HH:mm
       count: parseInt(row.count, 10),
     }));
+  }
+
+  public async saveUpload(input: Partial<IScreenshotUpload>): Promise<IScreenshotUpload> {
+    return this.screenshotUploadService.save(input);
   }
 }

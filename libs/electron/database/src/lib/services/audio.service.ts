@@ -10,10 +10,13 @@ import { AudioRepository } from '../repositories/audio.repository';
 import { AudioMetadataService } from './audio-metadata.service';
 import { Audio } from '../entities/audio.entity';
 import { In } from 'typeorm';
+import { AudioUploadService } from './audio-upload.service';
+import { IAudioUpload } from '@ever-co/shared-utils';
 
 export class AudioService implements IAudioService {
   private readonly repository = AudioRepository.instance;
   private readonly audioMetadataService = new AudioMetadataService();
+  private readonly audioUploadService = new AudioUploadService();
 
   public async save(input: IAudioCreateInput): Promise<IAudio> {
     const audio = new Audio();
@@ -59,5 +62,9 @@ export class AudioService implements IAudioService {
 
   public async deleteAll(audioIds?: string[]): Promise<void> {
     await this.repository.delete(audioIds ? { id: In(audioIds) } : {});
+  }
+
+  public async saveUpload(input: Partial<IAudioUpload>): Promise<IAudioUpload> {
+    return this.audioUploadService.save(input);
   }
 }

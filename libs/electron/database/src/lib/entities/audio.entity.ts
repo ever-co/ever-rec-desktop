@@ -11,12 +11,14 @@ import { Base } from './base.entity';
 import {
   IAudio,
   IAudioMetadata,
+  IAudioUpload,
   ITimeLog,
   IVideo,
 } from '@ever-co/shared-utils';
 import { TimeLog } from './time-log.entity';
 import { AudioMetadata } from './audio-metadata.entity';
 import { Video } from './video.entity';
+import { AudioUpload } from './audio-upload.entity';
 
 @Entity('audio')
 export class Audio extends Base implements IAudio {
@@ -64,4 +66,10 @@ export class Audio extends Base implements IAudio {
 
   @Column({ nullable: true })
   timeLogId?: ITimeLog['id'];
+
+  @OneToMany(() => AudioUpload, (upload) => upload.audio, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  uploads?: Relation<IAudioUpload[]>;
 }
