@@ -35,12 +35,12 @@ export class LibraryComponent implements OnDestroy {
       icon: 'video_library',
     },
     {
-      title: 'Camshots',
+      title: 'Screenshots',
       route: 'screenshots',
       icon: 'photo_frame',
     },
     {
-      title: 'Camera',
+      title: 'Camshots',
       route: 'photos',
       icon: 'photo_library',
     },
