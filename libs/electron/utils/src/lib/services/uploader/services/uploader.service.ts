@@ -7,6 +7,7 @@ import {
   isEmpty,
   IUpload,
   IUploadableService,
+  IUploadDone,
   IUploaderService,
 } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
@@ -68,7 +69,7 @@ export abstract class UploaderService<T>
 
   protected abstract prepareFiles(upload: IUpload): Promise<any>;
 
-  protected abstract synchronize(upload: IUpload, remoteUpload: IRemoteUpload): Promise<void>;
+  protected abstract synchronize(data: IUploadDone): Promise<void>;
 
   protected loadConfig() {
     return this.context.strategy.config();
@@ -83,7 +84,7 @@ export abstract class UploaderService<T>
       switch (payload.status) {
         case 'done':
           this.logger.info('Done...');
-          this.synchronize(upload, payload.message.result);
+          this.synchronize(payload.message);
           event.reply(Channel.UPLOAD_DONE, payload.message);
           worker.terminate();
           break;

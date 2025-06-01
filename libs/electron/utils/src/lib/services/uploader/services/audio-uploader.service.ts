@@ -1,5 +1,4 @@
-import { IAudio, IAudioService, IAudioUpload, IUpload } from '@ever-co/shared-utils';
-import { IRemoteUpload } from '@ever-co/shared-utils';
+import { IAudio, IAudioService, IAudioUpload, IUpload, IUploadDone } from '@ever-co/shared-utils';
 import { In } from 'typeorm';
 import { FileManager } from '../../files/file-manager';
 import { UploaderService } from './uploader.service';
@@ -28,17 +27,17 @@ export class AudioUploaderService extends UploaderService<IAudio> {
     }));
   }
 
-  protected override async synchronize(upload: IUpload, remoteUpload: IRemoteUpload): Promise<void> {
+  protected override async synchronize({ itemId, result }: IUploadDone): Promise<void> {
     await Promise.all(
-      upload.ids.map(async (id) => {
-        await this.service.update(id, { synced: true });
-        await this.service.saveUpload<IAudioUpload>({
-          id,
-          remoteUrl: remoteUpload.fullUrl,
-          remoteId: remoteUpload.id,
-          uploadedAt: remoteUpload.recordedAt,
-        });
-      })
+      [
+        this.service.update(itemId, { synced: true }),
+        this.service.saveUpload<IAudioUpload>({
+          id: itemId,
+          remoteUrl: result.fullUrl,
+          remoteId: result.id,
+          uploadedAt: result.recordedAt,
+        })
+      ]
     );
   }
 }

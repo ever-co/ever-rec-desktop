@@ -35,10 +35,7 @@ export interface IUploadError {
 
 export interface IUploadDone {
   itemId: string;
-  result: {
-    fullUrl: string;
-    id: string;
-  };
+  result: IRemoteUpload;
 }
 
 export interface IUploadableService<T = any> {

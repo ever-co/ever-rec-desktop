@@ -1,4 +1,4 @@
-import { IPhoto, IPhotoService, IPhotoUpload, IRemoteUpload, IUpload } from '@ever-co/shared-utils';
+import { IPhoto, IPhotoService, IPhotoUpload, IRemoteUpload, IUpload, IUploadDone } from '@ever-co/shared-utils';
 import { In } from 'typeorm';
 import { FileManager } from '../../files/file-manager';
 import { UploaderService } from './uploader.service';
@@ -22,17 +22,17 @@ export class PhotoUploaderService extends UploaderService<IPhoto> {
     }));
   }
 
-  protected override async synchronize(upload: IUpload, remoteUpload: IRemoteUpload): Promise<void> {
+  protected override async synchronize({ itemId, result }: IUploadDone): Promise<void> {
     await Promise.all(
-      upload.ids.map(async (id) => {
-        await this.service.update(id, { synced: true });
-        await this.service.saveUpload<IPhotoUpload>({
-          id,
-          remoteUrl: remoteUpload.fullUrl,
-          remoteId: remoteUpload.id,
-          uploadedAt: remoteUpload.recordedAt,
-        });
-      })
+      [
+        this.service.update(itemId, { synced: true }),
+        this.service.saveUpload<IPhotoUpload>({
+          id: itemId,
+          remoteUrl: result.fullUrl,
+          remoteId: result.id,
+          uploadedAt: result.recordedAt,
+        })
+      ]
     );
   }
 }
