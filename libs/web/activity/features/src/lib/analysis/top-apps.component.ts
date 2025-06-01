@@ -22,10 +22,10 @@ import { HumanizePipe } from '@ever-co/shared-service';
               <img [src]="app.icon" alt="{{app.name}} icon" class="w-10 h-10 rounded shadow border border-gray-200 object-contain" />
               <div class="flex-1">
                 <div class="font-medium text-gray-800">{{ app.name }}</div>
-                <div class="text-xs text-gray-500">{{ app.totalDuration | humanize:'second' }}</div>
+                <div class="text-xs text-gray-500">{{ app.totalDuration | humanize: 'seconds' : 'hh:mm:ss' }}</div>
               </div>
               <div class="flex flex-col items-end">
-                <span class="font-semibold text-indigo-600">{{ app.productivityPercent | percent:'1.0-0' }}</span>
+                <span class="font-semibold text-indigo-600">{{ app.productivityPercent | percent:'1.2-2' }}</span>
                 <span class="text-xs text-gray-400">Productivity</span>
               </div>
             </div>

@@ -566,7 +566,7 @@ export class ScreenshotStatisticsAnalyzer {
     return results.map((row: any) => {
       const totalDuration = Number(row.totalDuration) || 0;
       const activeDuration = Number(row.activeDuration) || 0;
-      const productivityPercent = totalDuration > 0 ? (activeDuration / totalDuration) * 100 : 0;
+      const productivityPercent = totalDuration > 0 ? (activeDuration / totalDuration) : 0;
       return {
         name: row.name,
         icon: row.icon,
