@@ -5,6 +5,7 @@ import {
   IScreenshot,
   IScreenshotMetadata,
   IStatisticalResult,
+  ITopApplicationProductivity,
 } from '@ever-co/shared-utils';
 import { FindManyOptions, FindOneOptions, In } from 'typeorm';
 import { ScreenshotMetadata } from '../entities/screenshot-metadata.entity';
@@ -75,5 +76,12 @@ export class ScreenshotMetadataService {
   ): Promise<IStatisticalResult[]> {
     const { data = [] } = await this.analyser.statisticsByRange(range);
     return data;
+  }
+
+  public static async topApplicationsByDurationAndProductivity(
+    range: IRange,
+    limit: number = 5
+  ): Promise<ITopApplicationProductivity[]> {
+    return this.analyser.topApplicationsByDurationAndProductivity(range, limit);
   }
 }

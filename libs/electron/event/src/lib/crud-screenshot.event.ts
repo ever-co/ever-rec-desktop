@@ -172,6 +172,13 @@ export function crudScreeshotEvents() {
       }
     },
   );
+
+  ipcMain.handle(
+    Channel.REQUEST_TOP_APPLICATIONS_PRODUCTIVITY,
+    async (_, { range, limit }) => {
+      return ScreenshotMetadataService.topApplicationsByDurationAndProductivity(range, limit);
+    }
+  );
 }
 
 export async function purgeData() {
@@ -203,6 +210,7 @@ export function removeCrudScreenshotEvent(): void {
     Channel.CHART_LINE_DATA,
     Channel.REQUEST_SCREENSHOTS_STATISTICS,
     Channel.REQUEST_DELETE_SELECTED_SCREENSHOTS,
+    Channel.REQUEST_TOP_APPLICATIONS_PRODUCTIVITY
   ];
   channels.forEach((channel) => ipcMain.removeHandler(channel));
 }

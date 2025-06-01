@@ -8,11 +8,12 @@ import {
   IStatisticalResult,
   moment,
   STATISTICAL_CONSTANTS,
+  ITopApplicationProductivity,
 } from '@ever-co/shared-utils';
 import { Repository } from 'typeorm';
 
 export class ScreenshotStatisticsAnalyzer {
-  constructor(private readonly repository: Repository<IScreenshotMetadata>) {}
+  constructor(private readonly repository: Repository<IScreenshotMetadata>) { }
   /**
    * Computes temporal statistics with Bayesian optimization and information-theoretic analysis
    *
@@ -280,13 +281,13 @@ export class ScreenshotStatisticsAnalyzer {
       current *
       Math.log(
         (current + STATISTICAL_CONSTANTS.TREND_STABILITY_EPSILON) /
-          (m + STATISTICAL_CONSTANTS.TREND_STABILITY_EPSILON),
+        (m + STATISTICAL_CONSTANTS.TREND_STABILITY_EPSILON),
       );
     const klQM =
       previous *
       Math.log(
         (previous + STATISTICAL_CONSTANTS.TREND_STABILITY_EPSILON) /
-          (m + STATISTICAL_CONSTANTS.TREND_STABILITY_EPSILON),
+        (m + STATISTICAL_CONSTANTS.TREND_STABILITY_EPSILON),
       );
 
     const jsDivergence = 0.5 * klPM + 0.5 * klQM;
@@ -528,5 +529,50 @@ export class ScreenshotStatisticsAnalyzer {
       .groupBy('application.name')
       .orderBy('count', 'DESC')
       .getRawMany();
+  }
+
+  /**
+   * Returns top applications by total duration and productivity percentage
+   * Joins ScreenshotMetadata -> Screenshot -> TimeLog -> Activity, grouped by Application
+   * @param range - Date range for analysis
+   * @param limit - Number of top applications to return
+   * @returns Array of { name, icon, totalDuration, productivityPercent }
+   */
+  public async topApplicationsByDurationAndProductivity(
+    range: IRange,
+    limit: number = 5
+  ): Promise<ITopApplicationProductivity[]> {
+    // Query: join ScreenshotMetadata -> Screenshot -> TimeLog -> Activity, group by Application
+    const qb = this.repository
+      .createQueryBuilder('metadata')
+      .leftJoin('metadata.application', 'application')
+      .leftJoin('metadata.screenshot', 'screenshot')
+      .leftJoin('screenshot.timeLog', 'timeLog')
+      .leftJoin('timeLog.activities', 'activity')
+      .select('application.name', 'name')
+      .addSelect('application.icon', 'icon')
+      .addSelect('SUM(activity.duration)', 'totalDuration')
+      .addSelect(`SUM(CASE WHEN activity.state = 'active' THEN activity.duration ELSE 0 END)`, 'activeDuration')
+      .where('metadata.createdAt BETWEEN :start AND :end', { start: range.start, end: range.end })
+      .andWhere('application.name IS NOT NULL')
+      .groupBy('application.name')
+      .addGroupBy('application.icon')
+      .orderBy('totalDuration', 'DESC')
+      .limit(limit);
+
+    const results = await qb.getRawMany();
+
+    // Calculate productivity percent for each app
+    return results.map((row: any) => {
+      const totalDuration = Number(row.totalDuration) || 0;
+      const activeDuration = Number(row.activeDuration) || 0;
+      const productivityPercent = totalDuration > 0 ? (activeDuration / totalDuration) * 100 : 0;
+      return {
+        name: row.name,
+        icon: row.icon,
+        totalDuration,
+        productivityPercent,
+      };
+    });
   }
 }

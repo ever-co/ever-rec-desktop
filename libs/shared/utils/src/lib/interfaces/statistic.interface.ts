@@ -20,3 +20,10 @@ export type IPaginationScreenshotStatisticsResponse =
     confidence: number;
     statisticalPower: number;
   };
+
+export interface ITopApplicationProductivity {
+  name: string;
+  icon: string;
+  totalDuration: number;
+  productivityPercent: number;
+}
