@@ -20,10 +20,9 @@ import { selectDateRange } from '@ever-co/date-picker-data-access';
           <mat-icon class="text-gray-500 text-xl sm:text-2xl">apps</mat-icon>
           <div class="text-base sm:text-lg font-semibold text-gray-700">Top Applications</div>
         </div>
-        <div *ngIf="(topApps$ | async)?.length; else noApps">
-          <div class="flex flex-wrap gap-3 sm:gap-4 md:gap-6 justify-center sm:justify-start">
-            <div *ngFor="let app of topApps$ | async; let i = index"
-                 class="group cursor-pointer flex flex-col items-center">
+        <div class="flex flex-wrap gap-3 sm:gap-4 md:gap-6 justify-center sm:justify-start">
+          @for (app of topApps$ | async; track app.name; let idx = $index) {
+            <div class="group cursor-pointer flex flex-col items-center">
               <!-- Stacked icons container with responsive sizing -->
               <div class="relative h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 mb-1 sm:mb-2 bounce-on-hover">
                 <!-- Background shadow layers for stack effect -->
@@ -43,11 +42,10 @@ import { selectDateRange } from '@ever-co/date-picker-data-access';
                 </div>
               </div>
             </div>
-          </div>
+          } @empty {
+            <div class="text-gray-400 text-center py-4 sm:py-6 text-sm sm:text-base w-full">No application data available</div>
+          }
         </div>
-        <ng-template #noApps>
-          <div class="text-gray-400 text-center py-4 sm:py-6 text-sm sm:text-base">No application data available</div>
-        </ng-template>
       </mat-card-content>
     </mat-card>
   `,
