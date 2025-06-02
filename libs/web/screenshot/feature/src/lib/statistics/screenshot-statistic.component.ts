@@ -29,7 +29,6 @@ import { ScreenshotStatisticsChartComponent } from '../chart/screenshot-statisti
 import {
   EffectSizeMatrixComponent,
   PowerAnalysisGraphComponent,
-  WaterfallChartComponent,
 } from '@ever-co/screenshot-ui';
 
 @Component({
@@ -47,7 +46,6 @@ import {
     ScreenshotStatisticsChartComponent,
     EffectSizeMatrixComponent,
     PowerAnalysisGraphComponent,
-    WaterfallChartComponent,
     NumberSuffixPipe,
   ],
   templateUrl: './screenshot-statistic.component.html',
@@ -64,7 +62,7 @@ export class ScreenshotStatisticComponent implements OnInit {
   constructor(
     private readonly store: Store,
     private router: Router,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.store

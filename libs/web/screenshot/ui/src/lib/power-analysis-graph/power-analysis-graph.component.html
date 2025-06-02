@@ -1,41 +1,26 @@
-<div class="p-4 bg-white rounded-lg shadow">
+<div class="p-4 rounded-lg">
   <div class="flex items-center gap-1 font-semibold mb-4">
-    <mat-icon
-      matTooltip=" Shows the relationship between sample size and statistical power for each
-      metric."
-      >info</mat-icon
-    >
+    <mat-icon matTooltip=" Shows the relationship between sample size and statistical power for each
+      metric.">info</mat-icon>
     Power Analysis
   </div>
 
   @if (processedData().length > 0) {
-    <div class="max-h-96 min-h-72 h-full">
-      <ngx-charts-line-chart
-        [scheme]="colorScheme"
-        [results]="processedData()"
-        [xAxis]="showXAxis"
-        [yAxis]="showYAxis"
-        [legend]="showLegend"
-        [xAxisLabel]="xAxisLabel"
-        [showYAxisLabel]="showYAxisLabel"
-        [yAxisLabel]="yAxisLabel"
-        [showGridLines]="showGridLines"
-        [autoScale]="autoScale"
-        [referenceLines]="[referenceLine]"
-        [yAxisTickFormatting]="yAxisTickFormatting"
-        [wrapTicks]="true"
-        [curve]="curve"
-      >
-        <ng-template #tooltipTemplate let-model="model">
-          <div class="p-2 bg-white border border-gray-200 rounded shadow">
-            <div [innerHTML]="customTooltipText(model)"></div>
-          </div>
-        </ng-template>
-      </ngx-charts-line-chart>
-    </div>
+  <div class="max-h-96 min-h-72 h-full">
+    <ngx-charts-line-chart [scheme]="colorScheme" [results]="processedData()" [xAxis]="showXAxis" [yAxis]="showYAxis"
+      [legend]="showLegend" [xAxisLabel]="xAxisLabel" [showYAxisLabel]="showYAxisLabel" [yAxisLabel]="yAxisLabel"
+      [showGridLines]="showGridLines" [autoScale]="autoScale" [referenceLines]="[referenceLine]"
+      [yAxisTickFormatting]="yAxisTickFormatting" [wrapTicks]="true" [curve]="curve">
+      <ng-template #tooltipTemplate let-model="model">
+        <div class="p-2 bg-white border border-gray-200 rounded shadow">
+          <div [innerHTML]="customTooltipText(model)"></div>
+        </div>
+      </ng-template>
+    </ngx-charts-line-chart>
+  </div>
   } @else {
-    <div class="flex items-center justify-center h-64 text-gray-500">
-      No data available for power analysis
-    </div>
+  <div class="flex items-center justify-center h-64 text-gray-500">
+    No data available for power analysis
+  </div>
   }
 </div>
