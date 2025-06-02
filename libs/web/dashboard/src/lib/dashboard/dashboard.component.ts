@@ -8,6 +8,7 @@ import { RouterLink } from '@angular/router';
 import {
   AnalysisComponent,
   DistributionComponent,
+  TopAppsComponent,
 } from '@ever-co/activity-feature';
 import { AudioWidgetComponent } from '@ever-co/audio-feature';
 import { PhotoWidgetComponent } from '@ever-co/photo-feature';
@@ -49,9 +50,10 @@ import { StateComponent } from '../state/state.component';
     AnalysisComponent,
     DistributionComponent,
     TimesheetHeatMapWidgetComponent,
+    TopAppsComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardComponent {}
+export class DashboardComponent { }

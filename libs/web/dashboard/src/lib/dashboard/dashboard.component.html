@@ -35,12 +35,8 @@
           <div class="text-sm font-medium text-gray-600">
             Recent Screenshots
           </div>
-          <button
-            mat-stroked-button
-            [routerLink]="['/', 'library', 'screenshots']"
-            matTooltip="See more screenshots"
-            class="text-gray-600 cursor-pointer transition-all duration-300 scale-[0.95] hover:text-blue-500 hover:scale-[1.00]"
-          >
+          <button mat-stroked-button [routerLink]="['/', 'library', 'screenshots']" matTooltip="See more screenshots"
+            class="text-gray-600 cursor-pointer transition-all duration-300 scale-[0.95] hover:text-blue-500 hover:scale-[1.00]">
             <span> View All </span>
           </button>
         </div>
@@ -55,12 +51,8 @@
       <mat-card-content class="p-6 h-full">
         <div class="flex items-center justify-between mb-4">
           <div class="text-sm font-medium text-gray-600">Recent Videos</div>
-          <button
-            mat-stroked-button
-            [routerLink]="['/', 'library', 'videos']"
-            matTooltip="See more videos"
-            class="text-gray-600 cursor-pointer transition-all duration-300 scale-[0.95] hover:text-blue-500 hover:scale-[1.00]"
-          >
+          <button mat-stroked-button [routerLink]="['/', 'library', 'videos']" matTooltip="See more videos"
+            class="text-gray-600 cursor-pointer transition-all duration-300 scale-[0.95] hover:text-blue-500 hover:scale-[1.00]">
             <span> View All </span>
           </button>
         </div>
@@ -72,6 +64,7 @@
   </div>
 
   <div class="flex flex-col gap-4 w-full">
+    <lib-top-apps></lib-top-apps>
     <div class="flex gap-4 flex-col sm:flex-row">
       <lib-distribution></lib-distribution>
       <lib-analysis></lib-analysis>
@@ -85,9 +78,7 @@
             Statistics Overview
           </p>
           <div class="h-full">
-            <lib-screenshot-statistic
-              class="dashboard"
-            ></lib-screenshot-statistic>
+            <lib-screenshot-statistic class="dashboard"></lib-screenshot-statistic>
           </div>
         </mat-card-content>
       </mat-card>
