@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { IRange, ITopApplicationProductivity } from '@ever-co/shared-utils';
-import { HumanizePipe } from '@ever-co/shared-service';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { activityActions, selectTopApplicationsProductivity } from '@ever-co/activity-data-access';
 import { Store } from '@ngrx/store';
