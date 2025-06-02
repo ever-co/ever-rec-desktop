@@ -24,7 +24,10 @@
   </div>
 
   <!-- Heat Map Widget -->
-  <lib-timesheet-heat-map-widget></lib-timesheet-heat-map-widget>
+  <div class="flex flex-col gap-4">
+    <lib-top-apps></lib-top-apps>
+    <lib-timesheet-heat-map-widget></lib-timesheet-heat-map-widget>
+  </div>
 
   <!-- Content Cards - Stack on mobile, 2 columns on larger screens -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -64,7 +67,6 @@
   </div>
 
   <div class="flex flex-col gap-4 w-full">
-    <lib-top-apps></lib-top-apps>
     <div class="flex gap-4 flex-col sm:flex-row">
       <lib-distribution></lib-distribution>
       <lib-analysis></lib-analysis>
