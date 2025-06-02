@@ -1,95 +1,196 @@
 <!-- dashboard.component.html -->
-<h4 class="text-xl md:text-xl font-bold mb-6">{{ '' | greeting | async }}</h4>
-
-<div class="w-full flex flex-col gap-4">
-  <!-- Status Cards - Stack on mobile, grid on larger screens -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-    <!-- State Widget -->
-    <lib-state></lib-state>
-
-    <!-- Videos Widget -->
-    <lib-video-widget></lib-video-widget>
-
-    <!-- Screenshots Widget -->
-    <lib-screenshot-widget></lib-screenshot-widget>
-
-    <!-- Timesheet Widget -->
-    <lib-timesheet-widget></lib-timesheet-widget>
-
-    <!-- Photos Widget -->
-    <lib-photo-widget></lib-photo-widget>
-
-    <!-- Audio Widget -->
-    <lib-audio-widget></lib-audio-widget>
-  </div>
-
-  <!-- Heat Map Widget -->
-  <div class="flex flex-col gap-4">
-    <lib-top-apps></lib-top-apps>
-    <lib-timesheet-heat-map-widget></lib-timesheet-heat-map-widget>
-  </div>
-
-  <!-- Content Cards - Stack on mobile, 2 columns on larger screens -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-    <!-- Recent Screenshots -->
-    <mat-card class="w-full" appearance="outlined">
-      <mat-card-content class="p-6 h-full">
-        <div class="flex items-center justify-between mb-4">
-          <div class="text-sm font-medium text-gray-600">
-            Recent Screenshots
-          </div>
-          <button mat-stroked-button [routerLink]="['/', 'library', 'screenshots']" matTooltip="See more screenshots"
-            class="text-gray-600 cursor-pointer transition-all duration-300 scale-[0.95] hover:text-blue-500 hover:scale-[1.00]">
-            <span> View All </span>
-          </button>
-        </div>
-        <div class="h-full">
-          <lib-screenshot-gallery class="dashboard"></lib-screenshot-gallery>
-        </div>
-      </mat-card-content>
-    </mat-card>
-
-    <!-- Recent Videos -->
-    <mat-card class="w-full" appearance="outlined">
-      <mat-card-content class="p-6 h-full">
-        <div class="flex items-center justify-between mb-4">
-          <div class="text-sm font-medium text-gray-600">Recent Videos</div>
-          <button mat-stroked-button [routerLink]="['/', 'library', 'videos']" matTooltip="See more videos"
-            class="text-gray-600 cursor-pointer transition-all duration-300 scale-[0.95] hover:text-blue-500 hover:scale-[1.00]">
-            <span> View All </span>
-          </button>
-        </div>
-        <div class="h-full">
-          <lib-video-gallery class="dashboard"></lib-video-gallery>
-        </div>
-      </mat-card-content>
-    </mat-card>
-  </div>
-
-  <div class="flex flex-col gap-4 w-full">
-    <div class="flex gap-4 flex-col sm:flex-row">
-      <lib-distribution></lib-distribution>
-      <lib-analysis></lib-analysis>
+<div class="dashboard-container animate-fade-in">
+  <!-- Header Section -->
+  <header class="mb-8">
+    <div class="text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-100 animate-slide-in-left">
+      {{ '' | greeting | async }}
     </div>
-    <!-- Content Cards - Stack on mobile, 2 columns on larger screens -->
-    <div class="grid grid-cols-1">
-      <!-- Statistics Overview -->
-      <mat-card class="w-full" appearance="outlined">
-        <mat-card-content class="p-6 h-full">
-          <p class="text-sm font-medium text-gray-600 mb-4">
-            Statistics Overview
-          </p>
-          <div class="h-full">
-            <lib-screenshot-statistic class="dashboard"></lib-screenshot-statistic>
+    <p class="text-sm text-gray-600 dark:text-gray-400 mt-2 animate-slide-in-left animation-delay-100">
+      Here's your productivity overview
+    </p>
+  </header>
+
+  <!-- Main Dashboard Content -->
+  <div class="dashboard-content space-y-8">
+    <!-- Quick Stats Section -->
+    <section class="stats-section">
+      <div class="section-header mb-6">
+        <div class="text-lg font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+          <mat-icon class="text-blue-500 text-xl">dashboard</mat-icon>
+          Quick Stats
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4">
+        <!-- State Widget -->
+        <div
+          class="widget-card transform transition-all duration-300 hover:scale-105 hover:shadow-lg animate-fade-in animation-delay-100">
+          <lib-state></lib-state>
+        </div>
+
+        <!-- Videos Widget -->
+        <div
+          class="widget-card transform transition-all duration-300 hover:scale-105 hover:shadow-lg animate-fade-in animation-delay-200">
+          <lib-video-widget></lib-video-widget>
+        </div>
+
+        <!-- Screenshots Widget -->
+        <div
+          class="widget-card transform transition-all duration-300 hover:scale-105 hover:shadow-lg animate-fade-in animation-delay-300">
+          <lib-screenshot-widget></lib-screenshot-widget>
+        </div>
+
+        <!-- Timesheet Widget -->
+        <div
+          class="widget-card transform transition-all duration-300 hover:scale-105 hover:shadow-lg animate-fade-in animation-delay-400">
+          <lib-timesheet-widget></lib-timesheet-widget>
+        </div>
+
+        <!-- Photos Widget -->
+        <div
+          class="widget-card transform transition-all duration-300 hover:scale-105 hover:shadow-lg animate-fade-in animation-delay-500">
+          <lib-photo-widget></lib-photo-widget>
+        </div>
+
+        <!-- Audio Widget -->
+        <div
+          class="widget-card transform transition-all duration-300 hover:scale-105 hover:shadow-lg animate-fade-in animation-delay-600">
+          <lib-audio-widget></lib-audio-widget>
+        </div>
+      </div>
+    </section>
+
+    <!-- Activity Analysis Section -->
+    <section class="activity-section">
+      <div class="section-header mb-6">
+        <div class="text-lg font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+          <mat-icon class="text-green-500 text-xl">trending_up</mat-icon>
+          Activity Analysis
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <!-- Top Apps -->
+        <div
+          class="bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 animate-fade-in animation-delay-700">
+          <lib-top-apps></lib-top-apps>
+        </div>
+
+        <!-- Heat Map -->
+        <div
+          class="bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 animate-fade-in animation-delay-800">
+          <lib-timesheet-heat-map-widget></lib-timesheet-heat-map-widget>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recent Content Section -->
+    <section class="content-section">
+      <div class="section-header mb-6">
+        <div class="text-lg font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+          <mat-icon class="text-purple-500 text-xl">collections</mat-icon>
+          Recent Content
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Recent Screenshots -->
+        <mat-card class="content-card group" appearance="outlined">
+          <mat-card-content class="p-6">
+            <div class="flex items-center justify-between mb-6">
+              <div class="flex items-center gap-3">
+                <mat-icon class="text-blue-500">photo_frame</mat-icon>
+                <div class="text-base font-semibold text-gray-700 dark:text-gray-300">
+                  Recent Screenshots
+                </div>
+              </div>
+              <button mat-stroked-button [routerLink]="['/', 'library', 'screenshots']"
+                matTooltip="See more screenshots"
+                class="action-button group-hover:border-blue-500 group-hover:text-blue-500">
+                <span class="flex items-center gap-2">
+                  View All
+                  <mat-icon class="text-sm">arrow_forward</mat-icon>
+                </span>
+              </button>
+            </div>
+            <div class="content-gallery">
+              <lib-screenshot-gallery class="dashboard"></lib-screenshot-gallery>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Recent Videos -->
+        <mat-card class="content-card group" appearance="outlined">
+          <mat-card-content class="p-6">
+            <div class="flex items-center justify-between mb-6">
+              <div class="flex items-center gap-3">
+                <mat-icon class="text-red-500">video_library</mat-icon>
+                <div class="text-base font-semibold text-gray-700 dark:text-gray-300">
+                  Recent Videos
+                </div>
+              </div>
+              <button mat-stroked-button [routerLink]="['/', 'library', 'videos']" matTooltip="See more videos"
+                class="action-button group-hover:border-red-500 group-hover:text-red-500">
+                <span class="flex items-center gap-2">
+                  View All
+                  <mat-icon class="text-sm">arrow_forward</mat-icon>
+                </span>
+              </button>
+            </div>
+            <div class="content-gallery">
+              <lib-video-gallery class="dashboard"></lib-video-gallery>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="statistics-section">
+      <div class="section-header mb-6">
+        <div class="text-lg font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+          <mat-icon class="text-orange-500 text-xl">analytics</mat-icon>
+          Detailed Statistics
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <!-- Distribution and Analysis -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="stats-card animate-fade-in animation-delay-900">
+            <lib-distribution></lib-distribution>
           </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
+          <div class="stats-card animate-fade-in animation-delay-1000">
+            <lib-analysis></lib-analysis>
+          </div>
+        </div>
+
+        <!-- Statistics Overview -->
+        <mat-card class="stats-card" appearance="outlined">
+          <mat-card-content class="p-6">
+            <div class="flex items-center gap-3 mb-6">
+              <mat-icon class="text-indigo-500">insights</mat-icon>
+              <div class="text-base font-semibold text-gray-700 dark:text-gray-300">
+                Statistics Overview
+              </div>
+            </div>
+            <div class="statistics-content">
+              <lib-screenshot-statistic class="dashboard"></lib-screenshot-statistic>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </section>
   </div>
 </div>
 
+<!-- Enhanced Loading State -->
 <ng-template #loading>
-  <span class="animate-bounce-dot delay-0">.</span>
-  <span class="animate-bounce-dot delay-150">.</span>
-  <span class="animate-bounce-dot delay-300">.</span>
+  <div class="flex items-center justify-center min-h-[200px]">
+    <div class="flex space-x-2">
+      <div class="w-3 h-3 bg-blue-500 rounded-full animate-bounce" style="animation-delay: 0ms;"></div>
+      <div class="w-3 h-3 bg-blue-500 rounded-full animate-bounce" style="animation-delay: 150ms;"></div>
+      <div class="w-3 h-3 bg-blue-500 rounded-full animate-bounce" style="animation-delay: 300ms;"></div>
+    </div>
+  </div>
 </ng-template>
