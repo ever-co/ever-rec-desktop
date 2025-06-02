@@ -149,7 +149,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     private readonly matDialog: MatDialog,
     private readonly notificationService: NotificationService,
     private readonly route: ActivatedRoute,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.store
@@ -179,7 +179,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
               button: {
                 confirm: {
                   variant: 'default',
-                  icon: 'copy',
+                  icon: 'content_copy',
                   label: 'Copy',
                 },
               },
