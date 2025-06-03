@@ -2,6 +2,10 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.3.1](https://github.com/ever-co/ever-rec-desktop/compare/utils-1.3.0...utils-1.3.1) (2025-06-03)
+
+
+
 # [1.3.0](https://github.com/ever-co/ever-rec-desktop/compare/utils-1.2.0...utils-1.3.0) (2025-06-03)
 
 

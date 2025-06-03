@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.4](https://github.com/ever-co/ever-rec-desktop/compare/data-access-electron-1.0.3...data-access-electron-1.0.4) (2025-06-03)
+
+### Dependency Updates
+
+* `utils` updated to version `1.3.0`
+
+
 ## [1.0.3](https://github.com/ever-co/ever-rec-desktop/compare/data-access-electron-1.0.2...data-access-electron-1.0.3) (2025-05-15)
 
 ### Dependency Updates
