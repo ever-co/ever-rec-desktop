@@ -2,7 +2,6 @@ import {
   Channel,
   ILoggable,
   ILogger,
-  IRemoteUpload,
   IS3Config,
   isEmpty,
   IUpload,
