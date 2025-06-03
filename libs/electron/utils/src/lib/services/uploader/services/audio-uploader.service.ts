@@ -22,6 +22,7 @@ export class AudioUploaderService extends UploaderService<IAudio> {
       channels: item.metadata?.channels,
       name: item.metadata?.name,
       pathname: FileManager.decodePath(item.pathname),
+      timeSlotId: this.getTimeSlotId(),
       id: item.id,
       key: upload.key,
     }));

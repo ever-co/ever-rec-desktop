@@ -83,6 +83,13 @@ export abstract class UploaderService<T>
     return this.context.strategy.config();
   }
 
+  protected getTimeSlotId() {
+    if (this.context.strategy instanceof GauzyUploaderStrategy) {
+      return this.context.strategy.config()?.timeSlotId;
+    }
+    return null;
+  }
+
   private workerHandler(
     worker: Worker,
     upload: IUpload,
