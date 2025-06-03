@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.1.6](https://github.com/ever-co/ever-rec-desktop/compare/screenshot-data-access-1.1.5...screenshot-data-access-1.1.6) (2025-06-03)
+
+### Dependency Updates
+
+* `notification-data-access` updated to version `1.0.5`
+
+
 ## [1.1.5](https://github.com/ever-co/ever-rec-desktop/compare/screenshot-data-access-1.1.4...screenshot-data-access-1.1.5) (2025-06-03)
 
 ### Dependency Updates
