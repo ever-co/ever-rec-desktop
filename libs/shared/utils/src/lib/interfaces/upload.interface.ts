@@ -38,10 +38,10 @@ export interface IUploadDone {
   result: IRemoteUpload;
 }
 
-export interface IUploadableService<T = any> {
+export interface IUploadableService<T = any, U = any> {
   findAll(options: IFindOneOptions<T>): Promise<T[]>;
   update(id: string, data: Partial<T>): Promise<T>;
-  saveUpload<U = IVideoUpload | IScreenshotUpload | IAudioUpload | IPhotoUpload>(upload: U): Promise<IUploadBase>;
+  saveUpload<TUpload extends U>(upload: TUpload): Promise<IUploadBase>;
 }
 
 export interface IUploaderService {
