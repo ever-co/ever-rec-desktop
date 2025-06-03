@@ -2,6 +2,20 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.2.0](https://github.com/ever-co/ever-rec-desktop/compare/activity-feature-1.1.2...activity-feature-1.2.0) (2025-06-03)
+
+### Dependency Updates
+
+* `activity-data-access` updated to version `1.0.10`
+* `utils` updated to version `1.3.0`
+
+### Features
+
+* **activity:** add top applications productivity display ([add9743](https://github.com/ever-co/ever-rec-desktop/commit/add974388c46aebe59573741022b23b648d9c9c6))
+* **activity:** place top apps component on dashboard ([09be910](https://github.com/ever-co/ever-rec-desktop/commit/09be9101ebb54e33cb568f71a3da05f5145ce2d0))
+
+
+
 ## [1.1.2](https://github.com/ever-co/ever-rec-desktop/compare/activity-feature-1.1.1...activity-feature-1.1.2) (2025-05-15)
 
 ### Dependency Updates
