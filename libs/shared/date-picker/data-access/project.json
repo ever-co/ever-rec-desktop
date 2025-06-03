@@ -6,7 +6,9 @@
   "projectType": "library",
   "release": {
     "version": {
-      "manifestRootsToUpdate": ["dist/{projectRoot}"],
+      "manifestRootsToUpdate": [
+        "dist/{projectRoot}"
+      ],
       "currentVersionResolver": "git-tag",
       "fallbackCurrentVersionResolver": "disk"
     }
@@ -15,7 +17,9 @@
   "targets": {
     "build": {
       "executor": "@nx/angular:package",
-      "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/dist/{projectRoot}"
+      ],
       "options": {
         "project": "libs/shared/date-picker/data-access/ng-package.json"
       },
@@ -36,7 +40,9 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {
         "jestConfig": "libs/shared/date-picker/data-access/jest.config.ts"
       }
@@ -52,7 +58,10 @@
         "pushTags": true,
         "trackDeps": true,
         "baseBranch": "develop",
-        "postTargets": ["publish"]
+        "postTargets": [
+          "build",
+          "publish"
+        ]
       }
     },
     "publish": {
@@ -63,7 +72,9 @@
           "cd dist/libs/shared/date-picker/data-access && npm publish"
         ]
       },
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "build"
+      ],
       "parallelism": false
     }
   }

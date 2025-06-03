@@ -36,7 +36,10 @@
         "pushTags": true,
         "trackDeps": true,
         "baseBranch": "develop",
-        "postTargets": ["publish"]
+        "postTargets": [
+          "build",
+          "publish"
+        ]
       }
     },
     "publish": {
@@ -47,7 +50,9 @@
           "cd dist/libs/electron/event && npm publish"
         ]
       },
-       "dependsOn": ["build"],
+      "dependsOn": [
+        "build"
+      ],
       "parallelism": false
     }
   }
