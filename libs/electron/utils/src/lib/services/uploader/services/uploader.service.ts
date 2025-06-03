@@ -19,6 +19,7 @@ import { WorkerFactory } from '../../worker-factory.service';
 import { ContextUploader } from '../context-uploader';
 import { GauzyUploaderStrategy } from '../strategies/gauzy.uploader';
 import { S3UploaderStrategy } from '../strategies/s3.uploader';
+import { ErrorUpload } from '../models/error-reponse.model';
 
 export abstract class UploaderService<T>
   implements IUploaderService, ILoggable {
@@ -33,38 +34,46 @@ export abstract class UploaderService<T>
     upload: IUpload,
     s3Config: IS3Config,
   ): Promise<void> {
-    this.logger.info('Start uploading...');
+    try {
+      this.logger.info('Start uploading...');
 
-    this.context.strategy = new GauzyUploaderStrategy(upload.type);
+      this.context.strategy = new GauzyUploaderStrategy(upload.type);
 
-    let config = await this.loadConfig();
-    if (isEmpty(config) && s3Config) {
-      this.context.strategy = new S3UploaderStrategy(s3Config, upload.type);
-      config = await this.loadConfig();
+      let config = await this.loadConfig();
+      if (isEmpty(config) && s3Config) {
+        this.context.strategy = new S3UploaderStrategy(s3Config, upload.type);
+        config = await this.loadConfig();
+
+        if (isEmpty(config)) {
+          this.logger.error('Error getting signed URL');
+          const error = new ErrorUpload('Error getting signed URL', upload.ids[0]);
+          event.reply(Channel.UPLOAD_ERROR, error.clone());
+          return;
+        }
+      }
 
       if (isEmpty(config)) {
-        this.logger.error('Error getting signed URL');
-        event.reply(Channel.UPLOAD_ERROR, 'Error getting signed URL');
+        this.logger.info('We cannot proceed with the upload');
+        const error = new ErrorUpload('We cannot proceed with the upload', upload.ids[0]);
+        event.reply(Channel.UPLOAD_ERROR, error.clone());
         return;
       }
+
+      const files = await this.prepareFiles(upload);
+
+      this.logger.info('Create upload worker...');
+
+      const worker = WorkerFactory.createWorker(
+        path.join(__dirname, 'assets', 'workers', 'upload.worker'),
+        { files, config },
+      );
+
+      this.workerHandler(worker, upload, event);
+    } catch (error: any) {
+      this.logger.error('Error uploading file', error);
+      const errorUpload = new ErrorUpload(error ?? 'Error uploading file', upload.ids[0]);
+      event.reply(Channel.UPLOAD_ERROR, errorUpload.clone());
     }
-
-    if (isEmpty(config)) {
-      this.logger.info('We cannot proceed with the upload');
-      event.reply(Channel.UPLOAD_ERROR, 'We cannot proceed with the upload');
-      return;
-    }
-
-    const files = await this.prepareFiles(upload);
-
-    this.logger.info('Create upload worker...');
-
-    const worker = WorkerFactory.createWorker(
-      path.join(__dirname, 'assets', 'workers', 'upload.worker.js'),
-      { files, config },
-    );
-
-    this.workerHandler(worker, upload, event);
   }
 
   protected abstract prepareFiles(upload: IUpload): Promise<any>;
@@ -105,10 +114,8 @@ export abstract class UploaderService<T>
 
     worker.on('error', (error) => {
       this.logger.error('Error::' + error);
-      event.reply(Channel.UPLOAD_ERROR, {
-        status: 'error',
-        message: error.message || error,
-      });
+      const errorUpload = new ErrorUpload('Error uploading file', upload.ids[0]);
+      event.reply(Channel.UPLOAD_ERROR, errorUpload.clone());
       worker.terminate();
     });
 
