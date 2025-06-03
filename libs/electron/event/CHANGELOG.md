@@ -2,6 +2,16 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.5.2](https://github.com/ever-co/ever-rec-desktop/compare/event-0.5.1...event-0.5.2) (2025-06-03)
+
+### Dependency Updates
+
+* `database-electron` updated to version `0.4.2`
+* `electron-utils` updated to version `1.2.1`
+* `utils` updated to version `1.3.1`
+* `window` updated to version `0.3.8`
+
+
 ## [0.5.1](https://github.com/ever-co/ever-rec-desktop/compare/event-0.5.0...event-0.5.1) (2025-06-03)
 
 ### Dependency Updates
