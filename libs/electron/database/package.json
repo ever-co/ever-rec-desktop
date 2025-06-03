@@ -1,6 +1,6 @@
 {
   "name": "@ever-co/electron-database",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "dependencies": {
     "tslib": "^2.3.0"
   },
