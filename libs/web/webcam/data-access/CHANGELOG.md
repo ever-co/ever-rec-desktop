@@ -2,6 +2,21 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.2.0](https://github.com/ever-co/ever-rec-desktop/compare/webcam-data-access-1.1.11...webcam-data-access-1.2.0) (2025-06-03)
+
+### Dependency Updates
+
+* `utils` updated to version `1.3.1`
+* `shared-service` updated to version `1.0.3`
+* `data-access-electron` updated to version `1.0.4`
+* `generate-video-data-access` updated to version `1.0.10`
+
+### Features
+
+* **webcam:** implement minimize functionality for audio recording screen ([51f15f8](https://github.com/ever-co/ever-rec-desktop/commit/51f15f83d6ae70e76d7a828af965bd1c46647e89))
+
+
+
 ## [1.1.11](https://github.com/ever-co/ever-rec-desktop/compare/webcam-data-access-1.1.10...webcam-data-access-1.1.11) (2025-05-15)
 
 ### Dependency Updates
