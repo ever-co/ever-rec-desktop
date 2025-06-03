@@ -2,6 +2,22 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.5.0](https://github.com/ever-co/ever-rec-desktop/compare/event-0.4.1...event-0.5.0) (2025-06-03)
+
+### Dependency Updates
+
+* `database-electron` updated to version `0.4.0`
+* `electron-utils` updated to version `1.2.0`
+* `utils` updated to version `1.2.0`
+
+### Features
+
+* **photo-capture:** add minimize window channel to photo capture event ([d19c140](https://github.com/ever-co/ever-rec-desktop/commit/d19c1403968ce10cb47acb2d5ec7c8310de6a091))
+* **statistics:** add top applications by duration and productivity ([fd6ada8](https://github.com/ever-co/ever-rec-desktop/commit/fd6ada8351d09c77b807e4d078f1b987ae503aec))
+* **webcam:** implement minimize functionality for audio recording screen ([51f15f8](https://github.com/ever-co/ever-rec-desktop/commit/51f15f83d6ae70e76d7a828af965bd1c46647e89))
+
+
+
 ## [0.4.1](https://github.com/ever-co/ever-rec-desktop/compare/event-0.4.0...event-0.4.1) (2025-05-15)
 
 ### Dependency Updates
