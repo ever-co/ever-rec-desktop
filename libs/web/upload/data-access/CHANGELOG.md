@@ -2,6 +2,17 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [2.0.11](https://github.com/ever-co/ever-rec-desktop/compare/upload-data-access-2.0.10...upload-data-access-2.0.11) (2025-06-03)
+
+### Dependency Updates
+
+* `utils` updated to version `1.3.1`
+* `generate-video-data-access` updated to version `1.0.10`
+* `notification-data-access` updated to version `1.0.4`
+* `web-setting-data-access` updated to version `1.0.12`
+* `data-access-electron` updated to version `1.0.4`
+
+
 ## [2.0.10](https://github.com/ever-co/ever-rec-desktop/compare/upload-data-access-2.0.9...upload-data-access-2.0.10) (2025-05-15)
 
 ### Dependency Updates
