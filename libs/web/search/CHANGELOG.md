@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.10](https://github.com/ever-co/ever-rec-desktop/compare/search-1.0.9...search-1.0.10) (2025-06-03)
+
+### Dependency Updates
+
+* `screenshot-data-access` updated to version `1.1.6`
+
+
 ## [1.0.9](https://github.com/ever-co/ever-rec-desktop/compare/search-1.0.8...search-1.0.9) (2025-06-03)
 
 ### Dependency Updates
