@@ -2,6 +2,16 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.10](https://github.com/ever-co/ever-rec-desktop/compare/date-picker-feature-1.0.9...date-picker-feature-1.0.10) (2025-06-03)
+
+### Dependency Updates
+
+* `shared-service` updated to version `1.0.3`
+* `date-picker-data-access` updated to version `1.0.5`
+* `utils` updated to version `1.3.1`
+* `web-setting-data-access` updated to version `1.0.12`
+
+
 ## [1.0.9](https://github.com/ever-co/ever-rec-desktop/compare/date-picker-feature-1.0.8...date-picker-feature-1.0.9) (2025-05-15)
 
 ### Dependency Updates
