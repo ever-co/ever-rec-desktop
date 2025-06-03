@@ -2,6 +2,18 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.3.0](https://github.com/ever-co/ever-rec-desktop/compare/utils-1.2.0...utils-1.3.0) (2025-06-03)
+
+
+### Features
+
+* **electron/database:** add upload entities, repos, and services ([dc7aa96](https://github.com/ever-co/ever-rec-desktop/commit/dc7aa96eda83e1d0f35cc7f8eb16151a50891a6b))
+* **statistics:** add top applications by duration and productivity ([fd6ada8](https://github.com/ever-co/ever-rec-desktop/commit/fd6ada8351d09c77b807e4d078f1b987ae503aec))
+* **uploader:** save remote upload details after sync ([7406448](https://github.com/ever-co/ever-rec-desktop/commit/7406448073d7598fae851e3d8873be47e703d67b))
+* **webcam:** implement minimize functionality for audio recording screen ([51f15f8](https://github.com/ever-co/ever-rec-desktop/commit/51f15f83d6ae70e76d7a828af965bd1c46647e89))
+
+
+
 # [1.2.0](https://github.com/ever-co/ever-rec-desktop/compare/utils-1.1.0...utils-1.2.0) (2025-05-15)
 
 
