@@ -2,6 +2,23 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.1.5](https://github.com/ever-co/ever-rec-desktop/compare/timesheet-feature-1.1.4...timesheet-feature-1.1.5) (2025-06-03)
+
+### Dependency Updates
+
+* `date-picker-data-access` updated to version `1.0.5`
+* `shared-components` updated to version `2.0.4`
+* `utils` updated to version `1.3.1`
+* `timesheet-data-access` updated to version `1.1.3`
+* `timesheet-ui` updated to version `1.0.3`
+* `shared-service` updated to version `1.0.3`
+* `web-setting-data-access` updated to version `1.0.12`
+* `timeline-feature` updated to version `1.0.11`
+* `screenshot-data-access` updated to version `1.1.5`
+* `generate-video-data-access` updated to version `1.0.10`
+* `notification-data-access` updated to version `1.0.4`
+
+
 ## [1.1.4](https://github.com/ever-co/ever-rec-desktop/compare/timesheet-feature-1.1.3...timesheet-feature-1.1.4) (2025-05-15)
 
 ### Dependency Updates
