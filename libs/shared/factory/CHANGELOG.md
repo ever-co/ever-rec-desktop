@@ -2,6 +2,19 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.9](https://github.com/ever-co/ever-rec-desktop/compare/factory-1.0.8...factory-1.0.9) (2025-06-03)
+
+### Dependency Updates
+
+* `generate-video-data-access` updated to version `1.0.10`
+* `screenshot-data-access` updated to version `1.1.5`
+* `webcam-data-access` updated to version `1.2.0`
+* `shared-service` updated to version `1.0.3`
+* `data-access-electron` updated to version `1.0.4`
+* `utils` updated to version `1.3.1`
+* `web-setting-data-access` updated to version `1.0.12`
+
+
 ## [1.0.8](https://github.com/ever-co/ever-rec-desktop/compare/factory-1.0.7...factory-1.0.8) (2025-05-15)
 
 ### Dependency Updates
