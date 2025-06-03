@@ -2,6 +2,24 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.2.0](https://github.com/ever-co/ever-rec-desktop/compare/electron-utils-1.1.3...electron-utils-1.2.0) (2025-06-03)
+
+### Dependency Updates
+
+* `utils` updated to version `1.2.0`
+
+### Bug Fixes
+
+* **uploader:** improve error handling during file upload process ([734d7c9](https://github.com/ever-co/ever-rec-desktop/commit/734d7c9b8a3166f88c89ef3bc96d34bbf16b7dbc))
+
+
+### Features
+
+* **uploader:** add timeSlotId to uploader services and implement getTimeSlotId method ([074c83d](https://github.com/ever-co/ever-rec-desktop/commit/074c83d4aa3f312c4dcf02224abb536dfb549fed))
+* **uploader:** save remote upload details after sync ([7406448](https://github.com/ever-co/ever-rec-desktop/commit/7406448073d7598fae851e3d8873be47e703d67b))
+
+
+
 ## [1.1.3](https://github.com/ever-co/ever-rec-desktop/compare/electron-utils-1.1.2...electron-utils-1.1.3) (2025-05-15)
 
 ### Dependency Updates
