@@ -2,6 +2,21 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.1.0](https://github.com/ever-co/ever-rec-desktop/compare/activity-data-access-1.0.10...activity-data-access-1.1.0) (2025-06-03)
+
+### Dependency Updates
+
+* `utils` updated to version `1.3.1`
+* `timesheet-data-access` updated to version `1.1.3`
+* `date-picker-data-access` updated to version `1.0.5`
+* `data-access-electron` updated to version `1.0.4`
+
+### Features
+
+* **activity:** add top applications productivity display ([add9743](https://github.com/ever-co/ever-rec-desktop/commit/add974388c46aebe59573741022b23b648d9c9c6))
+
+
+
 ## [1.0.10](https://github.com/ever-co/ever-rec-desktop/compare/activity-data-access-1.0.9...activity-data-access-1.0.10) (2025-05-15)
 
 ### Dependency Updates
