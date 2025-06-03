@@ -2,6 +2,26 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.4.0](https://github.com/ever-co/ever-rec-desktop/compare/database-electron-0.3.2...database-electron-0.4.0) (2025-06-03)
+
+### Dependency Updates
+
+* `electron-utils` updated to version `1.2.0`
+* `utils` updated to version `1.2.0`
+
+### Bug Fixes
+
+* **statistics:** correct total and active duration calculations in screenshot statistics analyzer ([81f4c8a](https://github.com/ever-co/ever-rec-desktop/commit/81f4c8a93753c2f7a8c4a3d79ceb49d7f65919e3))
+* **statistics:** simplify duration calculations in screenshot statistics analyzer ([221a344](https://github.com/ever-co/ever-rec-desktop/commit/221a3446f15681de07e32a287683e1cee54d8a56))
+
+
+### Features
+
+* **electron/database:** add upload entities, repos, and services ([dc7aa96](https://github.com/ever-co/ever-rec-desktop/commit/dc7aa96eda83e1d0f35cc7f8eb16151a50891a6b))
+* **statistics:** add top applications by duration and productivity ([fd6ada8](https://github.com/ever-co/ever-rec-desktop/commit/fd6ada8351d09c77b807e4d078f1b987ae503aec))
+
+
+
 ## [0.3.2](https://github.com/ever-co/ever-rec-desktop/compare/database-electron-0.3.1...database-electron-0.3.2) (2025-05-15)
 
 ### Dependency Updates
