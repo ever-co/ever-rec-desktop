@@ -2,6 +2,16 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.12](https://github.com/ever-co/ever-rec-desktop/compare/library-1.0.11...library-1.0.12) (2025-06-03)
+
+### Dependency Updates
+
+* `video-feature` updated to version `1.1.7`
+* `screenshot-feature` updated to version `1.1.7`
+* `photo-feature` updated to version `1.1.7`
+* `feature` updated to version `1.1.7`
+
+
 ## [1.0.11](https://github.com/ever-co/ever-rec-desktop/compare/library-1.0.10...library-1.0.11) (2025-06-03)
 
 ### Dependency Updates
