@@ -1,6 +1,6 @@
 {
   "name": "@ever-co/notification-feature",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "peerDependencies": {
     "@angular/common": "^19.2.0",
     "@angular/core": "^19.2.0"
