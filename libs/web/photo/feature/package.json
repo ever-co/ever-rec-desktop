@@ -1,6 +1,6 @@
 {
   "name": "@ever-co/photo-feature",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "peerDependencies": {
     "@angular/common": "^19.2.0",
     "@angular/core": "^19.2.0"
