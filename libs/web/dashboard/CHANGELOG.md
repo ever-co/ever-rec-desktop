@@ -2,6 +2,27 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.2.0](https://github.com/ever-co/ever-rec-desktop/compare/dashboard-1.1.4...dashboard-1.2.0) (2025-06-03)
+
+### Dependency Updates
+
+* `activity-feature` updated to version `1.2.1`
+* `feature` updated to version `1.1.5`
+* `photo-feature` updated to version `1.1.5`
+* `screenshot-feature` updated to version `1.1.5`
+* `shared-service` updated to version `1.0.3`
+* `timesheet-feature` updated to version `1.1.5`
+* `video-feature` updated to version `1.1.5`
+* `generate-video-data-access` updated to version `1.0.10`
+* `screenshot-data-access` updated to version `1.1.5`
+
+### Features
+
+* **activity:** place top apps component on dashboard ([09be910](https://github.com/ever-co/ever-rec-desktop/commit/09be9101ebb54e33cb568f71a3da05f5145ce2d0))
+* **dashboard:** enhance dashboard layout and animations ([bf8d45a](https://github.com/ever-co/ever-rec-desktop/commit/bf8d45a63a6a77759501c84ce5ae761c18ecc229))
+
+
+
 ## [1.1.4](https://github.com/ever-co/ever-rec-desktop/compare/dashboard-1.1.3...dashboard-1.1.4) (2025-05-15)
 
 ### Dependency Updates
