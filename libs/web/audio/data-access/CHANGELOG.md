@@ -2,6 +2,14 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.2.12](https://github.com/ever-co/ever-rec-desktop/compare/data-access-0.2.11...data-access-0.2.12) (2025-06-03)
+
+### Dependency Updates
+
+* `notification-data-access` updated to version `1.0.5`
+* `webcam-data-access` updated to version `1.2.1`
+
+
 ## [0.2.11](https://github.com/ever-co/ever-rec-desktop/compare/data-access-0.2.10...data-access-0.2.11) (2025-06-03)
 
 ### Dependency Updates
