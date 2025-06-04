@@ -119,9 +119,9 @@
           <mat-icon class="mb-2">hourglass_empty</mat-icon>
           <p>No uploads in progress</p>
         </div>
-        <div class="progress-container">
+        <div class="progress-container flex flex-col gap-4">
           <div *ngFor="let file of inProgress$ | async; trackBy: trackByFileId"
-            class="mb-4 p-4 border border-gray-200 rounded-lg">
+            class="p-4 border border-gray-200 rounded-lg">
             <div class="flex justify-between items-center mb-2">
               <div class="flex items-center">
                 <mat-icon class="text-indigo-500 mr-2">file_upload</mat-icon>
