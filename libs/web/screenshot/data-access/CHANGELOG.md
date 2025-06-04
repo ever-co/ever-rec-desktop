@@ -2,6 +2,10 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.1.7](https://github.com/ever-co/ever-rec-desktop/compare/screenshot-data-access-1.1.6...screenshot-data-access-1.1.7) (2025-06-04)
+
+
+
 ## [1.1.6](https://github.com/ever-co/ever-rec-desktop/compare/screenshot-data-access-1.1.5...screenshot-data-access-1.1.6) (2025-06-03)
 
 ### Dependency Updates
