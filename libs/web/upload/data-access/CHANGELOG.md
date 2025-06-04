@@ -2,6 +2,20 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [2.1.0](https://github.com/ever-co/ever-rec-desktop/compare/upload-data-access-2.0.13...upload-data-access-2.1.0) (2025-06-04)
+
+
+### Bug Fixes
+
+* **upload-effects:** filter out unsynced videos before adding to upload queue ([a9b015e](https://github.com/ever-co/ever-rec-desktop/commit/a9b015eda8a0f58d5328a1f8880ff0f6ce36a52a))
+
+
+### Features
+
+* **upload:** add cancel all uploads functionality with success handling and new selectors ([8cbb779](https://github.com/ever-co/ever-rec-desktop/commit/8cbb779543070b2183ce90fed56216ac95b0e53d))
+
+
+
 ## [2.0.13](https://github.com/ever-co/ever-rec-desktop/compare/upload-data-access-2.0.12...upload-data-access-2.0.13) (2025-06-03)
 
 ### Dependency Updates
