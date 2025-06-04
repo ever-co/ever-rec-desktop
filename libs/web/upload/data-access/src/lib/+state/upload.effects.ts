@@ -58,6 +58,7 @@ export class UploadEffects {
   uploadOnFinish$ = createEffect(() =>
     this.actions$.pipe(
       ofType(generateVideoActions.finish),
+      filter(({ video }) => video.synced === false),
       map(({ video }) =>
         uploadActions.addItemToQueue({
           item: new UploadVideoItem(video),
@@ -153,5 +154,5 @@ export class UploadEffects {
   constructor(
     private readonly uploadService: UploadService,
     private readonly notificationService: NotificationService,
-  ) {}
+  ) { }
 }
