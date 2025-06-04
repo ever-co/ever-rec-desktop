@@ -50,3 +50,18 @@ export const selectCanUploadMore = createSelector(
   selectMaxParallelUploads,
   (active, max) => active < max
 );
+
+export const selectHasInProgressUploads = createSelector(
+  selectUploadState,
+  (state) => state.inProgress.length > 0
+);
+
+export const selectHasQueuedUploads = createSelector(
+  selectUploadState,
+  (state) => state.queue.length > 0
+);
+
+export const selectHasCanceledUploads = createSelector(
+  selectUploadState,
+  (state) => state.canceled.length > 0
+);

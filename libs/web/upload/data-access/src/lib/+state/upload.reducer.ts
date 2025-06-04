@@ -237,17 +237,17 @@ export const reducer = createReducer(
       // Remove from queue if present
       queue: isInQueue
         ? [
-            ...state.queue.slice(0, queueIndex),
-            ...state.queue.slice(queueIndex + 1),
-          ]
+          ...state.queue.slice(0, queueIndex),
+          ...state.queue.slice(queueIndex + 1),
+        ]
         : state.queue,
 
       // Remove from inProgress if present
       inProgress: isInProgress
         ? [
-            ...state.inProgress.slice(0, inProgressIndex),
-            ...state.inProgress.slice(inProgressIndex + 1),
-          ]
+          ...state.inProgress.slice(0, inProgressIndex),
+          ...state.inProgress.slice(inProgressIndex + 1),
+        ]
         : state.inProgress,
 
       // Add to canceled list (if not already there)
@@ -345,6 +345,25 @@ export const reducer = createReducer(
   on(uploadActions.clearCanceledUploads, (state) => ({
     ...state,
     canceled: [],
+  })),
+
+  on(uploadActions.cancelAllUploads, (state) => {
+    // Combine all items from queue and inProgress
+    const allToCancel = [...state.queue, ...state.inProgress];
+    // Filter out items already in canceled
+    const alreadyCanceledIds = new Set(state.canceled.map(item => item.id));
+    const newCanceled = allToCancel.filter(item => !alreadyCanceledIds.has(item.id)).map(item => ({ ...item, progress: 0 }));
+    return {
+      ...state,
+      queue: [],
+      inProgress: [],
+      canceled: [...state.canceled, ...newCanceled],
+      activeUploads: 0,
+    };
+  }),
+
+  on(uploadActions.cancelAllUploadsSuccess, (state) => ({
+    ...state
   }))
 );
 

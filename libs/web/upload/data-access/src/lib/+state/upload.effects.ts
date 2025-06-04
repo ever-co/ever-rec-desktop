@@ -5,7 +5,7 @@ import { IUpload } from '@ever-co/shared-utils';
 import { selectSettingUploadAutoSync } from '@ever-co/web-setting-data-access';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { EMPTY, of } from 'rxjs';
+import { EMPTY, of, forkJoin } from 'rxjs';
 import {
   catchError,
   filter,
@@ -19,7 +19,7 @@ import { UploadVideoItem } from '../models/upload-video.model';
 import { UploadMapper } from '../models/upload.model';
 import { UploadService } from '../services/upload.service';
 import { uploadActions } from './upload.actions';
-import { selectCanUploadMore, selectUploadQueue } from './upload.selectors';
+import { selectCanUploadMore, selectInProgress, selectUploadInProgress, selectUploadQueue } from './upload.selectors';
 
 @Injectable()
 export class UploadEffects {
@@ -148,6 +148,29 @@ export class UploadEffects {
     this.actions$.pipe(
       ofType(uploadActions.silentUploadCancellation),
       map(() => uploadActions.cancelUploadSuccess()),
+    ),
+  );
+
+  cancelAllUploads$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(uploadActions.cancelAllUploads),
+      withLatestFrom(this.store.select(selectInProgress)),
+      mergeMap(([_, inProgress]) => {
+        if (!inProgress.length) {
+          this.notificationService.show('No uploads to cancel.', 'info');
+          return of(uploadActions.cancelAllUploadsSuccess());
+        }
+        // Cancel all in-progress uploads using forkJoin
+        return forkJoin(inProgress.map((item) => this.uploadService.cancel(item.id))).pipe(
+          tap(() => this.notificationService.show('All uploads canceled.', 'warning')),
+          map(() => uploadActions.cancelAllUploadsSuccess()),
+          catchError(() => {
+            this.notificationService.show('Error canceling uploads.', 'error');
+            return of(uploadActions.cancelAllUploadsSuccess());
+          })
+        );
+      }),
+      mergeMap((action) => of(action)),
     ),
   );
 

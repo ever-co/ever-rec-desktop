@@ -36,5 +36,6 @@ export const uploadActions = createActionGroup({
     'Clear Canceled Uploads': emptyProps(),
 
     'Cancel All Uploads': emptyProps(),
+    'Cancel All Uploads Success': emptyProps(),
   },
 });
