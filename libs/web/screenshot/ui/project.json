@@ -59,6 +59,7 @@
         "trackDeps": true,
         "baseBranch": "develop",
         "postTargets": [
+          "build",
           "publish"
         ]
       }
