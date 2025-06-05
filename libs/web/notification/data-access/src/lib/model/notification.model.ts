@@ -1,6 +1,6 @@
-import { Clonable, INotification } from '@ever-co/shared-utils';
+import { Cloneable, INotification } from '@ever-co/shared-utils';
 
-export class Notification implements INotification, Clonable<INotification> {
+export class Notification implements INotification, Cloneable<INotification> {
   private _id: string;
   private _message: string;
   private _type: 'success' | 'error' | 'info' | 'warning';

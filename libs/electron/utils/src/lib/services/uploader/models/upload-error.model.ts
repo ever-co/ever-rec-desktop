@@ -1,6 +1,6 @@
-import { Clonable, IUploadError } from "@ever-co/shared-utils";
+import { Cloneable, IUploadError } from "@ever-co/shared-utils";
 
-export class UploadError implements Clonable<IUploadError> {
+export class UploadError implements Cloneable<IUploadError> {
   constructor(
     public readonly message: string,
     public readonly itemId: string,

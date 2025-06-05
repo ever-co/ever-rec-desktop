@@ -1,5 +1,5 @@
 import {
-  Clonable,
+  Cloneable,
   IAudio,
   IPhoto,
   IScreenshot,
@@ -10,7 +10,7 @@ import {
 
 export type Uploadable = IVideo | IPhoto | IAudio | IScreenshot;
 
-export interface IUploadItem extends Clonable<IUploadItem> {
+export interface IUploadItem extends Cloneable<IUploadItem> {
   id: string;
   type: UploadType;
   name: string;
