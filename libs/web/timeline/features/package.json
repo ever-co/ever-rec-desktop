@@ -1,6 +1,6 @@
 {
   "name": "@ever-co/timeline-feature",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "peerDependencies": {
     "@angular/common": "^19.2.0",
     "@angular/core": "^19.2.0"

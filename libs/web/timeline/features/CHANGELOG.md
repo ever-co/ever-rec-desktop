@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.21](https://github.com/ever-co/ever-rec-desktop/compare/timeline-feature-1.0.20...timeline-feature-1.0.21) (2025-06-06)
+
+### Dependency Updates
+
+* `screenshot-feature` updated to version `1.1.16`
+
+
 ## [1.0.20](https://github.com/ever-co/ever-rec-desktop/compare/timeline-feature-1.0.19...timeline-feature-1.0.20) (2025-06-06)
 
 ### Dependency Updates
