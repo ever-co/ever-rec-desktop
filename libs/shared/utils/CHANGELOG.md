@@ -2,6 +2,24 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.3.2](https://github.com/ever-co/ever-rec-desktop/compare/utils-1.3.1...utils-1.3.2) (2025-06-06)
+
+
+### Bug Fixes
+
+* correct spelling of 'Clonable' to 'Cloneable' in multiple files ([013ebfe](https://github.com/ever-co/ever-rec-desktop/commit/013ebfeb3088419d1fe82030ab44580e8f880605))
+
+
+
+## [1.3.2](https://github.com/ever-co/ever-rec-desktop/compare/utils-1.3.1...utils-1.3.2) (2025-06-06)
+
+
+### Bug Fixes
+
+* correct spelling of 'Clonable' to 'Cloneable' in multiple files ([013ebfe](https://github.com/ever-co/ever-rec-desktop/commit/013ebfeb3088419d1fe82030ab44580e8f880605))
+
+
+
 ## [1.3.1](https://github.com/ever-co/ever-rec-desktop/compare/utils-1.3.0...utils-1.3.1) (2025-06-03)
 
 
