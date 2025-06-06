@@ -2,6 +2,19 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.1.13](https://github.com/ever-co/ever-rec-desktop/compare/video-feature-1.1.12...video-feature-1.1.13) (2025-06-06)
+
+### Dependency Updates
+
+* `video-data-access` updated to version `1.0.20`
+* `shared-service` updated to version `1.0.6`
+* `upload-data-access` updated to version `2.1.6`
+* `web-setting-data-access` updated to version `1.0.20`
+* `feature` updated to version `1.1.13`
+* `video-ui` updated to version `1.0.12`
+* `generate-video-data-access` updated to version `1.0.17`
+
+
 ## [1.1.12](https://github.com/ever-co/ever-rec-desktop/compare/video-feature-1.1.11...video-feature-1.1.12) (2025-06-06)
 
 ### Dependency Updates
