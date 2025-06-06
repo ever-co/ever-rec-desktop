@@ -2,6 +2,14 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.1.11](https://github.com/ever-co/ever-rec-desktop/compare/timesheet-data-access-1.1.10...timesheet-data-access-1.1.11) (2025-06-06)
+
+### Dependency Updates
+
+* `notification-data-access` updated to version `1.0.10`
+* `screenshot-data-access` updated to version `1.1.13`
+
+
 ## [1.1.10](https://github.com/ever-co/ever-rec-desktop/compare/timesheet-data-access-1.1.9...timesheet-data-access-1.1.10) (2025-06-06)
 
 ### Dependency Updates
