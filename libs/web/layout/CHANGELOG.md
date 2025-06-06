@@ -2,6 +2,27 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [2.0.18](https://github.com/ever-co/ever-rec-desktop/compare/layout-2.0.17...layout-2.0.18) (2025-06-06)
+
+### Dependency Updates
+
+* `notification-feature` updated to version `1.0.14`
+* `date-picker-feature` updated to version `1.0.18`
+* `shared-service` updated to version `1.0.6`
+* `sidebar-feature` updated to version `1.0.10`
+* `search` updated to version `1.0.16`
+* `upload-feature` updated to version `2.0.19`
+* `timeline-data-access` updated to version `1.0.19`
+* `dashboard` updated to version `1.2.8`
+* `library` updated to version `1.0.18`
+* `web-setting-feature` updated to version `1.0.19`
+* `timesheet-feature` updated to version `1.1.13`
+* `screenshot-feature` updated to version `1.1.13`
+* `timeline-feature` updated to version `1.0.19`
+* `generate-video-data-access` updated to version `1.0.17`
+* `screenshot-data-access` updated to version `1.1.12`
+
+
 ## [2.0.17](https://github.com/ever-co/ever-rec-desktop/compare/layout-2.0.16...layout-2.0.17) (2025-06-06)
 
 ### Dependency Updates
