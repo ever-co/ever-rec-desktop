@@ -1,6 +1,6 @@
 {
   "name": "@ever-co/generate-video-feature",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "peerDependencies": {
     "@angular/common": "^19.2.0",
     "@angular/core": "^19.2.0"
