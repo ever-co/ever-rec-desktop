@@ -2,6 +2,14 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.1.11](https://github.com/ever-co/ever-rec-desktop/compare/audio-ui-0.1.10...audio-ui-0.1.11) (2025-06-06)
+
+### Dependency Updates
+
+* `utils` updated to version `1.3.2`
+* `shared-service` updated to version `1.0.5`
+
+
 ## [0.1.10](https://github.com/ever-co/ever-rec-desktop/compare/audio-ui-0.1.9...audio-ui-0.1.10) (2025-06-06)
 
 ### Dependency Updates
