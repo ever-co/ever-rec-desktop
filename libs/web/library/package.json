@@ -1,6 +1,6 @@
 {
   "name": "@ever-co/library",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "peerDependencies": {
     "@angular/common": "^19.2.0",
     "@angular/core": "^19.2.0"
