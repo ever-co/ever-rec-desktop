@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [2.0.16](https://github.com/ever-co/ever-rec-desktop/compare/upload-feature-2.0.15...upload-feature-2.0.16) (2025-06-06)
+
+### Dependency Updates
+
+* `upload-data-access` updated to version `2.1.3`
+
+
 ## [2.0.15](https://github.com/ever-co/ever-rec-desktop/compare/upload-feature-2.0.14...upload-feature-2.0.15) (2025-06-06)
 
 ### Dependency Updates
