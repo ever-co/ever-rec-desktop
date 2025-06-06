@@ -2,6 +2,14 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.5](https://github.com/ever-co/ever-rec-desktop/compare/timesheet-ui-1.0.4...timesheet-ui-1.0.5) (2025-06-06)
+
+### Dependency Updates
+
+* `utils` updated to version `1.3.1`
+* `shared-components` updated to version `2.0.6`
+
+
 ## [1.0.4](https://github.com/ever-co/ever-rec-desktop/compare/timesheet-ui-1.0.3...timesheet-ui-1.0.4) (2025-06-06)
 
 ### Dependency Updates
