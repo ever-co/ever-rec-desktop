@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.22](https://github.com/ever-co/ever-rec-desktop/compare/video-data-access-1.0.21...video-data-access-1.0.22) (2025-06-06)
+
+### Dependency Updates
+
+* `generate-video-data-access` updated to version `1.0.18`
+
+
 ## [1.0.21](https://github.com/ever-co/ever-rec-desktop/compare/video-data-access-1.0.20...video-data-access-1.0.21) (2025-06-06)
 
 ### Dependency Updates
