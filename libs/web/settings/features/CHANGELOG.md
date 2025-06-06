@@ -2,6 +2,22 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.20](https://github.com/ever-co/ever-rec-desktop/compare/web-setting-feature-1.0.19...web-setting-feature-1.0.20) (2025-06-06)
+
+### Dependency Updates
+
+* `notification-data-access` updated to version `1.0.10`
+* `web-setting-data-access` updated to version `1.0.22`
+* `shared-service` updated to version `1.0.7`
+* `generate-video-feature` updated to version `1.0.19`
+* `screenshot-feature` updated to version `1.1.15`
+* `webcam-feature` updated to version `0.2.9`
+* `data-access` updated to version `0.2.19`
+* `photo-data-acess` updated to version `0.1.21`
+* `screenshot-data-access` updated to version `1.1.13`
+* `video-data-access` updated to version `1.0.22`
+
+
 ## [1.0.19](https://github.com/ever-co/ever-rec-desktop/compare/web-setting-feature-1.0.18...web-setting-feature-1.0.19) (2025-06-06)
 
 ### Dependency Updates
