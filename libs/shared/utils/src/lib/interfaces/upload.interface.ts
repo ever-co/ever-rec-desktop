@@ -8,8 +8,8 @@ import type { IPhoto } from './webcam.interface';
 export enum UploadType {
   VIDEO = 'videos',
   SCREENSHOT = 'screenshots',
-  PHOTO = 'photos',
-  AUDIO = 'audios',
+  PHOTO = 'camshots',
+  AUDIO = 'soundshots',
 }
 
 export interface IUploadFile {
