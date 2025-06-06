@@ -2,6 +2,21 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.16](https://github.com/ever-co/ever-rec-desktop/compare/web-setting-data-access-1.0.15...web-setting-data-access-1.0.16) (2025-06-06)
+
+### Dependency Updates
+
+* `data-access-electron` updated to version `1.0.4`
+* `utils` updated to version `1.3.1`
+* `data-access` updated to version `0.2.14`
+* `generate-video-data-access` updated to version `1.0.13`
+* `photo-data-acess` updated to version `0.1.15`
+* `screenshot-data-access` updated to version `1.1.8`
+* `shared-service` updated to version `1.0.4`
+* `video-data-access` updated to version `1.0.16`
+* `webcam-data-access` updated to version `1.2.3`
+
+
 ## [1.0.15](https://github.com/ever-co/ever-rec-desktop/compare/web-setting-data-access-1.0.14...web-setting-data-access-1.0.15) (2025-06-04)
 
 ### Dependency Updates

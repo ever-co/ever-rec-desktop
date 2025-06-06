@@ -1,6 +1,6 @@
 {
   "name": "@ever-co/web-setting-data-access",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "peerDependencies": {
     "@angular/common": "^19.2.0",
     "@angular/core": "^19.2.0"
