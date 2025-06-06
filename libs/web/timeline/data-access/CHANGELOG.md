@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.20](https://github.com/ever-co/ever-rec-desktop/compare/timeline-data-access-1.0.19...timeline-data-access-1.0.20) (2025-06-06)
+
+### Dependency Updates
+
+* `screenshot-data-access` updated to version `1.1.13`
+
+
 ## [1.0.19](https://github.com/ever-co/ever-rec-desktop/compare/timeline-data-access-1.0.18...timeline-data-access-1.0.19) (2025-06-06)
 
 ### Dependency Updates
