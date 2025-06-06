@@ -2,6 +2,21 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.2.7](https://github.com/ever-co/ever-rec-desktop/compare/dashboard-1.2.6...dashboard-1.2.7) (2025-06-06)
+
+### Dependency Updates
+
+* `activity-feature` updated to version `1.2.7`
+* `feature` updated to version `1.1.12`
+* `photo-feature` updated to version `1.1.12`
+* `screenshot-feature` updated to version `1.1.12`
+* `shared-service` updated to version `1.0.6`
+* `timesheet-feature` updated to version `1.1.12`
+* `video-feature` updated to version `1.1.12`
+* `generate-video-data-access` updated to version `1.0.16`
+* `screenshot-data-access` updated to version `1.1.11`
+
+
 ## [1.2.6](https://github.com/ever-co/ever-rec-desktop/compare/dashboard-1.2.5...dashboard-1.2.6) (2025-06-06)
 
 ### Dependency Updates
