@@ -2,6 +2,14 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.2.9](https://github.com/ever-co/ever-rec-desktop/compare/activity-feature-1.2.8...activity-feature-1.2.9) (2025-06-06)
+
+### Dependency Updates
+
+* `activity-data-access` updated to version `1.1.8`
+* `shared-service` updated to version `1.0.7`
+
+
 ## [1.2.8](https://github.com/ever-co/ever-rec-desktop/compare/activity-feature-1.2.7...activity-feature-1.2.8) (2025-06-06)
 
 ### Dependency Updates
