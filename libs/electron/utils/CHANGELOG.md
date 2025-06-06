@@ -2,6 +2,18 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.2.2](https://github.com/ever-co/ever-rec-desktop/compare/electron-utils-1.2.1...electron-utils-1.2.2) (2025-06-06)
+
+### Dependency Updates
+
+* `utils` updated to version `1.3.1`
+
+### Bug Fixes
+
+* correct spelling of 'Clonable' to 'Cloneable' in multiple files ([013ebfe](https://github.com/ever-co/ever-rec-desktop/commit/013ebfeb3088419d1fe82030ab44580e8f880605))
+
+
+
 ## [1.2.1](https://github.com/ever-co/ever-rec-desktop/compare/electron-utils-1.2.0...electron-utils-1.2.1) (2025-06-03)
 
 ### Dependency Updates
