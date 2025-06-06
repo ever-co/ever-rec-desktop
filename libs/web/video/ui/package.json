@@ -1,6 +1,6 @@
 {
   "name": "@ever-co/video-ui",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "peerDependencies": {
     "@angular/common": "^19.2.0",
     "@angular/core": "^19.2.0"
