@@ -2,6 +2,17 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.2.6](https://github.com/ever-co/ever-rec-desktop/compare/activity-feature-1.2.5...activity-feature-1.2.6) (2025-06-06)
+
+### Dependency Updates
+
+* `activity-data-access` updated to version `1.1.5`
+* `date-picker-data-access` updated to version `1.0.8`
+* `shared-service` updated to version `1.0.5`
+* `utils` updated to version `1.3.2`
+* `shared-components` updated to version `2.0.7`
+
+
 ## [1.2.5](https://github.com/ever-co/ever-rec-desktop/compare/activity-feature-1.2.4...activity-feature-1.2.5) (2025-06-06)
 
 ### Dependency Updates
