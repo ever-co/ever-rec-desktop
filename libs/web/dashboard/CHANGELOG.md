@@ -2,6 +2,17 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.2.10](https://github.com/ever-co/ever-rec-desktop/compare/dashboard-1.2.9...dashboard-1.2.10) (2025-06-06)
+
+### Dependency Updates
+
+* `feature` updated to version `1.1.16`
+* `photo-feature` updated to version `1.1.15`
+* `screenshot-feature` updated to version `1.1.16`
+* `timesheet-feature` updated to version `1.1.15`
+* `video-feature` updated to version `1.1.15`
+
+
 ## [1.2.9](https://github.com/ever-co/ever-rec-desktop/compare/dashboard-1.2.8...dashboard-1.2.9) (2025-06-06)
 
 ### Dependency Updates
