@@ -2,6 +2,14 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.1.15](https://github.com/ever-co/ever-rec-desktop/compare/photo-feature-1.1.14...photo-feature-1.1.15) (2025-06-06)
+
+### Dependency Updates
+
+* `upload-data-access` updated to version `2.1.9`
+* `web-setting-data-access` updated to version `1.0.23`
+
+
 ## [1.1.14](https://github.com/ever-co/ever-rec-desktop/compare/photo-feature-1.1.13...photo-feature-1.1.14) (2025-06-06)
 
 ### Dependency Updates
