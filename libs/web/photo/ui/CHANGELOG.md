@@ -2,6 +2,14 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.2.9](https://github.com/ever-co/ever-rec-desktop/compare/photo-ui-0.2.8...photo-ui-0.2.9) (2025-06-06)
+
+### Dependency Updates
+
+* `shared-components` updated to version `2.0.6`
+* `utils` updated to version `1.3.1`
+
+
 ## [0.2.8](https://github.com/ever-co/ever-rec-desktop/compare/photo-ui-0.2.7...photo-ui-0.2.8) (2025-06-06)
 
 ### Dependency Updates
