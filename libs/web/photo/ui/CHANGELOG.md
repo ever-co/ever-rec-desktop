@@ -9,6 +9,13 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 * `shared-service` updated to version `1.0.7`
 
 
+## [0.2.13](https://github.com/ever-co/ever-rec-desktop/compare/photo-ui-0.2.12...photo-ui-0.2.13) (2025-06-06)
+
+### Dependency Updates
+
+* `shared-service` updated to version `1.0.7`
+
+
 ## [0.2.12](https://github.com/ever-co/ever-rec-desktop/compare/photo-ui-0.2.11...photo-ui-0.2.12) (2025-06-06)
 
 ### Dependency Updates
