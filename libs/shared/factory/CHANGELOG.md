@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.19](https://github.com/ever-co/ever-rec-desktop/compare/factory-1.0.18...factory-1.0.19) (2025-06-06)
+
+### Dependency Updates
+
+* `web-setting-data-access` updated to version `1.0.23`
+
+
 ## [1.0.18](https://github.com/ever-co/ever-rec-desktop/compare/factory-1.0.17...factory-1.0.18) (2025-06-06)
 
 ### Dependency Updates
