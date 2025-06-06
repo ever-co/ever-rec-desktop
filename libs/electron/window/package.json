@@ -1,6 +1,6 @@
 {
   "name": "@ever-co/window",
-  "version": "0.3.9",
+  "version": "0.3.10",
   "type": "commonjs",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
