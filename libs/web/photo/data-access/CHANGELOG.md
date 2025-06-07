@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.1.22](https://github.com/ever-co/ever-rec-desktop/compare/photo-data-acess-0.1.21...photo-data-acess-0.1.22) (2025-06-07)
+
+
+### Bug Fixes
+
+* **photo:** use correct variable for photos array update ([8d2c80d](https://github.com/ever-co/ever-rec-desktop/commit/8d2c80de8855a1e96fc3f50ee906a8f2aa76d5db))
+
+
+
 ## [0.1.21](https://github.com/ever-co/ever-rec-desktop/compare/photo-data-acess-0.1.20...photo-data-acess-0.1.21) (2025-06-06)
 
 ### Dependency Updates
