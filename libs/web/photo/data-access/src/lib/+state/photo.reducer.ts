@@ -205,10 +205,10 @@ export const reducer = createReducer(
       // Update photo if needed
       photo: shouldUpdatePhoto ? { ...photo, synced: true } : photo,
       // Update photos array if needed (map preserves order)
-      photos: shouldUpdatePhoto
+      photos: shouldUpdatePhotos
         ? photos.map((photo) =>
-            photo.id === itemId ? { ...photo, synced: true } : photo,
-          )
+          photo.id === itemId ? { ...photo, synced: true } : photo,
+        )
         : photos,
     };
   }),
