@@ -26,7 +26,7 @@ export class VideoUploaderService extends UploaderService<IVideo> {
       title: item.metadata?.name,
       description: item.metadata?.summary,
       duration: item.metadata?.duration,
-      recordedAt: item.metadata?.createdAt,
+      recordedAt: this.toISOString(item.metadata?.createdAt),
       size: item.metadata?.size,
       resolution: item.metadata?.resolution,
       codec: item.metadata?.codec,

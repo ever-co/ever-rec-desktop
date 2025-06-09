@@ -15,7 +15,7 @@ export class AudioUploaderService extends UploaderService<IAudio> {
     });
 
     return data.map((item: IAudio) => ({
-      recordedAt: item.metadata?.createdAt,
+      recordedAt: this.toISOString(item.metadata?.createdAt),
       size: item.metadata?.size,
       duration: item.metadata?.duration,
       rate: item.metadata?.rate,

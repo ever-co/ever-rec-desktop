@@ -15,7 +15,7 @@ export class PhotoUploaderService extends UploaderService<IPhoto> {
     });
 
     return data.map((item: IPhoto) => ({
-      recordedAt: item.metadata?.createdAt,
+      recordedAt: this.toISOString(item.metadata?.createdAt),
       pathname: FileManager.decodePath(item.pathname),
       timeSlotId: this.getTimeSlotId(),
       id: item.id,

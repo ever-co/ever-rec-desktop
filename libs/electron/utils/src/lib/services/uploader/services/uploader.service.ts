@@ -8,6 +8,7 @@ import {
   IUploadableService,
   IUploadDone,
   IUploaderService,
+  moment,
 } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
 import * as path from 'path';
@@ -78,6 +79,20 @@ export abstract class UploaderService<T>
   protected abstract prepareFiles(upload: IUpload): Promise<any>;
 
   protected abstract synchronize(data: IUploadDone): Promise<void>;
+
+  /**
+   * Converts a given date input to an ISO 8601 string format.
+   *
+   * @param date - The date to convert, can be a Date object, string, or number.
+   * @returns The ISO string representation of the date.
+   */
+  protected toISOString(date: Date | string | number | undefined) {
+    if (!date) {
+      date = new Date();
+    }
+    return moment(date).toISOString();
+  }
+
 
   protected loadConfig() {
     return this.context.strategy.config();
