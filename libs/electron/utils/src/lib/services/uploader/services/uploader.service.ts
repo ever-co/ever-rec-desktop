@@ -86,7 +86,7 @@ export abstract class UploaderService<T>
    * @param date - The date to convert, can be a Date object, string, or number.
    * @returns The ISO string representation of the date.
    */
-  protected toISOString(date: Date | string | number | undefined) {
+  protected toISOString(date: Date | string | number | undefined): string {
     if (!date) {
       date = new Date();
     }
