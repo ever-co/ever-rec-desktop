@@ -27,8 +27,8 @@ export class FileTaskRunner {
   private get worker(): Worker {
     if (!this._worker) {
       this._worker = WorkerFactory.createWorker(
-        join(__dirname, 'assets', 'workers', 'file-worker.js'),
-        { userDataPath: join(app.getPath('userData')) }
+        join(__dirname, 'assets', 'workers', 'file-worker'),
+        { userDataPath: join(app.getPath('userData')) },
       );
 
       this._worker.on('message', this.handleWorkerMessage.bind(this));

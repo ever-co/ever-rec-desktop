@@ -51,7 +51,7 @@ export class VideoConversionService implements ILoggable {
     public logger: ILogger,
     private videoService: IVideoService,
     private timelineService: ITimelineService,
-    private isTimeline = false
+    private isTimeline = false,
   ) {}
 
   /**
@@ -119,18 +119,18 @@ export class VideoConversionService implements ILoggable {
         path: this.fileManager.decodePath(chunkExist.pathname),
       });
       this.screenshots = this.screenshots.filter(
-        ({ id }) => !chunkScreenshotIds.has(id)
+        ({ id }) => !chunkScreenshotIds.has(id),
       );
     }
 
     this.logger.info(`Processing ${this.screenshots.length} frames`);
 
     const filePathnames = this.fileManager.getFilesByPathnames(
-      this.screenshots.map(({ pathname }) => pathname)
+      this.screenshots.map(({ pathname }) => pathname),
     );
     const batches = this.splitter.split(
       filePathnames,
-      this.config.batch || 100
+      this.config.batch || 100,
     );
     const workers: Worker[] = [];
     this.config.duration = this.config.duration / filePathnames.length;
@@ -171,7 +171,7 @@ export class VideoConversionService implements ILoggable {
         this.handleWorkerCompletion(
           index,
           this.fileManager.decodePath(chunkExist.pathname),
-          workers.length
+          workers.length,
         );
         return;
       }
@@ -179,7 +179,7 @@ export class VideoConversionService implements ILoggable {
       if (chunkExist && chunkSize !== batch.length && optimized) {
         const { screenshots: chunkScreenshots = [] } = chunkExist;
         const chunkScreenshotPathnames = new Set(
-          chunkScreenshots.map(({ pathname }) => pathname)
+          chunkScreenshots.map(({ pathname }) => pathname),
         );
         this.logger.info(`Last batch checkpoint reused...`);
         this.chunks.push(chunkExist);
@@ -188,7 +188,7 @@ export class VideoConversionService implements ILoggable {
           path: this.fileManager.decodePath(chunkExist.pathname),
         });
         batch = batch.filter(
-          (pathname) => !chunkScreenshotPathnames.has(pathname)
+          (pathname) => !chunkScreenshotPathnames.has(pathname),
         );
       }
 
@@ -196,7 +196,7 @@ export class VideoConversionService implements ILoggable {
         __dirname,
         'assets',
         'workers',
-        'convert-screenshots-to-video.worker.js'
+        'convert-screenshots-to-video.worker',
       );
       const outputPath = this.getBatchOutputPath(index);
       const worker = this.workerFactory.createWorker(workerPath, {
@@ -239,7 +239,7 @@ export class VideoConversionService implements ILoggable {
             this.logger.error(String(error) || 'An error occurred');
             this.event.reply(
               this.channel.GENERATION_ERROR,
-              error || 'An error occurred'
+              error || 'An error occurred',
             );
           }
         },
@@ -247,10 +247,10 @@ export class VideoConversionService implements ILoggable {
           this.logger.error(error || 'An error occurred');
           this.event.reply(
             this.channel.GENERATION_ERROR,
-            error || 'An error occurred'
+            error || 'An error occurred',
           );
         },
-        this.logger
+        this.logger,
       );
 
       worker.postMessage({ command: 'start' });
@@ -271,7 +271,7 @@ export class VideoConversionService implements ILoggable {
   private handleWorkerCompletion(
     index: number,
     path: string,
-    totalBatches: number
+    totalBatches: number,
   ) {
     this.batchVideo.push({ index, path });
     this.completedWorkers++;
@@ -290,11 +290,11 @@ export class VideoConversionService implements ILoggable {
    */
   public async combineVideos(
     batchVideo: IBatchVideo[],
-    chunks: IVideo[]
+    chunks: IVideo[],
   ): Promise<void> {
     const finalOutputPath = this.fileManager.createFilePathSync(
       VIDEO_DIR,
-      `output-${Date.now()}.mp4`
+      `output-${Date.now()}.mp4`,
     );
     const batchVideoPaths = batchVideo
       .sort((a, b) => a.index - b.index)
@@ -303,7 +303,7 @@ export class VideoConversionService implements ILoggable {
       __dirname,
       'assets',
       'workers',
-      'combine-videos.worker.js'
+      'combine-videos.worker',
     );
     const worker = this.workerFactory.createWorker(workerPath, {
       batchVideoPaths,
@@ -371,10 +371,10 @@ export class VideoConversionService implements ILoggable {
         this.logger.error(error || 'An Error Occurred while video combination');
         this.event.reply(
           this.channel.GENERATION_ERROR,
-          error || 'An Error Occurred while video combination'
+          error || 'An Error Occurred while video combination',
         );
       },
-      this.logger
+      this.logger,
     );
   }
 
@@ -391,7 +391,7 @@ export class VideoConversionService implements ILoggable {
   private getBatchOutputPath(batchIndex: number): string {
     return this.fileManager.createFilePathSync(
       VIDEO_DIR,
-      `batch-${batchIndex}-${Date.now()}.mp4`
+      `batch-${batchIndex}-${Date.now()}.mp4`,
     );
   }
 }
