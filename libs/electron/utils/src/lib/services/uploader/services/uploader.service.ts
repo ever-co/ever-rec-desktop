@@ -17,17 +17,18 @@ import { Worker } from 'worker_threads';
 import { ElectronLogger } from '../../logger/electron-logger';
 import { WorkerFactory } from '../../worker-factory.service';
 import { ContextUploader } from '../context-uploader';
+import { UploadError } from '../models/upload-error.model';
 import { GauzyUploaderStrategy } from '../strategies/gauzy.uploader';
 import { S3UploaderStrategy } from '../strategies/s3.uploader';
-import { UploadError } from '../models/upload-error.model';
 
 export abstract class UploaderService<T>
-  implements IUploaderService, ILoggable {
+  implements IUploaderService, ILoggable
+{
   readonly logger: ILogger = new ElectronLogger('Uploader Service');
 
   protected readonly context = new ContextUploader();
 
-  protected constructor(protected readonly service: IUploadableService<T>) { }
+  protected constructor(protected readonly service: IUploadableService<T>) {}
 
   public async execute(
     event: Electron.IpcMainEvent,
@@ -46,7 +47,10 @@ export abstract class UploaderService<T>
 
         if (isEmpty(config)) {
           this.logger.error('Error getting signed URL');
-          const uploadError = new UploadError('Error getting signed URL', upload.ids[0]);
+          const uploadError = new UploadError(
+            'Error getting signed URL',
+            upload.ids[0],
+          );
           event.reply(Channel.UPLOAD_ERROR, uploadError.clone());
           return;
         }
@@ -54,7 +58,10 @@ export abstract class UploaderService<T>
 
       if (isEmpty(config)) {
         this.logger.info('We cannot proceed with the upload');
-        const uploadError = new UploadError('We cannot proceed with the upload', upload.ids[0]);
+        const uploadError = new UploadError(
+          'We cannot proceed with the upload',
+          upload.ids[0],
+        );
         event.reply(Channel.UPLOAD_ERROR, uploadError.clone());
         return;
       }
@@ -71,7 +78,10 @@ export abstract class UploaderService<T>
       this.workerHandler(worker, upload, event);
     } catch (error: any) {
       this.logger.error('Error uploading file', error);
-      const uploadError = new UploadError(error ?? 'Error uploading file', upload.ids[0]);
+      const uploadError = new UploadError(
+        error ?? 'Error uploading file',
+        upload.ids[0],
+      );
       event.reply(Channel.UPLOAD_ERROR, uploadError.clone());
     }
   }
@@ -92,7 +102,6 @@ export abstract class UploaderService<T>
     }
     return moment(date).toISOString();
   }
-
 
   protected loadConfig() {
     return this.context.strategy.config();
@@ -135,7 +144,10 @@ export abstract class UploaderService<T>
 
     worker.on('error', (error) => {
       this.logger.error('Error::' + error);
-      const uploadError = new UploadError('Error uploading file', upload.ids[0]);
+      const uploadError = new UploadError(
+        'Error uploading file',
+        upload.ids[0],
+      );
       event.reply(Channel.UPLOAD_ERROR, uploadError.clone());
       worker.terminate();
     });

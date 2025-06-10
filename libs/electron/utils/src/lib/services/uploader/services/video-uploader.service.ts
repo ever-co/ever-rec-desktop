@@ -1,5 +1,4 @@
 import {
-  IRemoteUpload,
   IUpload,
   IUploadDone,
   IVideo,
@@ -38,17 +37,18 @@ export class VideoUploaderService extends UploaderService<IVideo> {
     }));
   }
 
-  protected override async synchronize({ itemId, result }: IUploadDone): Promise<void> {
-    await Promise.all(
-      [
-        this.service.update(itemId, { synced: true }),
-        this.service.saveUpload<IVideoUpload>({
-          id: itemId,
-          remoteUrl: result.fullUrl,
-          remoteId: result.id,
-          uploadedAt: result.recordedAt,
-        })
-      ]
-    );
+  protected override async synchronize({
+    itemId,
+    result,
+  }: IUploadDone): Promise<void> {
+    await Promise.all([
+      this.service.update(itemId, { synced: true }),
+      this.service.saveUpload<IVideoUpload>({
+        id: itemId,
+        remoteUrl: result.fullUrl,
+        remoteId: result.id,
+        uploadedAt: result.recordedAt,
+      }),
+    ]);
   }
 }

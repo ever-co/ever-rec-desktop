@@ -1,11 +1,10 @@
 import {
-  IUploadDone,
-  IRemoteUpload,
   IScreenshot,
   IScreenshotService,
   IScreenshotUpload,
   isEmpty,
   IUpload,
+  IUploadDone,
 } from '@ever-co/shared-utils';
 import { In } from 'typeorm';
 import { FileManager } from '../../files/file-manager';
@@ -32,18 +31,19 @@ export class ScreenshotUploaderService extends UploaderService<IScreenshot> {
     }));
   }
 
-  protected override async synchronize({ itemId, result }: IUploadDone): Promise<void> {
-    await Promise.all(
-      [
-        this.service.update(itemId, { synced: true }),
-        this.service.saveUpload<IScreenshotUpload>({
-          id: itemId,
-          remoteUrl: result.fullUrl,
-          remoteId: result.id,
-          uploadedAt: result.recordedAt,
-        })
-      ]
-    );
+  protected override async synchronize({
+    itemId,
+    result,
+  }: IUploadDone): Promise<void> {
+    await Promise.all([
+      this.service.update(itemId, { synced: true }),
+      this.service.saveUpload<IScreenshotUpload>({
+        id: itemId,
+        remoteUrl: result.fullUrl,
+        remoteId: result.id,
+        uploadedAt: result.recordedAt,
+      }),
+    ]);
   }
 
   protected override async loadConfig() {
