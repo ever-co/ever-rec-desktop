@@ -4,13 +4,12 @@
     class="sidenav border-r border-gray-200 md:flex md:flex-col">
     <!-- Sidenav Header -->
     <header class="flex items-center gap-2 p-6 pr-2 border-b border-gray-200">
-      <mat-icon matTooltip="Ever Rec Desktop" [matTooltipDisabled]="!isTablet" class="text-gray-700"
-        aria-label="App Logo">
-        terminal
+      <mat-icon [matTooltip]="env.appName" [matTooltipDisabled]="!isTablet" class="text-gray-700" aria-label="App Logo">
+        {{ env.icon }}
       </mat-icon>
 
       @if (!isTablet) {
-      <span class="text-lg font-semibold text-gray-700 truncate">Ever Rec Desktop</span>
+      <span class="text-lg font-semibold text-gray-700 truncate">{{ env.appName }}</span>
       } @if (isMobileView) {
       <button mat-icon-button class="ml-auto" (click)="toggleSidenav()" aria-label="Close Menu">
         <mat-icon>close</mat-icon>

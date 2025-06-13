@@ -1,7 +1,7 @@
 // layout.component.ts
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -17,13 +17,14 @@ import { breadcrumbActions } from '@ever-co/breadcrumb-data-access';
 import { BreadcrumbComponent } from '@ever-co/breadcrumb-feature';
 import { NotificationBadgeComponent } from '@ever-co/notification-feature';
 import { DatePickerComponent } from '@ever-co/date-picker-feature';
-import { LayoutService } from '@ever-co/shared-service';
+import { LayoutService, REC_ENV } from '@ever-co/shared-service';
 import { SidebarComponent } from '@ever-co/sidebar-feature';
 import { SearchComponent } from '@ever-co/web-search';
 import { Store } from '@ngrx/store';
 import { Subject, takeUntil } from 'rxjs';
 import { UploadBadgeComponent } from '@ever-co/upload-feature';
 import { StartComponent } from '../start/start.component';
+import { IEnvironment } from '@ever-co/shared-utils';
 
 @Component({
   selector: 'lib-layout',
@@ -58,7 +59,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private readonly store: Store,
     private readonly breakpointObserver: BreakpointObserver,
     private readonly layoutService: LayoutService,
-  ) {}
+    @Inject(REC_ENV)
+    public readonly env: IEnvironment
+  ) { }
 
   public ngOnInit(): void {
     this.store.dispatch(

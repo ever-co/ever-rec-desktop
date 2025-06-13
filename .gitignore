@@ -45,3 +45,7 @@ Thumbs.db
 .cache
 
 .nx
+
+
+#Ignore cursor AI rules
+.cursor/rules/codacy.mdc

@@ -10,9 +10,7 @@ import { Store } from '@ngrx/store';
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-  title = 'Continues Recording';
-
-  constructor(private store: Store) {}
+  constructor(private store: Store) { }
 
   ngOnInit(): void {
     this.store.dispatch(hydrationActions.hydrateState());
