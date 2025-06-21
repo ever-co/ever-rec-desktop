@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.14](https://github.com/ever-co/ever-rec-desktop/compare/video-ui-1.0.13...video-ui-1.0.14) (2025-06-21)
+
+### Dependency Updates
+
+* `shared-components` updated to version `2.0.8`
+* `shared-service` updated to version `1.0.8`
+* `utils` updated to version `1.4.0`
+
+
 ## [1.0.13](https://github.com/ever-co/ever-rec-desktop/compare/video-ui-1.0.12...video-ui-1.0.13) (2025-06-06)
 
 ### Dependency Updates
