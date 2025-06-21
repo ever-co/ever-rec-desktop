@@ -2,6 +2,35 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [2.1.0](https://github.com/ever-co/ever-rec-desktop/compare/layout-2.0.20...layout-2.1.0) (2025-06-21)
+
+### Dependency Updates
+
+* `notification-feature` updated to version `1.0.16`
+* `date-picker-feature` updated to version `1.0.21`
+* `shared-service` updated to version `1.0.8`
+* `sidebar-feature` updated to version `1.0.12`
+* `search` updated to version `1.0.18`
+* `upload-feature` updated to version `2.0.22`
+* `utils` updated to version `1.4.0`
+* `date-picker-data-access` updated to version `1.0.9`
+* `timeline-data-access` updated to version `1.0.22`
+* `dashboard` updated to version `1.2.11`
+* `library` updated to version `1.0.21`
+* `web-setting-feature` updated to version `1.0.22`
+* `timesheet-feature` updated to version `1.1.16`
+* `screenshot-feature` updated to version `1.1.17`
+* `timeline-feature` updated to version `1.0.22`
+* `generate-video-data-access` updated to version `1.0.19`
+* `screenshot-data-access` updated to version `1.1.14`
+
+### Features
+
+* **env:** configure app title and icon using environment ([343534a](https://github.com/ever-co/ever-rec-desktop/commit/343534a4ab5f6336f4593cc893c61ed3247f567a))
+* **layout:** set initial date range ([03f41de](https://github.com/ever-co/ever-rec-desktop/commit/03f41de546c442e60d2dde5be8bf50b63071bd57))
+
+
+
 ## [2.0.20](https://github.com/ever-co/ever-rec-desktop/compare/layout-2.0.19...layout-2.0.20) (2025-06-06)
 
 ### Dependency Updates
