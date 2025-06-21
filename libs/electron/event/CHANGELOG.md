@@ -2,6 +2,21 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.6.0](https://github.com/ever-co/ever-rec-desktop/compare/event-0.5.5...event-0.6.0) (2025-06-21)
+
+### Dependency Updates
+
+* `database-electron` updated to version `0.5.0`
+* `electron-utils` updated to version `1.2.6`
+* `utils` updated to version `1.4.0`
+* `window` updated to version `0.3.12`
+
+### Features
+
+* **upload:** queue related media after video upload ([a7c7974](https://github.com/ever-co/ever-rec-desktop/commit/a7c7974d133aa5e394cdc349d387e8d67887537e))
+
+
+
 ## [0.5.5](https://github.com/ever-co/ever-rec-desktop/compare/event-0.5.4...event-0.5.5) (2025-06-06)
 
 ### Dependency Updates
