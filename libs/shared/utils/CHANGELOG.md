@@ -2,6 +2,16 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [1.4.0](https://github.com/ever-co/ever-rec-desktop/compare/utils-1.3.2...utils-1.4.0) (2025-06-21)
+
+
+### Features
+
+* **env:** configure app title and icon using environment ([343534a](https://github.com/ever-co/ever-rec-desktop/commit/343534a4ab5f6336f4593cc893c61ed3247f567a))
+* **upload:** queue related media after video upload ([a7c7974](https://github.com/ever-co/ever-rec-desktop/commit/a7c7974d133aa5e394cdc349d387e8d67887537e))
+
+
+
 ## [1.3.2](https://github.com/ever-co/ever-rec-desktop/compare/utils-1.3.1...utils-1.3.2) (2025-06-06)
 
 
