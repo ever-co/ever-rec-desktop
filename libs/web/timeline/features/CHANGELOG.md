@@ -2,6 +2,18 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.22](https://github.com/ever-co/ever-rec-desktop/compare/timeline-feature-1.0.21...timeline-feature-1.0.22) (2025-06-21)
+
+### Dependency Updates
+
+* `generate-video-data-access` updated to version `1.0.19`
+* `generate-video-feature` updated to version `1.0.20`
+* `timeline-data-access` updated to version `1.0.22`
+* `utils` updated to version `1.4.0`
+* `shared-service` updated to version `1.0.8`
+* `screenshot-feature` updated to version `1.1.17`
+
+
 ## [1.0.21](https://github.com/ever-co/ever-rec-desktop/compare/timeline-feature-1.0.20...timeline-feature-1.0.21) (2025-06-06)
 
 ### Dependency Updates
