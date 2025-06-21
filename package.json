@@ -1,12 +1,19 @@
 {
   "name": "@ever-co/ever-rec-desktop",
   "version": "0.1.0",
-  "description": "Ever Rec Desktop",
-  "license": "GPL-3.0",
+  "description": "Ever Rec Desktop - Screen Capture, Screen Recording, Images & Video Sharing Desktop Application",
+  "license": "AGPL-3.0",
+  "homepage": "https://rec.so",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ever-co/ever-rec-desktop.git"
   },
+	"private": true,
+	"author": {
+		"name": "Ever Co. LTD",
+		"email": "ever@ever.co",
+		"url": "https://ever.co"
+	},
   "bugs": {
     "url": "https://github.com/ever-co/ever-rec-desktop/issues"
   },
@@ -19,8 +26,7 @@
     "build:lib": "nx run-many --target=build --exclude=ui,desktop --tailwindConfig=apps/ui/tailwind.config.js",
     "publish:all": "nx run-many --target=version --exclude=ui,desktop --base=develop",
     "publish:affected:libraries": "nx affected  --exclude=ui,desktop --base=develop --target=version"
-  },
-  "author": "Ever Co. LTD <ever@ever.co> (https://ever.co)",
+  },  
   "keywords": [],
   "dependencies": {
     "@angular/animations": "19.2.10",
@@ -127,8 +133,7 @@
     "typescript": "5.8.3",
     "verdaccio": "6.1.2"
   },
-  "snyk": true,
-  "homepage": "https://github.com/ever-co/ever-rec-desktop#readme",
+  "snyk": true,  
   "publishConfig": {
     "registry": "http://localhost:4873"
   },
