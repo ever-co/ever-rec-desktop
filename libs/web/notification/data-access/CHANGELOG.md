@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.11](https://github.com/ever-co/ever-rec-desktop/compare/notification-data-access-1.0.10...notification-data-access-1.0.11) (2025-06-21)
+
+### Dependency Updates
+
+* `utils` updated to version `1.4.0`
+* `shared-service` updated to version `1.0.8`
+* `data-access-electron` updated to version `1.0.7`
+
+
 ## [1.0.10](https://github.com/ever-co/ever-rec-desktop/compare/notification-data-access-1.0.9...notification-data-access-1.0.10) (2025-06-06)
 
 ### Dependency Updates
