@@ -24,7 +24,8 @@ import { Store } from '@ngrx/store';
 import { Subject, takeUntil } from 'rxjs';
 import { UploadBadgeComponent } from '@ever-co/upload-feature';
 import { StartComponent } from '../start/start.component';
-import { IEnvironment } from '@ever-co/shared-utils';
+import { currentWeek, currentWeekTillNow, IEnvironment } from '@ever-co/shared-utils';
+import { datePickerActions } from '@ever-co/date-picker-data-access';
 
 @Component({
   selector: 'lib-layout',
@@ -61,7 +62,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private readonly layoutService: LayoutService,
     @Inject(REC_ENV)
     public readonly env: IEnvironment
-  ) { }
+  ) {
+    this.store.dispatch(datePickerActions.selectRange(currentWeekTillNow()));
+  }
 
   public ngOnInit(): void {
     this.store.dispatch(
