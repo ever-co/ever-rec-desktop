@@ -2,6 +2,16 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.2.10](https://github.com/ever-co/ever-rec-desktop/compare/webcam-data-access-1.2.9...webcam-data-access-1.2.10) (2025-06-21)
+
+### Dependency Updates
+
+* `utils` updated to version `1.4.0`
+* `shared-service` updated to version `1.0.8`
+* `data-access-electron` updated to version `1.0.7`
+* `generate-video-data-access` updated to version `1.0.19`
+
+
 ## [1.2.9](https://github.com/ever-co/ever-rec-desktop/compare/webcam-data-access-1.2.8...webcam-data-access-1.2.9) (2025-06-06)
 
 ### Dependency Updates
