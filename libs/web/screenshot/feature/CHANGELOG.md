@@ -2,6 +2,22 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.1.17](https://github.com/ever-co/ever-rec-desktop/compare/screenshot-feature-1.1.16...screenshot-feature-1.1.17) (2025-06-21)
+
+### Dependency Updates
+
+* `screenshot-data-access` updated to version `1.1.14`
+* `shared-components` updated to version `2.0.8`
+* `shared-service` updated to version `1.0.8`
+* `utils` updated to version `1.4.0`
+* `generate-video-data-access` updated to version `1.0.19`
+* `date-picker-data-access` updated to version `1.0.9`
+* `screenshot-ui` updated to version `1.1.12`
+* `upload-data-access` updated to version `2.2.0`
+* `web-setting-data-access` updated to version `1.0.24`
+* `notification-data-access` updated to version `1.0.11`
+
+
 ## [1.1.16](https://github.com/ever-co/ever-rec-desktop/compare/screenshot-feature-1.1.15...screenshot-feature-1.1.16) (2025-06-06)
 
 ### Dependency Updates
