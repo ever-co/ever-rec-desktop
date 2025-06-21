@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [2.0.8](https://github.com/ever-co/ever-rec-desktop/compare/shared-components-2.0.7...shared-components-2.0.8) (2025-06-21)
+
+### Dependency Updates
+
+* `utils` updated to version `1.4.0`
+
+
 ## [2.0.7](https://github.com/ever-co/ever-rec-desktop/compare/shared-components-2.0.6...shared-components-2.0.7) (2025-06-06)
 
 ### Dependency Updates
