@@ -38,3 +38,4 @@ export * from './lib/interfaces/message-broker.interface';
 export * from './lib/interfaces/mediator.interface';
 export * from './lib/interfaces/environment.interface';
 export * from './lib/interfaces/clone.interface';
+export * from './lib/pick-random-items.util';

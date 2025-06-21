@@ -4,11 +4,13 @@ import {
   Channel,
   convertBase64ToBuffer,
   currentDay,
+  IFindManyOptions,
   IPaginationOptions,
   IPhoto,
   IPhotoCreateInput,
   IPhotoSave,
   PHOTO_DIR,
+  pickRandomItems,
 } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
 import { Between } from 'typeorm';
@@ -99,6 +101,12 @@ export async function savePhoto(data: IPhotoSave) {
   return photoService.save(input);
 }
 
+// Get many photos for upload
+ipcMain.handle(Channel.GET_PHOTOS_TO_UPLOAD, async (_, options: IFindManyOptions<IPhoto>) => {
+  const photos = await photoService.findAll(options);
+  return pickRandomItems(photos, 16)
+});
+
 export function removeCrudPhotoEvent(): void {
   const channels = [
     Channel.SAVE_PHOTO,
@@ -106,6 +114,7 @@ export function removeCrudPhotoEvent(): void {
     Channel.DELETE_ALL_PHOTOS,
     Channel.GET_ALL_PHOTOS,
     Channel.GET_PHOT0,
+    Channel.GET_PHOTOS_TO_UPLOAD
   ];
   channels.forEach((channel) => ipcMain.removeHandler(channel));
 }

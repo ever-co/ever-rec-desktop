@@ -17,6 +17,7 @@ export interface IVideo extends IBase, IUploadable {
   screenshots?: IScreenshot[];
   metadata?: IVideoMetadata;
   timeLog?: ITimeLog;
+  timeLogId?: string;
   timelines?: ITimeline[];
   isTimeline?: boolean;
   audio?: IAudio;

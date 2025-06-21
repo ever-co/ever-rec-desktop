@@ -1,14 +1,22 @@
 import { Injectable, inject } from '@angular/core';
 import { generateVideoActions } from '@ever-co/generate-video-data-access';
 import { NotificationService } from '@ever-co/notification-data-access';
-import { IUpload } from '@ever-co/shared-utils';
-import { selectSettingUploadAutoSync } from '@ever-co/web-setting-data-access';
+import {
+  IAudio,
+  IPhoto,
+  IScreenshot,
+  IUpload,
+  IVideo,
+  UploadType,
+} from '@ever-co/shared-utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { EMPTY, of, forkJoin } from 'rxjs';
+import { EMPTY, forkJoin, from, of } from 'rxjs';
 import {
   catchError,
+  concatMap,
   filter,
+  first,
   map,
   mergeMap,
   switchMap,
@@ -19,7 +27,16 @@ import { UploadVideoItem } from '../models/upload-video.model';
 import { UploadMapper } from '../models/upload.model';
 import { UploadService } from '../services/upload.service';
 import { uploadActions } from './upload.actions';
-import { selectCanUploadMore, selectInProgress, selectUploadInProgress, selectUploadQueue } from './upload.selectors';
+import {
+  selectCanUploadMore,
+  selectCompleted,
+  selectInProgress,
+  selectUploadQueue,
+} from './upload.selectors';
+import { UploadPhotoItem } from '../models/upload-photo.model';
+import { UploadAudioItem } from '../models/upload-audio.model';
+import { UploadScreenshotItem } from '../models/upload-screenshot.model';
+import { selectSettingUploadAutoSync } from '@ever-co/web-setting-data-access';
 
 @Injectable()
 export class UploadEffects {
@@ -174,8 +191,60 @@ export class UploadEffects {
     ),
   );
 
+  uploadRelatedItems$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(uploadActions.uploadItemSuccess),
+      withLatestFrom(this.store.select(selectCompleted)),
+      concatMap(([{ itemId }, completedItems]) => {
+        const completedItem = completedItems.find((item) => item.id === itemId);
+
+        if (completedItem && completedItem.type === UploadType.VIDEO) {
+          const { timeLogId } = completedItem.data as IVideo
+          return forkJoin({
+            photos: this.uploadService.getPhotos({
+              where: { timeLogId }
+            }),
+            audios: this.uploadService.getAudios({
+              where: { timeLogId }
+            }),
+            screenshots: this.uploadService.getScreenshots({
+              where: {
+                video: {
+                  id: itemId
+                }
+              }
+            }),
+          }).pipe(
+            switchMap(({ photos, audios, screenshots }) => {
+              const itemsToQueue = [
+                ...photos.map(
+                  (photo: IPhoto) => new UploadPhotoItem(photo),
+                ),
+                ...audios.map(
+                  (audio: IAudio) => new UploadAudioItem(audio),
+                ),
+                ...screenshots.map(
+                  (screenshot: IScreenshot) =>
+                    new UploadScreenshotItem(screenshot),
+                ),
+              ];
+
+              if (itemsToQueue.length > 0) {
+                return of(
+                  uploadActions.addItemToQueue({ items: itemsToQueue }),
+                );
+              }
+              return EMPTY;
+            }),
+          );
+        }
+        return EMPTY;
+      }),
+    ),
+  );
+
   constructor(
     private readonly uploadService: UploadService,
-    private readonly notificationService: NotificationService,
+    private readonly notificationService: NotificationService
   ) { }
 }

@@ -10,10 +10,13 @@ import { FileManager } from '@ever-co/electron-utils';
 import {
   Channel,
   currentDay,
+  IFindManyOptions,
   IPaginationOptions,
+  IPhoto,
   IRange,
   IScreenshot,
   PHOTO_DIR,
+  pickRandomItems,
   SCREENSHOT_DIR,
   TimeSlot,
   VIDEO_DIR,
@@ -179,6 +182,12 @@ export function crudScreeshotEvents() {
       return ScreenshotMetadataService.topApplicationsByDurationAndProductivity(range, limit);
     }
   );
+
+  // Get many screenshots for upload
+  ipcMain.handle(Channel.GET_SCREENSHOTS_TO_UPLOAD, async (_, options: IFindManyOptions<IScreenshot>) => {
+    const photos = await screenshotService.findAll(options);
+    return pickRandomItems(photos, 16)
+  });
 }
 
 export async function purgeData() {
@@ -210,7 +219,8 @@ export function removeCrudScreenshotEvent(): void {
     Channel.CHART_LINE_DATA,
     Channel.REQUEST_SCREENSHOTS_STATISTICS,
     Channel.REQUEST_DELETE_SELECTED_SCREENSHOTS,
-    Channel.REQUEST_TOP_APPLICATIONS_PRODUCTIVITY
+    Channel.REQUEST_TOP_APPLICATIONS_PRODUCTIVITY,
+    Channel.GET_SCREENSHOTS_TO_UPLOAD
   ];
   channels.forEach((channel) => ipcMain.removeHandler(channel));
 }

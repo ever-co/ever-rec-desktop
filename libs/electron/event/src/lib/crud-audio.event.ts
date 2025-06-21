@@ -7,10 +7,11 @@ import {
   IAudio,
   IAudioCreateInput,
   IAudioSave,
+  IFindManyOptions,
   IPaginationOptions,
 } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
-import { Between } from 'typeorm';
+import { Between, FindManyOptions } from 'typeorm';
 
 const audioService = new AudioService();
 
@@ -107,6 +108,11 @@ export async function saveAudio(data: IAudioSave) {
   return audioService.save(input);
 }
 
+// Get many audios for upload
+ipcMain.handle(Channel.GET_AUDIOS_TO_UPLOAD, async (_, options: IFindManyOptions<IAudio>) => {
+  return audioService.findAll(options);
+});
+
 export function removeCrudAudioEvent(): void {
   const channels = [
     Channel.SAVE_AUDIO,
@@ -114,6 +120,7 @@ export function removeCrudAudioEvent(): void {
     Channel.DELETE_ALL_AUDIO,
     Channel.GET_ALL_AUDIO,
     Channel.GET_AUDIO,
+    Channel.GET_AUDIOS_TO_UPLOAD
   ];
   channels.forEach((channel) => ipcMain.removeHandler(channel));
 }
