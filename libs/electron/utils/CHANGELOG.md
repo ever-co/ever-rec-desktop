@@ -2,6 +2,18 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.2.6](https://github.com/ever-co/ever-rec-desktop/compare/electron-utils-1.2.5...electron-utils-1.2.6) (2025-06-21)
+
+### Dependency Updates
+
+* `utils` updated to version `1.4.0`
+
+### Bug Fixes
+
+* **uploader-service:** add return type to toISOString method for better type safety ([3c7fa9a](https://github.com/ever-co/ever-rec-desktop/commit/3c7fa9ada129cffd8464e3cbe4fa9efb75225b86))
+
+
+
 ## [1.2.5](https://github.com/ever-co/ever-rec-desktop/compare/electron-utils-1.2.4...electron-utils-1.2.5) (2025-06-09)
 
 
