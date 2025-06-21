@@ -1,4 +1,4 @@
-# Ever Rec
+# Ever Rec Desktop
 
 ## Overview
 
