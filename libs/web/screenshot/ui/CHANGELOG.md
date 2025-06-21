@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.1.12](https://github.com/ever-co/ever-rec-desktop/compare/screenshot-ui-1.1.11...screenshot-ui-1.1.12) (2025-06-21)
+
+### Dependency Updates
+
+* `utils` updated to version `1.4.0`
+* `shared-components` updated to version `2.0.8`
+* `shared-service` updated to version `1.0.8`
+
+
 ## [1.1.11](https://github.com/ever-co/ever-rec-desktop/compare/screenshot-ui-1.1.10...screenshot-ui-1.1.11) (2025-06-06)
 
 ### Dependency Updates
