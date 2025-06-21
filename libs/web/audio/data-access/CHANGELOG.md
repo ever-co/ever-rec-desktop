@@ -2,6 +2,21 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [0.3.0](https://github.com/ever-co/ever-rec-desktop/compare/data-access-0.2.20...data-access-0.3.0) (2025-06-21)
+
+### Dependency Updates
+
+* `utils` updated to version `1.4.0`
+* `notification-data-access` updated to version `1.0.11`
+* `webcam-data-access` updated to version `1.2.10`
+* `data-access-electron` updated to version `1.0.7`
+
+### Features
+
+* **upload:** queue related media after video upload ([a7c7974](https://github.com/ever-co/ever-rec-desktop/commit/a7c7974d133aa5e394cdc349d387e8d67887537e))
+
+
+
 ## [0.2.20](https://github.com/ever-co/ever-rec-desktop/compare/data-access-0.2.19...data-access-0.2.20) (2025-06-06)
 
 ### Dependency Updates
