@@ -195,55 +195,39 @@ export class UploadEffects {
     this.actions$.pipe(
       ofType(uploadActions.uploadItemSuccess),
       withLatestFrom(this.store.select(selectCompleted)),
-      concatMap(([{ itemId }, completedItems]) => {
+      mergeMap(([{ itemId }, completedItems]) => {
         const completedItem = completedItems.find((item) => item.id === itemId);
 
-        if (completedItem && completedItem.type === UploadType.VIDEO) {
-          const { timeLogId } = completedItem.data as IVideo
-          return forkJoin({
-            photos: this.uploadService.getPhotos({
-              where: { timeLogId },
-              relations: ['metadata'],
-            }),
-            audios: this.uploadService.getAudios({
-              where: { timeLogId },
-              relations: ['metadata'],
-            }),
-            screenshots: this.uploadService.getScreenshots({
-              relations: ['metadata', 'metadata.application',],
-              where: {
-                video: {
-                  id: itemId
-                }
-              }
-            }),
-          }).pipe(
-            switchMap(({ photos, audios, screenshots }) => {
-              const itemsToQueue = [
-                ...photos.map(
-                  (photo: IPhoto) => new UploadPhotoItem(photo),
-                ),
-                ...audios.map(
-                  (audio: IAudio) => new UploadAudioItem(audio),
-                ),
-                ...screenshots.map(
-                  (screenshot: IScreenshot) =>
-                    new UploadScreenshotItem(screenshot),
-                ),
-              ];
-
-              if (itemsToQueue.length > 0) {
-                return of(
-                  uploadActions.addItemToQueue({ items: itemsToQueue }),
-                );
-              }
-              return EMPTY;
-            }),
-          );
+        if (!completedItem || completedItem.type !== UploadType.VIDEO) {
+          return EMPTY;
         }
-        return EMPTY;
+
+        const { timeLogId } = completedItem.data as IVideo;
+
+        return forkJoin({
+          photos: this.uploadService.getPhotos({
+            where: { timeLogId },
+            relations: ['metadata'],
+          }),
+          audios: this.uploadService.getAudios({
+            where: { timeLogId },
+            relations: ['metadata'],
+          }),
+          screenshots: this.uploadService.getScreenshots({
+            relations: ['metadata', 'metadata.application'],
+            where: { video: { id: itemId } },
+          }),
+        }).pipe(
+          map(({ photos, audios, screenshots }) => [
+            ...photos.map((photo: IPhoto) => new UploadPhotoItem(photo)),
+            ...audios.map((audio: IAudio) => new UploadAudioItem(audio)),
+            ...screenshots.map((screenshot: IScreenshot) => new UploadScreenshotItem(screenshot)),
+          ]),
+          filter((itemsToQueue) => itemsToQueue.length > 0),
+          map((itemsToQueue) => uploadActions.addItemToQueue({ items: itemsToQueue }))
+        );
       }),
-    ),
+    )
   );
 
   constructor(
