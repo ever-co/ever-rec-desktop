@@ -202,12 +202,15 @@ export class UploadEffects {
           const { timeLogId } = completedItem.data as IVideo
           return forkJoin({
             photos: this.uploadService.getPhotos({
-              where: { timeLogId }
+              where: { timeLogId },
+              relations: ['metadata'],
             }),
             audios: this.uploadService.getAudios({
-              where: { timeLogId }
+              where: { timeLogId },
+              relations: ['metadata'],
             }),
             screenshots: this.uploadService.getScreenshots({
+              relations: ['metadata'],
               where: {
                 video: {
                   id: itemId
