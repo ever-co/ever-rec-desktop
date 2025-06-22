@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [2.3.0](https://github.com/ever-co/ever-rec-desktop/compare/upload-data-access-2.2.0...upload-data-access-2.3.0) (2025-06-22)
+
+
+### Features
+
+* **upload:** include metadata in upload results ([84a3aea](https://github.com/ever-co/ever-rec-desktop/commit/84a3aea60464ef22fa1dd6869f5782c8d5e2abd4))
+
+
+
 # [2.2.0](https://github.com/ever-co/ever-rec-desktop/compare/upload-data-access-2.1.9...upload-data-access-2.2.0) (2025-06-21)
 
 ### Dependency Updates
