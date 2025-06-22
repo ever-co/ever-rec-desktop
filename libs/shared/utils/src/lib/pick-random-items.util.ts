@@ -16,9 +16,7 @@
  */
 export function pickRandomItems<T>(array: T[], count: number): T[] {
   if (count <= 0) return [];
-  if (count > array.length) {
-    throw new Error(`Cannot pick ${count} items from array of length ${array.length}`);
-  }
+  if (count > array.length) return array;
 
   const shuffled = [...array];
   for (let i = shuffled.length - 1; i > shuffled.length - count - 1; i--) {
