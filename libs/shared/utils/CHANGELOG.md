@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.4.1](https://github.com/ever-co/ever-rec-desktop/compare/utils-1.4.0...utils-1.4.1) (2025-06-22)
+
+
+### Bug Fixes
+
+* **utils:** return full array when count exceeds length ([2cebbe1](https://github.com/ever-co/ever-rec-desktop/commit/2cebbe170796b6c9f7a0be5aefc2e84991288036))
+
+
+
 # [1.4.0](https://github.com/ever-co/ever-rec-desktop/compare/utils-1.3.2...utils-1.4.0) (2025-06-21)
 
 
