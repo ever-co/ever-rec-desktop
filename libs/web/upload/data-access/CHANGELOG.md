@@ -2,6 +2,18 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+# [2.4.0](https://github.com/ever-co/ever-rec-desktop/compare/upload-data-access-2.3.0...upload-data-access-2.4.0) (2025-06-22)
+
+### Dependency Updates
+
+* `utils` updated to version `1.4.1`
+
+### Features
+
+* **upload:** include application relation when fetching screenshots ([5abdf01](https://github.com/ever-co/ever-rec-desktop/commit/5abdf0173c3ef930a0330829f0c794a804a56105))
+
+
+
 # [2.3.0](https://github.com/ever-co/ever-rec-desktop/compare/upload-data-access-2.2.0...upload-data-access-2.3.0) (2025-06-22)
 
 
