@@ -210,7 +210,7 @@ export class UploadEffects {
               relations: ['metadata'],
             }),
             screenshots: this.uploadService.getScreenshots({
-              relations: ['metadata'],
+              relations: ['metadata', 'metadata.application',],
               where: {
                 video: {
                   id: itemId
