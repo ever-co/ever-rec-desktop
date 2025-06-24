@@ -15,17 +15,17 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterOutlet } from '@angular/router';
 import { breadcrumbActions } from '@ever-co/breadcrumb-data-access';
 import { BreadcrumbComponent } from '@ever-co/breadcrumb-feature';
-import { NotificationBadgeComponent } from '@ever-co/notification-feature';
+import { datePickerActions } from '@ever-co/date-picker-data-access';
 import { DatePickerComponent } from '@ever-co/date-picker-feature';
+import { NotificationBadgeComponent } from '@ever-co/notification-feature';
 import { LayoutService, REC_ENV } from '@ever-co/shared-service';
+import { currentWeekTillNow, IEnvironment } from '@ever-co/shared-utils';
 import { SidebarComponent } from '@ever-co/sidebar-feature';
+import { UploadBadgeComponent } from '@ever-co/upload-feature';
 import { SearchComponent } from '@ever-co/web-search';
 import { Store } from '@ngrx/store';
 import { Subject, takeUntil } from 'rxjs';
-import { UploadBadgeComponent } from '@ever-co/upload-feature';
 import { StartComponent } from '../start/start.component';
-import { currentWeek, currentWeekTillNow, IEnvironment } from '@ever-co/shared-utils';
-import { datePickerActions } from '@ever-co/date-picker-data-access';
 
 @Component({
   selector: 'lib-layout',
@@ -61,7 +61,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private readonly breakpointObserver: BreakpointObserver,
     private readonly layoutService: LayoutService,
     @Inject(REC_ENV)
-    public readonly env: IEnvironment
+    public readonly env: IEnvironment,
   ) {
     this.store.dispatch(datePickerActions.selectRange(currentWeekTillNow()));
   }
