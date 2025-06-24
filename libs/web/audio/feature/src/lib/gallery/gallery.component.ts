@@ -45,6 +45,7 @@ import {
   ContainerComponent,
   MetadataComponent,
 } from '@ever-co/audio-ui';
+import { selectDateRange } from '@ever-co/date-picker-data-access';
 import { selectGenerateVideoState } from '@ever-co/generate-video-data-access';
 import { selectScreenshotState } from '@ever-co/screenshot-data-access';
 import {
@@ -54,7 +55,6 @@ import {
 } from '@ever-co/upload-data-access';
 import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 import { PlayerContainerComponent } from '../player-container/player-container.component';
-import { selectDateRange } from '@ever-co/date-picker-data-access';
 
 @Component({
   selector: 'lib-audio-gallery',
