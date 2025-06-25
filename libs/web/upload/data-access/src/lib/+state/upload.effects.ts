@@ -9,20 +9,22 @@ import {
   IVideo,
   UploadType,
 } from '@ever-co/shared-utils';
+import { selectSettingUploadAutoSync } from '@ever-co/web-setting-data-access';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { EMPTY, forkJoin, from, of } from 'rxjs';
+import { EMPTY, forkJoin, of } from 'rxjs';
 import {
   catchError,
-  concatMap,
   filter,
-  first,
   map,
   mergeMap,
   switchMap,
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
+import { UploadAudioItem } from '../models/upload-audio.model';
+import { UploadPhotoItem } from '../models/upload-photo.model';
+import { UploadScreenshotItem } from '../models/upload-screenshot.model';
 import { UploadVideoItem } from '../models/upload-video.model';
 import { UploadMapper } from '../models/upload.model';
 import { UploadService } from '../services/upload.service';
@@ -33,10 +35,6 @@ import {
   selectInProgress,
   selectUploadQueue,
 } from './upload.selectors';
-import { UploadPhotoItem } from '../models/upload-photo.model';
-import { UploadAudioItem } from '../models/upload-audio.model';
-import { UploadScreenshotItem } from '../models/upload-screenshot.model';
-import { selectSettingUploadAutoSync } from '@ever-co/web-setting-data-access';
 
 @Injectable()
 export class UploadEffects {
@@ -178,13 +176,17 @@ export class UploadEffects {
           return of(uploadActions.cancelAllUploadsSuccess());
         }
         // Cancel all in-progress uploads using forkJoin
-        return forkJoin(inProgress.map((item) => this.uploadService.cancel(item.id))).pipe(
-          tap(() => this.notificationService.show('All uploads canceled.', 'warning')),
+        return forkJoin(
+          inProgress.map((item) => this.uploadService.cancel(item.id)),
+        ).pipe(
+          tap(() =>
+            this.notificationService.show('All uploads canceled.', 'warning'),
+          ),
           map(() => uploadActions.cancelAllUploadsSuccess()),
           catchError(() => {
             this.notificationService.show('Error canceling uploads.', 'error');
             return of(uploadActions.cancelAllUploadsSuccess());
-          })
+          }),
         );
       }),
       mergeMap((action) => of(action)),
@@ -221,17 +223,21 @@ export class UploadEffects {
           map(({ photos, audios, screenshots }) => [
             ...photos.map((photo: IPhoto) => new UploadPhotoItem(photo)),
             ...audios.map((audio: IAudio) => new UploadAudioItem(audio)),
-            ...screenshots.map((screenshot: IScreenshot) => new UploadScreenshotItem(screenshot)),
+            ...screenshots.map(
+              (screenshot: IScreenshot) => new UploadScreenshotItem(screenshot),
+            ),
           ]),
           filter((itemsToQueue) => itemsToQueue.length > 0),
-          map((itemsToQueue) => uploadActions.addItemToQueue({ items: itemsToQueue }))
+          map((itemsToQueue) =>
+            uploadActions.addItemToQueue({ items: itemsToQueue }),
+          ),
         );
       }),
-    )
+    ),
   );
 
   constructor(
     private readonly uploadService: UploadService,
-    private readonly notificationService: NotificationService
-  ) { }
+    private readonly notificationService: NotificationService,
+  ) {}
 }
