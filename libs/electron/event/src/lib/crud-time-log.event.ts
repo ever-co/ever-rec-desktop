@@ -100,6 +100,7 @@ export function removeCrudTimeLogEvent(): void {
     Channel.REQUEST_DELETE_ONE_LOG,
     Channel.REQUEST_LOG_STATISTICS,
     Channel.GET_CONTEXT,
+    Channel.GET_HEAT_MAP
   ];
   channels.forEach((channel) => ipcMain.removeHandler(channel));
 }
