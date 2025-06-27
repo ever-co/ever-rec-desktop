@@ -220,7 +220,8 @@ export function removeCrudScreenshotEvent(): void {
     Channel.REQUEST_SCREENSHOTS_STATISTICS,
     Channel.REQUEST_DELETE_SELECTED_SCREENSHOTS,
     Channel.REQUEST_TOP_APPLICATIONS_PRODUCTIVITY,
-    Channel.GET_SCREENSHOTS_TO_UPLOAD
+    Channel.GET_SCREENSHOTS_TO_UPLOAD,
+    Channel.REQUEST_SCREENSHOTS_STATISTICS_BY_RANGE
   ];
   channels.forEach((channel) => ipcMain.removeHandler(channel));
 }
