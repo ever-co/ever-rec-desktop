@@ -2,6 +2,10 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.7.1](https://github.com/ever-co/ever-rec-desktop/compare/event-0.7.0...event-0.7.1) (2025-06-27)
+
+
+
 # [0.7.0](https://github.com/ever-co/ever-rec-desktop/compare/event-0.6.0...event-0.7.0) (2025-06-27)
 
 ### Dependency Updates
