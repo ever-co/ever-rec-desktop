@@ -8,12 +8,12 @@
     "type": "git",
     "url": "git+https://github.com/ever-co/ever-rec-desktop.git"
   },
-	"private": true,
-	"author": {
-		"name": "Ever Co. LTD",
-		"email": "ever@ever.co",
-		"url": "https://ever.co"
-	},
+  "private": true,
+  "author": {
+    "name": "Ever Co. LTD",
+    "email": "ever@ever.co",
+    "url": "https://ever.co"
+  },
   "bugs": {
     "url": "https://github.com/ever-co/ever-rec-desktop/issues"
   },
@@ -26,7 +26,7 @@
     "build:lib": "nx run-many --target=build --exclude=ui,desktop --tailwindConfig=apps/ui/tailwind.config.js",
     "publish:all": "nx run-many --target=version --exclude=ui,desktop --base=develop",
     "publish:affected:libraries": "nx affected  --exclude=ui,desktop --base=develop --target=version"
-  },  
+  },
   "keywords": [],
   "dependencies": {
     "@angular/animations": "19.2.10",
@@ -133,11 +133,12 @@
     "typescript": "5.8.3",
     "verdaccio": "6.1.2"
   },
-  "snyk": true,  
+  "snyk": true,
   "publishConfig": {
     "registry": "http://localhost:4873"
   },
   "nx": {
     "includedScripts": []
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

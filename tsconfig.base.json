@@ -11,6 +11,9 @@
       "@ever-co/audio-data-access": ["libs/web/audio/data-access/src/index.ts"],
       "@ever-co/audio-feature": ["libs/web/audio/feature/src/index.ts"],
       "@ever-co/audio-ui": ["libs/web/audio/ui/src/index.ts"],
+      "@ever-co/auth-data-access": ["libs/web/auth/data-access/src/index.ts"],
+      "@ever-co/auth-feature": ["libs/web/auth/feature/src/index.ts"],
+      "@ever-co/auth-ui": ["libs/web/auth/ui/src/index.ts"],
       "@ever-co/breadcrumb-data-access": [
         "libs/web/breadcrumb/data-access/src/index.ts"
       ],
