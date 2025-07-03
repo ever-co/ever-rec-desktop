@@ -1,6 +1,6 @@
 <form
   [formGroup]="form"
-  (ngSubmit)="submit.emit(form.value)"
+  (ngSubmit)="submitForm()"
   class="login-form"
 >
   <mat-form-field appearance="fill" class="full-width">
@@ -10,25 +10,53 @@
       type="email"
       formControlName="email"
       placeholder="Enter your email"
+      autocomplete="email"
+      required
+      aria-label="Email"
     />
-    <mat-error *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
-      Please enter a valid email.
-    </mat-error>
+    @if (emailRequired) {
+      <mat-error>Email is required.</mat-error>
+    }
+    @if (emailInvalid) {
+      <mat-error>Please enter a valid email address.</mat-error>
+    }
+    @if (emailMinLength) {
+      <mat-error>Email must be at least 5 characters.</mat-error>
+    }
+    @if (emailMaxLength) {
+      <mat-error>Email must be at most 50 characters.</mat-error>
+    }
   </mat-form-field>
 
   <mat-form-field appearance="fill" class="full-width">
     <mat-label>Password</mat-label>
     <input
       matInput
-      type="password"
+      [type]="passwordInputType()"
       formControlName="password"
       placeholder="Enter your password"
+      autocomplete="current-password"
+      required
+      aria-label="Password"
     />
-    <mat-error
-      *ngIf="form.get('password')?.invalid && form.get('password')?.touched"
+    <button
+      mat-icon-button
+      matSuffix
+      type="button"
+      (click)="togglePasswordVisibility()"
+      [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
     >
-      Password is required.
-    </mat-error>
+      <mat-icon>{{ showPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+    </button>
+    @if (passwordRequired) {
+      <mat-error>Password is required.</mat-error>
+    }
+    @if (passwordMinLength) {
+      <mat-error>Password must be at least 8 characters.</mat-error>
+    }
+    @if (passwordPattern) {
+      <mat-error>Password must contain at least one letter and one number.</mat-error>
+    }
   </mat-form-field>
 
   <button
