@@ -1,3 +1,2 @@
-export * from './lib/lib.routes';
-
-export * from './lib/auth-ui/auth-ui.component';
+export * from './lib/login-form/login-form.component';
+export * from './lib/signup-form/signup-form.component';
