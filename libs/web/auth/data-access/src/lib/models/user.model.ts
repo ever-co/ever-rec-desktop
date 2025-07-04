@@ -1,4 +1,5 @@
 import { IUser, Cloneable } from '@ever-co/shared-utils';
+import { User } from 'firebase/auth';
 
 export class UserAdapter implements IUser, Cloneable<IUser> {
   private _id!: string;
@@ -8,7 +9,7 @@ export class UserAdapter implements IUser, Cloneable<IUser> {
   private _isVerified!: boolean;
   private _isAnonymous!: boolean;
 
-  constructor(firebase: IUserFirebase) {
+  constructor(firebase: User) {
     this._id = firebase.uid;
     this._email = firebase.email ?? '';
     this._imageUrl = firebase.photoURL ?? '';
