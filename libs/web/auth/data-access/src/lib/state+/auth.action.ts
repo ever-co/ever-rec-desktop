@@ -17,7 +17,6 @@ export const authActions = createActionGroup({
     // Logout actions
     Logout: emptyProps(),
     'Logout  Success': emptyProps(),
-
     'Logout failure': props<{ error: string }>(),
   },
 });
