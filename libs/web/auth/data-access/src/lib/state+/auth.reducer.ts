@@ -7,6 +7,7 @@ export const authFeatureKey = 'authentication';
 export interface IAuthState {
   user: IUser | null;
   token: string | null;
+  expiresIn: number | null;
   loading: boolean;
   error: string | null;
 }
@@ -14,6 +15,7 @@ export interface IAuthState {
 export const initialAuthState: IAuthState = {
   user: null,
   token: null,
+  expiresIn: null,
   loading: false,
   error: null,
 };

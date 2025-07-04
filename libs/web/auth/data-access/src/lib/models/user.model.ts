@@ -1,5 +1,17 @@
 import { IUser, Cloneable } from '@ever-co/shared-utils';
 import { User } from 'firebase/auth';
+import { ICredentials } from './login.model';
+
+export interface ILoginResponse {
+  user: IUser;
+  token: string;
+  expiresIn: number;
+}
+
+export interface ILoginCredentials {
+  credentials: ICredentials;
+  rememberMe: boolean;
+}
 
 export class UserAdapter implements IUser, Cloneable<IUser> {
   private _id!: string;

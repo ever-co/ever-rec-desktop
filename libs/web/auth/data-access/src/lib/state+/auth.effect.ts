@@ -15,7 +15,13 @@ export class AuthEffects {
     const adapter = new UserAdapter(credentials.user);
     const user = adapter.clone();
     return from(credentials.user.getIdTokenResult()).pipe(
-      map(({ token }) => authActions.loginSuccess({ user, token })),
+      map(({ token, expirationTime }) =>
+        authActions.loginSuccess({
+          user,
+          token,
+          expiresIn: Number(expirationTime),
+        }),
+      ),
     );
   }
 

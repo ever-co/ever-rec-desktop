@@ -1,17 +1,13 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { ICredentials } from '../models/login.model';
-import { IUser } from '@ever-co/shared-utils';
+import { ILoginCredentials, ILoginResponse } from '../models/user.model';
 
 export const authActions = createActionGroup({
   source: 'Authentication',
   events: {
     // Login actions
-    Login: props<{
-      credentials: ICredentials;
-      rememberMe: boolean;
-    }>(),
+    Login: props<ILoginCredentials>(),
     'Login With Google': emptyProps(),
-    'Login Success': props<{ user: IUser; token: string }>(),
+    'Login Success': props<ILoginResponse>(),
     'Login Failure': props<{ error: string }>(),
 
     // Logout actions
