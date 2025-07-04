@@ -1,6 +1,17 @@
-import { ChangeDetectionStrategy, Component, output, signal, computed } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ICredentials, ILoginForm } from '../models/login.model';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  output,
+  signal,
+  computed,
+} from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { ILoginForm } from '../models/login.model';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -8,6 +19,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
+import { ICredentials } from '@ever-co/auth-data-access';
 
 @Component({
   selector: 'lib-login-form',
@@ -19,11 +31,11 @@ import { MatDividerModule } from '@angular/material/divider';
     MatButtonModule,
     MatCheckboxModule,
     MatIconModule,
-    MatDividerModule
+    MatDividerModule,
   ],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginFormComponent {
   public readonly submit = output<ICredentials>();
@@ -33,19 +45,21 @@ export class LoginFormComponent {
       Validators.required,
       Validators.email,
       Validators.minLength(5),
-      Validators.maxLength(50)
+      Validators.maxLength(50),
     ]),
     password: new FormControl('', [
       Validators.required,
       Validators.minLength(8),
-      Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+\-=]{8,}$/)
-    ])
+      Validators.pattern(
+        /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+\-=]{8,}$/,
+      ),
+    ]),
   });
 
   public readonly showPassword = signal(false);
 
   public readonly passwordInputType = computed(() =>
-    this.showPassword() ? 'text' : 'password'
+    this.showPassword() ? 'text' : 'password',
   );
 
   public get email() {
@@ -82,7 +96,7 @@ export class LoginFormComponent {
   }
 
   public togglePasswordVisibility(): void {
-    this.showPassword.update(v => !v);
+    this.showPassword.update((v) => !v);
   }
 
   public submitForm(): void {
