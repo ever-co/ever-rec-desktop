@@ -1,12 +1,14 @@
 import { Routes } from '@angular/router';
+import { authGuard } from '@ever-co/auth-data-access';
 
 export const appRoutes: Routes = [
   { path: '', redirectTo: '', pathMatch: 'full' },
   {
     path: 'webcam',
+    canActivate: [authGuard],
     loadChildren: () =>
       import('@ever-co/webcam-feature').then(
-        ({ webcamRoutes }) => webcamRoutes
+        ({ webcamRoutes }) => webcamRoutes,
       ),
   },
   {
