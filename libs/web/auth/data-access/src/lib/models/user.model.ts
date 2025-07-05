@@ -5,7 +5,7 @@ import { ICredentials } from './login.model';
 export interface ILoginResponse {
   user: IUser;
   token: string;
-  expiresIn: number;
+  expiresAt: string;
 }
 
 export interface ILoginCredentials {

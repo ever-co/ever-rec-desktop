@@ -19,7 +19,7 @@ export class AuthEffects {
         authActions.loginSuccess({
           user,
           token,
-          expiresIn: Number(expirationTime),
+          expiresAt: expirationTime,
         }),
       ),
     );
