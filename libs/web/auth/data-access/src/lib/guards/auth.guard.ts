@@ -10,7 +10,7 @@ function isSessionValid(expiresAt: string | null): boolean {
   return new Date(expiresAt).getTime() > Date.now();
 }
 
-export const authGuard: CanActivateFn = () => {
+export const authGuard: CanActivateFn = (_, state) => {
   const store = inject(Store);
   const router = inject(Router);
 
@@ -20,7 +20,7 @@ export const authGuard: CanActivateFn = () => {
       map(({ user, expiresAt }) => !!user && isSessionValid(expiresAt)),
       switchMap((isValid) => {
         if (isValid) return of(true);
-        return from(router.navigate(['/auth/login'])).pipe(map(() => false));
+        return from(router.navigate(['/auth/login'], { queryParams: { returnUrl: state.url } })).pipe(map(() => false));
       }),
     ),
   );

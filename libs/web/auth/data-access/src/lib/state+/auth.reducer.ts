@@ -28,11 +28,12 @@ export const reducer = createReducer(
     loading: true,
   })),
 
-  on(authActions.loginSuccess, (state, { user, token }) => ({
+  on(authActions.loginSuccess, (state, { user, token, expiresAt }) => ({
     ...state,
     loading: false,
     user,
     token,
+    expiresAt
   })),
 
   on(
