@@ -1,9 +1,5 @@
-<form
-  [formGroup]="form"
-  (ngSubmit)="submitForm()"
-  class="login-form"
->
-  <mat-form-field appearance="fill" class="full-width">
+<form [formGroup]="form" (ngSubmit)="submitForm()" class="login-form">
+  <mat-form-field appearance="outline" class="full-width">
     <mat-label>Email</mat-label>
     <input
       matInput
@@ -28,7 +24,7 @@
     }
   </mat-form-field>
 
-  <mat-form-field appearance="fill" class="full-width">
+  <mat-form-field appearance="outline" class="full-width">
     <mat-label>Password</mat-label>
     <input
       matInput
@@ -46,7 +42,9 @@
       (click)="togglePasswordVisibility()"
       [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
     >
-      <mat-icon>{{ showPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+      <mat-icon>{{
+        showPassword() ? 'visibility' : 'visibility_off'
+      }}</mat-icon>
     </button>
     @if (passwordRequired) {
       <mat-error>Password is required.</mat-error>
@@ -55,7 +53,9 @@
       <mat-error>Password must be at least 8 characters.</mat-error>
     }
     @if (passwordPattern) {
-      <mat-error>Password must contain at least one letter and one number.</mat-error>
+      <mat-error
+        >Password must contain at least one letter and one number.</mat-error
+      >
     }
   </mat-form-field>
 
@@ -63,6 +63,7 @@
     mat-raised-button
     color="primary"
     type="submit"
+    class="mt-4"
     [disabled]="form.invalid"
   >
     Login

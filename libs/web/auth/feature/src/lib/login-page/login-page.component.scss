@@ -1,0 +1,79 @@
+.login-container {
+  @apply min-h-screen w-full flex items-center justify-center p-4;
+}
+
+.login-card {
+  @apply w-full max-w-md p-8 rounded-2xl shadow-xl;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.login-header {
+  @apply text-center mb-8;
+}
+
+.login-icon {
+  @apply text-5xl mb-4;
+  color: #3f51b5;
+  height: 64px;
+  width: 64px;
+}
+
+.login-title {
+  @apply text-2xl font-bold mb-2;
+  color: #2d3748;
+}
+
+.login-subtitle {
+  @apply text-gray-600;
+}
+
+.login-divider {
+  @apply flex items-center my-6;
+}
+
+.login-divider-line {
+  @apply flex-1 h-px;
+  background: #e2e8f0;
+}
+
+.login-divider-text {
+  @apply px-4 text-sm text-gray-500;
+}
+
+.google-login-btn {
+  @apply w-full py-2 rounded-lg flex items-center justify-center;
+  background: white;
+  color: #5f6368;
+  border: 1px solid #dadce0;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: #f8f9fa;
+    border-color: #d2e3fc;
+  }
+
+  &:active {
+    background: #f1f3f4;
+  }
+}
+
+.google-icon {
+  @apply h-5 w-5 mr-3;
+}
+
+.login-footer {
+  @apply text-center mt-6 text-sm text-gray-600;
+}
+
+.signup-link {
+  @apply ml-2 font-medium text-indigo-600 hover:text-indigo-500;
+  transition: color 0.2s ease;
+  cursor: pointer;
+}
