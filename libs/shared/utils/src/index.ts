@@ -40,3 +40,4 @@ export * from './lib/interfaces/environment.interface';
 export * from './lib/interfaces/clone.interface';
 export * from './lib/pick-random-items.util';
 export * from './lib/interfaces/user.interface';
+export * from './lib/interfaces/auth.interface';
