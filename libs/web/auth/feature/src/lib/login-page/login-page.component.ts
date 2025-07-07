@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { ICredentials } from '@ever-co/auth-data-access';
+import { authActions, ICredentials } from '@ever-co/auth-data-access';
 import { LoginFormComponent } from '@ever-co/auth-ui';
 import { REC_ENV } from '@ever-co/shared-service';
 import { IEnvironment } from '@ever-co/shared-utils';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'lib-login-page',
@@ -13,13 +14,17 @@ import { IEnvironment } from '@ever-co/shared-utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginPageComponent {
-  constructor(@Inject(REC_ENV) public env: IEnvironment) {}
+  constructor(
+    @Inject(REC_ENV) public env: IEnvironment,
+    private readonly store: Store,
+  ) {}
   public signInWithGoogle() {
-    // Implement your Google sign-in logic here
-    console.log('Google sign-in clicked');
+    this.store.dispatch(authActions.loginWithGoogle());
   }
 
   public signInWithEmail(event: ICredentials) {
-    console.log('Email sign-in clicked', event);
+    this.store.dispatch(
+      authActions.login({ credentials: event, rememberMe: false }),
+    );
   }
 }
