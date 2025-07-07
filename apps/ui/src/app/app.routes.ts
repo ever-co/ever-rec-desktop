@@ -12,7 +12,13 @@ export const appRoutes: Routes = [
       ),
   },
   {
+    path: 'auth',
+    loadChildren: () =>
+      import('@ever-co/auth-feature').then(({ authRoutes }) => authRoutes),
+  },
+  {
     path: '',
+    canActivate: [authGuard],
     loadChildren: () =>
       import('@ever-co/layout').then(({ layoutRoutes }) => layoutRoutes),
   },

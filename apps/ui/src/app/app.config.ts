@@ -11,7 +11,7 @@ import {
 } from '@angular/router';
 import { provideActivityDataAccess } from '@ever-co/activity-data-access';
 import { provideAudioPlayerDataAccess } from '@ever-co/audio-data-access';
-import { provideAuthDataAccess } from '@ever-co/auth-data-access';
+import { provideFirebaseCore } from '@ever-co/auth-data-access';
 import { provideBreadcrumbDataAccess } from '@ever-co/breadcrumb-data-access';
 import { provideDatePickerDataAccess } from '@ever-co/date-picker-data-access';
 import {
@@ -36,6 +36,8 @@ import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { Environment } from '../environment/environment';
 import { appRoutes } from './app.routes';
+
+const { firebaseConfig, useEmulators } = new Environment();
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -63,7 +65,7 @@ export const appConfig: ApplicationConfig = {
     provideMediatorDataAccess(),
     provideAudioPlayerDataAccess(),
     providePhotoDataAccess(),
-    provideAuthDataAccess(),
+    provideFirebaseCore(firebaseConfig, useEmulators),
     {
       provide: REC_ENV,
       useClass: Environment,
