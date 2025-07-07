@@ -7,7 +7,7 @@ import {
   signOut,
 } from 'firebase/auth';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class AuthService {
   private readonly auth = getAuth();
 
