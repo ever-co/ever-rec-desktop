@@ -38,7 +38,7 @@ import { ICredentials } from '@ever-co/auth-data-access';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginFormComponent {
-  public readonly submit = output<ICredentials>();
+  public readonly submit = output<ICredentials>({ alias: 'signInWithEmail'});
 
   public readonly form = new FormGroup<ILoginForm>({
     email: new FormControl('', [
