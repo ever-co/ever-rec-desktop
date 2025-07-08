@@ -5,7 +5,6 @@ export const appRoutes: Routes = [
   { path: '', redirectTo: '', pathMatch: 'full' },
   {
     path: 'webcam',
-    canActivate: [authGuard],
     loadChildren: () =>
       import('@ever-co/webcam-feature').then(
         ({ webcamRoutes }) => webcamRoutes,
