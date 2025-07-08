@@ -4,6 +4,8 @@ import { Store } from '@ngrx/store';
 import { defer, from, of } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 import { selectAuthState } from '../state+/auth.selector';
+import { REC_ENV } from '@ever-co/shared-service';
+import { IEnvironment } from '@ever-co/shared-utils';
 
 function isSessionValid(expiresAt: string | null): boolean {
   if (!expiresAt) return false;
@@ -13,6 +15,11 @@ function isSessionValid(expiresAt: string | null): boolean {
 export const authGuard: CanActivateFn = (_, state) => {
   const store = inject(Store);
   const router = inject(Router);
+  const environment = inject<IEnvironment>(REC_ENV);
+
+  if (environment.isPlugin) {
+    return of(true);
+  }
 
   return defer(() =>
     store.select(selectAuthState).pipe(
