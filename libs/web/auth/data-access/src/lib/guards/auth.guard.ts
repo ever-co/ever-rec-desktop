@@ -27,7 +27,10 @@ export const authGuard: CanActivateFn = (_, state) => {
       map(({ user, expiresAt }) => !!user && isSessionValid(expiresAt)),
       switchMap((isValid) => {
         if (isValid) return of(true);
-        return from(router.navigate(['/auth/login'], { queryParams: { returnUrl: state.url } })).pipe(map(() => false));
+        return from(router.navigate(['/auth/login'], {
+          queryParams: { returnUrl: state.url },
+          replaceUrl: true
+        })).pipe(map(() => false));
       }),
     ),
   );

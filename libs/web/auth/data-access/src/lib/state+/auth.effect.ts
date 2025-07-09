@@ -139,4 +139,19 @@ export class AuthEffects {
       ),
     { dispatch: false }
   );
+
+  public readonly logoutRedirect$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(authActions.logoutSuccess),
+        switchMap(() => {
+          return from(this.router.navigate(['/auth/login'], {
+            replaceUrl: true
+          })).pipe(
+            catchError(() => EMPTY)
+          );
+        })
+      ),
+    { dispatch: false }
+  );
 }
