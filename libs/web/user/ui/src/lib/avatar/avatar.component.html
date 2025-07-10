@@ -9,27 +9,29 @@
     }
   </div>
 
-  <div class="flex flex-col gap-1">
-    @if (showName()) {
-      <div class="min-w-0">
-        <span
-          class="block text-xl font-medium text-gray-900 dark:text-white truncate max-w-[10rem]"
-          [attr.title]="name()"
-        >
-          {{ name() }}
-        </span>
-      </div>
-    }
-    @if (showEmail()) {
-      <div class="min-w-0">
-        <span
-          class="block text-sm text-gray-500 dark:text-gray-400 truncate max-w-[10rem]"
-        >
-          {{ email() }}
-        </span>
-      </div>
-    }
-  </div>
+  @if (showName() || showEmail()) {
+    <div class="flex flex-col gap-1">
+      @if (showName()) {
+        <div class="min-w-0">
+          <span
+            class="block text-xl font-medium text-gray-900 dark:text-white truncate max-w-[10rem]"
+            [attr.title]="name()"
+          >
+            {{ name() }}
+          </span>
+        </div>
+      }
+      @if (showEmail()) {
+        <div class="min-w-0">
+          <span
+            class="block text-sm text-gray-500 dark:text-gray-400 truncate max-w-[10rem]"
+          >
+            {{ email() }}
+          </span>
+        </div>
+      }
+    </div>
+  }
 </div>
 
 <ng-template #avatarContent>
