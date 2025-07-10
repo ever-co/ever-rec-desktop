@@ -67,5 +67,8 @@
     [disabled]="form.invalid"
   >
     Login
+    @if (loading()) {
+      <mat-icon><mat-spinner diameter="16"> </mat-spinner></mat-icon>
+    }
   </button>
 </form>

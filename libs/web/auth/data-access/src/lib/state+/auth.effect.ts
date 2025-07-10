@@ -1,12 +1,21 @@
 import { inject, Injectable } from '@angular/core';
+import { UserCredential } from '@angular/fire/auth';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NotificationService } from '@ever-co/notification-data-access';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, defer, exhaustMap, from, map, of, switchMap, EMPTY } from 'rxjs';
+import {
+  catchError,
+  defer,
+  EMPTY,
+  exhaustMap,
+  from,
+  map,
+  of,
+  switchMap,
+} from 'rxjs';
 import { UserAdapter } from '../models/user.model';
 import { AuthService } from '../services/auth.service';
 import { authActions } from './auth.action';
-import { UserCredential } from '@angular/fire/auth';
-import { Router, ActivatedRoute } from '@angular/router';
-import { NotificationService } from '@ever-co/notification-data-access';
 
 @Injectable()
 export class AuthEffects {
@@ -39,7 +48,12 @@ export class AuthEffects {
       ofType(authActions.login),
       exhaustMap((action) => {
         this.notificationService.show('Logging in...', 'info');
-        return defer(() => this.authService.signIn(action.credentials.email, action.credentials.password)).pipe(
+        return defer(() =>
+          this.authService.signIn(
+            action.credentials.email,
+            action.credentials.password,
+          ),
+        ).pipe(
           switchMap(this.handleAuthSuccess),
           catchError(this.handleAuthError),
         );
@@ -54,9 +68,9 @@ export class AuthEffects {
         switchMap(() => {
           this.notificationService.show('Login successful', 'success');
           return EMPTY;
-        })
+        }),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
   public readonly loginFailureNotify$ = createEffect(
@@ -66,9 +80,9 @@ export class AuthEffects {
         switchMap(({ error }) => {
           this.notificationService.show(`Login failed: ${error}`, 'error');
           return EMPTY;
-        })
+        }),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
   public readonly loginRedirect$ = createEffect(
@@ -79,15 +93,17 @@ export class AuthEffects {
           if (!this.activatedRoute || !this.router) {
             return EMPTY;
           }
-          const returnUrl = this.activatedRoute.snapshot?.queryParamMap?.get('returnUrl') || '/';
+          const returnUrl =
+            this.activatedRoute.snapshot?.queryParamMap?.get('returnUrl') ||
+            '/';
           return from(this.router.navigateByUrl(returnUrl)).pipe(
             catchError((err) => {
               return EMPTY;
-            })
+            }),
           );
-        })
+        }),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
   public readonly signInWithGoogle$ = createEffect(() =>
@@ -123,9 +139,9 @@ export class AuthEffects {
         switchMap(() => {
           this.notificationService.show('Logged out successfully', 'success');
           return EMPTY;
-        })
+        }),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
   public readonly logoutFailureNotify$ = createEffect(
@@ -135,9 +151,9 @@ export class AuthEffects {
         switchMap(({ error }) => {
           this.notificationService.show(`Logout failed: ${error}`, 'error');
           return EMPTY;
-        })
+        }),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
   public readonly logoutRedirect$ = createEffect(
@@ -145,13 +161,13 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(authActions.logoutSuccess),
         switchMap(() => {
-          return from(this.router.navigate(['/auth/login'], {
-            replaceUrl: true
-          })).pipe(
-            catchError(() => EMPTY)
-          );
-        })
+          return from(
+            this.router.navigate(['/auth/login'], {
+              replaceUrl: true,
+            }),
+          ).pipe(catchError(() => EMPTY));
+        }),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 }

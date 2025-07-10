@@ -13,6 +13,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterOutlet } from '@angular/router';
+import { AuthBadgeComponent } from '@ever-co/auth-feature';
 import { breadcrumbActions } from '@ever-co/breadcrumb-data-access';
 import { BreadcrumbComponent } from '@ever-co/breadcrumb-feature';
 import { datePickerActions } from '@ever-co/date-picker-data-access';
@@ -49,6 +50,7 @@ import { StartComponent } from '../start/start.component';
     MatTooltipModule,
     NotificationBadgeComponent,
     UploadBadgeComponent,
+    AuthBadgeComponent,
   ],
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
