@@ -77,6 +77,9 @@
         "libs/web/upload/data-access/src/index.ts"
       ],
       "@ever-co/upload-feature": ["libs/web/upload/features/src/index.ts"],
+      "@ever-co/user-data-access": ["libs/web/user/data-access/src/index.ts"],
+      "@ever-co/user-feature": ["libs/web/user/feature/src/index.ts"],
+      "@ever-co/user-ui": ["libs/web/user/ui/src/index.ts"],
       "@ever-co/video-data-access": ["libs/web/video/data-access/src/index.ts"],
       "@ever-co/video-feature": ["libs/web/video/feature/src/index.ts"],
       "@ever-co/video-ui": ["libs/web/video/ui/src/index.ts"],

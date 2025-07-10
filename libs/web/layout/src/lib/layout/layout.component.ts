@@ -26,6 +26,7 @@ import { SearchComponent } from '@ever-co/web-search';
 import { Store } from '@ngrx/store';
 import { Subject, takeUntil } from 'rxjs';
 import { StartComponent } from '../start/start.component';
+import { LogoutButtonComponent } from '@ever-co/auth-feature';
 
 @Component({
   selector: 'lib-layout',
@@ -49,6 +50,7 @@ import { StartComponent } from '../start/start.component';
     MatTooltipModule,
     NotificationBadgeComponent,
     UploadBadgeComponent,
+    LogoutButtonComponent
   ],
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
