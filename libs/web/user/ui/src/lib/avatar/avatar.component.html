@@ -1,0 +1,51 @@
+<div class="flex items-center gap-3" [class]="customClass()">
+  <div class="relative" [class]="sizeClasses()">
+    @if (shouldShowTooltip()) {
+      <mat-tooltip [matTooltip]="name()">
+        <ng-template [ngTemplateOutlet]="avatarContent"></ng-template>
+      </mat-tooltip>
+    } @else {
+      <ng-template [ngTemplateOutlet]="avatarContent"></ng-template>
+    }
+  </div>
+
+  <div class="flex flex-col gap-1">
+    @if (showName()) {
+      <div class="min-w-0">
+        <span
+          class="block text-xl font-medium text-gray-900 dark:text-white truncate max-w-[10rem]"
+          [attr.title]="name()"
+        >
+          {{ name() }}
+        </span>
+      </div>
+    }
+    @if (showEmail()) {
+      <div class="min-w-0">
+        <span
+          class="block text-sm text-gray-500 dark:text-gray-400 truncate max-w-[10rem]"
+        >
+          {{ email() }}
+        </span>
+      </div>
+    }
+  </div>
+</div>
+
+<ng-template #avatarContent>
+  @if (imageUrl(); as url) {
+    <img
+      [src]="url"
+      [alt]="name()"
+      class="w-full h-full object-cover rounded-full shadow-md ring-1 ring-gray-300 dark:ring-gray-600 transition-transform duration-200 hover:scale-105"
+      [class.cursor-pointer]="shouldShowTooltip()"
+    />
+  } @else {
+    <div
+      class="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-200 font-semibold rounded-full shadow-md ring-1 ring-gray-300 dark:ring-gray-600"
+      [class.cursor-pointer]="shouldShowTooltip()"
+    >
+      {{ initials() }}
+    </div>
+  }
+</ng-template>

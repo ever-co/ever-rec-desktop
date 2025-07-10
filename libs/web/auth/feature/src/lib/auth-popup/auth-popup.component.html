@@ -1,6 +1,12 @@
 <div class="flex flex-col gap-4 w-full">
-  <lib-action-group-button
+  <lib-user-avatar
+    [show-tooltip]="true"
+    [show-name]="true"
+    [show-email]="true"
+    [user]="user$ | async"
+  ></lib-user-avatar>
+  <lib-action-button-group
     class="w-full"
     [buttons]="buttons"
-  ></lib-action-group-button>
+  ></lib-action-button-group>
 </div>

@@ -23,17 +23,22 @@ export const initialAuthState: IAuthState = {
 export const reducer = createReducer(
   initialAuthState,
 
-  on(authActions.login, authActions.logout, (state) => ({
-    ...state,
-    loading: true,
-  })),
+  on(
+    authActions.login,
+    authActions.logout,
+    authActions.loginWithGoogle,
+    (state) => ({
+      ...state,
+      loading: true,
+    }),
+  ),
 
   on(authActions.loginSuccess, (state, { user, token, expiresAt }) => ({
     ...state,
     loading: false,
     user,
     token,
-    expiresAt
+    expiresAt,
   })),
 
   on(

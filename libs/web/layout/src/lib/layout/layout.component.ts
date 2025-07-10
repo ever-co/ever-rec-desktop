@@ -13,6 +13,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterOutlet } from '@angular/router';
+import { AuthBadgeComponent } from '@ever-co/auth-feature';
 import { breadcrumbActions } from '@ever-co/breadcrumb-data-access';
 import { BreadcrumbComponent } from '@ever-co/breadcrumb-feature';
 import { datePickerActions } from '@ever-co/date-picker-data-access';
@@ -26,7 +27,6 @@ import { SearchComponent } from '@ever-co/web-search';
 import { Store } from '@ngrx/store';
 import { Subject, takeUntil } from 'rxjs';
 import { StartComponent } from '../start/start.component';
-import { LogoutButtonComponent } from '@ever-co/auth-feature';
 
 @Component({
   selector: 'lib-layout',
@@ -50,7 +50,7 @@ import { LogoutButtonComponent } from '@ever-co/auth-feature';
     MatTooltipModule,
     NotificationBadgeComponent,
     UploadBadgeComponent,
-    LogoutButtonComponent
+    AuthBadgeComponent,
   ],
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
