@@ -1,9 +1,11 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
+  input,
   output,
   signal,
-  computed,
 } from '@angular/core';
 import {
   FormControl,
@@ -11,15 +13,15 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ILoginForm } from '../models/login.model';
-import { CommonModule } from '@angular/common';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ICredentials } from '@ever-co/auth-data-access';
+import { ILoginForm } from '../models/login.model';
 
 @Component({
   selector: 'lib-login-form',
@@ -32,13 +34,15 @@ import { ICredentials } from '@ever-co/auth-data-access';
     MatCheckboxModule,
     MatIconModule,
     MatDividerModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginFormComponent {
-  public readonly submit = output<ICredentials>({ alias: 'signInWithEmail'});
+  public readonly loading = input<boolean | null>(false);
+  public readonly submit = output<ICredentials>({ alias: 'signInWithEmail' });
 
   public readonly form = new FormGroup<ILoginForm>({
     email: new FormControl('', [
