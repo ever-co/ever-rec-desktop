@@ -24,3 +24,13 @@ export const selectAuthError = createSelector(
   selectAuthState,
   (state) => state.error,
 );
+
+export const selectIsAuthenticated = createSelector(
+  selectAuthState,
+  ({ user, expiresAt }) => !!user && isSessionValid(expiresAt),
+);
+
+function isSessionValid(expiresAt: string | null): boolean {
+  if (!expiresAt) return false;
+  return new Date(expiresAt).getTime() > Date.now();
+}

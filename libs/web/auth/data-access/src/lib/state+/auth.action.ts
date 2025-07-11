@@ -2,7 +2,7 @@ import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { ILoginCredentials, ILoginResponse } from '../models/user.model';
 
 export const authActions = createActionGroup({
-  source: 'Authentication',
+  source: 'Auth Firebase',
   events: {
     // Login actions
     Login: props<ILoginCredentials>(),
