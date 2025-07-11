@@ -57,6 +57,18 @@ export const reducer = createReducer(
     user: null,
     token: null,
   })),
+
+  on(authActions.refreshTokenSuccess, (state, { token, expiresAt }) => ({
+    ...state,
+    token,
+    expiresAt,
+    error: null,
+  })),
+
+  on(authActions.refreshTokenFailure, (state, { error }) => ({
+    ...state,
+    error,
+  })),
 );
 
 export const authFeature = createFeature({

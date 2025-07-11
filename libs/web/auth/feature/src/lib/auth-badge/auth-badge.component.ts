@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { selectUser } from '@ever-co/auth-data-access';
+import { LayoutService, PopoverDirective } from '@ever-co/shared-service';
 import { IUser } from '@ever-co/shared-utils';
+import { AvatarComponent } from '@ever-co/user-ui';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AuthPopupComponent } from '../auth-popup/auth-popup.component';
-import { AvatarComponent } from '@ever-co/user-ui';
-import { LayoutService, PopoverDirective } from '@ever-co/shared-service';
 
 @Component({
   selector: 'lib-auth-badge',

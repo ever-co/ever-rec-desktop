@@ -16,6 +16,7 @@ import {
 import { UserAdapter } from '../models/user.model';
 import { AuthService } from '../services/auth.service';
 import { authActions } from './auth.action';
+import { RefreshTokenService } from '../services/refresh-token.service';
 
 @Injectable()
 export class AuthEffects {
@@ -24,6 +25,7 @@ export class AuthEffects {
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly notificationService = inject(NotificationService);
+  private readonly refreshTokenService = inject(RefreshTokenService);
 
   private handleAuthSuccess(credentials: UserCredential) {
     const adapter = new UserAdapter(credentials.user);
@@ -66,6 +68,7 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(authActions.loginSuccess),
         switchMap(() => {
+          this.refreshTokenService.startTimer();
           this.notificationService.show('Login successful', 'success');
           return EMPTY;
         }),
@@ -137,6 +140,7 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(authActions.logoutSuccess),
         switchMap(() => {
+          this.refreshTokenService.stopTimer();
           this.notificationService.show('Logged out successfully', 'success');
           return EMPTY;
         }),
@@ -169,5 +173,30 @@ export class AuthEffects {
         }),
       ),
     { dispatch: false },
+  );
+
+  public readonly refreshToken$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authActions.refreshToken),
+      switchMap(() => {
+        const user = this.authService.checkIfUserIsSignedIn();
+        if (user) {
+          return from(this.authService.getRefreshToken(user)).pipe(
+            map(({ token, expirationTime }) =>
+              authActions.refreshTokenSuccess({
+                token,
+                expiresAt: expirationTime,
+              }),
+            ),
+            catchError((error) =>
+              of(authActions.refreshTokenFailure({ error: error.message })),
+            ),
+          );
+        }
+        return of(
+          authActions.refreshTokenFailure({ error: 'No user logged in' }),
+        );
+      }),
+    ),
   );
 }
