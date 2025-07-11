@@ -14,9 +14,10 @@ import {
   switchMap,
 } from 'rxjs';
 import { UserAdapter } from '../models/user.model';
+import { AuthErrorService } from '../services/auth-error.service';
 import { AuthService } from '../services/auth.service';
-import { authActions } from './auth.action';
 import { RefreshTokenService } from '../services/refresh-token.service';
+import { authActions } from './auth.action';
 
 @Injectable()
 export class AuthEffects {
@@ -26,6 +27,7 @@ export class AuthEffects {
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly notificationService = inject(NotificationService);
   private readonly refreshTokenService = inject(RefreshTokenService);
+  private readonly authErrorService = inject(AuthErrorService);
 
   private handleAuthSuccess(credentials: UserCredential) {
     const adapter = new UserAdapter(credentials.user);
@@ -41,9 +43,10 @@ export class AuthEffects {
     );
   }
 
-  private handleAuthError(error: string) {
+  private readonly handleAuthError = (err: any) => {
+    const error = this.authErrorService.getFirebase(err);
     return of(authActions.loginFailure({ error }));
-  }
+  };
 
   public readonly signIn$ = createEffect(() =>
     this.actions$.pipe(
@@ -129,7 +132,7 @@ export class AuthEffects {
         this.notificationService.show('Logging out...', 'info');
         return defer(() => this.authService.signOut()).pipe(
           map(() => authActions.logoutSuccess()),
-          catchError((error) => of(authActions.logoutFailure({ error }))),
+          catchError(this.handleAuthError),
         );
       }),
     ),
@@ -188,9 +191,7 @@ export class AuthEffects {
                 expiresAt: expirationTime,
               }),
             ),
-            catchError((error) =>
-              of(authActions.refreshTokenFailure({ error: error.message })),
-            ),
+            catchError(this.handleAuthError),
           );
         }
         return of(
