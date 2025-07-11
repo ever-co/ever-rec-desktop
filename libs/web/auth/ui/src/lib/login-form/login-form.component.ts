@@ -20,8 +20,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ICredentials } from '@ever-co/auth-data-access';
-import { ILoginForm } from '../models/login.model';
+import { ICredentials, ILoginForm } from '@ever-co/auth-data-access';
 
 @Component({
   selector: 'lib-login-form',
