@@ -37,10 +37,13 @@
 <ng-template #avatarContent>
   @if (imageUrl(); as url) {
     <img
-      [src]="url"
+      [ngSrc]="url"
       [alt]="name()"
       class="w-full h-full object-cover rounded-full shadow-md ring-1 ring-gray-300 dark:ring-gray-600 transition-transform duration-200 hover:scale-105"
       [class.cursor-pointer]="shouldShowTooltip()"
+      width="400"
+      height="400"
+      loading="lazy"
     />
   } @else {
     <div

@@ -2,10 +2,13 @@ import { IUser, Cloneable } from '@ever-co/shared-utils';
 import { User } from 'firebase/auth';
 import { ICredentials } from './login.model';
 
-export interface ILoginResponse {
-  user: IUser;
+export interface IRefreshToken {
   token: string;
   expiresAt: string;
+}
+
+export interface ILoginResponse extends IRefreshToken {
+  user: IUser;
 }
 
 export interface ILoginCredentials {

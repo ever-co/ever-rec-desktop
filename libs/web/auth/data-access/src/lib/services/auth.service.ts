@@ -5,6 +5,8 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  User,
+  getIdTokenResult,
 } from 'firebase/auth';
 
 @Injectable()
@@ -22,5 +24,13 @@ export class AuthService {
 
   public signOut() {
     return signOut(this.auth);
+  }
+
+  public checkIfUserIsSignedIn() {
+    return this.auth.currentUser;
+  }
+
+  public getRefreshToken(user: User) {
+    return getIdTokenResult(user, true);
   }
 }

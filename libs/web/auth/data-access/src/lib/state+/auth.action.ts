@@ -1,5 +1,9 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { ILoginCredentials, ILoginResponse } from '../models/user.model';
+import {
+  ILoginCredentials,
+  ILoginResponse,
+  IRefreshToken,
+} from '../models/user.model';
 
 export const authActions = createActionGroup({
   source: 'Auth Firebase',
@@ -14,5 +18,10 @@ export const authActions = createActionGroup({
     Logout: emptyProps(),
     'Logout  Success': emptyProps(),
     'Logout failure': props<{ error: string }>(),
+
+    // Refresh Token
+    'Refresh Token': emptyProps(),
+    'Refresh Token Success': props<IRefreshToken>(),
+    'Refresh Token Failure': props<{ error: string }>(),
   },
 });
