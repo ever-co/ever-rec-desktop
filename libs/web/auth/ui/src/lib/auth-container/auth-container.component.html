@@ -1,0 +1,24 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <mat-icon class="auth-icon" aria-hidden="false" aria-label="Auth icon">{{ env.icon }}</mat-icon>
+      <h1 class="auth-title">{{ title() }}</h1>
+      @if (subtitle()) {
+        <p class="auth-subtitle">{{ subtitle() }}</p>
+      }
+    </div>
+
+    <ng-content></ng-content>
+
+    @if (footerText() || footerLink() || footerLinkText()) {
+      <div class="auth-footer">
+        @if (footerText()) {
+          <span>{{ footerText() }}</span>
+        }
+        @if (footerLink() && footerLinkText()) {
+          <a class="auth-link" [routerLink]="footerLink()">{{ footerLinkText() }}</a>
+        }
+      </div>
+    }
+  </div>
+</div>

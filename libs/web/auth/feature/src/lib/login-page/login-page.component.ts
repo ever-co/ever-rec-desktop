@@ -13,7 +13,7 @@ import {
   ICredentials,
   selectAuthLoading,
 } from '@ever-co/auth-data-access';
-import { LoginFormComponent } from '@ever-co/auth-ui';
+import { AuthContainerComponent, LoginFormComponent } from '@ever-co/auth-ui';
 import { REC_ENV } from '@ever-co/shared-service';
 import { IEnvironment } from '@ever-co/shared-utils';
 import { Actions, ofType } from '@ngrx/effects';
@@ -28,6 +28,7 @@ import { take } from 'rxjs/operators';
     LoginFormComponent,
     MatIconModule,
     MatProgressSpinnerModule,
+    AuthContainerComponent,
   ],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss',
