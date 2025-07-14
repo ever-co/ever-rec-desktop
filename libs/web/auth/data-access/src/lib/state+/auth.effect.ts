@@ -15,6 +15,7 @@ import {
   switchMap,
   throwError,
 } from 'rxjs';
+import { IProfile } from '../models/profile.model';
 import { ISignUp } from '../models/sign-up.model';
 import { UserAdapter } from '../models/user.model';
 import { AuthErrorService } from '../services/auth-error.service';
@@ -223,12 +224,12 @@ export class AuthEffects {
   }
 
   private handleUserProfileUpdate(
-    credentials: UserCredential, // Replace with your actual type
-    { fullName }: ISignUp,
+    credentials: UserCredential,
+    profile: IProfile,
   ) {
     const { user } = credentials;
 
-    return from(this.authService.updateProfile(user, { fullName })).pipe(
+    return from(this.authService.updateProfile(user, profile)).pipe(
       retry({ count: 2, delay: 1000 }),
       map(() => credentials),
       switchMap((updatedCredentials) =>
