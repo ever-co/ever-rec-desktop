@@ -3,6 +3,7 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   signInWithPopup,
   signOut,
   User,
@@ -40,7 +41,7 @@ export class AuthService {
 
   public signUp(input: ISignUp) {
     const { email, password } = input;
-    return signInWithEmailAndPassword(this.auth, email, password);
+    return createUserWithEmailAndPassword(this.auth, email, password);
   }
 
   public updateProfile(user: User, profile: IProfile) {
