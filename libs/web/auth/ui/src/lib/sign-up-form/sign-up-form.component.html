@@ -1,5 +1,26 @@
 <form [formGroup]="form" (ngSubmit)="submitForm()" class="signup-form">
   <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Full Name</mat-label>
+    <input
+      matInput
+      type="text"
+      formControlName="fullName"
+      placeholder="Enter your full name"
+      required
+      aria-label="Name"
+    />
+    @if (fullNameRequired) {
+      <mat-error>Full name is required.</mat-error>
+    }
+    @if (fullNameMinLength) {
+      <mat-error>Full name must be at least 2 characters.</mat-error>
+    }
+    @if (fullNameMaxLength) {
+      <mat-error>Full name must be at most 50 characters.</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
     <mat-label>Email</mat-label>
     <input
       matInput
@@ -54,7 +75,8 @@
     }
     @if (passwordPattern) {
       <mat-error>
-        Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.
+        Password must contain at least one uppercase letter, one lowercase
+        letter, one number, and one special character.
       </mat-error>
     }
   </mat-form-field>
@@ -69,13 +91,16 @@
       autocomplete="new-password"
       required
       aria-label="Confirm Password"
+      (input)="onConfirmPasswordInput()"
     />
     <button
       mat-icon-button
       matSuffix
       type="button"
       (click)="toggleConfirmPasswordVisibility()"
-      [attr.aria-label]="showConfirmPassword() ? 'Hide password' : 'Show password'"
+      [attr.aria-label]="
+        showConfirmPassword() ? 'Hide password' : 'Show password'
+      "
     >
       <mat-icon>{{
         showConfirmPassword() ? 'visibility' : 'visibility_off'
@@ -88,6 +113,19 @@
       <mat-error>Passwords do not match.</mat-error>
     }
   </mat-form-field>
+
+  <mat-checkbox formControlName="agreed">
+    Agree to
+    <a
+      class="text-blue-700 hover:underline"
+      (click)="openTermsAndConditions($event)"
+      >Terms & Conditions</a
+    >
+    and
+    <a class="text-blue-700 hover:underline" (click)="openPrivacyPolicy($event)"
+      >Privacy Policy</a
+    ></mat-checkbox
+  >
 
   <button
     mat-raised-button

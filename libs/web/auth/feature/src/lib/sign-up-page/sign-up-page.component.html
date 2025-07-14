@@ -1,0 +1,38 @@
+@let loading = loading$ | async;
+
+<lib-auth-container
+  title="Sign Up"
+  subtitle="To continue, please enter your details."
+  text="Already have an account?"
+  link="/auth/login"
+  linkText="Login"
+>
+  <lib-sign-up-form
+    class="w-full"
+    [loading]="loading && !isGoogle()"
+    (signUpWithEmail)="signUpWithEmail($event)"
+  ></lib-sign-up-form>
+
+  <div class="signup-divider">
+    <span class="signup-divider-line"></span>
+    <span class="signup-divider-text">OR</span>
+    <span class="signup-divider-line"></span>
+  </div>
+
+  <button
+    mat-flat-button
+    class="google-signup-btn"
+    (click)="signUpWithGoogle()"
+  >
+    @if (loading && isGoogle()) {
+      <mat-icon><mat-spinner diameter="20"> </mat-spinner></mat-icon>
+    } @else {
+      <img
+        src="assets/icons/google.webp"
+        alt="Google logo"
+        class="google-icon"
+      />
+    }
+    Continue with Google
+  </button>
+</lib-auth-container>
