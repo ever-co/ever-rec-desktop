@@ -8,6 +8,10 @@ import {
   User,
   getIdTokenResult,
 } from 'firebase/auth';
+import { ISignUp } from '../models/sign-up.model';
+import { updateProfile } from '@angular/fire/auth';
+import { IProfile } from '../models/profile.model';
+import { isEmpty } from '@ever-co/shared-utils';
 
 @Injectable()
 export class AuthService {
@@ -32,5 +36,24 @@ export class AuthService {
 
   public getRefreshToken(user: User) {
     return getIdTokenResult(user, true);
+  }
+
+  public signUp(input: ISignUp) {
+    const { email, password } = input;
+    return signInWithEmailAndPassword(this.auth, email, password);
+  }
+
+  public updateProfile(user: User, profile: IProfile) {
+    const displayName = profile?.fullName;
+    const photoURL = profile?.imageUrl;
+
+    const payload = {
+      ...(displayName && { displayName }),
+      ...(photoURL && { photoURL }),
+    };
+
+    if (isEmpty(payload)) return;
+
+    return updateProfile(user, payload);
   }
 }

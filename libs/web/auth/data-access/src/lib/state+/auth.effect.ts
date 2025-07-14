@@ -12,6 +12,7 @@ import {
   map,
   of,
   switchMap,
+  tap,
 } from 'rxjs';
 import { UserAdapter } from '../models/user.model';
 import { AuthErrorService } from '../services/auth-error.service';
@@ -196,6 +197,20 @@ export class AuthEffects {
         }
         return of(
           authActions.refreshTokenFailure({ error: 'No user logged in' }),
+        );
+      }),
+    ),
+  );
+
+  public readonly singUp$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authActions.signUp),
+      exhaustMap((action) => {
+        this.notificationService.show('Signing up...', 'info');
+        return defer(() => this.authService.signUp(action)).pipe(
+          tap(({ user }) => this.authService.updateProfile(user, action)),
+          switchMap(this.handleAuthSuccess),
+          catchError(this.handleAuthError),
         );
       }),
     ),

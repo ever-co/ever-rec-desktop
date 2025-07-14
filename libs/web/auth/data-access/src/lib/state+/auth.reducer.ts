@@ -27,6 +27,7 @@ export const reducer = createReducer(
     authActions.login,
     authActions.logout,
     authActions.loginWithGoogle,
+    authActions.signUp,
     (state) => ({
       ...state,
       loading: true,
@@ -44,6 +45,7 @@ export const reducer = createReducer(
   on(
     authActions.loginFailure,
     authActions.logoutFailure,
+    authActions.signUpFailure,
     (state, { error }) => ({
       ...state,
       loading: false,
@@ -68,6 +70,11 @@ export const reducer = createReducer(
   on(authActions.refreshTokenFailure, (state, { error }) => ({
     ...state,
     error,
+  })),
+
+  on(authActions.signUpSuccess, (state) => ({
+    ...state,
+    loading: false,
   })),
 );
 

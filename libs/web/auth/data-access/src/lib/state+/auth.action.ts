@@ -1,4 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import { ISignUp } from '../models/sign-up.model';
 import {
   ILoginCredentials,
   ILoginResponse,
@@ -23,5 +24,10 @@ export const authActions = createActionGroup({
     'Refresh Token': emptyProps(),
     'Refresh Token Success': props<IRefreshToken>(),
     'Refresh Token Failure': props<{ error: string }>(),
+
+    // Sign up actions
+    'Sign Up': props<ISignUp>(),
+    'Sign Up Success': emptyProps(),
+    'Sign Up Failure': props<{ error: string }>(),
   },
 });
