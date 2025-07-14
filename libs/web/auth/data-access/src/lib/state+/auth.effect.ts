@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { UserCredential } from '@angular/fire/auth';
+import { User, UserCredential } from '@angular/fire/auth';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '@ever-co/notification-data-access';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -11,9 +11,11 @@ import {
   from,
   map,
   of,
+  retry,
   switchMap,
-  tap,
+  throwError,
 } from 'rxjs';
+import { ISignUp } from '../models/sign-up.model';
 import { UserAdapter } from '../models/user.model';
 import { AuthErrorService } from '../services/auth-error.service';
 import { AuthService } from '../services/auth.service';
@@ -202,17 +204,43 @@ export class AuthEffects {
     ),
   );
 
-  public readonly singUp$ = createEffect(() =>
+  public readonly signUp$ = createEffect(() =>
     this.actions$.pipe(
       ofType(authActions.signUp),
-      exhaustMap((action) => {
-        this.notificationService.show('Signing up...', 'info');
-        return defer(() => this.authService.signUp(action)).pipe(
-          tap(({ user }) => this.authService.updateProfile(user, action)),
-          switchMap(this.handleAuthSuccess),
-          catchError(this.handleAuthError),
-        );
-      }),
+      exhaustMap((action) => this.handleSignUp(action)),
     ),
   );
+
+  private handleSignUp(action: ISignUp) {
+    this.notificationService.show('Signing up...', 'info');
+
+    return defer(() => this.authService.signUp(action)).pipe(
+      switchMap((credentials) =>
+        this.handleUserProfileUpdate(credentials, action),
+      ),
+      catchError(this.handleAuthError),
+    );
+  }
+
+  private handleUserProfileUpdate(
+    credentials: UserCredential, // Replace with your actual type
+    { fullName }: ISignUp,
+  ) {
+    const { user } = credentials;
+
+    return from(this.authService.updateProfile(user, { fullName })).pipe(
+      retry({ count: 2, delay: 1000 }),
+      map(() => credentials),
+      switchMap((updatedCredentials) =>
+        this.handleAuthSuccess(updatedCredentials),
+      ),
+      catchError((error) => this.cleanupFailedSignUp(user, error)),
+    );
+  }
+
+  private cleanupFailedSignUp(user: User, error: any) {
+    return from(this.authService.deleteUser(user)).pipe(
+      switchMap(() => throwError(() => error)),
+    );
+  }
 }

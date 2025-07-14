@@ -44,7 +44,7 @@ export class AuthService {
     return createUserWithEmailAndPassword(this.auth, email, password);
   }
 
-  public updateProfile(user: User, profile: IProfile) {
+  public updateProfile(user: User, profile: IProfile): Promise<void> {
     const displayName = profile?.fullName;
     const photoURL = profile?.imageUrl;
 
@@ -53,8 +53,14 @@ export class AuthService {
       ...(photoURL && { photoURL }),
     };
 
-    if (isEmpty(payload)) return;
+    if (isEmpty(payload)) {
+      throw new Error('No payload');
+    }
 
     return updateProfile(user, payload);
+  }
+
+  public deleteUser(user: User): Promise<void> {
+    return user.delete();
   }
 }

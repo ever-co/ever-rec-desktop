@@ -48,8 +48,8 @@ export class SignUpPageComponent {
     return this.store.select(selectAuthLoading);
   }
 
-  public signUpWithEmail(event: ISignUp) {
+  public signUpWithEmail(payload: ISignUp) {
     this.isGoogle.update(() => false);
-    // TODO: Implement signup with email
+    this.store.dispatch(authActions.signUp(payload));
   }
 }
