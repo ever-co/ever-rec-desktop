@@ -9,4 +9,11 @@ export const authRoutes: Route[] = [
         (m) => m.LoginPageComponent,
       ),
   },
+  {
+    path: 'sign-up',
+    loadComponent: () =>
+      import('./sign-up-page/sign-up-page.component').then(
+        (m) => m.SignUpPageComponent,
+      ),
+  },
 ];

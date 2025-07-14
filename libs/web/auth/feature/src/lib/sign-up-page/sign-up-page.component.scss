@@ -1,0 +1,33 @@
+.signup-divider {
+  @apply flex items-center my-6;
+}
+
+.signup-divider-line {
+  @apply flex-1 h-px;
+  background: #e2e8f0;
+}
+
+.signup-divider-text {
+  @apply px-4 text-sm text-gray-500;
+}
+
+.google-signup-btn {
+  @apply w-full py-2 rounded-lg flex items-center justify-center;
+  background: white;
+  color: #5f6368;
+  border: 1px solid #dadce0;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: #f8f9fa;
+    border-color: #d2e3fc;
+  }
+
+  &:active {
+    background: #f1f3f4;
+  }
+}
+
+.google-icon {
+  @apply h-5 w-5 mr-3;
+}

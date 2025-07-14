@@ -9,29 +9,29 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {
   authActions,
-  ICredentials,
+  ISignUp,
   selectAuthLoading,
 } from '@ever-co/auth-data-access';
-import { AuthContainerComponent, LoginFormComponent } from '@ever-co/auth-ui';
+import { AuthContainerComponent, SignUpFormComponent } from '@ever-co/auth-ui';
 import { REC_ENV } from '@ever-co/shared-service';
 import { IEnvironment } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'lib-login-page',
+  selector: 'lib-sign-up-page',
   imports: [
     CommonModule,
-    LoginFormComponent,
+    SignUpFormComponent,
     MatIconModule,
     MatProgressSpinnerModule,
     AuthContainerComponent,
   ],
-  templateUrl: './login-page.component.html',
-  styleUrl: './login-page.component.scss',
+  templateUrl: './sign-up-page.component.html',
+  styleUrl: './sign-up-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginPageComponent {
+export class SignUpPageComponent {
   public readonly isGoogle = signal<boolean>(false);
 
   constructor(
@@ -39,7 +39,7 @@ export class LoginPageComponent {
     private readonly store: Store,
   ) {}
 
-  public signInWithGoogle() {
+  public signUpWithGoogle() {
     this.isGoogle.update(() => true);
     this.store.dispatch(authActions.loginWithGoogle());
   }
@@ -48,10 +48,8 @@ export class LoginPageComponent {
     return this.store.select(selectAuthLoading);
   }
 
-  public signInWithEmail(event: ICredentials) {
+  public signUpWithEmail(event: ISignUp) {
     this.isGoogle.update(() => false);
-    this.store.dispatch(
-      authActions.login({ credentials: event, rememberMe: false }),
-    );
+    // TODO: Implement signup with email
   }
 }
