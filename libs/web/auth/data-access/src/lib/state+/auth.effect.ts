@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { UserCredential } from '@angular/fire/auth';
+import { User, UserCredential } from '@angular/fire/auth';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '@ever-co/notification-data-access';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -11,8 +11,12 @@ import {
   from,
   map,
   of,
+  retry,
   switchMap,
+  throwError,
 } from 'rxjs';
+import { IProfile } from '../models/profile.model';
+import { ISignUp } from '../models/sign-up.model';
 import { UserAdapter } from '../models/user.model';
 import { AuthErrorService } from '../services/auth-error.service';
 import { AuthService } from '../services/auth.service';
@@ -200,4 +204,44 @@ export class AuthEffects {
       }),
     ),
   );
+
+  public readonly signUp$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authActions.signUp),
+      exhaustMap((action) => this.handleSignUp(action)),
+    ),
+  );
+
+  private handleSignUp(action: ISignUp) {
+    this.notificationService.show('Signing up...', 'info');
+
+    return defer(() => this.authService.signUp(action)).pipe(
+      switchMap((credentials) =>
+        this.handleUserProfileUpdate(credentials, action),
+      ),
+      catchError(this.handleAuthError),
+    );
+  }
+
+  private handleUserProfileUpdate(
+    credentials: UserCredential,
+    profile: IProfile,
+  ) {
+    const { user } = credentials;
+
+    return from(this.authService.updateProfile(user, profile)).pipe(
+      retry({ count: 2, delay: 1000 }),
+      map(() => credentials),
+      switchMap((updatedCredentials) =>
+        this.handleAuthSuccess(updatedCredentials),
+      ),
+      catchError((error) => this.cleanupFailedSignUp(user, error)),
+    );
+  }
+
+  private cleanupFailedSignUp(user: User, error: any) {
+    return from(this.authService.deleteUser(user)).pipe(
+      switchMap(() => throwError(() => error)),
+    );
+  }
 }
