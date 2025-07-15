@@ -1,0 +1,47 @@
+.verification-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1rem;
+}
+
+.verification-icon {
+  width: 80px;
+  height: 80px;
+  font-size: 80px;
+  margin-bottom: 1.5rem;
+}
+
+.verification-message {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  max-width: 400px;
+}
+
+.verification-note {
+  font-size: 0.875rem;
+  color: rgba(0, 0, 0, 0.6);
+  margin-bottom: 2rem;
+  max-width: 400px;
+}
+
+.verify-btn {
+  padding: 0.5rem 2rem;
+  margin-bottom: 1.5rem;
+
+  .mat-icon {
+    margin-right: 8px;
+  }
+}
+
+.spinner-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.actions {
+  margin-top: 1rem;
+}

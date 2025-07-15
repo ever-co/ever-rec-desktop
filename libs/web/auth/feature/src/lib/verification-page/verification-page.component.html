@@ -1,0 +1,45 @@
+@let loading = loading$ | async;
+
+<lib-auth-container
+  title="Verify Your Email"
+  subtitle="To continue using our service, please verify your email address."
+>
+  <div class="verification-content">
+    <mat-icon class="verification-icon" color="primary"
+      >mark_email_read</mat-icon
+    >
+
+    <p class="verification-message">
+      We've sent a verification email to your address. Please check your inbox
+      and click the link to verify your account.
+    </p>
+
+    <p class="verification-note">
+      Didn't receive the email? Check your spam folder or request a new
+      verification link below.
+    </p>
+
+    <button
+      mat-flat-button
+      color="primary"
+      class="verify-btn"
+      (click)="verify()"
+      [disabled]="loading"
+    >
+      @if (loading) {
+        <mat-icon class="spinner-icon"
+          ><mat-spinner diameter="20"></mat-spinner
+        ></mat-icon>
+      } @else {
+        <mat-icon>send</mat-icon>
+      }
+      Resend verification email
+    </button>
+
+    <div class="actions">
+      <button mat-button color="primary" (click)="backToLogin()">
+        Back to Login
+      </button>
+    </div>
+  </div>
+</lib-auth-container>
