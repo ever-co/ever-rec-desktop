@@ -29,5 +29,10 @@ export const authActions = createActionGroup({
     'Sign Up': props<ISignUp>(),
     'Sign Up Success': emptyProps(),
     'Sign Up Failure': props<{ error: string }>(),
+
+    // Send verification email
+    'Send Verification Email': emptyProps(),
+    'Send Verification Email Success': emptyProps(),
+    'Send Verification Email Failure': props<{ error: string }>(),
   },
 });

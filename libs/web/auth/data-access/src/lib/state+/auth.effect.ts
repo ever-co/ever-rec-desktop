@@ -8,6 +8,7 @@ import {
   defer,
   EMPTY,
   exhaustMap,
+  filter,
   from,
   map,
   of,
@@ -52,6 +53,52 @@ export class AuthEffects {
     return of(authActions.loginFailure({ error }));
   };
 
+  public readonly sendEmailVerification$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authActions.sendVerificationEmail),
+      map(() => this.authService.checkIfUserIsSignedIn()),
+      filter((user): user is User => !!user && !user.emailVerified),
+      switchMap((user) =>
+        from(this.authService.verify(user)).pipe(
+          map(() => authActions.sendVerificationEmailSuccess()),
+          catchError((err) =>
+            of(authActions.sendVerificationEmailFailure(err)),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  public readonly sendEmailVerificationSuccessNotify$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(authActions.sendVerificationEmailSuccess),
+        switchMap(() => {
+          this.notificationService.show(
+            'Verification email sent successful',
+            'success',
+          );
+          return EMPTY;
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  public readonly sendEmailVerificationFailureNotify$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(authActions.sendVerificationEmailFailure),
+        switchMap(({ error }) => {
+          this.notificationService.show(
+            `Verification email failed: ${error}`,
+            'error',
+          );
+          return EMPTY;
+        }),
+      ),
+    { dispatch: false },
+  );
+
   public readonly signIn$ = createEffect(() =>
     this.actions$.pipe(
       ofType(authActions.login),
@@ -74,9 +121,11 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(authActions.loginSuccess),
-        switchMap(() => {
+        switchMap(({ user }) => {
           this.refreshTokenService.startTimer();
-          this.notificationService.show('Login successful', 'success');
+          if (user.isVerified) {
+            this.notificationService.show('Login successful', 'success');
+          }
           return EMPTY;
         }),
       ),
