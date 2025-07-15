@@ -34,5 +34,10 @@ export const authActions = createActionGroup({
     'Send Verification Email': emptyProps(),
     'Send Verification Email Success': emptyProps(),
     'Send Verification Email Failure': props<{ error: string }>(),
+
+    // Resend timer actions
+    'Start Cooldown': props<{ seconds: number }>(),
+    'Decrement Cooldown': emptyProps(),
+    'Reset Cooldown': emptyProps(),
   },
 });

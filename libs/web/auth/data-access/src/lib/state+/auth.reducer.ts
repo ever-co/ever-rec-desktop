@@ -10,6 +10,7 @@ export interface IAuthState {
   expiresAt: string | null;
   loading: boolean;
   error: string | null;
+  cooldown: number;
 }
 
 export const initialAuthState: IAuthState = {
@@ -18,6 +19,7 @@ export const initialAuthState: IAuthState = {
   expiresAt: null,
   loading: false,
   error: null,
+  cooldown: 0,
 };
 
 export const reducer = createReducer(
@@ -75,6 +77,21 @@ export const reducer = createReducer(
   on(authActions.signUpSuccess, (state) => ({
     ...state,
     loading: false,
+  })),
+
+  on(authActions.startCooldown, (state, { seconds }) => ({
+    ...state,
+    cooldown: seconds,
+  })),
+
+  on(authActions.decrementCooldown, (state) => ({
+    ...state,
+    cooldown: state.cooldown > 0 ? state.cooldown - 1 : 0,
+  })),
+
+  on(authActions.resetCooldown, (state) => ({
+    ...state,
+    cooldown: 0,
   })),
 );
 

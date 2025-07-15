@@ -10,10 +10,13 @@ import {
   exhaustMap,
   filter,
   from,
+  interval,
   map,
   of,
   retry,
+  map as rxMap,
   switchMap,
+  takeWhile,
   throwError,
 } from 'rxjs';
 import { IProfile } from '../models/profile.model';
@@ -66,6 +69,13 @@ export class AuthEffects {
           ),
         ),
       ),
+    ),
+  );
+
+  public readonly startResendTimer$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authActions.sendVerificationEmailSuccess),
+      map(() => authActions.startCooldown({ seconds: 60 })),
     ),
   );
 
@@ -258,6 +268,18 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(authActions.signUp),
       exhaustMap((action) => this.handleSignUp(action)),
+    ),
+  );
+
+  public readonly resendTimer$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authActions.startCooldown),
+      switchMap(({ seconds }) =>
+        interval(1000).pipe(
+          takeWhile((count) => count < seconds),
+          rxMap(() => authActions.decrementCooldown()),
+        ),
+      ),
     ),
   );
 
