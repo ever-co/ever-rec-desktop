@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard } from '@ever-co/auth-data-access';
+import { authGuard, verificationGuard } from '@ever-co/auth-data-access';
 
 export const appRoutes: Routes = [
   { path: '', redirectTo: '', pathMatch: 'full' },
@@ -17,7 +17,7 @@ export const appRoutes: Routes = [
   },
   {
     path: '',
-    canActivate: [authGuard],
+    canActivate: [authGuard, verificationGuard],
     loadChildren: () =>
       import('@ever-co/layout').then(({ layoutRoutes }) => layoutRoutes),
   },
