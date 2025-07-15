@@ -3,8 +3,12 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { authActions, selectAuthLoading } from '@ever-co/auth-data-access';
-import { AuthContainerComponent, SignUpFormComponent } from '@ever-co/auth-ui';
+import {
+  authActions,
+  selectAuthLoading,
+  selectCooldown,
+} from '@ever-co/auth-data-access';
+import { AuthContainerComponent } from '@ever-co/auth-ui';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
@@ -12,7 +16,6 @@ import { Observable } from 'rxjs';
   selector: 'lib-verification-page',
   imports: [
     CommonModule,
-    SignUpFormComponent,
     MatIconModule,
     MatButtonModule,
     MatProgressSpinnerModule,
@@ -29,11 +32,15 @@ export class VerificationPageComponent {
     return this.store.select(selectAuthLoading);
   }
 
+  public get cooldown$(): Observable<number> {
+    return this.store.select(selectCooldown);
+  }
+
   public backToLogin(): void {
     this.store.dispatch(authActions.logout());
   }
 
-  public verify() {
+  public verify(): void {
     this.store.dispatch(authActions.sendVerificationEmail());
   }
 }

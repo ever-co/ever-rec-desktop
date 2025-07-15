@@ -1,4 +1,5 @@
 @let loading = loading$ | async;
+@let cooldown = (cooldown$ | async) ?? 0;
 
 <lib-auth-container
   title="Verify Your Email"
@@ -22,18 +23,22 @@
     <button
       mat-flat-button
       color="primary"
-      class="verify-btn"
       (click)="verify()"
-      [disabled]="loading"
+      [disabled]="loading || cooldown > 0"
     >
-      @if (loading) {
-        <mat-icon class="spinner-icon"
-          ><mat-spinner diameter="20"></mat-spinner
-        ></mat-icon>
-      } @else {
-        <mat-icon>send</mat-icon>
-      }
-      Resend verification email
+      <div class="verify-btn">
+        @if (loading) {
+          <mat-icon class="spinner-icon"
+            ><mat-spinner diameter="20"></mat-spinner
+          ></mat-icon>
+        } @else if (cooldown > 0) {
+          <mat-icon>hourglass_empty</mat-icon>
+          Resend in {{ cooldown }}s
+        } @else {
+          <mat-icon>send</mat-icon>
+          Resend verification email
+        }
+      </div>
     </button>
 
     <div class="actions">

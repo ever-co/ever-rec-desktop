@@ -28,18 +28,16 @@
 }
 
 .verify-btn {
+  display: flex;
   padding: 0.5rem 2rem;
-  margin-bottom: 1.5rem;
-
-  .mat-icon {
-    margin-right: 8px;
-  }
+  gap: 0.5rem;
 }
 
 .spinner-icon {
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #fff;
 }
 
 .actions {
