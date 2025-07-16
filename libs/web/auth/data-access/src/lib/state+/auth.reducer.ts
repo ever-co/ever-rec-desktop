@@ -11,6 +11,8 @@ export interface IAuthState {
   loading: boolean;
   error: string | null;
   cooldown: number;
+  emailSent: boolean;
+  email: string;
 }
 
 export const initialAuthState: IAuthState = {
@@ -20,6 +22,8 @@ export const initialAuthState: IAuthState = {
   loading: false,
   error: null,
   cooldown: 0,
+  emailSent: false,
+  email: '',
 };
 
 export const reducer = createReducer(
@@ -109,6 +113,31 @@ export const reducer = createReducer(
   on(authActions.startVerificationPolling, (state) => ({
     ...state,
     error: null,
+  })),
+
+  on(authActions.resetPassword, (state, { email }) => ({
+    ...state,
+    loading: true,
+    email,
+    emailSent: false,
+  })),
+
+  on(authActions.resetPasswordSuccess, (state) => ({
+    ...state,
+    emailSent: true,
+    loading: false,
+  })),
+
+  on(authActions.resetPasswordFailure, (state, { error }) => ({
+    ...state,
+    error,
+    emailSent: false,
+  })),
+
+  on(authActions.resetForm, (state) => ({
+    ...state,
+    email: '',
+    emailSent: false,
   })),
 );
 
