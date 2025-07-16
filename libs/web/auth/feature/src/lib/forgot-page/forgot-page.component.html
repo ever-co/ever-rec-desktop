@@ -1,4 +1,6 @@
 @let loading = loading$ | async;
+@let emailSent = emailSent$ | async;
+@let email = email$ | async;
 
 <lib-auth-container
   title="Reset Your Password"
@@ -12,21 +14,6 @@
   linkText="Sign in here"
 >
   <div class="relative w-full max-w-md mx-auto">
-    <!-- Loading Overlay -->
-    @if (loading) {
-      <div
-        class="absolute inset-0 bg-white bg-opacity-90 rounded-lg flex flex-col items-center justify-center z-10"
-      >
-        <mat-progress-spinner
-          diameter="48"
-          strokeWidth="4"
-          mode="indeterminate"
-          color="primary"
-        ></mat-progress-spinner>
-        <p class="mt-4 text-gray-600 text-sm">Sending reset instructions...</p>
-      </div>
-    }
-
     <!-- Success Message -->
     @if (emailSent) {
       <div class="text-center py-4">
@@ -56,7 +43,7 @@
           </button>
           <button
             mat-stroked-button
-            routerLink="/auth/login"
+            (click)="returnToLogin()"
             class="min-w-[120px]"
           >
             Back to Login
@@ -73,6 +60,7 @@
     <!-- Form -->
     @else {
       <lib-forgot-form
+        [loading]="loading"
         (emailSubmitted)="onEmailSubmitted($event)"
       ></lib-forgot-form>
 
@@ -83,7 +71,7 @@
         <span>
           Need help?
           <a
-            routerLink="/support"
+            routerLink="/auth/support"
             class="text-primary-500 font-medium hover:underline"
             >Contact support</a
           >

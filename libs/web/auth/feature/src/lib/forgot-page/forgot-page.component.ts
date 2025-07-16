@@ -1,9 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { selectAuthLoading } from '@ever-co/auth-data-access';
+import { Router } from '@angular/router';
+import {
+  authActions,
+  selectAuthLoading,
+  selectEmail,
+  selectEmailSent,
+} from '@ever-co/auth-data-access';
 import { AuthContainerComponent, ForgotFormComponent } from '@ever-co/auth-ui';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -22,23 +28,37 @@ import { Observable } from 'rxjs';
   templateUrl: './forgot-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ForgotPageComponent {
-  emailSent = false;
-  email = '';
+export class ForgotPageComponent implements OnDestroy {
+  constructor(
+    private readonly store: Store,
+    private readonly router: Router,
+  ) {}
 
-  constructor(private readonly store: Store) {}
+  public get emailSent$(): Observable<boolean> {
+    return this.store.select(selectEmailSent);
+  }
+
+  public get email$(): Observable<string> {
+    return this.store.select(selectEmail);
+  }
 
   public get loading$(): Observable<boolean> {
     return this.store.select(selectAuthLoading);
   }
 
-  onEmailSubmitted(email: string) {
-    this.email = email;
-    this.emailSent = true;
+  public onEmailSubmitted(email: string) {
+    this.store.dispatch(authActions.resetPassword({ email }));
   }
 
-  resetForm() {
-    this.emailSent = false;
-    this.email = '';
+  public resetForm() {
+    this.store.dispatch(authActions.resetForm());
+  }
+
+  public returnToLogin(): void {
+    this.router.navigateByUrl('/auth/login');
+  }
+
+  ngOnDestroy(): void {
+    this.resetForm();
   }
 }
