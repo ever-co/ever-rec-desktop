@@ -31,7 +31,7 @@
       [type]="passwordInputType()"
       formControlName="password"
       placeholder="Enter your password"
-      autocomplete="current-password"
+      autocomplete="on"
       required
       aria-label="Password"
     />
@@ -58,6 +58,14 @@
       >
     }
   </mat-form-field>
+
+  <div class="flex justify-end w-full">
+    <span
+      class="text-blue-900 text-sm cursor-pointer hover:underline"
+      (click)="onForgotPassword()"
+      >Forgot password?</span
+    >
+  </div>
 
   <button
     mat-raised-button

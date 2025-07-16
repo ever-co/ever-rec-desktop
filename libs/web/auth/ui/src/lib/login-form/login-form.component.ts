@@ -42,6 +42,7 @@ import { ICredentials, ILoginForm } from '@ever-co/auth-data-access';
 export class LoginFormComponent {
   public readonly loading = input<boolean | null>(false);
   public readonly submit = output<ICredentials>({ alias: 'signInWithEmail' });
+  public readonly forgotPassword = output<void>();
 
   public readonly form = new FormGroup<ILoginForm>({
     email: new FormControl('', [
@@ -100,6 +101,10 @@ export class LoginFormComponent {
 
   public togglePasswordVisibility(): void {
     this.showPassword.update((v) => !v);
+  }
+
+  public onForgotPassword(): void {
+    this.forgotPassword.emit();
   }
 
   public submitForm(): void {
