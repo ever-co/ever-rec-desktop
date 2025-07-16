@@ -1,0 +1,94 @@
+@let loading = loading$ | async;
+
+<lib-auth-container
+  title="Reset Your Password"
+  [subtitle]="
+    emailSent
+      ? 'Check your email for further instructions'
+      : 'Enter your email address and we\'ll send you a link to reset your password.'
+  "
+  text="Remember your password?"
+  link="/auth/login"
+  linkText="Sign in here"
+>
+  <div class="relative w-full max-w-md mx-auto">
+    <!-- Loading Overlay -->
+    @if (loading) {
+      <div
+        class="absolute inset-0 bg-white bg-opacity-90 rounded-lg flex flex-col items-center justify-center z-10"
+      >
+        <mat-progress-spinner
+          diameter="48"
+          strokeWidth="4"
+          mode="indeterminate"
+          color="primary"
+        ></mat-progress-spinner>
+        <p class="mt-4 text-gray-600 text-sm">Sending reset instructions...</p>
+      </div>
+    }
+
+    <!-- Success Message -->
+    @if (emailSent) {
+      <div class="text-center py-4">
+        <mat-icon class="text-5xl check text-green-500 !w-12 !h-12 mx-auto mb-4"
+          >check_circle</mat-icon
+        >
+        <div class="text-2xl font-medium text-gray-800 mb-2">
+          Email Sent Successfully!
+        </div>
+        <p class="text-gray-600 mb-2">
+          We've sent password reset instructions to
+          <strong class="text-gray-800">{{ email }}</strong
+          >.
+        </p>
+        <p class="text-gray-600 mb-6">
+          Please check your inbox and follow the link to reset your password.
+        </p>
+
+        <div class="flex gap-3 justify-center mb-6">
+          <button
+            mat-flat-button
+            color="primary"
+            (click)="resetForm()"
+            class="min-w-[120px]"
+          >
+            Resend Email
+          </button>
+          <button
+            mat-stroked-button
+            routerLink="/auth/login"
+            class="min-w-[120px]"
+          >
+            Back to Login
+          </button>
+        </div>
+
+        <div class="flex items-center justify-center text-gray-600 text-sm">
+          <mat-icon class="text-blue-500 mr-2">info</mat-icon>
+          <span>Didn't receive the email? Check your spam folder.</span>
+        </div>
+      </div>
+    }
+
+    <!-- Form -->
+    @else {
+      <lib-forgot-form
+        (emailSubmitted)="onEmailSubmitted($event)"
+      ></lib-forgot-form>
+
+      <div
+        class="flex items-center mt-6 pt-4 border-t border-gray-200 text-gray-600 text-sm"
+      >
+        <mat-icon class="text-gray-500 mr-2">help_outline</mat-icon>
+        <span>
+          Need help?
+          <a
+            routerLink="/support"
+            class="text-primary-500 font-medium hover:underline"
+            >Contact support</a
+          >
+        </span>
+      </div>
+    }
+  </div>
+</lib-auth-container>

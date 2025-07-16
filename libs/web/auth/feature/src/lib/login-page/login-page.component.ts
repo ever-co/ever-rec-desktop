@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Router } from '@angular/router';
 import {
   authActions,
   ICredentials,
@@ -27,7 +28,10 @@ import { Observable } from 'rxjs';
 export class LoginPageComponent {
   public readonly isGoogle = signal<boolean>(false);
 
-  constructor(private readonly store: Store) {}
+  constructor(
+    private readonly store: Store,
+    private readonly router: Router,
+  ) {}
 
   public signInWithGoogle() {
     this.isGoogle.update(() => true);
@@ -43,5 +47,9 @@ export class LoginPageComponent {
     this.store.dispatch(
       authActions.login({ credentials: event, rememberMe: false }),
     );
+  }
+
+  public forgotPassword(): void {
+    this.router.navigateByUrl('/auth/forgot-password');
   }
 }

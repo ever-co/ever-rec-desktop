@@ -23,4 +23,11 @@ export const authRoutes: Route[] = [
         (m) => m.VerificationPageComponent,
       ),
   },
+  {
+    path: 'forgot-password',
+    loadComponent: () =>
+      import('./forgot-page/forgot-page.component').then(
+        (m) => m.ForgotPageComponent,
+      ),
+  },
 ];
