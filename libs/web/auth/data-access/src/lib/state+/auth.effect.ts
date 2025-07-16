@@ -16,9 +16,9 @@ import {
   retry,
   map as rxMap,
   switchMap,
+  takeUntil,
   takeWhile,
   throwError,
-  takeUntil,
 } from 'rxjs';
 import { IProfile } from '../models/profile.model';
 import { ISignUp } from '../models/sign-up.model';
@@ -272,7 +272,7 @@ export class AuthEffects {
     ),
   );
 
-  public readonly resendTimer$ = createEffect(() =>
+  public readonly cooldownTimer$ = createEffect(() =>
     this.actions$.pipe(
       ofType(authActions.startCooldown),
       switchMap(({ seconds }) =>
@@ -299,13 +299,13 @@ export class AuthEffects {
             this.actions$.pipe(
               ofType(
                 authActions.stopVerificationPolling,
-                authActions.checkVerificationSuccess
-              )
-            )
-          )
-        )
-      )
-    )
+                authActions.checkVerificationSuccess,
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   /**
@@ -319,7 +319,11 @@ export class AuthEffects {
       switchMap(() => {
         const user = this.authService.checkIfUserIsSignedIn();
         if (!user) {
-          return of(authActions.checkVerificationFailure({ error: 'No user signed in' }));
+          return of(
+            authActions.checkVerificationFailure({
+              error: 'No user signed in',
+            }),
+          );
         }
         // Reload user from Firebase to get latest emailVerified status
         return from(user.reload()).pipe(
@@ -333,11 +337,15 @@ export class AuthEffects {
             return [];
           }),
           catchError((err) =>
-            of(authActions.checkVerificationFailure({ error: err?.message || 'Verification check failed' }))
-          )
+            of(
+              authActions.checkVerificationFailure({
+                error: err?.message || 'Verification check failed',
+              }),
+            ),
+          ),
         );
-      })
-    )
+      }),
+    ),
   );
 
   /**
@@ -352,8 +360,8 @@ export class AuthEffects {
           user: userObj,
           token,
           expiresAt: expirationTime,
-        })
-      )
+        }),
+      ),
     );
   }
 
@@ -366,15 +374,21 @@ export class AuthEffects {
       switchMap(() => {
         const user = this.authService.checkIfUserIsSignedIn();
         if (!user) {
-          return of(authActions.loginFailure({ error: 'No user found for auto-login' }));
+          return of(
+            authActions.loginFailure({ error: 'No user found for auto-login' }),
+          );
         }
         return this.handleUserAutoLogin(user).pipe(
           catchError((err) =>
-            of(authActions.loginFailure({ error: err?.message || 'Auto-login failed' }))
-          )
+            of(
+              authActions.loginFailure({
+                error: err?.message || 'Auto-login failed',
+              }),
+            ),
+          ),
         );
-      })
-    )
+      }),
+    ),
   );
 
   private handleSignUp(action: ISignUp) {
@@ -409,4 +423,48 @@ export class AuthEffects {
       switchMap(() => throwError(() => error)),
     );
   }
+
+  private readonly resetPasswordSuccessNotify$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(authActions.resetPasswordSuccess),
+        switchMap(() => {
+          this.notificationService.show(
+            'Request new password successfully',
+            'success',
+          );
+          return EMPTY;
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  private readonly resetPasswordFailureNotify$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(authActions.resetPasswordFailure),
+        switchMap(({ error }) => {
+          this.notificationService.show(
+            `Request new password failed: ${error}`,
+            'error',
+          );
+          return EMPTY;
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  public readonly resetPassword$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authActions.resetPassword),
+      switchMap(({ email }) =>
+        from(this.authService.resetPassword(email)).pipe(
+          map(() => authActions.resetPasswordSuccess()),
+          catchError((error) =>
+            of(authActions.resetPasswordFailure({ error })),
+          ),
+        ),
+      ),
+    ),
+  );
 }

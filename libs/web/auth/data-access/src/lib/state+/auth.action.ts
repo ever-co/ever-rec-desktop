@@ -46,5 +46,11 @@ export const authActions = createActionGroup({
     'Verification Polling Tick': emptyProps(),
     'Check Verification Success': emptyProps(),
     'Check Verification Failure': props<{ error: string }>(),
+
+    // Forgot password
+    'Reset Password': props<{ email: string }>(),
+    'Reset Password Success': emptyProps(),
+    'Reset Password Failure': props<{ error: string }>(),
+    'Reset Form': emptyProps(),
   },
 });

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { updateProfile } from '@angular/fire/auth';
+import { sendPasswordResetEmail, updateProfile } from '@angular/fire/auth';
 import { isEmpty } from '@ever-co/shared-utils';
 import {
   createUserWithEmailAndPassword,
@@ -67,5 +67,9 @@ export class AuthService {
 
   public deleteUser(user: User): Promise<void> {
     return user.delete();
+  }
+
+  public resetPassword(email: string): Promise<void> {
+    return sendPasswordResetEmail(this.auth, email);
   }
 }

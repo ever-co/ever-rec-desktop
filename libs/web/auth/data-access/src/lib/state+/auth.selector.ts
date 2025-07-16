@@ -40,6 +40,16 @@ export const selectCooldown = createSelector(
   (state) => state.cooldown,
 );
 
+export const selectEmail = createSelector(
+  selectAuthState,
+  ({ email }) => email,
+);
+
+export const selectEmailSent = createSelector(
+  selectAuthState,
+  ({ emailSent }) => emailSent,
+);
+
 function isSessionValid(expiresAt: string | null): boolean {
   if (!expiresAt) return false;
   return new Date(expiresAt).getTime() > Date.now();

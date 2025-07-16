@@ -11,6 +11,7 @@
     class="w-full"
     [loading]="loading && !isGoogle()"
     (signInWithEmail)="signInWithEmail($event)"
+    (forgotPassword)="forgotPassword()"
   ></lib-login-form>
 
   <div class="login-divider">

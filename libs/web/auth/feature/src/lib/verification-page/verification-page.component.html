@@ -31,8 +31,9 @@
           <mat-icon class="spinner-icon"
             ><mat-spinner diameter="20"></mat-spinner
           ></mat-icon>
+          Sending...
         } @else if (cooldown > 0) {
-          <mat-icon>hourglass_empty</mat-icon>
+          <mat-icon class="animate-hourglass">hourglass_empty</mat-icon>
           Resend in {{ cooldown }}s
         } @else {
           <mat-icon>send</mat-icon>

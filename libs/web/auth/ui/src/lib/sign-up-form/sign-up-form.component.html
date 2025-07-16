@@ -52,7 +52,7 @@
       [type]="passwordInputType()"
       formControlName="password"
       placeholder="Enter your password"
-      autocomplete="current-password"
+      autocomplete="new-password"
       required
       aria-label="Password"
     />
@@ -88,7 +88,7 @@
       [type]="confirmPasswordInputType()"
       formControlName="confirmPassword"
       placeholder="Confirm your password"
-      autocomplete="new-password"
+      autocomplete="current-password"
       required
       aria-label="Confirm Password"
       (input)="onConfirmPasswordInput()"
@@ -132,7 +132,7 @@
     color="primary"
     type="submit"
     class="mt-4"
-    [disabled]="form.invalid"
+    [disabled]="form.invalid || loading()"
   >
     Sign Up
     @if (loading()) {
