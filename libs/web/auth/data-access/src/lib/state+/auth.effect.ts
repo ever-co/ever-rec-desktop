@@ -72,7 +72,7 @@ export class AuthEffects {
     ),
   );
 
-  public readonly startResendTimer$ = createEffect(() =>
+  public readonly startCooldownTimer$ = createEffect(() =>
     this.actions$.pipe(
       ofType(authActions.sendVerificationEmailSuccess),
       map(() => authActions.startCooldown({ seconds: 60 })),

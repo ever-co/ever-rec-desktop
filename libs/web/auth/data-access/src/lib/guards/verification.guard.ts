@@ -4,9 +4,9 @@ import { REC_ENV } from '@ever-co/shared-service';
 import { IEnvironment } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { defer, from, of } from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
+import { map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 import { authActions } from '../state+/auth.action';
-import { selectIsVerified } from '../state+/auth.selector';
+import { selectIsVerified, selectCooldown } from '../state+/auth.selector';
 
 export const verificationGuard: CanActivateFn = (_, state) => {
   const store = inject(Store);
@@ -20,9 +20,12 @@ export const verificationGuard: CanActivateFn = (_, state) => {
   return defer(() =>
     store.select(selectIsVerified).pipe(
       take(1),
-      switchMap((isVerified) => {
+      withLatestFrom(store.select(selectCooldown)),
+      switchMap(([isVerified, cooldown]) => {
         if (isVerified) return of(true);
-        store.dispatch(authActions.sendVerificationEmail());
+        if (!cooldown) {
+          store.dispatch(authActions.sendVerificationEmail());
+        }
         return from(
           router.navigate(['/auth/verification'], {
             queryParams: { returnUrl: state.url },

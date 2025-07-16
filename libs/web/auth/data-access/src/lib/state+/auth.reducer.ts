@@ -30,6 +30,7 @@ export const reducer = createReducer(
     authActions.logout,
     authActions.loginWithGoogle,
     authActions.signUp,
+    authActions.sendVerificationEmail,
     (state) => ({
       ...state,
       loading: true,
@@ -48,6 +49,7 @@ export const reducer = createReducer(
     authActions.loginFailure,
     authActions.logoutFailure,
     authActions.signUpFailure,
+    authActions.sendVerificationEmailFailure,
     (state, { error }) => ({
       ...state,
       loading: false,
@@ -74,10 +76,14 @@ export const reducer = createReducer(
     error,
   })),
 
-  on(authActions.signUpSuccess, (state) => ({
-    ...state,
-    loading: false,
-  })),
+  on(
+    authActions.signUpSuccess,
+    authActions.sendVerificationEmailSuccess,
+    (state) => ({
+      ...state,
+      loading: false,
+    }),
+  ),
 
   on(authActions.startCooldown, (state, { seconds }) => ({
     ...state,
