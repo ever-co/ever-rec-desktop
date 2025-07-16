@@ -39,5 +39,12 @@ export const authActions = createActionGroup({
     'Start Cooldown': props<{ seconds: number }>(),
     'Decrement Cooldown': emptyProps(),
     'Reset Cooldown': emptyProps(),
+
+    // Email verification polling actions
+    'Start Verification Polling': emptyProps(),
+    'Stop Verification Polling': emptyProps(),
+    'Verification Polling Tick': emptyProps(),
+    'Check Verification Success': emptyProps(),
+    'Check Verification Failure': props<{ error: string }>(),
   },
 });

@@ -99,6 +99,17 @@ export const reducer = createReducer(
     ...state,
     cooldown: 0,
   })),
+
+  // Verification polling error handling
+  on(authActions.checkVerificationFailure, (state, { error }) => ({
+    ...state,
+    error,
+  })),
+
+  on(authActions.startVerificationPolling, (state) => ({
+    ...state,
+    error: null,
+  })),
 );
 
 export const authFeature = createFeature({

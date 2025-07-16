@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, OnDestroy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -25,8 +25,16 @@ import { Observable } from 'rxjs';
   styleUrl: './verification-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class VerificationPageComponent {
+export class VerificationPageComponent implements OnInit, OnDestroy {
   constructor(private readonly store: Store) {}
+
+  ngOnInit(): void {
+    this.store.dispatch(authActions.startVerificationPolling());
+  }
+
+  ngOnDestroy(): void {
+    this.store.dispatch(authActions.stopVerificationPolling());
+  }
 
   public get loading$(): Observable<boolean> {
     return this.store.select(selectAuthLoading);

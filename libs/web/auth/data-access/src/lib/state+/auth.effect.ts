@@ -18,6 +18,7 @@ import {
   switchMap,
   takeWhile,
   throwError,
+  takeUntil,
 } from 'rxjs';
 import { IProfile } from '../models/profile.model';
 import { ISignUp } from '../models/sign-up.model';
@@ -281,6 +282,99 @@ export class AuthEffects {
         ),
       ),
     ),
+  );
+
+  /**
+   * Poll for email verification every 10 seconds after sending verification email.
+   * If verified, dispatch Check Verification Success and stop polling.
+   */
+  public readonly startVerificationPolling$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authActions.startVerificationPolling),
+      switchMap(() =>
+        interval(10000).pipe(
+          map(() => authActions.verificationPollingTick()),
+          // Stop polling if Stop Verification Polling or Check Verification Success is dispatched
+          takeUntil(
+            this.actions$.pipe(
+              ofType(
+                authActions.stopVerificationPolling,
+                authActions.checkVerificationSuccess
+              )
+            )
+          )
+        )
+      )
+    )
+  );
+
+  /**
+   * On each polling tick, reload the user and check if verified.
+   * If verified, dispatch Check Verification Success and Stop Verification Polling.
+   * If error, dispatch Check Verification Failure.
+   */
+  public readonly verificationPollingTick$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authActions.verificationPollingTick),
+      switchMap(() => {
+        const user = this.authService.checkIfUserIsSignedIn();
+        if (!user) {
+          return of(authActions.checkVerificationFailure({ error: 'No user signed in' }));
+        }
+        // Reload user from Firebase to get latest emailVerified status
+        return from(user.reload()).pipe(
+          switchMap(() => {
+            if (user.emailVerified) {
+              return [
+                authActions.checkVerificationSuccess(),
+                authActions.stopVerificationPolling(),
+              ];
+            }
+            return [];
+          }),
+          catchError((err) =>
+            of(authActions.checkVerificationFailure({ error: err?.message || 'Verification check failed' }))
+          )
+        );
+      })
+    )
+  );
+
+  /**
+   * Helper for auto-login with a User instance (not UserCredential).
+   */
+  private handleUserAutoLogin(user: User) {
+    const adapter = new UserAdapter(user);
+    const userObj = adapter.clone();
+    return from(user.getIdTokenResult()).pipe(
+      map(({ token, expirationTime }) =>
+        authActions.loginSuccess({
+          user: userObj,
+          token,
+          expiresAt: expirationTime,
+        })
+      )
+    );
+  }
+
+  /**
+   * On successful verification, auto-login and redirect.
+   */
+  public readonly checkVerificationSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authActions.checkVerificationSuccess),
+      switchMap(() => {
+        const user = this.authService.checkIfUserIsSignedIn();
+        if (!user) {
+          return of(authActions.loginFailure({ error: 'No user found for auto-login' }));
+        }
+        return this.handleUserAutoLogin(user).pipe(
+          catchError((err) =>
+            of(authActions.loginFailure({ error: err?.message || 'Auto-login failed' }))
+          )
+        );
+      })
+    )
   );
 
   private handleSignUp(action: ISignUp) {
