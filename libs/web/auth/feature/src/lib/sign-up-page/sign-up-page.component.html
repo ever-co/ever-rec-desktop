@@ -22,6 +22,7 @@
   <button
     mat-flat-button
     class="google-signup-btn"
+    [disabled]="loading"
     (click)="signUpWithGoogle()"
   >
     @if (loading && isGoogle()) {

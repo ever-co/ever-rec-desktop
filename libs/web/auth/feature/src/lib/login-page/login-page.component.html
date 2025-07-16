@@ -20,7 +20,12 @@
     <span class="login-divider-line"></span>
   </div>
 
-  <button mat-flat-button class="google-login-btn" (click)="signInWithGoogle()">
+  <button
+    mat-flat-button
+    class="google-login-btn"
+    [disabled]="loading"
+    (click)="signInWithGoogle()"
+  >
     @if (loading && isGoogle()) {
       <mat-icon><mat-spinner diameter="20"> </mat-spinner></mat-icon>
     } @else {
