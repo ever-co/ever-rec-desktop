@@ -16,4 +16,11 @@ export const authRoutes: Route[] = [
         (m) => m.SignUpPageComponent,
       ),
   },
+  {
+    path: 'verification',
+    loadComponent: () =>
+      import('./verification-page/verification-page.component').then(
+        (m) => m.VerificationPageComponent,
+      ),
+  },
 ];

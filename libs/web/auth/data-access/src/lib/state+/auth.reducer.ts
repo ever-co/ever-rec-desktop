@@ -10,6 +10,7 @@ export interface IAuthState {
   expiresAt: string | null;
   loading: boolean;
   error: string | null;
+  cooldown: number;
 }
 
 export const initialAuthState: IAuthState = {
@@ -18,6 +19,7 @@ export const initialAuthState: IAuthState = {
   expiresAt: null,
   loading: false,
   error: null,
+  cooldown: 0,
 };
 
 export const reducer = createReducer(
@@ -28,6 +30,7 @@ export const reducer = createReducer(
     authActions.logout,
     authActions.loginWithGoogle,
     authActions.signUp,
+    authActions.sendVerificationEmail,
     (state) => ({
       ...state,
       loading: true,
@@ -46,6 +49,7 @@ export const reducer = createReducer(
     authActions.loginFailure,
     authActions.logoutFailure,
     authActions.signUpFailure,
+    authActions.sendVerificationEmailFailure,
     (state, { error }) => ({
       ...state,
       loading: false,
@@ -72,9 +76,39 @@ export const reducer = createReducer(
     error,
   })),
 
-  on(authActions.signUpSuccess, (state) => ({
+  on(
+    authActions.signUpSuccess,
+    authActions.sendVerificationEmailSuccess,
+    (state) => ({
+      ...state,
+      loading: false,
+    }),
+  ),
+
+  on(authActions.startCooldown, (state, { seconds }) => ({
     ...state,
-    loading: false,
+    cooldown: seconds,
+  })),
+
+  on(authActions.decrementCooldown, (state) => ({
+    ...state,
+    cooldown: state.cooldown > 0 ? state.cooldown - 1 : 0,
+  })),
+
+  on(authActions.resetCooldown, (state) => ({
+    ...state,
+    cooldown: 0,
+  })),
+
+  // Verification polling error handling
+  on(authActions.checkVerificationFailure, (state, { error }) => ({
+    ...state,
+    error,
+  })),
+
+  on(authActions.startVerificationPolling, (state) => ({
+    ...state,
+    error: null,
   })),
 );
 

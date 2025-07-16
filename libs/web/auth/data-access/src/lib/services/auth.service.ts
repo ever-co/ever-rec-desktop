@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
+import { updateProfile } from '@angular/fire/auth';
+import { isEmpty } from '@ever-co/shared-utils';
 import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  getAuth,
+  getIdTokenResult,
+  GoogleAuthProvider,
+  sendEmailVerification,
+  signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
   User,
-  getIdTokenResult,
 } from 'firebase/auth';
-import { ISignUp } from '../models/sign-up.model';
-import { updateProfile } from '@angular/fire/auth';
 import { IProfile } from '../models/profile.model';
-import { isEmpty } from '@ever-co/shared-utils';
+import { ISignUp } from '../models/sign-up.model';
 
 @Injectable()
 export class AuthService {
@@ -58,6 +59,10 @@ export class AuthService {
     }
 
     return updateProfile(user, payload);
+  }
+
+  public verify(user: User): Promise<void> {
+    return sendEmailVerification(user);
   }
 
   public deleteUser(user: User): Promise<void> {

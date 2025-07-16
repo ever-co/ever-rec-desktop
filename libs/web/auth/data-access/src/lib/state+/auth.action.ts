@@ -29,5 +29,22 @@ export const authActions = createActionGroup({
     'Sign Up': props<ISignUp>(),
     'Sign Up Success': emptyProps(),
     'Sign Up Failure': props<{ error: string }>(),
+
+    // Send verification email
+    'Send Verification Email': emptyProps(),
+    'Send Verification Email Success': emptyProps(),
+    'Send Verification Email Failure': props<{ error: string }>(),
+
+    // Resend timer actions
+    'Start Cooldown': props<{ seconds: number }>(),
+    'Decrement Cooldown': emptyProps(),
+    'Reset Cooldown': emptyProps(),
+
+    // Email verification polling actions
+    'Start Verification Polling': emptyProps(),
+    'Stop Verification Polling': emptyProps(),
+    'Verification Polling Tick': emptyProps(),
+    'Check Verification Success': emptyProps(),
+    'Check Verification Failure': props<{ error: string }>(),
   },
 });

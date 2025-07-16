@@ -49,3 +49,6 @@ Thumbs.db
 
 #Ignore cursor AI rules
 .cursor/rules/codacy.mdc
+
+.cursor/rules/nx-rules.mdc
+.github/instructions/nx.instructions.md

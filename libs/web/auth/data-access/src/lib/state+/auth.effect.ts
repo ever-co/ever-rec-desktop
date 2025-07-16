@@ -8,12 +8,17 @@ import {
   defer,
   EMPTY,
   exhaustMap,
+  filter,
   from,
+  interval,
   map,
   of,
   retry,
+  map as rxMap,
   switchMap,
+  takeWhile,
   throwError,
+  takeUntil,
 } from 'rxjs';
 import { IProfile } from '../models/profile.model';
 import { ISignUp } from '../models/sign-up.model';
@@ -52,6 +57,59 @@ export class AuthEffects {
     return of(authActions.loginFailure({ error }));
   };
 
+  public readonly sendEmailVerification$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authActions.sendVerificationEmail),
+      map(() => this.authService.checkIfUserIsSignedIn()),
+      filter((user): user is User => !!user && !user.emailVerified),
+      switchMap((user) =>
+        from(this.authService.verify(user)).pipe(
+          map(() => authActions.sendVerificationEmailSuccess()),
+          catchError((err) =>
+            of(authActions.sendVerificationEmailFailure(err)),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  public readonly startCooldownTimer$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authActions.sendVerificationEmailSuccess),
+      map(() => authActions.startCooldown({ seconds: 60 })),
+    ),
+  );
+
+  public readonly sendEmailVerificationSuccessNotify$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(authActions.sendVerificationEmailSuccess),
+        switchMap(() => {
+          this.notificationService.show(
+            'Verification email sent successful',
+            'success',
+          );
+          return EMPTY;
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  public readonly sendEmailVerificationFailureNotify$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(authActions.sendVerificationEmailFailure),
+        switchMap(({ error }) => {
+          this.notificationService.show(
+            `Verification email failed: ${error}`,
+            'error',
+          );
+          return EMPTY;
+        }),
+      ),
+    { dispatch: false },
+  );
+
   public readonly signIn$ = createEffect(() =>
     this.actions$.pipe(
       ofType(authActions.login),
@@ -74,9 +132,11 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(authActions.loginSuccess),
-        switchMap(() => {
+        switchMap(({ user }) => {
           this.refreshTokenService.startTimer();
-          this.notificationService.show('Login successful', 'success');
+          if (user.isVerified) {
+            this.notificationService.show('Login successful', 'success');
+          }
           return EMPTY;
         }),
       ),
@@ -210,6 +270,111 @@ export class AuthEffects {
       ofType(authActions.signUp),
       exhaustMap((action) => this.handleSignUp(action)),
     ),
+  );
+
+  public readonly resendTimer$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authActions.startCooldown),
+      switchMap(({ seconds }) =>
+        interval(1000).pipe(
+          takeWhile((count) => count < seconds),
+          rxMap(() => authActions.decrementCooldown()),
+        ),
+      ),
+    ),
+  );
+
+  /**
+   * Poll for email verification every 10 seconds after sending verification email.
+   * If verified, dispatch Check Verification Success and stop polling.
+   */
+  public readonly startVerificationPolling$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authActions.startVerificationPolling),
+      switchMap(() =>
+        interval(10000).pipe(
+          map(() => authActions.verificationPollingTick()),
+          // Stop polling if Stop Verification Polling or Check Verification Success is dispatched
+          takeUntil(
+            this.actions$.pipe(
+              ofType(
+                authActions.stopVerificationPolling,
+                authActions.checkVerificationSuccess
+              )
+            )
+          )
+        )
+      )
+    )
+  );
+
+  /**
+   * On each polling tick, reload the user and check if verified.
+   * If verified, dispatch Check Verification Success and Stop Verification Polling.
+   * If error, dispatch Check Verification Failure.
+   */
+  public readonly verificationPollingTick$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authActions.verificationPollingTick),
+      switchMap(() => {
+        const user = this.authService.checkIfUserIsSignedIn();
+        if (!user) {
+          return of(authActions.checkVerificationFailure({ error: 'No user signed in' }));
+        }
+        // Reload user from Firebase to get latest emailVerified status
+        return from(user.reload()).pipe(
+          switchMap(() => {
+            if (user.emailVerified) {
+              return [
+                authActions.checkVerificationSuccess(),
+                authActions.stopVerificationPolling(),
+              ];
+            }
+            return [];
+          }),
+          catchError((err) =>
+            of(authActions.checkVerificationFailure({ error: err?.message || 'Verification check failed' }))
+          )
+        );
+      })
+    )
+  );
+
+  /**
+   * Helper for auto-login with a User instance (not UserCredential).
+   */
+  private handleUserAutoLogin(user: User) {
+    const adapter = new UserAdapter(user);
+    const userObj = adapter.clone();
+    return from(user.getIdTokenResult()).pipe(
+      map(({ token, expirationTime }) =>
+        authActions.loginSuccess({
+          user: userObj,
+          token,
+          expiresAt: expirationTime,
+        })
+      )
+    );
+  }
+
+  /**
+   * On successful verification, auto-login and redirect.
+   */
+  public readonly checkVerificationSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authActions.checkVerificationSuccess),
+      switchMap(() => {
+        const user = this.authService.checkIfUserIsSignedIn();
+        if (!user) {
+          return of(authActions.loginFailure({ error: 'No user found for auto-login' }));
+        }
+        return this.handleUserAutoLogin(user).pipe(
+          catchError((err) =>
+            of(authActions.loginFailure({ error: err?.message || 'Auto-login failed' }))
+          )
+        );
+      })
+    )
   );
 
   private handleSignUp(action: ISignUp) {

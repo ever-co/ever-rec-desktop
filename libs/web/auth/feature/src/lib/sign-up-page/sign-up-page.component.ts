@@ -1,10 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Inject,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {
@@ -13,8 +8,6 @@ import {
   selectAuthLoading,
 } from '@ever-co/auth-data-access';
 import { AuthContainerComponent, SignUpFormComponent } from '@ever-co/auth-ui';
-import { REC_ENV } from '@ever-co/shared-service';
-import { IEnvironment } from '@ever-co/shared-utils';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
@@ -34,10 +27,7 @@ import { Observable } from 'rxjs';
 export class SignUpPageComponent {
   public readonly isGoogle = signal<boolean>(false);
 
-  constructor(
-    @Inject(REC_ENV) public env: IEnvironment,
-    private readonly store: Store,
-  ) {}
+  constructor(private readonly store: Store) {}
 
   public signUpWithGoogle() {
     this.isGoogle.update(() => true);

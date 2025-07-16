@@ -30,6 +30,16 @@ export const selectIsAuthenticated = createSelector(
   ({ user, expiresAt }) => !!user && isSessionValid(expiresAt),
 );
 
+export const selectIsVerified = createSelector(
+  selectAuthState,
+  ({ user }) => user?.isVerified,
+);
+
+export const selectCooldown = createSelector(
+  selectAuthState,
+  (state) => state.cooldown,
+);
+
 function isSessionValid(expiresAt: string | null): boolean {
   if (!expiresAt) return false;
   return new Date(expiresAt).getTime() > Date.now();
