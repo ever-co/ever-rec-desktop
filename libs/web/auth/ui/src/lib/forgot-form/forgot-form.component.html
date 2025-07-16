@@ -29,11 +29,15 @@
     color="primary"
     type="submit"
     class="mt-4"
-    [disabled]="form.invalid"
+    [disabled]="form.invalid || loading()"
   >
-    Request password
     @if (loading()) {
-      <mat-icon><mat-spinner diameter="16"> </mat-spinner></mat-icon>
+      <div class="flex items-center">
+        <mat-icon><mat-spinner diameter="16"></mat-spinner></mat-icon>
+        Requesting new password...
+      </div>
+    } @else {
+      Request password
     }
   </button>
 </form>

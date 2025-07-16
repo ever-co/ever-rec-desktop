@@ -132,7 +132,7 @@
     color="primary"
     type="submit"
     class="mt-4"
-    [disabled]="form.invalid"
+    [disabled]="form.invalid || loading()"
   >
     Sign Up
     @if (loading()) {

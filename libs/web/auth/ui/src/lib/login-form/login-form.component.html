@@ -72,7 +72,7 @@
     color="primary"
     type="submit"
     class="mt-4"
-    [disabled]="form.invalid"
+    [disabled]="form.invalid || loading()"
   >
     Login
     @if (loading()) {
