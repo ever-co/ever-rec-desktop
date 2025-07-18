@@ -30,6 +30,11 @@ export const settingRoutes: Route[] = [
         loadChildren: () =>
           import('@ever-co/webcam-feature').then((m) => m.settingRoutes),
       },
+      {
+        path: 'user-profile',
+        loadChildren: () =>
+          import('@ever-co/user-feature').then((m) => m.userRoutes),
+      },
       { path: '**', redirectTo: '' },
     ],
   },

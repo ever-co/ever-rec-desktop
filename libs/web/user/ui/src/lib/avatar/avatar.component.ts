@@ -25,7 +25,7 @@ export class AvatarComponent {
   readonly showName = input(false, { alias: 'show-name' });
 
   /** Size of the avatar (small, medium, large) */
-  readonly size = input<'sm' | 'md' | 'lg'>('md');
+  readonly size = input<'sm' | 'md' | 'lg' | 'xl'>('md');
 
   /** Whether to display a tooltip with the user's name */
   readonly showTooltip = input(true, { alias: 'show-tooltip' });
@@ -73,6 +73,8 @@ export class AvatarComponent {
         return 'w-8 h-8 text-xs';
       case 'lg':
         return 'w-14 h-14 text-lg';
+      case 'xl':
+        return 'w-18 h-18 text-xl';
       case 'md':
       default:
         return 'w-10 h-10 sm:w-12 sm:h-12 text-sm';
