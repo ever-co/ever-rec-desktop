@@ -28,6 +28,7 @@ import { provideSidebarDataAccess } from '@ever-co/sidebar-data-access';
 import { provideTimelineDataAccess } from '@ever-co/timeline-data-access';
 import { provideTimeLogDataAccess } from '@ever-co/timesheet-data-access';
 import { provideUploadDataAccess } from '@ever-co/upload-data-access';
+import { provideUserDataAccess } from '@ever-co/user-data-access';
 import { provideVideoDataAccess } from '@ever-co/video-data-access';
 import { provideSettingsDataAccess } from '@ever-co/web-setting-data-access';
 import { provideWebcamDataAccess } from '@ever-co/webcam-data-access';
@@ -65,6 +66,7 @@ export const appConfig: ApplicationConfig = {
     provideMediatorDataAccess(),
     provideAudioPlayerDataAccess(),
     providePhotoDataAccess(),
+    provideUserDataAccess(),
     provideFirebaseCore(firebaseConfig, useEmulators),
     {
       provide: REC_ENV,
