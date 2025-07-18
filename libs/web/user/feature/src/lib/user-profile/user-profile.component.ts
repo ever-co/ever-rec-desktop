@@ -24,6 +24,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
 import { ActionButtonComponent } from '@ever-co/shared-components';
+import { userUpdateActions } from '@ever-co/user-data-access';
 
 @Component({
   selector: 'lib-user-profile',
@@ -71,8 +72,8 @@ export class UserProfileComponent {
     this.store.dispatch(authActions.logout());
   }
 
-  public updateName(input: { name: string }): void {
-    //TODO: Implement update name
+  public updateName(input: { fullName: string }): void {
+    this.store.dispatch(userUpdateActions.fullName(input));
   }
 
   public updateEmail(input: { email: string }): void {
