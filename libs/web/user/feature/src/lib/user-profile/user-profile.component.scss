@@ -1,0 +1,16 @@
+.profile-action-buttons {
+  padding-bottom: 20px;
+}
+
+.profile-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile-headers-align .mat-mdc-form-field + .mat-mdc-form-field {
+  margin-left: 8px;
+}
+
+::ng-deep .mat-expansion-panel:not([class*='mat-elevation-z']) {
+  box-shadow: unset !important;
+}

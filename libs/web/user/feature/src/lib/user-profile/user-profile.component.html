@@ -1,1 +1,79 @@
-<p>UserFeature works!</p>
+@let user = user$ | async;
+
+<div class="flex flex-col gap-4 w-fit">
+  <div class="flex gap-6">
+    <div class="flex flex-col items-center gap-3">
+      <lib-user-avatar
+        [show-tooltip]="false"
+        [show-name]="false"
+        [show-email]="false"
+        [user]="user"
+        size="xl"
+      ></lib-user-avatar>
+      <div class="text-blue-900 text-sm cursor-pointer">Edit</div>
+    </div>
+    <div>
+      <mat-accordion class="profile-headers-align mat-elevation-0" multi>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title> Name </mat-panel-title>
+            <mat-panel-description>
+              {{ user?.name }}
+              <mat-icon>account_circle</mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <mat-form-field class="w-full">
+            <mat-label>Full Name</mat-label>
+            <input matInput type="text" />
+          </mat-form-field>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title> Email </mat-panel-title>
+            <mat-panel-description>
+              {{ user?.email }}
+              <mat-icon>email</mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <mat-form-field class="w-full">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" />
+          </mat-form-field>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title> Password </mat-panel-title>
+            <mat-panel-description>
+              ***
+              <mat-icon>security</mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <mat-form-field>
+            <mat-label>Old Password</mat-label>
+            <input matInput type="password" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>New Password</mat-label>
+            <input matInput type="password" />
+          </mat-form-field>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="flex justify-between align-center items-center">
+    <div>Account</div>
+    <lib-action-button [button]="deleteButton"></lib-action-button>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="w-fit">
+    <lib-action-button
+      class="w-fit"
+      [button]="signOutButton"
+    ></lib-action-button>
+  </div>
+</div>
