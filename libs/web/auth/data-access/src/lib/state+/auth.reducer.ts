@@ -139,6 +139,11 @@ export const reducer = createReducer(
     email: '',
     emailSent: false,
   })),
+
+  on(authActions.updateProfile, (state, { user }) => ({
+    ...state,
+    user: user ?? state.user,
+  })),
 );
 
 export const authFeature = createFeature({
