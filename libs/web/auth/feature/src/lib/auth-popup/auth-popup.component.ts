@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   authActions,
   selectAuthLoading,
@@ -20,14 +21,12 @@ import { Observable } from 'rxjs';
 })
 export class AuthPopupComponent {
   private readonly store = inject(Store);
+  private readonly router = inject(Router);
   public readonly buttons: IActionButton[] = [
     {
       label: 'Profile',
       icon: 'person',
-    },
-    {
-      label: 'Account Settings',
-      icon: 'settings',
+      action: this.redirectToUserProfile.bind(this),
     },
     {
       icon: 'logout',
@@ -44,5 +43,9 @@ export class AuthPopupComponent {
 
   private logout(): void {
     this.store.dispatch(authActions.logout());
+  }
+
+  private redirectToUserProfile(): void {
+    this.router.navigateByUrl('/settings/user-profile');
   }
 }
