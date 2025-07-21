@@ -6,11 +6,6 @@ export const selectUserUpdateState =
     fromAuth.userUpdateFeatureKey,
   );
 
-export const selectUserUpdate = createSelector(
-  selectUserUpdateState,
-  (state) => state.user,
-);
-
 export const selectUserUpdateLoading = createSelector(
   selectUserUpdateState,
   (state) => state.loading,

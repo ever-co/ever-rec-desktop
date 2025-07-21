@@ -16,14 +16,20 @@ export class UserUpdateEffects {
   public readonly profile$ = createEffect(() =>
     this.actions$.pipe(
       ofType(userUpdateActions.fullNameSuccess),
-      switchMap(({ user }) =>
-        from(user.reload()).pipe(
+      switchMap(() => {
+        const user = this.authService.checkIfUserIsSignedIn();
+
+        if (!user) {
+          return of(authActions.logout());
+        }
+
+        return from(user.reload()).pipe(
           map(() => {
             const adapter = new UserAdapter(user);
             return authActions.updateProfile({ user: adapter.clone() });
           }),
-        ),
-      ),
+        );
+      }),
     ),
   );
 
@@ -42,7 +48,7 @@ export class UserUpdateEffects {
         }
 
         return from(this.authService.updateProfile(user, { fullName })).pipe(
-          map(() => userUpdateActions.fullNameSuccess({ user })),
+          map(() => userUpdateActions.fullNameSuccess()),
           catchError((error) =>
             of(
               userUpdateActions.fullNameFailure({

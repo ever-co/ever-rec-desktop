@@ -5,13 +5,11 @@ import { userUpdateActions } from './user-update.action';
 export const userUpdateFeatureKey = 'user update';
 
 export interface IUserUpdateState {
-  user: User | null;
   loading: boolean;
   error: string | null;
 }
 
 export const initialAuthState: IUserUpdateState = {
-  user: null,
   loading: false,
   error: null,
 };
@@ -24,10 +22,9 @@ export const reducer = createReducer(
     loading: true,
   })),
 
-  on(userUpdateActions.fullNameSuccess, (state, { user }) => ({
+  on(userUpdateActions.fullNameSuccess, (state) => ({
     ...state,
     loading: false,
-    user,
   })),
 
   on(
