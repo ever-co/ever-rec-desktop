@@ -1,1 +1,4 @@
-export * from './lib/user-data-access/user-data-access.component';
+export * from './lib/+state/user-update.action';
+export * from './lib/+state/user-update.selector';
+export * from './lib/user-data-access.module';
+export * from './lib/models/full-name.model';

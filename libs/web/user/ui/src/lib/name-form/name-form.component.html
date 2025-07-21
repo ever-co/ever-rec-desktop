@@ -1,0 +1,35 @@
+<form
+  [formGroup]="form"
+  (ngSubmit)="submitForm()"
+  class="full-name-form w-full"
+>
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>Full Name</mat-label>
+    <input
+      matInput
+      type="text"
+      formControlName="fullName"
+      placeholder="Enter your full name"
+      required
+      aria-label="Name"
+    />
+    @if (fullNameRequired) {
+      <mat-error>Full name is required.</mat-error>
+    }
+    @if (fullNameMinLength) {
+      <mat-error>Full name must be at least 2 characters.</mat-error>
+    }
+    @if (fullNameMaxLength) {
+      <mat-error>Full name must be at most 50 characters.</mat-error>
+    }
+    @if (fullNameSameValue) {
+      <mat-error>Full name must be different from ‘{{ name() }}’.</mat-error>
+    }
+  </mat-form-field>
+  <div class="w-fit">
+    <lib-action-button
+      class="w-fit"
+      [button]="buttonSubmit"
+    ></lib-action-button>
+  </div>
+</form>

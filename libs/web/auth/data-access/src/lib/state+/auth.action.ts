@@ -5,6 +5,8 @@ import {
   ILoginResponse,
   IRefreshToken,
 } from '../models/user.model';
+import { IProfile } from '../models/profile.model';
+import { IUser } from '@ever-co/shared-utils';
 
 export const authActions = createActionGroup({
   source: 'Auth Firebase',
@@ -52,5 +54,8 @@ export const authActions = createActionGroup({
     'Reset Password Success': emptyProps(),
     'Reset Password Failure': props<{ error: string }>(),
     'Reset Form': emptyProps(),
+
+    //Update profile
+    'Update Profile': props<{ user: IUser | null }>(),
   },
 });
