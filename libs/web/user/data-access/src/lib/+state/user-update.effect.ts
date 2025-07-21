@@ -4,6 +4,7 @@ import {
   AuthService,
   UserAdapter,
 } from '@ever-co/auth-data-access';
+import { NotificationService } from '@ever-co/notification-data-access';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, from, map, of, switchMap } from 'rxjs';
 import { userUpdateActions } from './user-update.action';
@@ -12,6 +13,7 @@ import { userUpdateActions } from './user-update.action';
 export class UserUpdateEffects {
   private readonly actions$ = inject(Actions);
   private readonly authService = inject(AuthService);
+  private readonly notiicationService = inject(NotificationService);
 
   public readonly profile$ = createEffect(() =>
     this.actions$.pipe(
@@ -59,5 +61,44 @@ export class UserUpdateEffects {
         );
       }),
     ),
+  );
+
+  public readonly fullNameNotification$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userUpdateActions.fullName),
+        map(() => {
+          this.notiicationService.show('Full name updating...', 'info');
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  public readonly fullNameNotificationSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userUpdateActions.fullNameSuccess),
+        map(() => {
+          this.notiicationService.show(
+            'Full name updated successfully.',
+            'success',
+          );
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  public readonly fullNameNotificationFailure$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userUpdateActions.fullNameFailure),
+        map(() => {
+          this.notiicationService.show(
+            'Something went wrong. Full name not updated.',
+            'error',
+          );
+        }),
+      ),
+    { dispatch: false },
   );
 }
