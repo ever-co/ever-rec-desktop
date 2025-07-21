@@ -6,9 +6,9 @@ export const selectUserUpdateState =
     fromAuth.userUpdateFeatureKey,
   );
 
-export const selectUserUpdateLoading = createSelector(
+export const selectFullNameUpdating = createSelector(
   selectUserUpdateState,
-  (state) => state.loading,
+  (state) => state.fullNameUpdating,
 );
 
 export const selectUserUpdateError = createSelector(

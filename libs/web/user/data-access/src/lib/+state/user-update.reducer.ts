@@ -1,16 +1,17 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
-import { User } from 'firebase/auth';
 import { userUpdateActions } from './user-update.action';
 
 export const userUpdateFeatureKey = 'user update';
 
 export interface IUserUpdateState {
-  loading: boolean;
+  fullNameUpdating: boolean;
+  emailUpdating: boolean;
   error: string | null;
 }
 
 export const initialAuthState: IUserUpdateState = {
-  loading: false,
+  fullNameUpdating: false,
+  emailUpdating: false,
   error: null,
 };
 
@@ -19,23 +20,35 @@ export const reducer = createReducer(
 
   on(userUpdateActions.fullName, (state) => ({
     ...state,
-    loading: true,
+    fullNameUpdating: true,
   })),
 
   on(userUpdateActions.fullNameSuccess, (state) => ({
     ...state,
-    loading: false,
+    fullNameUpdating: false,
   })),
 
-  on(
-    userUpdateActions.fullNameFailure,
+  on(userUpdateActions.fullNameFailure, (state, { error }) => ({
+    ...state,
+    fullNameUpdating: false,
+    error,
+  })),
 
-    (state, { error }) => ({
-      ...state,
-      loading: false,
-      error,
-    }),
-  ),
+  on(userUpdateActions.email, (state) => ({
+    ...state,
+    emailUpdating: true,
+  })),
+
+  on(userUpdateActions.emailSuccess, (state) => ({
+    ...state,
+    emailUpdating: false,
+  })),
+
+  on(userUpdateActions.emailFailure, (state, { error }) => ({
+    ...state,
+    emailUpdating: false,
+    error,
+  })),
 );
 
 export const userUpdateFeature = createFeature({

@@ -1,15 +1,6 @@
 import { CommonModule } from '@angular/common';
 
 import {
-  authActions,
-  selectAuthLoading,
-  selectUser,
-} from '@ever-co/auth-data-access';
-import { IActionButton, IUser } from '@ever-co/shared-utils';
-import { AvatarComponent, NameFormComponent } from '@ever-co/user-ui';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import {
   ChangeDetectionStrategy,
   Component,
   inject,
@@ -18,17 +9,26 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatDividerModule } from '@angular/material/divider';
+import {
+  authActions,
+  selectAuthLoading,
+  selectUser,
+} from '@ever-co/auth-data-access';
 import { ActionButtonComponent } from '@ever-co/shared-components';
+import { IActionButton, IUser } from '@ever-co/shared-utils';
 import {
   IFullName,
-  selectUserUpdateLoading,
+  selectFullNameUpdating,
   userUpdateActions,
 } from '@ever-co/user-data-access';
+import { AvatarComponent, NameFormComponent } from '@ever-co/user-ui';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'lib-user-profile',
@@ -73,8 +73,8 @@ export class UserProfileComponent {
     return this.store.select(selectUser);
   }
 
-  public get loading$(): Observable<boolean> {
-    return this.store.select(selectUserUpdateLoading);
+  public get fullNameUpdating$(): Observable<boolean> {
+    return this.store.select(selectFullNameUpdating);
   }
 
   private signOut(): void {

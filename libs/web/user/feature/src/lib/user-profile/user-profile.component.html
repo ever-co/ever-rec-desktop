@@ -1,5 +1,5 @@
 @let user = user$ | async;
-@let loading = loading$ | async;
+@let fullNameUpdating = fullNameUpdating$ | async;
 
 <div class="flex flex-col gap-4 w-fit">
   <div class="flex gap-6">
@@ -26,7 +26,7 @@
 
           <lib-name-form
             [name]="user?.name ?? ''"
-            [loading]="loading"
+            [loading]="fullNameUpdating"
             (nameChange)="updateName($event)"
           ></lib-name-form>
         </mat-expansion-panel>
