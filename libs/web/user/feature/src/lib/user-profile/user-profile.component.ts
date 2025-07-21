@@ -6,7 +6,7 @@ import {
   selectUser,
 } from '@ever-co/auth-data-access';
 import { IActionButton, IUser } from '@ever-co/shared-utils';
-import { AvatarComponent } from '@ever-co/user-ui';
+import { AvatarComponent, NameFormComponent } from '@ever-co/user-ui';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import {
@@ -24,7 +24,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
 import { ActionButtonComponent } from '@ever-co/shared-components';
-import { userUpdateActions } from '@ever-co/user-data-access';
+import {
+  IFullName,
+  selectUserUpdateLoading,
+  userUpdateActions,
+} from '@ever-co/user-data-access';
 
 @Component({
   selector: 'lib-user-profile',
@@ -42,6 +46,7 @@ import { userUpdateActions } from '@ever-co/user-data-access';
     MatDatepickerModule,
     MatDividerModule,
     ActionButtonComponent,
+    NameFormComponent,
   ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss',
@@ -68,11 +73,15 @@ export class UserProfileComponent {
     return this.store.select(selectUser);
   }
 
+  public get loading$(): Observable<boolean> {
+    return this.store.select(selectUserUpdateLoading);
+  }
+
   private signOut(): void {
     this.store.dispatch(authActions.logout());
   }
 
-  public updateName(input: { fullName: string }): void {
+  public updateName(input: IFullName): void {
     this.store.dispatch(userUpdateActions.fullName(input));
   }
 
