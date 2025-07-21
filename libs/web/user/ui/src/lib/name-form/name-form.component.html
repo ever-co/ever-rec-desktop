@@ -22,6 +22,9 @@
     @if (fullNameMaxLength) {
       <mat-error>Full name must be at most 50 characters.</mat-error>
     }
+    @if (fullNameSameValue) {
+      <mat-error>Full name must be different from ‘{{ name() }}’.</mat-error>
+    }
   </mat-form-field>
   <div class="w-fit">
     <lib-action-button

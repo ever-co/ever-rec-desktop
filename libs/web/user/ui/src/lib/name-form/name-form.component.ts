@@ -7,9 +7,11 @@ import {
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import {
+  AbstractControlOptions,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
+  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -52,8 +54,22 @@ export class NameFormComponent {
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(50),
+        this.sameValueValidator(this.name()),
       ]),
     });
+  }
+
+  private sameValueValidator(original: string | null) {
+    return (control: AbstractControlOptions): ValidationErrors | null => {
+      const fullName = control as FormControl;
+      const current = fullName?.value?.trim();
+
+      if (current === original) {
+        return { sameValue: true };
+      }
+
+      return null;
+    };
   }
 
   // Form control getters
@@ -65,11 +81,17 @@ export class NameFormComponent {
   public get fullNameRequired() {
     return this.fullName?.hasError('required') && this.fullName?.touched;
   }
+
   public get fullNameMinLength() {
     return this.fullName?.hasError('minlength') && this.fullName?.touched;
   }
+
   public get fullNameMaxLength() {
     return this.fullName?.hasError('maxlength') && this.fullName?.touched;
+  }
+
+  public get fullNameSameValue() {
+    return this.fullName?.hasError('sameValue') && this.fullName?.touched;
   }
 
   public submitForm(): void {
