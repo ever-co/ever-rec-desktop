@@ -97,7 +97,8 @@ export class NameFormComponent {
   public submitForm(): void {
     if (this.form.valid) {
       const { fullName } = this.form.value;
-      this.submit.emit({ fullName });
+      const trimmed = fullName.trim();
+      this.submit.emit({ fullName: trimmed });
     } else {
       this.form.markAllAsTouched();
     }
