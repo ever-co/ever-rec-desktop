@@ -1,7 +1,8 @@
 @let user = user$ | async;
 @let fullNameUpdating = fullNameUpdating$ | async;
+@let emailUpdating = emailUpdating$ | async;
 
-<div class="flex flex-col gap-4 w-fit">
+<div class="flex flex-col gap-4 max-w-xl w-full">
   <div class="flex gap-6">
     <div class="flex flex-col items-center gap-3">
       <lib-user-avatar
@@ -13,7 +14,7 @@
       ></lib-user-avatar>
       <div class="text-blue-900 text-sm cursor-pointer">Edit</div>
     </div>
-    <div>
+    <div class="w-full">
       <mat-accordion class="profile-headers-align mat-elevation-0" multi>
         <mat-expansion-panel>
           <mat-expansion-panel-header>
@@ -39,10 +40,11 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <mat-form-field class="w-full">
-            <mat-label>Email</mat-label>
-            <input matInput type="email" />
-          </mat-form-field>
+          <lib-email-form
+            [input]="user?.email ?? ''"
+            [loading]="emailUpdating"
+            (emailChange)="updateEmail($event)"
+          ></lib-email-form>
         </mat-expansion-panel>
 
         <mat-expansion-panel>
@@ -54,14 +56,7 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <mat-form-field>
-            <mat-label>Old Password</mat-label>
-            <input matInput type="password" />
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>New Password</mat-label>
-            <input matInput type="password" />
-          </mat-form-field>
+          <lib-password-form></lib-password-form>
         </mat-expansion-panel>
       </mat-accordion>
     </div>

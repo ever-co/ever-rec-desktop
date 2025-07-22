@@ -22,11 +22,18 @@ import {
 import { ActionButtonComponent } from '@ever-co/shared-components';
 import { IActionButton, IUser } from '@ever-co/shared-utils';
 import {
+  IEmail,
   IFullName,
+  selectEmailUpdating,
   selectFullNameUpdating,
   userUpdateActions,
 } from '@ever-co/user-data-access';
-import { AvatarComponent, NameFormComponent } from '@ever-co/user-ui';
+import {
+  AvatarComponent,
+  EmailFormComponent,
+  NameFormComponent,
+  PasswordFormComponent,
+} from '@ever-co/user-ui';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
@@ -47,6 +54,8 @@ import { Observable } from 'rxjs';
     MatDividerModule,
     ActionButtonComponent,
     NameFormComponent,
+    EmailFormComponent,
+    PasswordFormComponent,
   ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss',
@@ -77,6 +86,10 @@ export class UserProfileComponent {
     return this.store.select(selectFullNameUpdating);
   }
 
+  public get emailUpdating$(): Observable<boolean> {
+    return this.store.select(selectEmailUpdating);
+  }
+
   private signOut(): void {
     this.store.dispatch(authActions.logout());
   }
@@ -85,8 +98,9 @@ export class UserProfileComponent {
     this.store.dispatch(userUpdateActions.fullName(input));
   }
 
-  public updateEmail(input: { email: string }): void {
+  public updateEmail(input: IEmail): void {
     //TODO: Implement update email
+    console.log(input);
   }
 
   public updatePassword(input: {
