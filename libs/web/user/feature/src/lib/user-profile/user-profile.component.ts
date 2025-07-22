@@ -9,6 +9,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -24,6 +25,7 @@ import { IActionButton, IUser } from '@ever-co/shared-utils';
 import {
   IEmail,
   IFullName,
+  IPassword,
   selectEmailUpdating,
   selectFullNameUpdating,
   userUpdateActions,
@@ -32,10 +34,11 @@ import {
   AvatarComponent,
   EmailFormComponent,
   NameFormComponent,
+  PasswordDialogValidationComponent,
   PasswordFormComponent,
 } from '@ever-co/user-ui';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { filter, Observable, take, tap } from 'rxjs';
 
 @Component({
   selector: 'lib-user-profile',
@@ -64,6 +67,7 @@ import { Observable } from 'rxjs';
 export class UserProfileComponent {
   public readonly accordion = viewChild.required(MatAccordion);
   private readonly store = inject(Store);
+  private readonly dialogService = inject(MatDialog);
   public readonly deleteButton: IActionButton = {
     icon: 'dangerous',
     label: 'Delete',
@@ -98,15 +102,26 @@ export class UserProfileComponent {
     this.store.dispatch(userUpdateActions.fullName(input));
   }
 
-  public updateEmail(input: IEmail): void {
-    //TODO: Implement update email
-    console.log(input);
+  public updateEmail(email: IEmail): void {
+    this.dialogService
+      .open(PasswordDialogValidationComponent)
+      .afterClosed()
+      .pipe(
+        take(1),
+        filter(Boolean),
+        tap((password: IPassword) =>
+          this.store.dispatch(
+            userUpdateActions.email({
+              ...password,
+              ...email,
+            }),
+          ),
+        ),
+      )
+      .subscribe();
   }
 
-  public updatePassword(input: {
-    oldPassword: string;
-    newPassword: string;
-  }): void {
+  public updatePassword(input: IPassword): void {
     //TODO: Implement update password
   }
 
