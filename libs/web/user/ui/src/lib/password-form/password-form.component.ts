@@ -7,7 +7,6 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { toObservable } from '@angular/core/rxjs-interop';
 import {
   FormControl,
   FormGroup,
@@ -20,7 +19,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { ActionButtonComponent } from '@ever-co/shared-components';
 import { IActionButton } from '@ever-co/shared-utils';
-import { map } from 'rxjs';
+import { IPassword, IPasswordForm } from '@ever-co/user-data-access';
+
+export interface IPasswordConfig {
+  submit?: Partial<IActionButton>;
+  cancel?: Partial<IActionButton>;
+  showCancel?: boolean;
+}
 
 @Component({
   selector: 'lib-password-form',
@@ -38,18 +43,15 @@ import { map } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PasswordFormComponent {
+  public readonly config = input<IPasswordConfig>();
   public readonly input = input<string | null>('');
-  public readonly loading = input<boolean | null>(false);
-  public readonly submit = output<any>({ alias: 'signUpWithEmail' });
+  public readonly submit = output<IPassword>({ alias: 'passwordChange' });
 
-  public form!: FormGroup;
+  public form!: FormGroup<IPasswordForm>;
 
-  public readonly buttonSubmit: IActionButton = {
-    icon: 'save_as',
-    label: 'Update your password',
-    type: 'submit',
-    loading: toObservable(this.loading).pipe(map(Boolean)),
-  };
+  public buttonSubmit!: IActionButton;
+
+  public buttonCancel!: IActionButton;
 
   public readonly showPassword = signal(false);
 
@@ -68,6 +70,21 @@ export class PasswordFormComponent {
         ),
       ]),
     });
+
+    this.buttonSubmit = {
+      icon: 'save_as',
+      label: 'Update your password',
+      type: 'submit',
+      ...this.config()?.submit,
+    };
+
+    this.buttonCancel = {
+      icon: 'close',
+      type: 'reset',
+      label: 'Cancel',
+      variant: 'danger',
+      ...this.config()?.cancel,
+    };
   }
 
   // Form control getters
@@ -111,7 +128,7 @@ export class PasswordFormComponent {
 
   public submitForm(): void {
     if (this.form.valid) {
-      const { password } = this.form.value;
+      const { password } = this.form.value as IPassword;
       const trimmed = password.trim();
       this.submit.emit({ password: trimmed });
     } else {
