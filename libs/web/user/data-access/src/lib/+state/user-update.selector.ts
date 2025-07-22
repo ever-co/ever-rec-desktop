@@ -11,6 +11,11 @@ export const selectFullNameUpdating = createSelector(
   (state) => state.fullNameUpdating,
 );
 
+export const selectEmailUpdating = createSelector(
+  selectUserUpdateState,
+  (state) => state.emailUpdating,
+);
+
 export const selectUserUpdateError = createSelector(
   selectUserUpdateState,
   (state) => state.error,
