@@ -1,14 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { ActionButtonComponent } from '@ever-co/shared-components';
-import { IActionButton } from '@ever-co/shared-utils';
 import { IPassword } from '@ever-co/user-data-access';
 import {
   IPasswordConfig,
   PasswordFormComponent,
 } from '../password-form/password-form.component';
-import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'lib-password-dialog-validation',
