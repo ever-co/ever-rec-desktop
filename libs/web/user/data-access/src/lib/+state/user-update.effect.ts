@@ -13,7 +13,7 @@ import { userUpdateActions } from './user-update.action';
 export class UserUpdateEffects {
   private readonly actions$ = inject(Actions);
   private readonly authService = inject(AuthService);
-  private readonly notiicationService = inject(NotificationService);
+  private readonly notificationService = inject(NotificationService);
 
   public readonly profile$ = createEffect(() =>
     this.actions$.pipe(
@@ -68,7 +68,7 @@ export class UserUpdateEffects {
       this.actions$.pipe(
         ofType(userUpdateActions.fullName),
         map(() => {
-          this.notiicationService.show('Full name updating...', 'info');
+          this.notificationService.show('Full name updating...', 'info');
         }),
       ),
     { dispatch: false },
@@ -79,7 +79,7 @@ export class UserUpdateEffects {
       this.actions$.pipe(
         ofType(userUpdateActions.fullNameSuccess),
         map(() => {
-          this.notiicationService.show(
+          this.notificationService.show(
             'Full name updated successfully.',
             'success',
           );
@@ -93,7 +93,7 @@ export class UserUpdateEffects {
       this.actions$.pipe(
         ofType(userUpdateActions.fullNameFailure),
         map(() => {
-          this.notiicationService.show(
+          this.notificationService.show(
             'Something went wrong. Full name not updated.',
             'error',
           );
