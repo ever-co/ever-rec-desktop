@@ -1,5 +1,5 @@
-import { EnvironmentProviders, makeEnvironmentProviders } from '@angular/core';
-import { initializeApp } from '@angular/fire/app';
+import { EnvironmentProviders, importProvidersFrom, makeEnvironmentProviders } from '@angular/core';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { connectAuthEmulator, getAuth, provideAuth } from '@angular/fire/auth';
 import {
   connectFirestoreEmulator,

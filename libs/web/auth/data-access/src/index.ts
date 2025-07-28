@@ -9,3 +9,4 @@ export * from './lib/services/auth.service';
 export * from './lib/state+/auth.action';
 export * from './lib/state+/auth.effect';
 export * from './lib/state+/auth.selector';
+export * from './lib/services/auth-error.service';

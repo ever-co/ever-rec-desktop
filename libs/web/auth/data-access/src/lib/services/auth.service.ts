@@ -33,7 +33,11 @@ export class AuthService {
   }
 
   public checkIfUserIsSignedIn() {
-    return this.auth.currentUser;
+    const user = this.auth.currentUser;
+    if (!user) {
+      throw new Error('User not found');
+    }
+    return user;
   }
 
   public getRefreshToken(user: User) {
