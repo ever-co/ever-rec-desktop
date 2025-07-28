@@ -116,18 +116,6 @@ export class UserUpdateEffects {
     ),
   );
 
-  public readonly emailVerification$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(userUpdateActions.emailVerification),
-      switchMap(({ newEmail }) =>
-        from(this.emailUpdateService.updateUserEmail(email, password)).pipe(
-          map(() => userUpdateActions.emailSuccess()),
-          catchError((error) => of(userUpdateActions.emailFailure({ error }))),
-        ),
-      ),
-    ),
-  );
-
   public readonly emailNotification$ = createEffect(
     () =>
       this.actions$.pipe(
