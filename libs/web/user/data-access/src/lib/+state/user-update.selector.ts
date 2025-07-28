@@ -16,7 +16,12 @@ export const selectEmailUpdating = createSelector(
   (state) => state.emailUpdating,
 );
 
-export const selectUserUpdateError = createSelector(
+export const selectFullNameUpdateError = createSelector(
   selectUserUpdateState,
-  (state) => state.error,
+  (state) => state.fullNameError,
+);
+
+export const selectEmailUpdateError = createSelector(
+  selectUserUpdateState,
+  (state) => state.emailError,
 );

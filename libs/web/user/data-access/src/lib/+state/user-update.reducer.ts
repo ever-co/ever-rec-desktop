@@ -6,13 +6,15 @@ export const userUpdateFeatureKey = 'user update';
 export interface IUserUpdateState {
   fullNameUpdating: boolean;
   emailUpdating: boolean;
-  error: string | null;
+  emailError: string | null;
+  fullNameError: string | null;
 }
 
 export const initialAuthState: IUserUpdateState = {
   fullNameUpdating: false,
   emailUpdating: false,
-  error: null,
+  emailError: null,
+  fullNameError: null,
 };
 
 export const reducer = createReducer(
@@ -20,6 +22,7 @@ export const reducer = createReducer(
 
   on(userUpdateActions.fullName, (state) => ({
     ...state,
+    fullNameError: null,
     fullNameUpdating: true,
   })),
 
@@ -31,11 +34,12 @@ export const reducer = createReducer(
   on(userUpdateActions.fullNameFailure, (state, { error }) => ({
     ...state,
     fullNameUpdating: false,
-    error,
+    fullNameError: error,
   })),
 
   on(userUpdateActions.email, (state) => ({
     ...state,
+    emailError: null,
     emailUpdating: true,
   })),
 
@@ -47,8 +51,10 @@ export const reducer = createReducer(
   on(userUpdateActions.emailFailure, (state, { error }) => ({
     ...state,
     emailUpdating: false,
-    error,
+    emailError: error,
   })),
+
+  on(userUpdateActions.reset, () => initialAuthState),
 );
 
 export const userUpdateFeature = createFeature({
