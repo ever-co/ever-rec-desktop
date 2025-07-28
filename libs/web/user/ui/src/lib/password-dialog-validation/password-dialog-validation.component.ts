@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { ActionButtonComponent } from '@ever-co/shared-components';
 import { IPassword } from '@ever-co/user-data-access';
 import {
   IPasswordConfig,
@@ -15,7 +14,6 @@ import {
     PasswordFormComponent,
     CommonModule,
     MatDialogModule,
-    ActionButtonComponent,
     MatIconModule,
   ],
   templateUrl: './password-dialog-validation.component.html',
