@@ -6,6 +6,7 @@ export class Environment implements IEnvironment {
   public readonly appName: string = 'Ever Rec';
   public readonly icon: string = 'fiber_smart_record';
   public readonly useEmulators: boolean = true;
+  public readonly apiUrl: string = 'http://localhost:3000';
   public readonly firebaseConfig: IFirebaseConfig = {
     projectId: 'ever-rec-c8ff7',
     appId: '1:331856596503:web:4f17676526fd1080991652',

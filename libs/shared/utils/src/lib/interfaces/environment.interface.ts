@@ -5,6 +5,7 @@ export interface IEnvironment {
   canUseWebWorker: boolean;
   appName: string;
   icon: string;
+  apiUrl?: string;
   useEmulators?: boolean;
   firebaseConfig?: IFirebaseConfig;
 }
