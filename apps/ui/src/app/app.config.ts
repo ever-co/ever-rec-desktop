@@ -37,6 +37,8 @@ import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { Environment } from '../environment/environment';
 import { appRoutes } from './app.routes';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { apiInterceptor, tokenInterceptor } from '@ever-co/core-data-access';
 
 const { firebaseConfig, useEmulators } = new Environment();
 
@@ -68,6 +70,7 @@ export const appConfig: ApplicationConfig = {
     providePhotoDataAccess(),
     provideUserDataAccess(),
     provideFirebaseCore(firebaseConfig, useEmulators),
+    provideHttpClient(withInterceptors([tokenInterceptor, apiInterceptor])),
     {
       provide: REC_ENV,
       useClass: Environment,
