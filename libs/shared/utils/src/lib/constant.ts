@@ -15,4 +15,4 @@ export const STATISTICAL_CONSTANTS = {
   DEFAULT_PAGINATION_LIMIT: 10, // Default records per page
 };
 
-export const API_PREFIX = '/api'; // Api prefix
+export const API_PREFIX = '/api/v1'; // Api prefix
