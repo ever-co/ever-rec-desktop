@@ -14,3 +14,5 @@ export const STATISTICAL_CONSTANTS = {
   PAGINATION_MAX_LIMIT: 1000, // Maximum records per page
   DEFAULT_PAGINATION_LIMIT: 10, // Default records per page
 };
+
+export const API_PREFIX = '/api'; // Api prefix
