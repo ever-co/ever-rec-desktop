@@ -4,6 +4,7 @@ import { ICredentials } from './login.model';
 
 export interface IRefreshToken {
   token: string;
+  refreshToken: string;
   expiresAt: string;
 }
 

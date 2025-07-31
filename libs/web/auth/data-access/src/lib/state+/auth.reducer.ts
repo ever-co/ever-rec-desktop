@@ -7,6 +7,7 @@ export const authFeatureKey = 'authentication';
 export interface IAuthState {
   user: IUser | null;
   token: string | null;
+  refreshToken: string | null;
   expiresAt: string | null;
   loading: boolean;
   error: string | null;
@@ -18,6 +19,7 @@ export interface IAuthState {
 export const initialAuthState: IAuthState = {
   user: null,
   token: null,
+  refreshToken: null,
   expiresAt: null,
   loading: false,
   error: null,
@@ -41,11 +43,12 @@ export const reducer = createReducer(
     }),
   ),
 
-  on(authActions.loginSuccess, (state, { user, token, expiresAt }) => ({
+  on(authActions.loginSuccess, (state, { user, token, refreshToken, expiresAt }) => ({
     ...state,
     loading: false,
     user,
     token,
+    refreshToken,
     expiresAt,
   })),
 
@@ -68,9 +71,10 @@ export const reducer = createReducer(
     token: null,
   })),
 
-  on(authActions.refreshTokenSuccess, (state, { token, expiresAt }) => ({
+  on(authActions.refreshTokenSuccess, (state, { token, refreshToken, expiresAt }) => ({
     ...state,
     token,
+    refreshToken,
     expiresAt,
     error: null,
   })),

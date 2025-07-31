@@ -1,24 +1,12 @@
-import {
-  ApplicationConfig,
-  isDevMode,
-  provideZoneChangeDetection,
-} from '@angular/core';
+import { ApplicationConfig, isDevMode, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import {
-  provideRouter,
-  withHashLocation,
-  withViewTransitions,
-} from '@angular/router';
+import { provideRouter, withHashLocation, withViewTransitions } from '@angular/router';
 import { provideActivityDataAccess } from '@ever-co/activity-data-access';
 import { provideAudioPlayerDataAccess } from '@ever-co/audio-data-access';
 import { provideFirebaseCore } from '@ever-co/auth-data-access';
 import { provideBreadcrumbDataAccess } from '@ever-co/breadcrumb-data-access';
 import { provideDatePickerDataAccess } from '@ever-co/date-picker-data-access';
-import {
-  provideFactoriesDataAccess,
-  provideHydrationDataAccess,
-  provideMediatorDataAccess,
-} from '@ever-co/factory';
+import { provideFactoriesDataAccess, provideHydrationDataAccess, provideMediatorDataAccess } from '@ever-co/factory';
 import { provideGenerateVideoDataAccess } from '@ever-co/generate-video-data-access';
 import { provideNotificationDataAccess } from '@ever-co/notification-data-access';
 import { providePhotoDataAccess } from '@ever-co/photo-data-access';
@@ -37,8 +25,7 @@ import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { Environment } from '../environment/environment';
 import { appRoutes } from './app.routes';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { apiInterceptor, tokenInterceptor } from '@ever-co/core-data-access';
+import { provideCoreDataAccess } from '@ever-co/core-data-access';
 
 const { firebaseConfig, useEmulators } = new Environment();
 
@@ -70,10 +57,10 @@ export const appConfig: ApplicationConfig = {
     providePhotoDataAccess(),
     provideUserDataAccess(),
     provideFirebaseCore(firebaseConfig, useEmulators),
-    provideHttpClient(withInterceptors([tokenInterceptor, apiInterceptor])),
+    provideCoreDataAccess(),
     {
       provide: REC_ENV,
-      useClass: Environment,
-    },
-  ],
+      useClass: Environment
+    }
+  ]
 };

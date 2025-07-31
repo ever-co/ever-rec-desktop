@@ -121,9 +121,14 @@ export class AuthEffects {
             action.credentials.password,
           ),
         ).pipe(
-          switchMap(this.handleAuthSuccess),
+          switchMap((res) => {
+            console.log(res);
+            return EMPTY
+          }),
+
           catchError(this.handleAuthError),
         );
+
       }),
     ),
   );
