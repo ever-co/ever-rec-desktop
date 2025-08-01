@@ -71,33 +71,33 @@ export class EmailUpdateService {
    * @throws CurrentPasswordRequiredError if reauthentication is needed but no password is provided.
    * @throws Error for other Firebase Auth errors (e.g., invalid email, email already in use).
    */
-  public async updateUserEmail(
-    newEmail: string,
-    currentPassword?: string,
-  ): Promise<void> {
-    // First, let's make sure we actually have a user signed in.
-    // Assuming `authService.checkIfUserIsSignedIn()` returns a Firebase `User` object or `null`.
-    const user = this.authService.checkIfUserIsSignedIn();
-    if (!user) {
-      throw new UserNotSignedInError();
-    }
-
-    try {
-      // Attempt the email update directly. Firebase will tell us if a recent login is required.
-      await updateEmail(user, newEmail);
-      console.log(
-        'Email updated successfully without requiring reauthentication.',
-      );
-    } catch (error) {
-      // If an error occurs, let's figure out what kind of error it is.
-      await this.handleEmailUpdateError(
-        error as AuthError,
-        user,
-        newEmail,
-        currentPassword,
-      );
-    }
-  }
+  // public async updateUserEmail(
+  //   newEmail: string,
+  //   currentPassword?: string,
+  // ): Promise<void> {
+  //   // First, let's make sure we actually have a user signed in.
+  //   // Assuming `authService.checkIfUserIsSignedIn()` returns a Firebase `User` object or `null`.
+  //   const user = this.authService.checkIfUserIsSignedIn();
+  //   if (!user) {
+  //     throw new UserNotSignedInError();
+  //   }
+  //
+  //   try {
+  //     // Attempt the email update directly. Firebase will tell us if a recent login is required.
+  //     await updateEmail(user, newEmail);
+  //     console.log(
+  //       'Email updated successfully without requiring reauthentication.',
+  //     );
+  //   } catch (error) {
+  //     // If an error occurs, let's figure out what kind of error it is.
+  //     await this.handleEmailUpdateError(
+  //       error as AuthError,
+  //       user,
+  //       newEmail,
+  //       currentPassword,
+  //     );
+  //   }
+  // }
 
   /**
    * Internal method to handle specific Firebase Auth errors that might occur

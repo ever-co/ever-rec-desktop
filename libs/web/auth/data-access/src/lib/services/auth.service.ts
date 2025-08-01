@@ -1,16 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { sendPasswordResetEmail, updateProfile } from '@angular/fire/auth';
 import { API_PREFIX, isEmpty, IUser } from '@ever-co/shared-utils';
-import {
-  createUserWithEmailAndPassword,
-  getAuth,
-  getIdTokenResult,
-  GoogleAuthProvider,
-  sendEmailVerification,
-  signInWithPopup,
-  signOut,
-  User
-} from 'firebase/auth';
+import { getAuth, getIdTokenResult, User } from 'firebase/auth';
 import { HttpClient } from '@angular/common/http';
 import { IProfile } from '../models/profile.model';
 import { ISignUp } from '../models/sign-up.model';
@@ -28,7 +18,7 @@ export class AuthService {
   }
 
   public signInWithGoogle() {
-    return this.http.post<ILoginResponse>(`${this.API}/login-google`, { });
+    return this.http.post<ILoginResponse>(`${this.API}/login-google`, {});
   }
 
   public signOut() {
@@ -44,8 +34,8 @@ export class AuthService {
   }
 
   public signUp(input: ISignUp) {
-    const { email, password } = input;
-    return this.http.post<ILoginResponse>(`${this.API}/register`, { email, password });
+    const { email, password, fullName } = input;
+    return this.http.post<ILoginResponse>(`${this.API}/register`, { email, password, username: fullName });
   }
 
   public updateProfile(user: User, profile: IProfile): Observable<void> {
@@ -61,7 +51,7 @@ export class AuthService {
       throw new Error('No payload');
     }
 
-    return this.http.put<void>(`${this.API}/auth/user-data`, { displayName, photoURL });
+    return this.http.put<void>(`${this.API}/user-data`, { displayName, photoURL });
   }
 
   public verify(oob: string): Observable<void> {
@@ -69,7 +59,7 @@ export class AuthService {
   }
 
   public deleteUser(): Observable<void> {
-    return this.http.delete<void>(`${this.API}/auth/user`);
+    return this.http.delete<void>(`${this.API}/user`);
   }
 
   public resetPassword(email: string): Observable<void> {

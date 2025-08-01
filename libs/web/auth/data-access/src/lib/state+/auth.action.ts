@@ -1,12 +1,7 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { ISignUp } from '../models/sign-up.model';
-import {
-  ILoginCredentials,
-  ILoginResponse,
-  IRefreshToken,
-} from '../models/user.model';
-import { IProfile } from '../models/profile.model';
-import { IUser } from '@ever-co/shared-utils';
+import { ILoginCredentials, ILoginSuccess, IRefreshToken } from '../models/user.model';
+import { IUser } from '../models/user.model';
 
 export const authActions = createActionGroup({
   source: 'Auth Firebase',
@@ -14,7 +9,7 @@ export const authActions = createActionGroup({
     // Login actions
     Login: props<ILoginCredentials>(),
     'Login With Google': emptyProps(),
-    'Login Success': props<ILoginResponse>(),
+    'Login Success': props<ILoginSuccess>(),
     'Login Failure': props<{ error: string }>(),
 
     // Logout actions
@@ -56,6 +51,6 @@ export const authActions = createActionGroup({
     'Reset Form': emptyProps(),
 
     //Update profile
-    'Update Profile': props<{ user: IUser | null }>(),
-  },
+    'Update Profile': props<{ user: IUser | null }>()
+  }
 });

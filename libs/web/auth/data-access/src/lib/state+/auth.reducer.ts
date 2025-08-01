@@ -1,6 +1,6 @@
-import { IUser } from '@ever-co/shared-utils';
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { authActions } from './auth.action';
+import { IUser } from '../models/user.model';
 
 export const authFeatureKey = 'authentication';
 
@@ -25,7 +25,7 @@ export const initialAuthState: IAuthState = {
   error: null,
   cooldown: 0,
   emailSent: false,
-  email: '',
+  email: ''
 };
 
 export const reducer = createReducer(
@@ -39,8 +39,8 @@ export const reducer = createReducer(
     authActions.sendVerificationEmail,
     (state) => ({
       ...state,
-      loading: true,
-    }),
+      loading: true
+    })
   ),
 
   on(authActions.loginSuccess, (state, { user, token, refreshToken, expiresAt }) => ({
@@ -49,7 +49,7 @@ export const reducer = createReducer(
     user,
     token,
     refreshToken,
-    expiresAt,
+    expiresAt
   })),
 
   on(
@@ -60,15 +60,15 @@ export const reducer = createReducer(
     (state, { error }) => ({
       ...state,
       loading: false,
-      error,
-    }),
+      error
+    })
   ),
 
   on(authActions.logoutSuccess, (state) => ({
     ...state,
     loading: false,
     user: null,
-    token: null,
+    token: null
   })),
 
   on(authActions.refreshTokenSuccess, (state, { token, refreshToken, expiresAt }) => ({
@@ -76,12 +76,12 @@ export const reducer = createReducer(
     token,
     refreshToken,
     expiresAt,
-    error: null,
+    error: null
   })),
 
   on(authActions.refreshTokenFailure, (state, { error }) => ({
     ...state,
-    error,
+    error
   })),
 
   on(
@@ -89,68 +89,68 @@ export const reducer = createReducer(
     authActions.sendVerificationEmailSuccess,
     (state) => ({
       ...state,
-      loading: false,
-    }),
+      loading: false
+    })
   ),
 
   on(authActions.startCooldown, (state, { seconds }) => ({
     ...state,
-    cooldown: seconds,
+    cooldown: seconds
   })),
 
   on(authActions.decrementCooldown, (state) => ({
     ...state,
-    cooldown: state.cooldown > 0 ? state.cooldown - 1 : 0,
+    cooldown: state.cooldown > 0 ? state.cooldown - 1 : 0
   })),
 
   on(authActions.resetCooldown, (state) => ({
     ...state,
-    cooldown: 0,
+    cooldown: 0
   })),
 
   // Verification polling error handling
   on(authActions.checkVerificationFailure, (state, { error }) => ({
     ...state,
-    error,
+    error
   })),
 
   on(authActions.startVerificationPolling, (state) => ({
     ...state,
-    error: null,
+    error: null
   })),
 
   on(authActions.resetPassword, (state, { email }) => ({
     ...state,
     loading: true,
     email,
-    emailSent: false,
+    emailSent: false
   })),
 
   on(authActions.resetPasswordSuccess, (state) => ({
     ...state,
     emailSent: true,
-    loading: false,
+    loading: false
   })),
 
   on(authActions.resetPasswordFailure, (state, { error }) => ({
     ...state,
     error,
-    emailSent: false,
+    emailSent: false
   })),
 
   on(authActions.resetForm, (state) => ({
     ...state,
     email: '',
-    emailSent: false,
+    emailSent: false
   })),
 
   on(authActions.updateProfile, (state, { user }) => ({
     ...state,
-    user: user ?? state.user,
-  })),
+    user: user ?? state.user
+  }))
 );
 
 export const authFeature = createFeature({
   name: authFeatureKey,
-  reducer,
+  reducer
 });
