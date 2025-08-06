@@ -41,3 +41,5 @@ export * from './lib/interfaces/clone.interface';
 export * from './lib/pick-random-items.util';
 export * from './lib/interfaces/user.interface';
 export * from './lib/interfaces/auth.interface';
+export * from './lib/decorators';
+export * from './lib/types';
