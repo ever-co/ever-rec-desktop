@@ -19,6 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import {
   authActions,
   selectAuthLoading,
+  selectDeletingAccount,
   selectUser,
 } from '@ever-co/auth-data-access';
 import { ActionButtonComponent } from '@ever-co/shared-components';
@@ -31,11 +32,14 @@ import {
   selectEmailUpdating,
   selectFullNameUpdateError,
   selectFullNameUpdating,
+  selectPasswordUpdateError,
+  selectPasswordUpdating,
   userUpdateActions,
 } from '@ever-co/user-data-access';
 import {
   AvatarComponent,
   EmailFormComponent,
+  IPasswordConfig,
   NameFormComponent,
   PasswordDialogValidationComponent,
   PasswordFormComponent,
@@ -75,6 +79,7 @@ export class UserProfileComponent implements OnDestroy {
     icon: 'dangerous',
     label: 'Delete',
     variant: 'danger',
+    loading: this.store.select(selectDeletingAccount),
     action: this.deleteAccount.bind(this),
   };
 
@@ -83,6 +88,12 @@ export class UserProfileComponent implements OnDestroy {
     label: 'Sign Out',
     loading: this.store.select(selectAuthLoading),
     action: this.signOut.bind(this),
+  };
+
+  public readonly passwordConfig: IPasswordConfig = {
+    submit: {
+      loading: this.store.select(selectPasswordUpdating),
+    },
   };
 
   public get user$(): Observable<IUser | null> {
@@ -103,6 +114,14 @@ export class UserProfileComponent implements OnDestroy {
 
   public get emailError$(): Observable<string | null> {
     return this.store.select(selectEmailUpdateError);
+  }
+
+  public get passwordUpdating$(): Observable<boolean> {
+    return this.store.select(selectPasswordUpdating);
+  }
+
+  public get passwordError$(): Observable<string | null> {
+    return this.store.select(selectPasswordUpdateError);
   }
 
   private signOut(): void {
@@ -132,12 +151,37 @@ export class UserProfileComponent implements OnDestroy {
       .subscribe();
   }
 
-  public updatePassword(input: IPassword): void {
-    //TODO: Implement update password
+  public updatePassword({ password }: IPassword): void {
+    this.dialogService
+      .open(PasswordDialogValidationComponent)
+      .afterClosed()
+      .pipe(
+        take(1),
+        filter(Boolean),
+        tap(({ password: oldPassword }: IPassword) =>
+          this.store.dispatch(
+            userUpdateActions.password({
+              oldPassword,
+              password,
+            }),
+          ),
+        ),
+      )
+      .subscribe();
   }
 
   private deleteAccount(): void {
-    //TODO: Implement delete account
+    this.dialogService
+      .open(PasswordDialogValidationComponent)
+      .afterClosed()
+      .pipe(
+        take(1),
+        filter(Boolean),
+        tap((password: IPassword) => {
+          this.store.dispatch(authActions.delete(password));
+        }),
+      )
+      .subscribe();
   }
 
   public updateAvatar(): void {

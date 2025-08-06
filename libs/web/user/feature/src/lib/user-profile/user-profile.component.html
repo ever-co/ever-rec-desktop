@@ -3,8 +3,9 @@
 @let emailUpdating = emailUpdating$ | async;
 @let emailError = emailError$ | async;
 @let fullNameError = fullNameError$ | async;
+@let passwordError = passwordError$ | async;
 
-<div class="flex flex-col gap-4 max-w-xl w-full">
+<div class="flex flex-col gap-4 max-w-xl w-md w-full">
   <div class="flex flex-col sm:flex-row gap-6">
     <div class="flex flex-col items-center gap-3">
       <lib-user-avatar
@@ -74,7 +75,18 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <lib-password-form></lib-password-form>
+          @if (passwordError) {
+            <div
+              class="p-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 mb-3"
+            >
+              {{ passwordError }}
+            </div>
+          }
+
+          <lib-password-form
+            [config]="passwordConfig"
+            (passwordChange)="updatePassword($event)"
+          ></lib-password-form>
         </mat-expansion-panel>
       </mat-accordion>
     </div>
