@@ -11,13 +11,12 @@
     >
 
     <p class="verification-message">
-      We've sent a verification email to your address. Please check your inbox
-      and click the link to verify your account.
+      We've generated a verification link. Please wait the link to verify your
+      account.
     </p>
 
     <p class="verification-note">
-      Didn't receive the email? Check your spam folder or request a new
-      verification link below.
+      Didn't generated verification link? Request a new verification link below.
     </p>
 
     <button
@@ -31,13 +30,13 @@
           <mat-icon class="spinner-icon"
             ><mat-spinner diameter="20"></mat-spinner
           ></mat-icon>
-          Sending...
+          Generating..
         } @else if (cooldown > 0) {
           <mat-icon class="animate-hourglass">hourglass_empty</mat-icon>
-          Resend in {{ cooldown }}s
+          Regenerate in {{ cooldown }}s
         } @else {
           <mat-icon>send</mat-icon>
-          Resend verification email
+          Regenerate verification link
         }
       </div>
     </button>
