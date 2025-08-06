@@ -6,6 +6,8 @@ import {
 } from '@ever-co/auth-data-access';
 import { NotificationService } from '@ever-co/notification-data-access';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
+import { ResStatusEnum } from 'libs/web/auth/data-access/src/lib/models/auth.model';
 import {
   catchError,
   exhaustMap,
@@ -16,22 +18,22 @@ import {
   tap,
   withLatestFrom,
 } from 'rxjs';
-import { EmailUpdateService } from '../services/email-update.service';
 import { userUpdateActions } from './user-update.action';
-import { Store } from '@ngrx/store';
-import { ResStatusEnum } from 'libs/web/auth/data-access/src/lib/models/auth.model';
 
 @Injectable()
 export class UserUpdateEffects {
   private readonly actions$ = inject(Actions);
   private readonly authService = inject(AuthService);
   private readonly store = inject(Store);
-  private readonly emailUpdateService = inject(EmailUpdateService);
   private readonly notificationService = inject(NotificationService);
 
   public readonly profile$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(userUpdateActions.fullNameSuccess, userUpdateActions.emailSuccess),
+      ofType(
+        userUpdateActions.fullNameSuccess,
+        userUpdateActions.emailSuccess,
+        userUpdateActions.uploadAvatarSuccess,
+      ),
       map((user) => authActions.updateProfile({ user })),
     ),
   );
@@ -273,6 +275,79 @@ export class UserUpdateEffects {
         tap(() => {
           this.notificationService.show(
             'Something went wrong. Password not updated.',
+            'error',
+          );
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  public readonly updateAvatar$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userUpdateActions.uploadAvatar),
+      exhaustMap(({ file }) => {
+        if (!file) {
+          return of(
+            userUpdateActions.uploadAvatarFailure({
+              error: 'No file provided',
+            }),
+          );
+        }
+
+        return this.authService.uploadAvatar(file).pipe(
+          map(({ data, status, message }) => {
+            if (status === ResStatusEnum.error) {
+              return userUpdateActions.uploadAvatarFailure({ error: message });
+            }
+
+            return userUpdateActions.uploadAvatarSuccess({
+              imageUrl: data.photoURL,
+            });
+          }),
+          catchError((error) =>
+            of(
+              userUpdateActions.uploadAvatarFailure({
+                error: error.message || 'Failed to upload avatar',
+              }),
+            ),
+          ),
+        );
+      }),
+    ),
+  );
+
+  public readonly uploadAvatarNotification$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userUpdateActions.uploadAvatar),
+        tap(() => {
+          this.notificationService.show('Avatar uploading...', 'info');
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  public readonly uploadAvatarNotificationSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userUpdateActions.uploadAvatarSuccess),
+        tap(() => {
+          this.notificationService.show(
+            'Avatar updated successfully.',
+            'success',
+          );
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  public readonly uploadAvatarNotificationFailure$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userUpdateActions.uploadAvatarFailure),
+        tap(() => {
+          this.notificationService.show(
+            'Something went wrong. Avatar not updated.',
             'error',
           );
         }),

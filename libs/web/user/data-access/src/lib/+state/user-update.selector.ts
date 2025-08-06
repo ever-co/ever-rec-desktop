@@ -35,3 +35,13 @@ export const selectPasswordUpdating = createSelector(
   selectUserUpdateState,
   (state) => state.passwordUpdating,
 );
+
+export const selectAvatarUploadError = createSelector(
+  selectUserUpdateState,
+  (state) => state.avatarError,
+);
+
+export const selectAvatarUploading = createSelector(
+  selectUserUpdateState,
+  (state) => state.avatarUploading,
+);

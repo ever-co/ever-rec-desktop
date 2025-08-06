@@ -29,5 +29,10 @@ export const userUpdateActions = createActionGroup({
     Password: props<IPasswordValidation>(),
     'Password Success': emptyProps(),
     'Password Failure': props<{ error: string }>(),
+
+    // upload avatar
+    'Upload Avatar': props<{ file: File }>(),
+    'Upload Avatar Success': props<Partial<IProfile>>(),
+    'Upload Avatar Failure': props<{ error: string }>(),
   },
 });
