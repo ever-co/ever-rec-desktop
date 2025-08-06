@@ -74,7 +74,7 @@ export class AvatarComponent {
       case 'lg':
         return 'w-14 h-14 text-lg';
       case 'xl':
-        return 'w-18 h-18 text-xl';
+        return 'w-24 h-24 text-xl';
       case 'md':
       default:
         return 'w-10 h-10 sm:w-12 sm:h-12 text-sm';
