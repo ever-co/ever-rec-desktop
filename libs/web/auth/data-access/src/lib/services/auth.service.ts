@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { API_PREFIX, isEmpty } from '@ever-co/shared-utils';
+import { API_PREFIX, IFile, isEmpty } from '@ever-co/shared-utils';
 import { catchError, EMPTY, Observable } from 'rxjs';
 import { IDataResponse } from '../models/auth.model';
 import { IProfile } from '../models/profile.model';
@@ -123,6 +123,15 @@ export class AuthService {
     return this.http.post<IDataResponse<IRefreshToken>>(
       `${this.API}/reauthenticate`,
       data,
+    );
+  }
+
+  public uploadAvatar(file: IFile) {
+    const form = new FormData();
+    form.append('file', file);
+    return this.http.post<IDataResponse<{ photoURL: string }>>(
+      `${this.API}/upload-avatar`,
+      form,
     );
   }
 }
