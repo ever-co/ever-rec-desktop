@@ -4,6 +4,7 @@
 @let emailError = emailError$ | async;
 @let fullNameError = fullNameError$ | async;
 @let passwordError = passwordError$ | async;
+@let avatarUploading = avatarUploading$ | async;
 
 <div class="flex flex-col gap-4 max-w-xl w-md w-full">
   <div class="flex flex-col sm:flex-row gap-6">
@@ -15,7 +16,23 @@
         [user]="user"
         size="xl"
       ></lib-user-avatar>
-      <div class="text-blue-900 text-sm cursor-pointer">Edit</div>
+      @if (avatarUploading) {
+        <div class="text-blue-900 text-sm cursor-not-allowed">Uploading...</div>
+      } @else {
+        <div
+          class="text-blue-900 text-sm cursor-pointer"
+          (click)="image.click()"
+        >
+          Edit
+        </div>
+      }
+      <input
+        #image
+        type="file"
+        accept="image/*"
+        (change)="updateAvatar($event)"
+        hidden
+      />
     </div>
     <div class="w-full">
       <mat-accordion class="profile-headers-align mat-elevation-0" multi>

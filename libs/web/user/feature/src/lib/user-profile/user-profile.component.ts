@@ -23,11 +23,13 @@ import {
   selectUser,
 } from '@ever-co/auth-data-access';
 import { ActionButtonComponent } from '@ever-co/shared-components';
-import { IActionButton, IUser } from '@ever-co/shared-utils';
+import { FileInput, IActionButton, IFile, IUser } from '@ever-co/shared-utils';
+
 import {
   IEmail,
   IFullName,
   IPassword,
+  selectAvatarUploading,
   selectEmailUpdateError,
   selectEmailUpdating,
   selectFullNameUpdateError,
@@ -120,6 +122,10 @@ export class UserProfileComponent implements OnDestroy {
     return this.store.select(selectPasswordUpdating);
   }
 
+  public get avatarUploading$(): Observable<boolean> {
+    return this.store.select(selectAvatarUploading);
+  }
+
   public get passwordError$(): Observable<string | null> {
     return this.store.select(selectPasswordUpdateError);
   }
@@ -184,8 +190,9 @@ export class UserProfileComponent implements OnDestroy {
       .subscribe();
   }
 
-  public updateAvatar(): void {
-    //TODO: Implement update avatar
+  @FileInput()
+  public updateAvatar(file: IFile): void {
+    this.store.dispatch(userUpdateActions.uploadAvatar({ file }));
   }
 
   ngOnDestroy(): void {
