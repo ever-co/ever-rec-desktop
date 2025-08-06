@@ -1,4 +1,4 @@
-import { IEnvironment, IFirebaseConfig } from '@ever-co/shared-utils';
+import { IEnvironment } from '@ever-co/shared-utils';
 
 export class Environment implements IEnvironment {
   public readonly isPlugin: boolean = false;

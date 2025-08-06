@@ -96,7 +96,13 @@ export const reducer = createReducer(
     avatarError: error,
   })),
 
-  on(userUpdateActions.reset, () => initialAuthState),
+  on(userUpdateActions.reset, (state) => ({
+    ...state,
+    emailError: null,
+    fullNameError: null,
+    passwordError: null,
+    avatarError: null,
+  })),
 );
 
 export const userUpdateFeature = createFeature({
