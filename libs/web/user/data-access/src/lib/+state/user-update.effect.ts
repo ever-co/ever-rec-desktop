@@ -2,155 +2,281 @@ import { inject, Injectable } from '@angular/core';
 import {
   authActions,
   AuthService,
+  selectUser,
 } from '@ever-co/auth-data-access';
 import { NotificationService } from '@ever-co/notification-data-access';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, from, map, of, switchMap, tap } from 'rxjs';
-import { userUpdateActions } from './user-update.action';
+import {
+  catchError,
+  exhaustMap,
+  from,
+  map,
+  of,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 import { EmailUpdateService } from '../services/email-update.service';
+import { userUpdateActions } from './user-update.action';
+import { Store } from '@ngrx/store';
+import { ResStatusEnum } from 'libs/web/auth/data-access/src/lib/models/auth.model';
 
 @Injectable()
 export class UserUpdateEffects {
-  // private readonly actions$ = inject(Actions);
-  // private readonly authService = inject(AuthService);
-  // private readonly emailUpdateService = inject(EmailUpdateService);
-  // private readonly notificationService = inject(NotificationService);
-  //
-  // public readonly profile$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(userUpdateActions.fullNameSuccess, userUpdateActions.emailSuccess),
-  //     switchMap(() => {
-  //       const user = this.authService.checkIfUserIsSignedIn();
-  //
-  //       if (!user) {
-  //         return of(authActions.logout());
-  //       }
-  //
-  //       return from(user.reload()).pipe(
-  //         map(() => {
-  //           const adapter = new UserAdapter(user);
-  //           return authActions.updateProfile({ user: adapter.clone() });
-  //         }),
-  //       );
-  //     }),
-  //   ),
-  // );
-  //
-  // public readonly fullName$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(userUpdateActions.fullName),
-  //     switchMap(({ fullName }) => {
-  //       const user = this.authService.checkIfUserIsSignedIn();
-  //
-  //       if (!user) {
-  //         return of(
-  //           userUpdateActions.fullNameFailure({
-  //             error: 'User is not signed in.',
-  //           }),
-  //         );
-  //       }
-  //
-  //       return from(this.authService.updateProfile(user, { fullName })).pipe(
-  //         map(() => userUpdateActions.fullNameSuccess()),
-  //         catchError((error) =>
-  //           of(
-  //             userUpdateActions.fullNameFailure({
-  //               error: error.message ?? error,
-  //             }),
-  //           ),
-  //         ),
-  //       );
-  //     }),
-  //   ),
-  // );
-  //
-  // public readonly fullNameNotification$ = createEffect(
-  //   () =>
-  //     this.actions$.pipe(
-  //       ofType(userUpdateActions.fullName),
-  //       map(() => {
-  //         this.notificationService.show('Full name updating...', 'info');
-  //       }),
-  //     ),
-  //   { dispatch: false },
-  // );
-  //
-  // public readonly fullNameNotificationSuccess$ = createEffect(
-  //   () =>
-  //     this.actions$.pipe(
-  //       ofType(userUpdateActions.fullNameSuccess),
-  //       map(() => {
-  //         this.notificationService.show(
-  //           'Full name updated successfully.',
-  //           'success',
-  //         );
-  //       }),
-  //     ),
-  //   { dispatch: false },
-  // );
-  //
-  // public readonly fullNameNotificationFailure$ = createEffect(
-  //   () =>
-  //     this.actions$.pipe(
-  //       ofType(userUpdateActions.fullNameFailure),
-  //       map(() => {
-  //         this.notificationService.show(
-  //           'Something went wrong. Full name not updated.',
-  //           'error',
-  //         );
-  //       }),
-  //     ),
-  //   { dispatch: false },
-  // );
-  //
-  // public readonly updateEmail$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(userUpdateActions.email),
-  //     switchMap(({ password, email }) =>
-  //       from(this.emailUpdateService.updateUserEmail(email, password)).pipe(
-  //         map(() => userUpdateActions.emailSuccess()),
-  //         catchError((error) => of(userUpdateActions.emailFailure({ error }))),
-  //       ),
-  //     ),
-  //   ),
-  // );
-  //
-  // public readonly emailNotification$ = createEffect(
-  //   () =>
-  //     this.actions$.pipe(
-  //       ofType(userUpdateActions.email),
-  //       tap(() => {
-  //         this.notificationService.show('Email updating...', 'info');
-  //       }),
-  //     ),
-  //   { dispatch: false },
-  // );
-  //
-  // public readonly emailNotificationSuccess$ = createEffect(
-  //   () =>
-  //     this.actions$.pipe(
-  //       ofType(userUpdateActions.emailSuccess),
-  //       tap(() => {
-  //         this.notificationService.show(
-  //           'Email updated successfully.',
-  //           'success',
-  //         );
-  //       }),
-  //     ),
-  //   { dispatch: false },
-  // );
-  //
-  // public readonly emailNotificationFailure$ = createEffect(
-  //   () =>
-  //     this.actions$.pipe(
-  //       ofType(userUpdateActions.emailFailure),
-  //       tap(() => {
-  //         this.notificationService.show(
-  //           'Something went wrong. Email not updated.',
-  //           'error',
-  //         );
-  //       }),
-  //     ),
-  //   { dispatch: false },
-  // );
+  private readonly actions$ = inject(Actions);
+  private readonly authService = inject(AuthService);
+  private readonly store = inject(Store);
+  private readonly emailUpdateService = inject(EmailUpdateService);
+  private readonly notificationService = inject(NotificationService);
+
+  public readonly profile$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userUpdateActions.fullNameSuccess, userUpdateActions.emailSuccess),
+      map((user) => authActions.updateProfile({ user })),
+    ),
+  );
+
+  public readonly fullName$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userUpdateActions.fullName),
+      switchMap(({ fullName }) => {
+        const user = this.authService.checkIfUserIsSignedIn();
+
+        if (!user) {
+          return of(
+            userUpdateActions.fullNameFailure({
+              error: 'User is not signed in.',
+            }),
+          );
+        }
+
+        return from(this.authService.updateProfile({ fullName })).pipe(
+          map(({ data }) =>
+            userUpdateActions.fullNameSuccess({
+              name: data.displayName,
+            }),
+          ),
+          catchError((error) =>
+            of(
+              userUpdateActions.fullNameFailure({
+                error: error.message ?? error,
+              }),
+            ),
+          ),
+        );
+      }),
+    ),
+  );
+
+  public readonly fullNameNotification$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userUpdateActions.fullName),
+        map(() => {
+          this.notificationService.show('Full name updating...', 'info');
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  public readonly fullNameNotificationSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userUpdateActions.fullNameSuccess),
+        map(() => {
+          this.notificationService.show(
+            'Full name updated successfully.',
+            'success',
+          );
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  public readonly fullNameNotificationFailure$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userUpdateActions.fullNameFailure),
+        map(() => {
+          this.notificationService.show(
+            'Something went wrong. Full name not updated.',
+            'error',
+          );
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  public readonly updateEmail$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userUpdateActions.email),
+      withLatestFrom(this.store.select(selectUser)),
+      exhaustMap(([{ password, email: newEmail }, user]) => {
+        // Early validation
+        if (!user?.email) {
+          return of(
+            userUpdateActions.emailFailure({
+              error: 'User not authenticated',
+            }),
+          );
+        }
+
+        // Prepare request data
+        const authCredentials = {
+          password,
+          email: user.email,
+        };
+
+        return this.authService.reauthenticate(authCredentials).pipe(
+          switchMap(() => this.authService.updateEmail(newEmail)),
+          map((response) => {
+            if (response.status === ResStatusEnum.error) {
+              return userUpdateActions.emailFailure({
+                error: response.message || 'Failed to update email',
+              });
+            }
+            return userUpdateActions.emailSuccess(response.data);
+          }),
+          catchError((error) => {
+            return of(
+              userUpdateActions.emailFailure({
+                error: error.message || 'Wrong password',
+              }),
+            );
+          }),
+        );
+      }),
+      catchError((error) => {
+        return of(
+          userUpdateActions.emailFailure({
+            error: error.message || 'Failed to update email',
+          }),
+        );
+      }),
+    ),
+  );
+
+  public readonly emailNotification$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userUpdateActions.email),
+        tap(() => {
+          this.notificationService.show('Email updating...', 'info');
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  public readonly emailNotificationSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userUpdateActions.emailSuccess),
+        tap(() => {
+          this.notificationService.show(
+            'Email updated successfully.',
+            'success',
+          );
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  public readonly emailNotificationFailure$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userUpdateActions.emailFailure),
+        tap(() => {
+          this.notificationService.show(
+            'Something went wrong. Email not updated.',
+            'error',
+          );
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  public readonly updatePassword$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userUpdateActions.password),
+      withLatestFrom(this.store.select(selectUser)),
+      exhaustMap(([{ password, oldPassword }, user]) => {
+        if (!user?.email) {
+          return of(
+            userUpdateActions.passwordFailure({
+              error: 'User email not available',
+            }),
+          );
+        }
+
+        const credentials = {
+          password: oldPassword,
+          email: user.email,
+        };
+        const updateData = {
+          oldPassword,
+          password,
+          email: user.email,
+        };
+
+        return this.authService.reauthenticate(credentials).pipe(
+          switchMap(() => this.authService.updatePassword(updateData)),
+          map(({ data, status, message }) => {
+            if (status === ResStatusEnum.error) {
+              return userUpdateActions.passwordFailure({ error: message });
+            }
+            return userUpdateActions.passwordSuccess();
+          }),
+          catchError((error) => {
+            const errorMessage = error.message ?? 'Failed to update password';
+            return of(
+              userUpdateActions.passwordFailure({ error: errorMessage }),
+            );
+          }),
+        );
+      }),
+      catchError((error) => {
+        const errorMessage = error.message ?? 'An unexpected error occurred';
+        return of(userUpdateActions.passwordFailure({ error: errorMessage }));
+      }),
+    ),
+  );
+
+  public readonly passwordNotification$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userUpdateActions.password),
+        tap(() => {
+          this.notificationService.show('Password updating...', 'info');
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  public readonly passwordNotificationSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userUpdateActions.passwordSuccess),
+        tap(() => {
+          this.notificationService.show(
+            'Password updated successfully.',
+            'success',
+          );
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  public readonly passwordNotificationFailure$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userUpdateActions.passwordFailure),
+        tap(() => {
+          this.notificationService.show(
+            'Something went wrong. Password not updated.',
+            'error',
+          );
+        }),
+      ),
+    { dispatch: false },
+  );
 }

@@ -25,3 +25,13 @@ export const selectEmailUpdateError = createSelector(
   selectUserUpdateState,
   (state) => state.emailError,
 );
+
+export const selectPasswordUpdateError = createSelector(
+  selectUserUpdateState,
+  (state) => state.passwordError,
+);
+
+export const selectPasswordUpdating = createSelector(
+  selectUserUpdateState,
+  (state) => state.passwordUpdating,
+);
