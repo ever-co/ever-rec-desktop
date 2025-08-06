@@ -6,6 +6,4 @@ export interface IEnvironment {
   appName: string;
   icon: string;
   apiUrl?: string;
-  useEmulators?: boolean;
-  firebaseConfig?: IFirebaseConfig;
 }
