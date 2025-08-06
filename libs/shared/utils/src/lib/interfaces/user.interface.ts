@@ -3,6 +3,5 @@ export interface IUser {
   name?: string;
   email?: string;
   imageUrl?: string;
-  isAnonymous?: boolean;
   isVerified?: boolean;
 }
