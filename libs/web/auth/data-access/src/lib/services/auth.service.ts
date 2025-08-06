@@ -1,68 +1,128 @@
-import { inject, Injectable } from '@angular/core';
-import { API_PREFIX, isEmpty, IUser } from '@ever-co/shared-utils';
-import { getAuth, getIdTokenResult, User } from 'firebase/auth';
 import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { API_PREFIX, isEmpty } from '@ever-co/shared-utils';
+import { catchError, EMPTY, Observable } from 'rxjs';
+import { IDataResponse } from '../models/auth.model';
 import { IProfile } from '../models/profile.model';
 import { ISignUp } from '../models/sign-up.model';
-import { Observable } from 'rxjs';
-import { ILoginResponse } from '../models/user.model';
+import {
+  ILoginResponse,
+  IRefreshToken,
+  IUserResponse,
+  IUserReload,
+} from '../models/user.model';
 
 @Injectable()
 export class AuthService {
-  private readonly auth = getAuth();
   private readonly http = inject(HttpClient);
   private readonly API = `${API_PREFIX}/auth`;
 
   public signIn(email: string, password: string): Observable<ILoginResponse> {
-    return this.http.post<ILoginResponse>(`${this.API}/login`, { email, password });
+    return this.http.post<ILoginResponse>(`${this.API}/login`, {
+      email,
+      password,
+    });
   }
 
-  public signInWithGoogle() {
-    return this.http.post<ILoginResponse>(`${this.API}/login-google`, {});
+  public signInWithGoogle(credentials?: string) {
+    return this.http.post<ILoginResponse>(`${this.API}/login-google`, {
+      credentials,
+    });
   }
 
   public signOut() {
-    return this.http.delete<void>(`${this.API}/logout`);
+    return this.http.get<void>(`${this.API}/logout`);
   }
 
   public checkIfUserIsSignedIn() {
-    return this.http.get<IUser>(`${this.API}/user-data`);
+    return this.http
+      .get<IUserResponse>(`${this.API}/user-data`)
+      .pipe(catchError(() => EMPTY));
   }
 
-  public getRefreshToken(user: User) {
-    return getIdTokenResult(user, true);
+  public getRefreshToken() {
+    return this.http.get<IRefreshToken>(`${this.API}/refresh-token`);
   }
 
   public signUp(input: ISignUp) {
     const { email, password, fullName } = input;
-    return this.http.post<ILoginResponse>(`${this.API}/register`, { email, password, username: fullName });
+    return this.http.post<ILoginResponse>(`${this.API}/register`, {
+      email,
+      password,
+      username: fullName,
+    });
   }
 
-  public updateProfile(user: User, profile: IProfile): Observable<void> {
+  public updateProfile(profile: IProfile) {
     const displayName = profile?.fullName;
     const photoURL = profile?.imageUrl;
 
     const payload = {
       ...(displayName && { displayName }),
-      ...(photoURL && { photoURL })
+      ...(photoURL && { photoURL }),
     };
 
     if (isEmpty(payload)) {
       throw new Error('No payload');
     }
 
-    return this.http.put<void>(`${this.API}/user-data`, { displayName, photoURL });
+    return this.http.put<IDataResponse<{ displayName: string; email: string }>>(
+      `${this.API}/user-data`,
+      {
+        displayName,
+        photoURL,
+      },
+    );
   }
 
-  public verify(oob: string): Observable<void> {
-    return this.http.post<void>(`${this.API}/email/reset-password-email`, { oob });
+  public generateEmailVerificationLink(email: string) {
+    return this.http.post<IDataResponse<{ link: string }>>(
+      `${this.API}/generate-email-verification-link`,
+      { email },
+    );
   }
 
-  public deleteUser(): Observable<void> {
-    return this.http.delete<void>(`${this.API}/user`);
+  public deleteAccount(): Observable<IDataResponse> {
+    return this.http.delete<IDataResponse>(`${this.API}/user`);
   }
 
-  public resetPassword(email: string): Observable<void> {
-    return this.http.post<void>(`${this.API}/email/reset-password-email`, { email });
+  public resetPassword(email: string): Observable<IDataResponse> {
+    return this.http.post<IDataResponse>(
+      `${API_PREFIX}/email/reset-password-email`,
+      {
+        email,
+      },
+    );
+  }
+
+  public updateEmail(email: string): Observable<IDataResponse> {
+    return this.http.put<IDataResponse<{ email: string }>>(
+      `${this.API}/update-email`,
+      {
+        email,
+      },
+    );
+  }
+
+  public updatePassword(data: {
+    email: string;
+    password: string;
+    oldPassword: string;
+  }): Observable<IDataResponse> {
+    return this.http.put<IDataResponse<{ email: string }>>(
+      `${this.API}/update-pass`,
+      data,
+    );
+  }
+
+  public reloadUser(): Observable<IUserReload> {
+    return this.http.get<IUserReload>(`${this.API}/user-reload`);
+  }
+
+  public reauthenticate(data: { email: string; password: string }) {
+    return this.http.post<IDataResponse<IRefreshToken>>(
+      `${this.API}/reauthenticate`,
+      data,
+    );
   }
 }

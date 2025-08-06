@@ -1,7 +1,11 @@
+import { IUser } from '@ever-co/shared-utils';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { ISignUp } from '../models/sign-up.model';
-import { ILoginCredentials, ILoginSuccess, IRefreshToken } from '../models/user.model';
-import { IUser } from '../models/user.model';
+import {
+  ILoginCredentials,
+  ILoginSuccess,
+  IRefreshToken,
+} from '../models/user.model';
 
 export const authActions = createActionGroup({
   source: 'Auth Firebase',
@@ -51,6 +55,11 @@ export const authActions = createActionGroup({
     'Reset Form': emptyProps(),
 
     //Update profile
-    'Update Profile': props<{ user: IUser | null }>()
-  }
+    'Update Profile': props<{ user: Partial<IUser> | null }>(),
+
+    // Delete user
+    Delete: props<{ password: string }>(),
+    'Delete Success': emptyProps(),
+    'Delete Failure': props<{ error: string }>(),
+  },
 });

@@ -1,6 +1,6 @@
+import { IUser } from '@ever-co/shared-utils';
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { authActions } from './auth.action';
-import { IUser } from '../models/user.model';
 
 export const authFeatureKey = 'authentication';
 
@@ -14,6 +14,7 @@ export interface IAuthState {
   cooldown: number;
   emailSent: boolean;
   email: string;
+  deletingAccount: boolean;
 }
 
 export const initialAuthState: IAuthState = {
@@ -25,7 +26,8 @@ export const initialAuthState: IAuthState = {
   error: null,
   cooldown: 0,
   emailSent: false,
-  email: ''
+  email: '',
+  deletingAccount: false,
 };
 
 export const reducer = createReducer(
@@ -39,18 +41,21 @@ export const reducer = createReducer(
     authActions.sendVerificationEmail,
     (state) => ({
       ...state,
-      loading: true
-    })
+      loading: true,
+    }),
   ),
 
-  on(authActions.loginSuccess, (state, { user, token, refreshToken, expiresAt }) => ({
-    ...state,
-    loading: false,
-    user,
-    token,
-    refreshToken,
-    expiresAt
-  })),
+  on(
+    authActions.loginSuccess,
+    (state, { user, token, refreshToken, expiresAt }) => ({
+      ...state,
+      loading: false,
+      user,
+      token,
+      refreshToken,
+      expiresAt,
+    }),
+  ),
 
   on(
     authActions.loginFailure,
@@ -60,28 +65,33 @@ export const reducer = createReducer(
     (state, { error }) => ({
       ...state,
       loading: false,
-      error
-    })
+      error,
+    }),
   ),
 
   on(authActions.logoutSuccess, (state) => ({
     ...state,
     loading: false,
     user: null,
-    token: null
+    token: null,
+    refreshToken: null,
+    expiresAt: null,
   })),
 
-  on(authActions.refreshTokenSuccess, (state, { token, refreshToken, expiresAt }) => ({
-    ...state,
-    token,
-    refreshToken,
-    expiresAt,
-    error: null
-  })),
+  on(
+    authActions.refreshTokenSuccess,
+    (state, { token, refreshToken, expiresAt }) => ({
+      ...state,
+      token,
+      refreshToken,
+      expiresAt,
+      error: null,
+    }),
+  ),
 
   on(authActions.refreshTokenFailure, (state, { error }) => ({
     ...state,
-    error
+    error,
   })),
 
   on(
@@ -89,68 +99,97 @@ export const reducer = createReducer(
     authActions.sendVerificationEmailSuccess,
     (state) => ({
       ...state,
-      loading: false
-    })
+      loading: false,
+    }),
   ),
 
   on(authActions.startCooldown, (state, { seconds }) => ({
     ...state,
-    cooldown: seconds
+    cooldown: seconds,
   })),
 
   on(authActions.decrementCooldown, (state) => ({
     ...state,
-    cooldown: state.cooldown > 0 ? state.cooldown - 1 : 0
+    cooldown: state.cooldown > 0 ? state.cooldown - 1 : 0,
   })),
 
   on(authActions.resetCooldown, (state) => ({
     ...state,
-    cooldown: 0
+    cooldown: 0,
   })),
 
   // Verification polling error handling
   on(authActions.checkVerificationFailure, (state, { error }) => ({
     ...state,
-    error
+    error,
+  })),
+
+  on(authActions.checkVerificationSuccess, (state) => ({
+    ...state,
+    user: state.user && {
+      ...state.user,
+      isVerified: true,
+    },
+    error: null,
   })),
 
   on(authActions.startVerificationPolling, (state) => ({
     ...state,
-    error: null
+    error: null,
   })),
 
   on(authActions.resetPassword, (state, { email }) => ({
     ...state,
     loading: true,
     email,
-    emailSent: false
+    emailSent: false,
   })),
 
   on(authActions.resetPasswordSuccess, (state) => ({
     ...state,
     emailSent: true,
-    loading: false
+    loading: false,
   })),
 
   on(authActions.resetPasswordFailure, (state, { error }) => ({
     ...state,
     error,
-    emailSent: false
+    loading: false,
+    emailSent: false,
   })),
 
   on(authActions.resetForm, (state) => ({
     ...state,
     email: '',
-    emailSent: false
+    emailSent: false,
   })),
 
   on(authActions.updateProfile, (state, { user }) => ({
     ...state,
-    user: user ?? state.user
-  }))
+    user: state.user && {
+      ...state.user,
+      ...user,
+    },
+  })),
+
+  on(authActions.delete, (state) => ({
+    ...state,
+    deletingAccount: true,
+  })),
+
+  on(authActions.deleteSuccess, (state) => ({
+    ...state,
+    deletingAccount: false,
+  })),
+
+  on(authActions.deleteFailure, (state, { error }) => ({
+    ...state,
+    deletingAccount: false,
+    error,
+  })),
 );
 
 export const authFeature = createFeature({
   name: authFeatureKey,
-  reducer
+  reducer,
 });

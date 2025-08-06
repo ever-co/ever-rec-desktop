@@ -1,27 +1,37 @@
 import { inject, Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ElectronService } from '@ever-co/electron-data-access';
 import { NotificationService } from '@ever-co/notification-data-access';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import {
   catchError,
   defer,
   EMPTY,
   exhaustMap,
+  filter,
   from,
   interval,
   map,
-  map as rxMap,
   of,
+  map as rxMap,
   switchMap,
   takeUntil,
-  takeWhile
+  takeWhile,
 } from 'rxjs';
+import { tap, withLatestFrom } from 'rxjs/operators';
+import { ResStatusEnum } from '../models/auth.model';
 import { ISignUp } from '../models/sign-up.model';
-import { ILoginResponse } from '../models/user.model';
-import { AuthErrorService } from '../services/auth-error.service';
+import {
+  ILoginResponse,
+  IUserReload,
+  IUserResponse,
+  UserMapper,
+} from '../models/user.model';
 import { AuthService } from '../services/auth.service';
 import { RefreshTokenService } from '../services/refresh-token.service';
 import { authActions } from './auth.action';
+import { selectUser } from './auth.selector';
 
 @Injectable()
 export class AuthEffects {
@@ -29,14 +39,14 @@ export class AuthEffects {
   public readonly startCooldownTimer$ = createEffect(() =>
     this.actions$.pipe(
       ofType(authActions.sendVerificationEmailSuccess),
-      map(() => authActions.startCooldown({ seconds: 60 }))
-    )
+      map(() => authActions.startCooldown({ seconds: 60 })),
+    ),
   );
   public readonly signUp$ = createEffect(() =>
     this.actions$.pipe(
       ofType(authActions.signUp),
-      exhaustMap((action) => this.handleSignUp(action))
-    )
+      exhaustMap((action) => this.handleSignUp(action)),
+    ),
   );
   public readonly cooldownTimer$ = createEffect(() =>
     this.actions$.pipe(
@@ -44,10 +54,10 @@ export class AuthEffects {
       switchMap(({ seconds }) =>
         interval(1000).pipe(
           takeWhile((count) => count < seconds),
-          rxMap(() => authActions.decrementCooldown())
-        )
-      )
-    )
+          rxMap(() => authActions.decrementCooldown()),
+        ),
+      ),
+    ),
   );
   /**
    * Poll for email verification every 10 seconds after sending verification email.
@@ -64,64 +74,116 @@ export class AuthEffects {
             this.actions$.pipe(
               ofType(
                 authActions.stopVerificationPolling,
-                authActions.checkVerificationSuccess
-              )
-            )
-          )
-        )
-      )
-    )
+                authActions.checkVerificationSuccess,
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
+  private readonly store = inject(Store);
   private readonly authService = inject(AuthService);
   public readonly resetPassword$ = createEffect(() =>
     this.actions$.pipe(
       ofType(authActions.resetPassword),
       switchMap(({ email }) =>
         from(this.authService.resetPassword(email)).pipe(
-          map(() => authActions.resetPasswordSuccess()),
+          map((response) => {
+            if (response.error) {
+              return authActions.resetPasswordFailure({
+                error: String(response.error ?? response.message),
+              });
+            }
+            if (response.status === ResStatusEnum.error) {
+              return authActions.resetPasswordFailure({
+                error: response.message,
+              });
+            }
+            return authActions.resetPasswordSuccess();
+          }),
           catchError((error) =>
-            of(authActions.resetPasswordFailure({ error }))
-          )
-        )
-      )
-    )
+            of(authActions.resetPasswordFailure({ error })),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  private readonly electronService = inject(ElectronService);
+  public readonly sendEmailVerification$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authActions.sendVerificationEmail),
+      withLatestFrom(this.store.select(selectUser)),
+      map(([, user]) => user),
+      filter((user): user is IUserResponse => !!user && !user.isVerified),
+      switchMap((user) =>
+        from(this.authService.generateEmailVerificationLink(user.email)).pipe(
+          switchMap(({ data }) =>
+            this.electronService.openExternal$(data.link).pipe(
+              map(() => authActions.sendVerificationEmailSuccess()),
+              catchError((err) =>
+                of(authActions.sendVerificationEmailFailure(err)),
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  /**
+   * On each polling tick, reload the user and check if verified.
+   * If verified, dispatch Check Verification Success and Stop Verification Polling.
+   * If error, dispatch Check Verification Failure.
+   */
+  public readonly verificationPollingTick$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authActions.verificationPollingTick),
+      switchMap(() => {
+        // Reload user from Firebase to get the latest emailVerified status
+        return this.authService.reloadUser().pipe(
+          filter((user): user is IUserReload => !!user),
+          switchMap((user) => {
+            if (user.emailVerified) {
+              return [
+                authActions.checkVerificationSuccess(),
+                authActions.stopVerificationPolling(),
+              ];
+            }
+            return [];
+          }),
+          catchError((err) =>
+            of(
+              authActions.checkVerificationFailure({
+                error: err?.message || 'Verification check failed',
+              }),
+            ),
+          ),
+        );
+      }),
+    ),
   );
   private readonly router = inject(Router);
   public readonly logoutRedirect$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(authActions.logoutSuccess),
+        ofType(authActions.logoutSuccess, authActions.logoutFailure),
         switchMap(() => {
           return from(
             this.router.navigate(['/auth/login'], {
-              replaceUrl: true
-            })
+              replaceUrl: true,
+            }),
           ).pipe(catchError(() => EMPTY));
-        })
+        }),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
-
-  // public readonly sendEmailVerification$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(authActions.sendVerificationEmail),
-  //     map(() => this.authService.checkIfUserIsSignedIn()),
-  //     filter((user): user is User => !!user && !user.emailVerified),
-  //     switchMap((user) =>
-  //       from(this.authService.verify(user)).pipe(
-  //         map(() => authActions.sendVerificationEmailSuccess()),
-  //         catchError((err) =>
-  //           of(authActions.sendVerificationEmailFailure(err)),
-  //         ),
-  //       ),
-  //     ),
-  //   ),
-  // );
   private readonly activatedRoute = inject(ActivatedRoute);
   public readonly loginRedirect$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(authActions.loginSuccess),
+        ofType(authActions.loginSuccess, authActions.checkVerificationSuccess),
         switchMap(() => {
           if (!this.activatedRoute || !this.router) {
             return EMPTY;
@@ -132,26 +194,25 @@ export class AuthEffects {
           return from(this.router.navigateByUrl(returnUrl)).pipe(
             catchError((err) => {
               return EMPTY;
-            })
+            }),
           );
-        })
+        }),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
   private readonly notificationService = inject(NotificationService);
   public readonly sendEmailVerificationSuccessNotify$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(authActions.sendVerificationEmailSuccess),
-        switchMap(() => {
+        tap(() => {
           this.notificationService.show(
             'Verification email sent successful',
-            'success'
+            'success',
           );
-          return EMPTY;
-        })
+        }),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
   public readonly sendEmailVerificationFailureNotify$ = createEffect(
     () =>
@@ -160,12 +221,12 @@ export class AuthEffects {
         switchMap(({ error }) => {
           this.notificationService.show(
             `Verification email failed: ${error}`,
-            'error'
+            'error',
           );
           return EMPTY;
-        })
+        }),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
   public readonly loginFailureNotify$ = createEffect(
     () =>
@@ -174,9 +235,9 @@ export class AuthEffects {
         switchMap(({ error }) => {
           this.notificationService.show(`Login failed: ${error}`, 'error');
           return EMPTY;
-        })
+        }),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
   public readonly logoutFailureNotify$ = createEffect(
     () =>
@@ -185,9 +246,9 @@ export class AuthEffects {
         switchMap(({ error }) => {
           this.notificationService.show(`Logout failed: ${error}`, 'error');
           return EMPTY;
-        })
+        }),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
   private readonly refreshTokenService = inject(RefreshTokenService);
   public readonly loginSuccessNotify$ = createEffect(
@@ -200,9 +261,9 @@ export class AuthEffects {
             this.notificationService.show('Login successful', 'success');
           }
           return EMPTY;
-        })
+        }),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
   public readonly logoutSuccessNotify$ = createEffect(
     () =>
@@ -212,11 +273,35 @@ export class AuthEffects {
           this.refreshTokenService.stopTimer();
           this.notificationService.show('Logged out successfully', 'success');
           return EMPTY;
-        })
+        }),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
-  private readonly authErrorService = inject(AuthErrorService);
+
+  public readonly refreshToken$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authActions.refreshToken),
+      switchMap(() => {
+        const user = this.authService.checkIfUserIsSignedIn();
+        if (user) {
+          return this.authService.getRefreshToken().pipe(
+            map(({ token, refreshToken, expiresAt }) =>
+              authActions.refreshTokenSuccess({
+                token,
+                expiresAt,
+                refreshToken,
+              }),
+            ),
+            catchError(this.handleAuthError),
+          );
+        }
+        return of(
+          authActions.refreshTokenFailure({ error: 'No user logged in' }),
+        );
+      }),
+    ),
+  );
+
   private readonly resetPasswordSuccessNotify$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -224,36 +309,14 @@ export class AuthEffects {
         switchMap(() => {
           this.notificationService.show(
             'Request new password successfully',
-            'success'
+            'success',
           );
           return EMPTY;
-        })
+        }),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
-  // public readonly refreshToken$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(authActions.refreshToken),
-  //     switchMap(() => {
-  //       const user = this.authService.checkIfUserIsSignedIn();
-  //       if (user) {
-  //         return from(this.authService.getRefreshToken(user)).pipe(
-  //           map(({ token, expirationTime }) =>
-  //             authActions.refreshTokenSuccess({
-  //               token,
-  //               expiresAt: expirationTime,
-  //             }),
-  //           ),
-  //           catchError(this.handleAuthError),
-  //         );
-  //       }
-  //       return of(
-  //         authActions.refreshTokenFailure({ error: 'No user logged in' }),
-  //       );
-  //     }),
-  //   ),
-  // );
   private readonly resetPasswordFailureNotify$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -261,94 +324,42 @@ export class AuthEffects {
         switchMap(({ error }) => {
           this.notificationService.show(
             `Request new password failed: ${error}`,
-            'error'
+            'error',
           );
           return EMPTY;
-        })
+        }),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
-  private handleAuthSuccess(credentials: ILoginResponse) {
+  private handleAuthSuccess = (credentials: ILoginResponse) => {
     if (credentials.error) {
       return this.handleAuthError(credentials.error);
     }
 
-    const user = credentials.data;
-    const token = credentials.data.idToken;
-    const refreshToken = credentials.data.refreshToken;
-    const expiresAt = '2026-01-01T00:00:00.000Z';
+    if (!credentials.data) {
+      return this.handleAuthError(credentials.message);
+    }
+
+    const response = credentials.data;
+    const user = UserMapper.fromReponseToUser(response);
+    const token = response.idToken;
+    const refreshToken = response.refreshToken;
+    const expiresAt = response.expiresAt;
 
     return of(
       authActions.loginSuccess({
         user,
         token,
         refreshToken,
-        expiresAt
-      })
+        expiresAt,
+      }),
     );
-  }
-
-  private readonly handleAuthError = (error: any) => {
-    return of(authActions.loginFailure({ error }));
   };
 
-  /**
-   * On each polling tick, reload the user and check if verified.
-   * If verified, dispatch Check Verification Success and Stop Verification Polling.
-   * If error, dispatch Check Verification Failure.
-   */
-  // public readonly verificationPollingTick$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(authActions.verificationPollingTick),
-  //     switchMap(() => {
-  //       const user = this.authService.checkIfUserIsSignedIn();
-  //       if (!user) {
-  //         return of(
-  //           authActions.checkVerificationFailure({
-  //             error: 'No user signed in',
-  //           }),
-  //         );
-  //       }
-  //       // Reload user from Firebase to get latest emailVerified status
-  //       return from(user.reload()).pipe(
-  //         switchMap(() => {
-  //           if (user.emailVerified) {
-  //             return [
-  //               authActions.checkVerificationSuccess(),
-  //               authActions.stopVerificationPolling(),
-  //             ];
-  //           }
-  //           return [];
-  //         }),
-  //         catchError((err) =>
-  //           of(
-  //             authActions.checkVerificationFailure({
-  //               error: err?.message || 'Verification check failed',
-  //             }),
-  //           ),
-  //         ),
-  //       );
-  //     }),
-  //   ),
-  // );
-
-  /**
-   * Helper for auto-login with a User instance (not UserCredential).
-   */
-    // private handleUserAutoLogin(user: User) {
-    //   const adapter = new UserAdapter(user);
-    //   const userObj = adapter.clone();
-    //   return from(user.getIdTokenResult()).pipe(
-    //     map(({ token, expirationTime }) =>
-    //       authActions.loginSuccess({
-    //         user: userObj,
-    //         token,
-    //         expiresAt: expirationTime,
-    //       }),
-    //     ),
-    //   );
-    // }
+  private readonly handleAuthError = (error: any) => {
+    return of(authActions.loginFailure({ error: error?.message ?? error }));
+  };
 
   public readonly signIn$ = createEffect(() =>
     this.actions$.pipe(
@@ -358,15 +369,14 @@ export class AuthEffects {
         return defer(() =>
           this.authService.signIn(
             action.credentials.email,
-            action.credentials.password
-          )
+            action.credentials.password,
+          ),
         ).pipe(
           switchMap(this.handleAuthSuccess),
-          catchError(this.handleAuthError)
+          catchError(this.handleAuthError),
         );
-
-      })
-    )
+      }),
+    ),
   );
   public readonly signInWithGoogle$ = createEffect(() =>
     this.actions$.pipe(
@@ -375,55 +385,92 @@ export class AuthEffects {
         this.notificationService.show('Logging in with Google...', 'info');
         return defer(() => this.authService.signInWithGoogle()).pipe(
           switchMap(this.handleAuthSuccess),
-          catchError(this.handleAuthError)
+          catchError(this.handleAuthError),
         );
-      })
-    )
+      }),
+    ),
   );
   public readonly logout$ = createEffect(() =>
     this.actions$.pipe(
       ofType(authActions.logout),
       exhaustMap(() => {
         this.notificationService.show('Logging out...', 'info');
-        return defer(() => this.authService.signOut()).pipe(
+        return defer(() => of(true)).pipe(
           map(() => authActions.logoutSuccess()),
-          catchError(this.handleAuthError)
+          catchError(this.handleAuthError),
         );
-      })
-    )
+      }),
+    ),
   );
-
-  /**
-   * On successful verification, auto-login and redirect.
-   */
-  // public readonly checkVerificationSuccess$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(authActions.checkVerificationSuccess),
-  //     switchMap(() => {
-  //       const user = this.authService.checkIfUserIsSignedIn();
-  //       if (!user) {
-  //         return of(
-  //           authActions.loginFailure({ error: 'No user found for auto-login' }),
-  //         );
-  //       }
-  //       return this.handleUserAutoLogin(user).pipe(
-  //         catchError((err) =>
-  //           of(
-  //             authActions.loginFailure({
-  //               error: err?.message || 'Auto-login failed',
-  //             }),
-  //           ),
-  //         ),
-  //       );
-  //     }),
-  //   ),
-  // );
 
   private handleSignUp(action: ISignUp) {
     this.notificationService.show('Signing up...', 'info');
     return defer(() => this.authService.signUp(action)).pipe(
       switchMap(this.handleAuthSuccess),
-      catchError(this.handleAuthError)
+      catchError(this.handleAuthError),
     );
   }
+
+  public readonly deleteAccount$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authActions.delete),
+      withLatestFrom(this.store.select(selectUser)),
+      exhaustMap(([{ password }, user]) =>
+        this.authService
+          .reauthenticate({
+            password,
+            email: user?.email ?? '',
+          })
+          .pipe(
+            switchMap(() =>
+              this.authService.deleteAccount().pipe(
+                switchMap(({ status, message }) => {
+                  if (status === 'error') {
+                    return of(authActions.deleteFailure({ error: message }));
+                  }
+                  return [authActions.deleteSuccess(), authActions.logout()];
+                }),
+                catchError((error) => of(authActions.deleteFailure({ error }))),
+              ),
+            ),
+            catchError((error) => of(authActions.deleteFailure({ error }))),
+          ),
+      ),
+    ),
+  );
+
+  public readonly deleteAccountNotify$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(authActions.delete),
+        tap(() => {
+          this.notificationService.show('Deleting account...', 'info');
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  public readonly deleteAccountSuccessNotify$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(authActions.deleteSuccess),
+        tap(() => {
+          this.notificationService.show(
+            'Delete account successfully',
+            'success',
+          );
+        }),
+      ),
+    { dispatch: false },
+  );
+  public readonly deleteAccountFailureNotify$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(authActions.deleteFailure),
+        tap(() => {
+          this.notificationService.show('Delete account failed', 'error');
+        }),
+      ),
+    { dispatch: false },
+  );
 }

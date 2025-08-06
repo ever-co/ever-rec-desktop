@@ -1,5 +1,6 @@
 import { ICredentials } from './login.model';
 import { IDataResponse } from './auth.model';
+import { IUser } from '@ever-co/shared-utils';
 
 export interface IRefreshToken {
   token: string;
@@ -12,7 +13,7 @@ export interface IntegrationStatus {
   email: string | null;
 }
 
-export interface IUser {
+export interface IUserResponse {
   id: string;
   displayName: string;
   email: string;
@@ -24,16 +25,47 @@ export interface IUser {
   dropbox: IntegrationStatus;
   jira: IntegrationStatus;
   trello: IntegrationStatus;
+  expiresAt: string;
 }
 
 export interface ILoginSuccess extends IRefreshToken {
   user: IUser;
 }
 
-export interface ILoginResponse extends IDataResponse<IUser> {
-};
+export interface ILoginResponse extends IDataResponse<IUserResponse> {}
 
 export interface ILoginCredentials {
   credentials: ICredentials;
   rememberMe: boolean;
+}
+
+export interface IUserReload {
+  disabled: boolean;
+  email: string;
+  emailVerified: boolean;
+  metadata: {
+    lastSignInTime: string;
+    creationTime: string;
+  };
+  creationTime: string;
+  lastSignInTime: string;
+  providerData: {
+    uid: string;
+    email: string;
+    providerId: string;
+  }[];
+  tokensValidAfterTime: string;
+  uid: string;
+}
+
+export class UserMapper {
+  public static fromReponseToUser(user: IUserResponse): IUser {
+    return {
+      id: user.id,
+      name: user.displayName,
+      email: user.email,
+      imageUrl: user.photoURL ?? '',
+      isVerified: user.isVerified,
+    };
+  }
 }
