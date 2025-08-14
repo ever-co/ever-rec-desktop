@@ -226,7 +226,15 @@ export class UserUpdateEffects {
             if (status === ResStatusEnum.error) {
               return userUpdateActions.passwordFailure({ error: message });
             }
-            return userUpdateActions.passwordSuccess();
+            if (!data) {
+              return userUpdateActions.passwordFailure({ error: message })
+            }
+
+            return userUpdateActions.passwordSuccess({
+              token: data.idToken,
+              refreshToken: data.refreshToken,
+              expiresAt: data.expiresAt,
+            });
           }),
           catchError((error) => {
             const errorMessage = error.message ?? 'Failed to update password';
@@ -353,5 +361,15 @@ export class UserUpdateEffects {
         }),
       ),
     { dispatch: false },
+  );
+
+  public readonly onUpdatePasswordSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userUpdateActions.passwordSuccess),
+        map(({ token, refreshToken, expiresAt }) => {
+          return authActions.refreshTokenSuccess({ token, refreshToken, expiresAt });
+        }),
+      ),
   );
 }

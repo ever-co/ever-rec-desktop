@@ -27,7 +27,7 @@ export const userUpdateActions = createActionGroup({
 
     // update user password
     Password: props<IPasswordValidation>(),
-    'Password Success': emptyProps(),
+    'Password Success': props<{ token: string, refreshToken: string, expiresAt: string }>(),
     'Password Failure': props<{ error: string }>(),
 
     // upload avatar

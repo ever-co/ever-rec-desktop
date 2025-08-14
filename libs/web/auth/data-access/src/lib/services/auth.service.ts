@@ -97,7 +97,7 @@ export class AuthService {
 
   public updateEmail(email: string): Observable<IDataResponse> {
     return this.http.put<IDataResponse<{ email: string }>>(
-      `${this.API}/update-email`,
+      `${this.API}/email`,
       {
         email,
       },
@@ -110,7 +110,7 @@ export class AuthService {
     oldPassword: string;
   }): Observable<IDataResponse> {
     return this.http.put<IDataResponse<{ email: string }>>(
-      `${this.API}/update-pass`,
+      `${this.API}/password`,
       data,
     );
   }
