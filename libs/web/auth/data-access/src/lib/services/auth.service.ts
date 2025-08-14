@@ -82,13 +82,20 @@ export class AuthService {
     );
   }
 
+  public sendEmailVerificationLink(idToken: string | null) {
+    return this.http.post<IDataResponse>(
+      `${this.API}/send-email-verification`,
+      { idToken },
+    );
+  }
+
   public deleteAccount(): Observable<IDataResponse> {
     return this.http.delete<IDataResponse>(`${this.API}/user`);
   }
 
   public resetPassword(email: string): Observable<IDataResponse> {
     return this.http.post<IDataResponse>(
-      `${API_PREFIX}/email/reset-password-email`,
+      `${this.API}/send-password-reset-email`,
       {
         email,
       },
@@ -115,8 +122,8 @@ export class AuthService {
     );
   }
 
-  public reloadUser(): Observable<IUserReload> {
-    return this.http.get<IUserReload>(`${this.API}/user-reload`);
+  public verifyEmail(): Observable<IDataResponse<boolean>> {
+    return this.http.get<IDataResponse<boolean>>(`${this.API}/verify-email`);
   }
 
   public reauthenticate(data: { email: string; password: string }) {

@@ -1,6 +1,5 @@
 import { inject, Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ElectronService } from '@ever-co/electron-data-access';
 import { NotificationService } from '@ever-co/notification-data-access';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -24,14 +23,12 @@ import { ResStatusEnum } from '../models/auth.model';
 import { ISignUp } from '../models/sign-up.model';
 import {
   ILoginResponse,
-  IUserReload,
-  IUserResponse,
   UserMapper,
 } from '../models/user.model';
 import { AuthService } from '../services/auth.service';
 import { RefreshTokenService } from '../services/refresh-token.service';
 import { authActions } from './auth.action';
-import { selectUser } from './auth.selector';
+import { selectToken, selectUser } from './auth.selector';
 
 @Injectable()
 export class AuthEffects {
@@ -110,26 +107,22 @@ export class AuthEffects {
     ),
   );
 
-  private readonly electronService = inject(ElectronService);
   public readonly sendEmailVerification$ = createEffect(() =>
     this.actions$.pipe(
       ofType(authActions.sendVerificationEmail),
-      withLatestFrom(this.store.select(selectUser)),
-      map(([, user]) => user),
-      filter((user): user is IUserResponse => !!user && !user.isVerified),
-      switchMap((user) =>
-        from(this.authService.generateEmailVerificationLink(user.email)).pipe(
-          switchMap(({ data }) =>
-            this.electronService.openExternal$(data.link).pipe(
-              map(() => authActions.sendVerificationEmailSuccess()),
-              catchError((err) =>
-                of(authActions.sendVerificationEmailFailure(err)),
-              ),
-            ),
-          ),
-        ),
+      withLatestFrom(
+        this.store.select(selectUser),
+        this.store.select(selectToken)
       ),
-    ),
+      map(([, user, token]) => ({ user, token })),
+      filter(({ user }) => !!user && !user.isVerified),
+      switchMap(({ token }) =>
+        this.authService.sendEmailVerificationLink(token).pipe(
+          map(() => authActions.sendVerificationEmailSuccess()),
+          catchError((err) => of(authActions.sendVerificationEmailFailure(err)))
+        )
+      )
+    )
   );
 
   /**
@@ -142,10 +135,11 @@ export class AuthEffects {
       ofType(authActions.verificationPollingTick),
       switchMap(() => {
         // Reload user from Firebase to get the latest emailVerified status
-        return this.authService.reloadUser().pipe(
-          filter((user): user is IUserReload => !!user),
-          switchMap((user) => {
-            if (user.emailVerified) {
+        return this.authService.verifyEmail().pipe(
+          map(({ data: isVerified }) => isVerified),
+          filter(Boolean),
+          switchMap((isVerified) => {
+            if (isVerified) {
               return [
                 authActions.checkVerificationSuccess(),
                 authActions.stopVerificationPolling(),
@@ -302,7 +296,7 @@ export class AuthEffects {
     ),
   );
 
-  private readonly resetPasswordSuccessNotify$ = createEffect(
+  readonly resetPasswordSuccessNotify$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(authActions.resetPasswordSuccess),
@@ -317,7 +311,7 @@ export class AuthEffects {
     { dispatch: false },
   );
 
-  private readonly resetPasswordFailureNotify$ = createEffect(
+  readonly resetPasswordFailureNotify$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(authActions.resetPasswordFailure),
