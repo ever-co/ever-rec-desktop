@@ -21,10 +21,7 @@ import {
 import { tap, withLatestFrom } from 'rxjs/operators';
 import { ResStatusEnum } from '../models/auth.model';
 import { ISignUp } from '../models/sign-up.model';
-import {
-  ILoginResponse,
-  UserMapper,
-} from '../models/user.model';
+import { ILoginResponse, UserMapper } from '../models/user.model';
 import { AuthService } from '../services/auth.service';
 import { RefreshTokenService } from '../services/refresh-token.service';
 import { authActions } from './auth.action';
@@ -112,17 +109,19 @@ export class AuthEffects {
       ofType(authActions.sendVerificationEmail),
       withLatestFrom(
         this.store.select(selectUser),
-        this.store.select(selectToken)
+        this.store.select(selectToken),
       ),
       map(([, user, token]) => ({ user, token })),
       filter(({ user }) => !!user && !user.isVerified),
       switchMap(({ token }) =>
         this.authService.sendEmailVerificationLink(token).pipe(
           map(() => authActions.sendVerificationEmailSuccess()),
-          catchError((err) => of(authActions.sendVerificationEmailFailure(err)))
-        )
-      )
-    )
+          catchError((err) =>
+            of(authActions.sendVerificationEmailFailure(err)),
+          ),
+        ),
+      ),
+    ),
   );
 
   /**

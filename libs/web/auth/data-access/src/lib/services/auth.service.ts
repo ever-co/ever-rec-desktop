@@ -9,7 +9,6 @@ import {
   ILoginResponse,
   IRefreshToken,
   IUserResponse,
-  IUserReload,
 } from '../models/user.model';
 
 @Injectable()
