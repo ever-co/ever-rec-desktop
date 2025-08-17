@@ -7,4 +7,6 @@ export class Environment implements IEnvironment {
   public readonly icon: string = 'fiber_smart_record';
   public readonly useEmulators: boolean = true;
   public readonly apiUrl: string = 'http://localhost:3000';
+  public readonly googleClientId: string =
+    '331856596503-27e2jg0qi44bu0thotgg36gds735ue5s.apps.googleusercontent.com';
 }

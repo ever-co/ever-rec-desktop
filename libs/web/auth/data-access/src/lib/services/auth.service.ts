@@ -23,7 +23,7 @@ export class AuthService {
     });
   }
 
-  public signInWithGoogle(credentials?: string) {
+  public signInWithGoogle(credentials: string) {
     return this.http.post<ILoginResponse>(`${this.API}/login-google`, {
       credentials,
     });

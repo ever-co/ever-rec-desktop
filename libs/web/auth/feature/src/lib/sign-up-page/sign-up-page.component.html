@@ -19,21 +19,9 @@
     <span class="signup-divider-line"></span>
   </div>
 
-  <button
-    mat-flat-button
-    class="google-signup-btn"
-    [disabled]="loading"
-    (click)="signUpWithGoogle()"
+  <lib-google-button
+    class="w-full"
+    (signInWithGoogle)="signInWithGoogle($event)"
   >
-    @if (loading && isGoogle()) {
-      <mat-icon><mat-spinner diameter="20"> </mat-spinner></mat-icon>
-    } @else {
-      <img
-        src="assets/icons/google.webp"
-        alt="Google logo"
-        class="google-icon"
-      />
-    }
-    Continue with Google
-  </button>
+  </lib-google-button>
 </lib-auth-container>

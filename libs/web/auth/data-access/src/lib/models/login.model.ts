@@ -9,3 +9,7 @@ export interface ICredentials {
   email: string;
   password: string;
 }
+
+export interface ILoginGoogle {
+  credential: string;
+}

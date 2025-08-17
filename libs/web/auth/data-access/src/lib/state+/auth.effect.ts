@@ -374,9 +374,9 @@ export class AuthEffects {
   public readonly signInWithGoogle$ = createEffect(() =>
     this.actions$.pipe(
       ofType(authActions.loginWithGoogle),
-      exhaustMap(() => {
+      exhaustMap(({ credential }) => {
         this.notificationService.show('Logging in with Google...', 'info');
-        return defer(() => this.authService.signInWithGoogle()).pipe(
+        return defer(() => this.authService.signInWithGoogle(credential)).pipe(
           switchMap(this.handleAuthSuccess),
           catchError(this.handleAuthError),
         );

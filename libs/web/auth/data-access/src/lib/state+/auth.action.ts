@@ -1,5 +1,6 @@
 import { IUser } from '@ever-co/shared-utils';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import { ILoginGoogle } from '../models/login.model';
 import { ISignUp } from '../models/sign-up.model';
 import {
   ILoginCredentials,
@@ -12,7 +13,7 @@ export const authActions = createActionGroup({
   events: {
     // Login actions
     Login: props<ILoginCredentials>(),
-    'Login With Google': emptyProps(),
+    'Login With Google': props<ILoginGoogle>(),
     'Login Success': props<ILoginSuccess>(),
     'Login Failure': props<{ error: string }>(),
 
