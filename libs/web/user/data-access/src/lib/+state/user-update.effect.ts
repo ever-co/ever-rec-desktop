@@ -3,11 +3,11 @@ import {
   authActions,
   AuthService,
   selectUser,
+  ResStatusEnum,
 } from '@ever-co/auth-data-access';
 import { NotificationService } from '@ever-co/notification-data-access';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { ResStatusEnum } from 'libs/web/auth/data-access/src/lib/models/auth.model';
 import {
   catchError,
   exhaustMap,
@@ -227,7 +227,7 @@ export class UserUpdateEffects {
               return userUpdateActions.passwordFailure({ error: message });
             }
             if (!data) {
-              return userUpdateActions.passwordFailure({ error: message })
+              return userUpdateActions.passwordFailure({ error: message });
             }
 
             return userUpdateActions.passwordSuccess({
@@ -363,13 +363,16 @@ export class UserUpdateEffects {
     { dispatch: false },
   );
 
-  public readonly onUpdatePasswordSuccess$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(userUpdateActions.passwordSuccess),
-        map(({ token, refreshToken, expiresAt }) => {
-          return authActions.refreshTokenSuccess({ token, refreshToken, expiresAt });
-        }),
-      ),
+  public readonly onUpdatePasswordSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userUpdateActions.passwordSuccess),
+      map(({ token, refreshToken, expiresAt }) => {
+        return authActions.refreshTokenSuccess({
+          token,
+          refreshToken,
+          expiresAt,
+        });
+      }),
+    ),
   );
 }
