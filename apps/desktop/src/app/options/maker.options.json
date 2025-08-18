@@ -12,6 +12,14 @@
   "directories": {
     "buildResources": "apps/desktop/src/icons"
   },
+  "protocols": [
+    {
+      "name": "Ever Links",
+      "schemes": [
+        "ever-rec"
+      ]
+    }
+  ],
   "mac": {
     "icon": "mac/icon.icns",
     "darkModeSupport": true,
