@@ -1,64 +1,67 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  Inject,
-  NgZone,
-  OnInit,
-  output,
-  viewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, input, OnDestroy, OnInit, output } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { ILoginGoogle } from '@ever-co/auth-data-access';
 import { REC_ENV } from '@ever-co/shared-service';
-import { IEnvironment } from '@ever-co/shared-utils';
-
-declare const google: any;
+import { Channel, IEnvironment } from '@ever-co/shared-utils';
+import { ElectronService } from '@ever-co/electron-data-access';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'lib-google-button',
   templateUrl: './google-button.component.html',
   styleUrls: ['./google-button.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [MatButtonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GoogleButtonComponent implements OnInit, AfterViewInit {
-  public readonly googleButton = viewChild<ElementRef>('google');
+export class GoogleButtonComponent implements OnInit, OnDestroy {
   public readonly signIn = output<ILoginGoogle>({ alias: 'signInWithGoogle' });
+  public readonly loading = input<boolean>(false);
+  private readonly destroy$ = new Subject<void>();
 
   constructor(
     @Inject(REC_ENV)
     private env: IEnvironment,
-    private ngZone: NgZone,
-  ) {}
-
-  ngOnInit(): void {
-    this.initializeGoogleSignIn();
+    private electronService: ElectronService
+  ) {
   }
 
-  ngAfterViewInit(): void {
-    this.renderGoogleButton();
+  public ngOnInit(): void {
+    this.electronService
+      .fromEvent<ILoginGoogle>(Channel.GOOGLE_AUTH_LOGIN)
+      .pipe(
+        tap((response) => this.signIn.emit(response)),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
-  private initializeGoogleSignIn(): void {
-    google.accounts.id.initialize({
-      client_id: this.env.googleClientId,
-      callback: (response: ILoginGoogle) => {
-        this.ngZone.run(() => {
-          this.signIn.emit(response);
-        });
-      },
-      cancel_on_tap_outside: false,
-    });
+  public async handleGoogleSignIn(): Promise<void> {
+    // Check for required environment variables for robustness
+    if (!this.env.google?.clientId) {
+      console.error('Environment variable "googleClientId" is missing.');
+      return;
+    }
 
-    google.accounts.id.prompt();
+    // Use the redirect URI from the environment for better maintainability.
+    const clientId = this.env.google.clientId;
+    const redirectUri = this.env.google.redirectUri;
+
+    const authUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');
+    authUrl.search = new URLSearchParams({
+      client_id: clientId,
+      redirect_uri: redirectUri,
+      response_type: 'id_token token',
+      scope: 'openid email profile',
+      state: crypto.randomUUID(),
+      nonce: crypto.randomUUID(),
+      prompt: 'consent'
+    } as any).toString();
+
+    await this.electronService.openExternal(authUrl.toString());
   }
 
-  private renderGoogleButton(): void {
-    const buttonElement = this.googleButton()?.nativeElement;
-    google.accounts.id.renderButton(buttonElement, {
-      theme: 'outline',
-      size: 'large',
-      text: 'continue_with',
-    });
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

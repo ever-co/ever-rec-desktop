@@ -68,7 +68,8 @@ export enum Channel {
   'GET_HEAT_MAP' = 'get::heat::map',
   'MINIMIZE_WINDOW' = 'minimize::window',
   'REQUEST_TOP_APPLICATIONS_PRODUCTIVITY' = 'request::top::applications::productivity',
-  GET_SCREENSHOTS_TO_UPLOAD = "get::screenshots::to::upload",
-  GET_PHOTOS_TO_UPLOAD = "get::photos::to::upload",
-  GET_AUDIOS_TO_UPLOAD = "get::audios::to::upload",
+  GET_SCREENSHOTS_TO_UPLOAD = 'get::screenshots::to::upload',
+  GET_PHOTOS_TO_UPLOAD = 'get::photos::to::upload',
+  GET_AUDIOS_TO_UPLOAD = 'get::audios::to::upload',
+  GOOGLE_AUTH_LOGIN = 'google::auth::login',
 }

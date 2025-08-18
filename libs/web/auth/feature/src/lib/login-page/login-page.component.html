@@ -22,6 +22,7 @@
 
   <lib-google-button
     class="w-full"
+    [loading]="!!loading && isGoogle()"
     (signInWithGoogle)="signInWithGoogle($event)"
   >
   </lib-google-button>
