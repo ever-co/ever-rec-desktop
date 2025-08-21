@@ -7,23 +7,27 @@ export const authFeatureKey = 'authentication';
 export interface IAuthState {
   user: IUser | null;
   token: string | null;
+  refreshToken: string | null;
   expiresAt: string | null;
   loading: boolean;
   error: string | null;
   cooldown: number;
   emailSent: boolean;
   email: string;
+  deletingAccount: boolean;
 }
 
 export const initialAuthState: IAuthState = {
   user: null,
   token: null,
+  refreshToken: null,
   expiresAt: null,
   loading: false,
   error: null,
   cooldown: 0,
   emailSent: false,
   email: '',
+  deletingAccount: false,
 };
 
 export const reducer = createReducer(
@@ -41,13 +45,17 @@ export const reducer = createReducer(
     }),
   ),
 
-  on(authActions.loginSuccess, (state, { user, token, expiresAt }) => ({
-    ...state,
-    loading: false,
-    user,
-    token,
-    expiresAt,
-  })),
+  on(
+    authActions.loginSuccess,
+    (state, { user, token, refreshToken, expiresAt }) => ({
+      ...state,
+      loading: false,
+      user,
+      token,
+      refreshToken,
+      expiresAt,
+    }),
+  ),
 
   on(
     authActions.loginFailure,
@@ -66,14 +74,20 @@ export const reducer = createReducer(
     loading: false,
     user: null,
     token: null,
+    refreshToken: null,
+    expiresAt: null,
   })),
 
-  on(authActions.refreshTokenSuccess, (state, { token, expiresAt }) => ({
-    ...state,
-    token,
-    expiresAt,
-    error: null,
-  })),
+  on(
+    authActions.refreshTokenSuccess,
+    (state, { token, refreshToken, expiresAt }) => ({
+      ...state,
+      token,
+      refreshToken,
+      expiresAt,
+      error: null,
+    }),
+  ),
 
   on(authActions.refreshTokenFailure, (state, { error }) => ({
     ...state,
@@ -110,6 +124,15 @@ export const reducer = createReducer(
     error,
   })),
 
+  on(authActions.checkVerificationSuccess, (state) => ({
+    ...state,
+    user: state.user && {
+      ...state.user,
+      isVerified: true,
+    },
+    error: null,
+  })),
+
   on(authActions.startVerificationPolling, (state) => ({
     ...state,
     error: null,
@@ -131,6 +154,7 @@ export const reducer = createReducer(
   on(authActions.resetPasswordFailure, (state, { error }) => ({
     ...state,
     error,
+    loading: false,
     emailSent: false,
   })),
 
@@ -142,7 +166,26 @@ export const reducer = createReducer(
 
   on(authActions.updateProfile, (state, { user }) => ({
     ...state,
-    user: user ?? state.user,
+    user: state.user && {
+      ...state.user,
+      ...user,
+    },
+  })),
+
+  on(authActions.delete, (state) => ({
+    ...state,
+    deletingAccount: true,
+  })),
+
+  on(authActions.deleteSuccess, (state) => ({
+    ...state,
+    deletingAccount: false,
+  })),
+
+  on(authActions.deleteFailure, (state, { error }) => ({
+    ...state,
+    deletingAccount: false,
+    error,
   })),
 );
 

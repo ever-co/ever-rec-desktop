@@ -6,9 +6,14 @@ import { Router } from '@angular/router';
 import {
   authActions,
   ICredentials,
+  ILoginGoogle,
   selectAuthLoading,
 } from '@ever-co/auth-data-access';
-import { AuthContainerComponent, LoginFormComponent } from '@ever-co/auth-ui';
+import {
+  AuthContainerComponent,
+  GoogleButtonComponent,
+  LoginFormComponent,
+} from '@ever-co/auth-ui';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
@@ -20,6 +25,7 @@ import { Observable } from 'rxjs';
     MatIconModule,
     MatProgressSpinnerModule,
     AuthContainerComponent,
+    GoogleButtonComponent,
   ],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss',
@@ -33,9 +39,9 @@ export class LoginPageComponent {
     private readonly router: Router,
   ) {}
 
-  public signInWithGoogle() {
+  public signInWithGoogle(event: ILoginGoogle) {
     this.isGoogle.update(() => true);
-    this.store.dispatch(authActions.loginWithGoogle());
+    this.store.dispatch(authActions.loginWithGoogle(event));
   }
 
   public get loading$(): Observable<boolean> {

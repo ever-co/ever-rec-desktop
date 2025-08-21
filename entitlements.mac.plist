@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Hardened Runtime Entitlements -->
+	<key>com.apple.security.cs.allow-jit</key>
+	<true/>
+	<key>com.apple.security.cs.allow-unsigned-executable-memory</key>
+	<true/>
+	<key>com.apple.security.cs.allow-dyld-environment-variables</key>
+	<true/>
+	<key>com.apple.security.cs.disable-library-validation</key>
+	<true/>
+
+	<!-- Network Access -->
+	<key>com.apple.security.network.client</key>
+	<true/>
+	<key>com.apple.security.network.server</key>
+	<true/>
+
+	<!-- File System Access -->
+	<key>com.apple.security.files.user-selected.read-write</key>
+	<true/>
+	<key>com.apple.security.files.downloads.read-write</key>
+	<true/>
+	<key>com.apple.security.files.pictures.read-write</key>
+	<true/>
+	<key>com.apple.security.files.movies.read-write</key>
+	<true/>
+	<key>com.apple.security.files.music.read-write</key>
+	<true/>
+
+	<!-- Camera Access -->
+	<key>com.apple.security.device.camera</key>
+	<true/>
+
+	<!-- Microphone Access -->
+	<key>com.apple.security.device.microphone</key>
+	<true/>
+
+	<!-- Screen Recording/Screenshot Capability -->
+	<key>com.apple.security.temporary-exception.mach-lookup.global-name</key>
+	<array>
+		<string>com.apple.screencapture.interactive</string>
+		<string>com.apple.WindowServer</string>
+	</array>
+
+	<!-- Audio/Video Input Device Access -->
+	<key>com.apple.security.device.audio-input</key>
+	<true/>
+	<key>com.apple.security.device.usb</key>
+	<true/>
+
+	<!-- Deep Links / URL Scheme Handling -->
+	<key>com.apple.security.app-sandbox</key>
+	<false/>
+
+	<!-- Notification and Background Processing -->
+	<key>com.apple.security.automation.apple-events</key>
+	<true/>
+
+	<!-- For Electron apps that need to load dynamic libraries -->
+	<key>com.apple.security.cs.disable-executable-page-protection</key>
+	<true/>
+
+	<!-- Additional permissions for screen capture -->
+	<key>com.apple.security.temporary-exception.apple-events</key>
+	<array>
+		<string>com.apple.systemevents</string>
+		<string>com.apple.finder</string>
+	</array>
+
+	<!-- Allow inheriting entitlements -->
+	<key>com.apple.security.inherit</key>
+	<true/>
+</dict>
+</plist>

@@ -46,7 +46,7 @@ export class ElectronService {
    */
   public invoke<T = unknown, U = unknown>(
     channel: Channel,
-    data?: T
+    data?: T,
   ): Promise<U> {
     if (!this.isElectron) {
       return Promise.reject(new Error('Electron API is not available'));
@@ -60,7 +60,7 @@ export class ElectronService {
    */
   public invoke$<T = unknown, U = unknown>(
     channel: Channel,
-    data?: T
+    data?: T,
   ): Observable<U> {
     if (!this.isElectron) {
       return throwError(() => new Error('Electron API is not available'));
@@ -156,13 +156,25 @@ export class ElectronService {
    */
   public removeListener(
     channel: Channel,
-    callback: (...args: any[]) => void
+    callback: (...args: any[]) => void,
   ): void {
     if (!this.isElectron) {
       return;
     }
 
     this.electronAPI!.removeListener(channel, callback);
+  }
+  /**
+   * Open url link
+   */
+  public async openExternal(url: string): Promise<void> {
+    console.log(url);
+    await this.electronAPI!.openExternal(url);
+    console.log('Done');
+  }
+
+  public openExternal$(url: string): Observable<void> {
+    return from(this.openExternal(url));
   }
 }
 
@@ -174,4 +186,5 @@ interface ElectronAPI {
   send: (channel: string, data?: any) => void;
   removeAllListeners: (channel: string) => void;
   removeListener: (channel: string, callback: (...args: any[]) => void) => void;
+  openExternal: (string: string) => Promise<void>;
 }

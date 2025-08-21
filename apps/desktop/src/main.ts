@@ -7,14 +7,18 @@ import App from './app/app';
 import ElectronEvents from './app/events/electron.events';
 import SquirrelEvents from './app/events/squirrel.events';
 import UpdateEvents from './app/events/update.events';
+import { DeepLinkService } from './app/protocols/deeplink.service';
 
 class Main {
   private static readonly logger: ILogger = new ElectronLogger();
 
   public static run(): void {
+    if (this.isPrimaryInstance) {
+      this.registerProtocol();
+    }
+
     this.setupGlobalErrorHandlers();
     this.handleSquirrelStartup();
-
     this.patchConsoleInDevMode();
 
     this.bootstrapApp();
@@ -35,16 +39,17 @@ class Main {
   }
 
   private static bootstrapApp(): void {
-    if (!app.requestSingleInstanceLock()) {
+    if (!this.isPrimaryInstance) {
       app.quit();
       return;
     }
 
-    app.on('second-instance', () => {
+    app.on('second-instance', (_,argv) => {
       if (App.window) {
         App.window.show();
         App.window.restore();
         App.window.focus();
+        DeepLinkService.handleDeepLink(argv)
       }
     });
 
@@ -57,6 +62,8 @@ class Main {
     if (!App.isDevelopmentMode()) {
       UpdateEvents.initAutoUpdateService();
     }
+
+    DeepLinkService.init(app);
   }
 
   private static setupGlobalErrorHandlers(): void {
@@ -69,6 +76,15 @@ class Main {
         `Unhandled Rejection at: ${JSON.stringify(promise)}\nReason: ${reason}`
       );
     });
+  }
+
+  private static registerProtocol(): void {
+    app.setAsDefaultProtocolClient(DeepLinkService.PROTOCOL);
+    this.logger.info(`Protocol '${DeepLinkService.PROTOCOL}' registered.`);
+  }
+
+  public static get isPrimaryInstance(): boolean {
+    return app.requestSingleInstanceLock();
   }
 }
 

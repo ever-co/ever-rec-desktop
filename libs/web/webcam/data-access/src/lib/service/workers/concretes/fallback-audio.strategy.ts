@@ -26,7 +26,7 @@ export class FallbackAudioStrategy implements IAudioWorkerStrategy {
             arrayBuffer.slice(0)
           );
 
-          audioContext.close();
+          await audioContext.close();
 
           const duration = audioBuffer.duration;
           const channels = audioBuffer.numberOfChannels;

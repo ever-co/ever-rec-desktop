@@ -24,6 +24,18 @@
   }
 }
 
+:host(.no-shadow) {
+  .main {
+    box-shadow: unset !important;
+  }
+}
+
+:host(.no-bg) {
+  .main {
+    background-color: unset !important;
+  }
+}
+
 :host(.no-effect) {
   .main {
     box-shadow: unset !important;

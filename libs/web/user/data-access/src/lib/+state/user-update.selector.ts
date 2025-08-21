@@ -6,12 +6,42 @@ export const selectUserUpdateState =
     fromAuth.userUpdateFeatureKey,
   );
 
-export const selectUserUpdateLoading = createSelector(
+export const selectFullNameUpdating = createSelector(
   selectUserUpdateState,
-  (state) => state.loading,
+  (state) => state.fullNameUpdating,
 );
 
-export const selectUserUpdateError = createSelector(
+export const selectEmailUpdating = createSelector(
   selectUserUpdateState,
-  (state) => state.error,
+  (state) => state.emailUpdating,
+);
+
+export const selectFullNameUpdateError = createSelector(
+  selectUserUpdateState,
+  (state) => state.fullNameError,
+);
+
+export const selectEmailUpdateError = createSelector(
+  selectUserUpdateState,
+  (state) => state.emailError,
+);
+
+export const selectPasswordUpdateError = createSelector(
+  selectUserUpdateState,
+  (state) => state.passwordError,
+);
+
+export const selectPasswordUpdating = createSelector(
+  selectUserUpdateState,
+  (state) => state.passwordUpdating,
+);
+
+export const selectAvatarUploadError = createSelector(
+  selectUserUpdateState,
+  (state) => state.avatarError,
+);
+
+export const selectAvatarUploading = createSelector(
+  selectUserUpdateState,
+  (state) => state.avatarUploading,
 );

@@ -1,8 +1,13 @@
 @let user = user$ | async;
-@let loading = loading$ | async;
+@let fullNameUpdating = fullNameUpdating$ | async;
+@let emailUpdating = emailUpdating$ | async;
+@let emailError = emailError$ | async;
+@let fullNameError = fullNameError$ | async;
+@let passwordError = passwordError$ | async;
+@let avatarUploading = avatarUploading$ | async;
 
-<div class="flex flex-col gap-4 w-fit">
-  <div class="flex gap-6">
+<div class="flex flex-col gap-4 max-w-xl w-md w-full">
+  <div class="flex flex-col sm:flex-row gap-6">
     <div class="flex flex-col items-center gap-3">
       <lib-user-avatar
         [show-tooltip]="false"
@@ -11,9 +16,25 @@
         [user]="user"
         size="xl"
       ></lib-user-avatar>
-      <div class="text-blue-900 text-sm cursor-pointer">Edit</div>
+      @if (avatarUploading) {
+        <div class="text-blue-900 text-sm cursor-not-allowed">Uploading...</div>
+      } @else {
+        <div
+          class="text-blue-900 text-sm cursor-pointer"
+          (click)="image.click()"
+        >
+          Edit
+        </div>
+      }
+      <input
+        #image
+        type="file"
+        accept="image/*"
+        (change)="updateAvatar($event)"
+        hidden
+      />
     </div>
-    <div>
+    <div class="w-full">
       <mat-accordion class="profile-headers-align mat-elevation-0" multi>
         <mat-expansion-panel>
           <mat-expansion-panel-header>
@@ -24,9 +45,17 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
+          @if (fullNameError) {
+            <div
+              class="p-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 mb-3"
+            >
+              {{ fullNameError }}
+            </div>
+          }
+
           <lib-name-form
             [name]="user?.name ?? ''"
-            [loading]="loading"
+            [loading]="fullNameUpdating"
             (nameChange)="updateName($event)"
           ></lib-name-form>
         </mat-expansion-panel>
@@ -39,10 +68,19 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <mat-form-field class="w-full">
-            <mat-label>Email</mat-label>
-            <input matInput type="email" />
-          </mat-form-field>
+          @if (emailError) {
+            <div
+              class="p-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 mb-3"
+            >
+              {{ emailError }}
+            </div>
+          }
+
+          <lib-email-form
+            [input]="user?.email ?? ''"
+            [loading]="emailUpdating"
+            (emailChange)="updateEmail($event)"
+          ></lib-email-form>
         </mat-expansion-panel>
 
         <mat-expansion-panel>
@@ -54,21 +92,25 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <mat-form-field>
-            <mat-label>Old Password</mat-label>
-            <input matInput type="password" />
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>New Password</mat-label>
-            <input matInput type="password" />
-          </mat-form-field>
+          @if (passwordError) {
+            <div
+              class="p-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 mb-3"
+            >
+              {{ passwordError }}
+            </div>
+          }
+
+          <lib-password-form
+            [config]="passwordConfig"
+            (passwordChange)="updatePassword($event)"
+          ></lib-password-form>
         </mat-expansion-panel>
       </mat-accordion>
     </div>
   </div>
   <mat-divider></mat-divider>
   <div class="flex justify-between align-center items-center">
-    <div>Account</div>
+    <div class="font-medium text-gray-600">Account</div>
     <lib-action-button [button]="deleteButton"></lib-action-button>
   </div>
   <mat-divider></mat-divider>

@@ -1,70 +1,71 @@
-import { IUser, Cloneable } from '@ever-co/shared-utils';
-import { User } from 'firebase/auth';
 import { ICredentials } from './login.model';
+import { IDataResponse } from './auth.model';
+import { IUser } from '@ever-co/shared-utils';
 
 export interface IRefreshToken {
   token: string;
+  refreshToken: string;
   expiresAt: string;
 }
 
-export interface ILoginResponse extends IRefreshToken {
+export interface IntegrationStatus {
+  isIntegrated: boolean;
+  email: string | null;
+}
+
+export interface IUserResponse {
+  id: string;
+  displayName: string;
+  email: string;
+  photoURL: string | null;
+  idToken: string;
+  refreshToken: string;
+  isSlackIntegrate: boolean;
+  isVerified: boolean;
+  dropbox: IntegrationStatus;
+  jira: IntegrationStatus;
+  trello: IntegrationStatus;
+  expiresAt: string;
+}
+
+export interface ILoginSuccess extends IRefreshToken {
   user: IUser;
 }
+
+export interface ILoginResponse extends IDataResponse<IUserResponse> {}
 
 export interface ILoginCredentials {
   credentials: ICredentials;
   rememberMe: boolean;
 }
 
-export class UserAdapter implements IUser, Cloneable<IUser> {
-  private _id!: string;
-  private _email!: string;
-  private _imageUrl!: string;
-  private _name!: string;
-  private _isVerified!: boolean;
-  private _isAnonymous!: boolean;
+export interface IUserReload {
+  disabled: boolean;
+  email: string;
+  emailVerified: boolean;
+  metadata: {
+    lastSignInTime: string;
+    creationTime: string;
+  };
+  creationTime: string;
+  lastSignInTime: string;
+  providerData: {
+    uid: string;
+    email: string;
+    providerId: string;
+  }[];
+  tokensValidAfterTime: string;
+  uid: string;
+}
 
-  constructor(firebase: User) {
-    this._id = firebase.uid;
-    this._email = firebase.email ?? '';
-    this._imageUrl = firebase.photoURL ?? '';
-    this._name = firebase.displayName ?? '';
-    this._isVerified = firebase.emailVerified;
-    this._isAnonymous = firebase.isAnonymous;
-  }
-
-  public get id(): string {
-    return this._id;
-  }
-
-  public get email(): string {
-    return this._email;
-  }
-
-  public get imageUrl(): string {
-    return this._imageUrl;
-  }
-
-  public get name(): string {
-    return this._name;
-  }
-
-  public get isVerified(): boolean {
-    return this._isVerified;
-  }
-
-  public get isAnonymous(): boolean {
-    return this._isAnonymous;
-  }
-
-  public clone(): IUser {
+export class UserMapper {
+  public static fromReponseToUser(user: IUserResponse): IUser {
     return {
-      id: this.id,
-      email: this.email,
-      imageUrl: this.imageUrl,
-      name: this.name,
-      isVerified: this.isVerified,
-      isAnonymous: this.isAnonymous,
+      id: user.id,
+      name: user.displayName,
+      email: user.email,
+      imageUrl: user.photoURL ?? '',
+      isVerified: user.isVerified,
     };
   }
 }

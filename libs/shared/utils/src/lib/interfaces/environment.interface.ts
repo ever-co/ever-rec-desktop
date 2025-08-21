@@ -1,10 +1,11 @@
-import { IFirebaseConfig } from './auth.interface';
-
 export interface IEnvironment {
   isPlugin: boolean;
   canUseWebWorker: boolean;
   appName: string;
   icon: string;
-  useEmulators?: boolean;
-  firebaseConfig?: IFirebaseConfig;
+  apiUrl?: string;
+  google?: {
+    clientId: string;
+    redirectUri: string;
+  };
 }

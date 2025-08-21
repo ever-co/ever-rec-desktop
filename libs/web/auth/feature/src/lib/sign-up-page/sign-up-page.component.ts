@@ -4,10 +4,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {
   authActions,
+  ILoginGoogle,
   ISignUp,
   selectAuthLoading,
 } from '@ever-co/auth-data-access';
-import { AuthContainerComponent, SignUpFormComponent } from '@ever-co/auth-ui';
+import {
+  AuthContainerComponent,
+  GoogleButtonComponent,
+  SignUpFormComponent,
+} from '@ever-co/auth-ui';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
@@ -19,6 +24,7 @@ import { Observable } from 'rxjs';
     MatIconModule,
     MatProgressSpinnerModule,
     AuthContainerComponent,
+    GoogleButtonComponent,
   ],
   templateUrl: './sign-up-page.component.html',
   styleUrl: './sign-up-page.component.scss',
@@ -29,9 +35,9 @@ export class SignUpPageComponent {
 
   constructor(private readonly store: Store) {}
 
-  public signUpWithGoogle() {
+  public signInWithGoogle(event: ILoginGoogle) {
     this.isGoogle.update(() => true);
-    this.store.dispatch(authActions.loginWithGoogle());
+    this.store.dispatch(authActions.loginWithGoogle(event));
   }
 
   public get loading$(): Observable<boolean> {

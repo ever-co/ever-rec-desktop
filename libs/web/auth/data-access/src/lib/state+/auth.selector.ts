@@ -15,9 +15,25 @@ export const selectToken = createSelector(
   (state) => state.token,
 );
 
+export const selectRefreshToken = createSelector(
+  selectAuthState,
+  (state) => state.refreshToken,
+);
+
+export const selectClaimsToken = createSelector(selectAuthState, (state) => ({
+  token: state.token ?? '',
+  refreshToken: state.refreshToken ?? '',
+  expiresAt: state.expiresAt ?? '',
+}));
+
 export const selectAuthLoading = createSelector(
   selectAuthState,
   (state) => state.loading,
+);
+
+export const selectDeletingAccount = createSelector(
+  selectAuthState,
+  (state) => state.deletingAccount,
 );
 
 export const selectAuthError = createSelector(

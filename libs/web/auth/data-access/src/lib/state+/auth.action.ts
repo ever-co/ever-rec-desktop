@@ -1,20 +1,20 @@
+import { IUser } from '@ever-co/shared-utils';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import { ILoginGoogle } from '../models/login.model';
 import { ISignUp } from '../models/sign-up.model';
 import {
   ILoginCredentials,
-  ILoginResponse,
+  ILoginSuccess,
   IRefreshToken,
 } from '../models/user.model';
-import { IProfile } from '../models/profile.model';
-import { IUser } from '@ever-co/shared-utils';
 
 export const authActions = createActionGroup({
   source: 'Auth Firebase',
   events: {
     // Login actions
     Login: props<ILoginCredentials>(),
-    'Login With Google': emptyProps(),
-    'Login Success': props<ILoginResponse>(),
+    'Login With Google': props<ILoginGoogle>(),
+    'Login Success': props<ILoginSuccess>(),
     'Login Failure': props<{ error: string }>(),
 
     // Logout actions
@@ -56,6 +56,11 @@ export const authActions = createActionGroup({
     'Reset Form': emptyProps(),
 
     //Update profile
-    'Update Profile': props<{ user: IUser | null }>(),
+    'Update Profile': props<{ user: Partial<IUser> | null }>(),
+
+    // Delete user
+    Delete: props<{ password: string }>(),
+    'Delete Success': emptyProps(),
+    'Delete Failure': props<{ error: string }>(),
   },
 });

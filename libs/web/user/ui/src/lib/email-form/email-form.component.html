@@ -1,0 +1,35 @@
+<form [formGroup]="form" (ngSubmit)="submitForm()" class="email-form w-full">
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>Email</mat-label>
+    <input
+      matInput
+      type="email"
+      formControlName="email"
+      placeholder="Enter your email"
+      autocomplete="email"
+      required
+      aria-label="Email"
+    />
+    @if (emailRequired) {
+      <mat-error>Email is required.</mat-error>
+    }
+    @if (emailInvalid) {
+      <mat-error>Please enter a valid email address.</mat-error>
+    }
+    @if (emailMinLength) {
+      <mat-error>Email must be at least 5 characters.</mat-error>
+    }
+    @if (emailMaxLength) {
+      <mat-error>Email must be at most 50 characters.</mat-error>
+    }
+    @if (emailSameValue) {
+      <mat-error>Email must be different from ‘{{ input() }}’.</mat-error>
+    }
+  </mat-form-field>
+  <div class="w-fit mt-2">
+    <lib-action-button
+      class="w-fit"
+      [button]="buttonSubmit"
+    ></lib-action-button>
+  </div>
+</form>

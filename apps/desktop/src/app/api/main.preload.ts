@@ -8,9 +8,9 @@ const validChannels = Object.values(Channel); // Replace with your actual channe
 ipcRenderer.setMaxListeners(0);
 
 contextBridge.exposeInMainWorld('electronAPI', {
-  openExternal: (url: string) => {
+  openExternal: async (url: string) => {
     if (isHttpUrl(url)) {
-      shell.openExternal(url);
+      await shell.openExternal(url);
     } else {
       console.warn(`Blocked attempt to open unsafe URL: ${url}`);
     }
