@@ -40,7 +40,7 @@ export class AuthService {
   }
 
   public getRefreshToken() {
-    return this.http.get<IRefreshToken>(`${this.API}/refresh-token`);
+    return this.http.get<IRefreshToken & { idToken: string }>(`${this.API}/refresh-token`);
   }
 
   public signUp(input: ISignUp) {
