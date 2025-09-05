@@ -1,21 +1,16 @@
 <div class="w-full flex justify-center items-center p-4">
-  <button
-    matButton="outlined"
-    [disabled]="loading()"
+  <button mat-stroked-button matButton="outlined" [disabled]="loading()"
     class="google-auth-btn bg-white text-gray-700 font-semibold py-2 px-6 rounded-full hover:bg-gray-50 transition-all duration-300 flex items-center space-x-3"
-    (click)="handleGoogleSignIn()"
-  >
+    (click)="showCancelSignin() ? handleCancelSignin() : handleGoogleSignIn()">
     <!-- The Google icon is now larger and centered with the text -->
-    <img
-      src="assets/icons/google.webp"
-      alt="Google G logo for sign in"
-      class="google-icon h-5 w-5"
-    />
+    <img src="assets/icons/google.webp" alt="Google G logo for sign in" class="google-icon h-5 w-5" />
     <span>
-      @if (loading()) {
-        Signing in with Google...
+      @if(loading()) {
+      Signing in with Google...
+      }@else if(showCancelSignin()) {
+      Cancel sign-in
       } @else {
-        Login with Google
+      Login with Google
       }</span>
   </button>
 </div>

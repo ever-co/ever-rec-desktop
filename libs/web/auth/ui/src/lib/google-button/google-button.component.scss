@@ -1,0 +1,8 @@
+:host ::ng-deep {
+  .mdc-button__label {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+  }
+}

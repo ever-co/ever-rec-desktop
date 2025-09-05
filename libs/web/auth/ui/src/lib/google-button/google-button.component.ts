@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject, input, OnDestroy, OnInit, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, input, OnDestroy, OnInit, output, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { ILoginGoogle } from '@ever-co/auth-data-access';
 import { REC_ENV } from '@ever-co/shared-service';
@@ -17,6 +17,7 @@ export class GoogleButtonComponent implements OnInit, OnDestroy {
   public readonly signIn = output<ILoginGoogle>({ alias: 'signInWithGoogle' });
   public readonly loading = input<boolean>(false);
   private readonly destroy$ = new Subject<void>();
+  public readonly showCancelSignin = signal<boolean>(false);
 
   constructor(
     @Inject(REC_ENV)
@@ -30,6 +31,7 @@ export class GoogleButtonComponent implements OnInit, OnDestroy {
       .fromEvent<ILoginGoogle>(Channel.GOOGLE_AUTH_LOGIN)
       .pipe(
         tap((response) => this.signIn.emit(response)),
+        tap(() => this.showCancelSignin.update(() => false)),
         takeUntil(this.destroy$)
       )
       .subscribe();
@@ -41,6 +43,8 @@ export class GoogleButtonComponent implements OnInit, OnDestroy {
       console.error('Environment variable "googleClientId" is missing.');
       return;
     }
+
+    this.showCancelSignin.update(() => true);
 
     // Use the redirect URI from the environment for better maintainability.
     const clientId = this.env.google.clientId;
@@ -58,6 +62,10 @@ export class GoogleButtonComponent implements OnInit, OnDestroy {
     } as any).toString();
 
     await this.electronService.openExternal(authUrl.toString());
+  }
+
+  public handleCancelSignin(): void {
+    this.showCancelSignin.update(() => false);
   }
 
   ngOnDestroy() {
