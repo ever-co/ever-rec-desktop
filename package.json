@@ -112,7 +112,7 @@
     "@typescript-eslint/utils": "^8.32.0",
     "angular-eslint": "^19.2.0",
     "autoprefixer": "^10.4.21",
-    "electron": "36.2.0",
+    "electron": "36.8.1",
     "electron-builder": "^26.0.12",
     "eslint": "~9.26.0",
     "eslint-config-prettier": "10.1.5",
