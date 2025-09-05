@@ -278,9 +278,9 @@ export class AuthEffects {
         const user = this.authService.checkIfUserIsSignedIn();
         if (user) {
           return this.authService.getRefreshToken().pipe(
-            map(({ idToken, refreshToken, expiresAt }) =>
+            map(({ token, refreshToken, expiresAt }) =>
               authActions.refreshTokenSuccess({
-                token: idToken,
+                token,
                 expiresAt,
                 refreshToken,
               }),

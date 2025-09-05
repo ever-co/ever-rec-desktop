@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { API_PREFIX, IFile, isEmpty } from '@ever-co/shared-utils';
-import { catchError, EMPTY, Observable } from 'rxjs';
+import { catchError, EMPTY, map, Observable } from 'rxjs';
 import { IDataResponse } from '../models/auth.model';
 import { IProfile } from '../models/profile.model';
 import { ISignUp } from '../models/sign-up.model';
@@ -40,7 +40,9 @@ export class AuthService {
   }
 
   public getRefreshToken() {
-    return this.http.get<IRefreshToken & { idToken: string }>(`${this.API}/refresh-token`);
+    return this.http.get<IRefreshToken & { idToken: string }>(`${this.API}/refresh-token`).pipe(
+      map(({ idToken, ...rest }) => ({ ...rest, token: idToken }))
+    );
   }
 
   public signUp(input: ISignUp) {
