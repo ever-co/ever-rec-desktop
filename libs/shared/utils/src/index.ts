@@ -8,7 +8,6 @@ export * from './lib/interfaces/action-button.interface';
 export * from './lib/interfaces/activity.interface';
 export * from './lib/interfaces/application.interface';
 export * from './lib/interfaces/audio.interface';
-export * from './lib/interfaces/auth.interface';
 export * from './lib/interfaces/base.interface';
 export * from './lib/interfaces/clone.interface';
 export * from './lib/interfaces/conflict-resolution.strategy';
