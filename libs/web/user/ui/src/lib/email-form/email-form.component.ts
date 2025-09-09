@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   ChangeDetectionStrategy,
   Component,
@@ -25,11 +25,10 @@ import { map } from 'rxjs';
   selector: 'lib-email-form',
   imports: [
     ReactiveFormsModule,
-    CommonModule,
     MatFormFieldModule,
     MatInputModule,
-    ActionButtonComponent,
-  ],
+    ActionButtonComponent
+],
   templateUrl: './email-form.component.html',
   styleUrl: './email-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

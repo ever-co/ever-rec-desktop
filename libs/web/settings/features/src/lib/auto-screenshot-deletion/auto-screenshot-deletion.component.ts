@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,13 +16,12 @@ import { Subject, takeUntil, tap } from 'rxjs';
 @Component({
     selector: 'lib-auto-screenshot-deletion',
     imports: [
-        CommonModule,
-        MatFormFieldModule,
-        MatInputModule,
-        ReactiveFormsModule,
-        MatButtonModule,
-        MatSlideToggleModule,
-    ],
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatSlideToggleModule
+],
     templateUrl: './auto-screenshot-deletion.component.html',
     styleUrl: './auto-screenshot-deletion.component.scss'
 })

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   ChangeDetectionStrategy,
   Component,
@@ -26,15 +26,14 @@ import { ICredentials, ILoginForm } from '@ever-co/auth-data-access';
   selector: 'lib-login-form',
   imports: [
     ReactiveFormsModule,
-    CommonModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatCheckboxModule,
     MatIconModule,
     MatDividerModule,
-    MatProgressSpinnerModule,
-  ],
+    MatProgressSpinnerModule
+],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

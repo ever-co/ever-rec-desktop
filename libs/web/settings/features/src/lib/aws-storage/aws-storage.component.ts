@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormControl,
@@ -23,13 +23,12 @@ import { Subject, takeUntil, tap } from 'rxjs';
 @Component({
     selector: 'lib-aws-storage',
     imports: [
-        CommonModule,
-        MatFormFieldModule,
-        MatInputModule,
-        ReactiveFormsModule,
-        MatButtonModule,
-        MatSlideToggleModule,
-    ],
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatSlideToggleModule
+],
     templateUrl: './aws-storage.component.html',
     styleUrl: './aws-storage.component.scss'
 })

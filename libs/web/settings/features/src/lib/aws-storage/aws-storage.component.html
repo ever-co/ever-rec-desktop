@@ -9,15 +9,16 @@
       formControlName="accessKeyId"
       placeholder="Enter aws access key ID"
       type="password"
-    />
-    <mat-error
-      *ngIf="
-        form.controls['accessKeyId'].invalid &&
-        form.controls['accessKeyId'].touched
-      "
-    >
-      Aws access key ID is required.
-    </mat-error>
+      />
+    @if (
+      form.controls['accessKeyId'].invalid &&
+      form.controls['accessKeyId'].touched
+      ) {
+      <mat-error
+        >
+        Aws access key ID is required.
+      </mat-error>
+    }
   </mat-form-field>
 
   <!-- Aws Access Key Secret Input -->
@@ -29,15 +30,16 @@
       id="accessKeySecret"
       formControlName="accessKeySecret"
       placeholder="Enter aws access key Secret"
-    />
-    <mat-error
-      *ngIf="
-        form.controls['accessKeySecret'].invalid &&
-        form.controls['accessKeySecret'].touched
-      "
-    >
-      Aws access key secret is required.
-    </mat-error>
+      />
+    @if (
+      form.controls['accessKeySecret'].invalid &&
+      form.controls['accessKeySecret'].touched
+      ) {
+      <mat-error
+        >
+        Aws access key secret is required.
+      </mat-error>
+    }
   </mat-form-field>
 
   <!-- Aws Region Input -->
@@ -49,12 +51,13 @@
       id="region"
       formControlName="region"
       placeholder="Enter aws region"
-    />
-    <mat-error
-      *ngIf="form.controls['region'].invalid && form.controls['region'].touched"
-    >
-      Aws region is required.
-    </mat-error>
+      />
+    @if (form.controls['region'].invalid && form.controls['region'].touched) {
+      <mat-error
+        >
+        Aws region is required.
+      </mat-error>
+    }
   </mat-form-field>
 
   <!-- Aws S3 Bucket Input -->
@@ -66,14 +69,15 @@
       id="s3Bucket"
       formControlName="s3Bucket"
       placeholder="Enter S3 bucket name"
-    />
-    <mat-error
-      *ngIf="
-        form.controls['s3Bucket'].invalid && form.controls['s3Bucket'].touched
-      "
-    >
-      Aws S3 Bucket name is required.
-    </mat-error>
+      />
+    @if (
+      form.controls['s3Bucket'].invalid && form.controls['s3Bucket'].touched
+      ) {
+      <mat-error
+        >
+        Aws S3 Bucket name is required.
+      </mat-error>
+    }
   </mat-form-field>
 
   <!-- Aws S3 Bucket Endpoint Input -->
@@ -85,15 +89,16 @@
       id="s3Endpoint"
       formControlName="s3Endpoint"
       placeholder="Enter s3 endpoint"
-    />
-    <mat-error
-      *ngIf="
-        form.controls['s3Endpoint'].touched &&
-        form.controls['s3Endpoint'].hasError('invalidUrl')
-      "
-    >
-      This endpoint URL is not valid.
-    </mat-error>
+      />
+    @if (
+      form.controls['s3Endpoint'].touched &&
+      form.controls['s3Endpoint'].hasError('invalidUrl')
+      ) {
+      <mat-error
+        >
+        This endpoint URL is not valid.
+      </mat-error>
+    }
   </mat-form-field>
 
   <!-- Submit and Cancel Buttons -->
@@ -103,7 +108,7 @@
       color="primary"
       type="submit"
       [disabled]="form.invalid"
-    >
+      >
       Save
     </button>
   </div>

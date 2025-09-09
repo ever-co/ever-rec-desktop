@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   ChangeDetectionStrategy,
   Component,
@@ -24,15 +24,14 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   selector: 'lib-forgot-form',
   imports: [
     ReactiveFormsModule,
-    CommonModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatCheckboxModule,
     MatIconModule,
     MatDividerModule,
-    MatProgressSpinnerModule,
-  ],
+    MatProgressSpinnerModule
+],
   templateUrl: './forgot-form.component.html',
   styleUrl: './forgot-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

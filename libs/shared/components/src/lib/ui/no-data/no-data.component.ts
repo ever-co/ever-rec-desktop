@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
     selector: 'lib-no-data',
-    imports: [CommonModule, MatIconModule, MatButtonModule],
+    imports: [MatIconModule, MatButtonModule],
     templateUrl: './no-data.component.html',
     styleUrl: './no-data.component.scss'
 })

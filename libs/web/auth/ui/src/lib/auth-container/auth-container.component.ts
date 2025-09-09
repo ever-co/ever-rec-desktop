@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   ChangeDetectionStrategy,
   Component,
@@ -15,11 +15,10 @@ import { REC_ENV } from '@ever-co/shared-service';
   selector: 'lib-auth-container',
   standalone: true,
   imports: [
-    CommonModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    RouterModule,
-  ],
+    RouterModule
+],
   templateUrl: './auth-container.component.html',
   styleUrls: ['./auth-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

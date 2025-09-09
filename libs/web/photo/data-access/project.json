@@ -17,19 +17,16 @@
   "targets": {
     "build": {
       "executor": "@nx/angular:package",
-      "outputs": [
-        "{workspaceRoot}/dist/{projectRoot}"
-      ],
+      "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
       "options": {
-        "project": "libs/web/photo/data-access/ng-package.json"
+        "project": "libs/web/photo/data-access/ng-package.json",
+        "tsConfig": "libs/web/photo/data-access/tsconfig.lib.json"
       },
       "configurations": {
         "production": {
           "tsConfig": "libs/web/photo/data-access/tsconfig.lib.prod.json"
         },
-        "development": {
-          "tsConfig": "libs/web/photo/data-access/tsconfig.lib.json"
-        }
+        "development": {}
       },
       "defaultConfiguration": "production"
     },
@@ -40,11 +37,10 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/web/photo/data-access/jest.config.ts"
+        "jestConfig": "libs/web/photo/data-access/jest.config.ts",
+        "tsConfig": "libs/web/photo/data-access/tsconfig.spec.json"
       }
     },
     "lint": {
@@ -58,23 +54,16 @@
         "pushTags": true,
         "trackDeps": true,
         "baseBranch": "develop",
-        "postTargets": [
-          "build",
-          "publish"
-        ]
+        "postTargets": ["build", "publish"]
       }
     },
     "publish": {
       "executor": "nx:run-commands",
       "options": {
         "parallel": false,
-        "commands": [
-          "cd dist/libs/web/photo/data-access && npm publish"
-        ]
+        "commands": ["cd dist/libs/web/photo/data-access && npm publish"]
       },
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "parallelism": false
     }
   }

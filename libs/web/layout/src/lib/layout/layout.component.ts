@@ -1,6 +1,6 @@
 // layout.component.ts
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { CommonModule } from '@angular/common';
+
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -31,7 +31,6 @@ import { StartComponent } from '../start/start.component';
 @Component({
   selector: 'lib-layout',
   imports: [
-    CommonModule,
     BreadcrumbComponent,
     MatSidenavModule,
     MatListModule,
@@ -50,8 +49,8 @@ import { StartComponent } from '../start/start.component';
     MatTooltipModule,
     NotificationBadgeComponent,
     UploadBadgeComponent,
-    AuthBadgeComponent,
-  ],
+    AuthBadgeComponent
+],
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
 })

@@ -5,13 +5,13 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'lib-player-control',
-  imports: [CommonModule, MatIconModule, MatButtonModule],
+  imports: [MatIconModule, MatButtonModule],
   templateUrl: './control.component.html',
   styleUrl: './control.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

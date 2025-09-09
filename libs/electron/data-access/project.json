@@ -8,29 +8,25 @@
   "targets": {
     "build": {
       "executor": "@nx/angular:package",
-      "outputs": [
-        "{workspaceRoot}/dist/{projectRoot}"
-      ],
+      "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
       "options": {
-        "project": "libs/electron/data-access/ng-package.json"
+        "project": "libs/electron/data-access/ng-package.json",
+        "tsConfig": "libs/electron/data-access/tsconfig.lib.json"
       },
       "configurations": {
         "production": {
           "tsConfig": "libs/electron/data-access/tsconfig.lib.prod.json"
         },
-        "development": {
-          "tsConfig": "libs/electron/data-access/tsconfig.lib.json"
-        }
+        "development": {}
       },
       "defaultConfiguration": "production"
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/electron/data-access/jest.config.ts"
+        "jestConfig": "libs/electron/data-access/jest.config.ts",
+        "tsConfig": "libs/electron/data-access/tsconfig.spec.json"
       }
     },
     "lint": {
@@ -44,23 +40,16 @@
         "pushTags": true,
         "trackDeps": true,
         "baseBranch": "develop",
-        "postTargets": [
-          "build",
-          "publish"
-        ]
+        "postTargets": ["build", "publish"]
       }
     },
     "publish": {
       "executor": "nx:run-commands",
       "options": {
         "parallel": false,
-        "commands": [
-          "cd dist/libs/electron/data-access && npm publish"
-        ]
+        "commands": ["cd dist/libs/electron/data-access && npm publish"]
       },
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "parallelism": false
     }
   }

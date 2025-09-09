@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject, OnDestroy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -28,12 +28,11 @@ interface ILink {
 @Component({
   selector: 'lib-setting',
   imports: [
-    CommonModule,
     RouterOutlet,
     RouterLink,
     MatTabsModule,
-    MatIconModule,
-  ],
+    MatIconModule
+],
   templateUrl: './setting.component.html',
   styleUrl: './setting.component.scss',
 })

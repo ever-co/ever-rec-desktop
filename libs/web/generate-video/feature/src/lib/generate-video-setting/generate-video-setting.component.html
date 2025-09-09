@@ -9,15 +9,16 @@
         id="frameRate"
         formControlName="frameRate"
         placeholder="Enter the frame rate"
-      />
-      <mat-error
-        *ngIf="
-          formGroup.controls['frameRate'].invalid &&
-          formGroup.controls['frameRate'].touched
-        "
-      >
-        Frame rate is required and must be a valid number.
-      </mat-error>
+        />
+      @if (
+        formGroup.controls['frameRate'].invalid &&
+        formGroup.controls['frameRate'].touched
+        ) {
+        <mat-error
+          >
+          Frame rate is required and must be a valid number.
+        </mat-error>
+      }
     </mat-form-field>
 
     <!-- Codec Input -->
@@ -25,17 +26,18 @@
       <mat-label>Codec</mat-label>
       <mat-select formControlName="codec" required>
         @for (codec of codecList; track codec) {
-        <mat-option [value]="codec">{{ codec | codecDescription }}</mat-option>
+          <mat-option [value]="codec">{{ codec | codecDescription }}</mat-option>
         }
       </mat-select>
-      <mat-error
-        *ngIf="
-          formGroup.controls['codec'].invalid &&
-          formGroup.controls['codec'].touched
-        "
-      >
-        Codec is required.
-      </mat-error>
+      @if (
+        formGroup.controls['codec'].invalid &&
+        formGroup.controls['codec'].touched
+        ) {
+        <mat-error
+          >
+          Codec is required.
+        </mat-error>
+      }
     </mat-form-field>
 
     <!-- Resolution Input -->
@@ -43,13 +45,13 @@
       <mat-label>Resolution</mat-label>
       <mat-select formControlName="resolution" required>
         @for (resolution of resolutions; track resolution) {
-        <mat-option [value]="resolution">{{
-          resolution | resolution
-        }}</mat-option>
+          <mat-option [value]="resolution">{{
+            resolution | resolution
+          }}</mat-option>
         }
       </mat-select>
       @if (formGroup.controls['resolution'].hasError('required')) {
-      <mat-error>Please choose a resolution</mat-error>
+        <mat-error>Please choose a resolution</mat-error>
       }
     </mat-form-field>
 
@@ -62,15 +64,16 @@
         id="batch"
         formControlName="batch"
         placeholder="Enter batch size"
-      />
-      <mat-error
-        *ngIf="
-          formGroup.controls['batch'].invalid &&
-          formGroup.controls['batch'].touched
-        "
-      >
-        Batch size is required.
-      </mat-error>
+        />
+      @if (
+        formGroup.controls['batch'].invalid &&
+        formGroup.controls['batch'].touched
+        ) {
+        <mat-error
+          >
+          Batch size is required.
+        </mat-error>
+      }
     </mat-form-field>
 
     <!-- Toggle for Auto Generate -->
@@ -79,7 +82,7 @@
       <mat-slide-toggle
         (change)="onCheck($event)"
         formControlName="autoGenerate"
-      >
+        >
       </mat-slide-toggle>
     </div>
 
@@ -88,13 +91,13 @@
       <mat-label>Each</mat-label>
       <mat-select formControlName="period" required>
         @for (period of periods; track period) {
-        <mat-option [value]="period">{{
-          period | humanize : 'minutes' | titlecase
-        }}</mat-option>
+          <mat-option [value]="period">{{
+            period | humanize : 'minutes' | titlecase
+          }}</mat-option>
         }
       </mat-select>
       @if (formGroup.controls['period'].hasError('required')) {
-      <mat-error>Please choose a period</mat-error>
+        <mat-error>Please choose a period</mat-error>
       }
     </mat-form-field>
 
@@ -111,7 +114,7 @@
         color="primary"
         type="submit"
         [disabled]="formGroup.invalid"
-      >
+        >
         Save
       </button>
     </div>

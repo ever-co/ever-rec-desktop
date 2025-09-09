@@ -11,7 +11,7 @@
 // Make Angular Material tab styles consistent with Tailwind design
 ::ng-deep {
   .mat-mdc-tab-header {
-    --mdc-secondary-navigation-tab-container-height: 48px;
+    --mat-tab-container-height: 48px;
   }
 
   .mat-mdc-tab {
