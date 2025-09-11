@@ -27,6 +27,10 @@ import { AudioUploadSubscriber } from './subscribers/audio-upload.subscriber';
 import { VideoUploadSubscriber } from './subscribers/video-upload.subscriber';
 import { PhotoUploadSubscriber } from './subscribers/photo-upload.subscriber';
 import { ScreenshotUploadSubscriber } from './subscribers/screenshot-upload.subscriber';
+import { Session } from './entities/session.entity';
+import { User } from './entities/user.entity';
+import { SessionSubscriber } from './subscribers/session.subscriber';
+import { TimeLogSubscriber } from './subscribers/time-log.subscriber';
 
 const database = FileManager.createFilePathSync(
   'db',
@@ -53,6 +57,8 @@ export const appDataSource = new DataSource({
     PhotoUpload,
     ScreenshotUpload,
     VideoUpload,
+    Session,
+    User
   ],
   synchronize: true,
   logging: true,
@@ -67,6 +73,8 @@ export const appDataSource = new DataSource({
     VideoUploadSubscriber,
     PhotoUploadSubscriber,
     ScreenshotUploadSubscriber,
+    SessionSubscriber,
+    TimeLogSubscriber
   ],
   enableWAL: true,
   prepareDatabase: (db) => {

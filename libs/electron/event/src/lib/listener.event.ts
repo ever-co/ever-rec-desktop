@@ -30,6 +30,7 @@ import {
 } from './photo-capture.event';
 import { powerManagerHandlerEvents } from './power-manager.event';
 import { removeRetentionEvents, retentionEvents } from './retention.event';
+import { removeSessionEvents, sessionEvents } from './session.event';
 import { removeUploadEvent, uploadEventListener } from './upload.event';
 
 export function subscribeEvents() {
@@ -48,6 +49,7 @@ export function subscribeEvents() {
   new PhotoCaptureEvent();
   crudAudioEvent();
   mediatorEvents();
+  sessionEvents();
 }
 
 export function unsubscribeEvents() {
@@ -65,4 +67,5 @@ export function unsubscribeEvents() {
   removeCrudAudioEvent();
   removePhotoCaptureEvent();
   removeMediatorEvents();
+  removeSessionEvents();
 }
