@@ -44,7 +44,7 @@ export class SessionService {
   public async getActiveSession(): Promise<ISession | null> {
     return this.repository.findOne({
       where: { logoutAt: null },
-      relations: ["timeLogs", "users"],
+      relations: ["timeLogs", "user"],
       order: {
         createdAt: 'DESC'
       }
