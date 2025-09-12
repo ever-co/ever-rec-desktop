@@ -95,10 +95,14 @@ export class TimeLogService implements ILoggable {
 
   private async purgeConflictsIfExists() {
     this.logger.info('Purge conflicts if exists');
+    const user = await this.userSessionService.currentUser();
 
     const timelogs = await this.repository
       .createQueryBuilder('timeLog')
-      .where(
+      .leftJoin('timeLog.session', 'session')
+      .leftJoin('session.user', 'user')
+      .where('user.id = :userId', { userId: user.id })
+      .andWhere(
         new Brackets((qb) => {
           qb.where('timeLog.end IS NULL').orWhere(
             'timeLog.running = :running',
