@@ -56,6 +56,6 @@ export class UserService {
    * @param userId - The ID of the user to mark as logged in
    */
   public async markAsLogin(userId: string): Promise<void> {
-    await this.repository.update(userId, { lastLoginAt: new Date(Date.now()).toISOString() });
+    await this.repository.update(userId, { lastLoginAt: new Date().toISOString() });
   }
 }
