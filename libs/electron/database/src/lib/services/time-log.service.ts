@@ -32,12 +32,19 @@ export class TimeLogService implements ILoggable {
     return this.repository.save(timeLog);
   }
 
-  public running(): Promise<ITimeLog | null> {
+  public async running(): Promise<ITimeLog | null> {
     this.logger.info('Get running time log');
+    const user = await this.userSessionService.currentUser();
+
     return this.findOne({
       where: {
         running: true,
         end: IsNull(),
+        session: {
+          user: {
+            id: user.id
+          }
+        }
       },
     });
   }
@@ -151,9 +158,11 @@ export class TimeLogService implements ILoggable {
 
     return this.repository
       .createQueryBuilder('time_log')
-      .where('time_log.session.user.id = :userId', { userId: user.id })
+      .leftJoin('time_log.session', 'session')
+      .leftJoin('session.user', 'user')
+      .where('user.id = :userId', { userId: user.id })
       .orderBy('time_log.createdAt', 'DESC')
-      .take(1)
+      .limit(1)
       .getOne();
   }
 
@@ -165,35 +174,52 @@ export class TimeLogService implements ILoggable {
     id?: string;
   }): Promise<string> {
     const user = await this.userSessionService.currentUser();
+
     const query = this.repository
       .createQueryBuilder('time_log')
       .leftJoin('time_log.screenshots', 'screenshot')
       .leftJoin('screenshot.metadata', 'metadata')
-      .select("GROUP_CONCAT(metadata.description, ';')", 'context');
+      .leftJoin('time_log.session', 'session')
+      .leftJoin('session.user', 'user')
+      .select("GROUP_CONCAT(DISTINCT metadata.description)", 'context')
+      .andWhere('user.id = :userId', { userId: user.id });
 
     if (id) {
       query
         .andWhere('time_log.id = :id', { id })
         .addSelect('time_log.duration', 'duration');
-    } else if (range) {
-      query.where('time_log.createdAt BETWEEN :start AND :end', range);
     }
 
-    query.where('time_log.session.user.id = :userId', { userId: user.id });
+    if (range) {
+      query.andWhere('time_log.createdAt BETWEEN :start AND :end', {
+        start: range.start,
+        end: range.end,
+      });
+    }
 
     query.groupBy('time_log.id');
 
-    const result = await query.getRawOne();
+    const result = await query.getRawOne<{ context: string; duration?: number }>();
 
-    const duration = id
-      ? result.duration
-      : await this.repository.sum('duration', {
+    // normalize context
+    const descriptions = result?.context
+      ? result.context.split(',').join(';') // replace default `,` with `;`
+      : 'Not working';
+
+    // duration logic
+    let duration = 0;
+    if (id && result?.duration) {
+      duration = result.duration;
+    } else if (range) {
+      duration = await this.repository.sum('duration', {
         createdAt: Between(String(range.start), String(range.end)),
+        session: { user: { id: user.id } },
       });
+    }
 
     return JSON.stringify({
-      context: result.context || 'Not working',
-      worked: (duration || 0) + 'seconds',
+      context: descriptions,
+      worked: `${duration || 0} seconds`,
     });
   }
 }
