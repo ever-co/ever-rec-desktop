@@ -1,6 +1,7 @@
 import { IUser } from "@ever-co/shared-utils";
 import { UserRepository } from "../repositories/user.repository";
 import { User } from "../entities/user.entity";
+import { waitForDebugger } from "inspector";
 
 export class UserService {
   private readonly repository = UserRepository.instance;
@@ -47,9 +48,14 @@ export class UserService {
     const entity = new User();
     entity.remoteId = user.id;
     entity.email = user.email ?? null;
-    entity.imageUrl = user.imageUrl ?? null;
-    entity.isVerified = user.isVerified ?? false;
-    entity.name = user.name ?? null;
     return entity;
+  }
+
+  /**
+   * Marks a user as having logged in by updating their lastLoginAt timestamp.
+   * @param userId - The ID of the user to mark as logged in
+   */
+  public async markAsLogin(userId: string): Promise<void> {
+    await this.repository.update(userId, { lastLoginAt: new Date().toDateString() });
   }
 }

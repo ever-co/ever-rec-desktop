@@ -8,6 +8,7 @@ export class UserSessionService {
 
   public async login(input: IUser) {
     const { id } = await this.userService.findOrCreate(input);
+    await this.userService.markAsLogin(id);
     return this.sessionService.create(id);
   }
 

@@ -7,6 +7,8 @@ export interface IUser extends IBase {
   isVerified?: boolean;
 }
 
-export interface IUserPersistance extends IUser {
+export interface IUserPersistance extends IBase {
   remoteId?: string;
+  email?: string;
+  lastLoginAt?: string;
 }

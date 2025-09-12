@@ -4,9 +4,6 @@ import { Base } from './base.entity';
 
 @Entity('users')
 export class User extends Base implements IUserPersistance {
-  @Column({ type: 'varchar', length: 150, nullable: false })
-  name: string;
-
   @Index({ unique: true })
   @Column({ type: 'varchar', length: 255, nullable: false })
   email: string;
@@ -15,9 +12,6 @@ export class User extends Base implements IUserPersistance {
   @Column({ type: 'uuid' })
   remoteId: string;
 
-  @Column({ type: 'varchar', length: 500, nullable: true })
-  imageUrl?: string;
-
-  @Column({ type: 'boolean', default: false, nullable: false })
-  isVerified: boolean;
+  @Column({ type: 'datetime', nullable: true })
+  lastLoginAt: string;
 }
