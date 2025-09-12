@@ -18,10 +18,12 @@ import {
 } from 'typeorm';
 import { TimeLog } from '../entities/time-log.entity';
 import { TimeLogRepository } from '../repositories/time-log.repository';
+import { UserSessionService } from './user-session.service';
 
 export class TimeLogService implements ILoggable {
   public logger: ILogger = new ElectronLogger('App:TimeLogService');
   private readonly repository = TimeLogRepository.instance;
+  private readonly userSessionService = new UserSessionService();
 
   public async save(input: ITimeLogSave): Promise<ITimeLog> {
     const timeLog = new TimeLog();
@@ -131,16 +133,25 @@ export class TimeLogService implements ILoggable {
   }
 
   public async statistics({ start, end }): Promise<number> {
+    const user = await this.userSessionService.currentUser();
     const sum = await this.repository.sum('duration', {
       createdAt: Between(start, end),
+      session: {
+        user: {
+          id: user.id
+        }
+      }
     });
     return sum || 0;
   }
 
-  public findLatest(): Promise<ITimeLog | null> {
+  public async findLatest(): Promise<ITimeLog | null> {
     this.logger.info('Get last time log');
+    const user = await this.userSessionService.currentUser();
+
     return this.repository
       .createQueryBuilder('time_log')
+      .where('time_log.session.user.id = :userId', { userId: user.id })
       .orderBy('time_log.createdAt', 'DESC')
       .take(1)
       .getOne();
@@ -153,6 +164,7 @@ export class TimeLogService implements ILoggable {
     range?: IRange;
     id?: string;
   }): Promise<string> {
+    const user = await this.userSessionService.currentUser();
     const query = this.repository
       .createQueryBuilder('time_log')
       .leftJoin('time_log.screenshots', 'screenshot')
@@ -167,6 +179,8 @@ export class TimeLogService implements ILoggable {
       query.where('time_log.createdAt BETWEEN :start AND :end', range);
     }
 
+    query.where('time_log.session.user.id = :userId', { userId: user.id });
+
     query.groupBy('time_log.id');
 
     const result = await query.getRawOne();
@@ -174,8 +188,8 @@ export class TimeLogService implements ILoggable {
     const duration = id
       ? result.duration
       : await this.repository.sum('duration', {
-          createdAt: Between(String(range.start), String(range.end)),
-        });
+        createdAt: Between(String(range.start), String(range.end)),
+      });
 
     return JSON.stringify({
       context: result.context || 'Not working',

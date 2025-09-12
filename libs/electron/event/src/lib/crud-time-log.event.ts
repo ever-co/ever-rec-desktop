@@ -11,6 +11,7 @@ import {
 } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
 import { Between, FindOptionsWhere } from 'typeorm';
+import { userSessionService } from './session.event';
 
 export function crudTimeLogEvents() {
   const timeLogService = new TimeLogService();
@@ -27,9 +28,16 @@ export function crudTimeLogEvents() {
         sortOrder = 'DESC',
       } = options;
 
+      const user = await userSessionService.currentUser();
+
       const [data, count] = await timeLogService.findAndCount({
         where: {
           createdAt: Between(start, end),
+          session: {
+            user: {
+              id: user.id
+            }
+          }
         },
         order: { [`${sortField}`]: sortOrder },
         skip: (page - 1) * limit,
@@ -83,9 +91,16 @@ export function crudTimeLogEvents() {
   ipcMain.handle(
     Channel.GET_HEAT_MAP,
     async (_, { range }: { range: IRange }) => {
+      const user = await userSessionService.currentUser();
+
       return timeLogService.findAll({
         where: {
           createdAt: Between(range.start, range.end),
+          session: {
+            user: {
+              id: user.id
+            }
+          }
         },
       });
     },

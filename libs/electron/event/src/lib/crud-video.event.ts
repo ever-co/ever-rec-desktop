@@ -13,6 +13,7 @@ import {
 } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
 import { Between, IsNull, Not } from 'typeorm';
+import { userSessionService } from './session.event';
 
 export function crudVideoEvents() {
   const videoService = new VideoService();
@@ -28,11 +29,20 @@ export function crudVideoEvents() {
         end = currentDay().end,
       } = options;
 
+      const user = await userSessionService.currentUser();
+
       const [data, count] = await videoService.findAndCount({
         where: {
           createdAt: Between(start, end),
           chunks: {
             id: Not(IsNull()),
+          },
+          timeLog: {
+            session: {
+              user: {
+                id: user.id
+              }
+            }
           },
         },
         order: { createdAt: 'DESC' },
@@ -88,7 +98,7 @@ export function crudVideoEvents() {
   );
 
   // Get one video
-  ipcMain.handle(Channel.GET_USED_SIZE, () => {
+  ipcMain.handle(Channel.GET_USED_SIZE, async () => {
     const metadataService = new MetadataService();
     return metadataService.getUsedSize();
   });

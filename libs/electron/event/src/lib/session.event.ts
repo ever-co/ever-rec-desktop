@@ -3,7 +3,7 @@ import { ipcMain } from "electron/main";
 import { IUser } from '@ever-co/shared-utils';
 import { UserSessionService } from "@ever-co/electron-database";
 
-const userSessionService = new UserSessionService();
+export const userSessionService = new UserSessionService();
 
 export function sessionEvents(): void {
   ipcMain.on(Channel.LOGIN, (_, user: IUser) => userSessionService.login(user));
