@@ -5,10 +5,9 @@
 @tailwind utilities;
 
 :root {
-  --border-radius: var(
-    --mat-card-outlined-container-shape,
-    var(--mat-sys-corner-medium)
-  );
+  --border-radius: var(--mat-card-outlined-container-shape,
+      --mat-card-outlined-container-shape,
+      var(--mat-sys-corner-medium));
 }
 
 @layer utilities {
@@ -140,22 +139,13 @@ mat-icon:active,
 
 html {
   color-scheme: light;
-  @include mat.theme(
-    (
-      color: mat.$azure-palette,
+  @include mat.theme((color: mat.$azure-palette,
       typography: Roboto,
       density: 0,
-    )
-  );
+    ));
 }
 
-@include mat.typography-hierarchy(
-  mat.define-theme(
-    (
-      typography: (
-        use-system-variables: true,
+@include mat.typography-hierarchy(mat.define-theme((typography: (use-system-variables: true,
         system-variables-prefix: mat-sys,
       ),
-    )
-  )
-);
+    )));
