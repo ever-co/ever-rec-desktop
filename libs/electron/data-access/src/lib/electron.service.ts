@@ -1,5 +1,5 @@
-import { DOCUMENT } from '@angular/common';
-import { Injectable, inject, NgZone } from '@angular/core';
+
+import { Injectable, inject, NgZone, DOCUMENT } from '@angular/core';
 import { Channel } from '@ever-co/shared-utils';
 import { Observable, from, throwError } from 'rxjs';
 

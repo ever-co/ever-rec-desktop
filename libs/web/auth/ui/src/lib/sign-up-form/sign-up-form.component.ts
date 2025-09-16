@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   ChangeDetectionStrategy,
   Component,
@@ -29,15 +29,14 @@ import { ISignUp, ISignUpForm } from '@ever-co/auth-data-access';
   selector: 'lib-sign-up-form',
   imports: [
     ReactiveFormsModule,
-    CommonModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatCheckboxModule,
     MatIconModule,
     MatDividerModule,
-    MatProgressSpinnerModule,
-  ],
+    MatProgressSpinnerModule
+],
   templateUrl: './sign-up-form.component.html',
   styleUrl: './sign-up-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

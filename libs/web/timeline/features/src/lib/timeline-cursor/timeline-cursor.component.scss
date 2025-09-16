@@ -1,10 +1,10 @@
-$radius:  var(--mdc-outlined-card-container-shape, var(--mat-sys-corner-medium));
+$radius:  var(--mat-card-outlined-container-shape, var(--mat-sys-corner-medium));
 
 .cursor {
   position: absolute;
   top: 0;
   background-color: var(
-    --mat-outlined-button-state-layer-color,
+    --mat-button-outlined-state-layer-color,
     var(--mat-sys-primary)
   );
   transform: translateX(-50%);

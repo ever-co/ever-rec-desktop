@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   ChangeDetectionStrategy,
   Component,
@@ -31,13 +31,12 @@ export interface IPasswordConfig {
   selector: 'lib-password-form',
   imports: [
     ReactiveFormsModule,
-    CommonModule,
     MatFormFieldModule,
     MatInputModule,
     ActionButtonComponent,
     MatIconModule,
-    MatButtonModule,
-  ],
+    MatButtonModule
+],
   templateUrl: './password-form.component.html',
   styleUrl: './password-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

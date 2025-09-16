@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -20,13 +20,12 @@ import { Subject, takeUntil, tap } from 'rxjs';
 @Component({
     selector: 'lib-upload-config',
     imports: [
-        CommonModule,
-        MatFormFieldModule,
-        MatInputModule,
-        ReactiveFormsModule,
-        MatButtonModule,
-        MatSlideToggleModule,
-    ],
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatSlideToggleModule
+],
     templateUrl: './upload-config.component.html',
     styleUrl: './upload-config.component.scss'
 })

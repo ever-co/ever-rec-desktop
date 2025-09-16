@@ -6,7 +6,7 @@
 
 :root {
   --border-radius: var(
-    --mdc-outlined-card-container-shape,
+    --mat-card-outlined-container-shape,
     var(--mat-sys-corner-medium)
   );
 }
@@ -49,53 +49,53 @@
 
   // Success variant
   &.bg-success {
-    --mdc-snackbar-container-color: theme('colors.green.100');
+    --mat-snackbar-container-color: theme('colors.green.100');
     --mat-mdc-snack-bar-button-color: theme('colors.green.700');
-    --mdc-snackbar-supporting-text-color: theme('colors.green.700');
+    --mat-snackbar-supporting-text-color: theme('colors.green.700');
 
     @media (prefers-color-scheme: dark) {
-      --mdc-snackbar-container-color: theme('colors.green.900');
+      --mat-snackbar-container-color: theme('colors.green.900');
       --mat-mdc-snack-bar-button-color: theme('colors.green.300');
-      --mdc-snackbar-supporting-text-color: theme('colors.green.300');
+      --mat-snackbar-supporting-text-color: theme('colors.green.300');
     }
   }
 
   // Error variant
   &.bg-error {
-    --mdc-snackbar-container-color: theme('colors.red.100');
+    --mat-snackbar-container-color: theme('colors.red.100');
     --mat-mdc-snack-bar-button-color: theme('colors.red.700');
-    --mdc-snackbar-supporting-text-color: theme('colors.red.700');
+    --mat-snackbar-supporting-text-color: theme('colors.red.700');
 
     @media (prefers-color-scheme: dark) {
-      --mdc-snackbar-container-color: theme('colors.red.900');
+      --mat-snackbar-container-color: theme('colors.red.900');
       --mat-mdc-snack-bar-button-color: theme('colors.red.300');
-      --mdc-snackbar-supporting-text-color: theme('colors.red.300');
+      --mat-snackbar-supporting-text-color: theme('colors.red.300');
     }
   }
 
   // Info variant
   &.bg-info {
-    --mdc-snackbar-container-color: theme('colors.blue.100');
+    --mat-snackbar-container-color: theme('colors.blue.100');
     --mat-mdc-snack-bar-button-color: theme('colors.blue.700');
-    --mdc-snackbar-supporting-text-color: theme('colors.blue.700');
+    --mat-snackbar-supporting-text-color: theme('colors.blue.700');
 
     @media (prefers-color-scheme: dark) {
-      --mdc-snackbar-container-color: theme('colors.blue.900');
+      --mat-snackbar-container-color: theme('colors.blue.900');
       --mat-mdc-snack-bar-button-color: theme('colors.blue.300');
-      --mdc-snackbar-supporting-text-color: theme('colors.blue.300');
+      --mat-snackbar-supporting-text-color: theme('colors.blue.300');
     }
   }
 
   // Warning variant
   &.bg-warning {
-    --mdc-snackbar-container-color: theme('colors.amber.100');
+    --mat-snackbar-container-color: theme('colors.amber.100');
     --mat-mdc-snack-bar-button-color: theme('colors.amber.700');
-    --mdc-snackbar-supporting-text-color: theme('colors.amber.700');
+    --mat-snackbar-supporting-text-color: theme('colors.amber.700');
 
     @media (prefers-color-scheme: dark) {
-      --mdc-snackbar-container-color: theme('colors.amber.900');
+      --mat-snackbar-container-color: theme('colors.amber.900');
       --mat-mdc-snack-bar-button-color: theme('colors.amber.300');
-      --mdc-snackbar-supporting-text-color: theme('colors.amber.300');
+      --mat-snackbar-supporting-text-color: theme('colors.amber.300');
     }
   }
 }

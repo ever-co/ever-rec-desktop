@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,10 +12,9 @@ import {
   selector: 'lib-password-dialog-validation',
   imports: [
     PasswordFormComponent,
-    CommonModule,
     MatDialogModule,
-    MatIconModule,
-  ],
+    MatIconModule
+],
   templateUrl: './password-dialog-validation.component.html',
   styleUrl: './password-dialog-validation.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
