@@ -55,6 +55,7 @@
     "@nx/angular": "21.5.1",
     "@swimlane/ngx-charts": "^23.0.1",
     "better-sqlite3": "^12.2.0",
+    "call-bind-apply-helpers": "1.0.0",
     "electron-log": "5.4.3",
     "electron-store": "^8.1.0",
     "ffmpeg-static": "^5.2.0",
