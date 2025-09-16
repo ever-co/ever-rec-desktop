@@ -72,4 +72,6 @@ export enum Channel {
   GET_PHOTOS_TO_UPLOAD = 'get::photos::to::upload',
   GET_AUDIOS_TO_UPLOAD = 'get::audios::to::upload',
   GOOGLE_AUTH_LOGIN = 'google::auth::login',
+  LOGIN = 'create::session::login',
+  LOGOUT = 'close::session::logout'
 }

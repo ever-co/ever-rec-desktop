@@ -26,10 +26,13 @@ import { AuthService } from '../services/auth.service';
 import { RefreshTokenService } from '../services/refresh-token.service';
 import { authActions } from './auth.action';
 import { selectToken, selectUser } from './auth.selector';
+import { AuthElectronService } from '../services/auth-electron.service';
 
 @Injectable()
 export class AuthEffects {
   private readonly actions$ = inject(Actions);
+  private readonly authElectronService = inject(AuthElectronService);
+
   public readonly startCooldownTimer$ = createEffect(() =>
     this.actions$.pipe(
       ofType(authActions.sendVerificationEmailSuccess),
@@ -167,7 +170,10 @@ export class AuthEffects {
             this.router.navigate(['/auth/login'], {
               replaceUrl: true,
             }),
-          ).pipe(catchError(() => EMPTY));
+          ).pipe(
+            tap(() => this.authElectronService.logout()),
+            catchError(() => EMPTY)
+          );
         }),
       ),
     { dispatch: false },
@@ -339,6 +345,8 @@ export class AuthEffects {
     const token = response.idToken;
     const refreshToken = response.refreshToken;
     const expiresAt = response.expiresAt;
+
+    this.authElectronService.login(user);
 
     return of(
       authActions.loginSuccess({

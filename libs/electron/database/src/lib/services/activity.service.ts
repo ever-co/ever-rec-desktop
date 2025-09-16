@@ -10,16 +10,18 @@ import {
   IRange,
   ITimeLog,
   IWorkPatternAnalysis,
-  moment,
+  moment
 } from '@ever-co/shared-utils';
 import { Between, FindOneOptions } from 'typeorm';
 import { Activity } from '../entities/activity.entity';
 import { ActivityRepository } from '../repositories/activity.repository';
 import { TimeLogService } from './time-log.service';
+import { UserSessionService } from './user-session.service';
 
 export class ActivityService {
   private activityRepository = ActivityRepository.instance;
   private timeLogService = new TimeLogService();
+  private userSessionService = new UserSessionService();
 
   public async save(input: IActivityCreateInput): Promise<IActivity> {
     const activity = new Activity();
@@ -59,9 +61,15 @@ export class ActivityService {
    * Get daily statistics for a specific date range
    */
   public async getDailyStatistics(range: IRange): Promise<IDailyStatistics> {
+    const user = await this.userSessionService.currentUser();
     const timeLogs = await this.timeLogService.findAll({
       where: {
         start: Between(range.start, range.end),
+        session: {
+          user: {
+            id: user.id
+          }
+        }
       },
       relations: ['activities'],
     });
@@ -95,13 +103,18 @@ export class ActivityService {
     date: Date,
   ): Promise<IHourlyDistribution> {
     const startOfDay = moment(date).startOf('day').toISOString();
-
     const endOfDay = moment(date).endOf('day').toISOString();
+    const user = await this.userSessionService.currentUser();
 
     const activities = await this.activityRepository.find({
       where: {
         timeLog: {
           start: Between(startOfDay, endOfDay),
+          session: {
+            user: {
+              id: user.id
+            }
+          }
         },
       },
       relations: ['timeLog'],
@@ -146,9 +159,15 @@ export class ActivityService {
     range: IRange,
     interval: 'daily' | 'weekly' | 'monthly' = 'daily',
   ): Promise<IAggregatedProductivity> {
+    const user = await this.userSessionService.currentUser();
     const timeLogs = await this.timeLogService.findAll({
       where: {
         start: Between(range.start, range.end),
+        session: {
+          user: {
+            id: user.id
+          }
+        }
       },
       relations: ['activities'],
       order: {
@@ -165,10 +184,16 @@ export class ActivityService {
   public async getActivityStateDistribution(
     range: IRange,
   ): Promise<IActivityStateDistribution> {
+    const user = await this.userSessionService.currentUser();
     const activities = await this.activityRepository.find({
       where: {
         timeLog: {
           start: Between(range.start, range.end),
+          session: {
+            user: {
+              id: user.id
+            }
+          }
         },
       },
     });
@@ -188,9 +213,16 @@ export class ActivityService {
   public async getWorkPatternAnalysis(
     range: IRange,
   ): Promise<IWorkPatternAnalysis> {
+    const user = await this.userSessionService.currentUser();
     const timeLogs = await this.timeLogService.findAll({
       where: {
         start: Between(range.start, range.end),
+        session: {
+          user: {
+            id: user.id
+          }
+        }
+
       },
       relations: ['activities'],
     });

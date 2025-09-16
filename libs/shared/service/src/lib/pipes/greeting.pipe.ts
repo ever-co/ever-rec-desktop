@@ -26,13 +26,11 @@ export class GreetingPipe implements PipeTransform, OnDestroy {
   private readonly greeting$: Observable<string>;
 
   constructor() {
-    // Calculate initial delay to next hour
     const now = new Date();
     const nextHour = new Date(now);
     nextHour.setHours(now.getHours() + 1, 0, 0, 0);
     const initialDelay = nextHour.getTime() - now.getTime();
 
-    // Create an observable that emits the current hour
     this.greeting$ = timer(0, initialDelay).pipe(
       map(() => this.getCurrentHourGreeting()),
       distinctUntilChanged(),
@@ -41,11 +39,33 @@ export class GreetingPipe implements PipeTransform, OnDestroy {
     );
   }
 
-  transform(locale = 'en'): Observable<string> {
+  /**
+   * @param name Optional name for personalization
+   * @param locale Optional locale
+   */
+  transform(nameOrLocale?: string, locale = 'en'): Observable<string> {
+    let name: string | undefined;
+
+    if (locale) {
+      // both name and locale provided
+      name = nameOrLocale;
+    } else {
+      // only locale provided
+      locale = nameOrLocale ?? 'en';
+    }
+
     if (this.locale$.value !== locale) {
       this.locale$.next(locale);
     }
-    return this.greeting$;
+
+    return this.greeting$.pipe(
+      map(greeting => this.formatGreeting(greeting, name))
+    );
+  }
+
+  private formatGreeting(base: string, name?: string): string {
+    const cleanName = name?.trim();
+    return cleanName ? `${base}, ${cleanName}` : base;
   }
 
   private getCurrentHourGreeting(): string {

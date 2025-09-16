@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -27,6 +27,10 @@ import {
   VideoWidgetComponent,
 } from '@ever-co/video-feature';
 import { StateComponent } from '../state/state.component';
+import { selectUser } from '@ever-co/auth-data-access';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { IUser } from '@ever-co/shared-utils';
 
 @Component({
   selector: 'lib-dashboard',
@@ -56,4 +60,10 @@ import { StateComponent } from '../state/state.component';
   styleUrl: './dashboard.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardComponent { }
+export class DashboardComponent {
+  public readonly store = inject(Store);
+
+  public get user$(): Observable<IUser | null> {
+    return this.store.select(selectUser);
+  }
+}

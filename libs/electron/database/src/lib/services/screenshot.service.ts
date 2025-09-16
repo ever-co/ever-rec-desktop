@@ -11,11 +11,13 @@ import { Screenshot } from '../entities/screenshot.entity';
 import { ScreenshotRepository } from '../repositories/screenshot.repository';
 import { ScreenshotMetadataService } from './screenshot-metadata.service';
 import { ScreenshotUploadService } from './screenshot-upload.service';
+import { UserSessionService } from './user-session.service';
 
 export class ScreenshotService implements IScreenshotService {
   private readonly repository = ScreenshotRepository.instance;
   private readonly metadataService = ScreenshotMetadataService;
   private readonly screenshotUploadService = new ScreenshotUploadService();
+  private readonly userSessionService = new UserSessionService();
 
   public async save(input: IScreenshotInput): Promise<IScreenshot> {
     const screenshot = new Screenshot();
@@ -70,34 +72,44 @@ export class ScreenshotService implements IScreenshotService {
   }
 
   public async groupScreenshotsByHour(): Promise<IScreenshotChartLine[]> {
+    const user = await this.userSessionService.currentUser();
     const screenshotsGroupedByHour = await this.repository
       .createQueryBuilder('screenshot')
+      .leftJoin('screenshot.timeLog', 'timeLog')
+      .leftJoin('timeLog.session', 'session')
+      .leftJoin('session.user', 'user')
       .select("strftime('%H', screenshot.createdAt)", 'hour')
       .addSelect('COUNT(screenshot.id)', 'count')
       .where("DATE(screenshot.createdAt) = DATE('now')")
+      .andWhere('user.id = :userId', { userId: user.id })
       .groupBy('hour')
       .orderBy('hour', 'ASC')
       .withDeleted()
       .getRawMany();
 
     const userTimezone = moment.tz.guess();
-    // Convert the map to an array of objects
+
     return screenshotsGroupedByHour.map((row) => ({
       timeSlot: moment.utc(row.hour, 'HH').tz(userTimezone).format('HH[h]'),
-      count: row.count,
+      count: parseInt(row.count, 10),
     }));
   }
 
   public async groupScreenshotsByTenMinutes(): Promise<IScreenshotChartLine[]> {
+    const user = await this.userSessionService.currentUser();
     const screenshotsGroupedByTenMinutes = await this.repository
       .createQueryBuilder('screenshot')
+      .leftJoin('screenshot.timeLog', 'timeLog')
+      .leftJoin('timeLog.session', 'session')
+      .leftJoin('session.user', 'user')
       .select("strftime('%Y-%m-%d %H', screenshot.createdAt)", 'date_hour')
       .addSelect(
         "CAST((strftime('%M', screenshot.createdAt) / 10) * 10 AS INTEGER)",
-        'minute_group'
+        'minute_group',
       )
       .addSelect('COUNT(screenshot.id)', 'count')
       .where("DATE(screenshot.createdAt) = DATE('now')")
+      .andWhere('user.id = :userId', { userId: user.id })
       .groupBy('date_hour, minute_group')
       .orderBy('date_hour, minute_group', 'ASC')
       .withDeleted()
@@ -115,11 +127,16 @@ export class ScreenshotService implements IScreenshotService {
   }
 
   public async groupScreenshotsByMinute(): Promise<IScreenshotChartLine[]> {
+    const user = await this.userSessionService.currentUser();
     const screenshotsGroupedByMinute = await this.repository
       .createQueryBuilder('screenshot')
+      .leftJoin('screenshot.timeLog', 'timeLog')
+      .leftJoin('timeLog.session', 'session')
+      .leftJoin('session.user', 'user')
       .select("strftime('%Y-%m-%d %H:%M', screenshot.createdAt)", 'date_minute')
       .addSelect('COUNT(screenshot.id)', 'count')
       .where("DATE(screenshot.createdAt) = DATE('now')")
+      .andWhere('user.id = :userId', { userId: user.id })
       .groupBy('date_minute')
       .orderBy('date_minute', 'ASC')
       .withDeleted()
@@ -131,7 +148,7 @@ export class ScreenshotService implements IScreenshotService {
       timeSlot: moment
         .utc(row.date_minute, 'YYYY-MM-DD HH:mm')
         .tz(userTimezone)
-        .format('H[h]mm[m]'), // The timestamp formatted as YYYY-MM-DD HH:mm
+        .format('H[h]mm[m]'),
       count: parseInt(row.count, 10),
     }));
   }

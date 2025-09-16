@@ -11,8 +11,11 @@ import {
   ITopApplicationProductivity,
 } from '@ever-co/shared-utils';
 import { Repository } from 'typeorm';
+import { UserSessionService } from '../services/user-session.service';
 
 export class ScreenshotStatisticsAnalyzer {
+  private readonly userSessionService = new UserSessionService();
+
   constructor(private readonly repository: Repository<IScreenshotMetadata>) { }
   /**
    * Computes temporal statistics with Bayesian optimization and information-theoretic analysis
@@ -29,6 +32,7 @@ export class ScreenshotStatisticsAnalyzer {
   public async statistics(
     options: IPaginationOptions<IScreenshot> = {},
   ): Promise<IPaginationScreenshotStatisticsResponse> {
+    const user = await this.userSessionService.currentUser();
     // Phase 1: Optimal Temporal Configuration
     const {
       page = 1,
@@ -53,6 +57,7 @@ export class ScreenshotStatisticsAnalyzer {
       comparisonWindow.prevStart,
       comparisonWindow.prevEnd,
       { page, limit, deleted },
+      user.id
     );
 
     // Phase 4: Information-theoretic analysis with error bounds
@@ -191,6 +196,7 @@ export class ScreenshotStatisticsAnalyzer {
     prevStart: string | Date,
     prevEnd: string | Date,
     { page, limit, deleted },
+    userId: string
   ) {
     return Promise.all([
       this.executeStatisticalQuery(
@@ -199,6 +205,7 @@ export class ScreenshotStatisticsAnalyzer {
         page,
         limit,
         deleted,
+        userId
       ),
       this.executeStatisticalQuery(
         prevStart,
@@ -206,6 +213,7 @@ export class ScreenshotStatisticsAnalyzer {
         1,
         Math.max(limit * 3, STATISTICAL_CONSTANTS.MINIMUM_OBSERVATIONS),
         deleted,
+        userId
       ),
     ]);
   }
@@ -412,22 +420,29 @@ export class ScreenshotStatisticsAnalyzer {
     page: number,
     limit: number,
     deleted: boolean,
+    userId: string
   ) {
-    const query = this.repository
+    const qb = this.repository
       .createQueryBuilder('metadata')
-      .leftJoinAndSelect('metadata.application', 'application')
+      .leftJoin('metadata.application', 'application')
+      .leftJoin('metadata.screenshot', 'screenshot')
+      .leftJoin('screenshot.timeLog', 'timeLog')
+      .leftJoin('timeLog.session', 'session')
+      .leftJoin('session.user', 'user')
       .select([
         'application.name AS name',
         'application.icon AS icon',
         'COUNT(application.name) AS count',
         'SUM(COUNT(metadata.id)) OVER() AS total',
       ])
-      .where('metadata.createdAt BETWEEN :start AND :end', { start, end });
+      .where('metadata.createdAt BETWEEN :start AND :end', { start, end })
+      .andWhere('user.id = :userId', { userId });
 
-    if (deleted) query.withDeleted();
+    if (deleted) qb.withDeleted();
 
-    return query
+    return qb
       .groupBy('application.name')
+      .addGroupBy('application.icon')
       .orderBy('count', 'DESC')
       .offset((page - 1) * limit)
       .limit(limit)
@@ -467,6 +482,7 @@ export class ScreenshotStatisticsAnalyzer {
   ): Promise<Pick<IPaginationScreenshotStatisticsResponse, 'data'>> {
     // Normalize the input range
     const { start, end } = this.normalizeRange(range);
+    const user = await this.userSessionService.currentUser();
 
     // Calculate optimal analysis window
     const analysisWindow = this.calculateOptimalWindow(start, end);
@@ -478,10 +494,11 @@ export class ScreenshotStatisticsAnalyzer {
 
     // Fetch data for both periods
     const [currentData, previousData] = await Promise.all([
-      this.executeFullRangeQuery(start, end),
+      this.executeFullRangeQuery(start, end, user.id),
       this.executeFullRangeQuery(
         comparisonWindow.prevStart,
         comparisonWindow.prevEnd,
+        user.id
       ),
     ]);
 
@@ -514,10 +531,15 @@ export class ScreenshotStatisticsAnalyzer {
   private async executeFullRangeQuery(
     start: string | Date,
     end: string | Date,
+    userId: string,
   ) {
     return this.repository
       .createQueryBuilder('metadata')
-      .leftJoinAndSelect('metadata.application', 'application')
+      .leftJoin('metadata.application', 'application')
+      .leftJoin('metadata.screenshot', 'screenshot')
+      .leftJoin('screenshot.timeLog', 'timeLog')
+      .leftJoin('timeLog.session', 'session')
+      .leftJoin('session.user', 'user')
       .select([
         'application.name AS name',
         'application.icon AS icon',
@@ -525,8 +547,10 @@ export class ScreenshotStatisticsAnalyzer {
         'SUM(COUNT(metadata.id)) OVER() AS total',
       ])
       .where('metadata.createdAt BETWEEN :start AND :end', { start, end })
+      .andWhere('user.id = :userId', { userId })
       .withDeleted()
       .groupBy('application.name')
+      .addGroupBy('application.icon')
       .orderBy('count', 'DESC')
       .getRawMany();
   }
@@ -540,21 +564,31 @@ export class ScreenshotStatisticsAnalyzer {
    */
   public async topApplicationsByDurationAndProductivity(
     range: IRange,
-    limit: number = 5
+    limit: number = 5,
   ): Promise<ITopApplicationProductivity[]> {
+    const { id: userId } = await this.userSessionService.currentUser();
     // Query: join ScreenshotMetadata -> Screenshot -> TimeLog -> Activity, group by Application
     const qb = this.repository
       .createQueryBuilder('metadata')
       .leftJoin('metadata.application', 'application')
       .leftJoin('metadata.screenshot', 'screenshot')
       .leftJoin('screenshot.timeLog', 'timeLog')
+      .leftJoin('timeLog.session', 'session')
+      .leftJoin('session.user', 'user')
       .leftJoin('timeLog.activities', 'activity')
       .select('application.name', 'name')
       .addSelect('application.icon', 'icon')
       .addSelect('SUM(activity.duration)', 'totalDuration')
-      .addSelect(`SUM(CASE WHEN activity.state = 'active' THEN activity.duration ELSE 0 END)`, 'activeDuration')
-      .where('metadata.createdAt BETWEEN :start AND :end', { start: range.start, end: range.end })
+      .addSelect(
+        `SUM(CASE WHEN activity.state = 'active' THEN activity.duration ELSE 0 END)`,
+        'activeDuration'
+      )
+      .where('metadata.createdAt BETWEEN :start AND :end', {
+        start: range.start,
+        end: range.end,
+      })
       .andWhere('application.name IS NOT NULL')
+      .andWhere('user.id = :userId', { userId })
       .groupBy('application.name')
       .addGroupBy('application.icon')
       .orderBy('totalDuration', 'DESC')

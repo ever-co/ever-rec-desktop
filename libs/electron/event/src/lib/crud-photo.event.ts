@@ -14,6 +14,7 @@ import {
 } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
 import { Between } from 'typeorm';
+import { userSessionService } from './session.event';
 
 const photoService = new PhotoService();
 
@@ -29,9 +30,18 @@ export function crudPhotoEvent(): void {
         end = currentDay().end,
       } = options;
 
+      const user = await userSessionService.currentUser();
+
       const [data, count] = await photoService.findAndCount({
         where: {
           createdAt: Between(start, end),
+          timeLog: {
+            session: {
+              user: {
+                id: user.id
+              }
+            }
+          }
         },
         relations: ['metadata'],
         order: { createdAt: 'DESC' },
