@@ -149,3 +149,29 @@ html {
         system-variables-prefix: mat-sys,
       ),
     )));
+
+.external-link {
+  color: #007acc;
+  text-decoration: none;
+  border-bottom: 1px dotted #007acc;
+  transition: color 0.2s ease;
+}
+
+.external-link:hover {
+  color: #005a9e;
+  text-decoration: underline;
+}
+
+.custom-link {
+  color: #e91e63;
+  font-weight: 500;
+}
+
+/* Style based on protocol */
+.external-link[href^="mailto:"] {
+  color: #d81b60;
+}
+
+.external-link[href^="tel:"] {
+  color: #43a047;
+}
