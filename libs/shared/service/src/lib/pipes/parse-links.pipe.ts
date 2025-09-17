@@ -197,15 +197,41 @@ export class ParseLinksPipe implements PipeTransform {
   }
 
   private extractFtpUrl(text: string): { url: string; protocol: string } | null {
-    return this.extractHttpUrl(text.replace('ftp://', 'http://'))?.url
-      ? { url: text.substring(0, text.indexOf(' ') !== -1 ? text.indexOf(' ') : text.length), protocol: 'ftp://' }
-      : null;
+    const protocol = 'ftp://';
+    if (!text.startsWith(protocol)) return null;
+
+    let end = protocol.length;
+    while (end < text.length && !/\s|<|>|"|'/.test(text[end])) {
+      end++;
+    }
+
+    const url = text.substring(0, end);
+    try {
+      // Validate as URL by replacing with https for URL constructor
+      new URL(url.replace('ftp://', 'https://'));
+      return { url, protocol };
+    } catch {
+      return null;
+    }
   }
 
   private extractSshUrl(text: string): { url: string; protocol: string } | null {
-    return this.extractHttpUrl(text.replace('ssh://', 'http://'))?.url
-      ? { url: text.substring(0, text.indexOf(' ') !== -1 ? text.indexOf(' ') : text.length), protocol: 'ssh://' }
-      : null;
+    const protocol = 'ssh://';
+    if (!text.startsWith(protocol)) return null;
+
+    let end = protocol.length;
+    while (end < text.length && !/\s|<|>|"|'/.test(text[end])) {
+      end++;
+    }
+
+    const url = text.substring(0, end);
+    try {
+      // Validate as URL by replacing with https for URL constructor
+      new URL(url.replace('ssh://', 'https://'));
+      return { url, protocol };
+    } catch {
+      return null;
+    }
   }
 
   /**
