@@ -117,15 +117,15 @@ export class ParseLinksPipe implements PipeTransform {
 
       // Check each protocol in order of likelihood
       if (remainingText.startsWith('http://') || remainingText.startsWith('https://')) {
-        urlMatch = this.extractHttpUrl(remainingText, i, text);
+        urlMatch = this.extractHttpUrl(remainingText);
       } else if (remainingText.startsWith('mailto:')) {
         urlMatch = this.extractMailtoUrl(remainingText);
       } else if (remainingText.startsWith('tel:')) {
         urlMatch = this.extractTelUrl(remainingText);
       } else if (remainingText.startsWith('ftp://')) {
-        urlMatch = this.extractFtpUrl(remainingText, i, text);
+        urlMatch = this.extractFtpUrl(remainingText);
       } else if (remainingText.startsWith('ssh://')) {
-        urlMatch = this.extractSshUrl(remainingText, i, text);
+        urlMatch = this.extractSshUrl(remainingText);
       }
 
       if (urlMatch) {
@@ -196,14 +196,14 @@ export class ParseLinksPipe implements PipeTransform {
     return { url, protocol: 'tel:' };
   }
 
-  private extractFtpUrl(text: string, index: number, fullText: string): { url: string; protocol: string } | null {
-    return this.extractHttpUrl(text.replace('ftp://', 'http://'), index, fullText)?.url
+  private extractFtpUrl(text: string): { url: string; protocol: string } | null {
+    return this.extractHttpUrl(text.replace('ftp://', 'http://'))?.url
       ? { url: text.substring(0, text.indexOf(' ') !== -1 ? text.indexOf(' ') : text.length), protocol: 'ftp://' }
       : null;
   }
 
-  private extractSshUrl(text: string, index: number, fullText: string): { url: string; protocol: string } | null {
-    return this.extractHttpUrl(text.replace('ssh://', 'http://'), index, fullText)?.url
+  private extractSshUrl(text: string): { url: string; protocol: string } | null {
+    return this.extractHttpUrl(text.replace('ssh://', 'http://'))?.url
       ? { url: text.substring(0, text.indexOf(' ') !== -1 ? text.indexOf(' ') : text.length), protocol: 'ssh://' }
       : null;
   }
