@@ -141,7 +141,7 @@ export class ParseLinksPipe implements PipeTransform {
     return result.join('');
   }
 
-  private extractHttpUrl(text: string, index: number, fullText: string): { url: string; protocol: string } | null {
+  private extractHttpUrl(text: string): { url: string; protocol: string } | null {
     // Simple HTTP URL extraction without complex regex
     const protocol = text.startsWith('https://') ? 'https://' : 'http://';
     let end = protocol.length;
