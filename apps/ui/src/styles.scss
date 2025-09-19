@@ -149,3 +149,28 @@ html {
         system-variables-prefix: mat-sys,
       ),
     )));
+.external-link {
+  color: theme('colors.blue.600');
+  text-decoration: none;
+  border-bottom: 1px dotted theme('colors.blue.600');
+  transition: color 0.2s ease;
+}
+
+.external-link:hover {
+  color: theme('colors.blue.700');
+  text-decoration: underline;
+}
+
+.custom-link {
+  color: theme('colors.pink.600');
+  font-weight: 500;
+}
+
+/* Style based on protocol */
+.external-link[href^="mailto:"] {
+  color: theme('colors.pink.700');
+}
+
+.external-link[href^="tel:"] {
+  color: theme('colors.green.600');
+}

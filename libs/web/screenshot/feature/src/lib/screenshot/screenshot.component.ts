@@ -20,6 +20,7 @@ import {
   HumanizeBytesPipe,
   IconFallbackDirective,
   ImgFallbackDirective,
+  ParseLinksPipe,
   PopoverDirective,
   UtcToLocalTimePipe,
 } from '@ever-co/shared-service';
@@ -60,6 +61,7 @@ import {
     ImgFallbackDirective,
     IconFallbackDirective,
     MatTooltipModule,
+    ParseLinksPipe
   ],
   templateUrl: './screenshot.component.html',
   styleUrl: './screenshot.component.scss',
