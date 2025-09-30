@@ -50,11 +50,11 @@ class RetryStrategy {
       if (
         retryCount < this.maxRetries &&
         ['ETIMEDOUT', 'ECONNRESET', 'AbortError'].includes(
-          error.code || error.name
+          error.code || error.name,
         )
       ) {
         await new Promise((resolve) =>
-          setTimeout(resolve, this.retryDelay * (retryCount + 1))
+          setTimeout(resolve, this.retryDelay * (retryCount + 1)),
         );
         return this.executeWithRetry(fn, retryCount + 1);
       }
@@ -96,7 +96,7 @@ class UploadManager {
         this.progressNotifier.notifyProgress(
           this.uploadedBytes,
           this.totalSize,
-          id
+          id,
         );
       });
       // Handle stream errors
@@ -153,6 +153,10 @@ class UploadManager {
       headers['Authorization'] = `Bearer ${this.config.token}`;
     }
 
+    if (this.config?.refreshToken) {
+      headers['X-Refresh-Token'] = this.config.refreshToken;
+    }
+
     return this.retryStrategy.executeWithRetry(async () => {
       const response = await fetch(this.config.url, {
         method: this.config?.token ? 'POST' : 'PUT',
@@ -199,7 +203,7 @@ class UploadManagerFactory {
   static create(files, config) {
     const progressNotifier = new ProgressNotifier(
       PROGRESS_THROTTLE,
-      parentPort
+      parentPort,
     );
     const retryStrategy = new RetryStrategy(MAX_RETRIES, RETRY_DELAY);
     return new UploadManager(files, config, progressNotifier, retryStrategy);

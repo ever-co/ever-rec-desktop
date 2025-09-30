@@ -31,18 +31,12 @@ export class ScreenshotUploaderService extends UploaderService<IScreenshot> {
     }));
   }
 
-  protected override async synchronize({
-    itemId,
-    result,
-  }: IUploadDone): Promise<void> {
+  protected override async synchronize(uploaded: IUploadDone): Promise<void> {
     await Promise.all([
-      this.service.update(itemId, { synced: true }),
-      this.service.saveUpload<IScreenshotUpload>({
-        id: itemId,
-        remoteUrl: result.fullUrl,
-        remoteId: result.id,
-        uploadedAt: result.recordedAt,
-      }),
+      this.service.update(uploaded.itemId, { synced: true }),
+      this.service.saveUpload<IScreenshotUpload>(
+        this.synchronizeFactory.synchronize(this.context.strategy, uploaded),
+      ),
     ]);
   }
 
