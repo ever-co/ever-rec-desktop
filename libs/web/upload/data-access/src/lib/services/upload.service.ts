@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { selectClaimsToken, selectToken } from '@ever-co/auth-data-access';
+import { selectClaimsToken } from '@ever-co/auth-data-access';
 import { ElectronService } from '@ever-co/electron-data-access';
 import { REC_ENV } from '@ever-co/shared-service';
 import {
@@ -27,13 +27,14 @@ export class UploadService {
     private readonly store: Store,
     @Inject(REC_ENV)
     private readonly environment: IEnvironment,
-  ) {}
+  ) { }
 
   public upload(upload: IUpload): Observable<void> {
     return this.store.select(selectSettingStorageState).pipe(
       take(1),
       filter(({ uploadConfig }) => uploadConfig.autoSync),
       withLatestFrom(this.store.select(selectClaimsToken)),
+      filter(([, claims]) => !!claims),
       map(([{ s3Config }, claims]) =>
         this.electronService.send(Channel.UPLOAD, {
           upload: {
