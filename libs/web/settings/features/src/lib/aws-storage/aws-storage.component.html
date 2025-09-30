@@ -2,8 +2,8 @@
   <!-- Aws Access Key ID Input -->
   <mat-form-field appearance="outline" class="w-full">
     <mat-label>Access Key ID</mat-label>
-    <input matInput type="text" id="accessKeyId" formControlName="accessKeyId" placeholder="Enter aws access key ID"
-      type="password" />
+    <input matInput type="password" id="accessKeyId" formControlName="accessKeyId"
+      placeholder="Enter aws access key ID" />
     @if (
     form.controls['accessKeyId'].invalid &&
     form.controls['accessKeyId'].touched

@@ -1,7 +1,15 @@
-import { IUploadBase, IUploadDone } from '@ever-co/shared-utils';
+import { IRemoteUpload, IUploadBase, IUploadDone } from '@ever-co/shared-utils';
 import { IUploaderStrategy } from '../../../models/uploader-strategy.interface';
 import { EverRecUploaderStrategy } from '../../../strategies/ever-rec.uploader';
 import { ResponseHandler } from './response.handler';
+
+interface IEverRecUploadResult extends IRemoteUpload {
+  url: string;
+  dbData: {
+    id: string;
+    created: string;
+  };
+}
 
 export class EverRecResponseHandler extends ResponseHandler<
   IUploadDone,
@@ -16,7 +24,7 @@ export class EverRecResponseHandler extends ResponseHandler<
     const {
       url: remoteUrl,
       dbData: { id: remoteId, created: uploadedAt },
-    } = result as any;
+    } = result as IEverRecUploadResult;
 
     return {
       id: itemId,

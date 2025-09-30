@@ -19,8 +19,6 @@ export class EverRecUploaderStrategy implements IUploaderStrategy {
       return null;
     }
 
-    console.error('Danger', url, this.upload);
-
     return {
       url,
       token: this.upload.token,
