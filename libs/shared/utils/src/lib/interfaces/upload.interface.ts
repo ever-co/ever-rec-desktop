@@ -21,6 +21,9 @@ export interface IUpload {
   type: UploadType;
   key: string;
   ids: string[];
+  refreshToken?: string;
+  token?: string;
+  apiUrl?: string;
 }
 
 export interface IUploadProgress {
