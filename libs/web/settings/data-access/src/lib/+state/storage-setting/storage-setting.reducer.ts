@@ -26,6 +26,7 @@ const initialState: IStorageState = {
     region: '',
     s3Bucket: '',
     s3Endpoint: '',
+    enabled: false,
     autoSync: false,
   },
   used: {

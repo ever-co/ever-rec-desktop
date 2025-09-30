@@ -2,113 +2,81 @@
   <!-- Aws Access Key ID Input -->
   <mat-form-field appearance="outline" class="w-full">
     <mat-label>Access Key ID</mat-label>
-    <input
-      matInput
-      type="text"
-      id="accessKeyId"
-      formControlName="accessKeyId"
-      placeholder="Enter aws access key ID"
-      type="password"
-      />
+    <input matInput type="text" id="accessKeyId" formControlName="accessKeyId" placeholder="Enter aws access key ID"
+      type="password" />
     @if (
-      form.controls['accessKeyId'].invalid &&
-      form.controls['accessKeyId'].touched
-      ) {
-      <mat-error
-        >
-        Aws access key ID is required.
-      </mat-error>
+    form.controls['accessKeyId'].invalid &&
+    form.controls['accessKeyId'].touched
+    ) {
+    <mat-error>
+      Aws access key ID is required.
+    </mat-error>
     }
   </mat-form-field>
 
   <!-- Aws Access Key Secret Input -->
   <mat-form-field appearance="outline" class="w-full">
     <mat-label>Access Key Secret</mat-label>
-    <input
-      matInput
-      type="password"
-      id="accessKeySecret"
-      formControlName="accessKeySecret"
-      placeholder="Enter aws access key Secret"
-      />
+    <input matInput type="password" id="accessKeySecret" formControlName="accessKeySecret"
+      placeholder="Enter aws access key Secret" />
     @if (
-      form.controls['accessKeySecret'].invalid &&
-      form.controls['accessKeySecret'].touched
-      ) {
-      <mat-error
-        >
-        Aws access key secret is required.
-      </mat-error>
+    form.controls['accessKeySecret'].invalid &&
+    form.controls['accessKeySecret'].touched
+    ) {
+    <mat-error>
+      Aws access key secret is required.
+    </mat-error>
     }
   </mat-form-field>
 
   <!-- Aws Region Input -->
   <mat-form-field appearance="outline" class="w-full">
     <mat-label>AWS Region</mat-label>
-    <input
-      matInput
-      type="text"
-      id="region"
-      formControlName="region"
-      placeholder="Enter aws region"
-      />
+    <input matInput type="text" id="region" formControlName="region" placeholder="Enter aws region" />
     @if (form.controls['region'].invalid && form.controls['region'].touched) {
-      <mat-error
-        >
-        Aws region is required.
-      </mat-error>
+    <mat-error>
+      Aws region is required.
+    </mat-error>
     }
   </mat-form-field>
 
   <!-- Aws S3 Bucket Input -->
   <mat-form-field appearance="outline" class="w-full">
     <mat-label>S3 Bucket Name</mat-label>
-    <input
-      matInput
-      type="text"
-      id="s3Bucket"
-      formControlName="s3Bucket"
-      placeholder="Enter S3 bucket name"
-      />
+    <input matInput type="text" id="s3Bucket" formControlName="s3Bucket" placeholder="Enter S3 bucket name" />
     @if (
-      form.controls['s3Bucket'].invalid && form.controls['s3Bucket'].touched
-      ) {
-      <mat-error
-        >
-        Aws S3 Bucket name is required.
-      </mat-error>
+    form.controls['s3Bucket'].invalid && form.controls['s3Bucket'].touched
+    ) {
+    <mat-error>
+      Aws S3 Bucket name is required.
+    </mat-error>
     }
   </mat-form-field>
 
   <!-- Aws S3 Bucket Endpoint Input -->
   <mat-form-field appearance="outline" class="w-full">
     <mat-label>S3 Bucket Endpoint</mat-label>
-    <input
-      matInput
-      type="url"
-      id="s3Endpoint"
-      formControlName="s3Endpoint"
-      placeholder="Enter s3 endpoint"
-      />
+    <input matInput type="url" id="s3Endpoint" formControlName="s3Endpoint" placeholder="Enter s3 endpoint" />
     @if (
-      form.controls['s3Endpoint'].touched &&
-      form.controls['s3Endpoint'].hasError('invalidUrl')
-      ) {
-      <mat-error
-        >
-        This endpoint URL is not valid.
-      </mat-error>
+    form.controls['s3Endpoint'].touched &&
+    form.controls['s3Endpoint'].hasError('invalidUrl')
+    ) {
+    <mat-error>
+      This endpoint URL is not valid.
+    </mat-error>
     }
   </mat-form-field>
 
+  <!-- Auto sync -->
+  <div class="start flex justify-between items-center mb-3">
+    <span class="text-gray-700">Enable S3 cloud sync</span>
+    <mat-slide-toggle formControlName="enabled">
+    </mat-slide-toggle>
+  </div>
+
   <!-- Submit and Cancel Buttons -->
   <div class="flex space-x-4">
-    <button
-      mat-stroked-button
-      color="primary"
-      type="submit"
-      [disabled]="form.invalid"
-      >
+    <button mat-stroked-button color="primary" type="submit" [disabled]="form.invalid">
       Save
     </button>
   </div>

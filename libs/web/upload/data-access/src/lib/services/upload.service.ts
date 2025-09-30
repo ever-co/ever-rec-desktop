@@ -1,8 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
+import { selectClaimsToken, selectToken } from '@ever-co/auth-data-access';
 import { ElectronService } from '@ever-co/electron-data-access';
+import { REC_ENV } from '@ever-co/shared-service';
 import {
   Channel,
   IAudio,
+  IEnvironment,
   IFindManyOptions,
   IPhoto,
   IScreenshot,
@@ -13,7 +16,7 @@ import {
 } from '@ever-co/shared-utils';
 import { selectSettingStorageState } from '@ever-co/web-setting-data-access';
 import { Store } from '@ngrx/store';
-import { filter, map, Observable, of, take } from 'rxjs';
+import { filter, map, Observable, of, take, withLatestFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -21,15 +24,26 @@ import { filter, map, Observable, of, take } from 'rxjs';
 export class UploadService {
   constructor(
     private readonly electronService: ElectronService,
-    private store: Store,
-  ) { }
+    private readonly store: Store,
+    @Inject(REC_ENV)
+    private readonly environment: IEnvironment,
+  ) {}
 
   public upload(upload: IUpload): Observable<void> {
     return this.store.select(selectSettingStorageState).pipe(
       take(1),
       filter(({ uploadConfig }) => uploadConfig.autoSync),
-      map(({ s3Config }) =>
-        this.electronService.send(Channel.UPLOAD, { upload, s3Config }),
+      withLatestFrom(this.store.select(selectClaimsToken)),
+      map(([{ s3Config }, claims]) =>
+        this.electronService.send(Channel.UPLOAD, {
+          upload: {
+            ...upload,
+            apiUrl: this.environment.apiUrl,
+            token: claims.token,
+            refreshToken: claims.refreshToken,
+          },
+          s3Config,
+        }),
       ),
     );
   }
@@ -55,7 +69,10 @@ export class UploadService {
   public getScreenshots(
     options: IFindManyOptions<IScreenshot>,
   ): Observable<IScreenshot[]> {
-    return this.electronService.invoke$(Channel.GET_SCREENSHOTS_TO_UPLOAD, options);
+    return this.electronService.invoke$(
+      Channel.GET_SCREENSHOTS_TO_UPLOAD,
+      options,
+    );
   }
 
   public getPhotos(options: IFindManyOptions<IPhoto>): Observable<IPhoto[]> {
