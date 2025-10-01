@@ -26,6 +26,12 @@ export class EverRecResponseHandler extends ResponseHandler<
       dbData: { id: remoteId, created: uploadedAt },
     } = result as IEverRecUploadResult;
 
+    if (!remoteUrl || !remoteId) {
+      throw new Error(
+        'Invalid EverRec upload response: missing required fields',
+      );
+    }
+
     return {
       id: itemId,
       remoteUrl,
