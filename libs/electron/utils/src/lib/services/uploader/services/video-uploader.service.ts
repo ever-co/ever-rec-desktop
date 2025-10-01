@@ -37,18 +37,12 @@ export class VideoUploaderService extends UploaderService<IVideo> {
     }));
   }
 
-  protected override async synchronize({
-    itemId,
-    result,
-  }: IUploadDone): Promise<void> {
+  protected override async synchronize(uploaded: IUploadDone): Promise<void> {
     await Promise.all([
-      this.service.update(itemId, { synced: true }),
-      this.service.saveUpload<IVideoUpload>({
-        id: itemId,
-        remoteUrl: result.fullUrl,
-        remoteId: result.id,
-        uploadedAt: result.recordedAt,
-      }),
+      this.service.update(uploaded.itemId, { synced: true }),
+      this.service.saveUpload<IVideoUpload>(
+        this.synchronizeFactory.synchronize(this.context.strategy, uploaded),
+      ),
     ]);
   }
 }
