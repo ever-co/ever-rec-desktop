@@ -1,9 +1,9 @@
-import { IRemoteUpload, IUploadBase, IUploadDone } from '@ever-co/shared-utils';
+import { IUploadBase, IUploadDone } from '@ever-co/shared-utils';
 import { IUploaderStrategy } from '../../../models/uploader-strategy.interface';
 import { EverRecUploaderStrategy } from '../../../strategies/ever-rec.uploader';
 import { ResponseHandler } from './response.handler';
 
-interface IEverRecUploadResult extends IRemoteUpload {
+interface IEverRecUploadResult {
   url: string;
   dbData: {
     id: string;
@@ -19,16 +19,22 @@ export class EverRecResponseHandler extends ResponseHandler<
     return strategy instanceof EverRecUploaderStrategy;
   }
 
-  protected transform(response: IUploadDone): IUploadBase {
+  protected transform(
+    response: IUploadDone<IEverRecUploadResult>,
+  ): IUploadBase {
     const { itemId, result } = response;
-    const {
-      url: remoteUrl,
-      dbData: { id: remoteId, created: uploadedAt },
-    } = result as IEverRecUploadResult;
+
+    if (!result?.data) {
+      throw new Error('Invalid EverRec upload response: missing data');
+    }
+
+    const { url: remoteUrl, dbData } = result.data;
+    const remoteId = dbData?.id;
+    const uploadedAt = dbData?.created;
 
     if (!remoteUrl || !remoteId) {
       throw new Error(
-        'Invalid EverRec upload response: missing required fields',
+        `Invalid EverRec upload response: missing ${!remoteUrl ? 'url' : 'id'}`,
       );
     }
 
