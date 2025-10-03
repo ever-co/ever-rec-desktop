@@ -1,0 +1,7 @@
+@if (routerLink()) {
+<a class="logo" [routerLink]="routerLink()" [attr.aria-label]="effectiveAriaLabel()">
+  <img class="logo" [src]="effectiveSrc()" [alt]="alt()" [width]="width()" [height]="height()" priority />
+</a>
+} @else {
+<img class="logo" [src]="effectiveSrc()" [alt]="alt()" [width]="width()" [height]="height()" priority />
+}
