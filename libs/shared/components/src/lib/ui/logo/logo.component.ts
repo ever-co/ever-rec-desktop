@@ -31,10 +31,8 @@ export class LogoComponent {
   routerLink = input<string | any[] | undefined>(undefined);
 
   readonly effectiveSrc = computed(() =>
-    this.isTablet() ? 'assets/logo-min.svg' : this.src()
+    this.isTablet() ? 'assets/logo-min.svg' : this.src(),
   );
 
-  readonly effectiveAriaLabel = computed(() =>
-    this.ariaLabel() ?? this.alt()
-  );
+  readonly effectiveAriaLabel = computed(() => this.ariaLabel() ?? this.alt());
 }
