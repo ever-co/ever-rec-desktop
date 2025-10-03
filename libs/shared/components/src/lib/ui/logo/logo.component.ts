@@ -28,7 +28,7 @@ export class LogoComponent {
 
   ariaLabel = input<string | undefined>(undefined);
 
-  routerLink = input<string | any[] | undefined>(undefined);
+  routerLink = input<string | unknown[] | undefined>(undefined);
 
   readonly effectiveSrc = computed(() =>
     this.isTablet() ? 'assets/logo-min.svg' : this.src(),
