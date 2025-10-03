@@ -7,20 +7,15 @@
   >
     <!-- Sidenav Header -->
     <header class="flex items-center gap-2 p-6 pr-2 border-b border-gray-200">
-      <mat-icon
-        [matTooltip]="env.appName"
-        [matTooltipDisabled]="!isTablet"
-        class="text-gray-700"
-        aria-label="App Logo"
-      >
-        {{ env.icon }}
-      </mat-icon>
+      <div class="max-h-[32px]">
+        <lib-logo
+          [alt]="env.appName"
+          [width]="isMobileView ? 135 : isTablet ? 17.25 : 115"
+          routerLink="/"
+          [isTablet]="isTablet"
+        />
+      </div>
 
-      @if (!isTablet) {
-        <span class="text-lg font-semibold text-gray-700 truncate">{{
-          env.appName
-        }}</span>
-      }
       @if (isMobileView) {
         <button
           mat-icon-button
@@ -92,3 +87,4 @@
     </main>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
