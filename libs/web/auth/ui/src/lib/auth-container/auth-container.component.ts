@@ -10,6 +10,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterModule } from '@angular/router';
 import { IEnvironment } from '@ever-co/shared-utils';
 import { REC_ENV } from '@ever-co/shared-service';
+import { LogoComponent } from '@ever-co/shared-components';
 
 @Component({
   selector: 'lib-auth-container',
@@ -17,8 +18,9 @@ import { REC_ENV } from '@ever-co/shared-service';
   imports: [
     MatIconModule,
     MatProgressSpinnerModule,
-    RouterModule
-],
+    RouterModule,
+    LogoComponent
+  ],
   templateUrl: './auth-container.component.html',
   styleUrls: ['./auth-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -30,5 +32,5 @@ export class AuthContainerComponent {
   footerLink = input('', { alias: 'link' });
   footerLinkText = input('', { alias: 'linkText' });
 
-  constructor(@Inject(REC_ENV) public env: IEnvironment) {}
+  constructor(@Inject(REC_ENV) public env: IEnvironment) { }
 }
