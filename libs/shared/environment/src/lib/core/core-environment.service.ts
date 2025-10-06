@@ -52,6 +52,13 @@ export class CoreEnvironmentService implements IEnvironmentReader {
 
   private async loadEnvironmentVars(): Promise<Record<string, string>> {
     try {
+      // Prefer global env injected by the app (e.g., scripts/load-env*.js)
+      const globalEnv = (globalThis as any).__REC_ENV;
+      if (globalEnv && typeof globalEnv === 'object') {
+        const { production, ...envVars } = globalEnv;
+        return envVars;
+      }
+
       // Determine the correct path based on environment type
       const envPath =
         this.detectEnvironment() === 'production'
