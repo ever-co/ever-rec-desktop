@@ -4,6 +4,8 @@ import { distinctUntilChanged, shareReplay } from 'rxjs/operators';
 import {
   IEnvironmentReader,
   ValidationResult,
+  ValidationError,
+  ValidationWarning,
 } from '../interfaces/environment.interface';
 
 // Core Environment Service - Combines best practices with simplicity
@@ -147,8 +149,8 @@ export class CoreEnvironmentService implements IEnvironmentReader {
 
   // Basic validation
   async validate(): Promise<ValidationResult> {
-    const errors: any[] = [];
-    const warnings: any[] = [];
+    const errors: ValidationError[] = [];
+    const warnings: ValidationWarning[] = [];
 
     // Check required fields
     const requiredFields = ['API_URL', 'APP_NAME'];
