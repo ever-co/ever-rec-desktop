@@ -44,8 +44,6 @@ export const ENV_DEFAULTS = {
   APP_ICON: 'fiber_smart_record',
   USE_EMULATORS: true,
   API_URL: 'http://localhost:3000',
-  DATABASE_URL: '',
-  JWT_SECRET: '',
   DEBUG: false,
   PORT: 4201,
   GOOGLE_REDIRECT_URI: 'http://localhost:4200/authorize',

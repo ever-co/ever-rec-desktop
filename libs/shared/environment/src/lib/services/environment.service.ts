@@ -57,14 +57,6 @@ export class EnvironmentService implements IEnvironment {
     return this.getValue('API_URL');
   }
 
-  get databaseUrl(): string {
-    return this.getValue('DATABASE_URL');
-  }
-
-  get jwtSecret(): string {
-    return this.getValue('JWT_SECRET');
-  }
-
   get debug(): boolean {
     return this.getValue('DEBUG');
   }
@@ -175,8 +167,6 @@ export class EnvironmentService implements IEnvironment {
   getApiConfig() {
     return {
       apiUrl: this.apiUrl,
-      databaseUrl: this.databaseUrl,
-      jwtSecret: this.jwtSecret,
       debug: this.debug,
       port: this.port
     };
