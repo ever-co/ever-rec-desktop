@@ -1,34 +1,43 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { IEnvironment } from '@ever-co/shared-utils';
 import { CoreEnvironmentService } from '../core/core-environment.service';
-import { 
-  IGoogleConfig, 
-  ValidationResult, 
-  ValidationError, 
-  ValidationWarning, 
-  ENV_DEFAULTS, 
-  EnvironmentKey 
+import {
+  IGoogleConfig,
+  ValidationResult,
+  ValidationError,
+  ValidationWarning,
+  ENV_DEFAULTS,
+  EnvironmentKey,
 } from '../interfaces/environment.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EnvironmentService implements IEnvironment {
-  constructor(private coreService: CoreEnvironmentService) {}
+  private readonly coreService = inject(CoreEnvironmentService);
 
   // Type-safe environment variable access with defaults
-  private getValue<K extends EnvironmentKey>(key: K): typeof ENV_DEFAULTS[K] {
+  private getValue<K extends EnvironmentKey>(key: K): (typeof ENV_DEFAULTS)[K] {
     const defaultValue = ENV_DEFAULTS[key];
-    
+
     if (typeof defaultValue === 'boolean') {
-      return this.coreService.getBooleanSync(key, defaultValue) as typeof ENV_DEFAULTS[K];
+      return this.coreService.getBooleanSync(
+        key,
+        defaultValue,
+      ) as (typeof ENV_DEFAULTS)[K];
     }
-    
+
     if (typeof defaultValue === 'number') {
-      return this.coreService.getNumberSync(key, defaultValue) as typeof ENV_DEFAULTS[K];
+      return this.coreService.getNumberSync(
+        key,
+        defaultValue,
+      ) as (typeof ENV_DEFAULTS)[K];
     }
-    
-    return this.coreService.getSync(key, defaultValue as string) as typeof ENV_DEFAULTS[K];
+
+    return this.coreService.getSync(
+      key,
+      defaultValue as string,
+    ) as (typeof ENV_DEFAULTS)[K];
   }
 
   // Application Configuration
@@ -69,7 +78,7 @@ export class EnvironmentService implements IEnvironment {
   get google(): IGoogleConfig {
     return {
       redirectUri: this.getValue('GOOGLE_REDIRECT_URI'),
-      clientId: this.getValue('GOOGLE_CLIENT_ID')
+      clientId: this.getValue('GOOGLE_CLIENT_ID'),
     };
   }
 
@@ -90,7 +99,7 @@ export class EnvironmentService implements IEnvironment {
     // Required fields validation
     const requiredFields: Array<{ key: EnvironmentKey; name: string }> = [
       { key: 'API_URL', name: 'API URL' },
-      { key: 'APP_NAME', name: 'Application Name' }
+      { key: 'APP_NAME', name: 'Application Name' },
     ];
 
     for (const { key, name } of requiredFields) {
@@ -99,7 +108,7 @@ export class EnvironmentService implements IEnvironment {
         errors.push({
           key,
           message: `${name} is required but not provided`,
-          severity: 'error'
+          severity: 'error',
         });
       }
     }
@@ -110,7 +119,7 @@ export class EnvironmentService implements IEnvironment {
       errors.push({
         key: 'API_URL',
         message: 'API URL is not a valid URL format',
-        severity: 'error'
+        severity: 'error',
       });
     }
 
@@ -119,14 +128,14 @@ export class EnvironmentService implements IEnvironment {
       warnings.push({
         key: 'DEBUG',
         message: 'Debug mode is enabled in production environment',
-        suggestion: 'Consider disabling debug mode in production for security'
+        suggestion: 'Consider disabling debug mode in production for security',
       });
     }
 
     return {
       isValid: errors.length === 0,
       errors,
-      warnings
+      warnings,
     };
   }
 
@@ -160,7 +169,7 @@ export class EnvironmentService implements IEnvironment {
       canUseWebWorker: this.canUseWebWorker,
       appName: this.appName,
       icon: this.icon,
-      useEmulators: this.useEmulators
+      useEmulators: this.useEmulators,
     };
   }
 
@@ -168,7 +177,7 @@ export class EnvironmentService implements IEnvironment {
     return {
       apiUrl: this.apiUrl,
       debug: this.debug,
-      port: this.port
+      port: this.port,
     };
   }
 
@@ -176,3 +185,4 @@ export class EnvironmentService implements IEnvironment {
     return this.google;
   }
 }
+
