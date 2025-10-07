@@ -14,8 +14,6 @@ import {
   providedIn: 'root'
 })
 export class EnvironmentService implements IEnvironment {
-  private _google: IGoogleConfig | null = null;
-
   constructor(private coreService: CoreEnvironmentService) {}
 
   // Type-safe environment variable access with defaults
@@ -75,15 +73,12 @@ export class EnvironmentService implements IEnvironment {
     return this.getValue('PORT');
   }
 
-  // Google Configuration (cached for performance)
+  // Google Configuration (computed dynamically)
   get google(): IGoogleConfig {
-    if (!this._google) {
-      this._google = {
-        redirectUri: this.getValue('GOOGLE_REDIRECT_URI'),
-        clientId: this.getValue('GOOGLE_CLIENT_ID')
-      };
-    }
-    return this._google;
+    return {
+      redirectUri: this.getValue('GOOGLE_REDIRECT_URI'),
+      clientId: this.getValue('GOOGLE_CLIENT_ID')
+    };
   }
 
   // Utility methods
@@ -145,7 +140,6 @@ export class EnvironmentService implements IEnvironment {
 
   // Reload functionality
   async reload(): Promise<void> {
-    this._google = null; // Clear cache
     await this.coreService.reload();
   }
 
