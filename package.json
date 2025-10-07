@@ -19,12 +19,9 @@
   },
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
-    "prestart": "node scripts/load-env.js",
-    "prebuild": "node scripts/load-env.js",
-    "prebuild:prod": "node scripts/load-env-prod.js",
     "build": "nx run-many --target=build",
     "build:prod": "nx run-many --target=build --configuration=production",
-    "serve": "yarn prestart && nx run-many --target=serve --projects=ui,desktop",
+    "serve": "nx run-many --target=serve --projects=ui,desktop",
     "make": "nx run desktop:make",
     "build:lib": "nx run-many --target=build --exclude=ui,desktop --tailwindConfig=apps/ui/tailwind.config.js",
     "publish:all": "nx run-many --target=version --exclude=ui,desktop --base=develop",
