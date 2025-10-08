@@ -6,8 +6,27 @@
   "sourceRoot": "apps/ui/src",
   "tags": [],
   "targets": {
+    "load-env": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node scripts/load-env.js",
+        "cwd": "{workspaceRoot}"
+      },
+      "configurations": {
+        "production": {
+          "command": "node scripts/load-env-prod.js",
+          "cwd": "{workspaceRoot}"
+        }
+      }
+    },
     "build": {
       "executor": "@angular-devkit/build-angular:application",
+      "dependsOn": [
+        {
+          "target": "load-env",
+          "params": "forward"
+        }
+      ],
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/ui",
@@ -60,6 +79,12 @@
     },
     "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
+      "dependsOn": [
+        {
+          "target": "load-env",
+          "params": "forward"
+        }
+      ],
       "configurations": {
         "production": {
           "buildTarget": "ui:build:production"

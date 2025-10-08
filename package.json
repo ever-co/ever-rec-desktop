@@ -20,7 +20,7 @@
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
     "build": "nx run-many --target=build",
-    "build:prod": "yarn nx run-many --target=build --configuration=production",
+    "build:prod": "nx run-many --target=build --configuration=production",
     "serve": "nx run-many --target=serve --projects=ui,desktop",
     "make": "nx run desktop:make",
     "build:lib": "nx run-many --target=build --exclude=ui,desktop --tailwindConfig=apps/ui/tailwind.config.js",
@@ -56,6 +56,7 @@
     "@swimlane/ngx-charts": "^23.0.1",
     "better-sqlite3": "^12.2.0",
     "call-bind-apply-helpers": "1.0.0",
+    "dotenv": "^17.2.3",
     "electron-log": "5.4.3",
     "electron-store": "^8.1.0",
     "ffmpeg-static": "^5.2.0",

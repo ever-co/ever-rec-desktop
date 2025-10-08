@@ -7,42 +7,22 @@
       "@ever-co/activity-data-access": [
         "libs/web/activity/data-access/src/index.ts"
       ],
-      "@ever-co/activity-feature": [
-        "libs/web/activity/features/src/index.ts"
-      ],
-      "@ever-co/audio-data-access": [
-        "libs/web/audio/data-access/src/index.ts"
-      ],
-      "@ever-co/audio-feature": [
-        "libs/web/audio/feature/src/index.ts"
-      ],
-      "@ever-co/audio-ui": [
-        "libs/web/audio/ui/src/index.ts"
-      ],
-      "@ever-co/auth-data-access": [
-        "libs/web/auth/data-access/src/index.ts"
-      ],
-      "@ever-co/auth-feature": [
-        "libs/web/auth/feature/src/index.ts"
-      ],
-      "@ever-co/auth-ui": [
-        "libs/web/auth/ui/src/index.ts"
-      ],
+      "@ever-co/activity-feature": ["libs/web/activity/features/src/index.ts"],
+      "@ever-co/audio-data-access": ["libs/web/audio/data-access/src/index.ts"],
+      "@ever-co/audio-feature": ["libs/web/audio/feature/src/index.ts"],
+      "@ever-co/audio-ui": ["libs/web/audio/ui/src/index.ts"],
+      "@ever-co/auth-data-access": ["libs/web/auth/data-access/src/index.ts"],
+      "@ever-co/auth-feature": ["libs/web/auth/feature/src/index.ts"],
+      "@ever-co/auth-ui": ["libs/web/auth/ui/src/index.ts"],
       "@ever-co/breadcrumb-data-access": [
         "libs/web/breadcrumb/data-access/src/index.ts"
       ],
       "@ever-co/breadcrumb-feature": [
         "libs/web/breadcrumb/feature/src/index.ts"
       ],
-      "@ever-co/core-data-access": [
-        "libs/core/data-access/src/index.ts"
-      ],
-      "@ever-co/core-feature": [
-        "libs/core/feature/src/index.ts"
-      ],
-      "@ever-co/core-ui": [
-        "libs/core/ui/src/index.ts"
-      ],
+      "@ever-co/core-data-access": ["libs/core/data-access/src/index.ts"],
+      "@ever-co/core-feature": ["libs/core/feature/src/index.ts"],
+      "@ever-co/core-ui": ["libs/core/ui/src/index.ts"],
       "@ever-co/date-picker-data-access": [
         "libs/shared/date-picker/data-access/src/index.ts"
       ],
@@ -52,114 +32,63 @@
       "@ever-co/electron-data-access": [
         "libs/electron/data-access/src/index.ts"
       ],
-      "@ever-co/electron-database": [
-        "libs/electron/database/src/index.ts"
-      ],
-      "@ever-co/electron-events": [
-        "libs/electron/event/src/index.ts"
-      ],
-      "@ever-co/electron-utils": [
-        "libs/electron/utils/src/index.ts"
-      ],
-      "@ever-co/factory": [
-        "libs/shared/factory/src/index.ts"
-      ],
+      "@ever-co/electron-database": ["libs/electron/database/src/index.ts"],
+      "@ever-co/electron-events": ["libs/electron/event/src/index.ts"],
+      "@ever-co/electron-utils": ["libs/electron/utils/src/index.ts"],
+      "@ever-co/factory": ["libs/shared/factory/src/index.ts"],
       "@ever-co/generate-video-data-access": [
         "libs/web/generate-video/data-access/src/index.ts"
       ],
       "@ever-co/generate-video-feature": [
         "libs/web/generate-video/feature/src/index.ts"
       ],
-      "@ever-co/layout": [
-        "libs/web/layout/src/index.ts"
-      ],
-      "@ever-co/library": [
-        "libs/web/library/src/index.ts"
-      ],
+      "@ever-co/layout": ["libs/web/layout/src/index.ts"],
+      "@ever-co/library": ["libs/web/library/src/index.ts"],
       "@ever-co/notification-data-access": [
         "libs/web/notification/data-access/src/index.ts"
       ],
       "@ever-co/notification-feature": [
         "libs/web/notification/features/src/index.ts"
       ],
-      "@ever-co/photo-data-access": [
-        "libs/web/photo/data-access/src/index.ts"
-      ],
-      "@ever-co/photo-feature": [
-        "libs/web/photo/feature/src/index.ts"
-      ],
-      "@ever-co/photo-ui": [
-        "libs/web/photo/ui/src/index.ts"
-      ],
+      "@ever-co/photo-data-access": ["libs/web/photo/data-access/src/index.ts"],
+      "@ever-co/photo-feature": ["libs/web/photo/feature/src/index.ts"],
+      "@ever-co/photo-ui": ["libs/web/photo/ui/src/index.ts"],
       "@ever-co/screenshot-data-access": [
         "libs/web/screenshot/data-access/src/index.ts"
       ],
       "@ever-co/screenshot-feature": [
         "libs/web/screenshot/feature/src/index.ts"
       ],
-      "@ever-co/screenshot-ui": [
-        "libs/web/screenshot/ui/src/index.ts"
-      ],
-      "@ever-co/shared-components": [
-        "libs/shared/components/src/index.ts"
-      ],
-      "@ever-co/shared-service": [
-        "libs/shared/service/src/index.ts"
-      ],
-      "@ever-co/shared-utils": [
-        "libs/shared/utils/src/index.ts"
-      ],
+      "@ever-co/screenshot-ui": ["libs/web/screenshot/ui/src/index.ts"],
+      "@ever-co/shared-components": ["libs/shared/components/src/index.ts"],
+      "@ever-co/shared-environment": ["libs/shared/environment/src/index.ts"],
+      "@ever-co/shared-service": ["libs/shared/service/src/index.ts"],
+      "@ever-co/shared-utils": ["libs/shared/utils/src/index.ts"],
       "@ever-co/sidebar-data-access": [
         "libs/web/sidebar/data-access/src/index.ts"
       ],
-      "@ever-co/sidebar-feature": [
-        "libs/web/sidebar/features/src/index.ts"
-      ],
+      "@ever-co/sidebar-feature": ["libs/web/sidebar/features/src/index.ts"],
       "@ever-co/timeline-data-access": [
         "libs/web/timeline/data-access/src/index.ts"
       ],
-      "@ever-co/timeline-feature": [
-        "libs/web/timeline/features/src/index.ts"
-      ],
+      "@ever-co/timeline-feature": ["libs/web/timeline/features/src/index.ts"],
       "@ever-co/timesheet-data-access": [
         "libs/web/timesheet/data-access/src/index.ts"
       ],
-      "@ever-co/timesheet-feature": [
-        "libs/web/timesheet/feature/src/index.ts"
-      ],
-      "@ever-co/timesheet-ui": [
-        "libs/web/timesheet/ui/src/index.ts"
-      ],
+      "@ever-co/timesheet-feature": ["libs/web/timesheet/feature/src/index.ts"],
+      "@ever-co/timesheet-ui": ["libs/web/timesheet/ui/src/index.ts"],
       "@ever-co/upload-data-access": [
         "libs/web/upload/data-access/src/index.ts"
       ],
-      "@ever-co/upload-feature": [
-        "libs/web/upload/features/src/index.ts"
-      ],
-      "@ever-co/user-data-access": [
-        "libs/web/user/data-access/src/index.ts"
-      ],
-      "@ever-co/user-feature": [
-        "libs/web/user/feature/src/index.ts"
-      ],
-      "@ever-co/user-ui": [
-        "libs/web/user/ui/src/index.ts"
-      ],
-      "@ever-co/video-data-access": [
-        "libs/web/video/data-access/src/index.ts"
-      ],
-      "@ever-co/video-feature": [
-        "libs/web/video/feature/src/index.ts"
-      ],
-      "@ever-co/video-ui": [
-        "libs/web/video/ui/src/index.ts"
-      ],
-      "@ever-co/web-dashboard": [
-        "libs/web/dashboard/src/index.ts"
-      ],
-      "@ever-co/web-search": [
-        "libs/web/search/src/index.ts"
-      ],
+      "@ever-co/upload-feature": ["libs/web/upload/features/src/index.ts"],
+      "@ever-co/user-data-access": ["libs/web/user/data-access/src/index.ts"],
+      "@ever-co/user-feature": ["libs/web/user/feature/src/index.ts"],
+      "@ever-co/user-ui": ["libs/web/user/ui/src/index.ts"],
+      "@ever-co/video-data-access": ["libs/web/video/data-access/src/index.ts"],
+      "@ever-co/video-feature": ["libs/web/video/feature/src/index.ts"],
+      "@ever-co/video-ui": ["libs/web/video/ui/src/index.ts"],
+      "@ever-co/web-dashboard": ["libs/web/dashboard/src/index.ts"],
+      "@ever-co/web-search": ["libs/web/search/src/index.ts"],
       "@ever-co/web-setting-data-access": [
         "libs/web/settings/data-access/src/index.ts"
       ],
@@ -169,15 +98,9 @@
       "@ever-co/webcam-data-access": [
         "libs/web/webcam/data-access/src/index.ts"
       ],
-      "@ever-co/webcam-feature": [
-        "libs/web/webcam/feature/src/index.ts"
-      ],
-      "@ever-co/window": [
-        "libs/electron/window/src/index.ts"
-      ],
-      "@ever-gauzy/desktop-core": [
-        "node_modules/@ever-gauzy/desktop-core/*"
-      ]
+      "@ever-co/webcam-feature": ["libs/web/webcam/feature/src/index.ts"],
+      "@ever-co/window": ["libs/electron/window/src/index.ts"],
+      "@ever-gauzy/desktop-core": ["node_modules/@ever-gauzy/desktop-core/*"]
     },
     "sourceMap": true,
     "declaration": false,
@@ -187,16 +110,9 @@
     "importHelpers": true,
     "target": "ESNext",
     "module": "esnext",
-    "lib": [
-      "es2020",
-      "ESNext",
-      "dom"
-    ],
+    "lib": ["es2020", "ESNext", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true
   },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+  "exclude": ["node_modules", "tmp"]
 }

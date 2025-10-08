@@ -23,7 +23,6 @@ import { provideGenerateVideoDataAccess } from '@ever-co/generate-video-data-acc
 import { provideNotificationDataAccess } from '@ever-co/notification-data-access';
 import { providePhotoDataAccess } from '@ever-co/photo-data-access';
 import { provideScreenshotDataAccess } from '@ever-co/screenshot-data-access';
-import { REC_ENV } from '@ever-co/shared-service';
 import { provideSidebarDataAccess } from '@ever-co/sidebar-data-access';
 import { provideTimelineDataAccess } from '@ever-co/timeline-data-access';
 import { provideTimeLogDataAccess } from '@ever-co/timesheet-data-access';
@@ -35,12 +34,13 @@ import { provideWebcamDataAccess } from '@ever-co/webcam-data-access';
 import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { Environment } from '../environment/environment';
+import { provideEnvironment } from '@ever-co/shared-environment';
 import { appRoutes } from './app.routes';
 import { provideCoreDataAccess } from '@ever-co/core-data-access';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    // Core providers
     provideScreenshotDataAccess(),
     provideBreadcrumbDataAccess(),
     provideVideoDataAccess(),
@@ -68,9 +68,6 @@ export const appConfig: ApplicationConfig = {
     provideUserDataAccess(),
     provideAuthDataAccess(),
     provideCoreDataAccess(),
-    {
-      provide: REC_ENV,
-      useClass: Environment,
-    },
+    provideEnvironment(),
   ],
 };

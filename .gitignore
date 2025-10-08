@@ -46,6 +46,14 @@ Thumbs.db
 
 .nx
 
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Generated environment files
+apps/ui/src/environment/environment.dev.ts
+apps/ui/src/environment/environment.prod.ts
 
 #Ignore cursor AI rules
 .cursor/rules/codacy.mdc
