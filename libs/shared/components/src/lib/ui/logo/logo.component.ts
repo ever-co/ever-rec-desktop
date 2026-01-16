@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   ChangeDetectionStrategy,
   Component,
@@ -10,7 +10,7 @@ import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'lib-logo',
-  imports: [CommonModule, RouterLink],
+  imports: [RouterLink],
   templateUrl: './logo.component.html',
   styleUrl: './logo.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -5,27 +5,22 @@
   "projectType": "library",
   "release": {
     "version": {
-      "generatorOptions": {
-        "packageRoot": "dist/{projectRoot}",
-        "currentVersionResolver": "git-tag",
-        "fallbackCurrentVersionResolver": "disk"
-      }
+      "currentVersionResolver": "git-tag",
+      "fallbackCurrentVersionResolver": "disk",
+      "preserveLocalDependencyProtocols": false,
+      "manifestRootsToUpdate": ["dist/{projectRoot}"]
     }
   },
   "tags": [],
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/electron/window",
         "main": "libs/electron/window/src/index.ts",
         "tsConfig": "libs/electron/window/tsconfig.lib.json",
-        "assets": [
-          "libs/electron/window/*.md"
-        ]
+        "assets": ["libs/electron/window/*.md"]
       }
     },
     "nx-release-publish": {
@@ -35,9 +30,7 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "jestConfig": "libs/electron/window/jest.config.ts"
       }
@@ -50,23 +43,16 @@
         "pushTags": true,
         "trackDeps": true,
         "baseBranch": "develop",
-        "postTargets": [
-          "build",
-          "publish"
-        ]
+        "postTargets": ["build", "publish"]
       }
     },
     "publish": {
       "executor": "nx:run-commands",
       "options": {
         "parallel": false,
-        "commands": [
-          "cd dist/libs/electron/window && npm publish"
-        ]
+        "commands": ["cd dist/libs/electron/window && npm publish"]
       },
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "parallelism": false
     }
   }
