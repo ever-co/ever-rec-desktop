@@ -19,8 +19,10 @@
     </ngx-charts-bubble-chart>
   </div>
   <div class="mt-4 text-sm text-gray-500">
-    <p *ngIf="data.length === 0" class="text-amber-600">
-      No data available to display.
-    </p>
+    @if (data.length === 0) {
+      <p class="text-amber-600">
+        No data available to display.
+      </p>
+    }
   </div>
 </div>

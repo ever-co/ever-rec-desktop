@@ -1,0 +1,47 @@
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+import * as fromAuth from './user-update.reducer';
+
+export const selectUserUpdateState =
+  createFeatureSelector<fromAuth.IUserUpdateState>(
+    fromAuth.userUpdateFeatureKey,
+  );
+
+export const selectFullNameUpdating = createSelector(
+  selectUserUpdateState,
+  (state) => state.fullNameUpdating,
+);
+
+export const selectEmailUpdating = createSelector(
+  selectUserUpdateState,
+  (state) => state.emailUpdating,
+);
+
+export const selectFullNameUpdateError = createSelector(
+  selectUserUpdateState,
+  (state) => state.fullNameError,
+);
+
+export const selectEmailUpdateError = createSelector(
+  selectUserUpdateState,
+  (state) => state.emailError,
+);
+
+export const selectPasswordUpdateError = createSelector(
+  selectUserUpdateState,
+  (state) => state.passwordError,
+);
+
+export const selectPasswordUpdating = createSelector(
+  selectUserUpdateState,
+  (state) => state.passwordUpdating,
+);
+
+export const selectAvatarUploadError = createSelector(
+  selectUserUpdateState,
+  (state) => state.avatarError,
+);
+
+export const selectAvatarUploading = createSelector(
+  selectUserUpdateState,
+  (state) => state.avatarUploading,
+);

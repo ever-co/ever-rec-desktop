@@ -11,12 +11,18 @@
       "@ever-co/audio-data-access": ["libs/web/audio/data-access/src/index.ts"],
       "@ever-co/audio-feature": ["libs/web/audio/feature/src/index.ts"],
       "@ever-co/audio-ui": ["libs/web/audio/ui/src/index.ts"],
+      "@ever-co/auth-data-access": ["libs/web/auth/data-access/src/index.ts"],
+      "@ever-co/auth-feature": ["libs/web/auth/feature/src/index.ts"],
+      "@ever-co/auth-ui": ["libs/web/auth/ui/src/index.ts"],
       "@ever-co/breadcrumb-data-access": [
         "libs/web/breadcrumb/data-access/src/index.ts"
       ],
       "@ever-co/breadcrumb-feature": [
         "libs/web/breadcrumb/feature/src/index.ts"
       ],
+      "@ever-co/core-data-access": ["libs/core/data-access/src/index.ts"],
+      "@ever-co/core-feature": ["libs/core/feature/src/index.ts"],
+      "@ever-co/core-ui": ["libs/core/ui/src/index.ts"],
       "@ever-co/date-picker-data-access": [
         "libs/shared/date-picker/data-access/src/index.ts"
       ],
@@ -55,6 +61,7 @@
       ],
       "@ever-co/screenshot-ui": ["libs/web/screenshot/ui/src/index.ts"],
       "@ever-co/shared-components": ["libs/shared/components/src/index.ts"],
+      "@ever-co/shared-environment": ["libs/shared/environment/src/index.ts"],
       "@ever-co/shared-service": ["libs/shared/service/src/index.ts"],
       "@ever-co/shared-utils": ["libs/shared/utils/src/index.ts"],
       "@ever-co/sidebar-data-access": [
@@ -74,6 +81,9 @@
         "libs/web/upload/data-access/src/index.ts"
       ],
       "@ever-co/upload-feature": ["libs/web/upload/features/src/index.ts"],
+      "@ever-co/user-data-access": ["libs/web/user/data-access/src/index.ts"],
+      "@ever-co/user-feature": ["libs/web/user/feature/src/index.ts"],
+      "@ever-co/user-ui": ["libs/web/user/ui/src/index.ts"],
       "@ever-co/video-data-access": ["libs/web/video/data-access/src/index.ts"],
       "@ever-co/video-feature": ["libs/web/video/feature/src/index.ts"],
       "@ever-co/video-ui": ["libs/web/video/ui/src/index.ts"],

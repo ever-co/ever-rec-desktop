@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnDestroy } from '@angular/core';
+
+import { Component, inject, OnDestroy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import {
@@ -9,6 +9,7 @@ import {
   RouterOutlet,
 } from '@angular/router';
 import { breadcrumbActions } from '@ever-co/breadcrumb-data-access';
+import { REC_ENV } from '@ever-co/shared-service';
 import { Store } from '@ngrx/store';
 import {
   distinctUntilChanged,
@@ -27,17 +28,18 @@ interface ILink {
 @Component({
   selector: 'lib-setting',
   imports: [
-    CommonModule,
     RouterOutlet,
     RouterLink,
     MatTabsModule,
-    MatIconModule,
-  ],
+    MatIconModule
+],
   templateUrl: './setting.component.html',
   styleUrl: './setting.component.scss',
 })
 export class SettingComponent implements OnDestroy {
   private readonly destroy$ = new Subject<void>();
+  private readonly env = inject(REC_ENV);
+
   public links: ILink[] = [
     {
       title: 'Generate Video',
@@ -63,11 +65,22 @@ export class SettingComponent implements OnDestroy {
 
   public activeLink = this.links[0];
 
-  constructor(private readonly store: Store, private readonly router: Router) {
+  constructor(
+    private readonly store: Store,
+    private readonly router: Router,
+  ) {
+    if (!this.env.isPlugin) {
+      this.links.push({
+        title: 'Profile',
+        route: 'user-profile',
+        icon: 'person',
+      });
+    }
+
     this.store.dispatch(
       breadcrumbActions.set({
         breadcrumbs: [{ label: 'Settings', url: '/settings' }],
-      })
+      }),
     );
 
     this.router.events
@@ -80,7 +93,7 @@ export class SettingComponent implements OnDestroy {
             this.links.find((link) => route.includes(link.route)) ||
             this.links[0];
         }),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }

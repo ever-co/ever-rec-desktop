@@ -7,6 +7,7 @@
     "inlineSources": true,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
+    "moduleResolution": "bundler"
   },
   "exclude": [
     "src/**/*.spec.ts",

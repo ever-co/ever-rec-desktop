@@ -1,17 +1,19 @@
 import {
   IActivity,
   IScreenshot,
+  ISession,
   ITimeline,
   ITimeLog,
   IVideo,
   TimeLogType,
 } from '@ever-co/shared-utils';
-import { Column, Entity, OneToMany, Relation } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, Relation } from 'typeorm';
 import { Activity } from './activity.entity';
 import { Base } from './base.entity';
 import { Screenshot } from './screenshot.entity';
 import { Timeline } from './timeline.entity';
 import { Video } from './video.entity';
+import { Session } from './session.entity';
 
 @Entity('time_log')
 export class TimeLog extends Base implements ITimeLog {
@@ -56,4 +58,11 @@ export class TimeLog extends Base implements ITimeLog {
     onDelete: 'SET NULL',
   })
   activities: Relation<IActivity[]>;
+
+  @ManyToOne(() => Session, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn()
+  session?: Relation<ISession>;
 }

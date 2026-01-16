@@ -1,0 +1,43 @@
+<form [formGroup]="form" (ngSubmit)="submitForm()" class="forgot-form">
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Email</mat-label>
+    <input
+      matInput
+      type="email"
+      formControlName="email"
+      placeholder="Enter your email"
+      autocomplete="email"
+      required
+      aria-label="Email"
+    />
+    @if (emailRequired) {
+      <mat-error>Email is required.</mat-error>
+    }
+    @if (emailInvalid) {
+      <mat-error>Please enter a valid email address.</mat-error>
+    }
+    @if (emailMinLength) {
+      <mat-error>Email must be at least 5 characters.</mat-error>
+    }
+    @if (emailMaxLength) {
+      <mat-error>Email must be at most 50 characters.</mat-error>
+    }
+  </mat-form-field>
+
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    class="mt-4"
+    [disabled]="form.invalid || loading()"
+  >
+    @if (loading()) {
+      <div class="flex items-center">
+        <mat-icon><mat-spinner diameter="16"></mat-spinner></mat-icon>
+        Requesting new password...
+      </div>
+    } @else {
+      Request password
+    }
+  </button>
+</form>

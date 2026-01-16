@@ -5,18 +5,17 @@ import { TrackComponent } from '../../components/track/track.component';
 import { TimeDisplayComponent } from '../../components/time-display/time-display.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'lib-audio-inline',
   imports: [
-    CommonModule,
     MatIconModule,
     MatButtonModule,
     ProgressComponent,
     TrackComponent,
-    TimeDisplayComponent,
-  ],
+    TimeDisplayComponent
+],
   templateUrl: './inline.component.html',
   styleUrl: './inline.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

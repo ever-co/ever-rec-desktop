@@ -19,7 +19,8 @@ import { WorkerFactory } from '../../worker-factory.service';
 import { ContextUploader } from '../context-uploader';
 import { UploadError } from '../models/upload-error.model';
 import { GauzyUploaderStrategy } from '../strategies/gauzy.uploader';
-import { S3UploaderStrategy } from '../strategies/s3.uploader';
+import { UploaderStrategyFactory } from '../uploader-strategy.factory';
+import { SynchronizeFactory } from './synchronize/synchronize.factory';
 
 export abstract class UploaderService<T>
   implements IUploaderService, ILoggable
@@ -27,6 +28,10 @@ export abstract class UploaderService<T>
   readonly logger: ILogger = new ElectronLogger('Uploader Service');
 
   protected readonly context = new ContextUploader();
+
+  protected readonly synchronizeFactory = new SynchronizeFactory();
+
+  private readonly strategyFactory = new UploaderStrategyFactory();
 
   protected constructor(protected readonly service: IUploadableService<T>) {}
 
@@ -38,23 +43,9 @@ export abstract class UploaderService<T>
     try {
       this.logger.info('Start uploading...');
 
-      this.context.strategy = new GauzyUploaderStrategy(upload.type);
+      this.context.strategy = this.strategyFactory.create(upload, s3Config);
 
-      let config = await this.loadConfig();
-      if (isEmpty(config) && s3Config) {
-        this.context.strategy = new S3UploaderStrategy(s3Config, upload.type);
-        config = await this.loadConfig();
-
-        if (isEmpty(config)) {
-          this.logger.error('Error getting signed URL');
-          const uploadError = new UploadError(
-            'Error getting signed URL',
-            upload.ids[0],
-          );
-          event.reply(Channel.UPLOAD_ERROR, uploadError.clone());
-          return;
-        }
-      }
+      const config = await this.loadConfig();
 
       if (isEmpty(config)) {
         this.logger.info('We cannot proceed with the upload');

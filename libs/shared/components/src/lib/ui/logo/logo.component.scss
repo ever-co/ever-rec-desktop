@@ -1,0 +1,12 @@
+.logo {
+  display: inline-block;
+  height: auto;
+  max-width: 100%;
+  filter: invert(10%) sepia(100%) saturate(5000%) hue-rotate(240deg)
+    brightness(70%);
+}
+
+a.logo {
+  text-decoration: none;
+  line-height: 0;
+}

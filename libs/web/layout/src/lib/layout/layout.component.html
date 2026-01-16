@@ -1,35 +1,49 @@
 <!-- layout.component.html -->
 <mat-sidenav-container class="h-screen flex flex-col md:flex-row bg-gray-50">
-  <mat-sidenav [mode]="isMobileView ? 'over' : 'side'" [(opened)]="isExpanded"
-    class="sidenav border-r border-gray-200 md:flex md:flex-col">
+  <mat-sidenav
+    [mode]="isMobileView ? 'over' : 'side'"
+    [(opened)]="isExpanded"
+    class="sidenav border-r border-gray-200 md:flex md:flex-col"
+  >
     <!-- Sidenav Header -->
     <header class="flex items-center gap-2 p-6 pr-2 border-b border-gray-200">
-      <mat-icon [matTooltip]="env.appName" [matTooltipDisabled]="!isTablet" class="text-gray-700" aria-label="App Logo">
-        {{ env.icon }}
-      </mat-icon>
+      <div class="max-h-[32px]">
+        <lib-logo
+          [alt]="env.appName"
+          [width]="isMobileView ? 135 : isTablet ? 17.25 : 115"
+          routerLink="/"
+          [isTablet]="isTablet"
+        />
+      </div>
 
-      @if (!isTablet) {
-      <span class="text-lg font-semibold text-gray-700 truncate">{{ env.appName }}</span>
-      } @if (isMobileView) {
-      <button mat-icon-button class="ml-auto" (click)="toggleSidenav()" aria-label="Close Menu">
-        <mat-icon>close</mat-icon>
-      </button>
+      @if (isMobileView) {
+        <button
+          mat-icon-button
+          class="ml-auto"
+          (click)="toggleSidenav()"
+          aria-label="Close Menu"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
       }
     </header>
 
     <!-- Date Picker for Mobile -->
     @if (isMobileView) {
-    <div class="px-2 py-4 border-b border-gray-200">
-      <lib-date-picker></lib-date-picker>
-    </div>
+      <div class="px-2 py-4 border-b border-gray-200">
+        <lib-date-picker></lib-date-picker>
+      </div>
     }
 
     <!-- Sidebar Menu -->
     <lib-sidebar class="flex-grow"></lib-sidebar>
 
     <!-- Footer Actions -->
-    <footer class="p-4 mt-auto border-t border-gray-200 flex flex-col items-center gap-4">
+    <footer
+      class="p-4 mt-auto border-t border-gray-200 flex flex-col items-center gap-4"
+    >
       <lib-start></lib-start>
+      <lib-auth-badge class="absolute left-6 bottom-3"></lib-auth-badge>
     </footer>
   </mat-sidenav>
 
@@ -38,9 +52,13 @@
     <!-- Header -->
     <header class="flex items-center gap-4 p-4 border-b border-gray-200">
       @if (!isExpanded) {
-      <button mat-icon-button (click)="toggleSidenav()" aria-label="Open Menu">
-        <mat-icon>menu</mat-icon>
-      </button>
+        <button
+          mat-icon-button
+          (click)="toggleSidenav()"
+          aria-label="Open Menu"
+        >
+          <mat-icon>menu</mat-icon>
+        </button>
       }
 
       <div class="w-full flex-shrink">
@@ -48,9 +66,9 @@
       </div>
 
       @if (!isMobileView) {
-      <div class="flex-shrink-0">
-        <lib-date-picker></lib-date-picker>
-      </div>
+        <div class="flex-shrink-0">
+          <lib-date-picker></lib-date-picker>
+        </div>
       }
 
       <div class="flex-shrink-0">
@@ -69,3 +87,4 @@
     </main>
   </mat-sidenav-content>
 </mat-sidenav-container>
+

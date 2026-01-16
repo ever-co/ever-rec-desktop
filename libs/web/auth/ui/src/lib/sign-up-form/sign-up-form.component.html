@@ -1,0 +1,142 @@
+<form [formGroup]="form" (ngSubmit)="submitForm()" class="signup-form">
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Full Name</mat-label>
+    <input
+      matInput
+      type="text"
+      formControlName="fullName"
+      placeholder="Enter your full name"
+      required
+      aria-label="Name"
+    />
+    @if (fullNameRequired) {
+      <mat-error>Full name is required.</mat-error>
+    }
+    @if (fullNameMinLength) {
+      <mat-error>Full name must be at least 2 characters.</mat-error>
+    }
+    @if (fullNameMaxLength) {
+      <mat-error>Full name must be at most 50 characters.</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Email</mat-label>
+    <input
+      matInput
+      type="email"
+      formControlName="email"
+      placeholder="Enter your email"
+      autocomplete="email"
+      required
+      aria-label="Email"
+    />
+    @if (emailRequired) {
+      <mat-error>Email is required.</mat-error>
+    }
+    @if (emailInvalid) {
+      <mat-error>Please enter a valid email address.</mat-error>
+    }
+    @if (emailMinLength) {
+      <mat-error>Email must be at least 5 characters.</mat-error>
+    }
+    @if (emailMaxLength) {
+      <mat-error>Email must be at most 50 characters.</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Password</mat-label>
+    <input
+      matInput
+      [type]="passwordInputType()"
+      formControlName="password"
+      placeholder="Enter your password"
+      autocomplete="new-password"
+      required
+      aria-label="Password"
+    />
+    <button
+      mat-icon-button
+      matSuffix
+      type="button"
+      (click)="togglePasswordVisibility()"
+      [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
+    >
+      <mat-icon>{{
+        showPassword() ? 'visibility' : 'visibility_off'
+      }}</mat-icon>
+    </button>
+    @if (passwordRequired) {
+      <mat-error>Password is required.</mat-error>
+    }
+    @if (passwordMinLength) {
+      <mat-error>Password must be at least 8 characters.</mat-error>
+    }
+    @if (passwordPattern) {
+      <mat-error>
+        Password must contain at least one uppercase letter, one lowercase
+        letter, one number, and one special character.
+      </mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Confirm Password</mat-label>
+    <input
+      matInput
+      [type]="confirmPasswordInputType()"
+      formControlName="confirmPassword"
+      placeholder="Confirm your password"
+      autocomplete="current-password"
+      required
+      aria-label="Confirm Password"
+      (input)="onConfirmPasswordInput()"
+    />
+    <button
+      mat-icon-button
+      matSuffix
+      type="button"
+      (click)="toggleConfirmPasswordVisibility()"
+      [attr.aria-label]="
+        showConfirmPassword() ? 'Hide password' : 'Show password'
+      "
+    >
+      <mat-icon>{{
+        showConfirmPassword() ? 'visibility' : 'visibility_off'
+      }}</mat-icon>
+    </button>
+    @if (confirmPasswordRequired) {
+      <mat-error>Confirmation is required.</mat-error>
+    }
+    @if (confirmPasswordMismatch) {
+      <mat-error>Passwords do not match.</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-checkbox formControlName="agreed">
+    Agree to
+    <a
+      class="text-blue-700 hover:underline"
+      (click)="openTermsAndConditions($event)"
+      >Terms & Conditions</a
+    >
+    and
+    <a class="text-blue-700 hover:underline" (click)="openPrivacyPolicy($event)"
+      >Privacy Policy</a
+    ></mat-checkbox
+  >
+
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    class="mt-4"
+    [disabled]="form.invalid || loading()"
+  >
+    Sign Up
+    @if (loading()) {
+      <mat-icon><mat-spinner diameter="16"> </mat-spinner></mat-icon>
+    }
+  </button>
+</form>
