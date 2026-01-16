@@ -1,6 +1,6 @@
 // layout.component.ts
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { CommonModule } from '@angular/common';
+
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -13,24 +13,25 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterOutlet } from '@angular/router';
+import { AuthBadgeComponent } from '@ever-co/auth-feature';
 import { breadcrumbActions } from '@ever-co/breadcrumb-data-access';
 import { BreadcrumbComponent } from '@ever-co/breadcrumb-feature';
-import { NotificationBadgeComponent } from '@ever-co/notification-feature';
+import { datePickerActions } from '@ever-co/date-picker-data-access';
 import { DatePickerComponent } from '@ever-co/date-picker-feature';
+import { NotificationBadgeComponent } from '@ever-co/notification-feature';
 import { LayoutService, REC_ENV } from '@ever-co/shared-service';
+import { currentWeekTillNow, IEnvironment } from '@ever-co/shared-utils';
 import { SidebarComponent } from '@ever-co/sidebar-feature';
+import { UploadBadgeComponent } from '@ever-co/upload-feature';
 import { SearchComponent } from '@ever-co/web-search';
 import { Store } from '@ngrx/store';
 import { Subject, takeUntil } from 'rxjs';
-import { UploadBadgeComponent } from '@ever-co/upload-feature';
 import { StartComponent } from '../start/start.component';
-import { currentWeek, currentWeekTillNow, IEnvironment } from '@ever-co/shared-utils';
-import { datePickerActions } from '@ever-co/date-picker-data-access';
+import { LogoComponent } from '@ever-co/shared-components';
 
 @Component({
   selector: 'lib-layout',
   imports: [
-    CommonModule,
     BreadcrumbComponent,
     MatSidenavModule,
     MatListModule,
@@ -49,6 +50,8 @@ import { datePickerActions } from '@ever-co/date-picker-data-access';
     MatTooltipModule,
     NotificationBadgeComponent,
     UploadBadgeComponent,
+    AuthBadgeComponent,
+    LogoComponent
   ],
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
@@ -61,7 +64,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private readonly breakpointObserver: BreakpointObserver,
     private readonly layoutService: LayoutService,
     @Inject(REC_ENV)
-    public readonly env: IEnvironment
+    public readonly env: IEnvironment,
   ) {
     this.store.dispatch(datePickerActions.selectRange(currentWeekTillNow()));
   }

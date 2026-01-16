@@ -10,7 +10,7 @@ export default class App {
 
   static main(app: Electron.App): void {
     App.application = app;
-    App.application.setName('Ever Rec Desktop');
+    App.application.setName(process.env['APP_NAME'] || 'Ever Rec Desktop');
 
     App.application.on('ready', App.handleAppReady);
     App.application.on('activate', App.handleAppActivate);
@@ -49,7 +49,7 @@ export default class App {
         } else {
           callback(false); // Denied
         }
-      }
+      },
     );
   }
 
@@ -63,7 +63,7 @@ export default class App {
             callback({ video: sources[0], audio: 'loopback' });
           });
       },
-      { useSystemPicker: true }
+      { useSystemPicker: true },
     );
   }
 

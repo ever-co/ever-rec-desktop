@@ -1,6 +1,7 @@
 import { FormControl } from '@angular/forms';
 
 export interface IS3Config {
+  enabled: boolean;
   accessKeyId: string;
   accessKeySecret: string;
   region: string;
@@ -15,6 +16,7 @@ export interface IS3ConfigForm {
   region: FormControl<string | null>;
   s3Bucket: FormControl<string | null>;
   s3Endpoint: FormControl<string | null>;
+  enabled: FormControl<boolean | null>;
 }
 
 export interface IUploadConfig {

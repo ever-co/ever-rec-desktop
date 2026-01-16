@@ -1,0 +1,28 @@
+@let loading = loading$ | async;
+
+<lib-auth-container
+  title="Sign Up"
+  subtitle="To continue, please enter your details."
+  text="Already have an account?"
+  link="/auth/login"
+  linkText="Login"
+>
+  <lib-sign-up-form
+    class="w-full"
+    [loading]="loading && !isGoogle()"
+    (signUpWithEmail)="signUpWithEmail($event)"
+  ></lib-sign-up-form>
+
+  <div class="signup-divider">
+    <span class="signup-divider-line"></span>
+    <span class="signup-divider-text">OR</span>
+    <span class="signup-divider-line"></span>
+  </div>
+
+  <lib-google-button
+    class="w-full"
+    [loading]="!!loading && isGoogle()"
+    (signInWithGoogle)="signInWithGoogle($event)"
+  >
+  </lib-google-button>
+</lib-auth-container>

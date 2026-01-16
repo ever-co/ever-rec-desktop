@@ -1,7 +1,6 @@
 import {
   IAudio,
   IAudioService,
-  IAudioUpload,
   IUpload,
   IUploadDone,
 } from '@ever-co/shared-utils';
@@ -34,18 +33,10 @@ export class AudioUploaderService extends UploaderService<IAudio> {
     }));
   }
 
-  protected override async synchronize({
-    itemId,
-    result,
-  }: IUploadDone): Promise<void> {
+  protected override async synchronize(uploaded: IUploadDone): Promise<void> {
     await Promise.all([
-      this.service.update(itemId, { synced: true }),
-      this.service.saveUpload<IAudioUpload>({
-        id: itemId,
-        remoteUrl: result.fullUrl,
-        remoteId: result.id,
-        uploadedAt: result.recordedAt,
-      }),
+      this.service.update(uploaded.itemId, { synced: true }),
+      this.synchronizeFactory.synchronize(this.context.strategy, uploaded),
     ]);
   }
 }

@@ -32,3 +32,4 @@ export * from './lib/services/photo.service';
 export * from './lib/services/photo-metadata.service';
 export * from './lib/services/audio.service';
 export * from './lib/services/audio-metadata.service';
+export * from './lib/services/user-session.service';

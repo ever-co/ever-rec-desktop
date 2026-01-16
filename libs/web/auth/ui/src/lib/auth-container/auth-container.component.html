@@ -1,0 +1,24 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <lib-logo [width]="135" class="block mb-6" routerLink="/" />
+      <h1 class="auth-title">{{ title() }}</h1>
+      @if (subtitle()) {
+      <p class="auth-subtitle">{{ subtitle() }}</p>
+      }
+    </div>
+
+    <ng-content></ng-content>
+
+    @if (footerText() || footerLink() || footerLinkText()) {
+    <div class="auth-footer">
+      @if (footerText()) {
+      <span>{{ footerText() }}</span>
+      }
+      @if (footerLink() && footerLinkText()) {
+      <a class="auth-link" [routerLink]="footerLink()">{{ footerLinkText() }}</a>
+      }
+    </div>
+    }
+  </div>
+</div>

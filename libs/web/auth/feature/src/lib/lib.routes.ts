@@ -1,0 +1,33 @@
+import { Route } from '@angular/router';
+
+export const authRoutes: Route[] = [
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./login-page/login-page.component').then(
+        (m) => m.LoginPageComponent,
+      ),
+  },
+  {
+    path: 'sign-up',
+    loadComponent: () =>
+      import('./sign-up-page/sign-up-page.component').then(
+        (m) => m.SignUpPageComponent,
+      ),
+  },
+  {
+    path: 'verification',
+    loadComponent: () =>
+      import('./verification-page/verification-page.component').then(
+        (m) => m.VerificationPageComponent,
+      ),
+  },
+  {
+    path: 'forgot-password',
+    loadComponent: () =>
+      import('./forgot-page/forgot-page.component').then(
+        (m) => m.ForgotPageComponent,
+      ),
+  },
+];

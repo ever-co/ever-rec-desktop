@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import {
   AudioPlayerMode,
@@ -12,12 +12,11 @@ import { PlayerComponent } from '../modes/player/player.component';
 @Component({
   selector: 'lib-player-container',
   imports: [
-    CommonModule,
     PlayerComponent,
     InlineComponent,
     CardComponent,
-    HostComponent,
-  ],
+    HostComponent
+],
   templateUrl: './container.component.html',
   styleUrl: './container.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

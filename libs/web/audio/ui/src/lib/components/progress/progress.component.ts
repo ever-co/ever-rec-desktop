@@ -5,12 +5,12 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'lib-progress-bar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './progress.component.html',
   styleUrl: './progress.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

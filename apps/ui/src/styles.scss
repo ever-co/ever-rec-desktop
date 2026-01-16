@@ -5,10 +5,9 @@
 @tailwind utilities;
 
 :root {
-  --border-radius: var(
-    --mdc-outlined-card-container-shape,
-    var(--mat-sys-corner-medium)
-  );
+  --border-radius: var(--mat-card-outlined-container-shape,
+      --mat-card-outlined-container-shape,
+      var(--mat-sys-corner-medium));
 }
 
 @layer utilities {
@@ -42,28 +41,61 @@
 }
 
 .mat-mdc-snack-bar-container {
+  // Base styles for all snackbars
+  --snackbar-border-radius: 8px;
+
+  border-radius: var(--snackbar-border-radius);
+
+  // Success variant
   &.bg-success {
-    --mdc-snackbar-container-color: theme('colors.green.100');
-    --mat-mdc-snack-bar-button-color: theme('colors.green.700');
-    --mdc-snackbar-supporting-text-color: theme('colors.green.700');
+    --mat-snack-bar-container-color: theme('colors.green.100');
+    --mat-snack-bar-button-color: theme('colors.green.700');
+    --mat-snack-bar-supporting-text-color: theme('colors.green.700');
+
+    @media (prefers-color-scheme: dark) {
+      --mat-snack-bar-container-color: theme('colors.green.900');
+      --mat-snack-bar-button-color: theme('colors.green.300');
+      --mat-snack-bar-supporting-text-color: theme('colors.green.300');
+    }
   }
 
+  // Error variant
   &.bg-error {
-    --mdc-snackbar-container-color: theme('colors.red.100');
-    --mat-mdc-snack-bar-button-color: theme('colors.red.700');
-    --mdc-snackbar-supporting-text-color: theme('colors.red.700');
+    --mat-snack-bar-container-color: theme('colors.red.100');
+    --mat-snack-bar-button-color: theme('colors.red.700');
+    --mat-snack-bar-supporting-text-color: theme('colors.red.700');
+
+    @media (prefers-color-scheme: dark) {
+      --mat-snack-bar-container-color: theme('colors.red.900');
+      --mat-snack-bar-button-color: theme('colors.red.300');
+      --mat-snack-bar-supporting-text-color: theme('colors.red.300');
+    }
   }
 
+  // Info variant
   &.bg-info {
-    --mdc-snackbar-container-color: theme('colors.blue.100');
-    --mat-mdc-snack-bar-button-color: theme('colors.blue.700');
-    --mdc-snackbar-supporting-text-color: theme('colors.blue.700');
+    --mat-snack-bar-container-color: theme('colors.blue.100');
+    --mat-snack-bar-button-color: theme('colors.blue.700');
+    --mat-snack-bar-supporting-text-color: theme('colors.blue.700');
+
+    @media (prefers-color-scheme: dark) {
+      --mat-snack-bar-container-color: theme('colors.blue.900');
+      --mat-mdc-snack-bar-button-color: theme('colors.blue.300');
+      --mat-snack-bar-supporting-text-color: theme('colors.blue.300');
+    }
   }
 
+  // Warning variant
   &.bg-warning {
-    --mdc-snackbar-container-color: theme('colors.yellow.100');
-    --mat-mdc-snack-bar-button-color: theme('colors.yellow.700');
-    --mdc-snackbar-supporting-text-color: theme('colors.yellow.700');
+    --mat-snack-bar-container-color: theme('colors.amber.100');
+    --mat-snack-bar-button-color: theme('colors.amber.700');
+    --mat-snack-bar-supporting-text-color: theme('colors.amber.700');
+
+    @media (prefers-color-scheme: dark) {
+      --mat-snack-bar-container-color: theme('colors.amber.900');
+      --mat-snack-bar-button-color: theme('colors.amber.300');
+      --mat-snack-bar-supporting-text-color: theme('colors.amber.300');
+    }
   }
 }
 
@@ -107,22 +139,38 @@ mat-icon:active,
 
 html {
   color-scheme: light;
-  @include mat.theme(
-    (
-      color: mat.$azure-palette,
+  @include mat.theme((color: mat.$azure-palette,
       typography: Roboto,
       density: 0,
-    )
-  );
+    ));
 }
 
-@include mat.typography-hierarchy(
-  mat.define-theme(
-    (
-      typography: (
-        use-system-variables: true,
+@include mat.typography-hierarchy(mat.define-theme((typography: (use-system-variables: true,
         system-variables-prefix: mat-sys,
       ),
-    )
-  )
-);
+    )));
+.external-link {
+  color: theme('colors.blue.600');
+  text-decoration: none;
+  border-bottom: 1px dotted theme('colors.blue.600');
+  transition: color 0.2s ease;
+}
+
+.external-link:hover {
+  color: theme('colors.blue.700');
+  text-decoration: underline;
+}
+
+.custom-link {
+  color: theme('colors.pink.600');
+  font-weight: 500;
+}
+
+/* Style based on protocol */
+.external-link[href^="mailto:"] {
+  color: theme('colors.pink.700');
+}
+
+.external-link[href^="tel:"] {
+  color: theme('colors.green.600');
+}

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnDestroy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -22,7 +22,7 @@ interface ILink {
 
 @Component({
   selector: 'lib-library',
-  imports: [CommonModule, RouterModule, MatTabsModule, MatIconModule],
+  imports: [RouterModule, MatTabsModule, MatIconModule],
   templateUrl: './library.component.html',
   styleUrl: './library.component.scss',
 })

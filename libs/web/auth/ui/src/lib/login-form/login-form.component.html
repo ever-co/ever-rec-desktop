@@ -1,0 +1,82 @@
+<form [formGroup]="form" (ngSubmit)="submitForm()" class="login-form">
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Email</mat-label>
+    <input
+      matInput
+      type="email"
+      formControlName="email"
+      placeholder="Enter your email"
+      autocomplete="email"
+      required
+      aria-label="Email"
+    />
+    @if (emailRequired) {
+      <mat-error>Email is required.</mat-error>
+    }
+    @if (emailInvalid) {
+      <mat-error>Please enter a valid email address.</mat-error>
+    }
+    @if (emailMinLength) {
+      <mat-error>Email must be at least 5 characters.</mat-error>
+    }
+    @if (emailMaxLength) {
+      <mat-error>Email must be at most 50 characters.</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Password</mat-label>
+    <input
+      matInput
+      [type]="passwordInputType()"
+      formControlName="password"
+      placeholder="Enter your password"
+      autocomplete="on"
+      required
+      aria-label="Password"
+    />
+    <button
+      mat-icon-button
+      matSuffix
+      type="button"
+      (click)="togglePasswordVisibility()"
+      [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
+    >
+      <mat-icon>{{
+        showPassword() ? 'visibility' : 'visibility_off'
+      }}</mat-icon>
+    </button>
+    @if (passwordRequired) {
+      <mat-error>Password is required.</mat-error>
+    }
+    @if (passwordMinLength) {
+      <mat-error>Password must be at least 8 characters.</mat-error>
+    }
+    @if (passwordPattern) {
+      <mat-error
+        >Password must contain at least one letter and one number.</mat-error
+      >
+    }
+  </mat-form-field>
+
+  <div class="flex justify-end w-full">
+    <span
+      class="text-blue-900 text-sm cursor-pointer hover:underline"
+      (click)="onForgotPassword()"
+      >Forgot password?</span
+    >
+  </div>
+
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    class="mt-4"
+    [disabled]="form.invalid || loading()"
+  >
+    Login
+    @if (loading()) {
+      <mat-icon><mat-spinner diameter="16"> </mat-spinner></mat-icon>
+    }
+  </button>
+</form>

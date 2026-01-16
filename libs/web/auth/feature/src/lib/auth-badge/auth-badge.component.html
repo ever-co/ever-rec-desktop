@@ -1,0 +1,22 @@
+<!-- structure -->
+<lib-user-avatar
+  [show-tooltip]="true"
+  [show-name]="false"
+  [show-email]="false"
+  [libPopover]="menu"
+  [user]="user$ | async"
+  position="top"
+  class="relative"
+  size="sm"
+>
+  <span
+    class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center"
+  >
+  </span>
+</lib-user-avatar>
+
+<ng-template #menu>
+  <div class="p-3 shadow-sm bg-white backdrop-blur-md rounded-md">
+    <lib-auth-popup></lib-auth-popup>
+  </div>
+</ng-template>

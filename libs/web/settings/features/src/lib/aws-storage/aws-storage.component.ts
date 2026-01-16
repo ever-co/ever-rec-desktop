@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormControl,
@@ -21,17 +21,16 @@ import { Store } from '@ngrx/store';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
-    selector: 'lib-aws-storage',
-    imports: [
-        CommonModule,
-        MatFormFieldModule,
-        MatInputModule,
-        ReactiveFormsModule,
-        MatButtonModule,
-        MatSlideToggleModule,
-    ],
-    templateUrl: './aws-storage.component.html',
-    styleUrl: './aws-storage.component.scss'
+  selector: 'lib-aws-storage',
+  imports: [
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatSlideToggleModule
+  ],
+  templateUrl: './aws-storage.component.html',
+  styleUrl: './aws-storage.component.scss'
 })
 export class AwsStorageComponent implements OnInit, OnDestroy {
   public form!: FormGroup;
@@ -47,6 +46,7 @@ export class AwsStorageComponent implements OnInit, OnDestroy {
       region: new FormControl('', [Validators.required]),
       s3Endpoint: new FormControl('', [urlValidator()]),
       s3Bucket: new FormControl('', [Validators.required]),
+      enabled: new FormControl(false)
     });
   }
   ngOnInit(): void {

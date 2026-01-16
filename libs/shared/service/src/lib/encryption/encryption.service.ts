@@ -30,7 +30,7 @@ export class EncryptionService {
         const keyBuffer = this.base64ToArrayBuffer(savedKey);
         this.encryptionKey = await crypto.subtle.importKey(
           'raw',
-          keyBuffer,
+          new Uint8Array(keyBuffer),
           this.algorithm,
           false,
           ['encrypt', 'decrypt']

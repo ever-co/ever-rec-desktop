@@ -1,0 +1,117 @@
+---
+yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+
+# CodeRabbit Configuration for Ever Rec Desktop
+repository: ever-co/ever-rec-desktop
+defaultBranch: develop
+
+# Workflow configurations
+workflows:
+  lint:
+    enabled: true
+    command: "nx run-many --target=eslint:lint --all"
+    files: ["**/*.{ts,tsx,js,jsx,html}"]
+  test:
+    enabled: true
+    command: "nx run-many --target=test --all"
+    files: ["**/*.{ts,tsx,js,jsx}"]
+  build:
+    enabled: true
+    command: "nx run-many --target=build --all"
+    files: ["**/*.{ts,tsx,js,jsx,html,scss,css}"]
+
+# Matcher rules for different file types
+matchers:
+  - name: "Angular Components"
+    files: ["**/*.component.{ts,html,scss}"]
+    instructions: |
+      Focus on Angular best practices, component lifecycle, change detection, and accessibility.
+      Ensure proper use of OnPush change detection strategy where appropriate.
+      Check for proper input/output bindings and component communication patterns.
+
+  - name: "Angular Services"
+    files: ["**/*.service.ts"]
+    instructions: |
+      Review for proper dependency injection, singleton patterns, and service architecture.
+      Ensure services are properly typed and follow Angular service best practices.
+      Check for proper error handling and observables usage.
+
+  - name: "Electron Main Process"
+    files: ["apps/desktop/src/**/*.ts"]
+    instructions: |
+      Focus on Electron security best practices, IPC communication, and main process architecture.
+      Ensure proper handling of window management, menu creation, and system integration.
+      Check for proper error handling and logging in the main process.
+
+  - name: "Database Layer"
+    files: ["libs/electron/database/**/*.ts"]
+    instructions: |
+      Review database schema design, query optimization, and data access patterns.
+      Ensure proper use of TypeORM decorators and relationships.
+      Check for proper transaction handling and error management.
+
+  - name: "Shared Libraries"
+    files: ["libs/shared/**/*.ts"]
+    instructions: |
+      Focus on code reusability, proper abstraction, and library design patterns.
+      Ensure consistent API design and proper TypeScript typing.
+      Check for proper documentation and export patterns.
+
+# Ignore patterns
+ignore:
+  - "**/node_modules/**"
+  - "**/dist/**"
+  - "**/tmp/**"
+  - "**/*.d.ts"
+  - "**/jest.config.ts"
+  - "**/tsconfig*.json"
+  - "**/ng-package.json"
+  - "**/project.json"
+  - "**/package.json"
+  - "**/yarn.lock"
+  - "**/CHANGELOG.md"
+  - "**/README.md"
+  - "**/assets/**"
+  - "**/icons/**"
+  - "**/*.blockmap"
+  - "**/*.dmg"
+  - "**/*.zip"
+  - "**/latest-mac.yml"
+  - "**/builder-*.yml"
+  - "**/builder-*.yaml"
+
+# Review settings
+review:
+  # Focus on critical areas
+  focus:
+    - "security"
+    - "performance"
+    - "accessibility"
+    - "maintainability"
+
+  # Custom instructions for the project
+  instructions: |
+    This is an Electron desktop application for screen recording and capture built with Angular and Nx.
+
+    Key areas to focus on:
+    1. **Security**: Electron security best practices, especially around IPC and file system access
+    2. **Performance**: Memory management for video/audio processing, efficient rendering
+    3. **Accessibility**: WCAG compliance for the Angular UI components
+    4. **Architecture**: Proper separation between main/renderer processes, library boundaries
+    5. **Testing**: Ensure proper test coverage for critical functionality
+
+    Technology stack:
+    - Angular 20+ with standalone components
+    - Electron 38+
+    - Nx monorepo
+    - TypeORM with SQLite
+    - NgRx for state management
+    - Tailwind CSS for styling
+    - Jest for testing
+
+    Pay special attention to:
+    - Nx library boundaries and dependencies
+    - Electron IPC security
+    - Media processing efficiency
+    - Database query optimization
+    - Component reusability across the monorepo

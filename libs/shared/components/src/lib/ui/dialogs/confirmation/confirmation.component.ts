@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
@@ -10,7 +10,7 @@ import { ActionButtonComponent } from '../../action-button-group/button/action-b
 
 @Component({
   selector: 'lib-confirmation',
-  imports: [CommonModule, MatDialogModule, ActionButtonComponent],
+  imports: [MatDialogModule, ActionButtonComponent],
   templateUrl: './confirmation.component.html',
   styleUrl: './confirmation.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -41,7 +41,7 @@ export class ConfirmationComponent {
       danger: 'rgb(225 29 72)',
       warning: 'rgb(202 138 4)',
       primary:
-        'var(--mat-outlined-button-state-layer-color, var(--mat-sys-primary))',
+        'var(--mat-button-outlined-state-layer-color, var(--mat-sys-primary))',
       default: 'darkgray',
       info: ' rgb(37 99 235)',
     };

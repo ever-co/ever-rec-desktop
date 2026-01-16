@@ -2,6 +2,22 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.7.1](https://github.com/ever-co/ever-rec-desktop/compare/event-0.7.0...event-0.7.1) (2025-06-27)
+
+
+
+# [0.7.0](https://github.com/ever-co/ever-rec-desktop/compare/event-0.6.0...event-0.7.0) (2025-06-27)
+
+### Dependency Updates
+
+* `utils` updated to version `1.4.1`
+
+### Features
+
+* add ipc channel for range-based screenshot statistics ([0cd0e68](https://github.com/ever-co/ever-rec-desktop/commit/0cd0e68b2ea93a103757384ddd2b5c7dc6ba054e))
+
+
+
 # [0.6.0](https://github.com/ever-co/ever-rec-desktop/compare/event-0.5.5...event-0.6.0) (2025-06-21)
 
 ### Dependency Updates

@@ -11,7 +11,8 @@ import {
   IPaginationOptions,
 } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
-import { Between, FindManyOptions } from 'typeorm';
+import { Between } from 'typeorm';
+import { userSessionService } from './session.event';
 
 const audioService = new AudioService();
 
@@ -27,9 +28,18 @@ export function crudAudioEvent(): void {
         end = currentDay().end,
       } = options;
 
+      const user = await userSessionService.currentUser();
+
       const [data, count] = await audioService.findAndCount({
         where: {
           createdAt: Between(start, end),
+          timeLog: {
+            session: {
+              user: {
+                id: user.id
+              }
+            }
+          }
         },
         relations: ['metadata', 'chunks'],
         order: { createdAt: 'DESC' },

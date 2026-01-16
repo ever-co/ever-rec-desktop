@@ -12,7 +12,6 @@ import {
   currentDay,
   IFindManyOptions,
   IPaginationOptions,
-  IPhoto,
   IRange,
   IScreenshot,
   PHOTO_DIR,
@@ -23,6 +22,7 @@ import {
 } from '@ever-co/shared-utils';
 import { ipcMain } from 'electron';
 import { Between, ILike, IsNull } from 'typeorm';
+import { userSessionService } from './session.event';
 
 export function crudScreeshotEvents() {
   const screenshotService = new ScreenshotService();
@@ -42,9 +42,18 @@ export function crudScreeshotEvents() {
         deleted = false,
       } = options;
 
+      const user = await userSessionService.currentUser();
+
       const [data, count] = await screenshotService.findAndCount({
         where: {
           parent: IsNull(),
+          timeLog: {
+            session: {
+              user: {
+                id: user.id
+              }
+            }
+          },
           ...(!ignoreRange && {
             createdAt: Between(start, end),
           }),
@@ -93,11 +102,19 @@ export function crudScreeshotEvents() {
     Channel.SEARCHING,
     async (_, options = {} as IPaginationOptions<IScreenshot>) => {
       const { page = 1, limit = 10, filter = '' } = options;
+      const user = await userSessionService.currentUser();
 
       const [data, count] = await screenshotService.findAndCount({
         relations: ['metadata', 'metadata.application'],
         ...(filter && {
           where: {
+            timeLog: {
+              session: {
+                user: {
+                  id: user.id
+                }
+              }
+            },
             metadata: {
               description: ILike(`%${filter}%`),
             },
@@ -220,7 +237,8 @@ export function removeCrudScreenshotEvent(): void {
     Channel.REQUEST_SCREENSHOTS_STATISTICS,
     Channel.REQUEST_DELETE_SELECTED_SCREENSHOTS,
     Channel.REQUEST_TOP_APPLICATIONS_PRODUCTIVITY,
-    Channel.GET_SCREENSHOTS_TO_UPLOAD
+    Channel.GET_SCREENSHOTS_TO_UPLOAD,
+    Channel.REQUEST_SCREENSHOTS_STATISTICS_BY_RANGE
   ];
   channels.forEach((channel) => ipcMain.removeHandler(channel));
 }

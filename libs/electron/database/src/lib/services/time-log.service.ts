@@ -18,10 +18,12 @@ import {
 } from 'typeorm';
 import { TimeLog } from '../entities/time-log.entity';
 import { TimeLogRepository } from '../repositories/time-log.repository';
+import { UserSessionService } from './user-session.service';
 
 export class TimeLogService implements ILoggable {
   public logger: ILogger = new ElectronLogger('App:TimeLogService');
   private readonly repository = TimeLogRepository.instance;
+  private readonly userSessionService = new UserSessionService();
 
   public async save(input: ITimeLogSave): Promise<ITimeLog> {
     const timeLog = new TimeLog();
@@ -30,12 +32,19 @@ export class TimeLogService implements ILoggable {
     return this.repository.save(timeLog);
   }
 
-  public running(): Promise<ITimeLog | null> {
+  public async running(): Promise<ITimeLog | null> {
     this.logger.info('Get running time log');
+    const user = await this.userSessionService.currentUser();
+
     return this.findOne({
       where: {
         running: true,
         end: IsNull(),
+        session: {
+          user: {
+            id: user.id
+          }
+        }
       },
     });
   }
@@ -86,10 +95,14 @@ export class TimeLogService implements ILoggable {
 
   private async purgeConflictsIfExists() {
     this.logger.info('Purge conflicts if exists');
+    const user = await this.userSessionService.currentUser();
 
     const timelogs = await this.repository
       .createQueryBuilder('timeLog')
-      .where(
+      .leftJoin('timeLog.session', 'session')
+      .leftJoin('session.user', 'user')
+      .where('user.id = :userId', { userId: user.id })
+      .andWhere(
         new Brackets((qb) => {
           qb.where('timeLog.end IS NULL').orWhere(
             'timeLog.running = :running',
@@ -131,18 +144,29 @@ export class TimeLogService implements ILoggable {
   }
 
   public async statistics({ start, end }): Promise<number> {
+    const user = await this.userSessionService.currentUser();
     const sum = await this.repository.sum('duration', {
       createdAt: Between(start, end),
+      session: {
+        user: {
+          id: user.id
+        }
+      }
     });
     return sum || 0;
   }
 
-  public findLatest(): Promise<ITimeLog | null> {
+  public async findLatest(): Promise<ITimeLog | null> {
     this.logger.info('Get last time log');
+    const user = await this.userSessionService.currentUser();
+
     return this.repository
       .createQueryBuilder('time_log')
+      .leftJoin('time_log.session', 'session')
+      .leftJoin('session.user', 'user')
+      .where('user.id = :userId', { userId: user.id })
       .orderBy('time_log.createdAt', 'DESC')
-      .take(1)
+      .limit(1)
       .getOne();
   }
 
@@ -153,33 +177,53 @@ export class TimeLogService implements ILoggable {
     range?: IRange;
     id?: string;
   }): Promise<string> {
+    const user = await this.userSessionService.currentUser();
+
     const query = this.repository
       .createQueryBuilder('time_log')
       .leftJoin('time_log.screenshots', 'screenshot')
       .leftJoin('screenshot.metadata', 'metadata')
-      .select("GROUP_CONCAT(metadata.description, ';')", 'context');
+      .leftJoin('time_log.session', 'session')
+      .leftJoin('session.user', 'user')
+      .select("GROUP_CONCAT(DISTINCT metadata.description)", 'context')
+      .andWhere('user.id = :userId', { userId: user.id });
 
     if (id) {
       query
         .andWhere('time_log.id = :id', { id })
         .addSelect('time_log.duration', 'duration');
-    } else if (range) {
-      query.where('time_log.createdAt BETWEEN :start AND :end', range);
+    }
+
+    if (range) {
+      query.andWhere('time_log.createdAt BETWEEN :start AND :end', {
+        start: range.start,
+        end: range.end,
+      });
     }
 
     query.groupBy('time_log.id');
 
-    const result = await query.getRawOne();
+    const result = await query.getRawOne<{ context: string; duration?: number }>();
 
-    const duration = id
-      ? result.duration
-      : await this.repository.sum('duration', {
-          createdAt: Between(String(range.start), String(range.end)),
-        });
+    // normalize context
+    const descriptions = result?.context
+      ? result.context.split(',').join(';') // replace default `,` with `;`
+      : 'Not working';
+
+    // duration logic
+    let duration = 0;
+    if (id && result?.duration) {
+      duration = result.duration;
+    } else if (range) {
+      duration = await this.repository.sum('duration', {
+        createdAt: Between(String(range.start), String(range.end)),
+        session: { user: { id: user.id } },
+      });
+    }
 
     return JSON.stringify({
-      context: result.context || 'Not working',
-      worked: (duration || 0) + 'seconds',
+      context: descriptions,
+      worked: `${duration || 0} seconds`,
     });
   }
 }

@@ -32,7 +32,7 @@ export class AudioService {
   }
 
   public delete(audio: IAudio): Observable<void> {
-    return this.electronService.invoke$(Channel.DELETE_PHOTO, audio);
+    return this.electronService.invoke$(Channel.DELETE_AUDIO, audio);
   }
 
   public deleteAll(audios?: IAudio[]): Observable<void> {

@@ -21,6 +21,9 @@ export interface IUpload {
   type: UploadType;
   key: string;
   ids: string[];
+  refreshToken?: string;
+  token?: string;
+  apiUrl?: string;
 }
 
 export interface IUploadProgress {
@@ -33,9 +36,9 @@ export interface IUploadError {
   itemId: string;
 }
 
-export interface IUploadDone {
+export interface IUploadDone<T = unknown> {
   itemId: string;
-  result: IRemoteUpload;
+  result: IRemoteUpload<T>;
 }
 
 export interface IUploadableService<T = any, U = any> {
@@ -69,10 +72,11 @@ export interface IUploadBase extends IBase {
   uploadedAt?: string;
 }
 
-export interface IRemoteUpload {
+export interface IRemoteUpload<T = unknown> {
   fullUrl: string;
   id: string;
   recordedAt: string;
+  data?: T;
 }
 
 export interface IVideoUpload extends IUploadBase {

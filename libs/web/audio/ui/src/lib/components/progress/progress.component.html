@@ -1,15 +1,16 @@
 <div
   class="relative h-2 bg-gray-700 rounded-full overflow-hidden cursor-pointer hover:bg-gray-600 transition-colors"
   (click)="handleClick($event)"
->
+  >
   <div
     class="absolute top-0 left-0 h-full bg-green-500 rounded-full"
     [style.width]="progress + '%'"
   ></div>
-  <div
-    class="absolute top-0 right-0 h-full w-2 rounded-full bg-white transform translate-x-1/2"
-    *ngIf="showThumb && progress"
-    [style.left]="progress + '%'"
-    [style.display]="isActive ? 'block' : 'none'"
-  ></div>
+  @if (showThumb && progress) {
+    <div
+      class="absolute top-0 right-0 h-full w-2 rounded-full bg-white transform translate-x-1/2"
+      [style.left]="progress + '%'"
+      [style.display]="isActive ? 'block' : 'none'"
+    ></div>
+  }
 </div>

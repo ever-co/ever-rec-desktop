@@ -3,6 +3,7 @@ export interface IUploaderConfig {
   tenantId: string | null;
   token: string | null;
   organizationId: string | null;
+  refreshToken?: string;
 }
 
 export interface IUploaderStrategy {
