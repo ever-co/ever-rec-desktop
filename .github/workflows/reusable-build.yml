@@ -21,10 +21,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: ${{ inputs.node-version }}
           cache: 'yarn'
@@ -49,7 +49,7 @@ jobs:
         run: yarn make
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: electron-build-${{ inputs.os }}-${{ inputs.arch }}
           path: dist/executables/
@@ -58,7 +58,7 @@ jobs:
 
       - name: Upload Logs (if failure occurs)
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: logs-${{ github.run_id }}-${{ inputs.os }}
           path: logs/
