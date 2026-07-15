@@ -72,7 +72,7 @@
     "reflect-metadata": "^0.2.2",
     "rxjs": "~7.8.2",
     "tslib": "^2.3.0",
-    "typeorm": "^0.3.28",
+    "typeorm": "^0.3.29",
     "util": "^0.12.5",
     "zone.js": "0.16.0"
   },
