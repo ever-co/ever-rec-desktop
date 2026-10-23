@@ -20,7 +20,7 @@ jobs:
       matrix:
         os: [macos-latest, windows-latest, "${{ vars.RUNNER_LINUX_X64_4 || 'ubuntu-latest' }}"]
         arch: [x64, arm64]
-        node-version: [22.14.0]
+        node-version: [26.12.1]
 
     uses: ./.github/workflows/reusable-build.yml
     with:
