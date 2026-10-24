@@ -54,7 +54,7 @@
     "@ngrx/store": "21.0.1",
     "@nx/angular": "22.3.3",
     "@swimlane/ngx-charts": "^23.1.0",
-    "better-sqlite3": "^12.6.0",
+    "better-sqlite3": "^12.11.1",
     "call-bind-apply-helpers": "1.0.2",
     "dotenv": "^17.2.3",
     "electron-log": "5.4.3",
