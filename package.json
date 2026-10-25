@@ -107,7 +107,7 @@
     "@types/jest": "30.0.0",
     "@types/moment": "^2.13.0",
     "@types/moment-duration-format": "^2.2.7",
-    "@types/node": "^25.0.9",
+    "@types/node": "^26.6.5",
     "@typescript-eslint/eslint-plugin": "8.53.0",
     "@typescript-eslint/parser": "8.53.0",
     "@typescript-eslint/utils": "8.53.0",
