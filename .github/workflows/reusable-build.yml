@@ -18,6 +18,10 @@ jobs:
     runs-on: ${{ inputs.os }}
     env:
       NODE_ENV: production
+      # GitHub's artifact storage for ever-co is full ("Artifact storage quota has been hit"; Free plan, billing
+      # locked), so builds upload to our own storage (MinIO bucket `ci-artifacts`, 14-day expiry) when the repo has
+      # the CI_ARTIFACTS_S3_* settings. Forks have none and keep actions/upload-artifact.
+      CI_ARTIFACTS_S3: ${{ secrets.CI_ARTIFACTS_S3_SECRET_ACCESS_KEY != '' && vars.CI_ARTIFACTS_S3_BUCKET != '' && 'true' || 'false' }}
 
     steps:
       - name: Checkout repository
@@ -48,7 +52,26 @@ jobs:
       - name: Package Electron app
         run: yarn make
 
+      # One archive of dist/executables/ per OS: its layout differs per maker, and the link is one file.
+      - name: Upload Artifacts to CI artifact storage
+        if: env.CI_ARTIFACTS_S3 == 'true'
+        shell: bash
+        env:
+          CI_ARTIFACTS_S3_ENDPOINT: ${{ vars.CI_ARTIFACTS_S3_ENDPOINT }}
+          CI_ARTIFACTS_S3_BUCKET: ${{ vars.CI_ARTIFACTS_S3_BUCKET }}
+          CI_ARTIFACTS_S3_ACCESS_KEY_ID: ${{ vars.CI_ARTIFACTS_S3_ACCESS_KEY_ID }}
+          CI_ARTIFACTS_S3_SECRET_ACCESS_KEY: ${{ secrets.CI_ARTIFACTS_S3_SECRET_ACCESS_KEY }}
+          CI_ARTIFACTS_S3_DOWNLOAD_ENDPOINT: ${{ vars.CI_ARTIFACTS_S3_DOWNLOAD_ENDPOINT }}
+          PREFIX: ever-rec-desktop/${{ github.ref_name }}/${{ github.sha }}/${{ runner.os }}-${{ inputs.arch }}
+          NAME: electron-build-${{ runner.os }}-${{ inputs.arch }}
+        run: |
+          test -n "$(ls -A dist/executables 2>/dev/null)" || { echo "::error::dist/executables/ is empty"; exit 1; }
+          tar -czf "$RUNNER_TEMP/$NAME.tar.gz" -C dist executables
+          node scripts/ci/upload-ci-artifacts.mjs --self-test
+          node scripts/ci/upload-ci-artifacts.mjs --prefix "$PREFIX" "$RUNNER_TEMP/$NAME.tar.gz"
+
       - name: Upload Artifacts
+        if: env.CI_ARTIFACTS_S3 != 'true'
         uses: actions/upload-artifact@v7
         with:
           name: electron-build-${{ inputs.os }}-${{ inputs.arch }}
@@ -57,7 +80,7 @@ jobs:
           retention-days: 7
 
       - name: Upload Logs (if failure occurs)
-        if: failure()
+        if: failure() && env.CI_ARTIFACTS_S3 != 'true'
         uses: actions/upload-artifact@v7
         with:
           name: logs-${{ github.run_id }}-${{ inputs.os }}

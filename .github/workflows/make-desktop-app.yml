@@ -23,6 +23,9 @@ jobs:
         node-version: [26.12.1]
 
     uses: ./.github/workflows/reusable-build.yml
+    # The called workflow reads CI_ARTIFACTS_S3_SECRET_ACCESS_KEY (our own artifact storage); reusable workflows
+    # only see the caller's secrets when they are passed on.
+    secrets: inherit
     with:
       os: ${{ matrix.os }}
       arch: ${{ matrix.arch }}
