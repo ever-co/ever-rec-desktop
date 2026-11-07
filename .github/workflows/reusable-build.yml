@@ -42,7 +42,12 @@ jobs:
       - name: Install dependencies
         run: |
           yarn install --frozen-lockfile
-          yarn add -D nx@latest @nrwl/node @nrwl/workspace
+          # The lockfile already pins nx 22 and @nx/*. Adding the deprecated @nrwl/node and @nrwl/workspace pulls nested
+          # older nx copies whose post-install died with "Bus error (core dumped)" on Linux (runs 42274412665, 42359453431).
+          # Kept behind a variable in case a build still needs them.
+          if [ "${{ vars.REC_DESKTOP_ADD_NRWL }}" = "true" ]; then
+            yarn add -D nx@latest @nrwl/node @nrwl/workspace
+          fi
 
       - name: Build Electron app
         run: |
