@@ -41,7 +41,9 @@ jobs:
 
       - name: Install dependencies
         run: |
-          yarn install --frozen-lockfile
+          # NODE_ENV=production (job env) makes yarn 1 skip devDependencies, and nx, @nx/* and electron-builder are
+          # devDependencies: install them all, the build itself still runs with NODE_ENV=production.
+          yarn install --frozen-lockfile --production=false
           # The lockfile already pins nx 22 and @nx/*. Adding the deprecated @nrwl/node and @nrwl/workspace pulls nested
           # older nx copies whose post-install died with "Bus error (core dumped)" on Linux (runs 42274412665, 42359453431).
           # Kept behind a variable in case a build still needs them.
