@@ -40,9 +40,19 @@ jobs:
           yarn global add nx@latest
 
       - name: Install dependencies
+        env:
+          REC_DESKTOP_ADD_NRWL: ${{ vars.REC_DESKTOP_ADD_NRWL }}
         run: |
-          yarn install --frozen-lockfile
-          yarn add -D nx@latest @nrwl/node @nrwl/workspace
+          # NODE_ENV=production (job env) makes yarn 1 skip devDependencies, and nx, @nx/* and electron-builder are
+          # devDependencies: install them all, the build itself still runs with NODE_ENV=production.
+          yarn install --frozen-lockfile --production=false
+          # The lockfile already pins nx 22 and @nx/*. Adding the deprecated @nrwl/node and @nrwl/workspace pulls nested
+          # older nx copies whose post-install died with "Bus error (core dumped)" on Linux (runs 42274412665, 42359453431).
+          # Kept behind a variable in case a build still needs them.
+          # The variable comes in through the environment, never pasted into the script.
+          if [ "$REC_DESKTOP_ADD_NRWL" = "true" ]; then
+            yarn add -D --production=false nx@latest @nrwl/node @nrwl/workspace
+          fi
 
       - name: Build Electron app
         run: |
